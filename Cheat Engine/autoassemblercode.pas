@@ -146,4 +146,172 @@ type
 
 var
   //list containing functions tcclib1.c defines.
-  //If any of these functions are us
+  //If any of these functions are used, compile tcclib1-ce.c into the target process.
+  //for __m* make
+  tcclibimportlist: TStringHashList;
+
+  {
+  32-bit only:
+  __divdi3
+  __moddi3
+  __udivdi3
+  __umoddi3
+  __ashrdi3
+  __lshrdi3
+  __ashldi3
+  __floatundisf
+
+  //32 and 64-bit:
+  __floatundidf
+  __floatundixf
+  __fixunssfdi
+  __fixsfdi
+  __fixunsdfdi
+  __fixdfdi
+  __fixunsxfdi
+  __fixxfdi
+  }
+
+
+
+procedure parseLuaCodeParameters(s: string; var output: TLuaCodeParams);
+var
+  i: integer;
+  r,r2,r3: TStringArray;
+
+
+  varname, regname: string;
+  so: TStringSplitOptions;
+  o: TLuaCodeParameter;
+  xmmnr: integer;
+  subnr: integer;
+  st: string;
+begin
+  setlength(output,0);
+
+  r:=s.Split(' ');
+  for i:=0 to length(r)-1 do
+  begin
+    FillByte(o, sizeof(o),0);
+
+    r2:=r[i].Split('=');
+
+    if length(r2)<>2 then
+      continue;
+
+    varname:=r2[0];
+    regname:=uppercase(r2[1]);
+
+
+    o.varname:=varname;
+
+
+    case regname of
+      'EAX','RAX': o.contextitem:=0;
+      'EBX','RBX': o.contextitem:=1;
+      'ECX','RCX': o.contextitem:=2;
+      'EDX','RDX': o.contextitem:=3;
+      'ESI','RSI': o.contextitem:=4;
+      'EDI','RDI': o.contextitem:=5;
+      'ESP','RSP': o.contextitem:=6;
+      'EBP','RBP': o.contextitem:=7;
+      'R8': o.contextItem:=8;
+      'R9': o.contextItem:=9;
+      'R10': o.contextItem:=10;
+      'R11': o.contextItem:=11;
+      'R12': o.contextItem:=12;
+      'R13': o.contextItem:=13;
+      'R14': o.contextItem:=14;
+      'R15': o.contextItem:=15;
+
+      'EAXF','RAXF': o.contextitem:=16;
+      'EBXF','RBXF': o.contextitem:=17;
+      'ECXF','RCXF': o.contextitem:=18;
+      'EDXF','RDXF': o.contextitem:=19;
+      'ESIF','RSIF': o.contextitem:=20;
+      'EDIF','RDIF': o.contextitem:=21;
+      'EBPF','RBPF': o.contextitem:=22;
+      'ESPF','RSPF': o.contextitem:=23;
+      'R8F': o.contextItem:=24;
+      'R9F': o.contextItem:=25;
+      'R10F': o.contextItem:=26;
+      'R11F': o.contextItem:=27;
+      'R12F': o.contextItem:=28;
+      'R13F': o.contextItem:=29;
+      'R14F': o.contextItem:=30;
+      'R15F': o.contextItem:=31;
+      else
+      begin
+
+        if (length(regname)>=4) and regname.StartsWith('XMM') then
+        begin
+          if regname.Contains('.')=false then
+          begin
+            //xmm bytetable
+            if regname[4]='-' then
+              xmmnr:=strtoint(regname.Substring(4)) //XMM-x
+            else
+              xmmnr:=strtoint(regname.Substring(3)); //except on invalid data. That's ok
+            o.contextItem:=32+xmmnr;
+          end
+          else
+          begin
+            r3:=regname.Split('.');
+            if length(r3)<>2 then raise exception.create('Invalid xmm register format (Invalid dot usage)');
+
+            if regname[4]='-' then
+              xmmnr:=strtoint(r3[0].Substring(4)) //XMM-x.yyyyyyz
+            else
+              xmmnr:=strtoint(r3[0].Substring(3));
+
+            if (length(r3[1])>2) or (length(r3[1])=0) then raise exception.create('Invalid xmm register format');
+
+            if (length(r3[1])=2) and (not (uppercase(r3[1])[2] in ['D','F'])) then exception.create('Invalid xmm register format (Not F or D)');
+
+            subnr:=strtoint(r3[1][1]);
+
+            if (length(r3[1])=2) and (uppercase(r3[1][2])='D') then
+              o.contextItem:=112+xmmnr*2+subnr //XMM*.*D (double)
+            else
+              o.contextItem:=48+xmmnr*4+subnr; //XMM*.*F or //XMM*.*
+          end;
+        end;
+      end;
+
+    end;
+
+    setlength(output,length(output)+1);
+    output[length(output)-1]:=o;
+  end;
+end;
+
+function AddSafeCallStub(script: TStrings; functionname: string; targetself: boolean):string; //a function that can be called from any stack alignment
+begin
+  if functionname[1]='[' then
+    result:='ceinternal_autofree_safecallstub_for_'+copy(functionname,2,length(functionname)-2)
+  else
+    result:='ceinternal_autofree_safecallstub_for_'+functionname;
+
+  script.add('');
+  script.insert(0,'alloc('+result+',512)'); //Let's place bets how many people are going to remark that this is what breaks their code and not because they didn't allocate enough memory properly...
+
+
+  script.add(result+':');
+  if processhandler.is64Bit{$ifdef cpu64} or targetself{$endif} then
+  begin
+    script.add('pushfq //save flags');
+    script.add('push rax');
+    script.add('mov rax,rsp');
+    script.add('and rsp,fffffffffffffff0   //align stack');
+
+    script.add('sub rsp,2a0 //allocate local space for scratchspace, the registers, and sse registers. And keep alignment');
+
+    script.add('//store state');
+    script.add('fxsave qword [rsp+20]');
+    script.add('mov [rsp+220],rbx');
+    script.add('mov [rsp+228],rcx');
+    script.add('mov [rsp+230],rdx');
+    script.add('mov [rsp+238],rsi');
+    script.add('mov [rsp+240],rdi');
+    script.add('mov [rsp+248],rax //rsp');
+    script.add
