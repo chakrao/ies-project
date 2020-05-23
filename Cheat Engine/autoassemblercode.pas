@@ -314,4 +314,170 @@ begin
     script.add('mov [rsp+238],rsi');
     script.add('mov [rsp+240],rdi');
     script.add('mov [rsp+248],rax //rsp');
-    script.add
+    script.add('mov [rsp+250],rbp');
+    script.add('mov [rsp+258],r8');
+    script.add('mov [rsp+260],r9');
+    script.add('mov [rsp+268],r10');
+    script.add('mov [rsp+270],r11');
+    script.add('mov [rsp+278],r12');
+    script.add('mov [rsp+280],r13');
+    script.add('mov [rsp+288],r14');
+    script.add('mov [rsp+290],r15');
+
+    script.add('//[rsp+248]+0=original rax');
+    script.add('//[rsp+248]+8=original flags');
+
+    script.add('//call lua function');
+    script.add('lea rcx,[rsp+20]  //pointer to the saved state  ([rcx+248-20]+0=rax   [rcx+248-20]+0=flags)');
+    script.add('call '+functionname);
+
+    script.add('//restore registers (could have been changed by the function on purpose)');
+    script.add('mov r15,[rsp+290]');
+    script.add('mov r14,[rsp+288]');
+    script.add('mov r13,[rsp+280]');
+    script.add('mov r12,[rsp+278]');
+    script.add('mov r11,[rsp+270]');
+    script.add('mov r10,[rsp+268]');
+    script.add('mov r9,[rsp+260]');
+    script.add('mov r8,[rsp+258]');
+    script.add('mov rbp,[rsp+250]');
+    script.add('mov rdi,[rsp+240]');
+    script.add('mov rsi,[rsp+238]');
+    script.add('mov rdx,[rsp+230]');
+    script.add('mov rcx,[rsp+228]');
+    script.add('mov rbx,[rsp+220]');
+
+    script.add('fxrstor qword [rsp+20]');
+
+    script.add('mov rsp,[rsp+248] //restore rsp');
+    script.add('pop rax');
+    script.add('popfq');
+    script.add('ret');
+
+  end
+  else
+  begin
+    script.add('pushfd //save flags');
+    script.add('push eax');
+    script.add('mov eax,esp');
+    script.add('and esp,fffffff0   //align stack');
+    script.add('sub esp,220 //allocate local space for scratchspace, the registers, and sse registers. And keep alignment');
+
+    script.add('//store state');
+    script.add('fxsave [esp]');
+    script.add('mov [esp+200],ebx');
+    script.add('mov [esp+204],ecx');
+    script.add('mov [esp+208],edx');
+    script.add('mov [esp+20c],esi');
+    script.add('mov [esp+210],edi');
+    script.add('mov [esp+214],eax //rsp');
+    script.add('mov [esp+218],ebp');
+
+    script.add('//[esp+214]+0=original eax');
+    script.add('//[esp+214]+4=original eflags');
+
+    script.add('//call lua function');
+    script.add('mov eax,esp'); //just to be safe
+    script.add('push eax');
+    script.add('call '+functionname);
+    script.add('add esp,4');
+
+    script.add('//restore registers (could have been changed by the function on purpose)');
+    script.add('mov ebp,[esp+218]');
+    script.add('mov edi,[rsp+210]');
+    script.add('mov esi,[rsp+20c]');
+    script.add('mov edx,[rsp+208]');
+    script.add('mov ecx,[rsp+204]');
+    script.add('mov ebx,[rsp+200]');
+
+    script.add('fxrstor [rsp]');
+
+    script.add('mov esp,[rsp+214] //restore rsp');
+    script.add('pop eax');
+    script.add('popfd');
+    script.add('ret');
+  end;
+end;
+
+
+
+procedure AutoAssemblerCCodePass2(var dataForPass2: TAutoAssemblerCodePass2Data; symbollist: TSymbolListHandler);
+//right after the allocs have been done
+var
+  secondarylist,errorlog: tstringlist;
+  i,j,k: integer;
+  bytes: tmemorystream;
+
+  jmpbytes, nopfiller: array of byte;
+
+  a, newAddress: ptruint;
+  syminfo, nextsyminfo: PCESymbolInfo;
+  bw: size_t;
+  psize: integer;
+
+  phandle: THandle;
+
+  _tcc: TTCC;
+  s,s2: string;
+
+  tempsymbollist: TStringlist;
+
+  oldprotection: dword;
+  tccregions: TTCCRegionList;
+
+  writesuccess: boolean;
+  writesuccess2: boolean;
+
+begin
+  secondarylist:=TStringList.create;
+  bytes:=tmemorystream.create;
+
+  tempsymbollist:=tstringlist.create;
+
+  errorlog:=tstringlist.create;
+  tccregions:=TTCCRegionList.Create;
+
+  dataForPass2.cdata.address:=align(dataForPass2.cdata.address,16);
+
+  try
+    if dataForPass2.cdata.targetself then
+    begin
+      _tcc:=tccself;
+      phandle:=GetCurrentProcess;
+      {$ifdef cpu64}
+      psize:=8;
+      {$else}
+      psize:=4;
+      {$endif}
+    end
+    else
+    begin
+      phandle:=processhandle;
+{$ifdef windows}
+      if getConnection<>nil then
+        _tcc:=tcc_linux
+      else
+{$endif}
+       _tcc:=tcc;
+
+      psize:=processhandler.pointersize;
+    end;
+
+
+    for i:=0 to length(dataForPass2.cdata.references)-1 do
+      secondarylist.AddObject(dataForPass2.cdata.references[i].name, tobject(dataForPass2.cdata.references[i].address));
+
+
+    if dataForPass2.cdata.nodebug=false then
+      dataForPass2.cdata.sourceCodeInfo:=TSourceCodeInfo.create;
+
+
+
+
+    if _tcc.compileScript(dataForPass2.cdata.cscript.Text, dataForPass2.cdata.address, bytes, tempsymbollist, tccregions, dataForPass2.cdata.sourceCodeInfo, errorlog, secondarylist, dataForPass2.cdata.targetself ) then
+    begin
+      if bytes.Size>dataForPass2.cdata.bytesize then
+      begin
+        tccregions.Clear;
+
+        //this will be a slight memoryle
