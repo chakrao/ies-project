@@ -480,4 +480,134 @@ begin
       begin
         tccregions.Clear;
 
-        //this will be a slight memoryle
+        //this will be a slight memoryleak but whatever
+        //allocate 4x the amount of memory needed
+{$ifdef windows}
+        if dataForPass2.cdata.kernelAlloc then
+          newAddress:=ptruint(KernelAlloc(4*bytes.size))
+        else
+{$endif}
+        begin
+          if SystemSupportsWritableExecutableMemory then
+            newAddress:=ptruint(VirtualAllocEx(phandle,nil,4*bytes.size,mem_reserve or mem_commit, PAGE_EXECUTE_READWRITE))
+          else
+            newAddress:=ptruint(VirtualAllocEx(phandle,nil,bytes.size,mem_reserve or mem_commit, PAGE_READWRITE)); //these systems already waste memory as is so no *4
+
+        end;
+
+        if newAddress<>0 then
+        begin
+          dataForPass2.cdata.address:=newAddress;
+          dataForPass2.cdata.bytesize:=4*bytes.size;
+
+          //try again
+          tempsymbollist.clear;
+          bytes.clear;
+          secondarylist.Clear;
+          errorlog.clear;
+          if _tcc.compileScript(dataForPass2.cdata.cscript.text, dataForPass2.cdata.address, bytes, tempsymbollist, tccregions, dataForPass2.cdata.sourceCodeInfo, errorlog, secondarylist, dataForPass2.cdata.targetself )=false then
+          begin
+            //wtf? something really screwed up here
+{$ifdef windows}
+            if dataForPass2.cdata.kernelAlloc then
+              KernelFree(newAddress)
+            else
+{$endif}
+              VirtualFreeEx(phandle, pointer(newAddress), 0,MEM_FREE);
+            raise exception.create('3rd time failure of c-code');
+          end;
+
+
+          if bytes.Size>dataForPass2.cdata.bytesize then
+          begin
+{$ifdef windows}
+            if dataForPass2.cdata.kernelAlloc then
+              KernelFree(newAddress)
+            else
+{$endif}
+              VirtualFreeEx(phandle, pointer(newAddress), 0,MEM_FREE);
+
+            raise exception.create('(Unexplained and unmitigated code growth)');
+          end;
+        end
+        else
+          raise exception.create('Failure allocating memory for the C-code');
+      end;
+
+      //still here so compilation is within the given parameters
+
+
+      if not SystemSupportsWritableExecutableMemory then //could have been made execute readonly earlier, undo that here
+        virtualprotectex(processhandle,pointer(dataforpass2.cdata.address),bytes.size,PAGE_READWRITE,oldprotection);
+
+
+
+      OutputDebugString('Writing c-code to '+dataforpass2.cdata.address.ToHexString+' ( '+bytes.size.ToString+' bytes )');
+      writesuccess:=writeProcessMemory(phandle, pointer(dataforpass2.cdata.address),bytes.memory, bytes.size,bw);
+
+      {$ifdef darwin}
+      if (writesuccess) then
+      begin
+        outputdebugstring('success. Wrote:');
+        s:='';
+        for i:=0 to bytes.size-1 do
+        begin
+          s:=s+pbyte(bytes.memory)[i].ToHexString(2)+' ';
+        end;
+
+        outputdebugstring(s);
+      end;
+      {$endif}
+
+
+      //fill in links
+      for i:=0 to length(dataForPass2.cdata.linklist)-1 do
+      begin
+        j:=secondarylist.IndexOf(dataforpass2.cdata.linklist[i].name);
+        if j=-1 then
+        begin
+          raise exception.create('Failure to link '+dataForPass2.cdata.linklist[i].fromname+' due to missing reference');
+        end;
+
+        k:=tempsymbollist.IndexOf(dataForPass2.cdata.linklist[i].fromname);
+        if k=-1 then
+        begin
+          raise exception.create('Failure to link '+dataForPass2.cdata.linklist[i].fromname+' due to it missing in the c-code');
+        end;
+
+        a:=ptruint(tempsymbollist.Objects[k]);
+        writesuccess2:=writeProcessMemory(phandle, pointer(dataForPass2.cdata.references[j].address),@a,psize,bw);
+      end;
+
+
+      for i:=0 to length(dataForPass2.cdata.symbols)-1 do
+      begin
+        j:=tempsymbollist.IndexOf(dataForPass2.cdata.symbols[i].name);
+        if j<>-1 then
+          dataforpass2.cdata.symbols[i].address:=ptruint(tempsymbollist.Objects[j])
+        else
+        begin
+          //not found. prefixed ?
+          if dataForPass2.cdata.symbolPrefix<>'' then
+          begin
+            s:=dataForPass2.cdata.symbols[i].name;
+            if s.StartsWith(dataForPass2.cdata.symbolPrefix+'.') then
+            begin
+              s:=copy(s,length(dataForPass2.cdata.symbolPrefix)+2);
+              j:=tempsymbollist.IndexOf(s);
+              if j<>-1 then
+                dataforpass2.cdata.symbols[i].address:=ptruint(tempsymbollist.Objects[j])
+            end;
+          end;
+        end;
+      end;
+
+
+      if symbollist<>nil then //caller wants the list
+      begin
+        for i:=0 to tempsymbollist.count-1 do
+        begin
+          s:=tempsymbollist[i];
+          if s.StartsWith('ceinternal_autofree_cfunction') then continue; //strip the ceinternal_autofree_cfunction
+
+         
