@@ -610,4 +610,166 @@ begin
           s:=tempsymbollist[i];
           if s.StartsWith('ceinternal_autofree_cfunction') then continue; //strip the ceinternal_autofree_cfunction
 
-         
+          if dataForPass2.cdata.symbolPrefix<>'' then
+          begin
+            symbollist.AddSymbol('',dataForPass2.cdata.symbolPrefix+'.'+tempsymbollist[i], ptruint(tempsymbollist.Objects[i]), 1);
+            symbollist.AddSymbol('',tempsymbollist[i], ptruint(tempsymbollist.Objects[i]), 1,true);
+          end
+          else
+            symbollist.AddSymbol('',tempsymbollist[i], ptruint(tempsymbollist.Objects[i]), 1);
+        end;
+      end;
+
+      if not SystemSupportsWritableExecutableMemory then
+      begin
+        //apply protections
+        for i:=0 to tccregions.Count-1 do
+          virtualprotectex(processhandle, pointer(tccregions[i].address), tccregions[i].size, tccregions[i].protection,oldprotection);
+      end;
+
+      if not writesuccess then
+        raise exception.create('Failure writing the generated c-code to memory');
+
+
+      if not writesuccess2 then
+        raise exception.create('Failure writing referenced addresses');
+    end
+    else
+    begin
+      raise Exception.Create('ccode section compilation failed:'+errorlog.text);
+    end;
+
+
+  finally
+    freeandnil(errorlog);
+
+    freeandnil(bytes);
+    freeandnil(secondarylist);
+
+    freeandnil(dataForPass2.cdata.cscript);
+
+    freeandnil(tempsymbollist);
+    freeandnil(tccregions);
+  end;
+end;
+
+
+procedure ParseCBlockSpecificParameters(s: string; var dataForPass2: TAutoAssemblerCodePass2Data);
+var
+  i,j: integer;
+  params: array of string;
+  us: string;
+
+begin
+  params:=s.Split([' ',',']);
+  for i:=0 to length(params)-1 do
+  begin
+    us:=uppercase(params[i]);
+{$ifdef windows}
+    if (us='KALLOC') or (us='KERNELMODE') or (us='KERNEL') then
+      DataForPass2.cdata.kernelAlloc:=true;
+{$endif}
+
+    if (us='NODEBUG') then
+      DataForPass2.cdata.nodebug:=true;
+
+    if copy(us,1,7)='PREFIX=' then
+      DataForPass2.cdata.symbolPrefix:=copy(params[i],8);
+  end;
+
+end;
+
+procedure AutoAssemblerCBlockPass1(Script: TStrings; var i: integer; var dataForPass2: TAutoAssemblerCodePass2Data);
+//just copy the lines from script to cscript
+var
+  s: string;
+begin
+  if dataForPass2.cdata.cscript=nil then
+    dataForPass2.cdata.cscript:=tstringlist.create;
+
+  dataForPass2.cdata.cscript.add('//{$C} block at line '+ptruint(script.Objects[i]).ToString);;
+
+  s:=trim(script[i]);
+  s:=copy(s,5,length(s)-5);
+  ParseCBlockSpecificParameters(s, dataForPass2);
+
+
+  script.delete(i); //remove the {$C} line
+  while i<script.Count-1 do
+  begin
+    if uppercase(script[i])='{$ASM}' then
+    begin
+      //finished
+      script.delete(i);
+      dataForPass2.cdata.cscript.add(''); //just a seperator to make debugging easier
+      exit;
+    end;
+
+    dataForPass2.cdata.cscript.AddObject(script[i], script.Objects[i]);
+    script.Delete(i);
+  end;
+end;
+
+procedure AutoAssemblerCCodePass1(script: TStrings; parameters: TLuaCodeParams; var i: integer; var dataForPass2: TAutoAssemblerCodePass2Data; syntaxcheckonly: boolean; targetself: boolean);
+var
+  j,k: integer;
+  tst: ptruint;
+  s: string;
+  endpos, scriptstart, scriptend: integer;
+  scriptstartlinenr: integer;
+
+  stubcounter: integer=0;
+
+  cscript, imports, errorlog: tstringlist;
+  functionname: string;
+
+  refnr: integer;
+
+
+  usesXMMType: boolean=false;
+
+  ms: TMemorystream;
+  bytesizeneeded: integer;
+
+begin
+
+  s:=trim(script[i]);
+  s:=copy(s,9,length(s)-9);
+  ParseCBlockSpecificParameters(s, dataForPass2);
+
+  if dataForPass2.cdata.cscript=nil then
+    dataForPass2.cdata.cscript:=tstringlist.create;
+
+
+
+  scriptstartlinenr:=ptruint(script.Objects[i]);
+
+  scriptstart:=i;
+  j:=i+1;
+  while j<script.Count-1 do
+  begin
+    if uppercase(script[j])='{$ASM}' then
+      break;
+
+    inc(j);
+  end;
+  scriptend:=j;
+
+
+
+  cscript:=dataForPass2.cdata.cscript; //shortens the code
+  functionname:='ceinternal_autofree_cfunction_at_line'+inttostr(ptruint(script.objects[scriptstart]));
+  cscript.add('void '+functionname+'(void *parameters)');
+  cscript.add('{');
+  cscript.add('  //get the values from the parameter pointer');
+  //load the values from parameters pointer
+
+  if processhandler.is64Bit {$ifdef cpu64}or targetself{$endif} then
+  begin
+    for j:=0 to length(parameters)-1 do
+    begin
+      case parameters[j].contextitem of
+        0: s:='unsigned long long '+parameters[j].varname+'=*(unsigned long long *)*(unsigned long long *)((unsigned long long)parameters+0x228);'; //RAX
+        1..5, 7..15: s:='unsigned long long '+parameters[j].varname+'=*(unsigned long long*)((unsigned long long)parameters+0x'+inttohex($200+(parameters[j].contextitem-1)*8,1)+');'; //RBX..R15
+        6: s:='unsigned long long '+parameters[j].varname+'=*(unsigned long long*)((unsigned long long)parameters+0x'+inttohex($200+(parameters[j].contextitem-1)*8,1)+')+24;'; //RSP
+        16: s:='float '+p
