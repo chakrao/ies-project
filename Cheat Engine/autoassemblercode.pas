@@ -991,4 +991,133 @@ begin
         17..23: s:=s+'readFloat(parameters+0x'+inttohex($200+(parameters[j].contextitem-17)*4,1)+')'; //RBX..R15 as float
         32..39: s:=s+'readBytes(parameters+0x'+inttohex($a0+(parameters[j].contextitem-32)*16,1)+',16,true)';
         48..79: s:=s+'readFloat(parameters+0x'+inttohex($a0+(parameters[j].contextitem-48)*4,1)+')';
-        112..127: s:=s+'readDouble(parameters+0x'+inttohex($
+        112..127: s:=s+'readDouble(parameters+0x'+inttohex($a0+(parameters[j].contextitem-112)*8,1)+')';
+      end;
+      luascript.insert(j+1,s);
+    end;
+
+  end;
+
+
+  //end of the script: write the values back
+  if processhandler.is64bit then
+  begin
+    for j:=0 to length(parameters)-1 do
+    begin
+      case parameters[j].contextitem of
+        0: s:='writePointer(readPointer(parameters+0x228),'+parameters[j].varname+')';
+        1..5,7..15: s:='writePointer(parameters+0x'+inttohex($200+(parameters[j].contextitem-1)*8,1)+','+parameters[j].varname+')'; //RBX..R15
+        6: s:='';
+        16: s:='writeFloat(readPointer(parameters+0x228),'+parameters[j].varname+')'; //RAX as float
+        17..31: s:='writeFloat(parameters+0x'+inttohex($200+(parameters[j].contextitem-17)*8,1)+','+parameters[j].varname+')'; //RBX..R15 as float
+        32..47: s:='writeBytes(parameters+0x'+inttohex($a0+(parameters[j].contextitem-32)*16,1)+','+parameters[j].varname+')';
+        48..111: s:='writeFloat(parameters+0x'+inttohex($a0+(parameters[j].contextitem-48)*4,1)+','+parameters[j].varname+')';
+        112..143: s:='writeDouble(parameters+0x'+inttohex($a0+(parameters[j].contextitem-112)*8,1)+','+parameters[j].varname+')';
+        else
+          s:='';
+      end;
+
+      luascript.add(s);
+
+    end;
+
+  end
+  else
+  begin
+    for j:=0 to length(parameters)-1 do
+    begin
+      case parameters[j].contextitem of
+        0: s:='writePointer(readPointer(parameters+0x214),'+parameters[j].varname+')';
+        1..5,7: s:='writePointer(parameters+0x'+inttohex($200+(parameters[j].contextitem-1)*4,1)+','+parameters[j].varname+')'; //EBX..EBP
+        6: s:='';
+        16: s:='writeFloat(readPointer(parameters+0x214),'+parameters[j].varname+')'; //EAX as float
+        17..23: s:='writeFloat(parameters+0x'+inttohex($200+(parameters[j].contextitem-17)*4,1)+','+parameters[j].varname+')'; //EBX..EBP as float
+        32..39: s:='writeBytes(parameters+0x'+inttohex($a0+(parameters[j].contextitem-32)*16,1)+','+parameters[j].varname+')';
+        48..79: s:='writeFloat(parameters+0x'+inttohex($a0+(parameters[j].contextitem-48)*4,1)+','+parameters[j].varname+')';
+        112..127: s:='writeDouble(parameters+0x'+inttohex($a0+(parameters[j].contextitem-112)*8,1)+','+parameters[j].varname+')';
+      end;
+
+      luascript.add(s);
+
+    end;
+  end;
+
+  luascript.add('return end )');
+
+  if lua_dostring(luavm, pchar(luascript.Text))=0 then
+  begin
+    refnr:=lua_tointeger(LuaVM,-1);
+    lua_pop(LuaVM,1);
+
+    if syntaxcheckonly then  //remove this reference
+      lua_unref(LuaVM, refnr);
+  end
+  else
+  begin
+    s:=lua_tostring(LuaVM,-1);
+    lua_pop(LuaVM,1);
+    raise exception.create('Invalid lua code in internal {$LUACODE} block at line '+inttostr(linenr)+' :'+s);
+  end;
+
+
+
+
+  //add the assemble function used to call the lua code, no need to save registers, it's called by a safecall stub, just pass param1 to lua
+  script.insert(0,'alloc(ceinternal_autofree_luacallstub_at'+inttostr(linenr)+',64)');
+
+  inc(scriptstart,1);
+  inc(scriptend,1);
+
+  script.add('ceinternal_autofree_luacallstub_at'+inttostr(linenr)+':');
+
+  if processhandler.is64Bit then
+  begin
+    script.add('sub rsp,28'); //scratchspace, and parameter save. Also aligns the stack
+    script.add('mov [rsp+20],rcx');  //save the parameter pointer
+
+    script.add('mov ecx,'+inttohex(refnr,1));
+    script.add('mov edx,1'); //1 parameteer
+    script.add('lea r8,[rsp+20]'); //the address where the parameter pointer is stored
+    script.add('mov r9,1');
+    script.add('call CELUA_ExecuteFunctionByReference');
+    script.add('add rsp,28');
+    script.add('ret');
+  end
+  else
+  begin
+    script.add('lea eax,[esp+4]'); //esp=return address, esp+4=param1
+    //[ebp]=old ebp
+    //[ebp+4]=return address
+    //[ebp+8]=param1 (parameters)
+    script.add('push 1');
+    script.add('push eax'); //push pointer to param1
+    script.add('push 1'); //1 parameter
+    script.add('push '+inttohex(refnr,1));
+    script.add('call CELUA_ExecuteFunctionByReference');
+    script.add('ret');
+  end;
+
+
+
+  //create a safecall stub to call this routine with a simple call (note, could be a 16 byte call so beware of that)
+  s:=AddSafeCallStub(script, 'ceinternal_autofree_luacallstub_at'+inttostr(linenr),false);
+  inc(scriptstart,1); //also inserts an alloc at top
+  inc(scriptend,1);
+
+  //and finally replace the luacode block with a call to the safecallstub
+  for j:=scriptend downto scriptstart+1 do
+  begin
+    script.Delete(j);
+  end;
+
+  script[scriptstart]:='call '+s;
+
+
+  //clipboard.AsText:=script.text;
+  //debug^^^
+
+end;
+
+procedure AutoAssemblerCodePass2(var dataForPass2: TAutoAssemblerCodePass2Data; symbollist: TSymbolListHandler);
+begin
+  AutoAssemblerCCodePass2(dataForPass2, symbollist
