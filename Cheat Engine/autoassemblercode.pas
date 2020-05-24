@@ -860,4 +860,135 @@ begin
         32..39:
         begin
           usesXMMType:=true;
-          s:='*(pxmmreg)((unsi
+          s:='*(pxmmreg)((unsigned long)parameters+0x'+inttohex($a0+(parameters[j].contextitem-32)*16,1)+')='+parameters[j].varname+';';
+        end;
+        48..79: s:='*(float *)((unsigned long)parameters+0x'+inttohex($a0+(parameters[j].contextitem-48)*4,1)+')='+parameters[j].varname+';'; //EBX..EBP
+        112..127: s:='*(double *)((unsigned long)parameters+0x'+inttohex($a0+(parameters[j].contextitem-112)*8,1)+')='+parameters[j].varname+';';
+      end;
+      if s<>'' then
+        cscript.add('  '+s);
+
+    end;
+  end;
+
+  cscript.add('}');
+
+
+
+  //allocate a spot for the linker stage to put the address
+  if processhandler.is64Bit {$ifdef cpu64} or targetself{$endif} then
+    script.insert(0, {$ifdef windows}ifthen(DataForPass2.cdata.kernelAlloc,'k','')+{$endif}'alloc('+functionname+'_address,8)')
+  else
+    script.insert(0, {$ifdef windows}ifthen(DataForPass2.cdata.kernelAlloc,'k','')+{$endif}'alloc('+functionname+'_address,4)');
+
+  inc(scriptstart,1);
+  inc(scriptend,1);
+
+  //create a safecall stub to call this routine with a simple call
+  s:=AddSafeCallStub(script, '['+functionname+'_address]', targetself);
+  inc(scriptstart,1);
+  inc(scriptend,1);
+
+
+  //and finally replace the c block with a call to the safecallstub
+  for j:=scriptend downto scriptstart+1 do
+    script.Delete(j);
+
+
+  script[scriptstart]:='call '+s;
+
+  j:=length(dataForPass2.cdata.linklist);
+  setlength(dataForPass2.cdata.linklist,j+1);
+  dataForPass2.cdata.linklist[j].name:=functionname+'_address';
+  dataForPass2.cdata.linklist[j].fromname:=functionname;
+  dataForPass2.cdata.usesxmm:=usesXMMType;
+end;
+
+procedure AutoAssemblerLuaCodePass(script: TStrings; parameters: TLuaCodeParams; var i: integer; syntaxcheckonly: boolean);
+var
+  j,k: integer;
+  s: string;
+  endpos, scriptstart, scriptend: integer;
+  luascript: tstringlist;
+
+  linenr: integer;
+  refnr: integer;
+
+  hasAddedLuaServerCode: boolean=false;
+  hasAddedAsmStatement: boolean=false;
+
+begin
+  //search for {$LUACODE/
+  linenr:=ptruint(script.Objects[i]);
+  scriptstart:=i;
+
+  j:=i+1;
+  while j<script.Count do
+  begin
+    if uppercase(script[j])='{$ASM}' then
+      break;
+
+    inc(j);
+  end;
+
+  scriptend:=j;
+
+
+  luascript:=tstringlist.Create;
+  for j:=i+1 to scriptend-1 do
+    luascript.add(script[j]);
+
+  if luaL_loadstring(luavm, pchar(luascript.text))=0 then
+    lua_pop(LuaVM,1)
+  else
+  begin
+    s:=lua_tostring(LuaVM,-1);
+    lua_pop(LuaVM,1);
+
+   // clipboard.AsText:=luascript.text;
+
+    raise exception.create('Invalid lua code in {$LUACODE} block at line '+inttostr(linenr)+' :'+s);
+  end;
+
+  //parse s for the parameters that it wants
+
+
+
+  luascript.insert(0,'return createRef(function(parameters)');
+  //load the values from parameters pointer
+
+  if processhandler.is64bit then
+  begin
+    for j:=0 to length(parameters)-1 do
+    begin
+      s:='local '+parameters[j].varname+'=';
+
+      case parameters[j].contextitem of
+        0: s:=s+'readPointer(readPointer(parameters+0x228))'; //RAX
+        1..5,7..15: s:=s+'readPointer(parameters+0x'+inttohex($200+(parameters[j].contextitem-1)*8,1)+')'; //RBX..R15
+        6: s:=s+'readPointer(parameters+0x'+inttohex($200+(parameters[j].contextitem-1)*8,1)+'+24)';
+        16: s:=s+'readFloat(readPointer(parameters+0x228))'; //RAX as float
+        17..31: s:=s+'readFloat(parameters+0x'+inttohex($200+(parameters[j].contextitem-17)*8,1)+')'; //RBX..R15 as float
+        32..47: s:=s+'readBytes(parameters+0x'+inttohex($a0+(parameters[j].contextitem-32)*16,1)+',16,true)';
+        48..111: s:=s+'readFloat(parameters+0x'+inttohex($a0+(parameters[j].contextitem-48)*4,1)+')';
+        112..143: s:=s+'readDouble(parameters+0x'+inttohex($a0+(parameters[j].contextitem-112)*8,1)+')';
+      end;
+
+      luascript.insert(j+1,s);
+    end;
+
+  end
+  else
+  begin
+    for j:=0 to length(parameters)-1 do
+    begin
+      s:='local '+parameters[j].varname+'=';
+      case parameters[j].contextitem of
+        0: s:=s+'readPointer(readPointer(parameters+0x214))'; //RAX
+        1..5,7: s:=s+'readPointer(parameters+0x'+inttohex($200+(parameters[j].contextitem-1)*4,1)+')'; //RBX..R15
+        6: s:=s+'readPointer(parameters+0x'+inttohex($200+(parameters[j].contextitem-1)*8,1)+'+12)';
+        16: s:=s+'readFloat(readPointer(parameters+0x214))'; //RAX as float
+        17..23: s:=s+'readFloat(parameters+0x'+inttohex($200+(parameters[j].contextitem-17)*4,1)+')'; //RBX..R15 as float
+        32..39: s:=s+'readBytes(parameters+0x'+inttohex($a0+(parameters[j].contextitem-32)*16,1)+',16,true)';
+        48..79: s:=s+'readFloat(parameters+0x'+inttohex($a0+(parameters[j].contextitem-48)*4,1)+')';
+        112..127: s:=s+'readDouble(parameters+0x'+inttohex($
