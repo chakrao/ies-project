@@ -1381,4 +1381,49 @@ begin
         end;
 
         for i:=imports.count to imports.count+length(dataforpass2.cdata.linklist)-1 do
-          dataforpass2.cdata.references[i].name:=da
+          dataforpass2.cdata.references[i].name:=dataforpass2.cdata.linklist[i-imports.count].name;
+
+        if dataforpass2.cdata.symbolPrefix<>'' then
+        begin //add another version with the prefix added
+          setlength(dataforpass2.cdata.symbols, symbols.count*2);
+          for i:=0 to symbols.count-1 do
+          begin
+            dataforpass2.cdata.symbols[i*2].name:=symbols[i shr 1];
+            dataforpass2.cdata.symbols[i*2].address:=0;
+            dataforpass2.cdata.symbols[i*2+1].name:=dataforpass2.cdata.symbolPrefix+'.'+symbols[i];
+            dataforpass2.cdata.symbols[i*2+1].address:=0;
+          end;
+        end
+        else
+        begin
+          setlength(dataforpass2.cdata.symbols, symbols.count);
+          for i:=0 to symbols.count-1 do
+          begin
+            dataforpass2.cdata.symbols[i].name:=symbols[i];
+            dataforpass2.cdata.symbols[i].address:=0;
+          end;
+        end;
+
+
+
+      finally
+        ms.free;
+        imports.free;
+        errorlog.free;
+        symbols.free;
+      end;
+
+      script.insert(0,'alloc(ceinternal_autofree_ccode,'+dataforpass2.cdata.bytesize.ToString+')');
+    end;
+
+  except
+    if dataforpass2.cdata.cscript<>nil then
+      freeandnil(dataforpass2.cdata.cscript);
+
+    raise; //reraise the exception
+  end;
+end;
+
+
+end.
+
