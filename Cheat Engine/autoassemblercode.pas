@@ -1120,4 +1120,145 @@ end;
 
 procedure AutoAssemblerCodePass2(var dataForPass2: TAutoAssemblerCodePass2Data; symbollist: TSymbolListHandler);
 begin
-  AutoAssemblerCCodePass2(dataForPass2, symbollist
+  AutoAssemblerCCodePass2(dataForPass2, symbollist);
+
+end;
+
+procedure AutoAssemblerCodePass1(script: TStrings; out dataForPass2: TAutoAssemblerCodePass2Data; syntaxcheckonly: boolean; targetself: boolean);
+//this way the script only needs to be parsed once for quite similar code
+var
+  i,j,r: integer;
+  endpos: integer;
+  uppercaseline: string;
+  s, linenrstring: string;
+  parameterstring: string;
+  linenr: integer;
+  lnstart: integer;
+  parameters:  TLuaCodeParams;
+  hasAddedLuaServerCode: boolean=false;
+  _tcc: TTCC;
+
+  //
+  symbols, imports, errorlog: tstringlist;
+  ms: TMemorystream;
+  bytesizeneeded: integer;
+  symbolerror: boolean;
+  //
+begin
+  if tcclibimportlist=nil then
+  begin
+    tcclibimportlist:=TStringHashList.Create(true);
+    tcclibimportlist.Add('__divdi3');
+    tcclibimportlist.Add('__moddi3');
+    tcclibimportlist.Add('__udivdi3');
+    tcclibimportlist.Add('__umoddi3');
+    tcclibimportlist.Add('__ashrdi3');
+    tcclibimportlist.Add('__lshrdi3');
+    tcclibimportlist.Add('__ashldi3');
+    tcclibimportlist.Add('__floatundisf');
+    tcclibimportlist.Add('__floatundidf');
+    tcclibimportlist.Add('__floatundixf');
+    tcclibimportlist.Add('__fixunssfdi');
+    tcclibimportlist.Add('__fixsfdi');
+    tcclibimportlist.Add('__fixunsdfdi');
+    tcclibimportlist.Add('__fixdfdi');
+    tcclibimportlist.Add('__fixunsxfdi');
+    tcclibimportlist.Add('__fixxfdi');
+  end;
+
+
+  dataForPass2.cdata.cscript:=nil;
+  dataForPass2.cdata.address:=0;
+  dataForPass2.cdata.bytesize:=0;
+  dataForPass2.cdata.usesxmm:=false;
+  dataForPass2.cdata.symbols:=[];
+  dataForPass2.cdata.linklist:=[];
+  dataForPass2.cdata.references:=[];
+  dataForPass2.cdata.targetself:=false;
+  dataForPass2.cdata.symbolPrefix:='';
+  dataForPass2.cdata.nodebug:=false;
+  dataForPass2.cdata.sourceCodeInfo:=nil;
+  {$ifdef windows}
+  dataForPass2.cdata.kernelAlloc:=false;
+  {$endif}
+  //setlength(dataForPass2.cdata.linklist,0);
+  //setlength(dataForPass2.cdata.references,0);
+
+
+
+  try
+    i:=0;
+    while i<script.count do
+    begin
+      s:=script[i];
+      if (length(s)>=4) and (s[1]='{') and (s[2]='$') and (s[3] in ['l','L','c','C']) then  //{$C or {$L
+      begin
+        if (s[4] in ['u','U','c','C','}',' ']) then  //{$CC, $CU, $LC, $LU , {$L}, {$C},.. {$C ..., {$CU ....,....
+        begin
+          endpos:=pos('}',s);
+          if endpos=-1 then
+            raise exception.create('Invalid command line at '+inttostr(ptrUint(script.Objects[i]))+' ('+script[i]+')');
+
+          uppercaseline:=uppercase(s);
+
+          {$ifdef windows}
+          if copy(uppercaseline,1,9)='{$LUACODE' then
+          begin
+            if targetself or (processid=GetCurrentProcessId) then
+              raise exception.create('{$LUACODE} blocks can not be used inside CE');
+
+            parameterstring:=copy(s,11,endpos-11);
+            setlength(parameters,0);
+            parseLuaCodeParameters(parameterstring, parameters);
+
+            if (syntaxcheckonly=false) and (hasAddedLuaServerCode=false) then
+            begin
+              //add the code that runs and configures the luaserver
+              if luaserverExists('CELUASERVER'+inttostr(getcurrentprocessid))=false then
+                tluaserver.create('CELUASERVER'+inttostr(getcurrentprocessid));
+
+
+              if processhandler.is64Bit then
+                script.insert(0,'loadlibrary(luaclient-x86_64.dll)')
+              else
+                script.insert(0,'loadlibrary(luaclient-i386.dll)');
+
+              script.insert(1,'CELUA_ServerName:');
+              script.insert(2,'db ''CELUASERVER'+inttostr(getcurrentprocessid)+''',0');
+              inc(i,3);
+
+              hasAddedLuaServerCode:=true;
+            end;
+
+            AutoAssemblerLuaCodePass(script, parameters, i, syntaxcheckonly)
+          end
+          else
+          {$endif}
+          if copy(uppercaseline,1,3)='{$C' then
+          begin
+            if uppercaseline[4] in ['}',' '] then //{$C} {$C ....}
+            begin
+              AutoAssemblerCBlockPass1(script, i, dataForPass2);
+            end
+            else
+            if copy(uppercaseline,1,7)='{$CCODE' then
+            begin
+              parameterstring:=copy(s,9,endpos-9);
+              setlength(parameters,0);
+              parseLuaCodeParameters(parameterstring, parameters);  //same data needed for C, so use it
+              AutoAssemblerCCodePass1(script, parameters, i,  dataForPass2, syntaxcheckonly, targetself);
+            end;
+          end;
+        end;
+      end;
+
+      inc(i);
+    end;
+
+    if dataForPass2.cdata.cscript<>nil then
+    begin
+      if dataforpass2.cdata.usesxmm then
+      begin
+        //insert the xmm type
+        dataForPass2.cdata.cscript.insert( 0,'typedef struct {');
+        dataForPass2.cdata.cscript.insert( 1,'  uni
