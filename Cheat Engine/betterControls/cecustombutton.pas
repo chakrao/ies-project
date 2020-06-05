@@ -287,4 +287,233 @@ begin
   invalidate;;
 end;
 
-procedure TCECustom
+procedure TCECustomButton.setDrawFocusRect(state: boolean);
+begin
+  fDrawFocusRect:=state;
+  invalidate;
+end;
+
+procedure TCECustomButton.MouseEnter;
+begin
+  btnstate:=btnstate+[sbsHighlighted];
+
+  animationStart:=GetTickCount64;
+  animationLength:=fbuttonAnimationSpeed;
+
+  if lastanimationcolor<>0 then
+    animationStartColor:=lastanimationcolor
+  else
+    animationStartColor:=ColorToRGB(fButtonColor);
+  animationStopColor:=ColorToRGB(fButtonHighlightedColor);
+
+  invalidate;
+
+  if animationLength>0 then
+    startAnimatorTimer;
+
+  inherited MouseEnter;
+end;
+
+procedure TCECustomButton.MouseLeave;
+begin
+
+  btnstate:=btnstate-[sbsHighlighted];
+
+  animationStart:=GetTickCount64;
+  animationLength:=fbuttonAnimationSpeed;
+  if lastanimationcolor<>0 then
+    animationStartColor:=lastanimationcolor
+  else
+    animationStartColor:=ColorToRGB(fButtonHighlightedColor);
+  animationStopColor:=ColorToRGB(fButtonColor);
+
+  invalidate;
+
+  startAnimatorTimer;
+
+  inherited MouseLeave;
+end;
+
+procedure TCECustomButton.ChildHandlesCreated;
+var
+  p: twincontrol;
+  f: TCustomForm absolute p;
+begin
+  if scaled and hasSetRounding then
+  begin
+    p:=parent;
+    while (p<>nil) and (not (p is TCustomForm)) do
+      p:=p.Parent;
+
+    if p<>nil then
+    begin
+      fRoundingX:=scalex(froundingx, f.DesignTimePPI);
+      fRoundingY:=scaley(froundingy, f.DesignTimePPI);
+    end;
+
+    Invalidate;
+  end;
+
+  inherited ChildHandlesCreated;
+end;
+
+procedure TCECustomButton.SetFocus;
+begin
+  inherited SetFocus;
+  invalidate;
+
+end;
+
+procedure TCECustomButton.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if button=mbLeft then
+  begin
+    SetFocus;
+    btnstate:=btnstate+[sbsDown];
+    invalidate;
+  end;
+
+  inherited mousedown(button, shift, x, y);
+end;
+
+procedure TCECustomButton.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if button=mbLeft then
+  begin
+    btnstate:=btnstate-[sbsDown];
+    invalidate;
+  end;
+
+  inherited MouseUp(button, shift, x, y);
+end;
+
+procedure TCECustomButton.setCaption(c: string);
+begin
+  inherited caption:=c;
+  invalidate;
+end;
+
+function TCECustomButton.getCaption: string;
+begin
+  result:=inherited caption;
+end;
+
+procedure TCECustomButton.CalculatePreferredSize(var PreferredWidth, PreferredHeight: integer; WithThemeSpace: Boolean);
+begin
+  PreferredWidth:=0;
+  PreferredHeight:=0;
+  canvas.GetTextSize(Caption,PreferredWidth,PreferredHeight);
+
+  PreferredWidth:=4+PreferredWidth+2*canvas.GetTextWidth(' ');
+  PreferredHeight:=4+PreferredHeight;
+end;
+
+
+
+procedure TCECustomButton.Paint;
+var
+  w,h: integer;
+  fs: integer;
+  borderc: tcolor;
+  buttonc: tcolor;
+
+  animpos: single;
+  startred, startgreen, startblue: byte;
+  endred, endgreen, endblue: byte;
+
+  newred, newgreen, newblue: byte;
+
+  currenttime: qword;
+  ts: TTextStyle;
+
+  p: TPenPattern;
+begin
+  if CustomDrawn then
+    inherited Paint
+  else
+  begin
+    borderc:=bordercolor;
+
+    if (timer<>nil) and timer.enabled then
+    begin
+      currenttime:=gettickcount64();
+      if animationLength>0 then
+        animpos:=(currenttime-animationstart) / animationlength
+      else
+        animpos:=2;
+
+      if animpos>1 then
+      begin
+        timer.enabled:=false; //animation ended
+        animpos:=1;
+        lastanimationcolor:=0;
+      end;
+
+      RedGreenBlue(animationstartcolor, startred, startgreen, startblue);
+      RedGreenBlue(animationStopColor,  endred, endgreen, endblue);
+
+      newred:=startred+trunc((integer(endred)-integer(startred))*animpos);
+      newgreen:=startgreen+trunc((integer(endgreen)-integer(startgreen))*animpos);
+      newblue:=startblue+trunc((integer(endblue)-integer(startblue))*animpos);
+
+      buttonc:=RGBToColor(newred,newgreen,newblue);
+
+      if timer.enabled then
+        lastanimationcolor:=buttonc;
+    end
+    else
+    begin
+
+
+      if sbsHighlighted in btnstate then
+        buttonc:=ButtonHighlightedColor
+      else
+        buttonc:=buttoncolor;
+    end;
+
+    if sbsDown in btnstate then
+      buttonc:=fButtonDownColor;
+
+
+
+    w:=0;
+    h:=0;
+
+    if growfont and (autofontsize=0) then
+    begin
+      fs:=0;
+      repeat
+        inc(fs);
+        canvas.font.size:=fs;
+        canvas.GetTextSize(Caption,w,h);
+      until (w>width-4) or (h>height-4);
+
+      if fs>1 then
+        autofontsize:=fs
+      else
+        autofontsize:=1;
+    end;
+
+
+
+
+    canvas.brush.color:=buttonc;
+    canvas.brush.Style:=bsSolid;
+
+    if fDrawBorder then
+    begin
+      canvas.Pen.Color:=borderc;
+      canvas.pen.Width:=fbordersize;
+    end
+    else
+    begin
+      canvas.Pen.Color:=buttonc;
+      canvas.pen.Width:=1;
+    end;
+
+    Canvas.RoundRect(0,0,width, height,froundingX,froundingY);
+
+    if Focused and drawfocusrect then
+    begin
+
+ 
