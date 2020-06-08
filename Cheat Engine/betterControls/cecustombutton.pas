@@ -516,4 +516,79 @@ begin
     if Focused and drawfocusrect then
     begin
 
- 
+      canvas.pen.style:=psPattern;
+      setlength(p,2);
+      p[0]:=1;
+      p[1]:=3;
+
+      canvas.pen.SetPattern(p);
+      canvas.pen.color:=fFocusElipseColor;
+      canvas.pen.width:=fFocusedSize;
+      Canvas.RoundRect(1,1,width-1, height-1,froundingX,froundingY);
+
+
+      canvas.pen.style:=psSolid;
+    end;
+
+
+    canvas.pen.Width:=1;
+
+    canvas.brush.Style:=bsClear;
+    if growfont then
+      canvas.font.size:=autofontsize
+    else
+      canvas.font:=Font;
+
+    ts:=canvas.TextStyle;
+    ts.Alignment:=Alignment;
+    ts.Layout:=tlCenter;
+    ts.EndEllipsis:=true;
+
+    ts.ShowPrefix:=ShowPrefix;
+    canvas.TextRect(ClientRect,0,0,caption, ts);
+  end;
+end;
+
+destructor TCECustomButton.destroy;
+begin
+  if timer<>nil then
+    freeandnil(timer);
+
+  inherited destroy;
+end;
+
+constructor TCECustomButton.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+
+  Alignment:=taCenter;
+  froundingY:=20; //scaley(20,96);
+  froundingX:=20; //scalex(20,96);
+  ControlStyle:=ControlStyle - [csOpaque] + [csParentBackground, csClickEvents];
+
+  fButtonColor:=clBtnFace;
+  fButtonHighlightedColor:=inccolor(fButtonColor,32);
+  fButtonDownColor:=deccolor(fbuttonColor,32);
+  fBorderColor:=clBtnBorder;
+
+  buttonAnimationSpeed:=200;
+
+  fFramesPerSecond:=24;
+
+  fDrawFocusRect:=true;
+  fDrawBorder:=true;
+  fFocusedSize:=1;
+
+  fbordersize:=1;
+
+  ffocusElipseColor:=clHighlight;
+  fscaled:=true;
+
+  TabStop:=true;
+end;
+
+initialization
+  RegisterClass(TCECustomButton);
+
+end.
+
