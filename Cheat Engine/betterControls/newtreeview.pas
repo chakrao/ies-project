@@ -20,4 +20,26 @@ implementation
 
 uses betterControls, Graphics;
 
-procedure TNewTreeView.C
+procedure TNewTreeView.ChildHandlesCreated;
+begin
+  inherited ChildHandlesCreated;
+
+  if ShouldAppsUseDarkMode and (parent<>nil) then
+  begin
+    ToolTips:=false;
+    AllowDarkModeForWindow(handle, 1);
+    SetWindowTheme(Handle, 'explorer', nil);
+
+    font.color:=ColorSet.FontColor;
+    color:=ColorSet.TextBackground;
+
+    TreeLineColor:=colorset.ButtonBorderColor;
+
+    options:=options-[tvoThemedDraw];
+
+  end;
+end;
+
+
+end.
+
