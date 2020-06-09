@@ -1,35 +1,32 @@
-unit newScrollBox;
+unit newToggleBox;
 
 {$mode objfpc}{$H+}
 
 interface
 
 uses
-  jwawindows, windows, Classes, SysUtils, Controls, StdCtrls, Forms;
+  windows, UxTheme,Classes, SysUtils, StdCtrls;
 
 type
-  TNewScrollBox=class(TScrollBox)
-  private
+  TNewToggleBox=class(StdCtrls.TToggleBox)
   protected
     procedure ChildHandlesCreated; override;
-  public
   end;
-
 
 implementation
 
 uses betterControls;
 
-
-procedure TNewScrollBox.ChildHandlesCreated;
+procedure TNewToggleBox.ChildHandlesCreated;
 begin
   inherited ChildHandlesCreated;
   if ShouldAppsUseDarkMode and (Parent<>nil) then
   begin
     AllowDarkModeForWindow(handle, 1);
-    SetWindowTheme(handle, 'Explorer', nil);
+    SetWindowTheme(handle, 'EXPLORER', nil);
   end;
 end;
+
 
 end.
 
