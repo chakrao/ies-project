@@ -175,4 +175,145 @@ function autosave.loadState()
       messageDialog(translate('The saved state belongs to a different autosave version that is not currently implemented'), mtError, mbOk)  
       return false
     end
-    local
+    local luaformcount=cestate.readDword()
+    --print("luaformcount="..luaformcount)
+    for i=1,luaformcount do
+      local f=createLuaEngine()
+      f.mOutput.Lines.Text=cestate.readAnsiString()
+      f.mScript.Lines.Text=cestate.readAnsiString()
+      f.SaveDialog1.FileName=cestate.readAnsiString()
+      f.Left=cestate.readDword()
+      f.Top=cestate.readDword()
+      f.Width=cestate.readDword()
+      f.Height=cestate.readDword()
+      
+      f.show()     
+    end
+    
+    local aacount=cestate.readDword()
+    --print("aacount="..aacount)
+    for i=1,aacount do
+      f=createAutoAssemblerForm()
+      
+      local count=cestate.readDword()
+     
+      if count>0 then --should be      
+        f.TabCount=count      
+        local j
+        for j=0,count-1 do          
+          f.TabScript[j]=cestate.readAnsiString()
+        end
+      end
+      
+      f.SaveDialog1.FileName=cestate.readAnsiString()
+      f.Left=cestate.readDword()
+      f.Top=cestate.readDword()
+      f.Width=cestate.readDword()
+      f.Height=cestate.readDword()    
+      
+      f.show()
+    end
+    
+    --print("Done loading")
+    
+    
+    cestate.destroy()
+    return true
+  else
+    --print("error opening state.dat because of "..err)
+    return false
+  end
+  
+
+end
+
+autosave.applySettings=function()
+  local interval=tonumber(AutoSaveSettings['Interval'])
+    
+  if autosave.Timer then
+    --print("killing old timer")
+    autosave.Timer.destroy()
+    autosave.Timer=nil
+  end
+    
+  if interval and (interval>0) then
+   -- print("creating new timer with interval "..interval*1000)
+    autosave.Timer=createTimer(nil)
+    autosave.Timer.Interval=interval*1000
+    autosave.Timer.OnTimer=function(t)
+      --print("autosave")
+      if autosave.saveState()~=true then
+        --something happened
+        autosave.Timer.destroy()
+        autosave.Timer=nil
+      end
+    end
+    autosave.Enabled=true  
+  else
+    --print("no autosave")
+  end
+end
+
+
+local oldMainFormOnClose=MainForm.OnClose
+MainForm.OnClose=function(s, ca)
+  AutoSaveSettings['ProcessID']=nil --CE was properly closed
+  if oldMainFormOnClose then
+    return oldMainFormOnClose(s, ca)
+  else 
+    return ca
+  end
+end
+
+
+--add settings menu
+local sf=getSettingsForm()
+autosave.settingsTab=sf.SettingsPageControl.addTab()
+
+autosave.settingsEdtInterval=createEdit(autosave.settingsTab)
+autosave.settingsEdtInterval.Text=AutoSaveSettings['Interval']
+autosave.settingsEdtInterval.Align='alTop'
+
+autosave.settingsLblInterval=createLabel(autosave.settingsTab)
+autosave.settingsLblInterval.Caption=translate('Auto Save Interval (In seconds. 0 is disabled)')
+autosave.settingsLblInterval.Align='alTop'
+
+local insertNode=sf.SettingsTreeView.Items[3]
+local node=sf.SettingsTreeView.Items.insert(insertNode, translate("Auto Save"))
+node.data=userDataToInteger(autosave.settingsTab)
+
+local originalSettingsCloseEvent=sf.OnClose
+sf.OnClose=function(s, closeAction)
+ 
+  local r=closeAction
+  if originalSettingsCloseEvent then
+    r=originalSettingsCloseEvent(s, closeAction)
+  end
+  
+  if s.ModalResult==mrOK then
+    --apply change
+    AutoSaveSettings['Interval']=autosave.settingsEdtInterval.Text
+    
+    autosave.applySettings()
+  end
+  return r 
+end
+
+
+--check if there is an autosave waiting to be loaded
+
+pid=AutoSaveSettings['ProcessID']
+if (pid) and (pid ~= '') and (getProcessList()[tonumber(pid)]==nil) then
+  --The noted down processid does not exist anymore. CE crashed.  Ask to load the autosave
+  AutoSaveSettings['ProcessID']=nil
+  
+  if messageDialog(translate('Cheat Engine did not properly close last time. Do you wish to restore your work?'), mtInformation, mbYes, mbNo)==mrYes then
+    autosave.loadState()    
+  end
+end
+
+
+--start the autosave timer(if needed)
+autosave.applySettings()
+
+
