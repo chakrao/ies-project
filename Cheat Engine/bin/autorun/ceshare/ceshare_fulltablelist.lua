@@ -336,4 +336,93 @@ function ceshare.ViewAllTablesClick()
       lblNext.Font.Style='[fsUnderline]'
       lblNext.Font.Color=linkColor      
       
-      lblPrev.OnMouseDow
+      lblPrev.OnMouseDown=function() setPage(ceshare.AllTableForm.Page-1) end
+      lblNext.OnMouseDown=function() setPage(ceshare.AllTableForm.Page+1) end
+      
+      lblPrev.Parent=prevnext
+      lblCurrentPage.Parent=prevnext
+      lblNext.Parent=prevnext
+      
+      prevnext.AnchorSideTop.Side=asrBottom
+      prevnext.AnchorSideTop.Control=searchfield
+      prevnext.AnchorSideRight.Side=asrRight
+      prevnext.AnchorSideRight.Control=panel
+      prevnext.Anchors='[akBottom, akRight]'
+      
+
+
+    panel.AutoSize=true
+    
+    list=createListBox(atf)
+    list.align=alClient      
+    list.name='List'
+    list.OnMeasureItem=function(sender, index, height)
+      local realindex=ceshare.AllTableForm.Page*25+index+1
+      
+      w,h,t1,t2=getListItemData(realindex)
+      --print("measureitem "..index.." h="..h)
+      
+      return h
+    end
+    
+    list.OnDrawItem=function (sender, index, rect, state)
+      --print("drawing "..index)
+      local realindex=ceshare.AllTableForm.Page*25+index+1
+      
+      local bm=getListItemBitmap(realindex)
+      if bm then
+        sender.Canvas.Brush.Color=backgroundcolor        
+        sender.Canvas.Pen.Color=backgroundcolor
+        sender.Canvas.fillRect(rect.Left, rect.Top, rect.Right,rect.Bottom)
+        sender.Canvas.rect(rect.Left, rect.Top, rect.Right,rect.Bottom)  
+        sender.Canvas.draw(rect.Left,rect.Top,bm)
+        if state:find('odSelected') then
+          sender.Canvas.Brush.Color=highlightColor   
+          sender.Canvas.Pen.Color=highlightColor
+          sender.Canvas.Brush.Style='bsClear'
+          sender.Canvas.Pen.Color=highlightColor
+          sender.Canvas.Pen.Width=2*DPIMultiplier
+          sender.Canvas.rect(rect.Left, rect.Top, rect.Right,rect.Bottom)        
+        end       
+      else
+        print("error "..index)
+      end      
+    end
+    
+    list.OnDblClick=function()
+      local realindex=ceshare.AllTableForm.Page*25+ceshare.AllTableForm.List.ItemIndex+1
+      if realindex>=0 then      
+        ceshare.CheckForCheatsClick(nil, ceshare.FullProcessListView[realindex].process)
+      end    
+    end
+    
+    list.Style='lbOwnerDrawVariable'
+    list.Color=listColor    
+    
+
+    atf.BorderStyle='bsSizeable'
+    if atf.loadFormPosition()==false then
+      --set initial size    
+      atf.Width=600*DPIMultiplier
+      atf.Height=400*DPIMultiplier
+      atf.Position=poScreenCenter
+    end   
+    
+    
+    atf.OnClose=function() return caHide end
+    
+    atf.OnDestroy=function(f)
+      f.saveFormPosition()
+    end
+    
+    atf.PopupMode='pmNone'
+  end
+  
+  atf.searchfield.Text=''
+  
+  getFullProcessList()
+  ceshare.FullProcessListView=ceshare.FullProcessList
+  setPage(0)
+  
+  atf.show()
+end
