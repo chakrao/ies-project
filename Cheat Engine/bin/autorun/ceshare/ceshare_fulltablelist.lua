@@ -186,4 +186,154 @@ function setPage(index)
   ceshare.AllTableForm.Page=index
   local start=1+index*25
   local stop=math.min(index*25+25, #ceshare.FullProcessListView) 
-  loc
+  local i
+  for i=start,stop do
+    ceshare.AllTableForm.List.items.add(ceshare.FullProcessListView[i].process..' - '..ceshare.FullProcessListView[i].title)
+  end
+  
+  ceshare.AllTableForm.lblCurrentPage.Caption=(math.floor(index+1))..'/'..(math.floor(1+#ceshare.FullProcessListView/25)) 
+  
+  ceshare.AllTableForm.lblNext.Enabled=#ceshare.FullProcessListView>1+index*25+25
+  ceshare.AllTableForm.lblPrev.Enabled=index>0
+  
+  if ceshare.AllTableForm.lblNext.Enabled then
+    ceshare.AllTableForm.lblNext.Cursor=crHandPoint   
+  else
+    ceshare.AllTableForm.lblNext.Cursor=crDefault
+  end
+  
+  if ceshare.AllTableForm.lblPrev.Enabled then
+    ceshare.AllTableForm.lblPrev.Cursor=crHandPoint   
+  else
+    ceshare.AllTableForm.lblPrev.Cursor=crDefault
+  end  
+end
+
+
+
+function getFullProcessList()
+  --clean up the entries with a bitmap first
+  local i
+  if ceshare.FullProcessList then  
+    for i=1,#ceshare.FullProcessList do
+      if ceshare.FullProcessList[i].bitmap then
+        ceshare.FullProcessList[i].bitmap.destroy()
+        ceshare.FullProcessList[i].bitmap=nil
+      end
+    end  
+  end
+  
+  ceshare.FullProcessList={}
+  ceshare.FullProcessListView={}
+  fullProcessListText=ceshare.getInternet().getURL(ceshare.base..'fullprocesslist.txt')
+  sl=createStringList()
+  sl.Text=fullProcessListText
+  local i
+  for i=0, sl.Count-1 do
+    local a=sl[i]
+    local e={}
+    local count,thumbnail,process,title=a:split(' #-# ')
+    
+    e.count=tonumber(count)
+    if thumbnail~='' then
+      e.thumbnail=thumbnail
+    end  
+   
+    
+    
+    e.process=process
+    e.title=title
+    
+    table.insert(ceshare.FullProcessList,e)
+  end
+  
+  sl.destroy()  
+  filterList()
+end
+
+function filterList()
+  local searchvalue=ceshare.AllTableForm.SearchField.Text:upper()
+  if searchvalue=='' then
+    ceshare.FullProcessListView=ceshare.FullProcessList
+  else
+    ceshare.FullProcessListView={} --assign it a new table
+    
+    --scan the FullProcessList and only add those where the process or title match
+    local i
+    for i=1, #ceshare.FullProcessList do
+      if ceshare.FullProcessList[i].process:upper():find(searchvalue,1,true) or 
+         ceshare.FullProcessList[i].title:upper():find(searchvalue,1,true) then
+        table.insert(ceshare.FullProcessListView, ceshare.FullProcessList[i])
+      end
+    end    
+  end
+  
+  setPage(0)  
+end
+
+function ceshare.ViewAllTablesClick()
+  local atf=ceshare.AllTableForm
+  local list
+  
+  if atf==nil then 
+    ceshare.AllTableForm=createForm(false)        
+    atf=ceshare.AllTableForm
+    atf.Name='ceshare_AllTableForm'
+    atf.Caption=translate('All tables')
+    atf.Color=windowColor
+    
+    
+    local panel=createPanel(atf)
+    panel.color=windowColor
+    panel.align=alTop
+      local searchfieldlabel=createLabel(panel)
+      searchfieldlabel.Caption=translate('Search:')
+      local searchfield=createEdit(atf)
+      
+      searchfieldlabel.AnchorSideTop.Side=asrTop
+      searchfieldlabel.AnchorSideTop.Control=panel
+      searchfieldlabel.AnchorSideLeft.Side=asrLeft
+      searchfieldlabel.AnchorSideLeft.Control=panel
+      searchfieldlabel.Font.Color=fontColor
+      
+      searchfield.AnchorSideTop.Side=asrBottom
+      searchfield.AnchorSideTop.Control=searchfieldlabel
+      searchfield.AnchorSideLeft.Side=asrLeft
+      searchfield.AnchorSideLeft.Control=panel
+      searchfield.Name='SearchField' 
+      searchfield.Text=''      
+      searchfield.OnChange=filterList
+      searchfield.Parent=panel
+      
+      searchfield.Constraints.MinWidth=atf.Canvas.getTextWidth('Space for a gamename')*2
+      searchfield.BorderSpacing.Bottom=4*DPIMultiplier      
+      searchfield.Color=searchFieldColor
+      searchfield.Font.Color=fontColor
+      searchfield.Font.Size=fontSize
+      
+      
+
+      local prevnext=createPanel(panel)
+      prevnext.Color=windowColor
+      prevnext.AutoSize=true
+      prevnext.ChildSizing.Layout='cclLeftToRightThenTopToBottom'
+      prevnext.ChildSizing.ControlsPerLine=3
+      prevnext.ChildSizing.HorizontalSpacing=5*DPIMultiplier
+      prevnext.BevelOuter='bvNone'
+      
+      local lblPrev=createLabel(atf)      
+      local lblCurrentPage=createLabel(atf)      
+      local lblNext=createLabel(atf)
+      lblPrev.Caption=translate('Previous (25)')
+      lblPrev.Name='lblPrev'
+      lblPrev.Font.Style='[fsUnderline]'
+      lblPrev.Font.Color=linkColor
+      lblCurrentPage.Caption='1/xx'
+      lblCurrentPage.Name='lblCurrentPage'
+      lblCurrentPage.Font.Color=fontColor
+      lblNext.Caption=translate('Next (25)')
+      lblNext.Name='lblNext'
+      lblNext.Font.Style='[fsUnderline]'
+      lblNext.Font.Color=linkColor      
+      
+      lblPrev.OnMouseDow
