@@ -187,4 +187,157 @@ function ceshare.PublishCheatClick(sender, cheatinfo)
     return    
   end
   
-  --spawn a window that shows all tables with this processname that the current user has modify right
+  --spawn a window that shows all tables with this processname that the current user has modify rights to
+ 
+  if ceshare.UpdateOrNewFrm==nil then
+    local f=createFormFromFile(ceshare.formpath..'UpdateOrNew.FRM') 
+    
+    f.AutoSize=true
+    f.AutoSize=false
+    
+    local h=f.lvCheats.Canvas.getTextHeight('XXX')*10
+    local hdelta=h-f.lvCheats.Height
+    
+    if hdelta>0 then
+      f.height=f.height+hdelta      
+    end
+    
+    local headerwidth=0
+    local i
+    for i=0,f.lvCheats.Columns.Count-1 do
+      local w=f.lvCheats.Columns[i].Width
+      local neededw=f.Canvas.getTextWidth(' '..f.lvCheats.Columns[i].Caption..' ')
+      if w<neededw then
+        f.lvCheats.Columns[i].Autosize=false
+        f.lvCheats.Columns[i].Width=neededw
+        w=neededw
+      end
+      headerwidth=headerwidth+w    
+      
+    end
+    f.ClientWidth=headerwidth+10
+    
+    f.lvCheats.OnDblClick=function(s)
+      f.btnChoose.doClick()
+    end
+    
+    f.rbUpdate.OnChange=function(s)
+      f.lvCheats.Enabled=s.Checked
+      f.btnChoose.Caption=translate('Update table')
+    end
+    
+    f.rbPublish.OnChange=function(s)      
+      f.btnChoose.Caption=translate('Publish new table')
+    end    
+   
+    f.btnChoose.OnClick=function(s)
+      local cheatinfo
+      
+      if f.rbUpdate.checked then
+        local itemindex=f.lvCheats.ItemIndex
+            
+        if itemindex==-1 and f.rbUpdate.checked then
+          messageDialog(translate('Please select a cheattable to update'), mtError, mbOK);
+          return
+        end
+        
+        if itemindex<#ceshare.CurrentUpdateQuery then
+          cheatinfo=ceshare.CurrentUpdateQuery[itemindex+1]                
+          ceshare.publishOrUpdate(cheatinfo)          
+        else
+          messageDialog(translate('Invalid background update query list'), mtError, mbOK);
+        end
+      else
+        ceshare.publishOrUpdate()
+      end     
+      
+      
+      f.hide()
+    end;
+
+    
+    ceshare.UpdateOrNewFrm=f
+  end;
+  
+  
+  
+  --get the table list of entries the user can change
+  
+  ceshare.CurrentUpdateQuery=ceshare.QueryCurrentProcess(true)
+  ceshare.UpdateOrNewFrm.rbUpdate.checked=true
+  ceshare.UpdateOrNewFrm.rbUpdate.OnChange(ceshare.UpdateOrNewFrm.rbUpdate)
+  
+  
+  if ceshare.CurrentUpdateQuery==nil or #ceshare.CurrentUpdateQuery==0 then
+    --skip to publish instantly
+    ceshare.UpdateOrNewFrm.rbPublish.Checked=true
+    ceshare.UpdateOrNewFrm.btnChoose.doClick()
+  else
+    ceshare.UpdateOrNewFrm.lvCheats.clear()
+    local i
+    for i=1,#ceshare.CurrentUpdateQuery do 
+      local li=ceshare.UpdateOrNewFrm.lvCheats.Items.add()
+      li.Caption=ceshare.CurrentUpdateQuery[i].Title
+      local owner=ceshare.CurrentUpdateQuery[i].Owner
+      local editor=ceshare.CurrentUpdateQuery[i].LastEditor
+      if editor==owner then 
+        li.SubItems.add(owner)
+      else
+        li.SubItems.add(editor..' (owner:'..owner..')')
+      end
+      
+      if ceshare.CurrentUpdateQuery[i].Public then
+        li.SubItems.add('     yes     ')
+      else
+        li.SubItems.add('     ')
+      end
+      
+      if ceshare.CurrentUpdateQuery[i].VersionIndependent then
+        li.SubItems.add('      yes      ')
+      else
+        li.SubItems.add('             ')
+      end 
+
+      if ceshare.CurrentUpdateQuery[i].Signed then
+        li.SubItems.add('     yes     ')
+      else    
+        li.SubItems.add('           ')  --signed
+      end
+      
+      if (ceshare.LoadedTable) and (ceshare.LoadedTable.ID==ceshare.CurrentUpdateQuery[i].ID) then
+        --select the table if a table was loaded and you have access to update
+        li.Selected=true
+        ceshare.UpdateOrNewFrm.lvCheats.ItemIndex=li.Index
+      end         
+    end
+    ceshare.UpdateOrNewFrm.show()    
+  end
+  
+end
+
+function ceshare.publishOrUpdate(cheatinfo) --cheatinfo is a set if an update
+  if ceshare.PublishCheatFrm==nil then
+    ceshare.PublishCheatFrm=createFormFromFile(ceshare.formpath..'PublishCheat.frm')    
+    --configure base state and add events
+    
+    
+    ceshare.PublishCheatFrm.cbVersionIndependent.OnChange=function(s)
+      ceshare.PublishCheatFrm.lblHeaderMD5Text.visible=true --not s.Checked
+      ceshare.PublishCheatFrm.lblHeaderMD5.visible=true --not s.Checked
+      ceshare.PublishCheatFrm.pnlFullFileHash.visible=not s.Checked
+      ceshare.PublishCheatFrm.cbUseSecondaryModule.visible=not s.checked
+      if s.checked then      
+        ceshare.PublishCheatFrm.cbUseSecondaryModule.checked=false
+        ceshare.PublishCheatFrm.cbNeedsFullFileHash.checked=false      
+      end
+    end
+    
+    
+    
+    ceshare.PublishCheatFrm.cbNeedsFullFileHash.OnChange=function(s)
+      local ml=enumModules()
+      ceshare.PublishCheatFrm.lblFullHeaderMD5Text.visible=s.Checked
+      ceshare.PublishCheatFrm.lblFullHeaderMD5.visible=s.Checked
+      ceshare.PublishCheatFrm.lblFullHeaderMD5.Caption=md5file(ml[1].PathToFile)
+    end
+  
