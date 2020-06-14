@@ -340,4 +340,115 @@ function ceshare.publishOrUpdate(cheatinfo) --cheatinfo is a set if an update
       ceshare.PublishCheatFrm.lblFullHeaderMD5.visible=s.Checked
       ceshare.PublishCheatFrm.lblFullHeaderMD5.Caption=md5file(ml[1].PathToFile)
     end
+    
+    ceshare.PublishCheatFrm.cbUseSecondaryModule.OnChange=function(s)
+      --when the 'Use secondary module' checkbox is ticked
+      ceshare.PublishCheatFrm.lblModulename.visible=s.checked
+      ceshare.PublishCheatFrm.cbModuleName.visible=s.checked      
+      ceshare.PublishCheatFrm.pnlModuleFullHash.visible=s.checked
+    end
+    
+    ceshare.PublishCheatFrm.cbModuleNeedsFullFileHash.OnChange=function(s)
+      ceshare.PublishCheatFrm.lblFullModuleHeaderMD5Text.visible=s.checked
+      ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.visible=s.checked
+      
+      if s.checked then
+        ceshare.PublishCheatFrm.cbModuleName.OnChange(s)
+      end
+    end
+    
+    ceshare.PublishCheatFrm.cbModuleName.OnChange=function(s)
+      if ceshare.PublishCheatFrm.cbModuleNeedsFullFileHash.Checked then      
+        if ceshare.PublishCheatFrm.cbModuleName.Text=='' then
+          ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.caption='<Select a module>'
+        else
+          local ml=enumModules()
+          for i=1,#ml do
+            if ml[i].Name:lower()==ceshare.PublishCheatFrm.cbModuleName.Text:lower() then
+              ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.caption=md5file(ml[i].PathToFile)
+              ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.Font.Color=ceshare.PublishCheatFrm.cbModuleNeedsFullFileHash.Font.Color            
+              ceshare.PublishCheatFrm.cbModuleName.Font.Color=ceshare.PublishCheatFrm.cbModuleNeedsFullFileHash.Font.Color            
+              return
+            end
+          end
+
+          ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.Caption='<Module not found>'
+          ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.Font.Color=0x0000ff
+          ceshare.PublishCheatFrm.cbModuleName.Font.Color=0x0000ff    
+        end 
+      end      
+       
+    end
+    
+    
+    
+    ceshare.PublishCheatFrm.btnCancel.OnClick=function(s)
+      ceshare.PublishCheatFrm.close()    
+    end
+   
+    ceshare.PublishCheatFrm.lblHeaderMD5Text.visible=false
+    ceshare.PublishCheatFrm.lblHeaderMD5.visible=false
+    ceshare.PublishCheatFrm.pnlFullFileHash.visible=false    
+    ceshare.PublishCheatFrm.lblFullHeaderMD5Text.visible=false
+    ceshare.PublishCheatFrm.lblFullHeaderMD5.visible=false
+
+    ceshare.PublishCheatFrm.lblModulename.visible=false
+    ceshare.PublishCheatFrm.cbModuleName.visible=false
+
+    ceshare.PublishCheatFrm.pnlModuleFullHash.visible=false
+    ceshare.PublishCheatFrm.lblFullModuleHeaderMD5Text.visible=false
+    ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.visible=false    
+
+    ceshare.PublishCheatFrm.cbPublic.checked=false
+
+    ceshare.Position='poScreenCenter'
+    
+    --position and size saving
+    ceshare.PublishCheatFrm.OnDestroy=function(s)
+      ceshare.settings.Value['PublishCheatFrm.x']=s.left
+      ceshare.settings.Value['PublishCheatFrm.y']=s.top
+      ceshare.settings.Value['PublishCheatFrm.width']=s.width
+      ceshare.settings.Value['PublishCheatFrm.height']=s.height
+    end
+    
+    
+    local newx=ceshare.settings.Value['PublishCheatFrm.x']
+    local newy=ceshare.settings.Value['PublishCheatFrm.y']
+    local newwidth=ceshare.settings.Value['PublishCheatFrm.width']
+    local newheight=ceshare.settings.Value['PublishCheatFrm.height']
+    
+    if (newwidth~='') or (newheight~='') then
+      ceshare.PublishCheatFrm.AutoSize=false
+    end
+    
+    if newx~='' then ceshare.PublishCheatFrm.Left=newx end
+    if newy~='' then ceshare.PublishCheatFrm.Top=newy end
+    if newwidth~='' then ceshare.PublishCheatFrm.Width=newwidth end
+    if newheight~='' then ceshare.PublishCheatFrm.Height=newheight end    
+    
+    ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.caption=''
+    ceshare.PublishCheatFrm.lblFullHeaderMD5.Caption=''
+  end
   
+  ceshare.PublishCheatFrm.btnPublish.OnClick=function(sender)   
+    if ceshare.PublishCheatFrm.cbUseSecondaryModule.Checked then
+      if ceshare.PublishCheatFrm.cbModuleName.Text=='' then
+        messageDialog('Missing module',mtError,mbOK)
+        return
+      end    
+    end
+    
+    if (AddressList.Count==0) and 
+       (getApplication().AdvancedOptions.CodeList2.Items.Count==0) and
+       (getApplication().Comments.Memo1.Lines.Count==0) then
+      if messageDialog(translate('This looks like an empty table. Are you sure?'),mtWarning,mbYes,mbNo)~=mrYes then return end
+    end
+
+    if ceshare.PublishCheatFrm.cbPublic.Enabled and ceshare.PublishCheatFrm.cbPublic.Checked then
+      if messageDialog(translate('Are you sure you wish to let \'Everyone\' overwrite your table in the ceshare system ?'),mtWarning,mbYes,mbNo)~=mrYes then return end
+    end
+       
+    local temptablepath=ceshare.path..'temptable.ct'
+    saveTable(temptablepath)
+    
+    if MainForm.
