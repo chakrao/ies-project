@@ -451,4 +451,121 @@ function ceshare.publishOrUpdate(cheatinfo) --cheatinfo is a set if an update
     local temptablepath=ceshare.path..'temptable.ct'
     saveTable(temptablepath)
     
-    if MainForm.
+    if MainForm.miSignTable.Visible then
+      if messageDialog(translate('Do you wish to sign this table?'),mtConfirmation,mbYes,mbNo)==mrYes then
+        local r,msg=signTable(ceshare.path..'temptable.ct')
+        if not r then
+          messageDialog(msg,mtError,mbOK)
+          return
+        end
+      end
+    end    
+    
+    local s=createStringList()
+    s.loadFromFile(temptablepath)
+    
+        
+    local fullfilehash,secondarymodulename,secondaryfullfilehash
+    
+    if ceshare.PublishCheatFrm.cbNeedsFullFileHash.Checked then
+      fullfilehash=ceshare.PublishCheatFrm.lblFullHeaderMD5.Caption
+    end
+    
+    if ceshare.PublishCheatFrm.cbUseSecondaryModule.Checked then
+      secondarymodulename=ceshare.PublishCheatFrm.cbModuleName.Text 
+      secondaryfullfilehash=ceshare.PublishCheatFrm.lblFullModuleHeaderMD5.caption
+    end
+    
+
+    
+
+    if cheatinfo then
+      if ceshare.UpdateCheat(cheatinfo.ID,
+                            s.Text, --data
+                            ceshare.PublishCheatFrm.edtTitle.Text,                              
+                            ceshare.PublishCheatFrm.lblHeaderMD5.Caption, --headermd5
+                            ceshare.PublishCheatFrm.cbVersionIndependent.checked, --versionindependent
+                            ceshare.PublishCheatFrm.mDescription.Lines.Text, --description
+                            ceshare.PublishCheatFrm.cbPublic.Checked,                                
+                            fullfilehash,
+                            secondarymodulename,
+                            secondaryfullfilehash,
+                            ceshare.PublishCheatFrm.edtURL.Text
+                            ) then
+        ceshare.PublishCheatFrm.close() 
+      end          
+    else
+      if ceshare.PublishCheat(s.Text, --data
+                            ceshare.PublishCheatFrm.edtTitle.Text,
+                            ceshare.PublishCheatFrm.edtProcessName.Text, --processname
+                            ceshare.PublishCheatFrm.lblHeaderMD5.Caption, --headermd5
+                            ceshare.PublishCheatFrm.cbVersionIndependent.checked, --versionindependent
+                            ceshare.PublishCheatFrm.mDescription.Lines.Text, --description
+                            ceshare.PublishCheatFrm.cbPublic.Checked,                                
+                            fullfilehash,
+                            secondarymodulename,
+                            secondaryfullfilehash,
+                            ceshare.PublishCheatFrm.edtURL.Text
+                            ) then
+        ceshare.PublishCheatFrm.close()                            
+      end
+    end
+       
+    s.destroy()
+  
+  end      
+
+  
+  
+  --fill in header and processname
+  local headermd5
+  headermd5=ceshare.getCurrentProcessHeaderMD5()
+  
+  local ml=enumModules()
+  
+  ceshare.PublishCheatFrm.cbModuleName.Items.clear()
+  for i=1,#ml do    
+    ceshare.PublishCheatFrm.cbModuleName.Items.add(ml[i].Name)
+  end
+
+
+      
+  if cheatinfo then
+    ceshare.PublishCheatFrm.Caption=translate('Update table')
+    ceshare.PublishCheatFrm.edtTitle.Text=cheatinfo.Title
+    
+    if cheatinfo.public then
+      ceshare.PublishCheatFrm.cbPublic.checked=true
+      ceshare.PublishCheatFrm.cbPublic.enabled=false
+    else
+      ceshare.PublishCheatFrm.cbPublic.checked=false
+      ceshare.PublishCheatFrm.cbPublic.enabled=true    
+    end    
+  else
+    ceshare.PublishCheatFrm.cbPublic.checked=false
+    ceshare.PublishCheatFrm.cbPublic.enabled=true
+  
+    ceshare.PublishCheatFrm.Caption=translate('Publish new table')
+    local pt=ceshare.getCurrentProcessTitle()
+    if pt then
+      ceshare.PublishCheatFrm.edtTitle.Text=pt
+    end
+  end
+
+  ceshare.PublishCheatFrm.edtProcessName.text=process
+  ceshare.PublishCheatFrm.edtProcessName.Enabled=cheatinfo==nil
+  ceshare.PublishCheatFrm.cbPublic.Enabled=(cheatinfo==nil) or (cheatinfo.Public==false)
+  if cheatinfo then
+    ceshare.PublishCheatFrm.mDescription.Lines.Text=cheatinfo.Description
+    ceshare.PublishCheatFrm.cbVersionIndependent.Checked=cheatinfo.VersionIndependent
+    ceshare.PublishCheatFrm.cbPublic.Checked=cheatinfo.Public
+    
+    ceshare.PublishCheatFrm.cbNeedsFullFileHash.Checked=(cheatinfo.FullFileHash~=nil) and (cheatinfo.FullFileHash~='')
+    ceshare.PublishCheatFrm.cbUseSecondaryModule.Checked=(cheatinfo.SecondaryModuleName~=nil) and (cheatinfo.SecondaryModuleName~='')
+    ceshare.PublishCheatFrm.cbModuleName.Text=cheatinfo.SecondaryModuleName     
+    ceshare.PublishCheatFrm.cbModuleName.OnChange(ceshare.PublishCheatFrm.cbModuleName)
+    
+    ceshare.PublishCheatFrm.cbVersionIndependent.Checked=cheatinfo.VersionIndependent
+   
+  end
+  ceshare.PublishCheatFrm.cbVersionIndependent.OnChange(ceshare.PublishCheatF
