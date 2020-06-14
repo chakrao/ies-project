@@ -568,4 +568,15 @@ function ceshare.publishOrUpdate(cheatinfo) --cheatinfo is a set if an update
     ceshare.PublishCheatFrm.cbVersionIndependent.Checked=cheatinfo.VersionIndependent
    
   end
-  ceshare.PublishCheatFrm.cbVersionIndependent.OnChange(ceshare.PublishCheatF
+  ceshare.PublishCheatFrm.cbVersionIndependent.OnChange(ceshare.PublishCheatFrm.cbVersionIndependent)  
+ 
+  if headermd5==nil then
+    ceshare.PublishCheatFrm.lblHeaderMD5.Caption=''
+    ceshare.PublishCheatFrm.cbNeedsFullFileHash.enabled=false    
+  else
+    ceshare.PublishCheatFrm.lblHeaderMD5.Caption=headermd5
+    ceshare.PublishCheatFrm.cbNeedsFullFileHash.enabled=true
+  end
+
+  ceshare.PublishCheatFrm.show() --clicking publish will do the rest
+end
