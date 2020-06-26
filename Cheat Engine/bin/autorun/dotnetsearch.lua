@@ -171,4 +171,95 @@ function spawnDotNetSearchDialog(DataSource, frmDotNetInfo, searchtype)
                 end
               end)
                 
-              --classes is now set t
+              --classes is now set to busy 
+              if HasToFetchClasses then                    
+                --print('Getting classes')                  
+                DataSource.getClasses(DataSource.Domains[i].Images[j])
+                DataSource.Domains[i].Images[j].Classes.Busy=false                      
+              end
+
+              if DataSource.Domains[i].Images[j].Classes==nil then return end
+              for k=1,#DataSource.Domains[i].Images[j].Classes do                                    
+                if searchtype==0 then
+                  local name=DataSource.Domains[i].Images[j].Classes[k].Name
+                    
+                  if not caseSensitive then 
+                    name=name:upper()
+                  end
+                  --print(string.format("Checking domain %d image %d class %d (%s)", i,j,k, name))  
+                   
+                  if name:find(searchInput) then
+                    synchronize(function()
+                      --add to the list
+                      if t.Terminated then return end
+                      local li=frmSearch.lvResults.Items.add()
+                      li.Caption=DataSource.Domains[i].Images[j].FileName
+                      li.SubItems.add(DataSource.Domains[i].Images[j].Classes[k].Name)
+                      
+                      local e={}
+                      e.DomainIndex=i
+                      e.ImageIndex=j
+                      e.ClassIndex=k
+                      searchresults[li.Index+1]=e                     
+                                         
+                    end)
+                  end
+                elseif searchtype==1 then
+                  --field search  
+                  if DataSource.Domains[i].Images[j].Classes[k].Fields==nil then                  
+                    DataSource.getClassFields(DataSource.Domains[i].Images[j].Classes[k])
+                  end
+                  
+                  --print("parsing field list")
+                  if DataSource.Domains[i].Images[j].Classes[k].Fields then
+                    for l=1,#DataSource.Domains[i].Images[j].Classes[k].Fields do
+                      local name=DataSource.Domains[i].Images[j].Classes[k].Fields[l].Name
+                      if not caseSensitive then 
+                        name=name:upper()
+                      end
+                      
+                      if name:find(searchInput) then
+                        synchronize(function()
+                          if t.Terminated then return end
+                          --add to the list
+                          local li=frmSearch.lvResults.Items.add()
+                          li.Caption=DataSource.Domains[i].Images[j].FileName
+                          li.SubItems.add(DataSource.Domains[i].Images[j].Classes[k].Name)
+                          li.SubItems.add(DataSource.Domains[i].Images[j].Classes[k].Fields[l].Name)
+                          
+                          local e={}
+                          e.DomainIndex=i
+                          e.ImageIndex=j
+                          e.ClassIndex=k
+                          e.FieldIndex=l
+                          searchresults[li.Index+1]=e                      
+                        end)                      
+                        
+                      end
+                    end
+                  end
+                  
+                  
+                  
+                elseif searchtype==2 then
+                  --method search
+                  if DataSource.Domains[i].Images[j].Classes[k].Methods==nil then
+                    DataSource.getClassMethods(DataSource.Domains[i].Images[j].Classes[k])                                        
+                  end
+                  
+                  if DataSource.Domains[i].Images[j].Classes[k].Methods then
+                    for l=1,#DataSource.Domains[i].Images[j].Classes[k].Methods do
+                      local name=DataSource.Domains[i].Images[j].Classes[k].Methods[l].Name
+                      if not caseSensitive then 
+                        name=name:upper()
+                      end
+                      
+                      if name:find(searchInput) then
+                        synchronize(function()
+                          if t.Terminated then return end
+                          --add to the list
+                          local li=frmSearch.lvResults.Items.add()
+                          li.Caption=DataSource.Domains[i].Images[j].FileName
+                          li.SubItems.add(DataSource.Domains[i].Images[j].Classes[k].Name)
+                          li.SubItems.add(DataSource.Domains[i].Images[j].Classes[k].Methods[l].Name)
+                         
