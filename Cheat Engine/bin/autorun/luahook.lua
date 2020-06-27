@@ -141,4 +141,172 @@ function lua_pushinteger(value)
   end  
 end
 
-function lua
+function lua_tointegerx(index)
+  if luastubs and lua_state and luastubs.lua_tointegerx then
+    local isvalid={0,0,0,0}
+    local r,r2=LuaExecutor.executeStub(luastubs.lua_tointegerx,{lua_state, index,isvalid})
+    
+    if r2.Data[1]~=0 then
+      return r
+    else
+      return nil
+    end
+  end  
+end
+
+function lua_tointeger(index)
+  if luastubs and lua_state then
+    if luastubs.lua_tointeger then
+      return LuaExecutor.executeStub(luastubs.lua_tointeger,{lua_state, index})    
+    else      
+      return lua_tointegerx(index)
+    end
+  end  
+end
+
+function lua_touserdata(index)
+  if luastubs and lua_state and luastubs.lua_touserdata then    
+    return LuaExecutor.executeStub(luastubs.lua_touserdata,{lua_state, index})    
+  end    
+end
+
+function lua_tostring(index)
+  if luastubs and lua_state and luastubs.lua_tolstring then
+    local stringLength={0,0,0,0,0,0,0,0}
+    local stringAddress,l=LuaExecutor.executeStub(luastubs.lua_tolstring,{lua_state, index,stringLength})   
+    stringLength=byteTableToQword(l.Data)
+    
+    local result=readString(stringAddress, stringLength)    
+    return result
+  end
+end
+
+function lua_gettable(index)
+  if luastubs and lua_state and luastubs.lua_gettable then
+    return LuaExecutor.executeStub(luastubs.lua_gettable,{lua_state, index})    
+  end
+end
+
+function lua_settable(index)
+  if luastubs and lua_state and luastubs.lua_settable then
+    return LuaExecutor.executeStub(luastubs.lua_settable,{lua_state, index})    
+  end
+end
+
+
+function lua_type(index)
+  if luastubs and lua_state and luastubs.lua_type then
+    return LuaExecutor.executeStub(luastubs.lua_type,{lua_state, index})    
+  end
+end
+
+function lua_istable(index)
+  return lua_type(index)==LUA_TTABLE; 
+end
+
+function lua_isnil(index)
+   return lua_type(index)==LUA_TNIL
+end
+
+function lua_isstring(index)
+  if luastubs and lua_state and luastubs.lua_isstring then
+    return LuaExecutor.executeStub(luastubs.lua_isstring,{lua_state, index})    
+  end
+end
+
+function lua_isinteger(index)
+  if luastubs and lua_state and luastubs.lua_isinteger then
+    return LuaExecutor.executeStub(luastubs.lua_isinteger,{lua_state, index})    
+  end
+end
+
+function lua_isnumber(index)
+  if luastubs and lua_state and luastubs.lua_isnumber then
+    return LuaExecutor.executeStub(luastubs.lua_isnumber,{lua_state, index})    
+  end
+end
+
+function lua_iscfunction(index)
+  if luastubs and lua_state and luastubs.lua_iscfunction then
+    return LuaExecutor.executeStub(luastubs.lua_iscfunction,{lua_state, index})    
+  end
+end
+
+function lua_isuserdata(index)
+  if luastubs and lua_state and luastubs.lua_isuserdata then
+    return LuaExecutor.executeStub(luastubs.lua_isuserdata,{lua_state, index})    
+  end
+end
+
+function lua_rawlen(index)
+  if luastubs and lua_state and luastubs.lua_rawlen then
+    return LuaExecutor.executeStub(luastubs.lua_rawlen,{lua_state, index})    
+  end
+end
+
+function lua_objlen(index)
+  return lua_rawlen(index);
+end;   
+
+
+
+function lual_loadstring(script)
+  if luastubs and lua_state and luastubs.lual_loadstring then
+    return LuaExecutor.executeStub(luastubs.lual_loadstring,{lua_state, script})
+  end
+end
+
+function lua_pcallUnlocked(lua_state, argcount, resultcount, errfunc)  
+  if luastubs and lua_state then
+    if luastubs.lua_pcall then
+      return LuaExecutor.executeStub(luastubs.lua_pcall,{lua_state, argcount, resultcount, errfunc})
+    elseif luastubs.lua_pcallk then
+      return LuaExecutor.executeStub(luastubs.lua_pcallk,{lua_state, argcount, resultcount, errfunc,0,0})
+    end
+  end
+end
+
+function lua_pcall(argcount, resultcount, errfunc)
+  --warning: Do not call functions that need to synchronize with the main thread
+  --use lua_pcallUnlocked if you're sure the lua build you're working with is thread safe 
+  return lua_pcallUnlocked(lua_state, argcount, resultcount, errfunc)
+end
+
+
+function lua_dostring(script)
+  if lual_loadstring(script)==0 then
+    return lua_pcall(0,0,0)  
+  end  
+end
+
+
+function lua_pushcclosure(functionaddress, n)
+  if luastubs and lua_state and luastubs.lua_pushcclosure then
+    return LuaExecutor.executeStub(luastubs.lua_pushcclosure,{lua_state, functionaddress,n})
+  end
+end
+
+function lua_pushcfunction(functionaddress)
+  return lua_pushcclosure(functionaddress,0)
+end
+
+function lua_setglobal(name)
+  if luastubs and lua_state and luastubs.lua_setglobal then
+    return LuaExecutor.executeStub(luastubs.lua_setglobal,{lua_state, name})
+  end
+end
+
+function lua_getglobal(name)
+  if luastubs and lua_state and luastubs.lua_getglobal then
+    return LuaExecutor.executeStub(luastubs.lua_getglobal,{lua_state, name})
+  end
+end
+
+function luaopen_debug()
+  if luastubs and lua_state and luastubs.luaopen_debug then
+    return LuaExecutor.executeStub(luastubs.luaopen_debug,{lua_state})
+  end  
+end
+
+function lua_registerdebug()
+  l
