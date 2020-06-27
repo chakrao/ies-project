@@ -309,4 +309,199 @@ function luaopen_debug()
 end
 
 function lua_registerdebug()
-  l
+  local oldstack=lua_gettop()
+  luaopen_debug()
+  if oldstack~=lua_gettop() then  
+    lua_setglobal('debug')
+  end
+end
+
+
+
+function lua_register(name, functionaddress)
+  lua_pushcfunction(functionaddress)
+  lua_setglobal(name)
+end
+
+
+function lua_ceprint(stringAddress)
+  --called when ceprint is executed by the target. stringAddress is
+  if stringAddress~=0 then  
+    print(process..'>'..readString(stringAddress))
+  end
+  return 0
+end
+
+function lua_registerceprint()
+  --injects a print function into the target which on execution sends a string to CE's lua engine window.
+  --and registers it as 'ceprint'
+  r,r2=autoAssemble([[
+alloc(ceprint,1024)
+ceprint:
+loadlibrary(luaclient-x86_64.dll)
+luacall(openLuaServer('CELUASERVER'))
+
+alloc(CELUA_ServerName,16)
+alloc(ceprintStringName,16)
+alloc(ceprintFunctionID,4)
+
+
+ceprintStringName:
+db 'lua_ceprint',0
+
+ceprintFunctionID:
+dd 0
+
+CELUA_ServerName:
+db 'CELUASERVER',0
+
+ceprint:
+push rcx
+sub rsp,30
+
+mov rcx,[rsp+30]
+mov rdx,1
+mov r8,0
+call lua_tolstring
+
+//rax should now be 0 or point to a string
+mov [rsp+20],rax
+
+mov ecx,[ceprintFunctionID]
+test ecx,ecx
+jne short hasrefid
+
+mov rcx,ceprintStringName
+call CELUA_GetFunctionReferenceFromName  //Basically calls createRef(functionname) and returns the value
+mov [ceprintFunctionID],eax
+mov ecx,eax
+
+hasrefid:
+//ecx contains the ceprintFunctionID
+mov edx,1
+lea r8,[rsp+20]
+mov r9,1
+call CELUA_ExecuteFunctionByReference
+
+add rsp,38
+mov rax,0 //no return
+ret
+  ]])
+  
+  if r then
+    lua_register('ceprint',r2.allocs.ceprint.address)  
+    return true
+  else
+    return r,r2
+  end   
+end
+
+function lua_startrecordcalls()
+--[[
+celog={}
+celogging=true
+debug.sethook(function(event)
+  table.insert(celog,debug.getinfo(2))
+
+  count=count-1
+  if celogging==false then
+    debug.sethook()
+  end
+end,'c')
+--]]
+  local oldstack=lua_gettop()
+  lua_dostring([[
+celog={}
+celogging=true
+debug.sethook(function(event)
+  table.insert(celog,debug.getinfo(2))
+
+  if celogging==false then
+    debug.sethook()
+  end
+end,'c')  
+  ]])
+  
+  if lua_gettop()~=oldstack then
+    print("Error:"..lua_tostring(-1))
+    lua_pop(1)
+  end
+
+end
+
+function lua_stoprecordcalls()
+  lua_dostring('debug.sethook()')
+end
+
+function lua_getcalllog()
+end
+
+
+function setLuaState(ls)
+  lua_state=ls  
+end
+
+function getLuaState(ls)
+  return lua_state
+end
+
+function LockLuaState(timeout)
+
+  --waits for a lock on lua and then get the state
+  if timeout==nil then
+    timeout=0xffffffff
+  end 
+  
+  executeCodeLocalEx('ResetEvent',LuaNotifyCEEvent)   
+  executeCodeLocalEx('ResetEvent',LuaCEDoneEvent)
+  writeBytes(aainfo.allocs.hascommands.address,1)
+  local result=executeCodeLocalEx('WaitForSingleObject',LuaNotifyCEEvent,timeout)==0
+  
+  if result then
+    lua_state=readQword(aainfo.allocs.last_lua_state.address)     
+    
+    
+    if luastubs~=nil then
+      if luastubs.processid~=getOpenedProcessID() then
+        luastubs=nil
+      end
+    end
+    
+    if luastubs==nil then
+      --create lua function call stubs
+      luastubs={}
+      luastubs.processid=getOpenedProcessID()
+      luastubs.lua_gettop=createExecuteCodeExStub(1,'lua_gettop',0)
+      luastubs.lua_settop=createExecuteCodeExStub(1,'lua_settop',0,0)      
+            
+      luastubs.lua_pushinteger=createExecuteCodeExStub(1,'lua_pushinteger',0,0)
+      luastubs.lua_tointegerx=createExecuteCodeExStub(1,'lua_tointegerx',0,0,{type=5, size=4})      
+      if getAddressSafe('lua_tointeger') then
+        luastubs.lua_tointegerx=createExecuteCodeExStub(1,'lua_tointeger',0,0)    
+      end
+      
+      luastubs.lua_touserdata=createExecuteCodeExStub(1,'lua_touserdata',0,0)    
+      
+      luastubs.lua_type=createExecuteCodeExStub(1,'lua_type',0,0);
+ 
+      luastubs.lua_gettable=createExecuteCodeExStub(1,'lua_gettable',0,0)      
+      luastubs.lua_settable=createExecuteCodeExStub(1,'lua_settable',0,0) 
+      
+      luastubs.lua_rawlen=createExecuteCodeExStub(1,'lua_rawlen',0,0) 
+      
+      
+      
+      luastubs.lua_isstring=createExecuteCodeExStub(1,'lua_isstring',0,0) 
+      luastubs.lua_isinteger=createExecuteCodeExStub(1,'lua_isinteger',0,0) 
+      luastubs.lua_isnumber=createExecuteCodeExStub(1,'lua_isnumber',0,0) 
+      luastubs.lua_iscfunction=createExecuteCodeExStub(1,'lua_iscfunction',0,0) 
+      luastubs.lua_isuserdata=createExecuteCodeExStub(1,'lua_isuserdata',0,0) 
+      
+      luastubs.lual_loadstring=createExecuteCodeExStub(1,'lual_loadstring',0,3)   
+      luastubs.lua_pcallk=createExecuteCodeExStub(1,'lua_pcallk',0,0,0,0,0,0) 
+     
+      if getAddressSafe('lua_pcall') then
+        luastubs.lua_pcall=createExecuteCodeExStub(1,'lua_pcall',0,0,0,0)    
+      end
+
+      luastubs.lua_pcallk=createExecuteCodeExStub(1
