@@ -504,4 +504,24 @@ function LockLuaState(timeout)
         luastubs.lua_pcall=createExecuteCodeExStub(1,'lua_pcall',0,0,0,0)    
       end
 
-      luastubs.lua_pcallk=createExecuteCodeExStub(1
+      luastubs.lua_pcallk=createExecuteCodeExStub(1,'lua_pcallk',0,0,0,0,0,0) 
+      
+      luastubs.lua_pushcclosure=createExecuteCodeExStub(1,'lua_pushcclosure',0,0,0) 
+      luastubs.lua_setglobal=createExecuteCodeExStub(1,'lua_setglobal',0,3)       
+      luastubs.lua_getglobal=createExecuteCodeExStub(1,'lua_getglobal',0,3)   
+      luastubs.lua_tolstring=createExecuteCodeExStub(1,'lua_tolstring',0,0,{type=5, size=8})   
+      luastubs.luaopen_debug=createExecuteCodeExStub(1,'luaopen_debug',0)  
+    end
+    
+    return true
+  else 
+    ReleaseLuaState()
+  end
+end
+
+function ReleaseLuaState()
+  --resumes the game
+  writeBytes(aainfo.allocs.hascommands.address,0)
+  executeCodeLocalEx('SetEvent',LuaCEDoneEvent)
+  lua_state=nil
+end
