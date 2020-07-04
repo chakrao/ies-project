@@ -51,4 +51,41 @@ extern "C" {
     char p_sep_by_space;
     char n_cs_precedes;
     char n_sep_by_space;
- 
+    char p_sign_posn;
+    char n_sign_posn;
+  };
+#endif
+
+#ifndef _CONFIG_LOCALE_SWT
+#define _CONFIG_LOCALE_SWT
+
+#define _ENABLE_PER_THREAD_LOCALE 0x1
+#define _DISABLE_PER_THREAD_LOCALE 0x2
+#define _ENABLE_PER_THREAD_LOCALE_GLOBAL 0x10
+#define _DISABLE_PER_THREAD_LOCALE_GLOBAL 0x20
+#define _ENABLE_PER_THREAD_LOCALE_NEW 0x100
+#define _DISABLE_PER_THREAD_LOCALE_NEW 0x200
+
+#endif
+
+  int __cdecl _configthreadlocale(int _Flag);
+  char *__cdecl setlocale(int _Category,const char *_Locale);
+  _CRTIMP struct lconv *__cdecl localeconv(void);
+  _locale_t __cdecl _get_current_locale(void);
+  _locale_t __cdecl _create_locale(int _Category,const char *_Locale);
+  void __cdecl _free_locale(_locale_t _Locale);
+  _locale_t __cdecl __get_current_locale(void);
+  _locale_t __cdecl __create_locale(int _Category,const char *_Locale);
+  void __cdecl __free_locale(_locale_t _Locale);
+
+#ifndef _WLOCALE_DEFINED
+#define _WLOCALE_DEFINED
+  _CRTIMP wchar_t *__cdecl _wsetlocale(int _Category,const wchar_t *_Locale);
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#pragma pack(pop)
+#endif
