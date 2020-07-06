@@ -55,4 +55,87 @@ extern "C" {
   _CRTIMP intptr_t __cdecl _execve(const char *_Filename,const char *const *_ArgList,const char *const *_Env);
   _CRTIMP intptr_t __cdecl _execvp(const char *_Filename,const char *const *_ArgList);
   _CRTIMP intptr_t __cdecl _execvpe(const char *_Filename,const char *const *_ArgList,const char *const *_Env);
-  _CRTIMP intptr_t __cdecl _spawnl(int _Mode,const char *_Filename,const c
+  _CRTIMP intptr_t __cdecl _spawnl(int _Mode,const char *_Filename,const char *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _spawnle(int _Mode,const char *_Filename,const char *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _spawnlp(int _Mode,const char *_Filename,const char *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _spawnlpe(int _Mode,const char *_Filename,const char *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _spawnv(int _Mode,const char *_Filename,const char *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _spawnve(int _Mode,const char *_Filename,const char *const *_ArgList,const char *const *_Env);
+  _CRTIMP intptr_t __cdecl _spawnvp(int _Mode,const char *_Filename,const char *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _spawnvpe(int _Mode,const char *_Filename,const char *const *_ArgList,const char *const *_Env);
+
+#ifndef _CRT_SYSTEM_DEFINED
+#define _CRT_SYSTEM_DEFINED
+  int __cdecl system(const char *_Command);
+#endif
+
+#ifndef _WPROCESS_DEFINED
+#define _WPROCESS_DEFINED
+  _CRTIMP intptr_t __cdecl _wexecl(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wexecle(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wexeclp(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wexeclpe(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wexecv(const wchar_t *_Filename,const wchar_t *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _wexecve(const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+  _CRTIMP intptr_t __cdecl _wexecvp(const wchar_t *_Filename,const wchar_t *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _wexecvpe(const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+  _CRTIMP intptr_t __cdecl _wspawnl(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wspawnle(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wspawnlp(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wspawnlpe(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wspawnv(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _wspawnve(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+  _CRTIMP intptr_t __cdecl _wspawnvp(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _wspawnvpe(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+#ifndef _CRT_WSYSTEM_DEFINED
+#define _CRT_WSYSTEM_DEFINED
+  _CRTIMP int __cdecl _wsystem(const wchar_t *_Command);
+#endif
+#endif
+
+  void __cdecl __security_init_cookie(void);
+#if (defined(_X86_) && !defined(__x86_64))
+  void __fastcall __security_check_cookie(uintptr_t _StackCookie);
+  __declspec(noreturn) void __cdecl __report_gsfailure(void);
+#else
+  void __cdecl __security_check_cookie(uintptr_t _StackCookie);
+  __declspec(noreturn) void __cdecl __report_gsfailure(uintptr_t _StackCookie);
+#endif
+  extern uintptr_t __security_cookie;
+
+  intptr_t __cdecl _loaddll(char *_Filename);
+  int __cdecl _unloaddll(intptr_t _Handle);
+  int (__cdecl *__cdecl _getdllprocaddr(intptr_t _Handle,char *_ProcedureName,intptr_t _Ordinal))(void);
+
+#ifdef _DECL_DLLMAIN
+#ifdef _WINDOWS_
+  WINBOOL WINAPI DllMain(HANDLE _HDllHandle,DWORD _Reason,LPVOID _Reserved);
+  WINBOOL WINAPI _CRT_INIT(HANDLE _HDllHandle,DWORD _Reason,LPVOID _Reserved);
+  WINBOOL WINAPI _wCRT_INIT(HANDLE _HDllHandle,DWORD _Reason,LPVOID _Reserved);
+  extern WINBOOL (WINAPI *const _pRawDllMain)(HANDLE,DWORD,LPVOID);
+#else
+  int __stdcall DllMain(void *_HDllHandle,unsigned _Reason,void *_Reserved);
+  int __stdcall _CRT_INIT(void *_HDllHandle,unsigned _Reason,void *_Reserved);
+  int __stdcall _wCRT_INIT(void *_HDllHandle,unsigned _Reason,void *_Reserved);
+  extern int (__stdcall *const _pRawDllMain)(void *,unsigned,void *);
+#endif
+#endif
+
+#ifndef	NO_OLDNAMES
+#define P_WAIT _P_WAIT
+#define P_NOWAIT _P_NOWAIT
+#define P_OVERLAY _P_OVERLAY
+#define OLD_P_OVERLAY _OLD_P_OVERLAY
+#define P_NOWAITO _P_NOWAITO
+#define P_DETACH _P_DETACH
+#define WAIT_CHILD _WAIT_CHILD
+#define WAIT_GRANDCHILD _WAIT_GRANDCHILD
+
+  intptr_t __cdecl cwait(int *_TermStat,intptr_t _ProcHandle,int _Action);
+#ifdef __GNUC__
+  int __cdecl execl(const char *_Filename,const char *_ArgList,...);
+  int __cdecl execle(const char *_Filename,const char *_ArgList,...);
+  int __cdecl execlp(const char *_Filename,const char *_ArgList,...);
+  int __cdecl execlpe(const char *_Filename,const char *_ArgList,...);
+#else
+    intptr_t __cdecl execl(const char *_Filename,const char *_ArgList,...)
