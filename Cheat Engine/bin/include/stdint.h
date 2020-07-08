@@ -108,3 +108,106 @@ typedef unsigned long long   uintmax_t;
 #define UINT_LEAST64_MAX UINT64_MAX
 
 /* 7.18.2.3  Limits of fastest minimum-width integer types */
+#define INT_FAST8_MIN INT8_MIN
+#define INT_FAST16_MIN INT16_MIN
+#define INT_FAST32_MIN INT32_MIN
+#define INT_FAST64_MIN INT64_MIN
+
+#define INT_FAST8_MAX INT8_MAX
+#define INT_FAST16_MAX INT16_MAX
+#define INT_FAST32_MAX INT32_MAX
+#define INT_FAST64_MAX INT64_MAX
+
+#define UINT_FAST8_MAX UINT8_MAX
+#define UINT_FAST16_MAX UINT16_MAX
+#define UINT_FAST32_MAX UINT32_MAX
+#define UINT_FAST64_MAX UINT64_MAX
+
+/* 7.18.2.4  Limits of integer types capable of holding
+    object pointers */
+#ifdef _WIN64
+#define INTPTR_MIN INT64_MIN
+#define INTPTR_MAX INT64_MAX
+#define UINTPTR_MAX UINT64_MAX
+#else
+#define INTPTR_MIN INT32_MIN
+#define INTPTR_MAX INT32_MAX
+#define UINTPTR_MAX UINT32_MAX
+#endif
+
+/* 7.18.2.5  Limits of greatest-width integer types */
+#define INTMAX_MIN INT64_MIN
+#define INTMAX_MAX INT64_MAX
+#define UINTMAX_MAX UINT64_MAX
+
+/* 7.18.3  Limits of other integer types */
+#ifdef _WIN64
+#define PTRDIFF_MIN INT64_MIN
+#define PTRDIFF_MAX INT64_MAX
+#else
+#define PTRDIFF_MIN INT32_MIN
+#define PTRDIFF_MAX INT32_MAX
+#endif
+
+#define SIG_ATOMIC_MIN INT32_MIN
+#define SIG_ATOMIC_MAX INT32_MAX
+
+#ifndef SIZE_MAX
+#ifdef _WIN64
+#define SIZE_MAX UINT64_MAX
+#else
+#define SIZE_MAX UINT32_MAX
+#endif
+#endif
+
+#ifndef WCHAR_MIN  /* also in wchar.h */
+#define WCHAR_MIN 0
+#define WCHAR_MAX ((wchar_t)-1) /* UINT16_MAX */
+#endif
+
+/*
+ * wint_t is unsigned short for compatibility with MS runtime
+ */
+#define WINT_MIN 0
+#define WINT_MAX ((wint_t)-1) /* UINT16_MAX */
+
+#endif /* !defined ( __cplusplus) || defined __STDC_LIMIT_MACROS */
+
+
+/* 7.18.4  Macros for integer constants */
+#if !defined ( __cplusplus) || defined (__STDC_CONSTANT_MACROS)
+
+/* 7.18.4.1  Macros for minimum-width integer constants
+
+    According to Douglas Gwyn <gwyn@arl.mil>:
+	"This spec was changed in ISO/IEC 9899:1999 TC1; in ISO/IEC
+	9899:1999 as initially published, the expansion was required
+	to be an integer constant of precisely matching type, which
+	is impossible to accomplish for the shorter types on most
+	platforms, because C99 provides no standard way to designate
+	an integer constant with width less than that of type int.
+	TC1 changed this to require just an integer constant
+	*expression* with *promoted* type."
+
+	The trick used here is from Clive D W Feather.
+*/
+
+#define INT8_C(val) (INT_LEAST8_MAX-INT_LEAST8_MAX+(val))
+#define INT16_C(val) (INT_LEAST16_MAX-INT_LEAST16_MAX+(val))
+#define INT32_C(val) (INT_LEAST32_MAX-INT_LEAST32_MAX+(val))
+/*  The 'trick' doesn't work in C89 for long long because, without
+    suffix, (val) will be evaluated as int, not intmax_t */
+#define INT64_C(val) val##LL
+
+#define UINT8_C(val) (UINT_LEAST8_MAX-UINT_LEAST8_MAX+(val))
+#define UINT16_C(val) (UINT_LEAST16_MAX-UINT_LEAST16_MAX+(val))
+#define UINT32_C(val) (UINT_LEAST32_MAX-UINT_LEAST32_MAX+(val))
+#define UINT64_C(val) val##ULL
+
+/* 7.18.4.2  Macros for greatest-width integer constants */
+#define INTMAX_C(val) val##LL
+#define UINTMAX_C(val) val##ULL
+
+#endif  /* !defined ( __cplusplus) || defined __STDC_CONSTANT_MACROS */
+
+#endif
