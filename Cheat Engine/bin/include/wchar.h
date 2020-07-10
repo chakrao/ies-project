@@ -292,4 +292,126 @@ extern FILE (*_imp___iob)[];	/* A pointer to an array of FILE */
 #endif
   _CRTIMP errno_t __cdecl _wsopen_s(int *_FileHandle,const wchar_t *_Filename,int _OpenFlag,int _ShareFlag,int _PermissionFlag);
 #if !defined(__cplusplus) || !(defined(_X86_) && !defined(__x86_64))
-  _CRTIMP int __cdecl _wopen(const wchar_t *_Filename,int _Ope
+  _CRTIMP int __cdecl _wopen(const wchar_t *_Filename,int _OpenFlag,...);
+  _CRTIMP int __cdecl _wsopen(const wchar_t *_Filename,int _OpenFlag,int _ShareFlag,...);
+#else
+  extern "C++" _CRTIMP int __cdecl _wopen(const wchar_t *_Filename,int _OpenFlag,int _PermissionMode = 0);
+  extern "C++" _CRTIMP int __cdecl _wsopen(const wchar_t *_Filename,int _OpenFlag,int _ShareFlag,int _PermissionMode = 0);
+#endif
+#endif
+
+#ifndef _WLOCALE_DEFINED
+#define _WLOCALE_DEFINED
+  _CRTIMP wchar_t *__cdecl _wsetlocale(int _Category,const wchar_t *_Locale);
+#endif
+
+#ifndef _WPROCESS_DEFINED
+#define _WPROCESS_DEFINED
+
+  _CRTIMP intptr_t __cdecl _wexecl(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wexecle(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wexeclp(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wexeclpe(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wexecv(const wchar_t *_Filename,const wchar_t *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _wexecve(const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+  _CRTIMP intptr_t __cdecl _wexecvp(const wchar_t *_Filename,const wchar_t *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _wexecvpe(const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+  _CRTIMP intptr_t __cdecl _wspawnl(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wspawnle(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wspawnlp(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wspawnlpe(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+  _CRTIMP intptr_t __cdecl _wspawnv(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _wspawnve(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+  _CRTIMP intptr_t __cdecl _wspawnvp(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList);
+  _CRTIMP intptr_t __cdecl _wspawnvpe(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+#ifndef _CRT_WSYSTEM_DEFINED
+#define _CRT_WSYSTEM_DEFINED
+  _CRTIMP int __cdecl _wsystem(const wchar_t *_Command);
+#endif
+#endif
+
+#ifndef _WCTYPE_INLINE_DEFINED
+#undef _CRT_WCTYPE_NOINLINE
+#if !defined(__cplusplus) || defined(_CRT_WCTYPE_NOINLINE)
+#define iswalpha(_c) (iswctype(_c,_ALPHA))
+#define iswupper(_c) (iswctype(_c,_UPPER))
+#define iswlower(_c) (iswctype(_c,_LOWER))
+#define iswdigit(_c) (iswctype(_c,_DIGIT))
+#define iswxdigit(_c) (iswctype(_c,_HEX))
+#define iswspace(_c) (iswctype(_c,_SPACE))
+#define iswpunct(_c) (iswctype(_c,_PUNCT))
+#define iswalnum(_c) (iswctype(_c,_ALPHA|_DIGIT))
+#define iswprint(_c) (iswctype(_c,_BLANK|_PUNCT|_ALPHA|_DIGIT))
+#define iswgraph(_c) (iswctype(_c,_PUNCT|_ALPHA|_DIGIT))
+#define iswcntrl(_c) (iswctype(_c,_CONTROL))
+#define iswascii(_c) ((unsigned)(_c) < 0x80)
+
+#define _iswalpha_l(_c,_p) (_iswctype_l(_c,_ALPHA,_p))
+#define _iswupper_l(_c,_p) (_iswctype_l(_c,_UPPER,_p))
+#define _iswlower_l(_c,_p) (_iswctype_l(_c,_LOWER,_p))
+#define _iswdigit_l(_c,_p) (_iswctype_l(_c,_DIGIT,_p))
+#define _iswxdigit_l(_c,_p) (_iswctype_l(_c,_HEX,_p))
+#define _iswspace_l(_c,_p) (_iswctype_l(_c,_SPACE,_p))
+#define _iswpunct_l(_c,_p) (_iswctype_l(_c,_PUNCT,_p))
+#define _iswalnum_l(_c,_p) (_iswctype_l(_c,_ALPHA|_DIGIT,_p))
+#define _iswprint_l(_c,_p) (_iswctype_l(_c,_BLANK|_PUNCT|_ALPHA|_DIGIT,_p))
+#define _iswgraph_l(_c,_p) (_iswctype_l(_c,_PUNCT|_ALPHA|_DIGIT,_p))
+#define _iswcntrl_l(_c,_p) (_iswctype_l(_c,_CONTROL,_p))
+#ifndef _CTYPE_DISABLE_MACROS
+#define isleadbyte(_c) (__PCTYPE_FUNC[(unsigned char)(_c)] & _LEADBYTE)
+#endif
+#endif
+#define _WCTYPE_INLINE_DEFINED
+#endif
+
+#if !defined(_POSIX_) || defined(__GNUC__)
+#ifndef _INO_T_DEFINED
+#define _INO_T_DEFINED
+  typedef unsigned short _ino_t;
+#ifndef	NO_OLDNAMES
+  typedef unsigned short ino_t;
+#endif
+#endif
+
+#ifndef _DEV_T_DEFINED
+#define _DEV_T_DEFINED
+  typedef unsigned int _dev_t;
+#ifndef	NO_OLDNAMES
+  typedef unsigned int dev_t;
+#endif
+#endif
+
+#ifndef _OFF_T_DEFINED
+#define _OFF_T_DEFINED
+#ifndef _OFF_T_
+#define _OFF_T_
+  typedef long _off_t;
+#if !defined(NO_OLDNAMES) || defined(_POSIX)
+  typedef long off_t;
+#endif
+#endif
+#endif
+
+#ifndef _OFF64_T_DEFINED
+#define _OFF64_T_DEFINED
+  typedef long long _off64_t;
+#if !defined(NO_OLDNAMES) || defined(_POSIX)
+  typedef long long off64_t;
+#endif
+#endif
+
+#ifndef _STAT_DEFINED
+#define _STAT_DEFINED
+
+#ifdef _USE_32BIT_TIME_T
+#ifdef WIN64
+#define _fstat _fstat32
+#define _stat _stat32
+#define _wstat _wstat32
+#else
+#define _fstat32 _fstat
+#define _stat32 _stat
+#define _wstat32 _wstat
+#endif
+#define _fstati64 _fstat32i64
+#define _stati64 _stat32i64
