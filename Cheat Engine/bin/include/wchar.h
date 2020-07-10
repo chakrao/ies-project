@@ -173,4 +173,123 @@ extern FILE (*_imp___iob)[];	/* A pointer to an array of FILE */
 #define _pctype (*_imp___pctype)
 #endif
 #endif
-#end
+#endif
+#endif
+
+#ifndef _CRT_WCTYPEDATA_DEFINED
+#define _CRT_WCTYPEDATA_DEFINED
+#ifndef _CTYPE_DISABLE_MACROS
+#ifndef _wctype
+#ifdef _MSVCRT_
+  extern unsigned short *_wctype;
+#else
+  extern unsigned short **_imp___wctype;
+#define _wctype (*_imp___wctype)
+#endif
+#endif
+
+#ifdef _MSVCRT_
+#define __pwctype_func() (_pwctype)
+#else
+#define __pwctype_func() (*_imp___pwctype)
+#endif
+
+#ifndef _pwctype
+#ifdef _MSVCRT_
+  extern unsigned short *_pwctype;
+#else
+  extern unsigned short **_imp___pwctype;
+#define _pwctype (*_imp___pwctype)
+#endif
+#endif
+
+#endif
+#endif
+
+#define _UPPER 0x1
+#define _LOWER 0x2
+#define _DIGIT 0x4
+#define _SPACE 0x8
+
+#define _PUNCT 0x10
+#define _CONTROL 0x20
+#define _BLANK 0x40
+#define _HEX 0x80
+
+#define _LEADBYTE 0x8000
+#define _ALPHA (0x0100|_UPPER|_LOWER)
+
+#ifndef _WCTYPE_DEFINED
+#define _WCTYPE_DEFINED
+
+  int __cdecl iswalpha(wint_t _C);
+  _CRTIMP int __cdecl _iswalpha_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswupper(wint_t _C);
+  _CRTIMP int __cdecl _iswupper_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswlower(wint_t _C);
+  _CRTIMP int __cdecl _iswlower_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswdigit(wint_t _C);
+  _CRTIMP int __cdecl _iswdigit_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswxdigit(wint_t _C);
+  _CRTIMP int __cdecl _iswxdigit_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswspace(wint_t _C);
+  _CRTIMP int __cdecl _iswspace_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswpunct(wint_t _C);
+  _CRTIMP int __cdecl _iswpunct_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswalnum(wint_t _C);
+  _CRTIMP int __cdecl _iswalnum_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswprint(wint_t _C);
+  _CRTIMP int __cdecl _iswprint_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswgraph(wint_t _C);
+  _CRTIMP int __cdecl _iswgraph_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswcntrl(wint_t _C);
+  _CRTIMP int __cdecl _iswcntrl_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswascii(wint_t _C);
+  int __cdecl isleadbyte(int _C);
+  _CRTIMP int __cdecl _isleadbyte_l(int _C,_locale_t _Locale);
+  wint_t __cdecl towupper(wint_t _C);
+  _CRTIMP wint_t __cdecl _towupper_l(wint_t _C,_locale_t _Locale);
+  wint_t __cdecl towlower(wint_t _C);
+  _CRTIMP wint_t __cdecl _towlower_l(wint_t _C,_locale_t _Locale);
+  int __cdecl iswctype(wint_t _C,wctype_t _Type);
+  _CRTIMP int __cdecl _iswctype_l(wint_t _C,wctype_t _Type,_locale_t _Locale);
+  _CRTIMP int __cdecl __iswcsymf(wint_t _C);
+  _CRTIMP int __cdecl _iswcsymf_l(wint_t _C,_locale_t _Locale);
+  _CRTIMP int __cdecl __iswcsym(wint_t _C);
+  _CRTIMP int __cdecl _iswcsym_l(wint_t _C,_locale_t _Locale);
+  int __cdecl is_wctype(wint_t _C,wctype_t _Type);
+#endif
+
+#ifndef _WDIRECT_DEFINED
+#define _WDIRECT_DEFINED
+
+  _CRTIMP wchar_t *__cdecl _wgetcwd(wchar_t *_DstBuf,int _SizeInWords);
+  _CRTIMP wchar_t *__cdecl _wgetdcwd(int _Drive,wchar_t *_DstBuf,int _SizeInWords);
+  wchar_t *__cdecl _wgetdcwd_nolock(int _Drive,wchar_t *_DstBuf,int _SizeInWords);
+  _CRTIMP int __cdecl _wchdir(const wchar_t *_Path);
+  _CRTIMP int __cdecl _wmkdir(const wchar_t *_Path);
+  _CRTIMP int __cdecl _wrmdir(const wchar_t *_Path);
+#endif
+
+#ifndef _WIO_DEFINED
+#define _WIO_DEFINED
+
+  _CRTIMP int __cdecl _waccess(const wchar_t *_Filename,int _AccessMode);
+  _CRTIMP int __cdecl _wchmod(const wchar_t *_Filename,int _Mode);
+  _CRTIMP int __cdecl _wcreat(const wchar_t *_Filename,int _PermissionMode);
+  _CRTIMP intptr_t __cdecl _wfindfirst32(const wchar_t *_Filename,struct _wfinddata32_t *_FindData);
+  _CRTIMP int __cdecl _wfindnext32(intptr_t _FindHandle,struct _wfinddata32_t *_FindData);
+  _CRTIMP int __cdecl _wunlink(const wchar_t *_Filename);
+  _CRTIMP int __cdecl _wrename(const wchar_t *_NewFilename,const wchar_t *_OldFilename);
+  _CRTIMP wchar_t *__cdecl _wmktemp(wchar_t *_TemplateName);
+#if _INTEGRAL_MAX_BITS >= 64
+  _CRTIMP intptr_t __cdecl _wfindfirst32i64(const wchar_t *_Filename,struct _wfinddata32i64_t *_FindData);
+  intptr_t __cdecl _wfindfirst64i32(const wchar_t *_Filename,struct _wfinddata64i32_t *_FindData);
+  _CRTIMP intptr_t __cdecl _wfindfirst64(const wchar_t *_Filename,struct _wfinddata64_t *_FindData);
+  _CRTIMP int __cdecl _wfindnext32i64(intptr_t _FindHandle,struct _wfinddata32i64_t *_FindData);
+  int __cdecl _wfindnext64i32(intptr_t _FindHandle,struct _wfinddata64i32_t *_FindData);
+  _CRTIMP int __cdecl _wfindnext64(intptr_t _FindHandle,struct _wfinddata64_t *_FindData);
+#endif
+  _CRTIMP errno_t __cdecl _wsopen_s(int *_FileHandle,const wchar_t *_Filename,int _OpenFlag,int _ShareFlag,int _PermissionFlag);
+#if !defined(__cplusplus) || !(defined(_X86_) && !defined(__x86_64))
+  _CRTIMP int __cdecl _wopen(const wchar_t *_Filename,int _Ope
