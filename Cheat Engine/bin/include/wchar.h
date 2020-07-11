@@ -415,3 +415,167 @@ extern FILE (*_imp___iob)[];	/* A pointer to an array of FILE */
 #endif
 #define _fstati64 _fstat32i64
 #define _stati64 _stat32i64
+#define _wstati64 _wstat32i64
+#else
+#define _fstat _fstat64i32
+#define _fstati64 _fstat64
+#define _stat _stat64i32
+#define _stati64 _stat64
+#define _wstat _wstat64i32
+#define _wstati64 _wstat64
+#endif
+
+  struct _stat32 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    _off_t st_size;
+    __time32_t st_atime;
+    __time32_t st_mtime;
+    __time32_t st_ctime;
+  };
+
+#ifndef	NO_OLDNAMES
+  struct stat {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    _off_t st_size;
+    time_t st_atime;
+    time_t st_mtime;
+    time_t st_ctime;
+  };
+#endif
+
+#if _INTEGRAL_MAX_BITS >= 64
+
+  struct _stat32i64 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    __int64 st_size;
+    __time32_t st_atime;
+    __time32_t st_mtime;
+    __time32_t st_ctime;
+  };
+
+  struct _stat64i32 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    _off_t st_size;
+    __time64_t st_atime;
+    __time64_t st_mtime;
+    __time64_t st_ctime;
+  };
+
+  struct _stat64 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    __int64 st_size;
+    __time64_t st_atime;
+    __time64_t st_mtime;
+    __time64_t st_ctime;
+  };
+#endif
+
+#define __stat64 _stat64
+
+#endif
+
+#ifndef _WSTAT_DEFINED
+#define _WSTAT_DEFINED
+
+  _CRTIMP int __cdecl _wstat32(const wchar_t *_Name,struct _stat32 *_Stat);
+#if _INTEGRAL_MAX_BITS >= 64
+  _CRTIMP int __cdecl _wstat32i64(const wchar_t *_Name,struct _stat32i64 *_Stat);
+  int __cdecl _wstat64i32(const wchar_t *_Name,struct _stat64i32 *_Stat);
+  _CRTIMP int __cdecl _wstat64(const wchar_t *_Name,struct _stat64 *_Stat);
+#endif
+#endif
+#endif
+
+#ifndef _WCONIO_DEFINED
+#define _WCONIO_DEFINED
+
+#ifndef WEOF
+#define WEOF (wint_t)(0xFFFF)
+#endif
+
+  _CRTIMP wchar_t *_cgetws(wchar_t *_Buffer);
+  _CRTIMP wint_t __cdecl _getwch(void);
+  _CRTIMP wint_t __cdecl _getwche(void);
+  _CRTIMP wint_t __cdecl _putwch(wchar_t _WCh);
+  _CRTIMP wint_t __cdecl _ungetwch(wint_t _WCh);
+  _CRTIMP int __cdecl _cputws(const wchar_t *_String);
+  _CRTIMP int __cdecl _cwprintf(const wchar_t *_Format,...);
+  _CRTIMP int __cdecl _cwscanf(const wchar_t *_Format,...);
+  _CRTIMP int __cdecl _cwscanf_l(const wchar_t *_Format,_locale_t _Locale,...);
+  _CRTIMP int __cdecl _vcwprintf(const wchar_t *_Format,va_list _ArgList);
+  _CRTIMP int __cdecl _cwprintf_p(const wchar_t *_Format,...);
+  _CRTIMP int __cdecl _vcwprintf_p(const wchar_t *_Format,va_list _ArgList);
+
+  _CRTIMP int __cdecl _cwprintf_l(const wchar_t *_Format,_locale_t _Locale,...);
+  _CRTIMP int __cdecl _vcwprintf_l(const wchar_t *_Format,_locale_t _Locale,va_list _ArgList);
+  _CRTIMP int __cdecl _cwprintf_p_l(const wchar_t *_Format,_locale_t _Locale,...);
+  _CRTIMP int __cdecl _vcwprintf_p_l(const wchar_t *_Format,_locale_t _Locale,va_list _ArgList);
+  wint_t __cdecl _putwch_nolock(wchar_t _WCh);
+  wint_t __cdecl _getwch_nolock(void);
+  wint_t __cdecl _getwche_nolock(void);
+  wint_t __cdecl _ungetwch_nolock(wint_t _WCh);
+#endif
+
+#ifndef _WSTDIO_DEFINED
+#define _WSTDIO_DEFINED
+
+#ifndef WEOF
+#define WEOF (wint_t)(0xFFFF)
+#endif
+
+#ifdef _POSIX_
+  _CRTIMP FILE *__cdecl _wfsopen(const wchar_t *_Filename,const wchar_t *_Mode);
+#else
+  _CRTIMP FILE *__cdecl _wfsopen(const wchar_t *_Filename,const wchar_t *_Mode,int _ShFlag);
+#endif
+
+  wint_t __cdecl fgetwc(FILE *_File);
+  _CRTIMP wint_t __cdecl _fgetwchar(void);
+  wint_t __cdecl fputwc(wchar_t _Ch,FILE *_File);
+  _CRTIMP wint_t __cdecl _fputwchar(wchar_t _Ch);
+  wint_t __cdecl getwc(FILE *_File);
+  wint_t __cdecl getwchar(void);
+  wint_t __cdecl putwc(wchar_t _Ch,FILE *_File);
+  wint_t __cdecl putwchar(wchar_t _Ch);
+  wint_t __cdecl ungetwc(wint_t _Ch,FILE *_File);
+  wchar_t *__cdecl fgetws(wchar_t *_Dst,int _SizeInWords,FILE *_File);
+  int __cdecl fputws(const wchar_t *_Str,FILE *_File);
+  _CRTIMP wchar_t *__cdecl _getws(wchar_t *_String);
+  _CRTIMP int __cdecl _putws(const wchar_t *_Str);
+  int __cdecl fwprintf(FILE *_File,const wchar_t *_Format,...);
+  int __cdecl wprintf(const wchar_t *_Format,...);
+  _CRTIMP int __cdecl _scwprintf(const wchar_t *_Format,...);
+  int __cdecl vfwprintf(FILE *_File,const wchar_t *_Format,va_list _ArgList);
+  int __cdecl vwprintf(const wchar_t *_Format,va_list _ArgList);
+  _CRTIMP int __cdecl swprintf(wchar_t*, const wchar_t*, ...);
+  _C
