@@ -639,4 +639,94 @@ extern FILE (*_imp___iob)[];	/* A pointer to an array of FILE */
   _CRTIMP int __cdecl _fwscanf_l(FILE *_File,const wchar_t *_Format,_locale_t _Locale,...);
   int __cdecl swscanf(const wchar_t *_Src,const wchar_t *_Format,...);
   _CRTIMP int __cdecl _swscanf_l(const wchar_t *_Src,const wchar_t *_Format,_locale_t _Locale,...);
-  _CRTIMP int __cdecl _snwscanf(const wchar_t *_Src,size_t _MaxCount,const wchar_t *_Format
+  _CRTIMP int __cdecl _snwscanf(const wchar_t *_Src,size_t _MaxCount,const wchar_t *_Format,...);
+  _CRTIMP int __cdecl _snwscanf_l(const wchar_t *_Src,size_t _MaxCount,const wchar_t *_Format,_locale_t _Locale,...);
+  int __cdecl wscanf(const wchar_t *_Format,...);
+  _CRTIMP int __cdecl _wscanf_l(const wchar_t *_Format,_locale_t _Locale,...);
+  _CRTIMP FILE *__cdecl _wfdopen(int _FileHandle ,const wchar_t *_Mode);
+  _CRTIMP FILE *__cdecl _wfopen(const wchar_t *_Filename,const wchar_t *_Mode);
+  _CRTIMP FILE *__cdecl _wfreopen(const wchar_t *_Filename,const wchar_t *_Mode,FILE *_OldFile);
+
+#ifndef _CRT_WPERROR_DEFINED
+#define _CRT_WPERROR_DEFINED
+  _CRTIMP void __cdecl _wperror(const wchar_t *_ErrMsg);
+#endif
+  _CRTIMP FILE *__cdecl _wpopen(const wchar_t *_Command,const wchar_t *_Mode);
+#if !defined(NO_OLDNAMES) && !defined(wpopen)
+#define wpopen	_wpopen
+#endif
+  _CRTIMP int __cdecl _wremove(const wchar_t *_Filename);
+  _CRTIMP wchar_t *__cdecl _wtmpnam(wchar_t *_Buffer);
+  _CRTIMP wint_t __cdecl _fgetwc_nolock(FILE *_File);
+  _CRTIMP wint_t __cdecl _fputwc_nolock(wchar_t _Ch,FILE *_File);
+  _CRTIMP wint_t __cdecl _ungetwc_nolock(wint_t _Ch,FILE *_File);
+
+#undef _CRT_GETPUTWCHAR_NOINLINE
+
+#if !defined(__cplusplus) || defined(_CRT_GETPUTWCHAR_NOINLINE)
+#define getwchar() fgetwc(stdin)
+#define putwchar(_c) fputwc((_c),stdout)
+#else
+  __CRT_INLINE wint_t __cdecl getwchar() {return (fgetwc(stdin)); }
+  __CRT_INLINE wint_t __cdecl putwchar(wchar_t _C) {return (fputwc(_C,stdout)); }
+#endif
+
+#define getwc(_stm) fgetwc(_stm)
+#define putwc(_c,_stm) fputwc(_c,_stm)
+#define _putwc_nolock(_c,_stm) _fputwc_nolock(_c,_stm)
+#define _getwc_nolock(_c) _fgetwc_nolock(_c)
+#endif
+
+#ifndef _WSTDLIB_DEFINED
+#define _WSTDLIB_DEFINED
+
+  _CRTIMP wchar_t *__cdecl _itow(int _Value,wchar_t *_Dest,int _Radix);
+  _CRTIMP wchar_t *__cdecl _ltow(long _Value,wchar_t *_Dest,int _Radix);
+  _CRTIMP wchar_t *__cdecl _ultow(unsigned long _Value,wchar_t *_Dest,int _Radix);
+  double __cdecl wcstod(const wchar_t *_Str,wchar_t **_EndPtr);
+  _CRTIMP double __cdecl _wcstod_l(const wchar_t *_Str,wchar_t **_EndPtr,_locale_t _Locale);
+  float __cdecl wcstof( const wchar_t *nptr, wchar_t **endptr);
+#if !defined __NO_ISOCEXT /* in libmingwex.a */
+  float __cdecl wcstof (const wchar_t * __restrict__, wchar_t ** __restrict__);
+  long double __cdecl wcstold (const wchar_t * __restrict__, wchar_t ** __restrict__);
+#endif /* __NO_ISOCEXT */
+  long __cdecl wcstol(const wchar_t *_Str,wchar_t **_EndPtr,int _Radix);
+  _CRTIMP long __cdecl _wcstol_l(const wchar_t *_Str,wchar_t **_EndPtr,int _Radix,_locale_t _Locale);
+  unsigned long __cdecl wcstoul(const wchar_t *_Str,wchar_t **_EndPtr,int _Radix);
+  _CRTIMP unsigned long __cdecl _wcstoul_l(const wchar_t *_Str,wchar_t **_EndPtr,int _Radix,_locale_t _Locale);
+  _CRTIMP wchar_t *__cdecl _wgetenv(const wchar_t *_VarName);
+#ifndef _CRT_WSYSTEM_DEFINED
+#define _CRT_WSYSTEM_DEFINED
+  _CRTIMP int __cdecl _wsystem(const wchar_t *_Command);
+#endif
+  _CRTIMP double __cdecl _wtof(const wchar_t *_Str);
+  _CRTIMP double __cdecl _wtof_l(const wchar_t *_Str,_locale_t _Locale);
+  _CRTIMP int __cdecl _wtoi(const wchar_t *_Str);
+  _CRTIMP int __cdecl _wtoi_l(const wchar_t *_Str,_locale_t _Locale);
+  _CRTIMP long __cdecl _wtol(const wchar_t *_Str);
+  _CRTIMP long __cdecl _wtol_l(const wchar_t *_Str,_locale_t _Locale);
+
+#if _INTEGRAL_MAX_BITS >= 64
+  _CRTIMP wchar_t *__cdecl _i64tow(__int64 _Val,wchar_t *_DstBuf,int _Radix);
+  _CRTIMP wchar_t *__cdecl _ui64tow(unsigned __int64 _Val,wchar_t *_DstBuf,int _Radix);
+  _CRTIMP __int64 __cdecl _wtoi64(const wchar_t *_Str);
+  _CRTIMP __int64 __cdecl _wtoi64_l(const wchar_t *_Str,_locale_t _Locale);
+  _CRTIMP __int64 __cdecl _wcstoi64(const wchar_t *_Str,wchar_t **_EndPtr,int _Radix);
+  _CRTIMP __int64 __cdecl _wcstoi64_l(const wchar_t *_Str,wchar_t **_EndPtr,int _Radix,_locale_t _Locale);
+  _CRTIMP unsigned __int64 __cdecl _wcstoui64(const wchar_t *_Str,wchar_t **_EndPtr,int _Radix);
+  _CRTIMP unsigned __int64 __cdecl _wcstoui64_l(const wchar_t *_Str,wchar_t **_EndPtr,int _Radix,_locale_t _Locale);
+#endif
+#endif
+
+#ifndef _POSIX_
+#ifndef _WSTDLIBP_DEFINED
+#define _WSTDLIBP_DEFINED
+  _CRTIMP wchar_t *__cdecl _wfullpath(wchar_t *_FullPath,const wchar_t *_Path,size_t _SizeInWords);
+  _CRTIMP void __cdecl _wmakepath(wchar_t *_ResultPath,const wchar_t *_Drive,const wchar_t *_Dir,const wchar_t *_Filename,const wchar_t *_Ext);
+#ifndef _CRT_WPERROR_DEFINED
+#define _CRT_WPERROR_DEFINED
+  _CRTIMP void __cdecl _wperror(const wchar_t *_ErrMsg);
+#endif
+  _CRTIMP int __cdecl _wputenv(const wchar_t *_EnvString);
+  _CRTIMP void __cdecl _wsearchenv(const wchar_t *_Filename,const wchar_t *_EnvVar,wchar_t *_ResultPath);
+  _CRTIMP void __cdecl _wsplitpath(const wchar_t *_FullPath,wchar_t *_Drive,wchar_
