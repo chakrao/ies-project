@@ -729,4 +729,96 @@ extern FILE (*_imp___iob)[];	/* A pointer to an array of FILE */
 #endif
   _CRTIMP int __cdecl _wputenv(const wchar_t *_EnvString);
   _CRTIMP void __cdecl _wsearchenv(const wchar_t *_Filename,const wchar_t *_EnvVar,wchar_t *_ResultPath);
-  _CRTIMP void __cdecl _wsplitpath(const wchar_t *_FullPath,wchar_t *_Drive,wchar_
+  _CRTIMP void __cdecl _wsplitpath(const wchar_t *_FullPath,wchar_t *_Drive,wchar_t *_Dir,wchar_t *_Filename,wchar_t *_Ext);
+#endif
+#endif
+
+#ifndef _WSTRING_DEFINED
+#define _WSTRING_DEFINED
+  _CRTIMP wchar_t *__cdecl _wcsdup(const wchar_t *_Str);
+  wchar_t *__cdecl wcscat(wchar_t *_Dest,const wchar_t *_Source);
+  _CONST_RETURN wchar_t *__cdecl wcschr(const wchar_t *_Str,wchar_t _Ch);
+  int __cdecl wcscmp(const wchar_t *_Str1,const wchar_t *_Str2);
+  wchar_t *__cdecl wcscpy(wchar_t *_Dest,const wchar_t *_Source);
+  size_t __cdecl wcscspn(const wchar_t *_Str,const wchar_t *_Control);
+  size_t __cdecl wcslen(const wchar_t *_Str);
+  size_t __cdecl wcsnlen(const wchar_t *_Src,size_t _MaxCount);
+  wchar_t *__cdecl wcsncat(wchar_t *_Dest,const wchar_t *_Source,size_t _Count);
+  int __cdecl wcsncmp(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
+  wchar_t *__cdecl wcsncpy(wchar_t *_Dest,const wchar_t *_Source,size_t _Count);
+  _CONST_RETURN wchar_t *__cdecl wcspbrk(const wchar_t *_Str,const wchar_t *_Control);
+  _CONST_RETURN wchar_t *__cdecl wcsrchr(const wchar_t *_Str,wchar_t _Ch);
+  size_t __cdecl wcsspn(const wchar_t *_Str,const wchar_t *_Control);
+  _CONST_RETURN wchar_t *__cdecl wcsstr(const wchar_t *_Str,const wchar_t *_SubStr);
+  wchar_t *__cdecl wcstok(wchar_t *_Str,const wchar_t *_Delim);
+  _CRTIMP wchar_t *__cdecl _wcserror(int _ErrNum);
+  _CRTIMP wchar_t *__cdecl __wcserror(const wchar_t *_Str);
+  _CRTIMP int __cdecl _wcsicmp(const wchar_t *_Str1,const wchar_t *_Str2);
+  _CRTIMP int __cdecl _wcsicmp_l(const wchar_t *_Str1,const wchar_t *_Str2,_locale_t _Locale);
+  _CRTIMP int __cdecl _wcsnicmp(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
+  _CRTIMP int __cdecl _wcsnicmp_l(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount,_locale_t _Locale);
+  _CRTIMP wchar_t *__cdecl _wcsnset(wchar_t *_Str,wchar_t _Val,size_t _MaxCount);
+  _CRTIMP wchar_t *__cdecl _wcsrev(wchar_t *_Str);
+  _CRTIMP wchar_t *__cdecl _wcsset(wchar_t *_Str,wchar_t _Val);
+  _CRTIMP wchar_t *__cdecl _wcslwr(wchar_t *_String);
+  _CRTIMP wchar_t *_wcslwr_l(wchar_t *_String,_locale_t _Locale);
+  _CRTIMP wchar_t *__cdecl _wcsupr(wchar_t *_String);
+  _CRTIMP wchar_t *_wcsupr_l(wchar_t *_String,_locale_t _Locale);
+  size_t __cdecl wcsxfrm(wchar_t *_Dst,const wchar_t *_Src,size_t _MaxCount);
+  _CRTIMP size_t __cdecl _wcsxfrm_l(wchar_t *_Dst,const wchar_t *_Src,size_t _MaxCount,_locale_t _Locale);
+  int __cdecl wcscoll(const wchar_t *_Str1,const wchar_t *_Str2);
+  _CRTIMP int __cdecl _wcscoll_l(const wchar_t *_Str1,const wchar_t *_Str2,_locale_t _Locale);
+  _CRTIMP int __cdecl _wcsicoll(const wchar_t *_Str1,const wchar_t *_Str2);
+  _CRTIMP int __cdecl _wcsicoll_l(const wchar_t *_Str1,const wchar_t *_Str2,_locale_t _Locale);
+  _CRTIMP int __cdecl _wcsncoll(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
+  _CRTIMP int __cdecl _wcsncoll_l(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount,_locale_t _Locale);
+  _CRTIMP int __cdecl _wcsnicoll(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
+  _CRTIMP int __cdecl _wcsnicoll_l(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount,_locale_t _Locale);
+
+#ifndef	NO_OLDNAMES
+  wchar_t *__cdecl wcsdup(const wchar_t *_Str);
+#define wcswcs wcsstr
+  int __cdecl wcsicmp(const wchar_t *_Str1,const wchar_t *_Str2);
+  int __cdecl wcsnicmp(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
+  wchar_t *__cdecl wcsnset(wchar_t *_Str,wchar_t _Val,size_t _MaxCount);
+  wchar_t *__cdecl wcsrev(wchar_t *_Str);
+  wchar_t *__cdecl wcsset(wchar_t *_Str,wchar_t _Val);
+  wchar_t *__cdecl wcslwr(wchar_t *_Str);
+  wchar_t *__cdecl wcsupr(wchar_t *_Str);
+  int __cdecl wcsicoll(const wchar_t *_Str1,const wchar_t *_Str2);
+#endif
+#endif
+
+#ifndef _TM_DEFINED
+#define _TM_DEFINED
+  struct tm {
+    int tm_sec;
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+  };
+#endif
+
+#ifndef _WTIME_DEFINED
+#define _WTIME_DEFINED
+
+  _CRTIMP wchar_t *__cdecl _wasctime(const struct tm *_Tm);
+  _CRTIMP wchar_t *__cdecl _wctime32(const __time32_t *_Time);
+  size_t __cdecl wcsftime(wchar_t *_Buf,size_t _SizeInWords,const wchar_t *_Format,const struct tm *_Tm);
+  _CRTIMP size_t __cdecl _wcsftime_l(wchar_t *_Buf,size_t _SizeInWords,const wchar_t *_Format,const struct tm *_Tm,_locale_t _Locale);
+  _CRTIMP wchar_t *__cdecl _wstrdate(wchar_t *_Buffer);
+  _CRTIMP wchar_t *__cdecl _wstrtime(wchar_t *_Buffer);
+#if _INTEGRAL_MAX_BITS >= 64
+  _CRTIMP wchar_t *__cdecl _wctime64(const __time64_t *_Time);
+#endif
+
+#if !defined (RC_INVOKED) && !defined (_INC_WTIME_INL)
+#define _INC_WTIME_INL
+#ifdef _USE_32BIT_TIME_T
+__CRT_INLINE wchar_t *__cdecl _wctime(const time_t *_Time) { return _wctime32(_Time); }
+#el
