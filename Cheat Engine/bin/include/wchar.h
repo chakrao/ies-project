@@ -821,4 +821,53 @@ extern FILE (*_imp___iob)[];	/* A pointer to an array of FILE */
 #define _INC_WTIME_INL
 #ifdef _USE_32BIT_TIME_T
 __CRT_INLINE wchar_t *__cdecl _wctime(const time_t *_Time) { return _wctime32(_Time); }
-#el
+#else
+__CRT_INLINE wchar_t *__cdecl _wctime(const time_t *_Time) { return _wctime64(_Time); }
+#endif
+#endif
+#endif
+
+  typedef int mbstate_t;
+  typedef wchar_t _Wint_t;
+
+  wint_t __cdecl btowc(int);
+  size_t __cdecl mbrlen(const char *_Ch,size_t _SizeInBytes,mbstate_t *_State);
+  size_t __cdecl mbrtowc(wchar_t *_DstCh,const char *_SrcCh,size_t _SizeInBytes,mbstate_t *_State);
+  size_t __cdecl mbsrtowcs(wchar_t *_Dest,const char **_PSrc,size_t _Count,mbstate_t *_State);
+  size_t __cdecl wcrtomb(char *_Dest,wchar_t _Source,mbstate_t *_State);
+  size_t __cdecl wcsrtombs(char *_Dest,const wchar_t **_PSource,size_t _Count,mbstate_t *_State);
+  int __cdecl wctob(wint_t _WCh);
+
+#ifndef __NO_ISOCEXT /* these need static lib libmingwex.a */
+  wchar_t *__cdecl wmemset(wchar_t *s, wchar_t c, size_t n);
+  _CONST_RETURN wchar_t *__cdecl wmemchr(const wchar_t *s, wchar_t c, size_t n);
+  int wmemcmp(const wchar_t *s1, const wchar_t *s2,size_t n);
+  wchar_t *__cdecl wmemcpy(wchar_t *s1,const wchar_t *s2,size_t n);
+  wchar_t *__cdecl wmemmove(wchar_t *s1, const wchar_t *s2, size_t n);
+  long long __cdecl wcstoll(const wchar_t *nptr,wchar_t **endptr, int base);
+  unsigned long long __cdecl wcstoull(const wchar_t *nptr,wchar_t **endptr, int base);
+#endif /* __NO_ISOCEXT */
+
+  void *__cdecl memmove(void *_Dst,const void *_Src,size_t _MaxCount);
+  void *__cdecl memcpy(void *_Dst,const void *_Src,size_t _MaxCount);
+  __CRT_INLINE int __cdecl fwide(FILE *_F,int _M) { (void)_F; return (_M); }
+  __CRT_INLINE int __cdecl mbsinit(const mbstate_t *_P) { return (!_P || *_P==0); }
+  __CRT_INLINE _CONST_RETURN wchar_t *__cdecl wmemchr(const wchar_t *_S,wchar_t _C,size_t _N) { for (;0<_N;++_S,--_N) if (*_S==_C) return (_CONST_RETURN wchar_t *)(_S); return (0); }
+  __CRT_INLINE int __cdecl wmemcmp(const wchar_t *_S1,const wchar_t *_S2,size_t _N) { for (; 0 < _N; ++_S1,++_S2,--_N) if (*_S1!=*_S2) return (*_S1 < *_S2 ? -1 : +1); return (0); }
+  __CRT_INLINE wchar_t *__cdecl wmemcpy(wchar_t *_S1,const wchar_t *_S2,size_t _N) { return (wchar_t *)memcpy(_S1,_S2,_N*sizeof(wchar_t)); }
+  __CRT_INLINE wchar_t *__cdecl wmemmove(wchar_t *_S1,const wchar_t *_S2,size_t _N) { return (wchar_t *)memmove(_S1,_S2,_N*sizeof(wchar_t)); }
+  __CRT_INLINE wchar_t *__cdecl wmemset(wchar_t *_S,wchar_t _C,size_t _N) {
+    wchar_t *_Su = _S;
+    for (;0<_N;++_Su,--_N) {
+      *_Su = _C;
+    }
+    return (_S);
+  }
+#ifdef __cplusplus
+}
+#endif
+
+#pragma pack(pop)
+
+#include <sec_api/wchar_s.h>
+#endif
