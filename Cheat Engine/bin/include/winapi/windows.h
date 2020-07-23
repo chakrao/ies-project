@@ -67,4 +67,61 @@
 #include <winbase.h>
 #include <wingdi.h>
 #include <winuser.h>
-//gr 
+//gr #include <winnls.h>
+#include <wincon.h>
+#include <winver.h>
+#include <winreg.h>
+//gr #include <winnetwk.h>
+
+#ifndef WIN32_LEAN_AND_MEAN
+#include <cderr.h>
+#include <dde.h>
+#include <ddeml.h>
+#include <dlgs.h>
+#include <lzexpand.h>
+#include <mmsystem.h>
+#include <nb30.h>
+#include <rpc.h>
+#include <shellapi.h>
+#include <winperf.h>
+#include <winsock.h>
+#ifndef NOCRYPT
+#include <wincrypt.h>
+#include <winefs.h>
+#include <winscard.h>
+#endif
+
+#ifndef NOUSER
+#ifndef NOGDI
+#include <winspool.h>
+#ifdef INC_OLE1
+#include <ole.h>
+#else
+#include <ole2.h>
+#endif
+#include <commdlg.h>
+#endif
+#endif
+#endif
+
+//gr #include <stralign.h>
+
+#ifdef INC_OLE2
+#include <ole2.h>
+#endif
+
+#ifndef NOSERVICE
+#include <winsvc.h>
+#endif
+
+#ifndef NOMCX
+#include <mcx.h>
+#endif
+
+#ifndef NOIME
+#include <imm.h>
+#endif
+
+#endif
+#endif
+#endif
