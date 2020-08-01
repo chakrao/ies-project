@@ -668,4 +668,108 @@ extern "C" {
   WINUSERAPI HKL WINAPI LoadKeyboardLayoutW(LPCWSTR pwszKLID,UINT Flags);
   WINUSERAPI HKL WINAPI ActivateKeyboardLayout(HKL hkl,UINT Flags);
   WINUSERAPI int WINAPI ToUnicodeEx(UINT wVirtKey,UINT wScanCode,CONST BYTE *lpKeyState,LPWSTR pwszBuff,int cchBuff,UINT wFlags,HKL dwhkl);
-  WINUSERA
+  WINUSERAPI WINBOOL WINAPI UnloadKeyboardLayout(HKL hkl);
+  WINUSERAPI WINBOOL WINAPI GetKeyboardLayoutNameA(LPSTR pwszKLID);
+  WINUSERAPI WINBOOL WINAPI GetKeyboardLayoutNameW(LPWSTR pwszKLID);
+  WINUSERAPI int WINAPI GetKeyboardLayoutList(int nBuff,HKL *lpList);
+  WINUSERAPI HKL WINAPI GetKeyboardLayout(DWORD idThread);
+
+  typedef struct tagMOUSEMOVEPOINT {
+    int x;
+    int y;
+    DWORD time;
+    ULONG_PTR dwExtraInfo;
+  } MOUSEMOVEPOINT,*PMOUSEMOVEPOINT,*LPMOUSEMOVEPOINT;
+
+#define GMMP_USE_DISPLAY_POINTS 1
+#define GMMP_USE_HIGH_RESOLUTION_POINTS 2
+
+  WINUSERAPI int WINAPI GetMouseMovePointsEx(UINT cbSize,LPMOUSEMOVEPOINT lppt,LPMOUSEMOVEPOINT lpptBuf,int nBufPoints,DWORD resolution);
+
+#ifndef NODESKTOP
+
+#define DESKTOP_READOBJECTS 0x0001L
+#define DESKTOP_CREATEWINDOW 0x0002L
+#define DESKTOP_CREATEMENU 0x0004L
+#define DESKTOP_HOOKCONTROL 0x0008L
+#define DESKTOP_JOURNALRECORD 0x0010L
+#define DESKTOP_JOURNALPLAYBACK 0x0020L
+#define DESKTOP_ENUMERATE 0x0040L
+#define DESKTOP_WRITEOBJECTS 0x0080L
+#define DESKTOP_SWITCHDESKTOP 0x0100L
+
+#define DF_ALLOWOTHERACCOUNTHOOK 0x0001L
+
+#ifdef _WINGDI_
+#ifndef NOGDI
+#ifdef UNICODE
+#define CreateDesktop CreateDesktopW
+#else
+#define CreateDesktop CreateDesktopA
+#endif
+
+  WINUSERAPI HDESK WINAPI CreateDesktopA(LPCSTR lpszDesktop,LPCSTR lpszDevice,LPDEVMODEA pDevmode,DWORD dwFlags,ACCESS_MASK dwDesiredAccess,LPSECURITY_ATTRIBUTES lpsa);
+  WINUSERAPI HDESK WINAPI CreateDesktopW(LPCWSTR lpszDesktop,LPCWSTR lpszDevice,LPDEVMODEW pDevmode,DWORD dwFlags,ACCESS_MASK dwDesiredAccess,LPSECURITY_ATTRIBUTES lpsa);
+#endif
+#endif
+
+#ifdef UNICODE
+#define OpenDesktop OpenDesktopW
+#define EnumDesktops EnumDesktopsW
+#else
+#define OpenDesktop OpenDesktopA
+#define EnumDesktops EnumDesktopsA
+#endif
+
+  WINUSERAPI HDESK WINAPI OpenDesktopA(LPCSTR lpszDesktop,DWORD dwFlags,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI HDESK WINAPI OpenDesktopW(LPCWSTR lpszDesktop,DWORD dwFlags,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI HDESK WINAPI OpenInputDesktop(DWORD dwFlags,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI WINBOOL WINAPI EnumDesktopsA(HWINSTA hwinsta,DESKTOPENUMPROCA lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI EnumDesktopsW(HWINSTA hwinsta,DESKTOPENUMPROCW lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI EnumDesktopWindows(HDESK hDesktop,WNDENUMPROC lpfn,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI SwitchDesktop(HDESK hDesktop);
+  WINUSERAPI WINBOOL WINAPI SetThreadDesktop(HDESK hDesktop);
+  WINUSERAPI WINBOOL WINAPI CloseDesktop(HDESK hDesktop);
+  WINUSERAPI HDESK WINAPI GetThreadDesktop(DWORD dwThreadId);
+#endif
+
+#ifndef NOWINDOWSTATION
+#define WINSTA_ENUMDESKTOPS 0x0001L
+#define WINSTA_READATTRIBUTES 0x0002L
+#define WINSTA_ACCESSCLIPBOARD 0x0004L
+#define WINSTA_CREATEDESKTOP 0x0008L
+#define WINSTA_WRITEATTRIBUTES 0x0010L
+#define WINSTA_ACCESSGLOBALATOMS 0x0020L
+#define WINSTA_EXITWINDOWS 0x0040L
+#define WINSTA_ENUMERATE 0x0100L
+#define WINSTA_READSCREEN 0x0200L
+#define WINSTA_ALL_ACCESS (WINSTA_ENUMDESKTOPS | WINSTA_READATTRIBUTES | WINSTA_ACCESSCLIPBOARD | WINSTA_CREATEDESKTOP | WINSTA_WRITEATTRIBUTES | WINSTA_ACCESSGLOBALATOMS | WINSTA_EXITWINDOWS | WINSTA_ENUMERATE | WINSTA_READSCREEN)
+
+#define CWF_CREATE_ONLY 0x0001L
+
+#define WSF_VISIBLE 0x0001L
+
+#ifdef UNICODE
+#define CreateWindowStation CreateWindowStationW
+#define OpenWindowStation OpenWindowStationW
+#define EnumWindowStations EnumWindowStationsW
+#else
+#define CreateWindowStation CreateWindowStationA
+#define OpenWindowStation OpenWindowStationA
+#define EnumWindowStations EnumWindowStationsA
+#endif
+
+  WINUSERAPI HWINSTA WINAPI CreateWindowStationA(LPCSTR lpwinsta,DWORD dwFlags,ACCESS_MASK dwDesiredAccess,LPSECURITY_ATTRIBUTES lpsa);
+  WINUSERAPI HWINSTA WINAPI CreateWindowStationW(LPCWSTR lpwinsta,DWORD dwFlags,ACCESS_MASK dwDesiredAccess,LPSECURITY_ATTRIBUTES lpsa);
+  WINUSERAPI HWINSTA WINAPI OpenWindowStationA(LPCSTR lpszWinSta,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI HWINSTA WINAPI OpenWindowStationW(LPCWSTR lpszWinSta,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI WINBOOL WINAPI EnumWindowStationsA(WINSTAENUMPROCA lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI EnumWindowStationsW(WINSTAENUMPROCW lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI CloseWindowStation(HWINSTA hWinSta);
+  WINUSERAPI WINBOOL WINAPI SetProcessWindowStation(HWINSTA hWinSta);
+  WINUSERAPI HWINSTA WINAPI GetProcessWindowStation(VOID);
+#endif
+
+#ifndef NOSECURITY
+  WINUSERAPI WINBOOL WINAPI SetUserObjectSecurity(HANDLE hObj,PSECURITY_INFORMATION pSIRequested,PSECURITY_DESCRIPTOR pSID);
+  WINUSERAPI WINBOOL WINAPI GetUserObjectSecurity(HANDLE hObj,PSECURITY_INFORMATION pSIReques
