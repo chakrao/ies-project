@@ -772,4 +772,183 @@ extern "C" {
 
 #ifndef NOSECURITY
   WINUSERAPI WINBOOL WINAPI SetUserObjectSecurity(HANDLE hObj,PSECURITY_INFORMATION pSIRequested,PSECURITY_DESCRIPTOR pSID);
-  WINUSERAPI WINBOOL WINAPI GetUserObjectSecurity(HANDLE hObj,PSECURITY_INFORMATION pSIReques
+  WINUSERAPI WINBOOL WINAPI GetUserObjectSecurity(HANDLE hObj,PSECURITY_INFORMATION pSIRequested,PSECURITY_DESCRIPTOR pSID,DWORD nLength,LPDWORD lpnLengthNeeded);
+
+#define UOI_FLAGS 1
+#define UOI_NAME 2
+#define UOI_TYPE 3
+#define UOI_USER_SID 4
+
+  typedef struct tagUSEROBJECTFLAGS {
+    WINBOOL fInherit;
+    WINBOOL fReserved;
+    DWORD dwFlags;
+  } USEROBJECTFLAGS,*PUSEROBJECTFLAGS;
+
+#ifdef UNICODE
+#define GetUserObjectInformation GetUserObjectInformationW
+#define SetUserObjectInformation SetUserObjectInformationW
+#else
+#define GetUserObjectInformation GetUserObjectInformationA
+#define SetUserObjectInformation SetUserObjectInformationA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetUserObjectInformationA(HANDLE hObj,int nIndex,PVOID pvInfo,DWORD nLength,LPDWORD lpnLengthNeeded);
+  WINUSERAPI WINBOOL WINAPI GetUserObjectInformationW(HANDLE hObj,int nIndex,PVOID pvInfo,DWORD nLength,LPDWORD lpnLengthNeeded);
+  WINUSERAPI WINBOOL WINAPI SetUserObjectInformationA(HANDLE hObj,int nIndex,PVOID pvInfo,DWORD nLength);
+  WINUSERAPI WINBOOL WINAPI SetUserObjectInformationW(HANDLE hObj,int nIndex,PVOID pvInfo,DWORD nLength);
+#endif
+
+  typedef struct tagWNDCLASSEXA {
+    UINT cbSize;
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCSTR lpszMenuName;
+    LPCSTR lpszClassName;
+    HICON hIconSm;
+  } WNDCLASSEXA,*PWNDCLASSEXA,*NPWNDCLASSEXA,*LPWNDCLASSEXA;
+
+  typedef struct tagWNDCLASSEXW {
+    UINT cbSize;
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCWSTR lpszMenuName;
+    LPCWSTR lpszClassName;
+
+    HICON hIconSm;
+  } WNDCLASSEXW,*PWNDCLASSEXW,*NPWNDCLASSEXW,*LPWNDCLASSEXW;
+
+#ifdef UNICODE
+  typedef WNDCLASSEXW WNDCLASSEX;
+  typedef PWNDCLASSEXW PWNDCLASSEX;
+  typedef NPWNDCLASSEXW NPWNDCLASSEX;
+  typedef LPWNDCLASSEXW LPWNDCLASSEX;
+#else
+  typedef WNDCLASSEXA WNDCLASSEX;
+  typedef PWNDCLASSEXA PWNDCLASSEX;
+  typedef NPWNDCLASSEXA NPWNDCLASSEX;
+  typedef LPWNDCLASSEXA LPWNDCLASSEX;
+#endif
+
+  typedef struct tagWNDCLASSA {
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCSTR lpszMenuName;
+    LPCSTR lpszClassName;
+  } WNDCLASSA,*PWNDCLASSA,*NPWNDCLASSA,*LPWNDCLASSA;
+
+  typedef struct tagWNDCLASSW {
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCWSTR lpszMenuName;
+    LPCWSTR lpszClassName;
+  } WNDCLASSW,*PWNDCLASSW,*NPWNDCLASSW,*LPWNDCLASSW;
+
+#ifdef UNICODE
+  typedef WNDCLASSW WNDCLASS;
+  typedef PWNDCLASSW PWNDCLASS;
+  typedef NPWNDCLASSW NPWNDCLASS;
+  typedef LPWNDCLASSW LPWNDCLASS;
+#else
+  typedef WNDCLASSA WNDCLASS;
+  typedef PWNDCLASSA PWNDCLASS;
+  typedef NPWNDCLASSA NPWNDCLASS;
+  typedef LPWNDCLASSA LPWNDCLASS;
+#endif
+
+  WINUSERAPI WINBOOL WINAPI IsHungAppWindow(HWND hwnd);
+  WINUSERAPI VOID WINAPI DisableProcessWindowsGhosting(VOID);
+
+#ifndef NOMSG
+  typedef struct tagMSG {
+    HWND hwnd;
+    UINT message;
+    WPARAM wParam;
+    LPARAM lParam;
+    DWORD time;
+    POINT pt;
+  } MSG,*PMSG,*NPMSG,*LPMSG;
+
+#define POINTSTOPOINT(pt,pts) { (pt).x = (LONG)(SHORT)LOWORD(*(LONG*)&pts); (pt).y = (LONG)(SHORT)HIWORD(*(LONG*)&pts); }
+
+#define POINTTOPOINTS(pt) (MAKELONG((short)((pt).x),(short)((pt).y)))
+#define MAKEWPARAM(l,h) ((WPARAM)(DWORD)MAKELONG(l,h))
+#define MAKELPARAM(l,h) ((LPARAM)(DWORD)MAKELONG(l,h))
+#define MAKELRESULT(l,h) ((LRESULT)(DWORD)MAKELONG(l,h))
+#endif
+
+#ifndef NOWINOFFSETS
+#define GWL_WNDPROC (-4)
+#define GWL_HINSTANCE (-6)
+#define GWL_HWNDPARENT (-8)
+#define GWL_STYLE (-16)
+#define GWL_EXSTYLE (-20)
+#define GWL_USERDATA (-21)
+#define GWL_ID (-12)
+
+#ifdef _WIN64
+#undef GWL_WNDPROC
+#undef GWL_HINSTANCE
+#undef GWL_HWNDPARENT
+#undef GWL_USERDATA
+#endif
+
+#define GWLP_WNDPROC (-4)
+#define GWLP_HINSTANCE (-6)
+#define GWLP_HWNDPARENT (-8)
+#define GWLP_USERDATA (-21)
+#define GWLP_ID (-12)
+
+#define GCL_MENUNAME (-8)
+#define GCL_HBRBACKGROUND (-10)
+#define GCL_HCURSOR (-12)
+#define GCL_HICON (-14)
+#define GCL_HMODULE (-16)
+#define GCL_CBWNDEXTRA (-18)
+#define GCL_CBCLSEXTRA (-20)
+#define GCL_WNDPROC (-24)
+#define GCL_STYLE (-26)
+#define GCW_ATOM (-32)
+#define GCL_HICONSM (-34)
+
+#ifdef _WIN64
+
+#undef GCL_MENUNAME
+#undef GCL_HBRBACKGROUND
+#undef GCL_HCURSOR
+#undef GCL_HICON
+#undef GCL_HMODULE
+#undef GCL_WNDPROC
+#undef GCL_HICONSM
+#endif
+
+#define GCLP_MENUNAME (-8)
+#define GCLP_HBRBACKGROUND (-10)
+#define GCLP_HCURSOR (-12)
+#define GCLP_HICON (-14)
+#define GCLP_HMODULE (-16)
+#define GC
