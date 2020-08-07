@@ -1683,4 +1683,179 @@ extern "C" {
     LPCWSTR lpszName;
     LPCWSTR lpszClass;
     DWORD dwExStyle;
-  } CREATESTRUCTW,*LPCREA
+  } CREATESTRUCTW,*LPCREATESTRUCTW;
+
+#ifdef UNICODE
+  typedef CREATESTRUCTW CREATESTRUCT;
+  typedef LPCREATESTRUCTW LPCREATESTRUCT;
+#else
+  typedef CREATESTRUCTA CREATESTRUCT;
+  typedef LPCREATESTRUCTA LPCREATESTRUCT;
+#endif
+
+  typedef struct tagWINDOWPLACEMENT {
+    UINT length;
+    UINT flags;
+    UINT showCmd;
+    POINT ptMinPosition;
+    POINT ptMaxPosition;
+    RECT rcNormalPosition;
+  } WINDOWPLACEMENT;
+  typedef WINDOWPLACEMENT *PWINDOWPLACEMENT,*LPWINDOWPLACEMENT;
+
+#define WPF_SETMINPOSITION 0x0001
+#define WPF_RESTORETOMAXIMIZED 0x0002
+#define WPF_ASYNCWINDOWPLACEMENT 0x0004
+
+  typedef struct tagNMHDR {
+    HWND hwndFrom;
+    UINT_PTR idFrom;
+    UINT code;
+  } NMHDR;
+
+  typedef NMHDR *LPNMHDR;
+
+  typedef struct tagSTYLESTRUCT {
+    DWORD styleOld;
+    DWORD styleNew;
+  } STYLESTRUCT,*LPSTYLESTRUCT;
+
+#define ODT_MENU 1
+#define ODT_LISTBOX 2
+#define ODT_COMBOBOX 3
+#define ODT_BUTTON 4
+#define ODT_STATIC 5
+
+#define ODA_DRAWENTIRE 0x0001
+#define ODA_SELECT 0x0002
+#define ODA_FOCUS 0x0004
+
+#define ODS_SELECTED 0x0001
+#define ODS_GRAYED 0x0002
+#define ODS_DISABLED 0x0004
+#define ODS_CHECKED 0x0008
+#define ODS_FOCUS 0x0010
+#define ODS_DEFAULT 0x0020
+#define ODS_COMBOBOXEDIT 0x1000
+#define ODS_HOTLIGHT 0x0040
+#define ODS_INACTIVE 0x0080
+#define ODS_NOACCEL 0x0100
+#define ODS_NOFOCUSRECT 0x0200
+
+  typedef struct tagMEASUREITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    UINT itemID;
+    UINT itemWidth;
+    UINT itemHeight;
+    ULONG_PTR itemData;
+  } MEASUREITEMSTRUCT,*PMEASUREITEMSTRUCT,*LPMEASUREITEMSTRUCT;
+
+  typedef struct tagDRAWITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    UINT itemID;
+    UINT itemAction;
+    UINT itemState;
+    HWND hwndItem;
+    HDC hDC;
+    RECT rcItem;
+    ULONG_PTR itemData;
+  } DRAWITEMSTRUCT,*PDRAWITEMSTRUCT,*LPDRAWITEMSTRUCT;
+
+  typedef struct tagDELETEITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    UINT itemID;
+    HWND hwndItem;
+    ULONG_PTR itemData;
+  } DELETEITEMSTRUCT,*PDELETEITEMSTRUCT,*LPDELETEITEMSTRUCT;
+
+  typedef struct tagCOMPAREITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    HWND hwndItem;
+    UINT itemID1;
+    ULONG_PTR itemData1;
+    UINT itemID2;
+    ULONG_PTR itemData2;
+    DWORD dwLocaleId;
+  } COMPAREITEMSTRUCT,*PCOMPAREITEMSTRUCT,*LPCOMPAREITEMSTRUCT;
+
+#ifndef NOMSG
+#ifdef UNICODE
+#define GetMessage GetMessageW
+#define DispatchMessage DispatchMessageW
+#define PeekMessage PeekMessageW
+#else
+#define GetMessage GetMessageA
+#define DispatchMessage DispatchMessageA
+#define PeekMessage PeekMessageA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax);
+  WINUSERAPI WINBOOL WINAPI GetMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax);
+  WINUSERAPI WINBOOL WINAPI TranslateMessage(CONST MSG *lpMsg);
+  WINUSERAPI LRESULT WINAPI DispatchMessageA(CONST MSG *lpMsg);
+  WINUSERAPI LRESULT WINAPI DispatchMessageW(CONST MSG *lpMsg);
+  WINUSERAPI WINBOOL WINAPI SetMessageQueue(int cMessagesMax);
+  WINUSERAPI WINBOOL WINAPI PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg);
+  WINUSERAPI WINBOOL WINAPI PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg);
+
+#define PM_NOREMOVE 0x0000
+#define PM_REMOVE 0x0001
+#define PM_NOYIELD 0x0002
+#define PM_QS_INPUT (QS_INPUT << 16)
+#define PM_QS_POSTMESSAGE ((QS_POSTMESSAGE | QS_HOTKEY | QS_TIMER) << 16)
+#define PM_QS_PAINT (QS_PAINT << 16)
+#define PM_QS_SENDMESSAGE (QS_SENDMESSAGE << 16)
+#endif
+
+  WINUSERAPI WINBOOL WINAPI RegisterHotKey(HWND hWnd,int id,UINT fsModifiers,UINT vk);
+  WINUSERAPI WINBOOL WINAPI UnregisterHotKey(HWND hWnd,int id);
+
+#define MOD_ALT 0x0001
+#define MOD_CONTROL 0x0002
+#define MOD_SHIFT 0x0004
+#define MOD_WIN 0x0008
+
+#define IDHOT_SNAPWINDOW (-1)
+#define IDHOT_SNAPDESKTOP (-2)
+
+#ifdef WIN_INTERNAL
+#ifndef LSTRING
+#define NOLSTRING
+#endif
+#ifndef LFILEIO
+#define NOLFILEIO
+#endif
+#endif
+
+#define ENDSESSION_LOGOFF 0x80000000
+
+#define EWX_LOGOFF 0
+#define EWX_SHUTDOWN 0x00000001
+#define EWX_REBOOT 0x00000002
+#define EWX_FORCE 0x00000004
+#define EWX_POWEROFF 0x00000008
+#define EWX_FORCEIFHUNG 0x00000010
+
+#define ExitWindows(dwReserved,Code) ExitWindowsEx(EWX_LOGOFF,0xFFFFFFFF)
+
+#ifdef UNICODE
+#define SendMessage SendMessageW
+#define SendMessageTimeout SendMessageTimeoutW
+#define SendNotifyMessage SendNotifyMessageW
+#define SendMessageCallback SendMessageCallbackW
+#else
+#define SendMessage SendMessageA
+#define SendMessageTimeout SendMessageTimeoutA
+#define SendNotifyMessage SendNotifyMessageA
+#define SendMessageCallback SendMessageCallbackA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI ExitWindowsEx(UINT uFlags,DWORD dwReason);
+  WINUSERAPI WINBOOL WINAPI SwapMouseButton(WINBOOL fSwap);
+  WINUSERAPI DWORD WINAPI GetMessagePos(VOID);
+  WINUSERAPI LONG WINAPI GetMessageTime(VOID);
+  WI
