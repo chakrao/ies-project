@@ -1858,4 +1858,103 @@ extern "C" {
   WINUSERAPI WINBOOL WINAPI SwapMouseButton(WINBOOL fSwap);
   WINUSERAPI DWORD WINAPI GetMessagePos(VOID);
   WINUSERAPI LONG WINAPI GetMessageTime(VOID);
-  WI
+  WINUSERAPI LPARAM WINAPI GetMessageExtraInfo(VOID);
+  WINUSERAPI WINBOOL WINAPI IsWow64Message(VOID);
+  WINUSERAPI LPARAM WINAPI SetMessageExtraInfo(LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI SendMessageA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI SendMessageW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI SendMessageTimeoutA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,UINT fuFlags,UINT uTimeout,PDWORD_PTR lpdwResult);
+  WINUSERAPI LRESULT WINAPI SendMessageTimeoutW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,UINT fuFlags,UINT uTimeout,PDWORD_PTR lpdwResult);
+  WINUSERAPI WINBOOL WINAPI SendNotifyMessageA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI SendNotifyMessageW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI SendMessageCallbackA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,SENDASYNCPROC lpResultCallBack,ULONG_PTR dwData);
+  WINUSERAPI WINBOOL WINAPI SendMessageCallbackW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,SENDASYNCPROC lpResultCallBack,ULONG_PTR dwData);
+
+  typedef struct {
+    UINT cbSize;
+    HDESK hdesk;
+    HWND hwnd;
+    LUID luid;
+  } BSMINFO,*PBSMINFO;
+
+#ifdef UNICODE
+#define BroadcastSystemMessageEx BroadcastSystemMessageExW
+#define BroadcastSystemMessage BroadcastSystemMessageW
+#else
+#define BroadcastSystemMessageEx BroadcastSystemMessageExA
+#define BroadcastSystemMessage BroadcastSystemMessageA
+#endif
+
+  WINUSERAPI long WINAPI BroadcastSystemMessageExA(DWORD flags,LPDWORD lpInfo,UINT Msg,WPARAM wParam,LPARAM lParam,PBSMINFO pbsmInfo);
+  WINUSERAPI long WINAPI BroadcastSystemMessageExW(DWORD flags,LPDWORD lpInfo,UINT Msg,WPARAM wParam,LPARAM lParam,PBSMINFO pbsmInfo);
+  WINUSERAPI long WINAPI BroadcastSystemMessageA(DWORD flags,LPDWORD lpInfo,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI long WINAPI BroadcastSystemMessageW(DWORD flags,LPDWORD lpInfo,UINT Msg,WPARAM wParam,LPARAM lParam);
+
+#define BSM_ALLCOMPONENTS 0x00000000
+#define BSM_VXDS 0x00000001
+#define BSM_NETDRIVER 0x00000002
+#define BSM_INSTALLABLEDRIVERS 0x00000004
+#define BSM_APPLICATIONS 0x00000008
+#define BSM_ALLDESKTOPS 0x00000010
+
+#define BSF_QUERY 0x00000001
+#define BSF_IGNORECURRENTTASK 0x00000002
+#define BSF_FLUSHDISK 0x00000004
+#define BSF_NOHANG 0x00000008
+#define BSF_POSTMESSAGE 0x00000010
+#define BSF_FORCEIFHUNG 0x00000020
+#define BSF_NOTIMEOUTIFNOTHUNG 0x00000040
+#define BSF_ALLOWSFW 0x00000080
+#define BSF_SENDNOTIFYMESSAGE 0x00000100
+#define BSF_RETURNHDESK 0x00000200
+#define BSF_LUID 0x00000400
+
+#define BROADCAST_QUERY_DENY 0x424D5144
+
+  typedef PVOID HDEVNOTIFY;
+  typedef HDEVNOTIFY *PHDEVNOTIFY;
+
+#define DEVICE_NOTIFY_WINDOW_HANDLE 0x00000000
+#define DEVICE_NOTIFY_SERVICE_HANDLE 0x00000001
+#define DEVICE_NOTIFY_ALL_INTERFACE_CLASSES 0x00000004
+
+#ifdef UNICODE
+#define RegisterDeviceNotification RegisterDeviceNotificationW
+#define PostMessage PostMessageW
+#define PostThreadMessage PostThreadMessageW
+#define PostAppMessage PostAppMessageW
+#define DefWindowProc DefWindowProcW
+#define CallWindowProc CallWindowProcW
+#define RegisterClass RegisterClassW
+#define UnregisterClass UnregisterClassW
+#define GetClassInfo GetClassInfoW
+#define RegisterClassEx RegisterClassExW
+#define GetClassInfoEx GetClassInfoExW
+#else
+#define RegisterDeviceNotification RegisterDeviceNotificationA
+#define PostMessage PostMessageA
+#define PostThreadMessage PostThreadMessageA
+#define PostAppMessage PostAppMessageA
+#define DefWindowProc DefWindowProcA
+#define CallWindowProc CallWindowProcA
+#define RegisterClass RegisterClassA
+#define UnregisterClass UnregisterClassA
+#define GetClassInfo GetClassInfoA
+#define RegisterClassEx RegisterClassExA
+#define GetClassInfoEx GetClassInfoExA
+#endif
+
+  WINUSERAPI HDEVNOTIFY WINAPI RegisterDeviceNotificationA(HANDLE hRecipient,LPVOID NotificationFilter,DWORD Flags);
+  WINUSERAPI HDEVNOTIFY WINAPI RegisterDeviceNotificationW(HANDLE hRecipient,LPVOID NotificationFilter,DWORD Flags);
+  WINUSERAPI WINBOOL WINAPI UnregisterDeviceNotification(HDEVNOTIFY Handle);
+  WINUSERAPI WINBOOL WINAPI PostMessageA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI PostMessageW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI PostThreadMessageA(DWORD idThread,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI PostThreadMessageW(DWORD idThread,UINT Msg,WPARAM wParam,LPARAM lParam);
+#define PostAppMessageA(idThread,wMsg,wParam,lParam) PostThreadMessageA((DWORD)idThread,wMsg,wParam,lParam)
+#define PostAppMessageW(idThread,wMsg,wParam,lParam) PostThreadMessageW((DWORD)idThread,wMsg,wParam,lParam)
+
+#define HWND_BROADCAST ((HWND)0xffff)
+#define HWND_MESSAGE ((HWND)-3)
+
+  WINUSERAPI WINBOOL WINAPI AttachTh
