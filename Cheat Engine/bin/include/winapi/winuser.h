@@ -2266,4 +2266,116 @@ extern "C" {
   WINUSERAPI HWND WINAPI SetClipboardViewer(HWND hWndNewViewer);
   WINUSERAPI HWND WINAPI GetClipboardViewer(VOID);
   WINUSERAPI WINBOOL WINAPI ChangeClipboardChain(HWND hWndRemove,HWND hWndNewNext);
-  WINUSERAPI HANDLE WINAPI SetClipboardData(UINT uFo
+  WINUSERAPI HANDLE WINAPI SetClipboardData(UINT uFormat,HANDLE hMem);
+  WINUSERAPI HANDLE WINAPI GetClipboardData(UINT uFormat);
+  WINUSERAPI UINT WINAPI RegisterClipboardFormatA(LPCSTR lpszFormat);
+  WINUSERAPI UINT WINAPI RegisterClipboardFormatW(LPCWSTR lpszFormat);
+  WINUSERAPI int WINAPI CountClipboardFormats(VOID);
+  WINUSERAPI UINT WINAPI EnumClipboardFormats(UINT format);
+  WINUSERAPI int WINAPI GetClipboardFormatNameA(UINT format,LPSTR lpszFormatName,int cchMaxCount);
+  WINUSERAPI int WINAPI GetClipboardFormatNameW(UINT format,LPWSTR lpszFormatName,int cchMaxCount);
+  WINUSERAPI WINBOOL WINAPI EmptyClipboard(VOID);
+  WINUSERAPI WINBOOL WINAPI IsClipboardFormatAvailable(UINT format);
+  WINUSERAPI int WINAPI GetPriorityClipboardFormat(UINT *paFormatPriorityList,int cFormats);
+  WINUSERAPI HWND WINAPI GetOpenClipboardWindow(VOID);
+#endif
+
+#ifdef UNICODE
+#define CharToOem CharToOemW
+#define OemToChar OemToCharW
+#define CharToOemBuff CharToOemBuffW
+#define OemToCharBuff OemToCharBuffW
+#define CharUpper CharUpperW
+#define CharUpperBuff CharUpperBuffW
+#define CharLower CharLowerW
+#define CharLowerBuff CharLowerBuffW
+#define CharNext CharNextW
+#define CharPrev CharPrevW
+#else
+#define CharToOem CharToOemA
+#define OemToChar OemToCharA
+#define CharToOemBuff CharToOemBuffA
+#define OemToCharBuff OemToCharBuffA
+#define CharUpper CharUpperA
+#define CharUpperBuff CharUpperBuffA
+#define CharLower CharLowerA
+#define CharLowerBuff CharLowerBuffA
+#define CharNext CharNextA
+#define CharPrev CharPrevA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI CharToOemA(LPCSTR lpszSrc,LPSTR lpszDst);
+  WINUSERAPI WINBOOL WINAPI CharToOemW(LPCWSTR lpszSrc,LPSTR lpszDst);
+  WINUSERAPI WINBOOL WINAPI OemToCharA(LPCSTR lpszSrc,LPSTR lpszDst);
+  WINUSERAPI WINBOOL WINAPI OemToCharW(LPCSTR lpszSrc,LPWSTR lpszDst);
+  WINUSERAPI WINBOOL WINAPI CharToOemBuffA(LPCSTR lpszSrc,LPSTR lpszDst,DWORD cchDstLength);
+  WINUSERAPI WINBOOL WINAPI CharToOemBuffW(LPCWSTR lpszSrc,LPSTR lpszDst,DWORD cchDstLength);
+  WINUSERAPI WINBOOL WINAPI OemToCharBuffA(LPCSTR lpszSrc,LPSTR lpszDst,DWORD cchDstLength);
+  WINUSERAPI WINBOOL WINAPI OemToCharBuffW(LPCSTR lpszSrc,LPWSTR lpszDst,DWORD cchDstLength);
+  WINUSERAPI LPSTR WINAPI CharUpperA(LPSTR lpsz);
+  WINUSERAPI LPWSTR WINAPI CharUpperW(LPWSTR lpsz);
+  WINUSERAPI DWORD WINAPI CharUpperBuffA(LPSTR lpsz,DWORD cchLength);
+  WINUSERAPI DWORD WINAPI CharUpperBuffW(LPWSTR lpsz,DWORD cchLength);
+  WINUSERAPI LPSTR WINAPI CharLowerA(LPSTR lpsz);
+  WINUSERAPI LPWSTR WINAPI CharLowerW(LPWSTR lpsz);
+  WINUSERAPI DWORD WINAPI CharLowerBuffA(LPSTR lpsz,DWORD cchLength);
+  WINUSERAPI DWORD WINAPI CharLowerBuffW(LPWSTR lpsz,DWORD cchLength);
+  WINUSERAPI LPSTR WINAPI CharNextA(LPCSTR lpsz);
+  WINUSERAPI LPWSTR WINAPI CharNextW(LPCWSTR lpsz);
+  WINUSERAPI LPSTR WINAPI CharPrevA(LPCSTR lpszStart,LPCSTR lpszCurrent);
+  WINUSERAPI LPWSTR WINAPI CharPrevW(LPCWSTR lpszStart,LPCWSTR lpszCurrent);
+  WINUSERAPI LPSTR WINAPI CharNextExA(WORD CodePage,LPCSTR lpCurrentChar,DWORD dwFlags);
+  WINUSERAPI LPSTR WINAPI CharPrevExA(WORD CodePage,LPCSTR lpStart,LPCSTR lpCurrentChar,DWORD dwFlags);
+
+#define AnsiToOem CharToOemA
+#define OemToAnsi OemToCharA
+#define AnsiToOemBuff CharToOemBuffA
+#define OemToAnsiBuff OemToCharBuffA
+#define AnsiUpper CharUpperA
+#define AnsiUpperBuff CharUpperBuffA
+#define AnsiLower CharLowerA
+#define AnsiLowerBuff CharLowerBuffA
+#define AnsiNext CharNextA
+#define AnsiPrev CharPrevA
+
+#ifndef NOLANGUAGE
+
+#ifdef UNICODE
+#define IsCharAlpha IsCharAlphaW
+#define IsCharAlphaNumeric IsCharAlphaNumericW
+#define IsCharUpper IsCharUpperW
+#define IsCharLower IsCharLowerW
+#else
+#define IsCharAlpha IsCharAlphaA
+#define IsCharAlphaNumeric IsCharAlphaNumericA
+#define IsCharUpper IsCharUpperA
+#define IsCharLower IsCharLowerA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI IsCharAlphaA(CHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharAlphaW(WCHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharAlphaNumericA(CHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharAlphaNumericW(WCHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharUpperA(CHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharUpperW(WCHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharLowerA(CHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharLowerW(WCHAR ch);
+#endif
+
+#ifdef UNICODE
+#define GetKeyNameText GetKeyNameTextW
+#define VkKeyScan VkKeyScanW
+#define VkKeyScanEx VkKeyScanExW
+#else
+#define GetKeyNameText GetKeyNameTextA
+#define VkKeyScan VkKeyScanA
+#define VkKeyScanEx VkKeyScanExA
+#endif
+
+  WINUSERAPI HWND WINAPI SetFocus(HWND hWnd);
+  WINUSERAPI HWND WINAPI GetActiveWindow(VOID);
+  WINUSERAPI HWND WINAPI GetFocus(VOID);
+  WINUSERAPI UINT WINAPI GetKBCodePage(VOID);
+  WINUSERAPI SHORT WINAPI GetKeyState(int nVirtKey);
+  WINUSERAPI SHORT WINAPI GetAsyncKeyState(int vKey);
+  WINUSERAPI WINBOOL WINAPI GetKeyboardState(PBYTE lpKeyState
