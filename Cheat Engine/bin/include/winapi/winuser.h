@@ -2378,4 +2378,136 @@ extern "C" {
   WINUSERAPI UINT WINAPI GetKBCodePage(VOID);
   WINUSERAPI SHORT WINAPI GetKeyState(int nVirtKey);
   WINUSERAPI SHORT WINAPI GetAsyncKeyState(int vKey);
-  WINUSERAPI WINBOOL WINAPI GetKeyboardState(PBYTE lpKeyState
+  WINUSERAPI WINBOOL WINAPI GetKeyboardState(PBYTE lpKeyState);
+  WINUSERAPI WINBOOL WINAPI SetKeyboardState(LPBYTE lpKeyState);
+  WINUSERAPI int WINAPI GetKeyNameTextA(LONG lParam,LPSTR lpString,int cchSize);
+  WINUSERAPI int WINAPI GetKeyNameTextW(LONG lParam,LPWSTR lpString,int cchSize);
+  WINUSERAPI int WINAPI GetKeyboardType(int nTypeFlag);
+  WINUSERAPI int WINAPI ToAscii(UINT uVirtKey,UINT uScanCode,CONST BYTE *lpKeyState,LPWORD lpChar,UINT uFlags);
+  WINUSERAPI int WINAPI ToAsciiEx(UINT uVirtKey,UINT uScanCode,CONST BYTE *lpKeyState,LPWORD lpChar,UINT uFlags,HKL dwhkl);
+  WINUSERAPI int WINAPI ToUnicode(UINT wVirtKey,UINT wScanCode,CONST BYTE *lpKeyState,LPWSTR pwszBuff,int cchBuff,UINT wFlags);
+  WINUSERAPI DWORD WINAPI OemKeyScan(WORD wOemChar);
+  WINUSERAPI SHORT WINAPI VkKeyScanA(CHAR ch);
+  WINUSERAPI SHORT WINAPI VkKeyScanW(WCHAR ch);
+  WINUSERAPI SHORT WINAPI VkKeyScanExA(CHAR ch,HKL dwhkl);
+  WINUSERAPI SHORT WINAPI VkKeyScanExW(WCHAR ch,HKL dwhkl);
+
+#define KEYEVENTF_EXTENDEDKEY 0x0001
+#define KEYEVENTF_KEYUP 0x0002
+#define KEYEVENTF_UNICODE 0x0004
+#define KEYEVENTF_SCANCODE 0x0008
+
+  WINUSERAPI VOID WINAPI keybd_event(BYTE bVk,BYTE bScan,DWORD dwFlags,ULONG_PTR dwExtraInfo);
+
+#define MOUSEEVENTF_MOVE 0x0001
+#define MOUSEEVENTF_LEFTDOWN 0x0002
+#define MOUSEEVENTF_LEFTUP 0x0004
+#define MOUSEEVENTF_RIGHTDOWN 0x0008
+#define MOUSEEVENTF_RIGHTUP 0x0010
+#define MOUSEEVENTF_MIDDLEDOWN 0x0020
+#define MOUSEEVENTF_MIDDLEUP 0x0040
+#define MOUSEEVENTF_XDOWN 0x0080
+#define MOUSEEVENTF_XUP 0x0100
+#define MOUSEEVENTF_WHEEL 0x0800
+#define MOUSEEVENTF_VIRTUALDESK 0x4000
+#define MOUSEEVENTF_ABSOLUTE 0x8000
+
+  WINUSERAPI VOID WINAPI mouse_event(DWORD dwFlags,DWORD dx,DWORD dy,DWORD dwData,ULONG_PTR dwExtraInfo);
+
+  typedef struct tagMOUSEINPUT {
+    LONG dx;
+    LONG dy;
+    DWORD mouseData;
+    DWORD dwFlags;
+    DWORD time;
+    ULONG_PTR dwExtraInfo;
+  } MOUSEINPUT,*PMOUSEINPUT,*LPMOUSEINPUT;
+
+  typedef struct tagKEYBDINPUT {
+    WORD wVk;
+    WORD wScan;
+    DWORD dwFlags;
+    DWORD time;
+    ULONG_PTR dwExtraInfo;
+  } KEYBDINPUT,*PKEYBDINPUT,*LPKEYBDINPUT;
+
+  typedef struct tagHARDWAREINPUT {
+    DWORD uMsg;
+    WORD wParamL;
+    WORD wParamH;
+  } HARDWAREINPUT,*PHARDWAREINPUT,*LPHARDWAREINPUT;
+
+#define INPUT_MOUSE 0
+#define INPUT_KEYBOARD 1
+#define INPUT_HARDWARE 2
+
+  typedef struct tagINPUT {
+    DWORD type;
+    union {
+      MOUSEINPUT mi;
+      KEYBDINPUT ki;
+      HARDWAREINPUT hi;
+    };
+  } INPUT,*PINPUT,*LPINPUT;
+
+  WINUSERAPI UINT WINAPI SendInput(UINT cInputs,LPINPUT pInputs,int cbSize);
+
+  typedef struct tagLASTINPUTINFO {
+    UINT cbSize;
+    DWORD dwTime;
+  } LASTINPUTINFO,*PLASTINPUTINFO;
+
+#ifdef UNICODE
+#define MapVirtualKey MapVirtualKeyW
+#define MapVirtualKeyEx MapVirtualKeyExW
+#else
+#define MapVirtualKey MapVirtualKeyA
+#define MapVirtualKeyEx MapVirtualKeyExA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetLastInputInfo(PLASTINPUTINFO plii);
+  WINUSERAPI UINT WINAPI MapVirtualKeyA(UINT uCode,UINT uMapType);
+  WINUSERAPI UINT WINAPI MapVirtualKeyW(UINT uCode,UINT uMapType);
+  WINUSERAPI UINT WINAPI MapVirtualKeyExA(UINT uCode,UINT uMapType,HKL dwhkl);
+  WINUSERAPI UINT WINAPI MapVirtualKeyExW(UINT uCode,UINT uMapType,HKL dwhkl);
+  WINUSERAPI WINBOOL WINAPI GetInputState(VOID);
+  WINUSERAPI DWORD WINAPI GetQueueStatus(UINT flags);
+  WINUSERAPI HWND WINAPI GetCapture(VOID);
+  WINUSERAPI HWND WINAPI SetCapture(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI ReleaseCapture(VOID);
+  WINUSERAPI DWORD WINAPI MsgWaitForMultipleObjects(DWORD nCount,CONST HANDLE *pHandles,WINBOOL fWaitAll,DWORD dwMilliseconds,DWORD dwWakeMask);
+  WINUSERAPI DWORD WINAPI MsgWaitForMultipleObjectsEx(DWORD nCount,CONST HANDLE *pHandles,DWORD dwMilliseconds,DWORD dwWakeMask,DWORD dwFlags);
+
+#define MWMO_WAITALL 0x0001
+#define MWMO_ALERTABLE 0x0002
+#define MWMO_INPUTAVAILABLE 0x0004
+
+#define QS_KEY 0x0001
+#define QS_MOUSEMOVE 0x0002
+#define QS_MOUSEBUTTON 0x0004
+#define QS_POSTMESSAGE 0x0008
+#define QS_TIMER 0x0010
+#define QS_PAINT 0x0020
+#define QS_SENDMESSAGE 0x0040
+#define QS_HOTKEY 0x0080
+#define QS_ALLPOSTMESSAGE 0x0100
+#define QS_RAWINPUT 0x0400
+#define QS_MOUSE (QS_MOUSEMOVE | QS_MOUSEBUTTON)
+#define QS_INPUT (QS_MOUSE | QS_KEY | QS_RAWINPUT)
+#define QS_ALLEVENTS (QS_INPUT | QS_POSTMESSAGE | QS_TIMER | QS_PAINT | QS_HOTKEY)
+#define QS_ALLINPUT (QS_INPUT | QS_POSTMESSAGE | QS_TIMER | QS_PAINT | QS_HOTKEY | QS_SENDMESSAGE)
+
+#define USER_TIMER_MAXIMUM 0x7FFFFFFF
+#define USER_TIMER_MINIMUM 0x0000000A
+
+#ifdef UNICODE
+#define LoadAccelerators LoadAcceleratorsW
+#define CreateAcceleratorTable CreateAcceleratorTableW
+#define CopyAcceleratorTable CopyAcceleratorTableW
+#else
+#define LoadAccelerators LoadAcceleratorsA
+#define CreateAcceleratorTable CreateAcceleratorTableA
+#define CopyAcceleratorTable CopyAcceleratorTableA
+#endif
+
+  WINUSERAPI UINT_PTR WINAPI SetTimer(HWND hWnd,UINT_PTR nIDEvent,UINT uE
