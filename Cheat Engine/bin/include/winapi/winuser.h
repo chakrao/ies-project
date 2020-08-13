@@ -2047,4 +2047,157 @@ extern "C" {
 #define ULW_EX_NORESIZE 0x00000008
 
   WINUSERAPI WINBOOL WINAPI ShowWindowAsync(HWND hWnd,int nCmdShow);
-  WIN
+  WINUSERAPI WINBOOL WINAPI FlashWindow(HWND hWnd,WINBOOL bInvert);
+
+  typedef struct {
+    UINT cbSize;
+    HWND hwnd;
+    DWORD dwFlags;
+    UINT uCount;
+    DWORD dwTimeout;
+  } FLASHWINFO,*PFLASHWINFO;
+
+  WINUSERAPI WINBOOL WINAPI FlashWindowEx(PFLASHWINFO pfwi);
+
+#define FLASHW_STOP 0
+#define FLASHW_CAPTION 0x00000001
+#define FLASHW_TRAY 0x00000002
+#define FLASHW_ALL (FLASHW_CAPTION | FLASHW_TRAY)
+#define FLASHW_TIMER 0x00000004
+#define FLASHW_TIMERNOFG 0x0000000C
+
+  WINUSERAPI WINBOOL WINAPI ShowOwnedPopups(HWND hWnd,WINBOOL fShow);
+  WINUSERAPI WINBOOL WINAPI OpenIcon(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI CloseWindow(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI MoveWindow(HWND hWnd,int X,int Y,int nWidth,int nHeight,WINBOOL bRepaint);
+  WINUSERAPI WINBOOL WINAPI SetWindowPos(HWND hWnd,HWND hWndInsertAfter,int X,int Y,int cx,int cy,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI GetWindowPlacement(HWND hWnd,WINDOWPLACEMENT *lpwndpl);
+  WINUSERAPI WINBOOL WINAPI SetWindowPlacement(HWND hWnd,CONST WINDOWPLACEMENT *lpwndpl);
+
+#ifndef NODEFERWINDOWPOS
+  WINUSERAPI HDWP WINAPI BeginDeferWindowPos(int nNumWindows);
+  WINUSERAPI HDWP WINAPI DeferWindowPos(HDWP hWinPosInfo,HWND hWnd,HWND hWndInsertAfter,int x,int y,int cx,int cy,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI EndDeferWindowPos(HDWP hWinPosInfo);
+#endif
+
+  WINUSERAPI WINBOOL WINAPI IsWindowVisible(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI IsIconic(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI AnyPopup(VOID);
+  WINUSERAPI WINBOOL WINAPI BringWindowToTop(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI IsZoomed(HWND hWnd);
+
+#define SWP_NOSIZE 0x0001
+#define SWP_NOMOVE 0x0002
+#define SWP_NOZORDER 0x0004
+#define SWP_NOREDRAW 0x0008
+#define SWP_NOACTIVATE 0x0010
+#define SWP_FRAMECHANGED 0x0020
+#define SWP_SHOWWINDOW 0x0040
+#define SWP_HIDEWINDOW 0x0080
+#define SWP_NOCOPYBITS 0x0100
+#define SWP_NOOWNERZORDER 0x0200
+#define SWP_NOSENDCHANGING 0x0400
+
+#define SWP_DRAWFRAME SWP_FRAMECHANGED
+#define SWP_NOREPOSITION SWP_NOOWNERZORDER
+#define SWP_DEFERERASE 0x2000
+#define SWP_ASYNCWINDOWPOS 0x4000
+
+#define HWND_TOP ((HWND)0)
+#define HWND_BOTTOM ((HWND)1)
+#define HWND_TOPMOST ((HWND)-1)
+#define HWND_NOTOPMOST ((HWND)-2)
+
+#ifndef NOCTLMGR
+
+#include <pshpack2.h>
+
+  typedef struct {
+    DWORD style;
+    DWORD dwExtendedStyle;
+    WORD cdit;
+    short x;
+    short y;
+    short cx;
+    short cy;
+  } DLGTEMPLATE;
+
+  typedef DLGTEMPLATE *LPDLGTEMPLATEA;
+  typedef DLGTEMPLATE *LPDLGTEMPLATEW;
+
+#ifdef UNICODE
+  typedef LPDLGTEMPLATEW LPDLGTEMPLATE;
+#else
+  typedef LPDLGTEMPLATEA LPDLGTEMPLATE;
+#endif
+
+  typedef CONST DLGTEMPLATE *LPCDLGTEMPLATEA;
+  typedef CONST DLGTEMPLATE *LPCDLGTEMPLATEW;
+
+#ifdef UNICODE
+  typedef LPCDLGTEMPLATEW LPCDLGTEMPLATE;
+#else
+  typedef LPCDLGTEMPLATEA LPCDLGTEMPLATE;
+#endif
+
+  typedef struct {
+    DWORD style;
+    DWORD dwExtendedStyle;
+    short x;
+    short y;
+    short cx;
+    short cy;
+    WORD id;
+  } DLGITEMTEMPLATE;
+
+  typedef DLGITEMTEMPLATE *PDLGITEMTEMPLATEA;
+  typedef DLGITEMTEMPLATE *PDLGITEMTEMPLATEW;
+
+#ifdef UNICODE
+  typedef PDLGITEMTEMPLATEW PDLGITEMTEMPLATE;
+#else
+  typedef PDLGITEMTEMPLATEA PDLGITEMTEMPLATE;
+#endif
+
+  typedef DLGITEMTEMPLATE *LPDLGITEMTEMPLATEA;
+  typedef DLGITEMTEMPLATE *LPDLGITEMTEMPLATEW;
+
+#ifdef UNICODE
+  typedef LPDLGITEMTEMPLATEW LPDLGITEMTEMPLATE;
+#else
+  typedef LPDLGITEMTEMPLATEA LPDLGITEMTEMPLATE;
+#endif
+
+#include <poppack.h>
+
+#ifdef UNICODE
+#define CreateDialogParam CreateDialogParamW
+#define CreateDialogIndirectParam CreateDialogIndirectParamW
+#define CreateDialog CreateDialogW
+#define CreateDialogIndirect CreateDialogIndirectW
+#define DialogBoxParam DialogBoxParamW
+#define DialogBoxIndirectParam DialogBoxIndirectParamW
+#define DialogBox DialogBoxW
+#define DialogBoxIndirect DialogBoxIndirectW
+#define SetDlgItemText SetDlgItemTextW
+#define GetDlgItemText GetDlgItemTextW
+#define SendDlgItemMessage SendDlgItemMessageW
+#define DefDlgProc DefDlgProcW
+#else
+#define CreateDialogParam CreateDialogParamA
+#define CreateDialogIndirectParam CreateDialogIndirectParamA
+#define CreateDialog CreateDialogA
+#define CreateDialogIndirect CreateDialogIndirectA
+#define DialogBoxParam DialogBoxParamA
+#define DialogBoxIndirectParam DialogBoxIndirectParamA
+#define DialogBox DialogBoxA
+#define DialogBoxIndirect DialogBoxIndirectA
+#define SetDlgItemText SetDlgItemTextA
+#define GetDlgItemText GetDlgItemTextA
+#define SendDlgItemMessage SendDlgItemMessageA
+#define DefDlgProc DefDlgProcA
+#endif
+
+  WINUSERAPI HWND WINAPI CreateDialogParamA(HINSTANCE hInstance,LPCSTR lpTemplateName,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+  WINUSERAPI HWND WINAPI CreateDialogParamW(HINSTANCE hInstance,LPCWSTR lpTemplateName,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+  WINUSERAPI HWND WINA
