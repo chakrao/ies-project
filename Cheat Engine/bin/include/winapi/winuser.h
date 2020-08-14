@@ -2787,4 +2787,156 @@ extern "C" {
     UINT wID;
     HMENU hSubMenu;
     HBITMAP hbmpChecked;
-    HBITMAP hb
+    HBITMAP hbmpUnchecked;
+    ULONG_PTR dwItemData;
+    LPSTR dwTypeData;
+    UINT cch;
+    HBITMAP hbmpItem;
+  } MENUITEMINFOA,*LPMENUITEMINFOA;
+
+  typedef struct tagMENUITEMINFOW {
+    UINT cbSize;
+    UINT fMask;
+    UINT fType;
+    UINT fState;
+    UINT wID;
+    HMENU hSubMenu;
+    HBITMAP hbmpChecked;
+    HBITMAP hbmpUnchecked;
+    ULONG_PTR dwItemData;
+    LPWSTR dwTypeData;
+    UINT cch;
+    HBITMAP hbmpItem;
+  } MENUITEMINFOW,*LPMENUITEMINFOW;
+
+#ifdef UNICODE
+  typedef MENUITEMINFOW MENUITEMINFO;
+  typedef LPMENUITEMINFOW LPMENUITEMINFO;
+#else
+  typedef MENUITEMINFOA MENUITEMINFO;
+  typedef LPMENUITEMINFOA LPMENUITEMINFO;
+#endif
+  typedef MENUITEMINFOA CONST *LPCMENUITEMINFOA;
+  typedef MENUITEMINFOW CONST *LPCMENUITEMINFOW;
+#ifdef UNICODE
+  typedef LPCMENUITEMINFOW LPCMENUITEMINFO;
+#else
+  typedef LPCMENUITEMINFOA LPCMENUITEMINFO;
+#endif
+
+#ifdef UNICODE
+#define InsertMenuItem InsertMenuItemW
+#define GetMenuItemInfo GetMenuItemInfoW
+#define SetMenuItemInfo SetMenuItemInfoW
+#else
+#define InsertMenuItem InsertMenuItemA
+#define GetMenuItemInfo GetMenuItemInfoA
+#define SetMenuItemInfo SetMenuItemInfoA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI InsertMenuItemA(HMENU hmenu,UINT item,WINBOOL fByPosition,LPCMENUITEMINFOA lpmi);
+  WINUSERAPI WINBOOL WINAPI InsertMenuItemW(HMENU hmenu,UINT item,WINBOOL fByPosition,LPCMENUITEMINFOW lpmi);
+  WINUSERAPI WINBOOL WINAPI GetMenuItemInfoA(HMENU hmenu,UINT item,WINBOOL fByPosition,LPMENUITEMINFOA lpmii);
+  WINUSERAPI WINBOOL WINAPI GetMenuItemInfoW(HMENU hmenu,UINT item,WINBOOL fByPosition,LPMENUITEMINFOW lpmii);
+  WINUSERAPI WINBOOL WINAPI SetMenuItemInfoA(HMENU hmenu,UINT item,WINBOOL fByPositon,LPCMENUITEMINFOA lpmii);
+  WINUSERAPI WINBOOL WINAPI SetMenuItemInfoW(HMENU hmenu,UINT item,WINBOOL fByPositon,LPCMENUITEMINFOW lpmii);
+
+#define GMDI_USEDISABLED 0x0001L
+#define GMDI_GOINTOPOPUPS 0x0002L
+
+  WINUSERAPI UINT WINAPI GetMenuDefaultItem(HMENU hMenu,UINT fByPos,UINT gmdiFlags);
+  WINUSERAPI WINBOOL WINAPI SetMenuDefaultItem(HMENU hMenu,UINT uItem,UINT fByPos);
+  WINUSERAPI WINBOOL WINAPI GetMenuItemRect(HWND hWnd,HMENU hMenu,UINT uItem,LPRECT lprcItem);
+  WINUSERAPI int WINAPI MenuItemFromPoint(HWND hWnd,HMENU hMenu,POINT ptScreen);
+
+#define TPM_LEFTBUTTON 0x0000L
+#define TPM_RIGHTBUTTON 0x0002L
+#define TPM_LEFTALIGN 0x0000L
+#define TPM_CENTERALIGN 0x0004L
+#define TPM_RIGHTALIGN 0x0008L
+#define TPM_TOPALIGN 0x0000L
+#define TPM_VCENTERALIGN 0x0010L
+#define TPM_BOTTOMALIGN 0x0020L
+
+#define TPM_HORIZONTAL 0x0000L
+#define TPM_VERTICAL 0x0040L
+#define TPM_NONOTIFY 0x0080L
+#define TPM_RETURNCMD 0x0100L
+#define TPM_RECURSE 0x0001L
+#define TPM_HORPOSANIMATION 0x0400L
+#define TPM_HORNEGANIMATION 0x0800L
+#define TPM_VERPOSANIMATION 0x1000L
+#define TPM_VERNEGANIMATION 0x2000L
+#define TPM_NOANIMATION 0x4000L
+#define TPM_LAYOUTRTL 0x8000L
+#endif
+
+  typedef struct tagDROPSTRUCT {
+    HWND hwndSource;
+    HWND hwndSink;
+    DWORD wFmt;
+    ULONG_PTR dwData;
+    POINT ptDrop;
+    DWORD dwControlData;
+  } DROPSTRUCT,*PDROPSTRUCT,*LPDROPSTRUCT;
+
+#define DOF_EXECUTABLE 0x8001
+#define DOF_DOCUMENT 0x8002
+#define DOF_DIRECTORY 0x8003
+#define DOF_MULTIPLE 0x8004
+#define DOF_PROGMAN 0x0001
+#define DOF_SHELLDATA 0x0002
+
+#define DO_DROPFILE 0x454C4946L
+#define DO_PRINTFILE 0x544E5250L
+
+  WINUSERAPI DWORD WINAPI DragObject(HWND hwndParent,HWND hwndFrom,UINT fmt,ULONG_PTR data,HCURSOR hcur);
+  WINUSERAPI WINBOOL WINAPI DragDetect(HWND hwnd,POINT pt);
+  WINUSERAPI WINBOOL WINAPI DrawIcon(HDC hDC,int X,int Y,HICON hIcon);
+
+#ifndef NODRAWTEXT
+
+#define DT_TOP 0x00000000
+#define DT_LEFT 0x00000000
+#define DT_CENTER 0x00000001
+#define DT_RIGHT 0x00000002
+#define DT_VCENTER 0x00000004
+#define DT_BOTTOM 0x00000008
+#define DT_WORDBREAK 0x00000010
+#define DT_SINGLELINE 0x00000020
+#define DT_EXPANDTABS 0x00000040
+#define DT_TABSTOP 0x00000080
+#define DT_NOCLIP 0x00000100
+#define DT_EXTERNALLEADING 0x00000200
+#define DT_CALCRECT 0x00000400
+#define DT_NOPREFIX 0x00000800
+#define DT_INTERNAL 0x00001000
+
+#define DT_EDITCONTROL 0x00002000
+#define DT_PATH_ELLIPSIS 0x00004000
+#define DT_END_ELLIPSIS 0x00008000
+#define DT_MODIFYSTRING 0x00010000
+#define DT_RTLREADING 0x00020000
+#define DT_WORD_ELLIPSIS 0x00040000
+#define DT_NOFULLWIDTHCHARBREAK 0x00080000
+#define DT_HIDEPREFIX 0x00100000
+#define DT_PREFIXONLY 0x00200000
+
+  typedef struct tagDRAWTEXTPARAMS {
+    UINT cbSize;
+    int iTabLength;
+    int iLeftMargin;
+    int iRightMargin;
+    UINT uiLengthDrawn;
+  } DRAWTEXTPARAMS,*LPDRAWTEXTPARAMS;
+
+#ifdef UNICODE
+#define DrawText DrawTextW
+#define DrawTextEx DrawTextExW
+#else
+#define DrawText DrawTextA
+#define DrawTextEx DrawTextExA
+#endif
+
+  WINUSERAPI int WINAPI DrawTextA(HDC hdc,LPCSTR lpchText,int cchText,LPRECT lprc,UINT format);
+  WINUSERAPI int WINAPI DrawTextW(HDC hd
