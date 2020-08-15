@@ -2939,4 +2939,107 @@ extern "C" {
 #endif
 
   WINUSERAPI int WINAPI DrawTextA(HDC hdc,LPCSTR lpchText,int cchText,LPRECT lprc,UINT format);
-  WINUSERAPI int WINAPI DrawTextW(HDC hd
+  WINUSERAPI int WINAPI DrawTextW(HDC hdc,LPCWSTR lpchText,int cchText,LPRECT lprc,UINT format);
+  WINUSERAPI int WINAPI DrawTextExA(HDC hdc,LPSTR lpchText,int cchText,LPRECT lprc,UINT format,LPDRAWTEXTPARAMS lpdtp);
+  WINUSERAPI int WINAPI DrawTextExW(HDC hdc,LPWSTR lpchText,int cchText,LPRECT lprc,UINT format,LPDRAWTEXTPARAMS lpdtp);
+#endif
+
+#ifdef UNICODE
+#define GrayString GrayStringW
+#define DrawState DrawStateW
+#define TabbedTextOut TabbedTextOutW
+#define GetTabbedTextExtent GetTabbedTextExtentW
+#else
+#define GrayString GrayStringA
+#define DrawState DrawStateA
+#define TabbedTextOut TabbedTextOutA
+#define GetTabbedTextExtent GetTabbedTextExtentA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GrayStringA(HDC hDC,HBRUSH hBrush,GRAYSTRINGPROC lpOutputFunc,LPARAM lpData,int nCount,int X,int Y,int nWidth,int nHeight);
+  WINUSERAPI WINBOOL WINAPI GrayStringW(HDC hDC,HBRUSH hBrush,GRAYSTRINGPROC lpOutputFunc,LPARAM lpData,int nCount,int X,int Y,int nWidth,int nHeight);
+
+#define DST_COMPLEX 0x0000
+#define DST_TEXT 0x0001
+#define DST_PREFIXTEXT 0x0002
+#define DST_ICON 0x0003
+#define DST_BITMAP 0x0004
+
+#define DSS_NORMAL 0x0000
+#define DSS_UNION 0x0010
+#define DSS_DISABLED 0x0020
+#define DSS_MONO 0x0080
+#define DSS_HIDEPREFIX 0x0200
+#define DSS_PREFIXONLY 0x0400
+#define DSS_RIGHT 0x8000
+
+  WINUSERAPI WINBOOL WINAPI DrawStateA(HDC hdc,HBRUSH hbrFore,DRAWSTATEPROC qfnCallBack,LPARAM lData,WPARAM wData,int x,int y,int cx,int cy,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI DrawStateW(HDC hdc,HBRUSH hbrFore,DRAWSTATEPROC qfnCallBack,LPARAM lData,WPARAM wData,int x,int y,int cx,int cy,UINT uFlags);
+  WINUSERAPI LONG WINAPI TabbedTextOutA(HDC hdc,int x,int y,LPCSTR lpString,int chCount,int nTabPositions,CONST INT *lpnTabStopPositions,int nTabOrigin);
+  WINUSERAPI LONG WINAPI TabbedTextOutW(HDC hdc,int x,int y,LPCWSTR lpString,int chCount,int nTabPositions,CONST INT *lpnTabStopPositions,int nTabOrigin);
+  WINUSERAPI DWORD WINAPI GetTabbedTextExtentA(HDC hdc,LPCSTR lpString,int chCount,int nTabPositions,CONST INT *lpnTabStopPositions);
+  WINUSERAPI DWORD WINAPI GetTabbedTextExtentW(HDC hdc,LPCWSTR lpString,int chCount,int nTabPositions,CONST INT *lpnTabStopPositions);
+  WINUSERAPI WINBOOL WINAPI UpdateWindow(HWND hWnd);
+  WINUSERAPI HWND WINAPI SetActiveWindow(HWND hWnd);
+  WINUSERAPI HWND WINAPI GetForegroundWindow(VOID);
+  WINUSERAPI WINBOOL WINAPI PaintDesktop(HDC hdc);
+  WINUSERAPI VOID WINAPI SwitchToThisWindow(HWND hwnd,WINBOOL fUnknown);
+  WINUSERAPI WINBOOL WINAPI SetForegroundWindow(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI AllowSetForegroundWindow(DWORD dwProcessId);
+
+#define ASFW_ANY ((DWORD)-1)
+
+  WINUSERAPI WINBOOL WINAPI LockSetForegroundWindow(UINT uLockCode);
+
+#define LSFW_LOCK 1
+#define LSFW_UNLOCK 2
+
+  WINUSERAPI HWND WINAPI WindowFromDC(HDC hDC);
+  WINUSERAPI HDC WINAPI GetDC(HWND hWnd);
+  WINUSERAPI HDC WINAPI GetDCEx(HWND hWnd,HRGN hrgnClip,DWORD flags);
+
+#define DCX_WINDOW 0x00000001L
+#define DCX_CACHE 0x00000002L
+#define DCX_NORESETATTRS 0x00000004L
+#define DCX_CLIPCHILDREN 0x00000008L
+#define DCX_CLIPSIBLINGS 0x00000010L
+#define DCX_PARENTCLIP 0x00000020L
+#define DCX_EXCLUDERGN 0x00000040L
+#define DCX_INTERSECTRGN 0x00000080L
+#define DCX_EXCLUDEUPDATE 0x00000100L
+#define DCX_INTERSECTUPDATE 0x00000200L
+#define DCX_LOCKWINDOWUPDATE 0x00000400L
+
+#define DCX_VALIDATE 0x00200000L
+
+  WINUSERAPI HDC WINAPI GetWindowDC(HWND hWnd);
+  WINUSERAPI int WINAPI ReleaseDC(HWND hWnd,HDC hDC);
+  WINUSERAPI HDC WINAPI BeginPaint(HWND hWnd,LPPAINTSTRUCT lpPaint);
+  WINUSERAPI WINBOOL WINAPI EndPaint(HWND hWnd,CONST PAINTSTRUCT *lpPaint);
+  WINUSERAPI WINBOOL WINAPI GetUpdateRect(HWND hWnd,LPRECT lpRect,WINBOOL bErase);
+  WINUSERAPI int WINAPI GetUpdateRgn(HWND hWnd,HRGN hRgn,WINBOOL bErase);
+  WINUSERAPI int WINAPI SetWindowRgn(HWND hWnd,HRGN hRgn,WINBOOL bRedraw);
+  WINUSERAPI int WINAPI GetWindowRgn(HWND hWnd,HRGN hRgn);
+  WINUSERAPI int WINAPI GetWindowRgnBox(HWND hWnd,LPRECT lprc);
+  WINUSERAPI int WINAPI ExcludeUpdateRgn(HDC hDC,HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI InvalidateRect(HWND hWnd,CONST RECT *lpRect,WINBOOL bErase);
+  WINUSERAPI WINBOOL WINAPI ValidateRect(HWND hWnd,CONST RECT *lpRect);
+  WINUSERAPI WINBOOL WINAPI InvalidateRgn(HWND hWnd,HRGN hRgn,WINBOOL bErase);
+  WINUSERAPI WINBOOL WINAPI ValidateRgn(HWND hWnd,HRGN hRgn);
+  WINUSERAPI WINBOOL WINAPI RedrawWindow(HWND hWnd,CONST RECT *lprcUpdate,HRGN hrgnUpdate,UINT flags);
+
+#define RDW_INVALIDATE 0x0001
+#define RDW_INTERNALPAINT 0x0002
+#define RDW_ERASE 0x0004
+
+#define RDW_VALIDATE 0x0008
+#define RDW_NOINTERNALPAINT 0x0010
+#define RDW_NOERASE 0x0020
+
+#define RDW_NOCHILDREN 0x0040
+#define RDW_ALLCHILDREN 0x0080
+
+#define RDW_UPDATENOW 0x0100
+#define RDW_ERASENOW 0x0200
+
+#define RDW_
