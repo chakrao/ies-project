@@ -3042,4 +3042,120 @@ extern "C" {
 #define RDW_UPDATENOW 0x0100
 #define RDW_ERASENOW 0x0200
 
-#define RDW_
+#define RDW_FRAME 0x0400
+#define RDW_NOFRAME 0x0800
+
+  WINUSERAPI WINBOOL WINAPI LockWindowUpdate(HWND hWndLock);
+  WINUSERAPI WINBOOL WINAPI ScrollWindow(HWND hWnd,int XAmount,int YAmount,CONST RECT *lpRect,CONST RECT *lpClipRect);
+  WINUSERAPI WINBOOL WINAPI ScrollDC(HDC hDC,int dx,int dy,CONST RECT *lprcScroll,CONST RECT *lprcClip,HRGN hrgnUpdate,LPRECT lprcUpdate);
+  WINUSERAPI int WINAPI ScrollWindowEx(HWND hWnd,int dx,int dy,CONST RECT *prcScroll,CONST RECT *prcClip,HRGN hrgnUpdate,LPRECT prcUpdate,UINT flags);
+
+#define SW_SCROLLCHILDREN 0x0001
+#define SW_INVALIDATE 0x0002
+#define SW_ERASE 0x0004
+#define SW_SMOOTHSCROLL 0x0010
+
+#ifndef NOSCROLL
+  WINUSERAPI int WINAPI SetScrollPos(HWND hWnd,int nBar,int nPos,WINBOOL bRedraw);
+  WINUSERAPI int WINAPI GetScrollPos(HWND hWnd,int nBar);
+  WINUSERAPI WINBOOL WINAPI SetScrollRange(HWND hWnd,int nBar,int nMinPos,int nMaxPos,WINBOOL bRedraw);
+  WINUSERAPI WINBOOL WINAPI GetScrollRange(HWND hWnd,int nBar,LPINT lpMinPos,LPINT lpMaxPos);
+  WINUSERAPI WINBOOL WINAPI ShowScrollBar(HWND hWnd,int wBar,WINBOOL bShow);
+  WINUSERAPI WINBOOL WINAPI EnableScrollBar(HWND hWnd,UINT wSBflags,UINT wArrows);
+
+#define ESB_ENABLE_BOTH 0x0000
+#define ESB_DISABLE_BOTH 0x0003
+
+#define ESB_DISABLE_LEFT 0x0001
+#define ESB_DISABLE_RIGHT 0x0002
+
+#define ESB_DISABLE_UP 0x0001
+#define ESB_DISABLE_DOWN 0x0002
+
+#define ESB_DISABLE_LTUP ESB_DISABLE_LEFT
+#define ESB_DISABLE_RTDN ESB_DISABLE_RIGHT
+#endif
+
+#ifdef UNICODE
+#define SetProp SetPropW
+#define GetProp GetPropW
+#define RemoveProp RemovePropW
+#define EnumPropsEx EnumPropsExW
+#define EnumProps EnumPropsW
+#define SetWindowText SetWindowTextW
+#define GetWindowText GetWindowTextW
+#define GetWindowTextLength GetWindowTextLengthW
+#else
+#define SetProp SetPropA
+#define GetProp GetPropA
+#define RemoveProp RemovePropA
+#define EnumPropsEx EnumPropsExA
+#define EnumProps EnumPropsA
+#define SetWindowText SetWindowTextA
+#define GetWindowText GetWindowTextA
+#define GetWindowTextLength GetWindowTextLengthA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI SetPropA(HWND hWnd,LPCSTR lpString,HANDLE hData);
+  WINUSERAPI WINBOOL WINAPI SetPropW(HWND hWnd,LPCWSTR lpString,HANDLE hData);
+  WINUSERAPI HANDLE WINAPI GetPropA(HWND hWnd,LPCSTR lpString);
+  WINUSERAPI HANDLE WINAPI GetPropW(HWND hWnd,LPCWSTR lpString);
+  WINUSERAPI HANDLE WINAPI RemovePropA(HWND hWnd,LPCSTR lpString);
+  WINUSERAPI HANDLE WINAPI RemovePropW(HWND hWnd,LPCWSTR lpString);
+  WINUSERAPI int WINAPI EnumPropsExA(HWND hWnd,PROPENUMPROCEXA lpEnumFunc,LPARAM lParam);
+  WINUSERAPI int WINAPI EnumPropsExW(HWND hWnd,PROPENUMPROCEXW lpEnumFunc,LPARAM lParam);
+  WINUSERAPI int WINAPI EnumPropsA(HWND hWnd,PROPENUMPROCA lpEnumFunc);
+  WINUSERAPI int WINAPI EnumPropsW(HWND hWnd,PROPENUMPROCW lpEnumFunc);
+  WINUSERAPI WINBOOL WINAPI SetWindowTextA(HWND hWnd,LPCSTR lpString);
+  WINUSERAPI WINBOOL WINAPI SetWindowTextW(HWND hWnd,LPCWSTR lpString);
+  WINUSERAPI int WINAPI GetWindowTextA(HWND hWnd,LPSTR lpString,int nMaxCount);
+  WINUSERAPI int WINAPI GetWindowTextW(HWND hWnd,LPWSTR lpString,int nMaxCount);
+  WINUSERAPI int WINAPI GetWindowTextLengthA(HWND hWnd);
+  WINUSERAPI int WINAPI GetWindowTextLengthW(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI GetClientRect(HWND hWnd,LPRECT lpRect);
+  WINUSERAPI WINBOOL WINAPI GetWindowRect(HWND hWnd,LPRECT lpRect);
+  WINUSERAPI WINBOOL WINAPI AdjustWindowRect(LPRECT lpRect,DWORD dwStyle,WINBOOL bMenu);
+  WINUSERAPI WINBOOL WINAPI AdjustWindowRectEx(LPRECT lpRect,DWORD dwStyle,WINBOOL bMenu,DWORD dwExStyle);
+
+#define HELPINFO_WINDOW 0x0001
+#define HELPINFO_MENUITEM 0x0002
+
+  typedef struct tagHELPINFO {
+    UINT cbSize;
+    int iContextType;
+    int iCtrlId;
+    HANDLE hItemHandle;
+    DWORD_PTR dwContextId;
+    POINT MousePos;
+  } HELPINFO,*LPHELPINFO;
+
+  WINUSERAPI WINBOOL WINAPI SetWindowContextHelpId(HWND,DWORD);
+  WINUSERAPI DWORD WINAPI GetWindowContextHelpId(HWND);
+  WINUSERAPI WINBOOL WINAPI SetMenuContextHelpId(HMENU,DWORD);
+  WINUSERAPI DWORD WINAPI GetMenuContextHelpId(HMENU);
+
+#ifndef NOMB
+
+#define MB_OK 0x00000000L
+#define MB_OKCANCEL 0x00000001L
+#define MB_ABORTRETRYIGNORE 0x00000002L
+#define MB_YESNOCANCEL 0x00000003L
+#define MB_YESNO 0x00000004L
+#define MB_RETRYCANCEL 0x00000005L
+#define MB_CANCELTRYCONTINUE 0x00000006L
+#define MB_ICONHAND 0x00000010L
+#define MB_ICONQUESTION 0x00000020L
+#define MB_ICONEXCLAMATION 0x00000030L
+#define MB_ICONASTERISK 0x00000040L
+#define MB_USERICON 0x00000080L
+#define MB_ICONWARNING MB_ICONEXCLAMATION
+#define MB_ICONERROR MB_ICONHAND
+#define MB_ICONINFORMATION MB_ICONASTERISK
+#define MB_ICONSTOP MB_ICONHAND
+#define MB_DEFBUTTON1 0x00000000L
+#define MB_DEFBUTTON2 0x00000100L
+#define MB_DEFBUTTON3 0x00000200L
+#define MB_DEFBUTTON4 0x00000300L
+#define MB_APPLMODAL 0x00000000L
+#define MB_SYSTEMMODAL 0x00001000L
+#define MB_
