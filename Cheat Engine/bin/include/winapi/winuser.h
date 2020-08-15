@@ -3302,4 +3302,125 @@ extern "C" {
 #define COLOR_INFOTEXT 23
 #define COLOR_INFOBK 24
 
-#define COLOR_HOTLIG
+#define COLOR_HOTLIGHT 26
+#define COLOR_GRADIENTACTIVECAPTION 27
+#define COLOR_GRADIENTINACTIVECAPTION 28
+#define COLOR_MENUHILIGHT 29
+#define COLOR_MENUBAR 30
+
+#define COLOR_DESKTOP COLOR_BACKGROUND
+#define COLOR_3DFACE COLOR_BTNFACE
+#define COLOR_3DSHADOW COLOR_BTNSHADOW
+#define COLOR_3DHIGHLIGHT COLOR_BTNHIGHLIGHT
+#define COLOR_3DHILIGHT COLOR_BTNHIGHLIGHT
+#define COLOR_BTNHILIGHT COLOR_BTNHIGHLIGHT
+
+  WINUSERAPI DWORD WINAPI GetSysColor(int nIndex);
+  WINUSERAPI HBRUSH WINAPI GetSysColorBrush(int nIndex);
+  WINUSERAPI WINBOOL WINAPI SetSysColors(int cElements,CONST INT *lpaElements,CONST COLORREF *lpaRgbValues);
+#endif
+
+  WINUSERAPI WINBOOL WINAPI DrawFocusRect(HDC hDC,CONST RECT *lprc);
+  WINUSERAPI int WINAPI FillRect(HDC hDC,CONST RECT *lprc,HBRUSH hbr);
+  WINUSERAPI int WINAPI FrameRect(HDC hDC,CONST RECT *lprc,HBRUSH hbr);
+  WINUSERAPI WINBOOL WINAPI InvertRect(HDC hDC,CONST RECT *lprc);
+  WINUSERAPI WINBOOL WINAPI SetRect(LPRECT lprc,int xLeft,int yTop,int xRight,int yBottom);
+  WINUSERAPI WINBOOL WINAPI SetRectEmpty(LPRECT lprc);
+  WINUSERAPI WINBOOL WINAPI CopyRect(LPRECT lprcDst,CONST RECT *lprcSrc);
+  WINUSERAPI WINBOOL WINAPI InflateRect(LPRECT lprc,int dx,int dy);
+  WINUSERAPI WINBOOL WINAPI IntersectRect(LPRECT lprcDst,CONST RECT *lprcSrc1,CONST RECT *lprcSrc2);
+  WINUSERAPI WINBOOL WINAPI UnionRect(LPRECT lprcDst,CONST RECT *lprcSrc1,CONST RECT *lprcSrc2);
+  WINUSERAPI WINBOOL WINAPI SubtractRect(LPRECT lprcDst,CONST RECT *lprcSrc1,CONST RECT *lprcSrc2);
+  WINUSERAPI WINBOOL WINAPI OffsetRect(LPRECT lprc,int dx,int dy);
+  WINUSERAPI WINBOOL WINAPI IsRectEmpty(CONST RECT *lprc);
+  WINUSERAPI WINBOOL WINAPI EqualRect(CONST RECT *lprc1,CONST RECT *lprc2);
+  WINUSERAPI WINBOOL WINAPI PtInRect(CONST RECT *lprc,POINT pt);
+
+#ifndef NOWINOFFSETS
+
+#ifdef UNICODE
+#define GetWindowLong GetWindowLongW
+#define SetWindowLong SetWindowLongW
+#else
+#define GetWindowLong GetWindowLongA
+#define SetWindowLong SetWindowLongA
+#endif
+
+  WINUSERAPI WORD WINAPI GetWindowWord(HWND hWnd,int nIndex);
+  WINUSERAPI WORD WINAPI SetWindowWord(HWND hWnd,int nIndex,WORD wNewWord);
+  WINUSERAPI LONG WINAPI GetWindowLongA(HWND hWnd,int nIndex);
+  WINUSERAPI LONG WINAPI GetWindowLongW(HWND hWnd,int nIndex);
+  WINUSERAPI LONG WINAPI SetWindowLongA(HWND hWnd,int nIndex,LONG dwNewLong);
+  WINUSERAPI LONG WINAPI SetWindowLongW(HWND hWnd,int nIndex,LONG dwNewLong);
+
+#ifdef _WIN64
+
+#ifdef UNICODE
+#define GetWindowLongPtr GetWindowLongPtrW
+#define SetWindowLongPtr SetWindowLongPtrW
+#else
+#define GetWindowLongPtr GetWindowLongPtrA
+#define SetWindowLongPtr SetWindowLongPtrA
+#endif
+
+  WINUSERAPI LONG_PTR WINAPI GetWindowLongPtrA(HWND hWnd,int nIndex);
+  WINUSERAPI LONG_PTR WINAPI GetWindowLongPtrW(HWND hWnd,int nIndex);
+  WINUSERAPI LONG_PTR WINAPI SetWindowLongPtrA(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+  WINUSERAPI LONG_PTR WINAPI SetWindowLongPtrW(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+#else
+
+#ifdef UNICODE
+#define GetWindowLongPtr GetWindowLongPtrW
+#define SetWindowLongPtr SetWindowLongPtrW
+#else
+#define GetWindowLongPtr GetWindowLongPtrA
+#define SetWindowLongPtr SetWindowLongPtrA
+#endif
+
+#define GetWindowLongPtrA GetWindowLongA
+#define GetWindowLongPtrW GetWindowLongW
+#define SetWindowLongPtrA SetWindowLongA
+#define SetWindowLongPtrW SetWindowLongW
+#endif
+
+#ifdef UNICODE
+#define GetClassLong GetClassLongW
+#define SetClassLong SetClassLongW
+#else
+#define GetClassLong GetClassLongA
+#define SetClassLong SetClassLongA
+#endif
+
+  WINUSERAPI WORD WINAPI GetClassWord(HWND hWnd,int nIndex);
+  WINUSERAPI WORD WINAPI SetClassWord(HWND hWnd,int nIndex,WORD wNewWord);
+  WINUSERAPI DWORD WINAPI GetClassLongA(HWND hWnd,int nIndex);
+  WINUSERAPI DWORD WINAPI GetClassLongW(HWND hWnd,int nIndex);
+  WINUSERAPI DWORD WINAPI SetClassLongA(HWND hWnd,int nIndex,LONG dwNewLong);
+  WINUSERAPI DWORD WINAPI SetClassLongW(HWND hWnd,int nIndex,LONG dwNewLong);
+
+#ifdef _WIN64
+
+#ifdef UNICODE
+#define GetClassLongPtr GetClassLongPtrW
+#define SetClassLongPtr SetClassLongPtrW
+#else
+#define GetClassLongPtr GetClassLongPtrA
+#define SetClassLongPtr SetClassLongPtrA
+#endif
+
+  WINUSERAPI ULONG_PTR WINAPI GetClassLongPtrA(HWND hWnd,int nIndex);
+  WINUSERAPI ULONG_PTR WINAPI GetClassLongPtrW(HWND hWnd,int nIndex);
+  WINUSERAPI ULONG_PTR WINAPI SetClassLongPtrA(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+  WINUSERAPI ULONG_PTR WINAPI SetClassLongPtrW(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+#else
+#ifdef UNICODE
+#define GetClassLongPtr GetClassLongPtrW
+#define SetClassLongPtr SetClassLongPtrW
+#else
+#define GetClassLongPtr GetClassLongPtrA
+#define SetClassLongPtr SetClassLongPtrA
+#endif
+
+#define GetClassLongPtrA GetClassLongA
+#define GetClassLongPtrW GetClassLongW
+#def
