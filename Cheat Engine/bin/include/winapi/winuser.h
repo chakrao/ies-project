@@ -3423,4 +3423,133 @@ extern "C" {
 
 #define GetClassLongPtrA GetClassLongA
 #define GetClassLongPtrW GetClassLongW
-#def
+#define SetClassLongPtrA SetClassLongA
+#define SetClassLongPtrW SetClassLongW
+#endif
+#endif
+
+#ifdef UNICODE
+#define FindWindow FindWindowW
+#define FindWindowEx FindWindowExW
+#define GetClassName GetClassNameW
+#else
+#define FindWindow FindWindowA
+#define FindWindowEx FindWindowExA
+#define GetClassName GetClassNameA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetProcessDefaultLayout(DWORD *pdwDefaultLayout);
+  WINUSERAPI WINBOOL WINAPI SetProcessDefaultLayout(DWORD dwDefaultLayout);
+  WINUSERAPI HWND WINAPI GetDesktopWindow(VOID);
+  WINUSERAPI HWND WINAPI GetParent(HWND hWnd);
+  WINUSERAPI HWND WINAPI SetParent(HWND hWndChild,HWND hWndNewParent);
+  WINUSERAPI WINBOOL WINAPI EnumChildWindows(HWND hWndParent,WNDENUMPROC lpEnumFunc,LPARAM lParam);
+  WINUSERAPI HWND WINAPI FindWindowA(LPCSTR lpClassName,LPCSTR lpWindowName);
+  WINUSERAPI HWND WINAPI FindWindowW(LPCWSTR lpClassName,LPCWSTR lpWindowName);
+  WINUSERAPI HWND WINAPI FindWindowExA(HWND hWndParent,HWND hWndChildAfter,LPCSTR lpszClass,LPCSTR lpszWindow);
+  WINUSERAPI HWND WINAPI FindWindowExW(HWND hWndParent,HWND hWndChildAfter,LPCWSTR lpszClass,LPCWSTR lpszWindow);
+  WINUSERAPI HWND WINAPI GetShellWindow(VOID);
+  WINUSERAPI WINBOOL WINAPI RegisterShellHookWindow(HWND hwnd);
+  WINUSERAPI WINBOOL WINAPI DeregisterShellHookWindow(HWND hwnd);
+  WINUSERAPI WINBOOL WINAPI EnumWindows(WNDENUMPROC lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI EnumThreadWindows(DWORD dwThreadId,WNDENUMPROC lpfn,LPARAM lParam);
+
+#define EnumTaskWindows(hTask,lpfn,lParam) EnumThreadWindows(HandleToUlong(hTask),lpfn,lParam)
+
+  WINUSERAPI int WINAPI GetClassNameA(HWND hWnd,LPSTR lpClassName,int nMaxCount);
+  WINUSERAPI int WINAPI GetClassNameW(HWND hWnd,LPWSTR lpClassName,int nMaxCount);
+  WINUSERAPI HWND WINAPI GetTopWindow(HWND hWnd);
+
+#define GetNextWindow(hWnd,wCmd) GetWindow(hWnd,wCmd)
+#define GetSysModalWindow() (NULL)
+#define SetSysModalWindow(hWnd) (NULL)
+
+  WINUSERAPI DWORD WINAPI GetWindowThreadProcessId(HWND hWnd,LPDWORD lpdwProcessId);
+  WINUSERAPI WINBOOL WINAPI IsGUIThread(WINBOOL bConvert);
+
+#define GetWindowTask(hWnd) ((HANDLE)(DWORD_PTR)GetWindowThreadProcessId(hWnd,NULL))
+
+  WINUSERAPI HWND WINAPI GetLastActivePopup(HWND hWnd);
+
+#define GW_HWNDFIRST 0
+#define GW_HWNDLAST 1
+#define GW_HWNDNEXT 2
+#define GW_HWNDPREV 3
+#define GW_OWNER 4
+#define GW_CHILD 5
+#define GW_ENABLEDPOPUP 6
+#define GW_MAX 6
+
+  WINUSERAPI HWND WINAPI GetWindow(HWND hWnd,UINT uCmd);
+
+#ifndef NOWH
+
+#ifdef UNICODE
+#define SetWindowsHook SetWindowsHookW
+#define SetWindowsHookEx SetWindowsHookExW
+#else
+#define SetWindowsHook SetWindowsHookA
+#define SetWindowsHookEx SetWindowsHookExA
+#endif
+
+  WINUSERAPI HHOOK WINAPI SetWindowsHookA(int nFilterType,HOOKPROC pfnFilterProc);
+  WINUSERAPI HHOOK WINAPI SetWindowsHookW(int nFilterType,HOOKPROC pfnFilterProc);
+  WINUSERAPI WINBOOL WINAPI UnhookWindowsHook(int nCode,HOOKPROC pfnFilterProc);
+  WINUSERAPI HHOOK WINAPI SetWindowsHookExA(int idHook,HOOKPROC lpfn,HINSTANCE hmod,DWORD dwThreadId);
+  WINUSERAPI HHOOK WINAPI SetWindowsHookExW(int idHook,HOOKPROC lpfn,HINSTANCE hmod,DWORD dwThreadId);
+  WINUSERAPI WINBOOL WINAPI UnhookWindowsHookEx(HHOOK hhk);
+  WINUSERAPI LRESULT WINAPI CallNextHookEx(HHOOK hhk,int nCode,WPARAM wParam,LPARAM lParam);
+#define DefHookProc(nCode,wParam,lParam,phhk) CallNextHookEx(*phhk,nCode,wParam,lParam)
+#endif
+
+#ifndef NOMENUS
+
+#define MF_INSERT 0x00000000L
+#define MF_CHANGE 0x00000080L
+#define MF_APPEND 0x00000100L
+#define MF_DELETE 0x00000200L
+#define MF_REMOVE 0x00001000L
+#define MF_BYCOMMAND 0x00000000L
+#define MF_BYPOSITION 0x00000400L
+#define MF_SEPARATOR 0x00000800L
+#define MF_ENABLED 0x00000000L
+#define MF_GRAYED 0x00000001L
+#define MF_DISABLED 0x00000002L
+#define MF_UNCHECKED 0x00000000L
+#define MF_CHECKED 0x00000008L
+#define MF_USECHECKBITMAPS 0x00000200L
+#define MF_STRING 0x00000000L
+#define MF_BITMAP 0x00000004L
+#define MF_OWNERDRAW 0x00000100L
+#define MF_POPUP 0x00000010L
+#define MF_MENUBARBREAK 0x00000020L
+#define MF_MENUBREAK 0x00000040L
+#define MF_UNHILITE 0x00000000L
+#define MF_HILITE 0x00000080L
+#define MF_DEFAULT 0x00001000L
+#define MF_SYSMENU 0x00002000L
+#define MF_HELP 0x00004000L
+#define MF_RIGHTJUSTIFY 0x00004000L
+#define MF_MOUSESELECT 0x00008000L
+#define MF_END 0x00000080L
+
+#define MFT_STRING MF_STRING
+#define MFT_BITMAP MF_BITMAP
+#define MFT_MENUBARBREAK MF_MENUBARBREAK
+#define MFT_MENUBREAK MF_MENUBREAK
+#define MFT_OWNERDRAW MF_OWNERDRAW
+#define MFT_RADIOCHECK 0x00000200L
+#define MFT_SEPARATOR MF_SEPARATOR
+#define MFT_RIGHTORDER 0x00002000L
+#define MFT_RIGHTJUSTIFY MF_RIGHTJUSTIFY
+
+#define MFS_GRAYED 0x00000003L
+#define MFS_DISABLED MFS_GRAYED
+#define MFS_CHECKED MF_CHECKED
+#define MFS_HILITE MF_HILITE
+#define MFS_ENABLED MF_ENABLED
+#define MFS_UNCHECKED MF_UNCHECKED
+#define MFS_UNHILITE MF_UNHILITE
+#define MFS_DEFAULT MF_DEFAULT
+
+ 
