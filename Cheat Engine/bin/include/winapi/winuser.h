@@ -3552,4 +3552,133 @@ extern "C" {
 #define MFS_UNHILITE MF_UNHILITE
 #define MFS_DEFAULT MF_DEFAULT
 
- 
+  WINUSERAPI WINBOOL WINAPI CheckMenuRadioItem(HMENU hmenu,UINT first,UINT last,UINT check,UINT flags);
+
+  typedef struct {
+    WORD versionNumber;
+    WORD offset;
+  } MENUITEMTEMPLATEHEADER,*PMENUITEMTEMPLATEHEADER;
+
+  typedef struct {
+    WORD mtOption;
+    WORD mtID;
+    WCHAR mtString[1];
+  } MENUITEMTEMPLATE,*PMENUITEMTEMPLATE;
+#define MF_END 0x00000080L
+#endif
+
+#ifndef NOSYSCOMMANDS
+
+#define SC_SIZE 0xF000
+#define SC_MOVE 0xF010
+#define SC_MINIMIZE 0xF020
+#define SC_MAXIMIZE 0xF030
+#define SC_NEXTWINDOW 0xF040
+#define SC_PREVWINDOW 0xF050
+#define SC_CLOSE 0xF060
+#define SC_VSCROLL 0xF070
+#define SC_HSCROLL 0xF080
+#define SC_MOUSEMENU 0xF090
+#define SC_KEYMENU 0xF100
+#define SC_ARRANGE 0xF110
+#define SC_RESTORE 0xF120
+#define SC_TASKLIST 0xF130
+#define SC_SCREENSAVE 0xF140
+#define SC_HOTKEY 0xF150
+#define SC_DEFAULT 0xF160
+#define SC_MONITORPOWER 0xF170
+#define SC_CONTEXTHELP 0xF180
+#define SC_SEPARATOR 0xF00F
+#define SC_ICON SC_MINIMIZE
+#define SC_ZOOM SC_MAXIMIZE
+#endif
+
+#ifdef UNICODE
+#define LoadBitmap LoadBitmapW
+#define LoadCursor LoadCursorW
+#define LoadCursorFromFile LoadCursorFromFileW
+#else
+#define LoadBitmap LoadBitmapA
+#define LoadCursor LoadCursorA
+#define LoadCursorFromFile LoadCursorFromFileA
+#endif
+
+  WINUSERAPI HBITMAP WINAPI LoadBitmapA(HINSTANCE hInstance,LPCSTR lpBitmapName);
+  WINUSERAPI HBITMAP WINAPI LoadBitmapW(HINSTANCE hInstance,LPCWSTR lpBitmapName);
+  WINUSERAPI HCURSOR WINAPI LoadCursorA(HINSTANCE hInstance,LPCSTR lpCursorName);
+  WINUSERAPI HCURSOR WINAPI LoadCursorW(HINSTANCE hInstance,LPCWSTR lpCursorName);
+  WINUSERAPI HCURSOR WINAPI LoadCursorFromFileA(LPCSTR lpFileName);
+  WINUSERAPI HCURSOR WINAPI LoadCursorFromFileW(LPCWSTR lpFileName);
+  WINUSERAPI HCURSOR WINAPI CreateCursor(HINSTANCE hInst,int xHotSpot,int yHotSpot,int nWidth,int nHeight,CONST VOID *pvANDPlane,CONST VOID *pvXORPlane);
+  WINUSERAPI WINBOOL WINAPI DestroyCursor(HCURSOR hCursor);
+
+#define CopyCursor(pcur) ((HCURSOR)CopyIcon((HICON)(pcur)))
+
+#define IDC_ARROW MAKEINTRESOURCE(32512)
+#define IDC_IBEAM MAKEINTRESOURCE(32513)
+#define IDC_WAIT MAKEINTRESOURCE(32514)
+#define IDC_CROSS MAKEINTRESOURCE(32515)
+#define IDC_UPARROW MAKEINTRESOURCE(32516)
+#define IDC_SIZE MAKEINTRESOURCE(32640)
+#define IDC_ICON MAKEINTRESOURCE(32641)
+#define IDC_SIZENWSE MAKEINTRESOURCE(32642)
+#define IDC_SIZENESW MAKEINTRESOURCE(32643)
+#define IDC_SIZEWE MAKEINTRESOURCE(32644)
+#define IDC_SIZENS MAKEINTRESOURCE(32645)
+#define IDC_SIZEALL MAKEINTRESOURCE(32646)
+#define IDC_NO MAKEINTRESOURCE(32648)
+#define IDC_HAND MAKEINTRESOURCE(32649)
+#define IDC_APPSTARTING MAKEINTRESOURCE(32650)
+#define IDC_HELP MAKEINTRESOURCE(32651)
+
+  WINUSERAPI WINBOOL WINAPI SetSystemCursor(HCURSOR hcur,DWORD id);
+
+  typedef struct _ICONINFO {
+    WINBOOL fIcon;
+    DWORD xHotspot;
+    DWORD yHotspot;
+    HBITMAP hbmMask;
+    HBITMAP hbmColor;
+  } ICONINFO;
+  typedef ICONINFO *PICONINFO;
+
+#ifdef UNICODE
+#define LoadIcon LoadIconW
+#define PrivateExtractIcons PrivateExtractIconsW
+#else
+#define LoadIcon LoadIconA
+#define PrivateExtractIcons PrivateExtractIconsA
+#endif
+
+  WINUSERAPI HICON WINAPI LoadIconA(HINSTANCE hInstance,LPCSTR lpIconName);
+  WINUSERAPI HICON WINAPI LoadIconW(HINSTANCE hInstance,LPCWSTR lpIconName);
+  WINUSERAPI UINT WINAPI PrivateExtractIconsA(LPCSTR szFileName,int nIconIndex,int cxIcon,int cyIcon,HICON *phicon,UINT *piconid,UINT nIcons,UINT flags);
+  WINUSERAPI UINT WINAPI PrivateExtractIconsW(LPCWSTR szFileName,int nIconIndex,int cxIcon,int cyIcon,HICON *phicon,UINT *piconid,UINT nIcons,UINT flags);
+  WINUSERAPI HICON WINAPI CreateIcon(HINSTANCE hInstance,int nWidth,int nHeight,BYTE cPlanes,BYTE cBitsPixel,CONST BYTE *lpbANDbits,CONST BYTE *lpbXORbits);
+  WINUSERAPI WINBOOL WINAPI DestroyIcon(HICON hIcon);
+  WINUSERAPI int WINAPI LookupIconIdFromDirectory(PBYTE presbits,WINBOOL fIcon);
+  WINUSERAPI int WINAPI LookupIconIdFromDirectoryEx(PBYTE presbits,WINBOOL fIcon,int cxDesired,int cyDesired,UINT Flags);
+  WINUSERAPI HICON WINAPI CreateIconFromResource(PBYTE presbits,DWORD dwResSize,WINBOOL fIcon,DWORD dwVer);
+  WINUSERAPI HICON WINAPI CreateIconFromResourceEx(PBYTE presbits,DWORD dwResSize,WINBOOL fIcon,DWORD dwVer,int cxDesired,int cyDesired,UINT Flags);
+
+  typedef struct tagCURSORSHAPE {
+    int xHotSpot;
+    int yHotSpot;
+    int cx;
+    int cy;
+    int cbWidth;
+    BYTE Planes;
+    BYTE BitsPixel;
+  } CURSORSHAPE,*LPCURSORSHAPE;
+
+#define IMAGE_BITMAP 0
+#define IMAGE_ICON 1
+#define IMAGE_CURSOR 2
+#define IMAGE_ENHMETAFILE 3
+
+#define LR_DEFAULTCOLOR 0x0000
+#define LR_MONOCHROME 0x0001
+#define LR_COLOR 0x0002
+#define LR_COPYRETURNORG 0x0004
+#define LR_COPYDELETEORG 0x0008
+#defin
