@@ -4045,4 +4045,163 @@ extern "C" {
 #define IsDialogMessage IsDialogMessageA
 #endif
 
-  WINUSERAPI WINBOOL 
+  WINUSERAPI WINBOOL WINAPI IsDialogMessageA(HWND hDlg,LPMSG lpMsg);
+  WINUSERAPI WINBOOL WINAPI IsDialogMessageW(HWND hDlg,LPMSG lpMsg);
+#endif
+
+#ifdef UNICODE
+#define DlgDirList DlgDirListW
+#define DlgDirSelectEx DlgDirSelectExW
+#define DlgDirListComboBox DlgDirListComboBoxW
+#define DlgDirSelectComboBoxEx DlgDirSelectComboBoxExW
+#else
+#define DlgDirList DlgDirListA
+#define DlgDirSelectEx DlgDirSelectExA
+#define DlgDirListComboBox DlgDirListComboBoxA
+#define DlgDirSelectComboBoxEx DlgDirSelectComboBoxExA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI MapDialogRect(HWND hDlg,LPRECT lpRect);
+  WINUSERAPI int WINAPI DlgDirListA(HWND hDlg,LPSTR lpPathSpec,int nIDListBox,int nIDStaticPath,UINT uFileType);
+  WINUSERAPI int WINAPI DlgDirListW(HWND hDlg,LPWSTR lpPathSpec,int nIDListBox,int nIDStaticPath,UINT uFileType);
+
+#define DDL_READWRITE 0x0000
+#define DDL_READONLY 0x0001
+#define DDL_HIDDEN 0x0002
+#define DDL_SYSTEM 0x0004
+#define DDL_DIRECTORY 0x0010
+#define DDL_ARCHIVE 0x0020
+
+#define DDL_POSTMSGS 0x2000
+#define DDL_DRIVES 0x4000
+#define DDL_EXCLUSIVE 0x8000
+
+  WINUSERAPI WINBOOL WINAPI DlgDirSelectExA(HWND hwndDlg,LPSTR lpString,int chCount,int idListBox);
+  WINUSERAPI WINBOOL WINAPI DlgDirSelectExW(HWND hwndDlg,LPWSTR lpString,int chCount,int idListBox);
+  WINUSERAPI int WINAPI DlgDirListComboBoxA(HWND hDlg,LPSTR lpPathSpec,int nIDComboBox,int nIDStaticPath,UINT uFiletype);
+  WINUSERAPI int WINAPI DlgDirListComboBoxW(HWND hDlg,LPWSTR lpPathSpec,int nIDComboBox,int nIDStaticPath,UINT uFiletype);
+  WINUSERAPI WINBOOL WINAPI DlgDirSelectComboBoxExA(HWND hwndDlg,LPSTR lpString,int cchOut,int idComboBox);
+  WINUSERAPI WINBOOL WINAPI DlgDirSelectComboBoxExW(HWND hwndDlg,LPWSTR lpString,int cchOut,int idComboBox);
+
+#define DS_ABSALIGN 0x01L
+#define DS_SYSMODAL 0x02L
+#define DS_LOCALEDIT 0x20L
+#define DS_SETFONT 0x40L
+#define DS_MODALFRAME 0x80L
+#define DS_NOIDLEMSG 0x100L
+#define DS_SETFOREGROUND 0x200L
+
+#define DS_3DLOOK 0x0004L
+#define DS_FIXEDSYS 0x0008L
+#define DS_NOFAILCREATE 0x0010L
+#define DS_CONTROL 0x0400L
+#define DS_CENTER 0x0800L
+#define DS_CENTERMOUSE 0x1000L
+#define DS_CONTEXTHELP 0x2000L
+
+#define DS_SHELLFONT (DS_SETFONT | DS_FIXEDSYS)
+
+#if(_WIN32_WCE >= 0x0500)
+#define DS_USEPIXELS 0x8000L
+#endif
+
+#define DM_GETDEFID (WM_USER+0)
+#define DM_SETDEFID (WM_USER+1)
+#define DM_REPOSITION (WM_USER+2)
+
+#define DC_HASDEFID 0x534B
+
+#define DLGC_WANTARROWS 0x0001
+#define DLGC_WANTTAB 0x0002
+#define DLGC_WANTALLKEYS 0x0004
+#define DLGC_WANTMESSAGE 0x0004
+#define DLGC_HASSETSEL 0x0008
+#define DLGC_DEFPUSHBUTTON 0x0010
+#define DLGC_UNDEFPUSHBUTTON 0x0020
+#define DLGC_RADIOBUTTON 0x0040
+#define DLGC_WANTCHARS 0x0080
+#define DLGC_STATIC 0x0100
+#define DLGC_BUTTON 0x2000
+
+#define LB_CTLCODE 0L
+
+#define LB_OKAY 0
+#define LB_ERR (-1)
+#define LB_ERRSPACE (-2)
+
+#define LBN_ERRSPACE (-2)
+#define LBN_SELCHANGE 1
+#define LBN_DBLCLK 2
+#define LBN_SELCANCEL 3
+#define LBN_SETFOCUS 4
+#define LBN_KILLFOCUS 5
+
+#ifndef NOWINMESSAGES
+
+#define LB_ADDSTRING 0x0180
+#define LB_INSERTSTRING 0x0181
+#define LB_DELETESTRING 0x0182
+#define LB_SELITEMRANGEEX 0x0183
+#define LB_RESETCONTENT 0x0184
+#define LB_SETSEL 0x0185
+#define LB_SETCURSEL 0x0186
+#define LB_GETSEL 0x0187
+#define LB_GETCURSEL 0x0188
+#define LB_GETTEXT 0x0189
+#define LB_GETTEXTLEN 0x018A
+#define LB_GETCOUNT 0x018B
+#define LB_SELECTSTRING 0x018C
+#define LB_DIR 0x018D
+#define LB_GETTOPINDEX 0x018E
+#define LB_FINDSTRING 0x018F
+#define LB_GETSELCOUNT 0x0190
+#define LB_GETSELITEMS 0x0191
+#define LB_SETTABSTOPS 0x0192
+#define LB_GETHORIZONTALEXTENT 0x0193
+#define LB_SETHORIZONTALEXTENT 0x0194
+#define LB_SETCOLUMNWIDTH 0x0195
+#define LB_ADDFILE 0x0196
+#define LB_SETTOPINDEX 0x0197
+#define LB_GETITEMRECT 0x0198
+#define LB_GETITEMDATA 0x0199
+#define LB_SETITEMDATA 0x019A
+#define LB_SELITEMRANGE 0x019B
+#define LB_SETANCHORINDEX 0x019C
+#define LB_GETANCHORINDEX 0x019D
+#define LB_SETCARETINDEX 0x019E
+#define LB_GETCARETINDEX 0x019F
+#define LB_SETITEMHEIGHT 0x01A0
+#define LB_GETITEMHEIGHT 0x01A1
+#define LB_FINDSTRINGEXACT 0x01A2
+#define LB_SETLOCALE 0x01A5
+#define LB_GETLOCALE 0x01A6
+#define LB_SETCOUNT 0x01A7
+#define LB_INITSTORAGE 0x01A8
+#define LB_ITEMFROMPOINT 0x01A9
+#if(_WIN32_WCE >= 0x0400)
+#define LB_MULTIPLEADDSTRING 0x01B1
+#endif
+#define LB_GETLISTBOXINFO 0x01B2
+#define LB_MSGMAX 0x01B3
+#endif
+
+#ifndef NOWINSTYLES
+
+#define LBS_NOTIFY 0x0001L
+#define LBS_SORT 0x0002L
+#define LBS_NOREDRAW 0x0004L
+#define LBS_MULTIPLESEL 0x0008L
+#define LBS_OWNERDRAWFIXED 0x0010L
+#define LBS_OWNERDRAWVARIABLE 0x0020L
+#define LBS_HASSTRINGS 0x0040L
+#define LBS_USETABSTOPS 0x0080L
+#define LBS_NOINTEGRALHEIGHT 0x0100L
+#define LBS_MULTICOLUMN 0x0200L
+#define LBS_WANTKEYBOARDINPUT 0x0400L
+#define LBS_EXTENDEDSEL 0x0800L
+#define LBS_DISABLENOSCROLL 0x1000L
+#define LBS_NODATA 0x2000L
+#define LBS_NOSEL 0x4000L
+#define LBS_COMBOBOX 0x8000L
+
+#define LBS_STANDARD (
