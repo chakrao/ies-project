@@ -4853,4 +4853,135 @@ extern "C" {
 
 #define HCF_HIGHCONTRASTON 0x00000001
 #define HCF_AVAILABLE 0x00000002
-#define HCF_HOTKEYACTIV
+#define HCF_HOTKEYACTIVE 0x00000004
+#define HCF_CONFIRMHOTKEY 0x00000008
+#define HCF_HOTKEYSOUND 0x00000010
+#define HCF_INDICATOR 0x00000020
+#define HCF_HOTKEYAVAILABLE 0x00000040
+#define HCF_LOGONDESKTOP 0x00000100
+#define HCF_DEFAULTDESKTOP 0x00000200
+
+#define CDS_UPDATEREGISTRY 0x00000001
+#define CDS_TEST 0x00000002
+#define CDS_FULLSCREEN 0x00000004
+#define CDS_GLOBAL 0x00000008
+#define CDS_SET_PRIMARY 0x00000010
+#define CDS_VIDEOPARAMETERS 0x00000020
+#define CDS_RESET 0x40000000
+#define CDS_NORESET 0x10000000
+
+//gr #include <tvout.h>
+
+#define DISP_CHANGE_SUCCESSFUL 0
+#define DISP_CHANGE_RESTART 1
+#define DISP_CHANGE_FAILED -1
+#define DISP_CHANGE_BADMODE -2
+#define DISP_CHANGE_NOTUPDATED -3
+#define DISP_CHANGE_BADFLAGS -4
+#define DISP_CHANGE_BADPARAM -5
+#define DISP_CHANGE_BADDUALVIEW -6
+
+#ifdef _WINGDI_
+#ifndef NOGDI
+
+#ifdef UNICODE
+#define ChangeDisplaySettings ChangeDisplaySettingsW
+#define ChangeDisplaySettingsEx ChangeDisplaySettingsExW
+#define EnumDisplaySettings EnumDisplaySettingsW
+#define EnumDisplaySettingsEx EnumDisplaySettingsExW
+#define EnumDisplayDevices EnumDisplayDevicesW
+#else
+#define ChangeDisplaySettings ChangeDisplaySettingsA
+#define ChangeDisplaySettingsEx ChangeDisplaySettingsExA
+#define EnumDisplaySettings EnumDisplaySettingsA
+#define EnumDisplaySettingsEx EnumDisplaySettingsExA
+#define EnumDisplayDevices EnumDisplayDevicesA
+#endif
+
+  WINUSERAPI LONG WINAPI ChangeDisplaySettingsA(LPDEVMODEA lpDevMode,DWORD dwFlags);
+  WINUSERAPI LONG WINAPI ChangeDisplaySettingsW(LPDEVMODEW lpDevMode,DWORD dwFlags);
+  WINUSERAPI LONG WINAPI ChangeDisplaySettingsExA(LPCSTR lpszDeviceName,LPDEVMODEA lpDevMode,HWND hwnd,DWORD dwflags,LPVOID lParam);
+  WINUSERAPI LONG WINAPI ChangeDisplaySettingsExW(LPCWSTR lpszDeviceName,LPDEVMODEW lpDevMode,HWND hwnd,DWORD dwflags,LPVOID lParam);
+
+#define ENUM_CURRENT_SETTINGS ((DWORD)-1)
+#define ENUM_REGISTRY_SETTINGS ((DWORD)-2)
+
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsA(LPCSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEA lpDevMode);
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsW(LPCWSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEW lpDevMode);
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsExA(LPCSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEA lpDevMode,DWORD dwFlags);
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsExW(LPCWSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEW lpDevMode,DWORD dwFlags);
+
+#define EDS_RAWMODE 0x00000002
+
+  WINUSERAPI WINBOOL WINAPI EnumDisplayDevicesA(LPCSTR lpDevice,DWORD iDevNum,PDISPLAY_DEVICEA lpDisplayDevice,DWORD dwFlags);
+  WINUSERAPI WINBOOL WINAPI EnumDisplayDevicesW(LPCWSTR lpDevice,DWORD iDevNum,PDISPLAY_DEVICEW lpDisplayDevice,DWORD dwFlags);
+#endif
+#endif
+
+#ifdef UNICODE
+#define SystemParametersInfo SystemParametersInfoW
+#else
+#define SystemParametersInfo SystemParametersInfoA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI SystemParametersInfoA(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni);
+  WINUSERAPI WINBOOL WINAPI SystemParametersInfoW(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni);
+#endif
+
+  typedef struct tagFILTERKEYS {
+    UINT cbSize;
+    DWORD dwFlags;
+    DWORD iWaitMSec;
+    DWORD iDelayMSec;
+    DWORD iRepeatMSec;
+    DWORD iBounceMSec;
+  } FILTERKEYS,*LPFILTERKEYS;
+
+#define FKF_FILTERKEYSON 0x00000001
+#define FKF_AVAILABLE 0x00000002
+#define FKF_HOTKEYACTIVE 0x00000004
+#define FKF_CONFIRMHOTKEY 0x00000008
+#define FKF_HOTKEYSOUND 0x00000010
+#define FKF_INDICATOR 0x00000020
+#define FKF_CLICKON 0x00000040
+
+  typedef struct tagSTICKYKEYS {
+    UINT cbSize;
+    DWORD dwFlags;
+  } STICKYKEYS,*LPSTICKYKEYS;
+
+#define SKF_STICKYKEYSON 0x00000001
+#define SKF_AVAILABLE 0x00000002
+#define SKF_HOTKEYACTIVE 0x00000004
+#define SKF_CONFIRMHOTKEY 0x00000008
+#define SKF_HOTKEYSOUND 0x00000010
+#define SKF_INDICATOR 0x00000020
+#define SKF_AUDIBLEFEEDBACK 0x00000040
+#define SKF_TRISTATE 0x00000080
+#define SKF_TWOKEYSOFF 0x00000100
+#define SKF_LALTLATCHED 0x10000000
+#define SKF_LCTLLATCHED 0x04000000
+#define SKF_LSHIFTLATCHED 0x01000000
+#define SKF_RALTLATCHED 0x20000000
+#define SKF_RCTLLATCHED 0x08000000
+#define SKF_RSHIFTLATCHED 0x02000000
+#define SKF_LWINLATCHED 0x40000000
+#define SKF_RWINLATCHED 0x80000000
+#define SKF_LALTLOCKED 0x00100000
+#define SKF_LCTLLOCKED 0x00040000
+#define SKF_LSHIFTLOCKED 0x00010000
+#define SKF_RALTLOCKED 0x00200000
+#define SKF_RCTLLOCKED 0x00080000
+#define SKF_RSHIFTLOCKED 0x00020000
+#define SKF_LWINLOCKED 0x00400000
+#define SKF_RWINLOCKED 0x00800000
+
+  typedef struct tagMOUSEKEYS {
+    UINT cbSize;
+    DWORD dwFlags;
+    DWORD iMaxSpeed;
+    DWORD iTimeToMaxSpeed;
+    DWORD iCtrlSpeed;
+    DWORD dwReserved1;
+    DWORD dwReserved2;
+  } MOUSEKEYS,*LPM
