@@ -4671,4 +4671,186 @@ extern "C" {
 #define SPI_GETFONTSMOOTHINGTYPE 0x200A
 #define SPI_SETFONTSMOOTHINGTYPE 0x200B
 
-#define FE
+#define FE_FONTSMOOTHINGSTANDARD 0x0001
+#define FE_FONTSMOOTHINGCLEARTYPE 0x0002
+#define FE_FONTSMOOTHINGDOCKING 0x8000
+
+#define SPI_GETFONTSMOOTHINGCONTRAST 0x200C
+#define SPI_SETFONTSMOOTHINGCONTRAST 0x200D
+#define SPI_GETFOCUSBORDERWIDTH 0x200E
+#define SPI_SETFOCUSBORDERWIDTH 0x200F
+#define SPI_GETFOCUSBORDERHEIGHT 0x2010
+#define SPI_SETFOCUSBORDERHEIGHT 0x2011
+#define SPI_GETFONTSMOOTHINGORIENTATION 0x2012
+#define SPI_SETFONTSMOOTHINGORIENTATION 0x2013
+
+#define FE_FONTSMOOTHINGORIENTATIONBGR 0x0000
+#define FE_FONTSMOOTHINGORIENTATIONRGB 0x0001
+
+#define SPIF_UPDATEINIFILE 0x0001
+#define SPIF_SENDWININICHANGE 0x0002
+#define SPIF_SENDCHANGE SPIF_SENDWININICHANGE
+
+#define METRICS_USEDEFAULT -1
+#ifdef _WINGDI_
+#ifndef NOGDI
+  typedef struct tagNONCLIENTMETRICSA {
+    UINT cbSize;
+    int iBorderWidth;
+    int iScrollWidth;
+    int iScrollHeight;
+    int iCaptionWidth;
+    int iCaptionHeight;
+    LOGFONTA lfCaptionFont;
+    int iSmCaptionWidth;
+    int iSmCaptionHeight;
+    LOGFONTA lfSmCaptionFont;
+    int iMenuWidth;
+    int iMenuHeight;
+    LOGFONTA lfMenuFont;
+    LOGFONTA lfStatusFont;
+    LOGFONTA lfMessageFont;
+  } NONCLIENTMETRICSA,*PNONCLIENTMETRICSA,*LPNONCLIENTMETRICSA;
+
+  typedef struct tagNONCLIENTMETRICSW {
+    UINT cbSize;
+    int iBorderWidth;
+    int iScrollWidth;
+    int iScrollHeight;
+    int iCaptionWidth;
+    int iCaptionHeight;
+    LOGFONTW lfCaptionFont;
+    int iSmCaptionWidth;
+    int iSmCaptionHeight;
+    LOGFONTW lfSmCaptionFont;
+    int iMenuWidth;
+    int iMenuHeight;
+    LOGFONTW lfMenuFont;
+    LOGFONTW lfStatusFont;
+    LOGFONTW lfMessageFont;
+  } NONCLIENTMETRICSW,*PNONCLIENTMETRICSW,*LPNONCLIENTMETRICSW;
+
+#ifdef UNICODE
+  typedef NONCLIENTMETRICSW NONCLIENTMETRICS;
+  typedef PNONCLIENTMETRICSW PNONCLIENTMETRICS;
+  typedef LPNONCLIENTMETRICSW LPNONCLIENTMETRICS;
+#else
+  typedef NONCLIENTMETRICSA NONCLIENTMETRICS;
+  typedef PNONCLIENTMETRICSA PNONCLIENTMETRICS;
+  typedef LPNONCLIENTMETRICSA LPNONCLIENTMETRICS;
+#endif
+#endif
+#endif
+
+#define ARW_BOTTOMLEFT 0x0000L
+#define ARW_BOTTOMRIGHT 0x0001L
+#define ARW_TOPLEFT 0x0002L
+#define ARW_TOPRIGHT 0x0003L
+#define ARW_STARTMASK 0x0003L
+#define ARW_STARTRIGHT 0x0001L
+#define ARW_STARTTOP 0x0002L
+
+#define ARW_LEFT 0x0000L
+#define ARW_RIGHT 0x0000L
+#define ARW_UP 0x0004L
+#define ARW_DOWN 0x0004L
+#define ARW_HIDE 0x0008L
+
+  typedef struct tagMINIMIZEDMETRICS {
+    UINT cbSize;
+    int iWidth;
+    int iHorzGap;
+    int iVertGap;
+    int iArrange;
+  } MINIMIZEDMETRICS,*PMINIMIZEDMETRICS,*LPMINIMIZEDMETRICS;
+
+#ifdef _WINGDI_
+#ifndef NOGDI
+  typedef struct tagICONMETRICSA {
+    UINT cbSize;
+    int iHorzSpacing;
+    int iVertSpacing;
+    int iTitleWrap;
+    LOGFONTA lfFont;
+  } ICONMETRICSA,*PICONMETRICSA,*LPICONMETRICSA;
+
+  typedef struct tagICONMETRICSW {
+    UINT cbSize;
+    int iHorzSpacing;
+    int iVertSpacing;
+    int iTitleWrap;
+    LOGFONTW lfFont;
+  } ICONMETRICSW,*PICONMETRICSW,*LPICONMETRICSW;
+
+#ifdef UNICODE
+  typedef ICONMETRICSW ICONMETRICS;
+  typedef PICONMETRICSW PICONMETRICS;
+  typedef LPICONMETRICSW LPICONMETRICS;
+#else
+  typedef ICONMETRICSA ICONMETRICS;
+  typedef PICONMETRICSA PICONMETRICS;
+  typedef LPICONMETRICSA LPICONMETRICS;
+#endif
+#endif
+#endif
+
+  typedef struct tagANIMATIONINFO {
+    UINT cbSize;
+    int iMinAnimate;
+  } ANIMATIONINFO,*LPANIMATIONINFO;
+
+  typedef struct tagSERIALKEYSA {
+    UINT cbSize;
+    DWORD dwFlags;
+    LPSTR lpszActivePort;
+    LPSTR lpszPort;
+    UINT iBaudRate;
+    UINT iPortState;
+    UINT iActive;
+  } SERIALKEYSA,*LPSERIALKEYSA;
+
+  typedef struct tagSERIALKEYSW {
+    UINT cbSize;
+    DWORD dwFlags;
+    LPWSTR lpszActivePort;
+    LPWSTR lpszPort;
+    UINT iBaudRate;
+    UINT iPortState;
+    UINT iActive;
+  } SERIALKEYSW,*LPSERIALKEYSW;
+
+#ifdef UNICODE
+  typedef SERIALKEYSW SERIALKEYS;
+  typedef LPSERIALKEYSW LPSERIALKEYS;
+#else
+  typedef SERIALKEYSA SERIALKEYS;
+  typedef LPSERIALKEYSA LPSERIALKEYS;
+#endif
+
+#define SERKF_SERIALKEYSON 0x00000001
+#define SERKF_AVAILABLE 0x00000002
+#define SERKF_INDICATOR 0x00000004
+
+  typedef struct tagHIGHCONTRASTA {
+    UINT cbSize;
+    DWORD dwFlags;
+    LPSTR lpszDefaultScheme;
+  } HIGHCONTRASTA,*LPHIGHCONTRASTA;
+
+  typedef struct tagHIGHCONTRASTW {
+    UINT cbSize;
+    DWORD dwFlags;
+    LPWSTR lpszDefaultScheme;
+  } HIGHCONTRASTW,*LPHIGHCONTRASTW;
+
+#ifdef UNICODE
+  typedef HIGHCONTRASTW HIGHCONTRAST;
+  typedef LPHIGHCONTRASTW LPHIGHCONTRAST;
+#else
+  typedef HIGHCONTRASTA HIGHCONTRAST;
+  typedef LPHIGHCONTRASTA LPHIGHCONTRAST;
+#endif
+
+#define HCF_HIGHCONTRASTON 0x00000001
+#define HCF_AVAILABLE 0x00000002
+#define HCF_HOTKEYACTIV
