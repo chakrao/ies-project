@@ -5298,4 +5298,159 @@ extern "C" {
 #define GUI_INMOVESIZE 0x00000002
 #define GUI_INMENUMODE 0x00000004
 #define GUI_SYSTEMMENUMODE 0x00000008
-#define
+#define GUI_POPUPMENUMODE 0x00000010
+#define GUI_16BITTASK 0x00000020
+
+#ifdef UNICODE
+#define GetWindowModuleFileName GetWindowModuleFileNameW
+#else
+#define GetWindowModuleFileName GetWindowModuleFileNameA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetGUIThreadInfo(DWORD idThread,PGUITHREADINFO pgui);
+  WINUSERAPI UINT WINAPI GetWindowModuleFileNameA(HWND hwnd,LPSTR pszFileName,UINT cchFileNameMax);
+  WINUSERAPI UINT WINAPI GetWindowModuleFileNameW(HWND hwnd,LPWSTR pszFileName,UINT cchFileNameMax);
+
+#ifndef NO_STATE_FLAGS
+#define STATE_SYSTEM_UNAVAILABLE 0x00000001
+#define STATE_SYSTEM_SELECTED 0x00000002
+#define STATE_SYSTEM_FOCUSED 0x00000004
+#define STATE_SYSTEM_PRESSED 0x00000008
+#define STATE_SYSTEM_CHECKED 0x00000010
+#define STATE_SYSTEM_MIXED 0x00000020
+#define STATE_SYSTEM_INDETERMINATE STATE_SYSTEM_MIXED
+#define STATE_SYSTEM_READONLY 0x00000040
+#define STATE_SYSTEM_HOTTRACKED 0x00000080
+#define STATE_SYSTEM_DEFAULT 0x00000100
+#define STATE_SYSTEM_EXPANDED 0x00000200
+#define STATE_SYSTEM_COLLAPSED 0x00000400
+#define STATE_SYSTEM_BUSY 0x00000800
+#define STATE_SYSTEM_FLOATING 0x00001000
+#define STATE_SYSTEM_MARQUEED 0x00002000
+#define STATE_SYSTEM_ANIMATED 0x00004000
+#define STATE_SYSTEM_INVISIBLE 0x00008000
+#define STATE_SYSTEM_OFFSCREEN 0x00010000
+#define STATE_SYSTEM_SIZEABLE 0x00020000
+#define STATE_SYSTEM_MOVEABLE 0x00040000
+#define STATE_SYSTEM_SELFVOICING 0x00080000
+#define STATE_SYSTEM_FOCUSABLE 0x00100000
+#define STATE_SYSTEM_SELECTABLE 0x00200000
+#define STATE_SYSTEM_LINKED 0x00400000
+#define STATE_SYSTEM_TRAVERSED 0x00800000
+#define STATE_SYSTEM_MULTISELECTABLE 0x01000000
+#define STATE_SYSTEM_EXTSELECTABLE 0x02000000
+#define STATE_SYSTEM_ALERT_LOW 0x04000000
+#define STATE_SYSTEM_ALERT_MEDIUM 0x08000000
+#define STATE_SYSTEM_ALERT_HIGH 0x10000000
+#define STATE_SYSTEM_PROTECTED 0x20000000
+#define STATE_SYSTEM_VALID 0x3FFFFFFF
+#endif
+
+#define CCHILDREN_TITLEBAR 5
+#define CCHILDREN_SCROLLBAR 5
+
+  typedef struct tagCURSORINFO {
+    DWORD cbSize;
+    DWORD flags;
+    HCURSOR hCursor;
+    POINT ptScreenPos;
+  } CURSORINFO,*PCURSORINFO,*LPCURSORINFO;
+
+#define CURSOR_SHOWING 0x00000001
+
+  WINUSERAPI WINBOOL WINAPI GetCursorInfo(PCURSORINFO pci);
+
+  typedef struct tagWINDOWINFO {
+    DWORD cbSize;
+    RECT rcWindow;
+    RECT rcClient;
+    DWORD dwStyle;
+    DWORD dwExStyle;
+    DWORD dwWindowStatus;
+    UINT cxWindowBorders;
+    UINT cyWindowBorders;
+    ATOM atomWindowType;
+    WORD wCreatorVersion;
+  } WINDOWINFO,*PWINDOWINFO,*LPWINDOWINFO;
+
+#define WS_ACTIVECAPTION 0x0001
+
+  WINUSERAPI WINBOOL WINAPI GetWindowInfo(HWND hwnd,PWINDOWINFO pwi);
+
+  typedef struct tagTITLEBARINFO {
+    DWORD cbSize;
+    RECT rcTitleBar;
+    DWORD rgstate[CCHILDREN_TITLEBAR + 1];
+  } TITLEBARINFO,*PTITLEBARINFO,*LPTITLEBARINFO;
+
+  WINUSERAPI WINBOOL WINAPI GetTitleBarInfo(HWND hwnd,PTITLEBARINFO pti);
+
+  typedef struct tagMENUBARINFO {
+    DWORD cbSize;
+    RECT rcBar;
+    HMENU hMenu;
+    HWND hwndMenu;
+    WINBOOL fBarFocused:1;
+    WINBOOL fFocused:1;
+  } MENUBARINFO,*PMENUBARINFO,*LPMENUBARINFO;
+
+  WINUSERAPI WINBOOL WINAPI GetMenuBarInfo(HWND hwnd,LONG idObject,LONG idItem,PMENUBARINFO pmbi);
+
+  typedef struct tagSCROLLBARINFO {
+    DWORD cbSize;
+    RECT rcScrollBar;
+    int dxyLineButton;
+    int xyThumbTop;
+    int xyThumbBottom;
+    int reserved;
+    DWORD rgstate[CCHILDREN_SCROLLBAR + 1];
+  } SCROLLBARINFO,*PSCROLLBARINFO,*LPSCROLLBARINFO;
+
+  WINUSERAPI WINBOOL WINAPI GetScrollBarInfo(HWND hwnd,LONG idObject,PSCROLLBARINFO psbi);
+
+  typedef struct tagCOMBOBOXINFO {
+    DWORD cbSize;
+    RECT rcItem;
+    RECT rcButton;
+    DWORD stateButton;
+    HWND hwndCombo;
+    HWND hwndItem;
+    HWND hwndList;
+  } COMBOBOXINFO,*PCOMBOBOXINFO,*LPCOMBOBOXINFO;
+
+  WINUSERAPI WINBOOL WINAPI GetComboBoxInfo(HWND hwndCombo,PCOMBOBOXINFO pcbi);
+
+#define GA_PARENT 1
+#define GA_ROOT 2
+#define GA_ROOTOWNER 3
+
+  WINUSERAPI HWND WINAPI GetAncestor(HWND hwnd,UINT gaFlags);
+  WINUSERAPI HWND WINAPI RealChildWindowFromPoint(HWND hwndParent,POINT ptParentClientCoords);
+  WINUSERAPI UINT WINAPI RealGetWindowClassA(HWND hwnd,LPSTR ptszClassName,UINT cchClassNameMax);
+  WINUSERAPI UINT WINAPI RealGetWindowClassW(HWND hwnd,LPWSTR ptszClassName,UINT cchClassNameMax);
+#ifdef UNICODE
+#define RealGetWindowClass RealGetWindowClassW
+#else
+#define RealGetWindowClass RealGetWindowClassA
+#endif
+
+  typedef struct tagALTTABINFO {
+    DWORD cbSize;
+    int cItems;
+    int cColumns;
+    int cRows;
+    int iColFocus;
+    int iRowFocus;
+    int cxItem;
+    int cyItem;
+    POINT ptStart;
+  } ALTTABINFO,*PALTTABINFO,*LPALTTABINFO;
+
+#ifdef UNICODE
+#define GetAltTabInfo GetAltTabInfoW
+#else
+#define GetAltTabInfo GetAltTabInfoA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetAltTabInfoA(HWND hwnd,int iItem,PALTTABINFO pati,LPSTR pszItemText,UINT cchItemText);
+  WINUSERAPI
