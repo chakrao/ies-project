@@ -1946,3 +1946,4677 @@ msgstr ""
 
 #: formhotkeyunit.rsnumlock
 msgctxt "formhotkeyunit.rsnumlock"
+msgid "Num Lock"
+msgstr ""
+
+#: formhotkeyunit.rspagedown
+msgctxt "formhotkeyunit.rspagedown"
+msgid "Page Down"
+msgstr ""
+
+#: formhotkeyunit.rspageup
+msgctxt "formhotkeyunit.rspageup"
+msgid "Page Up"
+msgstr ""
+
+#: formhotkeyunit.rspause
+msgctxt "formhotkeyunit.rspause"
+msgid "Pause"
+msgstr "Pause"
+
+#: formhotkeyunit.rsprint
+msgctxt "formhotkeyunit.rsprint"
+msgid "Print"
+msgstr "Imprimer"
+
+#: formhotkeyunit.rsprintscreen
+msgctxt "formhotkeyunit.rsprintscreen"
+msgid "Print Screen"
+msgstr impression d'écran""
+
+#: formhotkeyunit.rsrightarrow
+msgctxt "formhotkeyunit.rsrightarrow"
+msgid "Right Arrow"
+msgstr ""
+
+#: formhotkeyunit.rsrightwindowskey
+msgctxt "formhotkeyunit.rsrightwindowskey"
+msgid "Right Windows key"
+msgstr ""
+
+#: formhotkeyunit.rsscrolllock
+msgctxt "formhotkeyunit.rsscrolllock"
+msgid "Scroll Lock"
+msgstr ""
+
+#: formhotkeyunit.rsselect
+msgctxt "formhotkeyunit.rsselect"
+msgid "Select"
+msgstr ""
+
+#: formhotkeyunit.rsseparator
+msgctxt "formhotkeyunit.rsseparator"
+msgid "Separator"
+msgstr ""
+
+#: formhotkeyunit.rsshift
+msgctxt "formhotkeyunit.rsshift"
+msgid "Shift"
+msgstr ""
+
+#: formhotkeyunit.rsspacebar
+msgctxt "formhotkeyunit.rsspacebar"
+msgid "Space bar"
+msgstr ""
+
+#: formhotkeyunit.rstab
+msgctxt "formhotkeyunit.rstab"
+msgid "Tab"
+msgstr ""
+
+#: formhotkeyunit.rsuparrow
+msgctxt "formhotkeyunit.rsuparrow"
+msgid "Up Arrow"
+msgstr ""
+
+#: formmemoryregionsunit.rscommit
+msgid "Commit"
+msgstr ""
+
+#: formmemoryregionsunit.rsdone
+msgctxt "formmemoryregionsunit.rsdone"
+msgid "done"
+msgstr ""
+
+#: formmemoryregionsunit.rsdoyouwanttousethecopyonwritebit
+msgid "Do you want to use the COPY-ON-WRITE bit?"
+msgstr ""
+
+#: formmemoryregionsunit.rsexecute
+msgctxt "formmemoryregionsunit.rsexecute"
+msgid "Execute"
+msgstr "Exécuter"
+
+#: formmemoryregionsunit.rsexecuteread
+msgid "Execute+Read"
+msgstr "Exécuter + Lire"
+
+#: formmemoryregionsunit.rsexecutereadwrite
+msgid "Execute+Read+Write"
+msgstr "Exécuter + Lire + Ecrire"
+
+#: formmemoryregionsunit.rsexecutewritecopy
+msgid "Execute+Write Copy"
+msgstr "Executer + Ecrire une copie"
+
+#: formmemoryregionsunit.rsfailedtodelete
+msgid "Failed to delete %s"
+msgstr ""
+
+#: formmemoryregionsunit.rsfree
+msgid "Free"
+msgstr "Libre"
+
+#: formmemoryregionsunit.rsguard
+msgid "Guard"
+msgstr ""
+
+#: formmemoryregionsunit.rsimage
+msgctxt "formmemoryregionsunit.rsimage"
+msgid "Image"
+msgstr "Image"
+
+#: formmemoryregionsunit.rsmapped
+msgid "Mapped"
+msgstr ""
+
+#: formmemoryregionsunit.rsmemoryregions
+msgctxt "formmemoryregionsunit.rsmemoryregions"
+msgid "Memory regions"
+msgstr "Régions de mémoire"
+
+#: formmemoryregionsunit.rsmemoryregionssaving
+msgid "Memory regions - Saving(%s/%s)"
+msgstr ""
+
+#: formmemoryregionsunit.rsnoaccess
+msgctxt "formmemoryregionsunit.rsnoaccess"
+msgid "No Access"
+msgstr "Pas d'accès"
+
+#: formmemoryregionsunit.rsnocache
+msgid "No Cache"
+msgstr "Pas de cache"
+
+#: formmemoryregionsunit.rsprivate
+msgid "Private"
+msgstr "Privé"
+
+#: formmemoryregionsunit.rsread
+msgctxt "formmemoryregionsunit.rsread"
+msgid "Read"
+msgstr "Lire"
+
+#: formmemoryregionsunit.rsreadwrite
+msgid "Read+Write"
+msgstr ""
+
+#: formmemoryregionsunit.rsreserve
+msgid "Reserve"
+msgstr ""
+
+#: formmemoryregionsunit.rstherearealreadymemoryfileswiththisnamedoyouwanttod
+msgid "There are already memoryfiles with this name. Do you want to delete them? (choosing no will add the file(s) to empty slots)"
+msgstr ""
+
+#: formmemoryregionsunit.rsthereisnofreeslot
+msgid "There is no free slot"
+msgstr "Il n'y a pas d'emplacement libre"
+
+#: formmemoryregionsunit.rswritecopy
+msgctxt "formmemoryregionsunit.rswritecopy"
+msgid "Write Copy"
+msgstr "Ecrire une copie"
+
+#: formsettingsunit.rs2bytes
+msgctxt "formsettingsunit.rs2bytes"
+msgid "2 Bytes"
+msgstr ""
+
+#: formsettingsunit.rs4bytes
+msgctxt "formsettingsunit.rs4bytes"
+msgid "4 Bytes"
+msgstr "4 Bytes"
+
+#: formsettingsunit.rs8bytes
+msgctxt "formsettingsunit.rs8bytes"
+msgid "8 Bytes"
+msgstr "8 Bytes"
+
+#: formsettingsunit.rsallcustomtypes
+msgid "All Custom Types"
+msgstr "Tous Types personnalisés"
+
+#: formsettingsunit.rsarrayofbyte
+msgctxt "formsettingsunit.rsarrayofbyte"
+msgid "Array of byte"
+msgstr "Tableau de Byte"
+
+#: formsettingsunit.rsattachtoforegroundprocess
+msgid "Attach to current foreground process"
+msgstr ""
+
+#: formsettingsunit.rsbinary
+msgctxt "formsettingsunit.rsbinary"
+msgid "Binary"
+msgstr "Binaire"
+
+#: formsettingsunit.rsbyte
+msgctxt "formsettingsunit.rsbyte"
+msgid "Byte"
+msgstr "Byte"
+
+#: formsettingsunit.rscancelthecurrentscan
+msgid "Cancel the current scan"
+msgstr "Annuler le Scan en cours"
+
+#: formsettingsunit.rschangedvalue
+msgid "Changed Value"
+msgstr "Valeur modifiée"
+
+#: formsettingsunit.rschangetypeto
+msgid "Change type to"
+msgstr "Changer le type pour"
+
+#: formsettingsunit.rsdebuggeroptions
+msgctxt "formsettingsunit.rsdebuggeroptions"
+msgid "Debugger Options"
+msgstr "Options du Debbuger"
+
+#: formsettingsunit.rsdebugrun
+msgid "Debug->Run"
+msgstr ""
+
+#: formsettingsunit.rsdecreasedvalue
+msgid "Decreased Value"
+msgstr ""
+
+#: formsettingsunit.rsdouble
+msgctxt "formsettingsunit.rsdouble"
+msgid "Double"
+msgstr "Double"
+
+#: formsettingsunit.rsextra
+msgctxt "formsettingsunit.rsextra"
+msgid "Extra"
+msgstr "Extra"
+
+#: formsettingsunit.rsfailmmregistry
+msgid "Failure getting the Memory Management registry key"
+msgstr ""
+
+#: formsettingsunit.rsfailuretoopenregistry
+msgid "Failure to open the registry entry"
+msgstr ""
+
+#: formsettingsunit.rsfloat
+msgctxt "formsettingsunit.rsfloat"
+msgid "Float"
+msgstr "Nombre"
+
+#: formsettingsunit.rsgeneralsettings
+msgctxt "formsettingsunit.rsgeneralsettings"
+msgid "General Settings"
+msgstr ""
+
+#: formsettingsunit.rshigher
+msgctxt "formsettingsunit.rshigher"
+msgid "Higher"
+msgstr ""
+
+#: formsettingsunit.rshighest
+msgctxt "formsettingsunit.rshighest"
+msgid "Highest"
+msgstr ""
+
+#: formsettingsunit.rshotkeys
+msgctxt "formsettingsunit.rshotkeys"
+msgid "Hotkeys"
+msgstr ""
+
+#: formsettingsunit.rsidle
+msgctxt "formsettingsunit.rsidle"
+msgid "Idle"
+msgstr ""
+
+#: formsettingsunit.rsincreasedvalue
+msgid "Increased Value"
+msgstr ""
+
+#: formsettingsunit.rsisnotavalidinterval
+msgid "%s is not a valid interval"
+msgstr ""
+
+#: formsettingsunit.rslanguages
+msgctxt "formsettingsunit.rslanguages"
+msgid "Languages"
+msgstr "Langages"
+
+#: formsettingsunit.rslower
+msgctxt "formsettingsunit.rslower"
+msgid "Lower"
+msgstr ""
+
+#: formsettingsunit.rslowest
+msgctxt "formsettingsunit.rslowest"
+msgid "Lowest"
+msgstr ""
+
+#: formsettingsunit.rsluaoptions
+msgctxt "formsettingsunit.rsluaoptions"
+msgid "Lua"
+msgstr "Lua"
+
+#: formsettingsunit.rsnewlanguageset
+msgid "New language set"
+msgstr ""
+
+#: formsettingsunit.rsnextscan
+msgctxt "formsettingsunit.rsnextscan"
+msgid "Next Scan"
+msgstr "Scan suivant"
+
+#: formsettingsunit.rsnoname
+msgid "No Name"
+msgstr "Aucun Nom"
+
+#: formsettingsunit.rsnormal
+msgctxt "formsettingsunit.rsnormal"
+msgid "Normal"
+msgstr "Normal"
+
+#: formsettingsunit.rspausetheselectedprocess
+msgid "Pause the selected process"
+msgstr ""
+
+#: formsettingsunit.rspleasebootwithunsigneddriversallowedf8duringbootor
+msgid "Please boot with unsigned drivers allowed(F8 during boot), or sign the driver yourself"
+msgstr ""
+
+#: formsettingsunit.rsplugins
+msgctxt "formsettingsunit.rsplugins"
+msgid "Plugins"
+msgstr "Plugins"
+
+#: formsettingsunit.rspopuphidecheatengine
+msgid "Popup/Hide cheat engine"
+msgstr ""
+
+#: formsettingsunit.rsrequiresdbvm
+msgid "(Requires DBVM)"
+msgstr ""
+
+#: formsettingsunit.rsrestartce
+msgid "It is recommended to restart Cheat Engine for this change to take effect"
+msgstr ""
+
+#: formsettingsunit.rsscansettings
+msgctxt "formsettingsunit.rsscansettings"
+msgid "Scan Settings"
+msgstr "Options de Scan"
+
+#: formsettingsunit.rssigning
+msgid "Signing"
+msgstr ""
+
+#: formsettingsunit.rsspectreregistrychanged
+msgid "The registry keys has been changed accordingly.  Reboot your system to make it take effect"
+msgstr ""
+
+#: formsettingsunit.rsspectrerestore
+msgid "Your protection has been restored. Please restart your system to make it take effect"
+msgstr ""
+
+#: formsettingsunit.rsspectrewarning
+msgid ""
+"WARNING! Making kernelmode possible will slightly increase the speed of your system, BUT it will make you vulnerable to Spectre attacks\n"
+"Are you ok with this? (You can later re-enable this protection)\n"
+msgstr ""
+
+#: formsettingsunit.rsspeedhackspeed
+msgid "Speedhack speed"
+msgstr ""
+
+#: formsettingsunit.rstext
+msgctxt "formsettingsunit.rstext"
+msgid "Text"
+msgstr ""
+
+#: formsettingsunit.rsthescanbuffersizehastobegreaterthan0
+msgid "The scanbuffer size has to be greater than 0"
+msgstr ""
+
+#: formsettingsunit.rsthevalueforthekeypollintervalisinvalid
+msgid "the value for the keypoll interval (%s is invalid"
+msgstr ""
+
+#: formsettingsunit.rsthevalueforthewaitbetweenhotkeypressesisinvalid
+msgid "the value for the wait between hotkey presses (%s is invalid"
+msgstr ""
+
+#: formsettingsunit.rsthispluginisalreadyloaded
+msgid "This plugin is already loaded"
+msgstr ""
+
+#: formsettingsunit.rstimecritical
+msgctxt "formsettingsunit.rstimecritical"
+msgid "TimeCritical"
+msgstr ""
+
+#: formsettingsunit.rstogglebetweenfirstlastscancompare
+msgid "Toggle between first/last scan compare"
+msgstr ""
+
+#: formsettingsunit.rstogglethespeedhack
+msgid "Toggle the speedhack"
+msgstr ""
+
+#: formsettingsunit.rstools
+msgctxt "formsettingsunit.rstools"
+msgid "Tools"
+msgstr "Outils"
+
+#: formsettingsunit.rsunchangedvalue
+msgid "Unchanged Value"
+msgstr ""
+
+#: formsettingsunit.rsundolastscan
+msgid "Undo last scan"
+msgstr ""
+
+#: formsettingsunit.rsunknowninitialvalue
+msgid "Unknown Initial Value"
+msgstr "Valeur de base inconnue"
+
+#: formsettingsunit.rsunrandomizer
+msgctxt "formsettingsunit.rsunrandomizer"
+msgid "Unrandomizer"
+msgstr ""
+
+#: formsettingsunit.rsyouhaventselectedanymemorytypethiswillresultinchea
+msgid "You haven't selected any memory type. This will result in Cheat Engine finding NO memory! Are you stupid?"
+msgstr ""
+
+#: formsettingsunit.strprocesswatcherwillpreventunloader
+msgid "Enabling the process watcher will prevent the unloader from working"
+msgstr ""
+
+#: foundcodeunit.rsfctheswillsetasiftwarebreakpointint3oneverysingleopcodeetc
+msgid "This will set a Software Breakpoint (int3) on every single opcode that will be reported here. Are you sure ?"
+msgstr ""
+
+#: foundcodeunit.strclose
+msgctxt "foundcodeunit.strclose"
+msgid "Close"
+msgstr "Fermer"
+
+#: foundlisthelper.rserror
+msgctxt "foundlisthelper.rserror"
+msgid "Error"
+msgstr "Erreur"
+
+#: foundlisthelper.rsundefinederror
+msgctxt "foundlisthelper.rsundefinederror"
+msgid "Undefined error"
+msgstr ""
+
+#: frmadconfigunit.rspercentageshown
+msgid "Percentage shown"
+msgstr ""
+
+#: frmautoinjectunit.rsareyousureyouwanttoclose
+msgid "Are you sure you want to close %s ?"
+msgstr ""
+
+#: frmautoinjectunit.rsautoassembler
+msgid "Auto assembler"
+msgstr "Auto Assembleur"
+
+#: frmautoinjectunit.rsceafilter
+msgid "Cheat Engine Assembly (*.CEA)|*.CEA|All Files ( *.* )|*.*"
+msgstr ""
+
+#: frmautoinjectunit.rscegafilter
+msgid "Cheat Engine GNU Assembly (*.CEGA)|*.CEGA|All Files ( *.* )|*.*"
+msgstr ""
+
+#: frmautoinjectunit.rscodeinjecttemplate
+msgid "Code inject template"
+msgstr ""
+
+#: frmautoinjectunit.rscodeneedsenableanddisable
+msgid "The code needs an [ENABLE] and a [DISABLE] section if you want to use this script as a table entry"
+msgstr ""
+
+#: frmautoinjectunit.rscoderelocationtemplate
+msgid "Code relocation template"
+msgstr ""
+
+#: frmautoinjectunit.rsendaddresslastbytesareincludedifnecesary
+msgid "End address (last bytes are included if necessary)"
+msgstr ""
+
+#: frmautoinjectunit.rserrorcouldnotfinduniqueaobtriedcode
+msgid "ERROR: Could not find unique AOB, tried code \""
+msgstr ""
+
+#: frmautoinjectunit.rsexecutescript
+msgid "Execute script"
+msgstr "Exécuter le Script"
+
+#: frmautoinjectunit.rsfailedallocatingmemoryforthescript
+msgid "Failed allocating memory for the script"
+msgstr ""
+
+#: frmautoinjectunit.rsfailedcreatingcallingstubforscriptlocatedataddress
+msgid "Failed creating calling stub for script located at address "
+msgstr ""
+
+#: frmautoinjectunit.rsfailedtoaddtotablenotallcodeisinjectable
+msgid "Failed to add to table. Not all code is injectable"
+msgstr ""
+
+#: frmautoinjectunit.rsfailedwritingthescripttotheprocess
+msgid "failed writing the script to the process"
+msgstr ""
+
+#: frmautoinjectunit.rsfailureloadingundercdll
+msgid "Failure loading undercdll"
+msgstr ""
+
+#: frmautoinjectunit.rsgnuascript
+msgid "GNU Assembler Script"
+msgstr ""
+
+#: frmautoinjectunit.rsluafilter
+msgid "LUA Script (*.LUA)|*.LUA|All Files ( *.* )|*.*"
+msgstr ""
+
+#: frmautoinjectunit.rsluascript
+msgid "LUA Script"
+msgstr "Script LUA"
+
+#: frmautoinjectunit.rsnotallcodeisinjectable
+msgid ""
+"Not all code is injectable.\n"
+"%s\n"
+"Are you sure you want to edit it to this?\n"
+msgstr ""
+
+#: frmautoinjectunit.rsonwhataddressdoyouwantthejump
+msgid "On what address do you want the jump?"
+msgstr ""
+
+#: frmautoinjectunit.rsscript
+msgid "Script "
+msgstr "Script "
+
+#: frmautoinjectunit.rsscript1
+msgid "Script 1"
+msgstr "Script 1"
+
+#: frmautoinjectunit.rsstartaddress
+msgid "Start address"
+msgstr ""
+
+#: frmautoinjectunit.rsthumbinstructionsarenotyetimplemented
+msgid "Thumb instructions are not yet implemented"
+msgstr ""
+
+#: frmautoinjectunit.rswhatidentifierdoyouwanttouse
+msgid "What do you want to name the symbol for the injection point?"
+msgstr ""
+
+#: frmautoinjectunit.rswritecode
+msgid "Write code"
+msgstr ""
+
+#: frmbranchmapperunit.rsfoundnr
+msgid "Found %d"
+msgstr ""
+
+#: frmbranchmapperunit.rssaveresultstofile
+msgid "Save results to file"
+msgstr "Enregistrer les résultats dans un fichier"
+
+#: frmbranchmapperunit.rsstartmapping
+msgid "Start Mapping"
+msgstr ""
+
+#: frmbranchmapperunit.rsstop
+msgctxt "frmbranchmapperunit.rsstop"
+msgid "Stop"
+msgstr "Stop"
+
+#: frmbreakpointlistunit.rsbpareyousureyouwishtochangethistoapegewidebp
+msgid "Are you sure you wish to change this to a pagewide breakpoint?"
+msgstr ""
+
+#: frmchangedaddressescommonalityscannerunit.rsdblclicklaunchcomp
+msgid "Doubleclick to launch structure compare"
+msgstr ""
+
+#: frmchangedaddressescommonalityscannerunit.rsshowresults
+msgid "Doubleclick to show scanner/results"
+msgstr "Double-cliquer pour afficher les résultats"
+
+#: frmcodecavescannerunit.rsclosingthiswindowwillalsostopthescannerareyousure
+msgid "Closing this window will also stop the scanner. Are you sure?"
+msgstr ""
+
+#: frmcodecavescannerunit.rspleaseprovideavalidsizeforthewantedcodecave
+msgid "Please provide a valid size for the wanted code cave"
+msgstr ""
+
+#: frmcodecavescannerunit.rspleaseprovideavalidstartaddress
+msgid "Please provide a valid start address"
+msgstr ""
+
+#: frmcodecavescannerunit.rspleaseprovideavalidstopaddress
+msgid "Please provide a valid stop address"
+msgstr ""
+
+#: frmcodecavescannerunit.rspleasetellmeyoudontneedacodecavethissmall
+msgid "Please tell me you don't need a code cave this small!!!"
+msgstr ""
+
+#: frmcodefilterunit.rsaddresslist
+msgid "Address List (%d)"
+msgstr "Liste d'adresses (%d)"
+
+#: frmcodefilterunit.rsassemblyscanpleasewait
+msgid "Assembly Scan. Please wait"
+msgstr ""
+
+#: frmcodefilterunit.rscancel
+msgid "Cancel List Refresh"
+msgstr ""
+
+#: frmcodefilterunit.rscodefilter
+msgctxt "frmcodefilterunit.rscodefilter"
+msgid "Code Filter"
+msgstr "Filtre de code"
+
+#: frmcodefilterunit.rsfilteringaddresses
+msgid "Filtering addresses"
+msgstr ""
+
+#: frmcodefilterunit.rsno
+msgctxt "frmcodefilterunit.rsno"
+msgid "No"
+msgstr "Non"
+
+#: frmcodefilterunit.rsopenanaddressfile
+msgid "Open an address file"
+msgstr ""
+
+#: frmcodefilterunit.rssaveanaddressfile
+msgid "Save an address file"
+msgstr ""
+
+#: frmcodefilterunit.rssettingbreakpoints
+msgid "Setting breakpoints"
+msgstr ""
+
+#: frmcodefilterunit.rsshowrefreshlist
+msgctxt "frmcodefilterunit.rsshowrefreshlist"
+msgid "Refresh list"
+msgstr ""
+
+#: frmcodefilterunit.rsxisaninvalidrange
+msgid "%s is an invalid range (xxxx-xxxx)"
+msgstr ""
+
+#: frmcodefilterunit.rsyes
+msgctxt "frmcodefilterunit.rsyes"
+msgid "Yes"
+msgstr "Oui"
+
+#: frmdisassemblyscanunit.rsdone
+msgid "Done"
+msgstr "Terminé"
+
+#: frmdisassemblyscanunit.rsdsclose
+msgctxt "frmdisassemblyscanunit.rsdsclose"
+msgid "Close"
+msgstr "Fermer"
+
+#: frmdisassemblyscanunit.rsdsscanerror
+msgid "scan error"
+msgstr "Erreur de Scan"
+
+#: frmdissectwindowunit.rsdissectwindows
+msgctxt "frmdissectwindowunit.rsdissectwindows"
+msgid "Dissect Windows"
+msgstr "Disséquer les fenêtres"
+
+#: frmdissectwindowunit.rsgivethenewtextforthiswindow
+msgid "Give the new text for this window"
+msgstr ""
+
+#: frmdissectwindowunit.rsinvis
+msgid "Invis"
+msgstr ""
+
+#: frmdissectwindowunit.rsremoved
+msgid "Removed"
+msgstr "Supprimé"
+
+#: frmenumeratedllsunit.rsnothingfound
+msgctxt "frmenumeratedllsunit.rsnothingfound"
+msgid "nothing found"
+msgstr "Rien n'a été trouvé"
+
+#: frmexceptionregionlistunit.rsconfirmdeleteregion
+msgid "Are you sure you wish to remove the range %s?"
+msgstr ""
+
+#: frmexceptionregionlistunit.rseraselistquestion
+msgid "Are you sure the erase the list?"
+msgstr "Voules-vous vraiment supprimer la liste ?"
+
+#: frmexetrainergeneratorunit.rsarchive
+msgid " ARCHIVE:"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rscetrainermaker
+msgid "CE trainer maker"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsdecompressor
+msgid " DECOMPRESSOR:"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsdefault
+msgctxt "frmexetrainergeneratorunit.rsdefault"
+msgid "Default"
+msgstr "Défaut"
+
+#: frmexetrainergeneratorunit.rsfailureonwriting
+msgid "failure on writing"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsfailureopeningthetrainerforresourceupdates
+msgid "Failure opening the trainer for resource updates. Make sure you do not watch the creation"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsfastest
+msgid "Fastest"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsgenerate
+msgctxt "frmexetrainergeneratorunit.rsgenerate"
+msgid "Generate"
+msgstr "Générer"
+
+#: frmexetrainergeneratorunit.rsiconupdateerror
+msgid "icon update error"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsinvalidicon
+msgid "(Invalid icon)"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsinvalidicontype
+msgid "(Invalid icon type)"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsmax
+msgctxt "frmexetrainergeneratorunit.rsmax"
+msgid "Max"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsnewfoldername
+msgid "New foldername"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsnone
+msgctxt "frmexetrainergeneratorunit.rsnone"
+msgid "None"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rssaving
+msgctxt "frmexetrainergeneratorunit.rssaving"
+msgid "Saving..."
+msgstr "Sauvegarde..."
+
+#: frmexetrainergeneratorunit.rsthetrainerhasbeensuccessfullygenerated
+msgid "The trainer has been successfully generated"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rstrainerfilemissing
+msgid "Copying %s.dat to %s failed. Please make sure the file still exists"
+msgstr ""
+
+#: frmexetrainergeneratorunit.rsupdatefailed
+msgid "Failure updating the trainer resource information: %d"
+msgstr ""
+
+#: frmfilepatcherunit.rsfilepatcher
+msgid "File Patcher: "
+msgstr ""
+
+#: frmfillmemoryunit.rsfmregiontoolarge
+msgid "Region too large"
+msgstr ""
+
+#: frmfillmemoryunit.rspleasefillinavalidfillvalue
+msgid "Please fill in a valid 'Fill' value"
+msgstr ""
+
+#: frmfillmemoryunit.rspleasefillinavalidfromaddress
+msgctxt "frmfillmemoryunit.rspleasefillinavalidfromaddress"
+msgid "Please fill in a valid 'From' address"
+msgstr ""
+
+#: frmfillmemoryunit.rspleasefillinavalidtoaddress
+msgctxt "frmfillmemoryunit.rspleasefillinavalidtoaddress"
+msgid "Please fill in a valid 'To' address"
+msgstr ""
+
+#: frmfindstaticsunit.rsfsstructorarray
+msgid "struct or array"
+msgstr ""
+
+#: frmfindstaticsunit.rsfsunreadablepointer
+msgid "Unreadable pointer"
+msgstr ""
+
+#: frmfindstaticsunit.strscan
+msgctxt "frmfindstaticsunit.strscan"
+msgid "Scan"
+msgstr "Scanner"
+
+#: frmfindstaticsunit.strstop
+msgctxt "frmfindstaticsunit.strstop"
+msgid "Stop"
+msgstr "Stop"
+
+#: frmfindstaticsunit.strstopping
+msgctxt "frmfindstaticsunit.strstopping"
+msgid "Stopping..."
+msgstr "Arrêt..."
+
+#: frmfloatingpointpanelunit.rsfppextended
+msgid "Extended (default)"
+msgstr ""
+
+#: frmgdtunit.rsgdtaccessed
+msgid "Accessed="
+msgstr ""
+
+#: frmgdtunit.rsgdtavl
+msgid "AVL="
+msgstr ""
+
+#: frmgdtunit.rsgdtcodesegment
+msgid "Code Segment"
+msgstr ""
+
+#: frmgdtunit.rsgdtconforming
+msgid "Conforming="
+msgstr ""
+
+#: frmgdtunit.rsgdtdatasegment
+msgid "Data Segment"
+msgstr ""
+
+#: frmgdtunit.rsgdtdpl
+msgid "DPL="
+msgstr ""
+
+#: frmgdtunit.rsgdtexpansiondirection
+msgid "Expansion direction="
+msgstr ""
+
+#: frmgdtunit.rsgdtnotpresent
+msgid "Not present"
+msgstr ""
+
+#: frmgdtunit.rsgdtreadable
+msgid "Readable="
+msgstr ""
+
+#: frmgdtunit.rsgdtreaderror
+msgid "Read error"
+msgstr ""
+
+#: frmgdtunit.rsgdtsystemsegment
+msgid "System Segment"
+msgstr ""
+
+#: frmgdtunit.rsgdtwritable
+msgid "Writable="
+msgstr ""
+
+#: frmgroupscanalgoritmgeneratorunit.rsadd
+msgctxt "frmgroupscanalgoritmgeneratorunit.rsadd"
+msgid "Add"
+msgstr "Ajouter"
+
+#: frmgroupscanalgoritmgeneratorunit.rsgsgblocksizemustbeprovided
+msgid "blocksize must be provided"
+msgstr ""
+
+#: frmgroupscanalgoritmgeneratorunit.rsgsgshouldbeatleast
+msgid "Should be at least %d"
+msgstr ""
+
+#: frmgroupscanalgoritmgeneratorunit.rspickedhint
+msgid "When checked this element will get added to the addresslist. Note: If all checkboxes are disabled, ALL elements will be added"
+msgstr ""
+
+#: frmgroupscanalgoritmgeneratorunit.rswildcard
+msgid "Skip nr of bytes:"
+msgstr ""
+
+#: frmidtunit.rsidt16bitinterruptgate
+msgid "16-bit interrupt gate"
+msgstr ""
+
+#: frmidtunit.rsidt16biytrapgate
+msgid "16-bit trap gate"
+msgstr ""
+
+#: frmidtunit.rsidt32bitinterruptgate
+msgid "32-bit interrupt gate"
+msgstr ""
+
+#: frmidtunit.rsidt32biytrapgate
+msgid "32-bit trap gate"
+msgstr ""
+
+#: frmidtunit.rsidtdpl
+msgid " DPL="
+msgstr ""
+
+#: frmidtunit.rsidtnotpresent
+msgid "not present"
+msgstr ""
+
+#: frmidtunit.rsidttaskgate
+msgid "task gate"
+msgstr ""
+
+#: frmidtunit.rsidtunkownidt
+msgid "unknown IDT"
+msgstr ""
+
+#: frmloadmemoryunit.rsloadintomemory
+msgid "Load %s into memory"
+msgstr ""
+
+#: frmloadmemoryunit.rsnotallthememorycanbewritteninthecurrentmemoryregion
+msgid "Not all the memory can be written in the current memory region. Do you want to force as much as possible into the given region and just discard what can not be written? (Really bad idea)"
+msgstr ""
+
+#: frmloadmemoryunit.rswrotebytesoutof
+msgid "Wrote %d bytes out of %d"
+msgstr ""
+
+#: frmloadmemoryunit.strinvalidfile
+msgid "This is a invalid memory region file. I'll assume this file has no header data"
+msgstr ""
+
+#: frmluaengineunit.rserror
+msgid "Script Error"
+msgstr "Erreur de Script"
+
+#: frmluaengineunit.rsleerrorinline
+msgid "Error in line "
+msgstr "Erreur à la ligne "
+
+#: frmluaengineunit.rsleonlyonescriptcanbedebuggedatatimeetc
+msgid "Only one script can be debugged at a time. Continue executing this script without the debugger?"
+msgstr ""
+
+#: frmluaengineunit.rsleundefinederror
+msgctxt "frmluaengineunit.rsleundefinederror"
+msgid "Undefined error"
+msgstr ""
+
+#: frmluaengineunit.rsleuserclickedstop
+msgid "User clicked stop"
+msgstr ""
+
+#: frmluaengineunit.rsluaengine
+msgctxt "frmluaengineunit.rsluaengine"
+msgid "Lua Engine"
+msgstr "Moteur LUA"
+
+#: frmmemoryallochandlerunit.rsevent1failure
+msgid "Event1 failure:"
+msgstr ""
+
+#: frmmemoryallochandlerunit.rsevent2failure
+msgid "Event2 failure:"
+msgstr ""
+
+#: frmmemoryallochandlerunit.rsevent3failure
+msgid "Event3 failure:"
+msgstr ""
+
+#: frmmemoryallochandlerunit.rsfailuretohook
+msgid "Failure to hook"
+msgstr ""
+
+#: frmmemoryallochandlerunit.rsfailuretoinitialize
+msgid "Failure to initialize"
+msgstr ""
+
+#: frmmemoryallochandlerunit.rsheapcount
+msgid "Heapcount=%s"
+msgstr ""
+
+#: frmmemoryallochandlerunit.rsqueuedmemoryeventswaiting
+msgid "Queued memory events waiting: %s"
+msgstr ""
+
+#: frmmemoryrecorddropdownsettingsunit.rsdddropdownotionsfor
+msgid "Dropdown options for "
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsbackgroundcolor
+msgid "Background color"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rscallcolor
+msgctxt "frmmemviewpreferencesunit.rscallcolor"
+msgid "Call color"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsconditionaljumpcolor
+msgctxt "frmmemviewpreferencesunit.rsconditionaljumpcolor"
+msgid "Conditional jump color"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsdcbreakpoint
+msgid "Breakpoint"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsdchighlighted
+msgctxt "frmmemviewpreferencesunit.rsdchighlighted"
+msgid "Highlighted"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsdchighlightedbreakpoint
+msgid "Highlighted breakpoint"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsdchighlightedbreakpointsecondary
+msgid "Highlighted breakpoint secondary"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsdchighlightedsecondary
+msgid "Highlighted secondary"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsdchighlightedultimap2
+msgid "Highlighted Ultimap2"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsdchighlightedultimap2secondary
+msgid "Highlighted Ultimap2 secondary"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsdcnormal
+msgctxt "frmmemviewpreferencesunit.rsdcnormal"
+msgid "Normal"
+msgstr "Normal"
+
+#: frmmemviewpreferencesunit.rsdcultimap2
+msgid "Ultimap2"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rshexadecimalcolor
+msgctxt "frmmemviewpreferencesunit.rshexadecimalcolor"
+msgid "Hexadecimal color"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsnormalcolor
+msgid "Normal color"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsregistercolor
+msgctxt "frmmemviewpreferencesunit.rsregistercolor"
+msgid "Register color"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rssymbolcolor
+msgctxt "frmmemviewpreferencesunit.rssymbolcolor"
+msgid "Symbol color"
+msgstr ""
+
+#: frmmemviewpreferencesunit.rsunconditionaljumpcolor
+msgctxt "frmmemviewpreferencesunit.rsunconditionaljumpcolor"
+msgid "Unconditional jump color"
+msgstr ""
+
+#: frmmergepointerscanresultsettingsunit.rscopiesthesourceptrfilestotheworkingfolder
+msgid "Copies the source .ptr.# files to the working folder of the main PTR"
+msgstr ""
+
+#: frmmergepointerscanresultsettingsunit.rslinksdirectlytothepathsofthesourceptrfiles
+msgid ""
+"Links directly to the paths of the source .ptr.# files.\n"
+"Note: The result will be unusable by other systems that do not have the same path layout, until you generate new results\n"
+msgstr ""
+
+#: frmmergepointerscanresultsettingsunit.rsmovesthesourceptrfilestotheworkingfolder
+msgid ""
+"Moves the source .ptr.# files to the working folder of the main PTR\n"
+"Note: This destroys the source\n"
+msgstr ""
+
+#: frmmodifyregistersunit.rsmodifyregisterssat
+msgid "Modify registers(s) at %s"
+msgstr ""
+
+#: frmmodifyregistersunit.rspleasefillinavalidvaluefor
+msgid "Please fill in a valid value for"
+msgstr ""
+
+#: frmpagingunit.rsfailurereadingphysicalmemory
+msgid "failure reading physical memory"
+msgstr ""
+
+#: frmpagingunit.rsnotfound
+msgid "Not found"
+msgstr ""
+
+#: frmpointerrescanconnectdialogunit.rscouldnotberesolved
+msgctxt "frmpointerrescanconnectdialogunit.rscouldnotberesolved"
+msgid " could not be resolved"
+msgstr ""
+
+#: frmpointerrescanconnectdialogunit.rshost
+msgctxt "frmpointerrescanconnectdialogunit.rshost"
+msgid "host:"
+msgstr ""
+
+#: frmpointerscanconnectdialogunit.rshostcouldnotberesolved
+msgid "host: %s could not be resolved"
+msgstr ""
+
+#: frmpointerscanconnectdialogunit.rsuseloadedpointermap
+msgid "Use loaded pointermap:"
+msgstr ""
+
+#: frmprocesswatcherunit.rsconventionalids
+msgid "----Conventional ID's----"
+msgstr ""
+
+#: frmprocesswatcherunit.rsfailedstartingtheprocesswatcher
+msgid "Failed starting the process watcher"
+msgstr ""
+
+#: frmprocesswatcherunit.rsfirstselectaprocess
+msgctxt "frmprocesswatcherunit.rsfirstselectaprocess"
+msgid "First select a process!"
+msgstr ""
+
+#: frmprocesswatcherunit.rsisntavalidprocessid
+msgctxt "frmprocesswatcherunit.rsisntavalidprocessid"
+msgid "%s isn't a valid processID"
+msgstr ""
+
+#: frmprocesswatcherunit.rspeprocess
+msgid "PEPROCESS="
+msgstr ""
+
+#: frmprocesswatcherunit.rsprocessid
+msgid "ProcessID="
+msgstr ""
+
+#: frmprocesswatcherunit.rsprocesswatcherthreaderror
+msgid "processwatcher: thread error:%s"
+msgstr ""
+
+#: frmprocesswatcherunit.rsthreadid
+msgid "ThreadID:"
+msgstr ""
+
+#: frmrescanpointerunit.rsadd
+msgctxt "frmrescanpointerunit.rsadd"
+msgid "Add"
+msgstr "Ajouter"
+
+#: frmrescanpointerunit.rsnotalltheendoffsetshavebeenfilledin
+msgid "Not all the end offsets have been filled in"
+msgstr ""
+
+#: frmrescanpointerunit.rsnotallthestartoffsetshavebeenfilledin
+msgid "Not all the start offsets have been filled in"
+msgstr ""
+
+#: frmrescanpointerunit.rsremove
+msgctxt "frmrescanpointerunit.rsremove"
+msgid "Remove"
+msgstr "Supprimer"
+
+#: frmrescanpointerunit.rsrpentertheipaddressestonotifyexplicitly
+msgctxt "frmrescanpointerunit.rsrpentertheipaddressestonotifyexplicitly"
+msgid "Enter the IP addresses to notify explicitly"
+msgstr ""
+
+#: frmrescanpointerunit.rsrpfirstoffset
+msgid "First offset"
+msgstr "Premier Offset"
+
+#: frmrescanpointerunit.rsrpiplist
+msgctxt "frmrescanpointerunit.rsrpiplist"
+msgid "IP List"
+msgstr "Liste des IP"
+
+#: frmrescanpointerunit.rsrplastoffset
+msgctxt "frmrescanpointerunit.rsrplastoffset"
+msgid "Last offset"
+msgstr "Dernier Offset"
+
+#: frmrescanpointerunit.rsrpthefunction
+msgid "The function %s(base, offsets, target) has not yet been defined. Please define it first"
+msgstr ""
+
+#: frmrescanpointerunit.rsrpusesavedpointermap
+msgid "Use saved pointermap: "
+msgstr "Utiliser une Pointermap sauvegardée : "
+
+#: frmrescanpointerunit.rsrpusesavedpointermap2
+msgctxt "frmrescanpointerunit.rsrpusesavedpointermap2"
+msgid "Use saved pointermap"
+msgstr "Utiliser une Pointermap sauvegardée"
+
+#: frmresumepointerscanunit.rsentertheaddressthisscanshouldlookfor
+msgid "Enter the address this scan should look for"
+msgstr ""
+
+#: frmresumepointerscanunit.rsnewpointermap
+msgid "New pointermap"
+msgstr "Nouvelle Pointermap"
+
+#: frmresumepointerscanunit.rsrpsentertheipaddressestonotifyexplicitly
+msgctxt "frmresumepointerscanunit.rsrpsentertheipaddressestonotifyexplicitly"
+msgid "Enter the IP addresses to notify explicitly"
+msgstr ""
+
+#: frmresumepointerscanunit.rsrpsiplist
+msgctxt "frmresumepointerscanunit.rsrpsiplist"
+msgid "IP List"
+msgstr "Liste des IP"
+
+#: frmresumepointerscanunit.rsrpswasnotfound
+msgid " was not found"
+msgstr " est introuvable"
+
+#: frmsavememoryregionunit.rsisnotavalidaddress
+msgctxt "frmsavememoryregionunit.rsisnotavalidaddress"
+msgid "%s is not a valid address"
+msgstr ""
+
+#: frmsavememoryregionunit.rsnostartaddress
+msgid "If you don't include the header data you'll have to specify the startaddress yourself when loading the file(That means Cheat Engine wont fill in the startaddress text field when loaded for you)"
+msgstr ""
+
+#: frmsavememoryregionunit.rsnotallthememorywasreadablein
+msgid "Not all the memory was readable in"
+msgstr ""
+
+#: frmsavememoryregionunit.rspleaseaddatleastoneaddressregiontothelist
+msgid "Please add at least one address region to the list"
+msgstr ""
+
+#: frmsavesnapshotsunit.rsssareyousureyouwishtothrowawaythesesnapshots
+msgid "Are you sure you wish to throw away these snapshots?"
+msgstr ""
+
+#: frmsnapshothandlerunit.rsshcompare
+msgid "Compare"
+msgstr "Comparer"
+
+#: frmsnapshothandlerunit.rsshdissectandcomparememoryofselectedsnapshots
+msgid "Dissect and compare memory of selected snapshots"
+msgstr ""
+
+#: frmsnapshothandlerunit.rsshdissectmemoryofselectedsnapshot
+msgid "Dissect memory of selected snapshot"
+msgstr ""
+
+#: frmsnapshothandlerunit.rsshfunctions
+msgid " Function(s): "
+msgstr " Fonction(s) : "
+
+#: frmsnapshothandlerunit.rsshlockandaddtostructuredissect
+msgctxt "frmsnapshothandlerunit.rsshlockandaddtostructuredissect"
+msgid "Lock and add to structure dissect"
+msgstr ""
+
+#: frmsnapshothandlerunit.rsshnewwindow
+msgctxt "frmsnapshothandlerunit.rsshnewwindow"
+msgid "<New window>"
+msgstr "<Nouvelle fenêtre>"
+
+#: frmsnapshothandlerunit.rsshselectthestructuredissectwindowyouwishtoaddthisregionto
+msgctxt "frmsnapshothandlerunit.rsshselectthestructuredissectwindowyouwishtoaddthisregionto"
+msgid "Select the structure dissect window you wish to add this region to"
+msgstr ""
+
+#: frmsnapshothandlerunit.rsshthestructureslistisbroken
+msgctxt "frmsnapshothandlerunit.rsshthestructureslistisbroken"
+msgid "The structures list is broken"
+msgstr ""
+
+#: frmsnapshothandlerunit.rsshview
+msgctxt "frmsnapshothandlerunit.rsshview"
+msgid "View"
+msgstr "Vue"
+
+#: frmsortpointerlistunit.rstimeleft
+msgid "Estimated time left"
+msgstr "Temps restant estimé"
+
+#: frmstackviewunit.rslockandaddtostructuredissect
+msgctxt "frmstackviewunit.rslockandaddtostructuredissect"
+msgid "Lock and add to structure dissect"
+msgstr ""
+
+#: frmstackviewunit.rsnewwindow
+msgctxt "frmstackviewunit.rsnewwindow"
+msgid "<New window>"
+msgstr "<Nouvelle fenêtre>"
+
+#: frmstackviewunit.rsselectthestructuredissectwindowyouwishtoaddthisreg
+msgctxt "frmstackviewunit.rsselectthestructuredissectwindowyouwishtoaddthisreg"
+msgid "Select the structure dissect window you wish to add this region to"
+msgstr ""
+
+#: frmstackviewunit.rssvthisstackviewwindowhasallocatedstacksnapshotsetc
+msgid "This stackview window has allocated stack snapshots in the target process. Do you wish to free them?"
+msgstr ""
+
+#: frmstackviewunit.rsthestructureslistisbroken
+msgctxt "frmstackviewunit.rsthestructureslistisbroken"
+msgid "The structures list is broken"
+msgstr ""
+
+#: frmstringmapunit.rsbtnshowlist
+msgctxt "frmstringmapunit.rsbtnshowlist"
+msgid "<<Show list"
+msgstr ""
+
+#: frmstringmapunit.rserror
+msgid "Error="
+msgstr "Erreur = "
+
+#: frmstringmapunit.rsgenerateregexprenginefailed
+msgid "GenerateRegExprEngine failed"
+msgstr ""
+
+#: frmstringmapunit.rsgeneratestringmap
+msgctxt "frmstringmapunit.rsgeneratestringmap"
+msgid "Generate string map"
+msgstr ""
+
+#: frmstringmapunit.rsnoreadablememoryfound
+msgctxt "frmstringmapunit.rsnoreadablememoryfound"
+msgid "No readable memory found"
+msgstr ""
+
+#: frmstringmapunit.rsstop
+msgctxt "frmstringmapunit.rsstop"
+msgid "Stop"
+msgstr "Stop"
+
+#: frmstringmapunit.rsstringcount
+msgid "Stringcount: %s"
+msgstr ""
+
+#: frmstringmapunit.rsunhandledtstringscancrash
+msgid "Unhandled TStringScan crash"
+msgstr ""
+
+#: frmstringpointerscanunit.rsareyousureyo
+msgctxt "frmstringpointerscanunit.rsareyousureyo"
+msgid "Are you sure you wish to start a new scan?"
+msgstr "Voulez-vous vraiment commencer un nouveau Scan ?"
+
+#: frmstringpointerscanunit.rsgeneratedscanning
+msgctxt "frmstringpointerscanunit.rsgeneratedscanning"
+msgid "Generated. Scanning..."
+msgstr "Généré. Scan en cours..."
+
+#: frmstringpointerscanunit.rsgeneratingstringmap
+msgctxt "frmstringpointerscanunit.rsgeneratingstringmap"
+msgid "Generating stringmap"
+msgstr ""
+
+#: frmstringpointerscanunit.rsscan
+msgctxt "frmstringpointerscanunit.rsscan"
+msgid "Scan"
+msgstr "Scanner"
+
+#: frmstringpointerscanunit.rsscanningfoun
+msgctxt "frmstringpointerscanunit.rsscanningfoun"
+msgid "Scanning... Found %s"
+msgstr ""
+
+#: frmstringpointerscanunit.rsspsuaddress
+msgctxt "frmstringpointerscanunit.rsspsuaddress"
+msgid "Address"
+msgstr "Adresse"
+
+#: frmstringpointerscanunit.rsspsuaddress2
+msgctxt "frmstringpointerscanunit.rsspsuaddress2"
+msgid "Address 2"
+msgstr "Adresse 2"
+
+#: frmstringpointerscanunit.rsspsuerrorduringscannoscanresults
+msgctxt "frmstringpointerscanunit.rsspsuerrorduringscannoscanresults"
+msgid "Error during scan. No scanresults available"
+msgstr ""
+
+#: frmstringpointerscanunit.rsspsuexception
+msgctxt "frmstringpointerscanunit.rsspsuexception"
+msgid "Exception:"
+msgstr "Exception :"
+
+#: frmstringpointerscanunit.rsspsufound
+msgctxt "frmstringpointerscanunit.rsspsufound"
+msgid "Found:"
+msgstr "Trouvé :"
+
+#: frmstringpointerscanunit.rsspsufuuuu
+msgctxt "frmstringpointerscanunit.rsspsufuuuu"
+msgid "FUUUU"
+msgstr ""
+
+#: frmstringpointerscanunit.rsspsufuuuuu
+msgctxt "frmstringpointerscanunit.rsspsufuuuuu"
+msgid "FUUUUU"
+msgstr ""
+
+#: frmstringpointerscanunit.rsspsunotyetimplemented
+msgctxt "frmstringpointerscanunit.rsspsunotyetimplemented"
+msgid "Not yet implemented"
+msgstr ""
+
+#: frmstringpointerscanunit.rsspsuoffset
+msgctxt "frmstringpointerscanunit.rsspsuoffset"
+msgid "Offset "
+msgstr "Offset "
+
+#: frmstringpointerscanunit.rsspsurescan
+msgctxt "frmstringpointerscanunit.rsspsurescan"
+msgid "Rescan"
+msgstr "Rescan"
+
+#: frmstringpointerscanunit.rsspsuscandonefound
+msgctxt "frmstringpointerscanunit.rsspsuscandonefound"
+msgid "Scan done! Found "
+msgstr "Scan terminé ! Trouvé"
+
+#: frmstringpointerscanunit.rsstop
+msgctxt "frmstringpointerscanunit.rsstop"
+msgid "Stop"
+msgstr "Stop"
+
+#: frmstringpointerscanunit.rsterminating
+msgctxt "frmstringpointerscanunit.rsterminating"
+msgid "Terminating..."
+msgstr ""
+
+#: frmstringpointerscanunit.rsthisaddressisnotaccessible
+msgctxt "frmstringpointerscanunit.rsthisaddressisnotaccessible"
+msgid "This address is not accessible"
+msgstr ""
+
+#: frmstructurecompareunit.rsareyousureyo
+msgctxt "frmstructurecompareunit.rsareyousureyo"
+msgid "Are you sure you wish to start a new scan?"
+msgstr "Voulez-vous vraiment commencer un nouveau Scan ?"
+
+#: frmstructurecompareunit.rsgeneratedscanning
+msgctxt "frmstructurecompareunit.rsgeneratedscanning"
+msgid "Generated. Scanning..."
+msgstr "Généré. Scan en cours..."
+
+#: frmstructurecompareunit.rsgeneratingstringmap
+msgctxt "frmstructurecompareunit.rsgeneratingstringmap"
+msgid "Generating stringmap"
+msgstr ""
+
+#: frmstructurecompareunit.rsinvalidgroup
+msgid "Group %d address %s (%s) is not valid"
+msgstr ""
+
+#: frmstructurecompareunit.rsmaxaddressesshown
+msgid "Max addresses shown :"
+msgstr ""
+
+#: frmstructurecompareunit.rsmaxreached
+msgid "...<max reached>..."
+msgstr ""
+
+#: frmstructurecompareunit.rssameaddress
+msgid "This will result in 0 results as address %s appears multiple times"
+msgstr ""
+
+#: frmstructurecompareunit.rsscan
+msgctxt "frmstructurecompareunit.rsscan"
+msgid "Scan"
+msgstr "Scanner"
+
+#: frmstructurecompareunit.rsscanningfoun
+msgctxt "frmstructurecompareunit.rsscanningfoun"
+msgid "Scanning... Found %s"
+msgstr ""
+
+#: frmstructurecompareunit.rsspsinvalidstruct
+msgid "Invalid structure pointerfile"
+msgstr ""
+
+#: frmstructurecompareunit.rsspslock
+msgctxt "frmstructurecompareunit.rsspslock"
+msgid "Lock"
+msgstr "Verouiller"
+
+#: frmstructurecompareunit.rsspsneednewce
+msgid "You'll need a newer CE version to open this file"
+msgstr ""
+
+#: frmstructurecompareunit.rsspsnoerror
+msgid "No error"
+msgstr ""
+
+#: frmstructurecompareunit.rsspsuaddress
+msgctxt "frmstructurecompareunit.rsspsuaddress"
+msgid "Address"
+msgstr "Adresse 1"
+
+#: frmstructurecompareunit.rsspsuaddress2
+msgctxt "frmstructurecompareunit.rsspsuaddress2"
+msgid "Address 2"
+msgstr "Adresse 2"
+
+#: frmstructurecompareunit.rsspsuerrorduringscannoscanresults
+msgctxt "frmstructurecompareunit.rsspsuerrorduringscannoscanresults"
+msgid "Error during scan. No scanresults available"
+msgstr ""
+
+#: frmstructurecompareunit.rsspsuexception
+msgctxt "frmstructurecompareunit.rsspsuexception"
+msgid "Exception:"
+msgstr "Exception :"
+
+#: frmstructurecompareunit.rsspsufound
+msgctxt "frmstructurecompareunit.rsspsufound"
+msgid "Found:"
+msgstr "Trouvé :"
+
+#: frmstructurecompareunit.rsspsufuuuu
+msgctxt "frmstructurecompareunit.rsspsufuuuu"
+msgid "FUUUU"
+msgstr ""
+
+#: frmstructurecompareunit.rsspsufuuuuu
+msgctxt "frmstructurecompareunit.rsspsufuuuuu"
+msgid "FUUUUU"
+msgstr ""
+
+#: frmstructurecompareunit.rsspsunlock
+msgid "Unlock (%.8x-%.8x)"
+msgstr ""
+
+#: frmstructurecompareunit.rsspsunotyetimplemented
+msgctxt "frmstructurecompareunit.rsspsunotyetimplemented"
+msgid "Not yet implemented"
+msgstr ""
+
+#: frmstructurecompareunit.rsspsuoffset
+msgctxt "frmstructurecompareunit.rsspsuoffset"
+msgid "Offset "
+msgstr "Offset "
+
+#: frmstructurecompareunit.rsspsurescan
+msgctxt "frmstructurecompareunit.rsspsurescan"
+msgid "Rescan"
+msgstr "Rescan"
+
+#: frmstructurecompareunit.rsspsuscandonefound
+msgctxt "frmstructurecompareunit.rsspsuscandonefound"
+msgid "Scan done! Found "
+msgstr ""
+
+#: frmstructurecompareunit.rsstop
+msgctxt "frmstructurecompareunit.rsstop"
+msgid "Stop"
+msgstr "Stop"
+
+#: frmstructurecompareunit.rsstructurecompare
+msgid "Structure Compare"
+msgstr ""
+
+#: frmstructurecompareunit.rsterminating
+msgctxt "frmstructurecompareunit.rsterminating"
+msgid "Terminating..."
+msgstr ""
+
+#: frmstructurecompareunit.rsthisaddressisnotaccessible
+msgctxt "frmstructurecompareunit.rsthisaddressisnotaccessible"
+msgid "This address is not accessible"
+msgstr ""
+
+#: frmstructurecompareunit.rstoosmallalign
+msgid "Alignsize must be greater than 0"
+msgstr ""
+
+#: frmstructurelinkerunit.strisnotavalidaddress
+msgctxt "frmstructurelinkerunit.strisnotavalidaddress"
+msgid "%s is not a valid address"
+msgstr ""
+
+#: frmstructures2elementinfounit.rss2eiifyoucontinuetheoldlocallydefinedtype
+msgid "If you continue the old locally defined type %s will be deleted. Continue? (Tip: You can make this type into a global type so it can be re-used over again)"
+msgstr ""
+
+#: frmstructures2elementinfounit.rss2eilocalstruct
+msgid "Local struct:"
+msgstr ""
+
+#: frmstructuresconfigunit.rshighlighted
+msgctxt "frmstructuresconfigunit.rshighlighted"
+msgid "Highlighted"
+msgstr ""
+
+#: frmstructuresconfigunit.rsnormal
+msgctxt "frmstructuresconfigunit.rsnormal"
+msgid "Normal"
+msgstr "Normal"
+
+#: frmstructuresnewstructureunit.rsguessfieldtypes
+msgid "Guess Field Types"
+msgstr ""
+
+#: frmstructuresnewstructureunit.rssize
+msgctxt "frmstructuresnewstructureunit.rssize"
+msgid "Size:"
+msgstr "Taille :"
+
+#: frmstructuresnewstructureunit.rsstructurename
+msgid "Structure Name:"
+msgstr ""
+
+#: frmstructuresnewstructureunit.rsuseautotypesifavailable
+msgid "Use Auto Types If Available"
+msgstr ""
+
+#: frmstructuresnewstructureunit.rswindowtitle
+msgid "New Structure"
+msgstr ""
+
+#: frmthreadlistunit.rscouldntobtaincontext
+msgid "Couldn't obtain context"
+msgstr ""
+
+#: frmthreadlistunit.rscouldntopenhandle
+msgid "Couldn't open handle"
+msgstr ""
+
+#: frmthreadlistunit.rscurrent
+msgid "Current"
+msgstr ""
+
+#: frmthreadlistunit.rspleasefirstattachthedebuggertothisprocess
+msgid "Please first attach the debugger to this process"
+msgstr ""
+
+#: frmthreadlistunit.rstl1bytes
+msgid "1 byte"
+msgstr ""
+
+#: frmthreadlistunit.rstl2bytes
+msgid "2 bytes"
+msgstr "2 bytes"
+
+#: frmthreadlistunit.rstl4bytes
+msgid "4 bytes"
+msgstr "4 bytes"
+
+#: frmthreadlistunit.rstl8bytes
+msgid "8 bytes"
+msgstr "8 bytes"
+
+#: frmthreadlistunit.rstlaccess
+msgid "Access"
+msgstr "Accès"
+
+#: frmthreadlistunit.rstlchangevalue
+msgctxt "frmthreadlistunit.rstlchangevalue"
+msgid "Change value"
+msgstr "Changer la valeur"
+
+#: frmthreadlistunit.rstlexecute
+msgctxt "frmthreadlistunit.rstlexecute"
+msgid "Execute"
+msgstr "Exécuter"
+
+#: frmthreadlistunit.rstlfailederrorcode
+msgid "failed. Errorcode="
+msgstr ""
+
+#: frmthreadlistunit.rstlio
+msgid "I/O"
+msgstr ""
+
+#: frmthreadlistunit.rstlwhatshouldthenewvalueofthisregisterbe
+msgid "What should the new value of this register be?"
+msgstr ""
+
+#: frmthreadlistunit.rstlwrite
+msgid "Write"
+msgstr ""
+
+#: frmtracerunit.rssearch
+msgctxt "frmtracerunit.rssearch"
+msgid "Search"
+msgstr "Rechercher"
+
+#: frmtracerunit.rstypetheluaconditionyouwanttosearchforexampleeax0x1
+msgid "Type the (LUA) condition you want to search for (Example: EAX==0x1234)"
+msgstr ""
+
+#: frmultimap2unit.rscantbeparsed
+msgid "\" can't be parsed"
+msgstr ""
+
+#: frmultimap2unit.rsclosingwillfreeallcollecteddata
+msgid "Closing will free all collected data. Continue? (Tip: You can minimize this window instead)"
+msgstr ""
+
+#: frmultimap2unit.rscpu
+msgid "CPU"
+msgstr "CPU"
+
+#: frmultimap2unit.rsdasherror
+msgid " -error"
+msgstr ""
+
+#: frmultimap2unit.rsdoesntexistandcantbecreated
+msgid " does not exist and can not be created"
+msgstr ""
+
+#: frmultimap2unit.rsfailureloadinglibipt
+msgid "Failure loading libipt"
+msgstr ""
+
+#: frmultimap2unit.rsfirstopenaprocess
+msgid "First open a process"
+msgstr ""
+
+#: frmultimap2unit.rsforsomeweirdreason
+msgid "For some weird reason \""
+msgstr ""
+
+#: frmultimap2unit.rsinstructionpointerlistsize
+msgid "Instruction Pointer List Size:"
+msgstr ""
+
+#: frmultimap2unit.rsisaninvalidrange
+msgid " is an invalid range"
+msgstr ""
+
+#: frmultimap2unit.rsmaxamountofrangesreachedforyourcpu
+msgid "Max amount of ranges reached for your CPU. Clear one first"
+msgstr ""
+
+#: frmultimap2unit.rsmodulelist
+msgid "Module list"
+msgstr "Liste des modules"
+
+#: frmultimap2unit.rsonlyforintelcpus
+msgid "Sorry, but Ultimap2 only works on Intel CPU's"
+msgstr ""
+
+#: frmultimap2unit.rspaused
+msgid "Paused"
+msgstr "Pause"
+
+#: frmultimap2unit.rsprocessingdata
+msgid ""
+"Processing\n"
+"Data\n"
+msgstr ""
+
+#: frmultimap2unit.rsputbetweentomarsasanautostoprange
+msgid "(Put between *'s to mark as an auto stop range)"
+msgstr ""
+
+#: frmultimap2unit.rsrangesemptyforallmax
+msgid "Ranges: (Empty for all) (Max %d)"
+msgstr ""
+
+#: frmultimap2unit.rsrangesneeddbvminwindows10
+msgid "To use ranges with Ultimap2 in windows 10, you must hide the fact that you use ranges from it. To be able to do that DBVM needs to be running. There is a chance running DBVM can crash your system and make you lose your data(So don't forget to save first). Do you want to run DBVM?"
+msgstr ""
+
+#: frmultimap2unit.rsrecording2
+msgid "Recording"
+msgstr ""
+
+#: frmultimap2unit.rsselectamoduleorgiveyourownrange
+msgid "Select a module or give your own range"
+msgstr ""
+
+#: frmultimap2unit.rssorrybutyourcpudoesntseemtobeabletosetatargetprocess
+msgid "Sorry, but your CPU doesn't seem to be able to set a target PROCESS"
+msgstr ""
+
+#: frmultimap2unit.rssorrybutyourcpuseemstobeleackingiptfeature
+msgid "Sorry, but your CPU seems to be lacking the Intel Processor Trace feature which Ultimap2 makes use of"
+msgstr ""
+
+#: frmultimap2unit.rssorrybutyourcpusimplementationoftheiptfeatureistooold
+msgid "Sorry, but your CPU's implementation of the Intel Processor Trace feature is too old. Ultimap uses multiple ToPA entries"
+msgstr ""
+
+#: frmultimap2unit.rstargetadifferentprocess
+msgid "Target a different process. Ultimap2 will suspend the target when the buffer is full, and suspending the thing that empties the buffer is not a good idea"
+msgstr ""
+
+#: frmultimap2unit.rstherangeyouhaveprovidedisanexitrangebeaware
+msgid "The range you have provided is an 'Exit' range. Be aware that this doesn't mean it will always stop at that range, or that the result is what you expect. A context switch to another thread between the start and stop can add a lot of other data"
+msgstr ""
+
+#: frmultimap2unit.rsthesizehastobe12kborhigher
+msgid "The size has to be 12KB or higher"
+msgstr ""
+
+#: frmultimapunit.rsremovehotkey
+msgid "Remove hotkey (%s)"
+msgstr ""
+
+#: frmultimapunit.rsuuerrorduringmap
+msgid "Error during map"
+msgstr ""
+
+#: frmultimapunit.rsuulastfilterresults
+msgid "Last filter results: filtered out %d left: %d"
+msgstr ""
+
+#: frmultimapunit.rsuunew
+msgid " new="
+msgstr ""
+
+#: frmultimapunit.rsuuold
+msgid "old="
+msgstr ""
+
+#: frmultimapunit.rsuupause
+msgctxt "frmultimapunit.rsuupause"
+msgid "Pause"
+msgstr "Pause"
+
+#: frmultimapunit.rsuupleaserunthe64bitversionofcheatenginetomakeuseofthisfeature
+msgid "Please run the 64-bit version of Cheat Engine to make use of this feature"
+msgstr ""
+
+#: frmultimapunit.rsuuresume
+msgctxt "frmultimapunit.rsuuresume"
+msgid "Resume"
+msgstr ""
+
+#: frmultimapunit.rsuusorrybutthisfeatureisonlyavailableonintelcpus
+msgid "Sorry, but this feature is only available on intel cpu's"
+msgstr ""
+
+#: frmultimapunit.rsuuthemaximumnumberofworkersis64
+msgid "The maximum number of workers is 64"
+msgstr ""
+
+#: frmultimapunit.rsuuthisfunctionneedsatleast200bytesfortheheaderofthebuffer
+msgid "This function needs at least 200 bytes for the header of the buffer"
+msgstr ""
+
+#: frmultimapunit.rsuuthiswillbringbackallfoundinstructions
+msgid "This will bring back all found instructions. Continue?"
+msgstr ""
+
+#: frmultimapunit.rsuuthiswillresetthecallcountoffunctionbackto0
+msgid "This will reset the callcount of functions back to 0. This can not be undone. Continue?"
+msgstr ""
+
+#: frmwatchlistunit.rsunparsable
+msgid "<Unparsable>"
+msgstr ""
+
+#: frmwatchlistunit.rsunreadable
+msgid "<Unreadable>"
+msgstr ""
+
+#: gnuassembler.rsbyteswhile
+msgid " bytes while "
+msgstr ""
+
+#: gnuassembler.rsconfigureavalidbinutilssetupfirst
+msgid "Configure a valid binutils setup first"
+msgstr ""
+
+#: gnuassembler.rscouldnotbefound
+msgctxt "gnuassembler.rscouldnotbefound"
+msgid " could not be found"
+msgstr ""
+
+#: gnuassembler.rsdoesntseemtobeavalidelffile
+msgid " doesn't seem to be a valid ELF file"
+msgstr ""
+
+#: gnuassembler.rsgnuassemblererror
+msgid "GNU Assembler error"
+msgstr ""
+
+#: gnuassembler.rsinvalidelffile
+msgid "Invalid ELF file"
+msgstr ""
+
+#: gnuassembler.rsnobinutilsinstalled
+msgid "No binutils installed"
+msgstr ""
+
+#: gnuassembler.rstheaobfor
+msgid "The AOB for "
+msgstr ""
+
+#: gnuassembler.rstheproperformatofasectionis
+msgid "The proper format of .asection is : .asection <name> <preferedaddress>"
+msgstr ""
+
+#: gnuassembler.rstheproperformatofmsectionis
+msgid "The proper format of .msection is : .msection <name> <address> <optional expected size>"
+msgstr ""
+
+#: gnuassembler.rstook
+msgid " took "
+msgstr ""
+
+#: gnuassembler.rswhereexpected
+msgid " where expected"
+msgstr ""
+
+#: groupscancommandparser.rsgscpcustomtypenotrecognized
+msgid "Custom type not recognized: "
+msgstr ""
+
+#: groupscancommandparser.rsgscpinvalidgroupscancommand
+msgid "Invalid groupscan command"
+msgstr ""
+
+#: groupscancommandparser.rsgscpwildcardsemptyarenotallowedforoutoforderscans
+msgid "Wildcards/Empty are not allowed for Out of Order scans"
+msgstr ""
+
+#: guisafecriticalsection.rscriticalsectionleavewithoutenter
+msgid "Criticalsection leave without enter"
+msgstr ""
+
+#: hexviewunit.rsaddress
+msgctxt "hexviewunit.rsaddress"
+msgid "address"
+msgstr ""
+
+#: hexviewunit.rsbase
+msgid "Base"
+msgstr ""
+
+#: hexviewunit.rsbigfuckingerror
+msgid "Big fucking error"
+msgstr ""
+
+#: hexviewunit.rsbytes
+msgctxt "hexviewunit.rsbytes"
+msgid "bytes"
+msgstr ""
+
+#: hexviewunit.rsexecute
+msgctxt "hexviewunit.rsexecute"
+msgid "Execute"
+msgstr "Exécuter"
+
+#: hexviewunit.rsexecutereadonly
+msgid "Execute/Read only"
+msgstr ""
+
+#: hexviewunit.rsexecutereadwrite
+msgid "Execute/Read/Write"
+msgstr ""
+
+#: hexviewunit.rsexecutewritecopy
+msgid "Execute/Write Copy"
+msgstr ""
+
+#: hexviewunit.rsguarded
+msgid "Guarded"
+msgstr ""
+
+#: hexviewunit.rsinvalidbytesperseperatorvalue
+msgid "Invalid BytesPerSeperator value:%s"
+msgstr ""
+
+#: hexviewunit.rsmodule
+msgid "Module"
+msgstr ""
+
+#: hexviewunit.rsnoaccess
+msgctxt "hexviewunit.rsnoaccess"
+msgid "No Access"
+msgstr ""
+
+#: hexviewunit.rsnotcached
+msgid "Not Cached"
+msgstr ""
+
+#: hexviewunit.rsphysicaladdress
+msgid "Physical Address"
+msgstr ""
+
+#: hexviewunit.rsprotect
+msgctxt "hexviewunit.rsprotect"
+msgid "Protect"
+msgstr ""
+
+#: hexviewunit.rsreadonly
+msgid "Read Only"
+msgstr ""
+
+#: hexviewunit.rsreadwrite
+msgid "Read/Write"
+msgstr ""
+
+#: hexviewunit.rssize
+msgctxt "hexviewunit.rssize"
+msgid "Size"
+msgstr "Taille"
+
+#: hexviewunit.rsthislookslikeanarrayofbytedoyouwanttoinputitasahex
+msgid "This looks like an array of byte. Do you want to input it as a hexadecimal string?"
+msgstr ""
+
+#: hexviewunit.rsthislookslikeanormalstringdoyouwanttoinputitasastr
+msgid "This looks like a normal string. Do you want to input it as a string ?"
+msgstr ""
+
+#: hexviewunit.rswritecopy
+msgctxt "hexviewunit.rswritecopy"
+msgid "Write Copy"
+msgstr ""
+
+#: hotkeys.rsdecreasevaluewith
+msgid "Decrease value with:"
+msgstr ""
+
+#: hotkeys.rsdefaultactivated
+msgid "%s Activated"
+msgstr "%s Activaté"
+
+#: hotkeys.rsdefaultdeactivated
+msgid "%s Deactivated"
+msgstr ""
+
+#: hotkeys.rsdisablescript
+msgid "Disable script"
+msgstr ""
+
+#: hotkeys.rsenablescript
+msgid "Enable script"
+msgstr ""
+
+#: hotkeys.rsfreeze
+msgid "Freeze"
+msgstr ""
+
+#: hotkeys.rshotkeyid
+msgid "Hotkey ID=%s"
+msgstr ""
+
+#: hotkeys.rsincreasevaluewith
+msgid "Increase value with:"
+msgstr ""
+
+#: hotkeys.rssetvalueto
+msgid "Set value to:"
+msgstr ""
+
+#: hotkeys.rsspeaktext
+msgid "Speak Text"
+msgstr ""
+
+#: hotkeys.rstexttospeechhint
+msgid ""
+"The text to speak\n"
+"%s = The description field of the memory record\n"
+"%s = The description of the hotkey\n"
+msgstr ""
+
+#: hotkeys.rstogglefreeze
+msgctxt "hotkeys.rstogglefreeze"
+msgid "Toggle freeze"
+msgstr ""
+
+#: hotkeys.rstogglefreezeandallowdecrease
+msgid "Toggle freeze and allow decrease"
+msgstr ""
+
+#: hotkeys.rstogglefreezeandallowincrease
+msgid "Toggle freeze and allow increase"
+msgstr ""
+
+#: hotkeys.rstogglescript
+msgid "Toggle script"
+msgstr ""
+
+#: hotkeys.rsunfreeze
+msgid "Unfreeze"
+msgstr ""
+
+#: iconstuff.rsfailureopen
+msgid "Failure opening "
+msgstr ""
+
+#: iconstuff.rsiconpicker
+msgid "Icon picker"
+msgstr ""
+
+#: iconstuff.rsnoiconfound
+msgid "No icon found in this file"
+msgstr ""
+
+#: iconstuff.rsunhandledext
+msgid "Unhandled file extension"
+msgstr ""
+
+#: kerneldebuggerinterface.rsdbkdebug_startdebuggingfailed
+msgid "DBKDebug_StartDebugging failed"
+msgstr ""
+
+#: luacaller.rsautoassemblercallbackluafunctionerror
+msgid "AutoAssemblerCallback: Lua Function error("
+msgstr ""
+
+#: luacaller.rsisnotyetsupported
+msgctxt "luacaller.rsisnotyetsupported"
+msgid " is not yet supported"
+msgstr ""
+
+#: luacaller.rsstructuredissecteventluafunctionerror
+msgid "StructureDissectEvent: Lua Function error("
+msgstr ""
+
+#: luacaller.rsthistypeofmethod
+msgctxt "luacaller.rsthistypeofmethod"
+msgid "This type of method:"
+msgstr ""
+
+#: luaclass.rsinvalidclassobject
+msgid "Invalid class object"
+msgstr ""
+
+#: luadissectcode.rscouldnotbefound
+msgctxt "luadissectcode.rscouldnotbefound"
+msgid " could not be found"
+msgstr ""
+
+#: luadissectcode.rsinvalidparametersfordissect
+msgid "Invalid parameters for dissect"
+msgstr ""
+
+#: luadissectcode.rsthemodulenamed
+msgid "The module named "
+msgstr ""
+
+#: luaform.rsthegivenformisnotcompatible
+msgid "The given form is not compatible. Formclass="
+msgstr ""
+
+#: luafoundlist.rscreatefoundlistneedsamemscanobjectasparameter
+msgid "createfoundlist needs a memscan object as parameter"
+msgstr ""
+
+#: luahandler.rscheatengineisbeingafag
+msgid "Cheatengine is being a fag"
+msgstr ""
+
+#: luahandler.rsconditionalbreakpointerror
+msgid "Conditional breakpoint error"
+msgstr ""
+
+#: luahandler.rscreatememscanneedsaprogressbarornil
+msgid "createMemScan needs a progressbar or nil. "
+msgstr ""
+
+#: luahandler.rsdeallocatesharedmemoryisnotimplemented
+msgid "deallocateSharedMemory is not implemented (It's not even in the list of available functions)"
+msgstr ""
+
+#: luahandler.rsdebugsetbreakpointneedsatleastanaddress
+msgid "debug_setBreakpoint needs at least an address"
+msgstr ""
+
+#: luahandler.rserror
+msgid "Error:"
+msgstr ""
+
+#: luahandler.rserror2
+msgid " error:"
+msgstr ""
+
+#: luahandler.rserror3
+msgid " error"
+msgstr ""
+
+#: luahandler.rsgetprocesslisttheprovidedlistobjectisnotvalid
+msgid "getProcessList: the provided List object is not valid"
+msgstr ""
+
+#: luahandler.rsgetthreadlisttheprovidedlistobjectisnotvalid
+msgid "getThreadlist: the provided List object is not valid"
+msgstr ""
+
+#: luahandler.rsincorrectnumberofparameters
+msgid "Incorrect number of parameters"
+msgstr ""
+
+#: luahandler.rsinvalidfloat
+msgid "Invalid floating point string:%s"
+msgstr ""
+
+#: luahandler.rsinvalidint
+msgid "Invalid integer:%s"
+msgstr ""
+
+#: luahandler.rsisnotaprogressbar
+msgid " is not a progressbar"
+msgstr ""
+
+#: luahandler.rsluapanic
+msgid "LUA panic!"
+msgstr ""
+
+#: luahandler.rslua_doscriptwasnotcalledromthemainthread
+msgid "LUA_DoScript was not called from the main thread"
+msgstr ""
+
+#: luahandler.rsmainluaerror
+msgid "main.lua error:"
+msgstr ""
+
+#: luahandler.rsmainluaerror2
+msgid "main.lua error"
+msgstr ""
+
+#: luahandler.rsnonmainthreadluaerror
+msgid "Lua error in a secondary thread"
+msgstr ""
+
+#: luahandler.rsnumberrequired
+msgid "Number required"
+msgstr ""
+
+#: luahandler.rsplaysoundtheparametermustbeatablefileoramemorystream
+msgid "playSound: The parameter must be a table file or a memory stream. Nothing else"
+msgstr ""
+
+#: luahandler.rspluginaddress
+msgctxt "luahandler.rspluginaddress"
+msgid "Plugin Address"
+msgstr ""
+
+#: luahandler.rsthistypeisnotsupportedhere
+msgid "This type is not supported here"
+msgstr ""
+
+#: luahandler.rsundefinedluaerror
+msgid "Undefined lua error"
+msgstr ""
+
+#: luamemscan.rsnotallparametershavebeenprovided
+msgid "Not all parameters have been provided"
+msgstr ""
+
+#: luaobject.rsisnotyetsupported
+msgctxt "luaobject.rsisnotyetsupported"
+msgid " is not yet supported"
+msgstr ""
+
+#: luaobject.rsthisisaninvalidclassormethodproperty
+msgid "This is an invalid class or method property"
+msgstr ""
+
+#: luaobject.rsthistypeofmethod
+msgctxt "luaobject.rsthistypeofmethod"
+msgid "This type of method:"
+msgstr ""
+
+#: luastructurefrm.rsgroup1
+msgctxt "luastructurefrm.rsgroup1"
+msgid "Group 1"
+msgstr ""
+
+#: luastructurefrm.rsgroupd
+msgid "Group %d"
+msgstr ""
+
+#: luasyntax.syns_attrluamstring
+msgid "LuaMString"
+msgstr ""
+
+#: luasyntax.syns_attrnumber
+msgid "Numbers"
+msgstr ""
+
+#: luasyntax.syns_filterlua
+msgid "Lua Files (*.lua, *.lpr)|*.lua;*.lpr"
+msgstr ""
+
+#: luasyntax.syns_langlua
+msgctxt "luasyntax.syns_langlua"
+msgid "Lua"
+msgstr ""
+
+#: luatablefile.rscreatetablefilerequiresatleastoneparameter
+msgid "createTableFile requires at least one parameter"
+msgstr ""
+
+#: luatablefile.rserrorraisedwithmessage
+msgid " error raised with message: "
+msgstr ""
+
+#: luatablefile.rstabledileentryalreadyexistsforfilename
+msgid "Table file entry already exists for filename: "
+msgstr ""
+
+#: luathread.rserrorinnativethreadcalled
+msgid "Error in native thread called "
+msgstr ""
+
+#: luathread.rsinnativecode
+msgid " in native code:"
+msgstr ""
+
+#: luathread.rsinvalidfirstparameterforcreatenativethread
+msgid "Invalid first parameter for createNativeThread"
+msgstr ""
+
+#: lua_server.rsalreadyexists
+msgid " already exists"
+msgstr ""
+
+#: lua_server.rsaluaserverwiththename
+msgid "A luaserver with the name "
+msgstr ""
+
+#: mainunit.rsand
+msgctxt "mainunit.rsand"
+msgid "and"
+msgstr "et"
+
+#: mainunit.rsaprilfools
+msgid "April fools!!!!"
+msgstr ""
+
+#: mainunit.rsareyousureyouwanttodelete
+msgctxt "mainunit.rsareyousureyouwanttodelete"
+msgid "Are you sure you want to delete %s?"
+msgstr ""
+
+#: mainunit.rsareyousureyouwanttodeletethisform
+msgid "Are you sure you want to delete this form?"
+msgstr ""
+
+#: mainunit.rsareyousureyouwanttoerasethedatainthecurrenttable
+msgid "Are you sure you want to erase the data in the current table?"
+msgstr ""
+
+#: mainunit.rsatleastxx
+msgid "at least xx%"
+msgstr ""
+
+#: mainunit.rsautoassembleedit
+msgid "Auto Assemble edit: %s"
+msgstr ""
+
+#: mainunit.rsbetween
+msgid "between %"
+msgstr ""
+
+#: mainunit.rsbringscheatenginetofront
+msgid "brings Cheat Engine to front"
+msgstr ""
+
+#: mainunit.rsbusy
+msgid "<busy>"
+msgstr ""
+
+#: mainunit.rscancel
+msgctxt "mainunit.rscancel"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: mainunit.rsceerror
+msgid "CE Error:"
+msgstr ""
+
+#: mainunit.rschangevalue
+msgctxt "mainunit.rschangevalue"
+msgid "Change value"
+msgstr "Changer la valeur"
+
+#: mainunit.rscheatengine
+msgctxt "mainunit.rscheatengine"
+msgid "Cheat Engine"
+msgstr ""
+
+#: mainunit.rschooselanguage
+msgid "Which language do you wish to use?"
+msgstr ""
+
+#: mainunit.rscomparingto
+msgid "Comparing to %s"
+msgstr ""
+
+#: mainunit.rscomparingtof
+msgid "Comparing to first scan results"
+msgstr ""
+
+#: mainunit.rscurrentprocess
+msgid "Current process"
+msgstr ""
+
+#: mainunit.rscustomluatype
+msgid "Custom LUA type"
+msgstr ""
+
+#: mainunit.rscustomtypename
+msgid "Custom Type Name"
+msgstr ""
+
+#: mainunit.rsdecimal
+msgctxt "mainunit.rsdecimal"
+msgid "Decimal"
+msgstr "Décimal"
+
+#: mainunit.rsdelete
+msgctxt "mainunit.rsdelete"
+msgid "Delete"
+msgstr "Supprimer"
+
+#: mainunit.rsdoyouwanttogotothecheatenginewebsite
+msgid "Do you want to go to the Cheat Engine website?"
+msgstr ""
+
+#: mainunit.rsdoyouwanttoprotectthistrainerfilefromediting
+msgid "Do you want to protect this trainer file from editing?"
+msgstr ""
+
+#: mainunit.rsdoyouwishtomergethecurrenttablewiththistable
+msgid "Do you wish to merge the current table with this table?"
+msgstr ""
+
+#: mainunit.rsedit
+msgctxt "mainunit.rsedit"
+msgid "Edit"
+msgstr "Modifier"
+
+#: mainunit.rseditaddresses
+msgid "Edit addresses"
+msgstr "Modifier les adresses"
+
+#: mainunit.rsexpired
+msgid "EXPIRED"
+msgstr ""
+
+#: mainunit.rsfailedtoload
+msgid "failed to load"
+msgstr ""
+
+#: mainunit.rsfailuresettingthecreateglobalprivilege
+msgid "Failure setting the CreateGlobal privilege."
+msgstr ""
+
+#: mainunit.rsfailuresettingthedebugprivilege
+msgid "Failure setting the debug privilege. Debugging may be limited."
+msgstr ""
+
+#: mainunit.rsfailuresettingtheloaddriverprivilege
+msgid "Failure setting the load driver privilege. Debugging may be limited."
+msgstr ""
+
+#: mainunit.rsfailuresettingthesetcbprivilegeprivilege
+msgid "Failure setting the SeTcbPrivilege privilege. Debugging may be limited."
+msgstr ""
+
+#: mainunit.rsfileinuse
+msgid "<File in use>"
+msgstr ""
+
+#: mainunit.rsfindoutwhataccessesthispointer
+msgid "Find out what accesses this pointer"
+msgstr ""
+
+#: mainunit.rsfindoutwhatwritesthispointer
+msgid "Find out what writes this pointer"
+msgstr ""
+
+#: mainunit.rsfindwhataccessestheaddresspointedatbythispointer
+msgid "Find what accesses the address pointed at by this pointer"
+msgstr ""
+
+#: mainunit.rsfindwhatwritestheaddresspointedatbythispointer
+msgid "Find what writes the address pointed at by this pointer"
+msgstr ""
+
+#: mainunit.rsforcetermination
+msgid "Force termination"
+msgstr ""
+
+#: mainunit.rsgivethenewfilename
+msgid "Give the new filename"
+msgstr ""
+
+#: mainunit.rsgivethenewvaluefortheselectedaddresses
+msgid "Give the new value for the selected address(es)"
+msgstr ""
+
+#: mainunit.rsgroup
+msgid "Group %s"
+msgstr ""
+
+#: mainunit.rsgroups
+msgid "Groups"
+msgstr ""
+
+#: mainunit.rsgroupscandatainvalid
+msgid "groupscan data invalid"
+msgstr ""
+
+#: mainunit.rsgroupscanresultwithnogroupscanparser
+msgid "Groupscan result with no groupscanparser"
+msgstr ""
+
+#: mainunit.rsheight
+msgid " , height="
+msgstr ""
+
+#: mainunit.rshex
+msgctxt "mainunit.rshex"
+msgid "Hex"
+msgstr "Hex"
+
+#: mainunit.rshexadecimal
+msgctxt "mainunit.rshexadecimal"
+msgid "Hexadecimal"
+msgstr "Héxadécimal"
+
+#: mainunit.rshrmpfbecauseiminagoodmoodillletyougothistimebutdon
+msgid "Hrmpf... Because I'm in a good mood i'll let you go this time. But don't do it again you filthy pirate"
+msgstr ""
+
+#: mainunit.rsinvalidscanfolder
+msgid "%s is not accessible like it should.  Please configure a proper location in the settings"
+msgstr ""
+
+#: mainunit.rsinvalidstartaddress
+msgid "Invalid start address: %s"
+msgstr "Adresse de départ invalide : %s"
+
+#: mainunit.rsinvalidstopaddress
+msgid "Invalid stop address: %s"
+msgstr ""
+
+#: mainunit.rsisnotavalidspeed
+msgid "%s is not a valid speed"
+msgstr ""
+
+#: mainunit.rsisnotavalidx
+msgid "%s is not a valid xml name"
+msgstr ""
+
+#: mainunit.rslanguage
+msgid "Language"
+msgstr ""
+
+#: mainunit.rslicenseexpired
+msgid "Your license to use Cheat Engine has expired. You can buy a license to use cheat engine for 1 month for $200, 6 months for only $1000 and for 1 year for only $1800. If you don't renew your license Cheat Engine will be severely limited in it's abilities. (e.g: Next scan has been disabled)"
+msgstr ""
+
+#: mainunit.rsloadtheassociatedtable
+msgid "Load the associated table? (%s)"
+msgstr ""
+
+#: mainunit.rsluascriptcheattable
+msgid "Lua script: Cheat Table"
+msgstr ""
+
+#: mainunit.rsmugenerategroupscancommand
+msgctxt "mainunit.rsmugenerategroupscancommand"
+msgid "Generate groupscan command"
+msgstr ""
+
+#: mainunit.rsnone
+msgid "<none>"
+msgstr ""
+
+#: mainunit.rsoverlay
+msgid "overlay "
+msgstr ""
+
+#: mainunit.rspart
+msgid " part "
+msgstr ""
+
+#: mainunit.rsprevious
+msgctxt "mainunit.rsprevious"
+msgid "Previous"
+msgstr "Précédent"
+
+#: mainunit.rsprocessing
+msgid "<Processing>"
+msgstr ""
+
+#: mainunit.rsremoveselectedaddress
+msgid "Remove selected address"
+msgstr "Supprimer l'adresse sélectionnée"
+
+#: mainunit.rsremoveselectedaddresses
+msgctxt "mainunit.rsremoveselectedaddresses"
+msgid "Remove selected addresses"
+msgstr "Supprimer les adresses sélectionnées"
+
+#: mainunit.rsrename
+msgctxt "mainunit.rsrename"
+msgid "Rename"
+msgstr "Renommer"
+
+#: mainunit.rsrenamefile
+msgid "Rename file"
+msgstr "Renommer le fichier"
+
+#: mainunit.rsrestoreandshow
+msgid "Restore and show"
+msgstr ""
+
+#: mainunit.rssaved
+msgid "Saved"
+msgstr "Sauvegardé"
+
+#: mainunit.rssavedscanresults
+msgid "Saved scan results"
+msgstr "Résultats de Scan sauvegardés"
+
+#: mainunit.rssavescanresults
+msgid "Save scan results"
+msgstr "Sauvegarder les résultats de Scan"
+
+#: mainunit.rssavetodisk
+msgctxt "mainunit.rssavetodisk"
+msgid "Save to disk"
+msgstr "Sauvegarder vers le disque dut"
+
+#: mainunit.rsscan
+msgctxt "mainunit.rsscan"
+msgid "Scan"
+msgstr "Scanner"
+
+#: mainunit.rsscanerror
+msgid "Scan error:%s"
+msgstr ""
+
+#: mainunit.rsscanresult
+msgid "Scanresult"
+msgstr ""
+
+#: mainunit.rsselectthesavedscanresultfromthelistbelow
+msgid "Select the saved scan result from the list below"
+msgstr ""
+
+#: mainunit.rssetchangehotkeys
+msgid "Set/Change hotkeys"
+msgstr "Assigner/Changer les raccourcis"
+
+#: mainunit.rssethotkeys
+msgctxt "mainunit.rssethotkeys"
+msgid "Set hotkeys"
+msgstr "Assigner des raccourcis"
+
+#: mainunit.rsshowasbinary
+msgctxt "mainunit.rsshowasbinary"
+msgid "Show as binary"
+msgstr "Afficher en Binaire"
+
+#: mainunit.rsshowasdecimal
+msgid "Show as decimal"
+msgstr "Afficher en Décimal"
+
+#: mainunit.rsshowashexadecimal
+msgctxt "mainunit.rsshowashexadecimal"
+msgid "Show as hexadecimal"
+msgstr "Afficher en Héxadécimal"
+
+#: mainunit.rsshown
+msgid "shown"
+msgstr ""
+
+#: mainunit.rsterminatingscan
+msgid "Terminating scan..."
+msgstr ""
+
+#: mainunit.rsthankyoufortryingoutcheatenginebecauseithasexpired
+msgid "Thank you for trying out Cheat Engine. Because it has expired Cheat Engine will now close. Is that ok with you?"
+msgstr ""
+
+#: mainunit.rstheprocessisntfullyopenedindicatingainvalidprocess
+msgid "The process isn't fully opened. Indicating a invalid ProcessID. You still want to find out the EPROCESS? (BSOD is possible)"
+msgstr ""
+
+#: mainunit.rsthereareoneormoreautoassemblerentriesorcodechanges
+msgid "There are one or more auto assembler entries or code changes enabled in this table. Do you want them disabled? (without executing the disable part)"
+msgstr ""
+
+#: mainunit.rstherecordwithdescriptionhasasinterpretableaddresst
+msgid "The record with description '%s' has as interpretable address '%s'. The recalculation will change it to %s. Do you want to edit it to the new address?"
+msgstr ""
+
+#: mainunit.rsthisbuttonwillforcecancelascanexpectmemoryleaks
+msgid "This button will force cancel a scan. Expect memory leaks"
+msgstr ""
+
+#: mainunit.rsthisbuttonwilltrytocancelthecurrentscanclicktwicet
+msgid "This button will try to cancel the current scan. Click twice to force an exit"
+msgstr ""
+
+#: mainunit.rsthislistishuge
+msgid "This list is huge and deleting multiple items will require CE to traverse the whole list and can take a while. Are you sure?"
+msgstr ""
+
+#: mainunit.rstrytutorial
+msgid "Do you want to try out the tutorial?"
+msgstr ""
+
+#: mainunit.rsunabletoscanfixyourscansettings
+msgid "Unable to scan. Fix your scan settings and restart cheat engine"
+msgstr ""
+
+#: mainunit.rsunrandomizerinfo
+msgid "This will scan for and change some routines that are commonly used to generate a random value so they always return the same. Please be aware that there is a chance it overwrites the wrong routines causing the program to crash, or that the program uses an unknown random generator. Continue?"
+msgstr ""
+
+#: mainunit.rsunspecifiederror
+msgid "Unspecified error"
+msgstr ""
+
+#: mainunit.rsvalue
+msgid "Value %"
+msgstr ""
+
+#: mainunit.rswasclickedatpositon
+msgid " was clicked at positon "
+msgstr ""
+
+#: mainunit.rswhatareyousayingyouregoingtocontinueusingceillegal
+msgid "WHAT!!! Are you saying you're going to continue using CE ILLEGALLY??? If you say yes, i'm going to mail the cops to get you and send you to jail!!!"
+msgstr ""
+
+#: mainunit.rswhatdoyouwantthegroupnametobe
+msgid "What do you want the groupname to be?"
+msgstr ""
+
+#: mainunit.rswhatnamedoyouwanttogivetothesescanresults
+msgid "What name do you want to give to these scanresults?"
+msgstr ""
+
+#: mainunit.rswhatwillbethenewnameforthistab
+msgid "What will be the new name for this tab?"
+msgstr ""
+
+#: mainunit.rswidth
+msgid "   -   width="
+msgstr ""
+
+#: mainunit.rsyouarelowondiskspaceonthefolderwherethescanresults
+msgid "You are low on diskspace on the folder where the scanresults are stored. Scanning might fail. Are you sure you want to continue?"
+msgstr ""
+
+#: mainunit.straccessed
+msgid "The following opcodes accessed the selected address"
+msgstr ""
+
+#: mainunit.stradd0
+msgid "Do you want to add a '0'-terminator at the end?"
+msgstr ""
+
+#: mainunit.stralreadyin
+msgctxt "mainunit.stralreadyin"
+msgid "This address is already in the list"
+msgstr ""
+
+#: mainunit.stralreadyinlistmultiple
+msgid "One or more addresses where already in the list"
+msgstr ""
+
+#: mainunit.strasktosave
+msgid "You haven't saved your last changes yet. Save Now?"
+msgstr "Vous n'avez pas sauvegardé vos derniers changements. Sauvegarder maintenant ?"
+
+#: mainunit.strchange1value
+msgid "Change this value to:"
+msgstr ""
+
+#: mainunit.strchangedescription1
+msgctxt "mainunit.strchangedescription1"
+msgid "Description"
+msgstr "Description"
+
+#: mainunit.strchangedescription2
+msgid "Change the description to:"
+msgstr ""
+
+#: mainunit.strchangemorevalues
+msgid "Change these values to:"
+msgstr ""
+
+#: mainunit.strchangescript
+msgctxt "mainunit.strchangescript"
+msgid "Change script"
+msgstr ""
+
+#: mainunit.strclicktogohome
+msgid "Click here to go to the Cheat Engine homepage"
+msgstr ""
+
+#: mainunit.strconfirmprocesstermination
+msgid "This will close the current process. Are you sure you want to do this?"
+msgstr ""
+
+#: mainunit.strconfirmundo
+msgid "Do you really want to go back to the results of the previous scan?"
+msgstr ""
+
+#: mainunit.strdeleteaddress
+msgid "Delete this address"
+msgstr ""
+
+#: mainunit.strdeleteall
+msgid "Are you sure you want to delete all addresses?"
+msgstr ""
+
+#: mainunit.strdeletetheseaddresses
+msgid "Delete these addresses"
+msgstr ""
+
+#: mainunit.strdisablecheat
+msgid "Disable cheat"
+msgstr ""
+
+#: mainunit.strdontbother
+msgid "Don't even bother. Cheat Engine uses the main thread to receive messages when the scan is done, freeze it and CE will crash!"
+msgstr ""
+
+#: mainunit.strenablecheat
+msgid "Enable cheat"
+msgstr ""
+
+#: mainunit.strerror
+msgctxt "mainunit.strerror"
+msgid "Error"
+msgstr "Erreur"
+
+#: mainunit.strerrorwhileopeningprocess
+msgid "Error while opening this process"
+msgstr ""
+
+#: mainunit.strforcerecheck
+msgctxt "mainunit.strforcerecheck"
+msgid "Force recheck symbols"
+msgstr "Forcer la vérification des symboles"
+
+#: mainunit.strfreezeaddressinlist
+msgid "Freeze the address in this list"
+msgstr ""
+
+#: mainunit.strfreezealladdresses
+msgid "Freeze all addresses in this list"
+msgstr ""
+
+#: mainunit.strfuture
+msgid "Wow,I never imagined people would use Cheat Engine up to today"
+msgstr ""
+
+#: mainunit.strhappybirthday
+msgid "Let's sing Happy Birthday for Dark Byte today!"
+msgstr ""
+
+#: mainunit.strhideall
+msgid "will hide all windows"
+msgstr ""
+
+#: mainunit.strhideforeground
+msgid "will hide the foreground window"
+msgstr ""
+
+#: mainunit.strinfoabouttable
+msgid "Info about this table:"
+msgstr ""
+
+#: mainunit.strkeeplist
+msgid "Keep the current address list/code list?"
+msgstr ""
+
+#: mainunit.strmorepointers
+msgid "There are more pointers selected. Do you want to change them as well?"
+msgstr ""
+
+#: mainunit.strmorepointers2
+msgid "You have selected one or more pointers. Do you want to change them as well?"
+msgstr ""
+
+#: mainunit.strnewyear
+msgid "And what are your good intentions for this year? ;-)"
+msgstr ""
+
+#: mainunit.strnotavalidbinarynotation
+msgid " is not a valid binary notation!"
+msgstr ""
+
+#: mainunit.strnotavalidnotation
+msgid "This is not a valid notation"
+msgstr ""
+
+#: mainunit.strnotavalidvalue
+msgctxt "mainunit.strnotavalidvalue"
+msgid "This is not an valid value"
+msgstr ""
+
+#: mainunit.strnotsameammountofbytes
+msgid "The number of bytes you typed is not the same as the previous ammount. Continue?"
+msgstr ""
+
+#: mainunit.strnotthesamesize1
+msgid "The text you entered isn't the same size as the original. Continue?"
+msgstr ""
+
+#: mainunit.strnotthesamesize2
+msgid "Not the same size!"
+msgstr ""
+
+#: mainunit.stropcodechanged
+msgctxt "mainunit.stropcodechanged"
+msgid "The following opcodes changed the selected address"
+msgstr ""
+
+#: mainunit.stropcoderead
+msgid "The following opcodes read from the selected address"
+msgstr ""
+
+#: mainunit.strphysicalmemory
+msgctxt "mainunit.strphysicalmemory"
+msgid "Physical Memory"
+msgstr ""
+
+#: mainunit.strrecalculateaddress
+msgctxt "mainunit.strrecalculateaddress"
+msgid "Recalculate address"
+msgstr "Recalculer l'adresse"
+
+#: mainunit.strrecalculatealladdresses
+msgid "Recalculate all addresses"
+msgstr "Recalculer toutes les adresses"
+
+#: mainunit.strrecalculateselectedaddresses
+msgid "Recalculate selected addresses"
+msgstr "Recalculer les adresses sélectionnées"
+
+#: mainunit.strremovefromgroup
+msgid "Remove from group "
+msgstr "Retirer du groupe"
+
+#: mainunit.strsaferphysicalmemory
+msgid "Safer memory access"
+msgstr ""
+
+#: mainunit.strscantextcaptiontotext
+msgid "Text:"
+msgstr "Texte :"
+
+#: mainunit.strscantextcaptiontovalue
+msgid "Value:"
+msgstr "Valeur :"
+
+#: mainunit.strsearchforarray
+msgid "Search for this array"
+msgstr ""
+
+#: mainunit.strsearchfortext
+msgid "Search for text"
+msgstr "Rechercher du texte"
+
+#: mainunit.strselectedaddressisapointer
+msgid "The selected address is a pointer. Are you sure? (the base pointer will get the address)"
+msgstr ""
+
+#: mainunit.strsethotkey
+msgid "Set a hotkey"
+msgstr ""
+
+#: mainunit.strshowasdecimal
+msgid "Show as decimal value"
+msgstr "Affichier sous forme décimale"
+
+#: mainunit.strshowashex
+msgid "Show as hexadecimal value"
+msgstr "Afficher sous forme héxadécimale"
+
+#: mainunit.strunfreezeaddressinlist
+msgid "Unfreeze the address in this list"
+msgstr "Dégeler l'adresse dans cette liste"
+
+#: mainunit.strunfreezealladdresses
+msgid "Unfreeze all addresses in this list"
+msgstr "Dégeler toutes les adresses dans cette liste"
+
+#: mainunit.strunhideall
+msgid "will bring all windows back"
+msgstr ""
+
+#: mainunit.strunhideforeground
+msgid "will bring the foreground window back"
+msgstr ""
+
+#: mainunit.strunknownextension
+msgctxt "mainunit.strunknownextension"
+msgid "Unknown extension"
+msgstr ""
+
+#: mainunit.strvalue
+msgctxt "mainunit.strvalue"
+msgid "Value"
+msgstr "Valeur"
+
+#: mainunit.strwindowfailedtohide
+msgid "A window failed to hide"
+msgstr ""
+
+#: mainunit.strxmess
+msgid "Merry christmas and happy new year"
+msgstr ""
+
+#: mainunit2.cename
+msgctxt "mainunit2.cename"
+msgid "Cheat Engine 6.8.3"
+msgstr ""
+
+#: mainunit2.rsenabledisablespeedhack
+msgid "Enable/Disable speedhack."
+msgstr ""
+
+#: mainunit2.rsm2nohotkey
+msgid " (No hotkey)"
+msgstr ""
+
+#: mainunit2.rsnohotkey
+msgid "No hotkey"
+msgstr ""
+
+#: mainunit2.rspleasewait
+msgid "Please Wait!"
+msgstr ""
+
+#: mainunit2.rsselectanitemfromthelistforasmalldescription
+msgid "Select an item from the list for a small description"
+msgstr ""
+
+#: mainunit2.rsusethegameapplicationforawhile
+msgid "Use the game/application for a while and make the address you're watching change. The list will be filled with addresses that contain code that change the watched address."
+msgstr ""
+
+#: mainunit2.straddresshastobereadable
+msgid "The address has to be readable if you want to use this function"
+msgstr ""
+
+#: mainunit2.strautoassemble
+msgid "Assembler"
+msgstr ""
+
+#: mainunit2.strbiggerthan
+msgid "Bigger than..."
+msgstr "Plus grand que..."
+
+#: mainunit2.strbug
+msgid "BUG!"
+msgstr ""
+
+#: mainunit2.strchangedvalue
+msgid "Changed value"
+msgstr "Valeur modifiée"
+
+#: mainunit2.strcomparetofirstscan
+msgid "Compare to first scan"
+msgstr "Comparer avec le premier Scan"
+
+#: mainunit2.strcomparetolastscan
+msgid "Compare to last scan"
+msgstr "Comparer avec le dernier Scan"
+
+#: mainunit2.strcomparetosavedscan
+msgid "Compare to saved scan"
+msgstr "Comparer avec un Scan sauvegardé"
+
+#: mainunit2.strdecreasedvalue
+msgid "Decreased value"
+msgstr "Valeur diminuée"
+
+#: mainunit2.strdecreasedvalueby
+msgid "Decreased value by ..."
+msgstr "Valeur diminuée de..."
+
+#: mainunit2.strexact
+msgid "Exact"
+msgstr "Exact"
+
+#: mainunit2.strexactvalue
+msgid "Exact Value"
+msgstr "Valeur Exacte"
+
+#: mainunit2.strfailedtoinitialize
+msgid "Failed to initialize the debugger"
+msgstr ""
+
+#: mainunit2.strfirstscan
+msgctxt "mainunit2.strfirstscan"
+msgid "First Scan"
+msgstr "Premier Scan"
+
+#: mainunit2.strincreasedvalue
+msgid "Increased value"
+msgstr "Valeur augmentée"
+
+#: mainunit2.strincreasedvalueby
+msgid "Increased value by ..."
+msgstr "Valeur augmentée de..."
+
+#: mainunit2.strneednewerwindowsversion
+msgid "This function only works in Windows 2000+ (perhaps also NT but not tested)"
+msgstr ""
+
+#: mainunit2.strnewscan
+msgctxt "mainunit2.strnewscan"
+msgid "New Scan"
+msgstr "Nouveau Scan"
+
+#: mainunit2.strnodescription
+msgctxt "mainunit2.strnodescription"
+msgid "No description"
+msgstr "Aucune description"
+
+#: mainunit2.strok
+msgctxt "mainunit2.strok"
+msgid "OK"
+msgstr "OK"
+
+#: mainunit2.strsmallerthan
+msgid "Smaller than..."
+msgstr "Plus petit que..."
+
+#: mainunit2.strstart
+msgctxt "mainunit2.strstart"
+msgid "Start"
+msgstr "Début"
+
+#: mainunit2.strstop
+msgctxt "mainunit2.strstop"
+msgid "Stop"
+msgstr "Stop"
+
+#: mainunit2.strtoolong
+msgid "Too long"
+msgstr "Trop long"
+
+#: mainunit2.strunchangedvalue
+msgid "Unchanged value"
+msgstr "Valeur inchangée"
+
+#: mainunit2.strunknowninitialvalue
+msgid "Unknown initial value"
+msgstr "Valeur de base inconnue"
+
+#: mainunit2.strvaluebetween
+msgid "Value between..."
+msgstr "Valeur entre..."
+
+#: manualmoduleloader.rsmmlallocationerror
+msgid "Allocation error"
+msgstr ""
+
+#: manualmoduleloader.rsmmlfailedfindingaddressof
+msgid "failed finding address of "
+msgstr ""
+
+#: manualmoduleloader.rsmmlnotavalidfile
+msgid "not a valid file"
+msgstr "N'est pas un fichier valide"
+
+#: manualmoduleloader.rsmmlnotavalidheader
+msgid "Not a valid header"
+msgstr ""
+
+#: manualmoduleloader.rsmmltriedloadinga64bitmoduleona32bitsystem
+msgid "Tried loading a 64-bit module on a 32-bit system"
+msgstr ""
+
+#: memdisplay.rsfailurecreatingopenglwindow
+msgid "failure creating opengl window"
+msgstr ""
+
+#: memdisplay.rsondatareturnedatoosmallmemoryregion
+msgid "OnData returned a too small memory region. It should have returned false instead"
+msgstr ""
+
+#: memorybrowserformunit.rs0or1
+msgid "(0 or 1)"
+msgstr ""
+
+#: memorybrowserformunit.rsaddress
+msgctxt "memorybrowserformunit.rsaddress"
+msgid "Address"
+msgstr "Adresse"
+
+#: memorybrowserformunit.rsallocatememory
+msgid "Allocate memory"
+msgstr "Allouer de la mémoire"
+
+#: memorybrowserformunit.rsassemblyscan
+msgctxt "memorybrowserformunit.rsassemblyscan"
+msgid "Assembly scan"
+msgstr ""
+
+#: memorybrowserformunit.rsatleastbyteshavebeenallocatedatdoyouwanttogotheren
+msgid "At least %s bytes have been allocated at %s%sDo you want to go there now?"
+msgstr ""
+
+#: memorybrowserformunit.rsatleastbyteshavebeenallocatedatgotherenow
+msgid "At least %s bytes have been allocated at %s. Go there now?"
+msgstr ""
+
+#: memorybrowserformunit.rsbecauseofunhandledexeption
+msgid "Because of unhandled exception %s"
+msgstr ""
+
+#: memorybrowserformunit.rsbetween
+msgid "Between %s"
+msgstr ""
+
+#: memorybrowserformunit.rschangedisplayfader
+msgid "Change display fader"
+msgstr ""
+
+#: memorybrowserformunit.rschangeregister
+msgid "Change register"
+msgstr ""
+
+#: memorybrowserformunit.rscheatenginesinglelingeassembler
+msgid "Single-line assembler"
+msgstr ""
+
+#: memorybrowserformunit.rscomment
+msgctxt "memorybrowserformunit.rscomment"
+msgid "Comment"
+msgstr ""
+
+#: memorybrowserformunit.rscommentfor
+msgid "Comment for %s"
+msgstr ""
+
+#: memorybrowserformunit.rscreateremotethread
+msgid "Create remote thread"
+msgstr ""
+
+#: memorybrowserformunit.rsdllinjected
+msgid "DLL Injected"
+msgstr ""
+
+#: memorybrowserformunit.rsdoyouwanttoexecuteafunctionofthedll
+msgid "Do you want to execute a function of the dll?"
+msgstr ""
+
+#: memorybrowserformunit.rserrorallocatingmemory
+msgid "Error allocating memory!"
+msgstr ""
+
+#: memorybrowserformunit.rsfillintheaddressyouwanttogoto
+msgid "Fill in the address you want to go to"
+msgstr ""
+
+#: memorybrowserformunit.rsgetkerneladdress
+msgid "Get kernel address"
+msgstr ""
+
+#: memorybrowserformunit.rsgivethenameofthefunctionyouwanttofindcasesensitive
+msgid "Give the name of the function you want to find (Case sensitive,certain words can cause blue screens)"
+msgstr ""
+
+#: memorybrowserformunit.rsgotoaddress
+msgid "Goto Address"
+msgstr ""
+
+#: memorybrowserformunit.rsheaderfor
+msgid "Header for %s"
+msgstr ""
+
+#: memorybrowserformunit.rshowlongshouldachangebeshown
+msgid "How long should a change be shown?"
+msgstr ""
+
+#: memorybrowserformunit.rshowmuchis
+msgid "How much is %s?"
+msgstr ""
+
+#: memorybrowserformunit.rshowmuchmemorydoyouwanttoaddtothisprocess
+msgid "How much memory do you want to add to this process?"
+msgstr ""
+
+#: memorybrowserformunit.rshowmuchmemorydoyouwishtoallocate
+msgid "How much memory do you wish to allocate?"
+msgstr ""
+
+#: memorybrowserformunit.rsidontunderstandwhatyoumeanwith
+msgid "I don't understand what you mean with %s"
+msgstr ""
+
+#: memorybrowserformunit.rsinjectdll
+msgid "Inject dll"
+msgstr "Injection DLL"
+
+#: memorybrowserformunit.rsinputtheassemblycodetofindwilcardssupported
+msgctxt "memorybrowserformunit.rsinputtheassemblycodetofindwilcardssupported"
+msgid "Input the assembly code to find. Wildcards( * ) supported."
+msgstr ""
+
+#: memorybrowserformunit.rsisnotavalidvalue
+msgctxt "memorybrowserformunit.rsisnotavalidvalue"
+msgid "%s is not a valid value"
+msgstr ""
+
+#: memorybrowserformunit.rslinkwithotherhexview
+msgctxt "memorybrowserformunit.rslinkwithotherhexview"
+msgid "Link with other hexview"
+msgstr ""
+
+#: memorybrowserformunit.rsmaxstacktracesize
+msgid "Max stacktrace size"
+msgstr ""
+
+#: memorybrowserformunit.rsmbbookmark
+msgid "Bookmark %d"
+msgstr ""
+
+#: memorybrowserformunit.rsmbbookmark2
+msgid "Bookmark %d: %s"
+msgstr ""
+
+#: memorybrowserformunit.rsmbcreationoftheremotethreadfailed
+msgid "Creation of the remote thread failed"
+msgstr ""
+
+#: memorybrowserformunit.rsmbthreadcreated
+msgid "Thread Created"
+msgstr ""
+
+#: memorybrowserformunit.rsmemorybrowser
+msgid "MemoryBrowser"
+msgstr ""
+
+#: memorybrowserformunit.rsmemoryviewercurrentlydebuggingthread
+msgid "Memory Viewer - Currently debugging thread %s"
+msgstr ""
+
+#: memorybrowserformunit.rsmemoryviewerrunning
+msgid "Memory Viewer - Running"
+msgstr ""
+
+#: memorybrowserformunit.rsneedtorundissectcode
+msgid "You will need to run the dissect code routine first before this window is usable. Run it now?"
+msgstr ""
+
+#: memorybrowserformunit.rsnewsize
+msgid "New size"
+msgstr ""
+
+#: memorybrowserformunit.rsparameters
+msgctxt "memorybrowserformunit.rsparameters"
+msgid "Parameters"
+msgstr ""
+
+#: memorybrowserformunit.rspleaseenteravalidhexadecimaladdres
+msgid "Please enter a valid hexadecimal addres"
+msgstr ""
+
+#: memorybrowserformunit.rspleaseenteravalidhexadecimalvalue
+msgid "Please enter a valid hexadecimal value"
+msgstr ""
+
+#: memorybrowserformunit.rspleasespecifythenewsymbolsearchpathseperatespaths
+msgid "Please specify the new symbol searchpath (; separates paths)"
+msgstr ""
+
+#: memorybrowserformunit.rspleasetargetanotherprocess
+msgid "Start another version of Cheat Engine and attach to that instead"
+msgstr ""
+
+#: memorybrowserformunit.rspleasetargetaprocessfirst
+msgid "Please target a process first"
+msgstr ""
+
+#: memorybrowserformunit.rsreplacewithcodethatdoesnothing
+msgctxt "memorybrowserformunit.rsreplacewithcodethatdoesnothing"
+msgid "Replace with code that does nothing"
+msgstr ""
+
+#: memorybrowserformunit.rsrestorewithorginalcode
+msgctxt "memorybrowserformunit.rsrestorewithorginalcode"
+msgid "Restore with original code"
+msgstr ""
+
+#: memorybrowserformunit.rsreturnaddress
+msgid "Return Address"
+msgstr ""
+
+#: memorybrowserformunit.rsselectthefunctionyouwanttoexecute
+msgid "Select the function you want to execute"
+msgstr ""
+
+#: memorybrowserformunit.rsshowdifference
+msgctxt "memorybrowserformunit.rsshowdifference"
+msgid "Show difference"
+msgstr ""
+
+#: memorybrowserformunit.rssshowstheautoguessvalue
+msgid "(%s shows the autoguess value)"
+msgstr ""
+
+#: memorybrowserformunit.rsstacktrace
+msgctxt "memorybrowserformunit.rsstacktrace"
+msgid "Stacktrace"
+msgstr ""
+
+#: memorybrowserformunit.rsstopshowingthedifference
+msgid "Stop showing the difference"
+msgstr ""
+
+#: memorybrowserformunit.rssymbolhandler
+msgid "Symbol handler"
+msgstr ""
+
+#: memorybrowserformunit.rsthegeneratedcodeisbyteslongbuttheselectedopcodeisb
+msgid "The generated code is %s byte(s) long, but the selected opcode is %s byte(s) long! Do you want to replace the incomplete opcode(s) with NOP's?"
+msgstr ""
+
+#: memorybrowserformunit.rstypeyourassemblercodehereaddress
+msgid "Type your assembler code here: (address=%s)"
+msgstr ""
+
+#: memorybrowserformunit.rsunlinkfromotherhexview
+msgid "Unlink from other hexview"
+msgstr ""
+
+#: memorybrowserformunit.rsvalue
+msgctxt "memorybrowserformunit.rsvalue"
+msgid "Value"
+msgstr "Valeur"
+
+#: memorybrowserformunit.rswhatisthenewvalueof
+msgid "What is the new value of %s?"
+msgstr ""
+
+#: memorybrowserformunit.rswhatwillbethestartaddressofthisthread
+msgid "What will be the startaddress of this thread?"
+msgstr ""
+
+#: memorybrowserformunit.rsyouwanttogiveanadditional32bitparameterwillshowupi
+msgid "You want to give an additional 32-bit parameter? (Will show up in (R)/(E)BX)"
+msgstr ""
+
+#: memoryrecordunit.rsactivate
+msgid "Activate"
+msgstr ""
+
+#: memoryrecordunit.rsdeactivate
+msgid "Deactivate"
+msgstr ""
+
+#: memoryrecordunit.rsdecreasevalue
+msgid "Decrease Value"
+msgstr ""
+
+#: memoryrecordunit.rserror
+msgctxt "memoryrecordunit.rserror"
+msgid "error"
+msgstr ""
+
+#: memoryrecordunit.rsincreasevalue
+msgid "Increase Value"
+msgstr ""
+
+#: memoryrecordunit.rsmrnibblesupportisonlyforhexadecimaldisplay
+msgid "Nibble support is only for hexadecimal display"
+msgstr ""
+
+#: memoryrecordunit.rsp
+msgctxt "memoryrecordunit.rsp"
+msgid "P->"
+msgstr ""
+
+#: memoryrecordunit.rspqqqqqqqq
+msgid "P->????????"
+msgstr ""
+
+#: memoryrecordunit.rssetvalue
+msgid "Set Value"
+msgstr ""
+
+#: memoryrecordunit.rstoggleactivation
+msgid "Toggle Activation"
+msgstr ""
+
+#: memoryrecordunit.rstoggleactivationallowdecrease
+msgid "Toggle Activation Allow Decrease"
+msgstr ""
+
+#: memoryrecordunit.rstoggleactivationallowincrease
+msgid "Toggle Activation Allow Increase"
+msgstr ""
+
+#: memscan.rsaresultsetwiththisnamealreadyexists
+msgid "A result set with this name(%s) already exists"
+msgstr ""
+
+#: memscan.rsdiskwriteerror
+msgid "Disk write error:%s"
+msgstr ""
+
+#: memscan.rsdiskwriteerror2
+msgid "Disk Write Error:%s"
+msgstr ""
+
+#: memscan.rserrorallocatingbytesfortheoldresults
+msgid "Error allocating %s bytes for the old results. buffersize=%s variablesize=%s"
+msgstr ""
+
+#: memscan.rserrorwhenwhileloadingresult
+msgid "Error while loading result"
+msgstr ""
+
+#: memscan.rsfailedspawningthesavefirstscanthread
+msgid "Failed spawning the Save First Scan thread"
+msgstr ""
+
+#: memscan.rsfailureallocatingmemoryforcopytriedallocatingkb
+msgid "Failure allocating memory for copy. Tried allocating %s KB"
+msgstr ""
+
+#: memscan.rsfailurecreatingthescandirectory
+msgid "Failure creating the scan directory"
+msgstr ""
+
+#: memscan.rsforsomereasonthescancontrollerdoesnotexist
+msgid "For some reason the scanController does not exist"
+msgstr ""
+
+#: memscan.rsinvalidbinarynotation
+msgid "Invalid binary notation"
+msgstr ""
+
+#: memscan.rsisaninvalidvalue
+msgid "%s is an invalid value"
+msgstr ""
+
+#: memscan.rsisnotavalidcharacterinsideabinarystring
+msgid "%s is not a valid character inside a binary string"
+msgstr ""
+
+#: memscan.rsisnotavalidnotation
+msgid "%s is an invalid notation"
+msgstr ""
+
+#: memscan.rsisnotavalidvalue
+msgctxt "memscan.rsisnotavalidvalue"
+msgid "%s is not a valid value"
+msgstr ""
+
+#: memscan.rsmscustomtypeisnil
+msgid "Custom type is nil"
+msgstr ""
+
+#: memscan.rsmsnothingtoscanfor
+msgid "Nothing to scan for"
+msgstr ""
+
+#: memscan.rsmsthescanwasforcedtoterminatesubsequentscansmaynotfunctionproperlyetc
+msgid "The scan was forced to terminate. Subsequent scans may not function properly. It's recommended to restart Cheat Engine"
+msgstr ""
+
+#: memscan.rsmstupidalignsize
+msgid "Stupid alignsize"
+msgstr ""
+
+#: memscan.rsnoreadablememoryfound
+msgctxt "memscan.rsnoreadablememoryfound"
+msgid "No readable memory found"
+msgstr ""
+
+#: memscan.rsnotenoughdiskspacefortheaddressfile
+msgid "Not enough diskspace for the address file"
+msgstr ""
+
+#: memscan.rsnotenoughdiskspaceforthememoryfile
+msgid "Not enough diskspace for the memory file"
+msgstr ""
+
+#: memscan.rspleasefillsomethingin
+msgid "Please fill something in"
+msgstr ""
+
+#: memscan.rsthetemporaryscandirectorydoesnotexistcheckyourscan
+msgid "The temporary scan directory %s does not exist. Check your scan settings"
+msgstr ""
+
+#: memscan.rsthread
+msgid "thread "
+msgstr ""
+
+#: memscan.rsthreadsynchronizer
+msgid "Thread synchronizer"
+msgstr ""
+
+#: memscan.rstmpandundoarenamesthatmaynotbeusedtryanothername
+msgid "TMP and UNDO are names that may not be used. Try another name"
+msgstr ""
+
+#: memscan.rsunknown
+msgctxt "memscan.rsunknown"
+msgid "Unknown"
+msgstr ""
+
+#: mikmod.rsfailuretoinitializemikmod
+msgid "Failure to initialize MikMod"
+msgstr ""
+
+#: networkconfig.rscouldnotberesolved
+msgctxt "networkconfig.rscouldnotberesolved"
+msgid " could not be resolved"
+msgstr ""
+
+#: networkconfig.rsfailedconnectingtotheserver
+msgid "Failed connecting to the server"
+msgstr ""
+
+#: networkconfig.rsfailurecreatingsocket
+msgctxt "networkconfig.rsfailurecreatingsocket"
+msgid "Failure creating socket"
+msgstr ""
+
+#: networkconfig.rshost
+msgctxt "networkconfig.rshost"
+msgid "host:"
+msgstr ""
+
+#: networkinterfaceapi.rsnoconnection
+msgid "No connection"
+msgstr ""
+
+#: newkernelhandler.rscouldntbeopened
+msgid "%s couldn't be opened"
+msgstr ""
+
+#: newkernelhandler.rsdbvmisnotloadedthisfeatureisnotusable
+msgid "DBVM is not loaded. This feature is not usable"
+msgstr ""
+
+#: newkernelhandler.rsdidnotloaddbvm
+msgid "I don't know what you did, you didn't crash, but you also didn't load DBVM"
+msgstr ""
+
+#: newkernelhandler.rsfucked
+msgid "Something is really messed up on your computer! You don't seem to have a kernel!!!!"
+msgstr ""
+
+#: newkernelhandler.rspleaserebootandpressf8beforewindowsboots
+msgid "Please reboot and press f8 before windows boots. Then enable unsigned drivers. Alternatively, you could buy yourself a business class certificate and sign the driver yourself (or try debug signing)"
+msgstr ""
+
+#: newkernelhandler.rsthedriverneedstobeloadedtobeabletousethisfunction
+msgid "The driver needs to be loaded to be able to use this function."
+msgstr ""
+
+#: newkernelhandler.rstousethisfunctionyouwillneedtorundbvm
+msgid "To use this function you will need to run DBVM. There is a high chance running DBVM can crash your system and make you lose your data(So don't forget to save first). Do you want to run DBVM?"
+msgstr ""
+
+#: newkernelhandler.rsyourcpumustbeabletorundbvmtousethisfunction
+msgid "Your cpu must be able to run dbvm to use this function"
+msgstr ""
+
+#: opensave.rsaskifstupid
+msgid "Generating a trainer with the current state of the cheat table will likely result in a completely useless trainer that does nothing. Are you sure?"
+msgstr ""
+
+#: opensave.rsdoesntcontainneededinformationwheretoplacethememor
+msgid "%s doesn't contain needed information where to place the memory"
+msgstr ""
+
+#: opensave.rserrorexecutingthistablesluascript
+msgid "Error executing this table's lua script: %s"
+msgstr ""
+
+#: opensave.rserrorsaving
+msgid "Error saving..."
+msgstr ""
+
+#: opensave.rsinvalidluafortrainer
+msgid "The lua script in this trainer has some issues and will therefore not load"
+msgstr ""
+
+#: opensave.rsosthereisanewerversionifcheatengineoutetc
+msgid "There is a newer version of Cheat Engine out. It's recommended to use that version instead"
+msgstr ""
+
+#: opensave.rsosthischeattableiscorrupt
+msgid "This cheat table is corrupt"
+msgstr ""
+
+#: opensave.rstheregionatwaspartiallyorcompletlyunreadable
+msgid "The region at %s was partially or completely unreadable"
+msgstr ""
+
+#: opensave.rstheversionofisincompatiblewiththisceversion
+msgid "The version of %s is incompatible with this CE version"
+msgstr ""
+
+#: opensave.rsthisisnotavalidcheattable
+msgid "This is not a valid cheat table"
+msgstr ""
+
+#: opensave.rsthisisnotavalidxmlfile
+msgid "This is not a valid xml file"
+msgstr ""
+
+#: opensave.rsthistablecontainsaluascriptdoyouwanttorunit
+msgid "This table contains a lua script. Do you want to run it?"
+msgstr ""
+
+#: opensave.rsunknownextention
+msgctxt "opensave.rsunknownextention"
+msgid "Unknown extension"
+msgstr ""
+
+#: opensave.rsyoucanonlyprotectafileifithasancetrainerextension
+msgid "You can only protect a file if it has an .CETRAINER extension"
+msgstr ""
+
+#: opensave.strcantloadfilepatcher
+msgid "The file patcher can't be loaded by Cheat Engine!"
+msgstr ""
+
+#: opensave.strcantloadprotectedfile
+msgid "This trainer is protected from being opened by CE. Now go away!!!"
+msgstr ""
+
+#: opensave.strcorrupticon
+msgid "The icon has been corrupted"
+msgstr ""
+
+#: opensave.strnotacetrainer
+msgid "This is not a trainer made by Cheat Engine (If it is a trainer at all!)"
+msgstr ""
+
+#: opensave.strunknowncomponent
+msgid "There is a unknown component in the trainer! compnr="
+msgstr ""
+
+#: opensave.strunknowntrainerversion
+msgid "This version of Cheat Engine doesn't know how to read this trainer! Trainerversion="
+msgstr ""
+
+#: parsers.rsinvalidinteger
+msgid "Invalid integer"
+msgstr ""
+
+#: peinfofunctions.rspeifnoexports
+msgid "No exports"
+msgstr ""
+
+#: peinfofunctions.strinvalidfile
+msgid "Invalid file"
+msgstr ""
+
+#: peinfounit.rspe32bit
+msgid "32-bit, "
+msgstr ""
+
+#: peinfounit.rspeaddressoffunctions
+msgid "AddressOfFunctions = %x"
+msgstr ""
+
+#: peinfounit.rspeaddressofnameordinals
+msgid "AddressOfNameOrdinals = %x"
+msgstr ""
+
+#: peinfounit.rspeaddressofnames
+msgid "AddressOfNames = %x"
+msgstr ""
+
+#: peinfounit.rspeaddressofrawdata
+msgid "Address of raw data = %x"
+msgstr ""
+
+#: peinfounit.rspeagressivetrim
+msgid "Agressive trim, "
+msgstr ""
+
+#: peinfounit.rspearchitecturespecifictable
+msgid "Architecture-Specific table"
+msgstr ""
+
+#: peinfounit.rspebase
+msgid "Base = %x"
+msgstr ""
+
+#: peinfounit.rspebaseofcode
+msgid "Base of code = %.8x "
+msgstr ""
+
+#: peinfounit.rspebaseofdata
+msgid "Base of data = %.8x "
+msgstr ""
+
+#: peinfounit.rspebaserelocationtable
+msgid "Base-Relocation table"
+msgstr ""
+
+#: peinfounit.rspeboundimporttable
+msgid "Bound import table"
+msgstr ""
+
+#: peinfounit.rspecertificatetabel
+msgid "Certificate table"
+msgstr ""
+
+#: peinfounit.rspecharacterisitics
+msgid "characterisitics=%x (%s)"
+msgstr ""
+
+#: peinfounit.rspecharacteristics
+msgid "Characteristics = %x (%s)"
+msgstr ""
+
+#: peinfounit.rspecharacteristics2
+msgid "Characteristics=%x (should be 0)"
+msgstr ""
+
+#: peinfounit.rspecharacteristicsoriginalfirstthunk
+msgid "Characteristics/OriginalFirstThunk=%x"
+msgstr ""
+
+#: peinfounit.rspechecksum
+msgid "CheckSum = %x "
+msgstr ""
+
+#: peinfounit.rspecodeview
+msgid "Codeview"
+msgstr ""
+
+#: peinfounit.rspedebugfile
+msgid "Debugfile =%s"
+msgstr ""
+
+#: peinfounit.rspedebugginginfotable
+msgid "Debugging info table"
+msgstr ""
+
+#: peinfounit.rspedelayimportdescriptiontable
+msgid "Delay import descriptor table"
+msgstr ""
+
+#: peinfounit.rspediscardable
+msgid "discardable, "
+msgstr ""
+
+#: peinfounit.rspedll
+msgid "DLL, "
+msgstr ""
+
+#: peinfounit.rspedllcharacteristics
+msgid "Dll Characteristics = %x "
+msgstr ""
+
+#: peinfounit.rspedosentrypoint
+msgid "dos entrypoint = %.4x:%.4x"
+msgstr ""
+
+#: peinfounit.rspedosstack
+msgid "dos stack = %.4x:%.4x"
+msgstr ""
+
+#: peinfounit.rspeentrypoint
+msgid "Entry point = %.8x "
+msgstr ""
+
+#: peinfounit.rspeexceptiontable
+msgid "Exception table"
+msgstr ""
+
+#: peinfounit.rspeexecutable
+msgid "Executable, "
+msgstr ""
+
+#: peinfounit.rspeexecutablecode
+msgid "Executable code, "
+msgstr ""
+
+#: peinfounit.rspeexecutablememory
+msgid "executable memory, "
+msgstr ""
+
+#: peinfounit.rspeexporttable
+msgid "Export table"
+msgstr ""
+
+#: peinfounit.rspefailureatallocationmemory
+msgid "Failure at allocating memory"
+msgstr ""
+
+#: peinfounit.rspefailurereadingmemory
+msgid "Failure reading memory"
+msgstr ""
+
+#: peinfounit.rspefilealignment
+msgid "File Alignment = %x "
+msgstr ""
+
+#: peinfounit.rspefirstthunk
+msgid "FirstThunk=%x"
+msgstr ""
+
+#: peinfounit.rspeforwarderchain
+msgid "Forwarder Chain=%x (-1 if no forwarders)"
+msgstr ""
+
+#: peinfounit.rspeglobalpointertable
+msgid "Global pointer table"
+msgstr ""
+
+#: peinfounit.rspeimport
+msgid "Import %d : %s"
+msgstr ""
+
+#: peinfounit.rspeimportaddresstable
+msgid "import address table"
+msgstr ""
+
+#: peinfounit.rspeimports
+msgid "imports:"
+msgstr ""
+
+#: peinfounit.rspeimporttable
+msgid "Import table"
+msgstr ""
+
+#: peinfounit.rspeinconsistent
+msgid " (inconsistent)"
+msgstr ""
+
+#: peinfounit.rspeinitializeddata
+msgid "Initialized data, "
+msgstr ""
+
+#: peinfounit.rspelfanew
+msgid "lfanew="
+msgstr ""
+
+#: peinfounit.rspeloadconfigtable
+msgid "Load config table"
+msgstr ""
+
+#: peinfounit.rspeloaderflags
+msgid "Loader Flags = %x "
+msgstr ""
+
+#: peinfounit.rspemachine
+msgid "Machine=%.2x"
+msgstr ""
+
+#: peinfounit.rspemachine64
+msgid "Machine=%.2x (64 bit)"
+msgstr ""
+
+#: peinfounit.rspemajorimageversion
+msgid "Major Image Version = %d "
+msgstr ""
+
+#: peinfounit.rspemajorlinkerversion
+msgid "Major linker version = %d "
+msgstr ""
+
+#: peinfounit.rspemajoroperatingsystemversion
+msgid "Major Operating System Version = %d "
+msgstr ""
+
+#: peinfounit.rspemajorsubsystemversion
+msgid "Major Subsystem Version = %d "
+msgstr ""
+
+#: peinfounit.rspemajorversion
+msgid "Major version=%d"
+msgstr ""
+
+#: peinfounit.rspeminorimageversion
+msgid "Minor Image Version = %d "
+msgstr ""
+
+#: peinfounit.rspeminorlinlerversion
+msgid "Minor linker version = %d "
+msgstr ""
+
+#: peinfounit.rspeminorsubsystemversion
+msgid "Minor Subsystem Version = %d "
+msgstr ""
+
+#: peinfounit.rspeminorversion
+msgid "Minor version=%d"
+msgstr ""
+
+#: peinfounit.rspemzheader
+msgid "MZ header"
+msgstr ""
+
+#: peinfounit.rspename
+msgid "Name = %x (%s)"
+msgstr ""
+
+#: peinfounit.rspename2
+msgid "Name=%x : %s"
+msgstr ""
+
+#: peinfounit.rspenetrunfromswap
+msgid "Net: Run from swap, "
+msgstr ""
+
+#: peinfounit.rspenodbginfo
+msgid "No DBG info, "
+msgstr ""
+
+#: peinfounit.rspenolinenumbers
+msgid "No line numbers, "
+msgstr ""
+
+#: peinfounit.rspenolocalsymbols
+msgid "No local symbols, "
+msgstr ""
+
+#: peinfounit.rspenorelocations
+msgid "No relocations, "
+msgstr ""
+
+#: peinfounit.rspenotallmemorycouldbereadworkingwithapartialcopyhere
+msgid "Not all memory could be read, working with a partial copy here"
+msgstr ""
+
+#: peinfounit.rspenotcached
+msgid "not cached, "
+msgstr ""
+
+#: peinfounit.rspenotpaged
+msgid "not paged, "
+msgstr ""
+
+#: peinfounit.rspenumberoffunctions
+msgid "NumberOfFunctions = %d"
+msgstr ""
+
+#: peinfounit.rspenumberoflinenumbers
+msgid "number of line numbers=%x"
+msgstr ""
+
+#: peinfounit.rspenumberofnames
+msgid "NumberOfNames = %d"
+msgstr ""
+
+#: peinfounit.rspenumberofrelocations
+msgid "number of relocations=%x"
+msgstr ""
+
+#: peinfounit.rspenumberofrvaandsize
+msgid "Number Of Rva And Sizes = %d "
+msgstr ""
+
+#: peinfounit.rspenumberofsections
+msgid "Number of sections=%d"
+msgstr ""
+
+#: peinfounit.rspeoptional
+msgid "-----optional-----"
+msgstr ""
+
+#: peinfounit.rspeoptionalheader
+msgid "OptionalHeader size = %x"
+msgstr ""
+
+#: peinfounit.rspeoptionalmagicnumber
+msgid "Optional magic number = %x "
+msgstr ""
+
+#: peinfounit.rspepeheader
+msgid "PE header"
+msgstr ""
+
+#: peinfounit.rspepeinfoimagesize
+msgid "PEInfo: Image size"
+msgstr ""
+
+#: peinfounit.rspepointertolinenumbers
+msgid "Pointer to line numbers=%x"
+msgstr ""
+
+#: peinfounit.rspepointertorawdata
+msgid "Pointer to raw data=%x"
+msgstr ""
+
+#: peinfounit.rspepointertorelocations
+msgid "Pointer to relocations=%x"
+msgstr ""
+
+#: peinfounit.rspepreferedimagebase
+msgid "Prefered imagebase = %.8x "
+msgstr ""
+
+#: peinfounit.rspepreferedimagebase2
+msgid "Prefered imagebase = %.16x "
+msgstr ""
+
+#: peinfounit.rspereadablememory
+msgid "readable memory, "
+msgstr ""
+
+#: peinfounit.rsperemovablerunfromswap
+msgid "Removable: Run from swap, "
+msgstr ""
+
+#: peinfounit.rsperemoved
+msgid "removed, "
+msgstr ""
+
+#: peinfounit.rspereserved
+msgid "reserved"
+msgstr ""
+
+#: peinfounit.rsperesourcetable
+msgid "Resource table"
+msgstr ""
+
+#: peinfounit.rspereversedbyteshi
+msgid "Reversed bytes HI, "
+msgstr ""
+
+#: peinfounit.rspereversedbyteslo
+msgid "Reversed bytes LO, "
+msgstr ""
+
+#: peinfounit.rspesectionallignment
+msgid "Section allignment = %x "
+msgstr ""
+
+#: peinfounit.rspesections
+msgid "-----sections-----"
+msgstr ""
+
+#: peinfounit.rspesharedmemory
+msgid "shared memory, "
+msgstr ""
+
+#: peinfounit.rspesignature
+msgid "Signature=%x (%s)"
+msgstr ""
+
+#: peinfounit.rspesizeofcode
+msgid "Size of code = %x (%d) "
+msgstr ""
+
+#: peinfounit.rspesizeofheader
+msgid "Size Of Headers = %x "
+msgstr ""
+
+#: peinfounit.rspesizeofheapcommit
+msgid "Size Of Heap Commit = %x "
+msgstr ""
+
+#: peinfounit.rspesizeofheapreserve
+msgid "Size Of Heap Reserve = %x "
+msgstr ""
+
+#: peinfounit.rspesizeofimage
+msgid "Size Of Image = %x "
+msgstr ""
+
+#: peinfounit.rspesizeofinitializeddata
+msgid "Size of initialized data = %x (%d)"
+msgstr ""
+
+#: peinfounit.rspesizeofrawdata
+msgid "size of raw data=%x"
+msgstr ""
+
+#: peinfounit.rspesizeofstackcommit
+msgid "Size Of Stack Commit = %x "
+msgstr ""
+
+#: peinfounit.rspesizeofstackreserve
+msgid "Size Of Stack Reserve = %x "
+msgstr ""
+
+#: peinfounit.rspesizeofuninitializeddata
+msgid "Size of uninitialized data = %x (%d) "
+msgstr ""
+
+#: peinfounit.rspestaticaddresses
+msgid "Static addresses"
+msgstr ""
+
+#: peinfounit.rspesubsystem
+msgid "Subsystem = %x "
+msgstr ""
+
+#: peinfounit.rspesymbolcount
+msgid "Symbolcount = %x"
+msgstr ""
+
+#: peinfounit.rspesymboltableat
+msgid "SymbolTable at %x"
+msgstr ""
+
+#: peinfounit.rspesystemfile
+msgid "System file, "
+msgstr ""
+
+#: peinfounit.rspetheheaderofthemodelecouldnobberead
+msgid "The header of the module could not be read"
+msgstr ""
+
+#: peinfounit.rspetheimagesizeismorethan256
+msgid "The imagesize is more than 256 MB, is this the correct ammount? If not, edit here"
+msgstr ""
+
+#: peinfounit.rspethisisnotavakidpefile
+msgid "This is not a valid PE file"
+msgstr ""
+
+#: peinfounit.rspetimedatastamp
+msgid "Time datastamp=%x"
+msgstr ""
+
+#: peinfounit.rspetimedate
+msgid "Time/Date =%d"
+msgstr ""
+
+#: peinfounit.rspetimedatestamp
+msgid "TimeDateStamp=%x (0=not bound -1=bound, and timestamp)"
+msgstr ""
+
+#: peinfounit.rspetlstable
+msgid "TLS table"
+msgstr ""
+
+#: peinfounit.rspetype
+msgid "Type = %d"
+msgstr ""
+
+#: peinfounit.rspeuninitializeddata
+msgid "Uninitialized data, "
+msgstr ""
+
+#: peinfounit.rspeunknown
+msgctxt "peinfounit.rspeunknown"
+msgid "Unknown"
+msgstr ""
+
+#: peinfounit.rspeupsystemonly
+msgid "UP system only, "
+msgstr ""
+
+#: peinfounit.rspevirtualaddress
+msgid "Virtual Address=%x"
+msgstr ""
+
+#: peinfounit.rspevirtualaddressbase
+msgid "Virtual address base: %.8x (size=%x (%d))"
+msgstr ""
+
+#: peinfounit.rspevirtualsize
+msgid "Virtual Size=%x"
+msgstr ""
+
+#: peinfounit.rspewin32versionvalue
+msgid "Win32 Version Value = %x "
+msgstr ""
+
+#: peinfounit.rspewritablememory
+msgid "writable memory, "
+msgstr ""
+
+#: peinfounit.rsthisisnotavalidimage
+msgid "This is not a valid image"
+msgstr ""
+
+#: plugin.rserrordisabling
+msgid "Error disabling %s"
+msgstr ""
+
+#: plugin.rserrorenabling
+msgid "Error enabling %s"
+msgstr ""
+
+#: plugin.rserrorloadingonlydllfilesareallowed
+msgid "Error loading %s. Only DLL files are allowed"
+msgstr ""
+
+#: plugin.rserrorloadingthedllismissingtheceplugin_getversione
+msgid "Error loading %s. The dll is missing the CEPlugin_GetVersion export"
+msgstr ""
+
+#: plugin.rserrorloadingthedllismissingtheceplugin_getversionf
+msgid "Error loading %s. The dll is missing the CEPlugin_GetVersion function"
+msgstr ""
+
+#: plugin.rserrorloadingthegetversionfunctionreturnedfalse
+msgid "Error loading %s. The GetVersion function returned FALSE"
+msgstr ""
+
+#: plugin.rserrorloadingthisdllrequiresanewerversionofcetofunc
+msgid "Error loading %s. This dll requires a newer version of ce to function properly"
+msgstr ""
+
+#: plugin.rsismissingtheceplugin_disablepluginexport
+msgid "%s is missing the CEPlugin_DisablePlugin export"
+msgstr ""
+
+#: plugin.rsismissingtheceplugin_initializepluginexport
+msgid "%s is missing the CEPlugin_InitializePlugin export"
+msgstr ""
+
+#: plugin.rsplugtheplugindllcouldnotbeloaded
+msgid "The plugin dll could not be loaded:"
+msgstr ""
+
+#: pluginexports.rsloadmodulefailed
+msgid "LoadModule failed"
+msgstr ""
+
+#: pluginexports.rspluginaddress
+msgctxt "pluginexports.rspluginaddress"
+msgid "Plugin Address"
+msgstr ""
+
+#: pointeraddresslist.rspalinvalidscandatafile
+msgctxt "pointeraddresslist.rspalinvalidscandatafile"
+msgid "Invalid scandata file"
+msgstr ""
+
+#: pointeraddresslist.rspalinvalidscandataversion
+msgctxt "pointeraddresslist.rspalinvalidscandataversion"
+msgid "Invalid scandata version"
+msgstr ""
+
+#: pointerscanconnector.rscouldnotberesolved
+msgctxt "pointerscanconnector.rscouldnotberesolved"
+msgid " could not be resolved"
+msgstr ""
+
+#: pointerscanconnector.rserrorwhileconnecting
+msgid "Error while connecting: "
+msgstr ""
+
+#: pointerscanconnector.rsfailurecreatingsocket
+msgctxt "pointerscanconnector.rsfailurecreatingsocket"
+msgid "Failure creating socket"
+msgstr ""
+
+#: pointerscanconnector.rshost
+msgctxt "pointerscanconnector.rshost"
+msgid "host:"
+msgstr ""
+
+#: pointerscanconnector.rsinvalidresponsefrom
+msgid "invalid response from "
+msgstr ""
+
+#: pointerscanconnector.rssomeoneforgottogivethisconnector
+msgid "Someone forgot to give this connector an OnConnected event..."
+msgstr ""
+
+#: pointerscancontroller.rsallpathsreceived
+msgid "All paths received"
+msgstr ""
+
+#: pointerscancontroller.rsfailurecopyingtargetprocessmemory
+msgid "Failure copying target process memory"
+msgstr ""
+
+#: pointerscancontroller.rsinvaliddata
+msgid "invalid data:"
+msgstr ""
+
+#: pointerscancontroller.rsnoupdatefromtheclientforover120sec
+msgid "No update from the client for over 120 seconds"
+msgstr ""
+
+#: pointerscancontroller.rspscachildtriedtoconnect
+msgid "A child tried to connect"
+msgstr ""
+
+#: pointerscancontroller.rspscalreadystillconnectedtothischild
+msgid "Already/still connected to this child"
+msgstr ""
+
+#: pointerscancontroller.rspscaparenttriedtoconnect
+msgid "A parent tried to connect"
+msgstr ""
+
+#: pointerscancontroller.rspscchildisntidlewhilepreviouslyitwas
+msgid "child isn't idle while previously it was..."
+msgstr ""
+
+#: pointerscancontroller.rspscduringscanfinishing
+msgid "During scan finishing: "
+msgstr ""
+
+#: pointerscancontroller.rspscerror
+msgid " (Error: "
+msgstr ""
+
+#: pointerscancontroller.rspscfailurecreatingsocket
+msgctxt "pointerscancontroller.rspscfailurecreatingsocket"
+msgid "Failure creating socket"
+msgstr ""
+
+#: pointerscancontroller.rspscfailuretobindport
+msgid "Failure to bind port "
+msgstr ""
+
+#: pointerscancontroller.rspscfailuretolisten
+msgid "Failure to listen"
+msgstr ""
+
+#: pointerscancontroller.rspscforsomeunknownreasontheuntrustedchildisntidleanymore
+msgid "For some unknown reason the untrusted child isn't idle anymore"
+msgstr ""
+
+#: pointerscancontroller.rspschelloafterinitializtion
+msgid "HELLO after initializtion"
+msgstr ""
+
+#: pointerscancontroller.rspscimpossibleerroruseloadedpointermapwasfalseetc
+msgid "Impossible error: UseLoadedPointermap was false when a child message got handled"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidchildpassword
+msgid "Invalid child password"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidcommandwhilewaitingforhello
+msgid "Invalid command while waiting for hello"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidhandshakesignature
+msgid "Invalid handshake signature"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidmessage
+msgid "Invalid message"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidmessagereceived
+msgid "Invalid message received"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidparentpassword
+msgid "Invalid parent password"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidqueuefile
+msgid "Invalid queue file"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidreplyforpsupdatereplycmdcurrentscanhasended
+msgid "Invalid reply for PSUPDATEREPLYCMD_CURRENTSCANHASENDED"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidresultreceivedafteruploadingthescanresults
+msgid "Invalid result received after uploading the scanresults"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidresultreceivedfrompsupdatereplycmdherearesomepaths
+msgid "Invalid result received from PSUPDATEREPLYCMD_HEREARESOMEPATHS"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidscandatareceivedfilecount
+msgid "Invalid scandata received. filecount=0"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidupdatestatusreplyreceived
+msgid "Invalid UpdateStatus reply received"
+msgstr ""
+
+#: pointerscancontroller.rspscnewscanstartedwhilenotdone
+msgid "New scan started while not done"
+msgstr ""
+
+#: pointerscancontroller.rspscnoresumeptrfilereaderpresent
+msgid "no resume ptr file reader present"
+msgstr ""
+
+#: pointerscancontroller.rspscparentdidntrespondproperlytopscmdprepareformytermination
+msgid "Parent didn't respond properly to PSCMD_PREPAREFORMYTERMINATION"
+msgstr ""
+
+#: pointerscancontroller.rspscsleeping
+msgid ":Sleeping"
+msgstr ""
+
+#: pointerscancontroller.rspscsuccesfullysentscandatatochild
+msgid "Succesfully sent scandata to child"
+msgstr ""
+
+#: pointerscancontroller.rspscterminated
+msgid ":Terminated"
+msgstr ""
+
+#: pointerscancontroller.rspscthechilddidntrespondtopsupdatereplycmdeverythingokasexpected
+msgid "The child didn't respond to PSUPDATEREPLYCMD_EVERYTHINGOK as expected"
+msgstr ""
+
+#: pointerscancontroller.rspscthechildissendingmeresultsofadifferentscan
+msgid "The child is sending me results of a different scan"
+msgstr ""
+
+#: pointerscancontroller.rspscthechildtriedtosendanegativeamount
+msgid "The child tried to send a negative amount"
+msgstr ""
+
+#: pointerscancontroller.rspscthechildtriedtosendmeresultswhileiwasstillbusy
+msgid "The child tried to send me results while I was still busy"
+msgstr ""
+
+#: pointerscancontroller.rspscthechildtriedtosendmorepathsatoncethanallowed
+msgid "The child tried to send more paths at once than allowed"
+msgstr ""
+
+#: pointerscancontroller.rspscthechildtriedtosendmorepathsthanallowedafterarequest
+msgid "The child tried to send more paths than allowed after a request"
+msgstr ""
+
+#: pointerscancontroller.rspsctheparenttriedtosendmeanegativeammountofpaths
+msgid "The parent tried to send me a negative ammount of paths"
+msgstr ""
+
+#: pointerscancontroller.rspsctheparenttriedtosendmemorepathsthanallowedaafterupdate
+msgid "The parent tried to send me more paths than allowed (after update)"
+msgstr ""
+
+#: pointerscancontroller.rspscthepointerlisthandlerwasdestroyedwithoutagoodreason
+msgid "The pointerlisthandler was destroyed without a good reason"
+msgstr ""
+
+#: pointerscancontroller.rspscthescanwasterminated
+msgid "The scan was terminated"
+msgstr ""
+
+#: pointerscancontroller.rspsctheuploadwasterminated
+msgid "The upload was terminated"
+msgstr ""
+
+#: pointerscancontroller.rspscworking
+msgid ":Working"
+msgstr ""
+
+#: pointerscancontroller.rspscwritingtodisk
+msgid ":Writing to disk"
+msgstr ""
+
+#: pointerscancontroller.rssavingpointermap
+msgid "Saving pointermap"
+msgstr ""
+
+#: pointerscannerfrm.rsactive
+msgctxt "pointerscannerfrm.rsactive"
+msgid "Active"
+msgstr "Actif"
+
+#: pointerscannerfrm.rsaddressspecifiersfoundinthewholeprocess
+msgid "Address specifiers found in the whole process"
+msgstr ""
+
+#: pointerscannerfrm.rsareyousureyouwishyouforceadisconnect
+msgid "Are you sure you wish you force a disconnect. The current paths will be lost"
+msgstr ""
+
+#: pointerscannerfrm.rsbaseaddress
+msgid "Base Address"
+msgstr ""
+
+#: pointerscannerfrm.rsceinjectedpointerscan
+msgid "CE Injected Pointerscan"
+msgstr ""
+
+#: pointerscannerfrm.rscurrentlevel
+msgid "Current Level"
+msgstr ""
+
+#: pointerscannerfrm.rserrorduringscan
+msgid "Error during scan"
+msgstr ""
+
+#: pointerscannerfrm.rsevaluated
+msgid "Evaluated"
+msgstr ""
+
+#: pointerscannerfrm.rsgeneratingpointermap
+msgid "Generating pointermap..."
+msgstr ""
+
+#: pointerscannerfrm.rsisnotavalid4bytevalue
+msgid "%s is not a valid 4 byte value"
+msgstr ""
+
+#: pointerscannerfrm.rsisnotavaliddoublevalue
+msgid "%s is not a valid double value"
+msgstr ""
+
+#: pointerscannerfrm.rsisnotavalidfloatingpointvalue
+msgid "%s is not a valid floating point value"
+msgstr ""
+
+#: pointerscannerfrm.rslookingfor
+msgid "Looking for"
+msgstr ""
+
+#: pointerscannerfrm.rsoffset
+msgctxt "pointerscannerfrm.rsoffset"
+msgid "Offset"
+msgstr ""
+
+#: pointerscannerfrm.rsonlythefirst1000000entrieswillbedisplayed
+msgid "Only the first 1000000 entries will be displayed. Rescan will still work with all results.  (This is normal for a pointerscan, you MUST do a few rescans)"
+msgstr ""
+
+#: pointerscannerfrm.rsoutofdiskspacecleanupthediskorstop
+msgid "OUT OF DISKSPACE! Clean up the disk or stop"
+msgstr ""
+
+#: pointerscannerfrm.rspointercount
+msgid "Pointer paths"
+msgstr ""
+
+#: pointerscannerfrm.rspointerpathsfound
+msgid "Pointer paths found"
+msgstr ""
+
+#: pointerscannerfrm.rspointerscan
+msgctxt "pointerscannerfrm.rspointerscan"
+msgid "Pointer scan"
+msgstr "Scan de Pointeur"
+
+#: pointerscannerfrm.rspointerscanresult
