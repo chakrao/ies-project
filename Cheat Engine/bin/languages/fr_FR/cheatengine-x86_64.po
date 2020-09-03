@@ -1,0 +1,1948 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: Monologix\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
+
+msgid "Most commonly used for stacks where stack pointers point to it's own structureTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notDon't care if it's executable or notDon't care if it's executable or notDon't care if it's executable or not"
+msgstr ""
+
+#: aboutunit.rsareyousureyouwanttolaunchdbvm
+msgid "Are you sure you want to launch DBVM? You seem to be running in 32-bit, so don't really need it that badly (Except for ultimap and cloaked operations)"
+msgstr ""
+
+#: aboutunit.rsdidyoureallythinkyoudfindaneastereggbydoingthiswel
+msgid "Did you really think you'd find an easter egg by doing this? Well, you know what? You where right!"
+msgstr "Tu pensais vraiment trouver un Easter Egg en faisant ça ? Et bien tu sais quoi : Tu avais raison !"
+
+#: aboutunit.rslaunchdbvmwasnotassigned
+msgid "launchdbvm was not assigned"
+msgstr "Launchdbvm n'a pas été assigné"
+
+#: aboutunit.rsthismeansthatyourecurrentlynotrunningdbvm
+msgid "This means that you're currently not running dbvm, but that your system is capable of running it"
+msgstr "Cela veut dire que Dbvm n'est pas en cours d'éxecution, mais que votre système est capable de le lancer"
+
+#: aboutunit.rsthismeansthatyoursystemisrunningdbvm
+msgid "This means that your system is running dbvm. This means ce will make use of some advanced tools that are otherwise unavailable"
+msgstr ""
+
+#: aboutunit.rsthismeansthatyouwillneedanewcpuinteltobeabletouset
+msgid "This means that you will need a new cpu (intel) to be able to use the advanced dbvm options"
+msgstr ""
+
+#: aboutunit.rsyoursystemdoesnotsupportdbvm
+msgid "Your system DOES NOT support DBVM"
+msgstr "Votre système NE SUPPORTE PAS DBVM"
+
+#: aboutunit.rsyoursystemisrunningdbvmversion
+msgid "Your system is running DBVM version %s (%.0n bytes free (%d pages))"
+msgstr ""
+
+#: aboutunit.rsyoursystemsupportsdbvm
+msgid "Your system supports DBVM"
+msgstr "Votre système supporte DBVM"
+
+#: accesscheck.rsbutyoudohavemodifyrights
+msgid "But you do have modify rights"
+msgstr ""
+
+#: accesscheck.rsnodeleterights
+msgid "No delete rights"
+msgstr "Aucun droit de suppression"
+
+#: accesscheck.rsnofilecreationrightsornofileoverwriterights
+msgid "No file creation rights or no file overwrite rights"
+msgstr ""
+
+#: accesscheck.rsnofiledeletionrights
+msgid "No file deletion rights"
+msgstr "Aucun droit de suppression de fichier"
+
+#: accesscheck.rsnofilemodificationrights
+msgid "No file modification rights"
+msgstr "Aucun droit de modification de fichier"
+
+#: accessedmemory.rsamerror
+msgctxt "accessedmemory.rsamerror"
+msgid "Error"
+msgstr "Erreur"
+
+#: accessedmemory.rsamyoucantsaveanemptylist
+msgid "You can't save an empty list"
+msgstr "Vous ne pouvez pas sauvegarder une liste vide"
+
+#: addresslist.rsactive
+msgctxt "addresslist.rsactive"
+msgid "Active"
+msgstr "Actif"
+
+#: addresslist.rsaddress
+msgctxt "addresslist.rsaddress"
+msgid "Address"
+msgstr "Adresse"
+
+#: addresslist.rsaladdaddress
+msgid "Add address"
+msgstr "Ajouter une adresse"
+
+#: addresslist.rsalautoassemblescritp
+msgid "Auto Assemble script"
+msgstr ""
+
+#: addresslist.rsalnodescription
+msgctxt "addresslist.rsalnodescription"
+msgid "No description"
+msgstr "Aucune description"
+
+#: addresslist.rschangedescription
+msgid "Change Description"
+msgstr "Changer la description"
+
+#: addresslist.rschangevalue
+msgctxt "addresslist.rschangevalue"
+msgid "Change Value"
+msgstr "Changer la valeur"
+
+#: addresslist.rsdescription
+msgctxt "addresslist.rsdescription"
+msgid "Description"
+msgstr "Description"
+
+#: addresslist.rsdoyouwanttodeletetheselectedaddress
+msgid "Do you want to delete the selected address?"
+msgstr "Voulez-vous vraiment supprimer l'adresse sélectionnée ?"
+
+#: addresslist.rsdoyouwanttodeletetheselectedaddresses
+msgid "Do you want to delete the selected addresses?"
+msgstr "Voulez-vous vraiment supprimer les adresses sélectionnées ?"
+
+#: addresslist.rsnotallvaluetypescouldhandlethevalue
+msgid "Not all value types could handle the value %s"
+msgstr ""
+
+#: addresslist.rsscript
+msgid "<script>"
+msgstr "<script>"
+
+#: addresslist.rsthevaluecouldnotbeparsed
+msgid "The value %s could not be parsed"
+msgstr ""
+
+#: addresslist.rstype
+msgctxt "addresslist.rstype"
+msgid "Type"
+msgstr "Type"
+
+#: addresslist.rsvalue
+msgctxt "addresslist.rsvalue"
+msgid "Value"
+msgstr "Valeur"
+
+#: addresslist.rswhatvaluetochangethisto
+msgid "what value to change this to?"
+msgstr ""
+
+#: addresslist.rswhatwillbethenewdescription
+msgid "What will be the new description?"
+msgstr ""
+
+#: addressparser.rsapthisisnotavalidaddress
+msgid "This is not a valid address"
+msgstr "Ce n'est pas une adresse valide"
+
+#: advancedoptionsunit.rsaocheatenginefailedtogetintotheconfigofselectedprogram
+msgid "Cheat Engine failed to get into the config of the selected program."
+msgstr ""
+
+#: advancedoptionsunit.rsaoerrorwhiletryingtocreatethesharedkeystructureetc
+msgid "Error while trying to create the shared key structure! (Which efficiently renders this whole feature useless)"
+msgstr ""
+
+#: advancedoptionsunit.rsaoyoucanonlyloadexefiles
+msgctxt "advancedoptionsunit.rsaoyoucanonlyloadexefiles"
+msgid "You can only load EXE files"
+msgstr "Vous ne pouvez charger que des fichiers .EXE"
+
+#: advancedoptionsunit.rsareyousureyouwishtodeletetheseentries
+msgid "Are you sure you wish to delete these entries?"
+msgstr "Êtes-vous sur de vouloir supprimer ces entrées ?"
+
+#: advancedoptionsunit.rsdelete
+msgctxt "advancedoptionsunit.rsdelete"
+msgid "Delete"
+msgstr "Supprimer"
+
+#: advancedoptionsunit.rsgivethenewnameofthisentry
+msgid "Give the new name of this entry"
+msgstr "Donnez un nouveau nom pour cette entrée"
+
+#: advancedoptionsunit.rsnewname
+msgid "New name"
+msgstr "Nouveau nom"
+
+#: advancedoptionsunit.rspaused
+msgid "paused"
+msgstr "Pause activée"
+
+#: advancedoptionsunit.rspausethegame
+msgctxt "advancedoptionsunit.rspausethegame"
+msgid "Pause the game"
+msgstr "Mettre en pause"
+
+#: advancedoptionsunit.rsresumethegame
+msgid "Resume the game"
+msgstr "Reprendre le jeu"
+
+#: advancedoptionsunit.rsthememoryatthisaddresscouldntbewritten
+msgctxt "advancedoptionsunit.rsthememoryatthisaddresscouldntbewritten"
+msgid "The memory at this address couldn't be written"
+msgstr "La mémoire à cette adresse n'a pas pu être écrite"
+
+#: advancedoptionsunit.straddressalreadyinthelist
+msgctxt "advancedoptionsunit.straddressalreadyinthelist"
+msgid "This address is already in the list"
+msgstr "Cette adresse est déjà dans la liste"
+
+#: advancedoptionsunit.stralreadyinthelist
+msgid "This byte is already part of another opcode already present in the list"
+msgstr "Ce Byte fait déjà partie d'un autre code déjà présent dans la liste"
+
+#: advancedoptionsunit.strcecode
+msgid "Code:"
+msgstr "Code:"
+
+#: advancedoptionsunit.strchangeof
+msgid "Change of "
+msgstr "Changement de "
+
+#: advancedoptionsunit.strcode
+msgid "Code :"
+msgstr "Code :"
+
+#: advancedoptionsunit.strcouldntrestorecode
+msgid "Error when trying to restore this code!"
+msgstr "Erreur lors de la tentative de restauration de ce code !"
+
+#: advancedoptionsunit.strcouldntwrite
+msgctxt "advancedoptionsunit.strcouldntwrite"
+msgid "The memory at this address couldn't be written"
+msgstr "La mémoire à cette adresse n'a pas pu être écrite"
+
+#: advancedoptionsunit.strfindwhatcodeaccesses
+msgid "Find out what addresses this code accesses"
+msgstr "Trouver à quelles adresses ce code accède"
+
+#: advancedoptionsunit.strfindwhatcodereads
+msgid "Find out what addresses this code reads from"
+msgstr "Trouver depuis quelles adresse ce code lis"
+
+#: advancedoptionsunit.strfindwhatcodewrites
+msgctxt "advancedoptionsunit.strfindwhatcodewrites"
+msgid "Find out what addresses this code writes to"
+msgstr "Trouver à quelles adresses ce code écrit"
+
+#: advancedoptionsunit.strnamececode
+msgid "What name do you want to give this code?"
+msgstr "Quel nom voulez-vous donner à ce code ?"
+
+#: advancedoptionsunit.strnotreadable
+msgid "This address is not readable"
+msgstr "Cette adresse n'est pas lisible"
+
+#: advancedoptionsunit.strnotthesame
+msgid "The memory at this address isn't what it should be! Continue?"
+msgstr "La mémoire à cette adresse n'est pas de qu'elle devrait être ! Continuer ?"
+
+#: advancedoptionsunit.strnotwhatitshouldbe
+msgid "The memory at this address is'nt what it should be! Continue?"
+msgstr "La mémoire à cette adresse n'est pas de qu'elle devrait être ! Continuer ?"
+
+#: advancedoptionsunit.strpartofopcodeinthelist
+msgid "At least one of these bytes is already in the list"
+msgstr "Au moins une de ces Bytes est déjà dans la liste"
+
+#: advancedoptionsunit.strselectexefor3d
+msgid "Select the executable of the Direct-3D game"
+msgstr "Selectionnez l'éxecutable du jeu Direct-3D"
+
+#: assemblerarm.rscannotbeencoded
+msgid " can not be encoded using 8 bits and double rotate"
+msgstr "ne peut pas être encodé"
+
+#: assemblerarm.rsdistanceistoobig
+msgid "Distance is too big"
+msgstr "La distance est trop grande"
+
+#: assemblerarm.rsinvaliddestinationregister
+msgid "Invalid destination register"
+msgstr "Destination du registre invalide"
+
+#: assemblerarm.rsinvalidfirstoperandregister
+msgid "Invalid first operand register"
+msgstr ""
+
+#: assemblerarm.rsinvalidopcode
+msgid "Invalid opcode"
+msgstr "Opcode invalide"
+
+#: assemblerarm.rsinvalidparameter1
+msgid "Invalid parameter 1"
+msgstr "Paramètre 1 invalide"
+
+#: assemblerarm.rsinvalidparameter2
+msgid "Invalid parameter 2"
+msgstr "Paramètre 2 invalide"
+
+#: assemblerarm.rsinvalidparameter3
+msgid "Invalid parameter 3"
+msgstr "Paramètre 3 invalide"
+
+#: assemblerarm.rsinvalidparameter4
+msgid "Invalid parameter 4"
+msgstr "Paramètre 4 invalide"
+
+#: assemblerarm.rsinvalidparameters
+msgid "invalid parameters"
+msgstr ""
+
+#: assemblerarm.rsinvalidregister
+msgctxt "assemblerarm.rsinvalidregister"
+msgid "Invalid register"
+msgstr "Registre invalide"
+
+#: assemblerarm.rsinvalidregisterinregisterlist
+msgid "Invalid register in register list:"
+msgstr ""
+
+#: assemblerarm.rsinvalidregisterlist
+msgid "Invalid register list"
+msgstr ""
+
+#: assemblerarm.rsinvalidshift
+msgid "Invalid shift"
+msgstr ""
+
+#: assemblerarm.rsinvalidshiftparameters
+msgid "invalid shift parameters"
+msgstr ""
+
+#: assemblerarm.rsinvalidshiftregister
+msgid "Invalid shift register"
+msgstr ""
+
+#: assemblerarm.rsthedestinationaddressmustbedividableby4
+msgid "The destination address must be dividable by 4"
+msgstr ""
+
+#: assemblerarm.rsthedistanceistoobig
+msgid "The distance is too big"
+msgstr ""
+
+#: assemblerarm.rsthevalue
+msgid "The value "
+msgstr ""
+
+#: assemblerarm.rsthisinstructionclassdoesnotallow
+msgid "This instruction class does not allow a register based shift"
+msgstr ""
+
+#: assemblerarm.rstodochangethistoa12byteinstruction
+msgid "Todo: Change this to a 12 byte instruction: LDR/STR [PC,#16] - B PC - DD offset"
+msgstr ""
+
+#: assemblerunit.rsassemblererror
+msgid "Assembler error"
+msgstr "Erreur de l'Assembleur"
+
+#: assemblerunit.rsidontunderstandwhatyoumeanwith
+msgid "I don't understand what you mean with "
+msgstr "Je ne comprend pas ce que vous voulez dire par "
+
+#: assemblerunit.rsinvalid
+msgid "Invalid"
+msgstr "Invalide"
+
+#: assemblerunit.rsinvalidaddress
+msgctxt "assemblerunit.rsinvalidaddress"
+msgid "Invalid address"
+msgstr "Adresse invalide"
+
+#: assemblerunit.rsinvalidmultiplier
+msgid "Invalid multiplier"
+msgstr "Multiplicateur invalide"
+
+#: assemblerunit.rsinvalidregister
+msgctxt "assemblerunit.rsinvalidregister"
+msgid "Invalid register"
+msgstr "Registre invalide"
+
+#: assemblerunit.rsnegativeregisterscannotbeencoded
+msgid "Negative registers can not be encoded"
+msgstr "Les registres négatifs ne peuvent pas être encodés"
+
+#: assemblerunit.rsoffsettoobig
+msgid "offset too big"
+msgstr "L'Offset est trop grand"
+
+#: assemblerunit.rstheassemblertriedtosetaregistevaluethatistoohigh
+msgid "The assembler tried to set a register value that is too high"
+msgstr "L'assembleur a tenté d'assigner une valeur de registre qui est trop haute"
+
+#: assemblerunit.rswtfisa
+msgid "WTF is a "
+msgstr ""
+
+#: autoassembler.rsaaerror
+msgid "Error: "
+msgstr "Erreur :"
+
+#: autoassembler.rsaaerrorinthestructuredefinitionof
+msgid "Error in the structure definition of %s at line %d"
+msgstr ""
+
+#: autoassembler.rsaaerrorwhilesacnningforaobs
+msgid "Error while scanning for AOB's : "
+msgstr ""
+
+#: autoassembler.rsaaisareservedword
+msgid "%s is a reserved word"
+msgstr "%s est un mot réservé"
+
+#: autoassembler.rsaaluaerrorinthescriptatline
+msgid "Lua error in the script at line "
+msgstr ""
+
+#: autoassembler.rsaamodulenotfound
+msgid "module not found:"
+msgstr "Module introuvable :"
+
+#: autoassembler.rsaanoendfound
+msgid "No end found"
+msgstr "Fin introuvable"
+
+#: autoassembler.rsaanoideawhatxis
+msgid "No idea what %s is"
+msgstr ""
+
+#: autoassembler.rsaathearrayofbytenamed
+msgid "The array of byte named %s could not be found"
+msgstr ""
+
+#: autoassembler.rscouldnotbefound
+msgctxt "autoassembler.rscouldnotbefound"
+msgid "%s could not be found"
+msgstr ""
+
+#: autoassembler.rscouldnotbeinjected
+msgid "%s could not be injected"
+msgstr "%s n'a pas pu être injecté"
+
+#: autoassembler.rsdefinealreadydefined
+msgid "Define %s already defined"
+msgstr ""
+
+#: autoassembler.rserrorinline
+msgid "Error in line %s (%s) :%s"
+msgstr "Erreur à la ligne %s (%s) : %s"
+
+#: autoassembler.rsfailuretoallocatememory
+msgid "Failure to allocate memory"
+msgstr "Echec lors de l'allocation de mémoire"
+
+#: autoassembler.rsforwardjumpwithnolabeldefined
+msgid "Forward jump with no label defined"
+msgstr ""
+
+#: autoassembler.rsgoto
+msgid "Go to "
+msgstr "Aller à "
+
+#: autoassembler.rsinvalidaddressforreadmem
+msgid "Invalid address for ReadMem"
+msgstr "Adresse invalide pour ReadMem"
+
+#: autoassembler.rsinvalidsizeforreadmem
+msgid "Invalid size for ReadMem"
+msgstr "Taille invalide pour ReadMem"
+
+#: autoassembler.rsisbeingredeclared
+msgid "%s is being redeclared"
+msgstr ""
+
+#: autoassembler.rsisnotavalidbytestring
+msgid "%s is not a valid bytestring"
+msgstr ""
+
+#: autoassembler.rsisnotavalididentifier
+msgid "%s is not a valid identifier"
+msgstr ""
+
+#: autoassembler.rsisnotavalidsize
+msgid "%s is not a valid size"
+msgstr ""
+
+#: autoassembler.rslabelisbeingdefinedmorethanonce
+msgid "label %s is being defined more than once"
+msgstr ""
+
+#: autoassembler.rslabelisnotdefinedinthescript
+msgid "label %s is not defined in the script"
+msgstr ""
+
+#: autoassembler.rsmissingexcept
+msgid "The {$TRY} at line %d has no matching {$EXCEPT}"
+msgstr ""
+
+#: autoassembler.rsneedtousekernelmodereadwriteprocessmemory
+msgid "You need to use kernelmode read/writeprocessmemory if you want to use KALLOC"
+msgstr ""
+
+#: autoassembler.rsnotallinstructionscouldbeinjected
+msgid "Not all instructions could be injected"
+msgstr ""
+
+#: autoassembler.rssorrybutwithoutthedriverkallocwillnotfunction
+msgid "Sorry, but without the driver KALLOC will not function"
+msgstr ""
+
+#: autoassembler.rssyntaxerror
+msgid "Syntax error"
+msgstr "Erreur de syntaxe"
+
+#: autoassembler.rssyntaxerrorfullaccessaddresssize
+msgid "Syntax error. FullAccess(address,size)"
+msgstr ""
+
+#: autoassembler.rstheaddressincreatethreadandwaitisnotvalid
+msgid "The address in createthreadandwait(%s) is not valid"
+msgstr ""
+
+#: autoassembler.rstheaddressincreatethreadisnotvalid
+msgid "The address in createthread(%s) is not valid"
+msgstr ""
+
+#: autoassembler.rstheaddressinloadbinaryisnotvalid
+msgid "The address in loadbinary(%s,%s) is not valid"
+msgstr ""
+
+#: autoassembler.rsthearrayofbytecouldnotbefound
+msgid "The array of byte '%s' could not be found"
+msgstr ""
+
+#: autoassembler.rsthebytesatarenotwhatwasexpected
+msgid "The bytes at %s are not what was expected"
+msgstr ""
+
+#: autoassembler.rsthecodeinjectionwassuccessfull
+msgid "The code injection was successfull"
+msgstr "L'injection de code s'est terminée avec succès !"
+
+#: autoassembler.rsthefiledoesnotexist
+msgid "The file %s does not exist"
+msgstr ""
+
+#: autoassembler.rsthefollowingkerneladdresseswhereallocated
+msgid "The following kernel addresses where allocated"
+msgstr ""
+
+#: autoassembler.rstheidentifierhasalreadybeendeclared
+msgid "The identifier %s has already been declared"
+msgstr ""
+
+#: autoassembler.rsthememoryatcannotberead
+msgid "The memory at +%s can not be read"
+msgstr ""
+
+#: autoassembler.rsthememoryatcouldnotbefullyread
+msgid "The memory at %s could not be fully read"
+msgstr ""
+
+#: autoassembler.rsthereiscodedefinedwithoutspecifyingtheaddressitbel
+msgid "There is code defined without specifying the address it belongs to"
+msgstr ""
+
+#: autoassembler.rsthisaddressspecifierisnotvalid
+msgid "This address specifier is not valid"
+msgstr ""
+
+#: autoassembler.rsthiscodecanbeinjectedareyousure
+msgid "This code can be injected. Are you sure?"
+msgstr ""
+
+#: autoassembler.rsthisinstructioncantbecompiled
+msgid "This instruction can't be compiled"
+msgstr "Cette instruction ne peut pas être compilée"
+
+#: autoassembler.rswassupposedtobeaddedtothesymbollistbutitisntdeclar
+msgid "%s was supposed to be added to the symbollist, but it isn't declared"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxallocidentifiersizeinbytes
+msgid "Wrong syntax. ALLOC(identifier,sizeinbytes)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxaobscanmodulename11223355
+msgid "Wrong syntax. AOBSCANMODULE(name, module, 11 22 33 ** 55)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxaobscanname11223355
+msgid "Wrong syntax. AOBSCAN(name,11 22 33 ** 55)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxaobscanregion
+msgid "Wrong syntax. AOBSCANREGION(name, startaddress, stopaddress, 11 22 33 ** 55)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxassertaddress1122335566
+msgid "Wrong syntax. ASSERT(address,11 22 33 ** 55 66)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxcreatethreadaddress
+msgid "Wrong syntax. CreateThread(address)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxdefinenamewhatever
+msgid "Wrong syntax. DEFINE(name,whatever)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxglobalallocnamesize
+msgid "Wrong syntax. GLOBALALLOC(name,size)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxincludefilenamecea
+msgid "Wrong syntax. Include(filename.cea)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxkallocidentifiersizeinbytes
+msgid "Wrong syntax. kalloc(identifier,sizeinbytes)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxloadbinaryaddressfilename
+msgid "Wrong syntax. LoadBinary(address,filename)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxloadlibraryfilename
+msgid "Wrong syntax. LoadLibrary(filename)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxluacall
+msgid "Wrong Syntax. LuaCall(luacommand)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxreadmemaddresssize
+msgid "Wrong syntax. ReadMem(address,size)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxreassemble
+msgid "Wrong syntax. Reassemble(address)"
+msgstr ""
+
+#: autoassembler.rswrongsyntaxsharedallocnamesize
+msgid "Wrong syntax. SHAREDALLOC(name,size)"
+msgstr ""
+
+#: autoassembler.rsxcouldnotbefound
+msgctxt "autoassembler.rsxcouldnotbefound"
+msgid "%s could not be found"
+msgstr ""
+
+#: autoassembler.rsyoucanonlyhaveonedisablesection
+msgid "You can only have one disable section"
+msgstr ""
+
+#: autoassembler.rsyoucanonlyhaveoneenablesection
+msgid "You can only have one enable section"
+msgstr ""
+
+#: autoassembler.rsyouhavntspecifiedadisablesection
+msgid "You havn't specified a disable section"
+msgstr ""
+
+#: autoassembler.rsyouhavntspecifiedaenablesection
+msgid "You havn't specified a enable section"
+msgstr ""
+
+#: bigmemallochandler.rsallocerror
+msgid "VirtualAlloc failed. You probably don't have enough system memory free. Either install more RAM, or increase the maximum allowed paging size"
+msgstr ""
+
+#: bigmemallochandler.rsbmavirtualallocfailedyouprobablydonthaveenoughtvirtualmemoryfreeetc
+msgid "VirtualAlloc failed. You probably don't have enough virtual memory free. Use the 64-bit version instead"
+msgstr ""
+
+#: bigmemallochandler.rscepointerscanmemorymanager
+msgid "CE Pointerscan memory manager"
+msgstr ""
+
+#: byteinterpreter.rsbibyte
+msgid "(byte)"
+msgstr ""
+
+#: byteinterpreter.rsbidouble
+msgid "(double)"
+msgstr ""
+
+#: byteinterpreter.rsbidword
+msgid "(dword)"
+msgstr ""
+
+#: byteinterpreter.rsbifloat
+msgid "(float)"
+msgstr ""
+
+#: byteinterpreter.rsbiqword
+msgid "(qword)"
+msgstr ""
+
+#: byteinterpreter.rsbiword
+msgid "(word)"
+msgstr ""
+
+#: cedebugger.rscontinue
+msgid "Continue?"
+msgstr "Continuer ?"
+
+#: cedebugger.rsdebugerror
+msgid "I couldn't attach the debugger to this process! You could try to open the process using the processpicker and try that! If that also doesn't work check if you have debugging rights."
+msgstr ""
+
+#: cedebugger.rsdonotclosece
+msgid "If you close Cheat Engine while the game is running, the game will close too. Are you sure you want to do this?"
+msgstr "Si vous fermez Cheat Engine pendant que le jeu est en cours d'éxecution, le jeu se fermera aussi. Être vous sur de vouloir faire cela ?"
+
+#: cedebugger.rspleasetargetanotherprocess
+msgid "Please target another process"
+msgstr "Mettre de bien vouloir sélectionner un autre Processus"
+
+#: cedebugger.rsthiswillattachthedebuggerofcheatenginetothecurrent
+msgid "This will attach the debugger of Cheat Engine to the current process."
+msgstr ""
+
+#: cedebugger.rsyoumustfirstopenaprocess
+msgid "You must first open a process"
+msgstr "Vous devez avant tout ouvrir un Processus"
+
+#: cefuncproc.rsalt
+msgctxt "cefuncproc.rsalt"
+msgid "Alt"
+msgstr "Alt"
+
+#: cefuncproc.rsapplicationskey
+msgctxt "cefuncproc.rsapplicationskey"
+msgid "Applications key"
+msgstr ""
+
+#: cefuncproc.rsbackspace
+msgctxt "cefuncproc.rsbackspace"
+msgid "Backspace"
+msgstr "Barre d'espace"
+
+#: cefuncproc.rsbreak
+msgctxt "cefuncproc.rsbreak"
+msgid "Break"
+msgstr ""
+
+#: cefuncproc.rscapslock
+msgctxt "cefuncproc.rscapslock"
+msgid "Caps Lock"
+msgstr ""
+
+#: cefuncproc.rscefpdllinjectionfailedsymbollookuperror
+msgid "Dll injection failed: symbol lookup error"
+msgstr ""
+
+#: cefuncproc.rscefpicantgettheprocesslistyouarepropablyuseinwindowsntetc
+msgctxt "cefuncproc.rscefpicantgettheprocesslistyouarepropablyuseinwindowsntetc"
+msgid "I can't get the process list. You are propably using windows NT. Use the window list instead!"
+msgstr ""
+
+#: cefuncproc.rsclear
+msgctxt "cefuncproc.rsclear"
+msgid "Clear"
+msgstr "Vider"
+
+#: cefuncproc.rsctrl
+msgctxt "cefuncproc.rsctrl"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: cefuncproc.rsdeletekey
+msgid "Delete "
+msgstr "Supprimer "
+
+#: cefuncproc.rsdownarrow
+msgctxt "cefuncproc.rsdownarrow"
+msgid "Down Arrow"
+msgstr ""
+
+#: cefuncproc.rsend
+msgctxt "cefuncproc.rsend"
+msgid "End"
+msgstr "Fin"
+
+#: cefuncproc.rsenter
+msgctxt "cefuncproc.rsenter"
+msgid "Enter"
+msgstr "Entrée"
+
+#: cefuncproc.rsesc
+msgctxt "cefuncproc.rsesc"
+msgid "Esc"
+msgstr "Echap"
+
+#: cefuncproc.rsexecute
+msgctxt "cefuncproc.rsexecute"
+msgid "Execute"
+msgstr "Exécuter"
+
+#: cefuncproc.rsfailedexecutingthefunctionofthedll
+msgid "Failed executing the function of the dll"
+msgstr ""
+
+#: cefuncproc.rsfailedinjectingthedll
+msgid "Failed injecting the DLL"
+msgstr "Echec lors de l'injection du DLL"
+
+#: cefuncproc.rsfailedtoallocatememory
+msgid "Failed to allocate memory"
+msgstr "Echec de l'allocation de la mémoire"
+
+#: cefuncproc.rsfailedtoexecutethedllloader
+msgid "Failed to execute the dll loader"
+msgstr ""
+
+#: cefuncproc.rsfailedtoinjectthedllloader
+msgid "Failed to inject the dll loader"
+msgstr ""
+
+#: cefuncproc.rsgetprocaddressnotfound
+msgid "GetProcAddress not found"
+msgstr ""
+
+#: cefuncproc.rshelp
+msgctxt "cefuncproc.rshelp"
+msgid "Help"
+msgstr "Aide"
+
+#: cefuncproc.rshome
+msgctxt "cefuncproc.rshome"
+msgid "Home"
+msgstr "Accueil"
+
+#: cefuncproc.rsicantgettheprocesslistyouarepropablyusingwindowsnt
+msgctxt "cefuncproc.rsicantgettheprocesslistyouarepropablyusingwindowsnt"
+msgid "I can't get the process list. You are propably using windows NT. Use the window list instead!"
+msgstr ""
+
+#: cefuncproc.rsinsert
+msgctxt "cefuncproc.rsinsert"
+msgid "Insert"
+msgstr "Insérer"
+
+#: cefuncproc.rsleftarrow
+msgctxt "cefuncproc.rsleftarrow"
+msgid "Left Arrow"
+msgstr ""
+
+#: cefuncproc.rsleftmb
+msgid "Left MB"
+msgstr ""
+
+#: cefuncproc.rsleftwindowskey
+msgctxt "cefuncproc.rsleftwindowskey"
+msgid "Left Windows key"
+msgstr ""
+
+#: cefuncproc.rsloadlibraryanotfound
+msgid "LoadLibraryA not found"
+msgstr ""
+
+#: cefuncproc.rsmiddlemb
+msgid "Middle MB"
+msgstr ""
+
+#: cefuncproc.rsnokernel32dllloaded
+msgid "No kernel32.dll loaded"
+msgstr ""
+
+#: cefuncproc.rsnotconvertable
+msgid "Not convertable"
+msgstr ""
+
+#: cefuncproc.rsnotsupportedinthisversion
+msgid "not supported in this version"
+msgstr ""
+
+#: cefuncproc.rsnumeric
+msgctxt "cefuncproc.rsnumeric"
+msgid "numeric"
+msgstr "Numérique"
+
+#: cefuncproc.rsnumlock
+msgctxt "cefuncproc.rsnumlock"
+msgid "Num Lock"
+msgstr ""
+
+#: cefuncproc.rspagedown
+msgctxt "cefuncproc.rspagedown"
+msgid "Page Down"
+msgstr ""
+
+#: cefuncproc.rspageup
+msgctxt "cefuncproc.rspageup"
+msgid "Page Up"
+msgstr ""
+
+#: cefuncproc.rspause
+msgctxt "cefuncproc.rspause"
+msgid "Pause"
+msgstr "Pause"
+
+#: cefuncproc.rsposition
+msgid " Position"
+msgstr ""
+
+#: cefuncproc.rsprint
+msgctxt "cefuncproc.rsprint"
+msgid "Print"
+msgstr ""
+
+#: cefuncproc.rsprintscreen
+msgctxt "cefuncproc.rsprintscreen"
+msgid "Print Screen"
+msgstr "Impression d'écran"
+
+#: cefuncproc.rsrightarrow
+msgctxt "cefuncproc.rsrightarrow"
+msgid "Right Arrow"
+msgstr ""
+
+#: cefuncproc.rsrightmb
+msgid "Right MB"
+msgstr ""
+
+#: cefuncproc.rsrightwindowskey
+msgctxt "cefuncproc.rsrightwindowskey"
+msgid "Right Windows key"
+msgstr ""
+
+#: cefuncproc.rsscrolllock
+msgctxt "cefuncproc.rsscrolllock"
+msgid "Scroll Lock"
+msgstr ""
+
+#: cefuncproc.rsselect
+msgctxt "cefuncproc.rsselect"
+msgid "Select"
+msgstr ""
+
+#: cefuncproc.rsseparator
+msgctxt "cefuncproc.rsseparator"
+msgid "Separator"
+msgstr ""
+
+#: cefuncproc.rsshift
+msgctxt "cefuncproc.rsshift"
+msgid "Shift"
+msgstr ""
+
+#: cefuncproc.rsspacebar
+msgctxt "cefuncproc.rsspacebar"
+msgid "Space bar"
+msgstr ""
+
+#: cefuncproc.rstab
+msgctxt "cefuncproc.rstab"
+msgid "Tab"
+msgstr ""
+
+#: cefuncproc.rstheinjectionthreadtooklongerthan10secondstoexecute
+msgid "The injection thread took longer than 10 seconds to execute. Injection routine not freed"
+msgstr ""
+
+#: cefuncproc.rsunknownerrorduringinjection
+msgid "Unknown error during injection"
+msgstr ""
+
+#: cefuncproc.rsuparrow
+msgctxt "cefuncproc.rsuparrow"
+msgid "Up Arrow"
+msgstr ""
+
+#: ceguicomponents.rsinvalidformdata
+msgid "Invalid formdata"
+msgstr ""
+
+#: celazysocket.rsdisconnectedwhilereceivingdata
+msgid "Disconnected while receiving data"
+msgstr ""
+
+#: celazysocket.rsdisconnectedwhilesendingdata
+msgid "Disconnected while sending data"
+msgstr ""
+
+#: celazysocket.rserrorwhilereceivingdata
+msgid "Error while receiving data: "
+msgstr ""
+
+#: celazysocket.rserrorwhilesendingdata
+msgid "Error while sending data: "
+msgstr ""
+
+#: celazysocket.rstimeoutwhilereceivingdata
+msgid "Timeout while receiving data"
+msgstr ""
+
+#: celazysocket.rstimeoutwhilesendingdata
+msgid "Timeout while sending data"
+msgstr ""
+
+#: celazysocket.rswhoopdeedoo
+msgid "Whoopdeedoo"
+msgstr ""
+
+#: changeoffsetunit.rsthisisnotanvalidvalue
+msgctxt "changeoffsetunit.rsthisisnotanvalidvalue"
+msgid "This is not an valid value"
+msgstr ""
+
+#: customtypehandler.rsacustomfunctiontypewithnamealreadyexists
+msgid "A custom function type with name %s already exists"
+msgstr ""
+
+#: customtypehandler.rsacustomtypewithnamealreadyexists
+msgid "A custom type with name %s already exists"
+msgstr ""
+
+#: customtypehandler.rsbytesizeis0
+msgid "bytesize is 0"
+msgstr ""
+
+#: customtypehandler.rscthinvalidnumberofparameters
+msgid "Invalid number of parameters"
+msgstr ""
+
+#: customtypehandler.rscthparameter3isnotavalidfunction
+msgid "Parameter 3 is not a valid function"
+msgstr ""
+
+#: customtypehandler.rscthparameter4isnotavalidfunction
+msgid "Parameter 4 is not a valid function"
+msgstr ""
+
+#: customtypehandler.rsfailurecreatingluaobject
+msgid "Failure creating lua object"
+msgstr ""
+
+#: customtypehandler.rsinvalidfunctiontypename
+msgid "invalid functiontypename"
+msgstr ""
+
+#: customtypehandler.rsinvalidtypename
+msgid "invalid typename"
+msgstr ""
+
+#: customtypehandler.rsonlyreturntypenamebytecountandfunctiontypename
+msgid "Only return typename, bytecount and functiontypename"
+msgstr ""
+
+#: customtypehandler.rsundefinederror
+msgctxt "customtypehandler.rsundefinederror"
+msgid "Undefined error"
+msgstr "Erreur indéfinie"
+
+#: d3dhookunit.rsd3dhookfailuretomapthesharedmemoryobject
+msgid "D3DHook: Failure to map the shared memory object"
+msgstr ""
+
+#: d3dhookunit.rsd3dhookfailuretoopenthesharedmemoryobject
+msgid "D3DHook: Failure to open the shared memory object"
+msgstr ""
+
+#: d3dhookunit.rsthed3dhookobjecthasnotbeencreatedyet
+msgid "The d3dhook object has not been created yet"
+msgstr ""
+
+#: dbk32functions.rsapcrules
+msgid "APC rules"
+msgstr ""
+
+#: dbk32functions.rscouldnotlaunchdbvm
+msgid "Could not launch DBVM: The Intel-VT feature has been disabled in your BIOS"
+msgstr ""
+
+#: dbk32functions.rsdbk32error
+msgid "DBK32 error"
+msgstr "Erreur DBK32"
+
+#: dbk32functions.rsdbkerror
+msgid "DBK Error"
+msgstr "Erreur DBK"
+
+#: dbk32functions.rsdrivererror
+msgid "Driver error"
+msgstr "Erreur des Pilotes"
+
+#: dbk32functions.rsfailuretoconfigurethedriver
+msgid "Failure to configure the driver"
+msgstr ""
+
+#: dbk32functions.rsfailuretoconfiguretheultimapdriver
+msgid "Failure to configure the ultimap driver"
+msgstr ""
+
+#: dbk32functions.rsinvalidmsraddress
+msgid "Invalid MSR address:"
+msgstr "Adresse MSR invalide : "
+
+#: dbk32functions.rsmsrsareunavailable
+msgid "msrs are unavailable"
+msgstr ""
+
+#: dbk32functions.rspleaserebootandpressf8duringboot
+msgid "The driver failed to load due to signing issues. If you have secure boot enabled in your BIOS, set it to \"Other OS\" or disable it. Alternatively, boot with driver signing policy disabled, or sign the driver yourself"
+msgstr ""
+
+#: dbk32functions.rspleaserunthe64bitversionofce
+msgid "Please run the 64-bit version of Cheat Engine"
+msgstr ""
+
+#: dbk32functions.rsthedrivercouldntbeopened
+msgid "The driver couldn't be opened! It's not loaded or not responding. Luckely you are running dbvm so it's not a total waste. Do you wish to force load the driver?"
+msgstr ""
+
+#: dbk32functions.rsthedrivercouldntbeopenedtryagain
+msgid "The driver couldn't be opened! It's not loaded or not responding. I recommend to reboot your system and try again"
+msgstr ""
+
+#: dbk32functions.rsthedriverfailedtosuccessfullyinitialize
+msgid "The driver failed to successfully initialize. Some functions may not completely work"
+msgstr ""
+
+#: dbk32functions.rsthedriverthatiscurrentlyloaded
+msgid "The driver that is currently loaded belongs to a different version of Cheat Engine. Please unload this driver or reboot."
+msgstr ""
+
+#: dbk32functions.rstheservicecouldntgetopened
+msgid "The service couldn't get opened and also couldn't get created. Check if you have the needed rights to create a service, or call your system admin (Who'll probably beat you up for even trying this). Until this is fixed you won't be able to make use of the enhancements the driver gives you"
+msgstr ""
+
+#: dbk32functions.rstheservicecouldntgetopenedultimap
+msgid "The ultimap service couldn't get opened and also couldn't get created.  (No admin rights?)"
+msgstr ""
+
+#: dbk32functions.rsyouaremissingthedriver
+msgid "You are missing the driver. Try reinstalling cheat engine, and try to disable your anti-virus before doing so."
+msgstr ""
+
+#: dbk64secondaryloader.rserrorwhiletryingtoloadthedriveratpart
+msgid "Error while trying to load the driver at part "
+msgstr ""
+
+#: dbk64secondaryloader.rsmoduleloaderdailedtomdbk64systomemoryap
+msgid "ModuleLoader failed to map dbk64.sys to memory"
+msgstr ""
+
+#: dbk64secondaryloader.rsseemslikedbvmisntloadedafterall
+msgid "seems like dbvm isn't loaded after all"
+msgstr ""
+
+#: dbk64secondaryloader.rssuccessthedriverhasbeenloaded
+msgid "Success. The driver has been loaded thanks to dbvm"
+msgstr ""
+
+#: dbk64secondaryloader.rsthedriverfailedtoinitialize
+msgid "The driver failed to initialize"
+msgstr ""
+
+#: dbvmloadmanual.rschecking
+msgid "<Checking>"
+msgstr ""
+
+#: dbvmloadmanual.rscpu
+msgid "CPU "
+msgstr "CPU "
+
+#: dbvmloadmanual.rscpualreadyrunningdbvm
+msgid "This cpu is already running DBVM"
+msgstr ""
+
+#: dbvmloadmanual.rsloaded
+msgid "Loaded:"
+msgstr "Chargé : "
+
+#: dbvmloadmanual.rsnotloaded
+msgid "Not loaded"
+msgstr ""
+
+#: debugeventhandler.rsdebughandleaccessviolationdebugeventnow
+msgid "Debug HandleAccessViolationDebugEvent now"
+msgstr ""
+
+#: debugeventhandler.rsspecialcase
+msgid "Special case"
+msgstr ""
+
+#: debuggertypedefinitions.rsbreak
+msgctxt "debuggertypedefinitions.rsbreak"
+msgid "Break"
+msgstr ""
+
+#: debuggertypedefinitions.rsbreakandtrace
+msgctxt "debuggertypedefinitions.rsbreakandtrace"
+msgid "Break and trace"
+msgstr ""
+
+#: debuggertypedefinitions.rschangereg
+msgid "Change reg"
+msgstr ""
+
+#: debuggertypedefinitions.rsexceptionbreakpoint
+msgid "Exception Breakpoint"
+msgstr ""
+
+#: debuggertypedefinitions.rsfindcode
+msgid "Find code"
+msgstr ""
+
+#: debuggertypedefinitions.rsfindcodeaccess
+msgid "Find code access"
+msgstr ""
+
+#: debuggertypedefinitions.rshardwarebreakpoint
+msgid "Hardware Breakpoint"
+msgstr ""
+
+#: debuggertypedefinitions.rsonexecute
+msgid "On Execute"
+msgstr ""
+
+#: debuggertypedefinitions.rsonreadwrite
+msgid "On Read/Write"
+msgstr ""
+
+#: debuggertypedefinitions.rsonwrite
+msgid "On Write"
+msgstr ""
+
+#: debuggertypedefinitions.rssoftwarebreakpoint
+msgid "Software Breakpoint"
+msgstr ""
+
+#: debughelper.rsaddbreakpointaninvaliddebugregisterisused
+msgid "AddBreakpoint: An invalid debug register is used"
+msgstr ""
+
+#: debughelper.rsall4debugregistersarecurrentlyusedupfreeoneandtrya
+msgid "All debug registers are currently used up. Free one and try again"
+msgstr ""
+
+#: debughelper.rsalldebugregistersareusedup
+msgid "All debug registers are used up"
+msgstr ""
+
+#: debughelper.rsalldebugregistersareusedupdoyouwanttouseasoftwarebp
+msgid "All debug registers are used up. Do you want to use a software breakpoint?"
+msgstr ""
+
+#: debughelper.rsbreakpointerror
+msgid "Breakpoint error:"
+msgstr ""
+
+#: debughelper.rscalledfromanunexpectedthread
+msgid "Called from an unexpected thread"
+msgstr ""
+
+#: debughelper.rscalledfromdebuggerthread
+msgid "Called from debugger thread"
+msgstr ""
+
+#: debughelper.rscalledfrommainthread
+msgid "Called from main thread"
+msgstr ""
+
+#: debughelper.rscreateprocessfailed
+msgid "CreateProcess failed:%s"
+msgstr ""
+
+#: debughelper.rsdebuggerattachtimeout
+msgid "Debugger attach timeout"
+msgstr ""
+
+#: debughelper.rsdebuggercrash
+msgid "Debugger Crash"
+msgstr ""
+
+#: debughelper.rsdebuggerfailedtoattach
+msgid "Debugger failed to attach"
+msgstr ""
+
+#: debughelper.rsdebuggerinterfacedoesnotsupportsoftwarebreakpoints
+msgid "Debugger interface %s does not support software breakpoints"
+msgstr ""
+
+#: debughelper.rsdebuggerthreadisatpoint
+msgid "debuggerthread is at point "
+msgstr ""
+
+#: debughelper.rslastlocation
+msgid " (Last location:"
+msgstr ""
+
+#: debughelper.rsno
+msgctxt "debughelper.rsno"
+msgid "No"
+msgstr ""
+
+#: debughelper.rsnoform
+msgid "No form"
+msgstr ""
+
+#: debughelper.rsonlythedebuggerthreadisallowedtosetthecurrentthread
+msgid "Only the debugger thread is allowed to set the current thread"
+msgstr ""
+
+#: debughelper.rsoutofhwbreakpoints
+msgid "All debug registers are used up and this debugger interface does not support software Breakpoints. Remove some and try again"
+msgstr ""
+
+#: debughelper.rsseconds
+msgid " seconds"
+msgstr ""
+
+#: debughelper.rsthedebuggerattachhastimedout
+msgid "The debugger attach has timed out. This could indicate that the target has crashed, or that your system is just slow. Do you wish to wait another "
+msgstr ""
+
+#: debughelper.rsthefollowingopcodesaccessed
+msgid "The following opcodes accessed %s"
+msgstr ""
+
+#: debughelper.rsthefollowingopcodeswriteto
+msgid "The following opcodes write to %s"
+msgstr ""
+
+#: debughelper.rsthisdebuggerinterfacedoesntsupportbreakonentryyet
+msgid "This debugger interface :'%s' doesn't support Break On Entry yet"
+msgstr ""
+
+#: debughelper.rsunreadableaddress
+msgid "Unreadable address"
+msgstr ""
+
+#: debughelper.rsunreadablememoryunabletosetsoftwarebreakpoint
+msgid "Unreadable memory. Unable to set software breakpoint"
+msgstr ""
+
+#: debughelper.rsyes
+msgctxt "debughelper.rsyes"
+msgid "Yes"
+msgstr ""
+
+#: disassemblerviewlinesunit.rscall
+msgid "(Call)"
+msgstr ""
+
+#: disassemblerviewlinesunit.rscon
+msgid "(Conditional)"
+msgstr ""
+
+#: disassemblerviewlinesunit.rsinvaliddisassembly
+msgid "Invalid disassembly"
+msgstr ""
+
+#: disassemblerviewlinesunit.rsmemory
+msgid "(Code/Data)"
+msgstr ""
+
+#: disassemblerviewlinesunit.rsun
+msgid "(Unconditional)"
+msgstr ""
+
+#: disassemblerviewunit.rsaddress
+msgctxt "disassemblerviewunit.rsaddress"
+msgid "Address"
+msgstr "Adresse"
+
+#: disassemblerviewunit.rsbytes
+msgctxt "disassemblerviewunit.rsbytes"
+msgid "Bytes"
+msgstr "Bytes"
+
+#: disassemblerviewunit.rscomment
+msgctxt "disassemblerviewunit.rscomment"
+msgid "Comment"
+msgstr ""
+
+#: disassemblerviewunit.rsopcode
+msgid "Opcode"
+msgstr "Opcode"
+
+#: disassemblerviewunit.rspleaseopenaprocessfirst
+msgid "Please open a process first"
+msgstr "Ouvrir un processus pour commencer"
+
+#: disassemblerviewunit.rssymbolsarebeingloaded
+msgid "Symbols are being loaded (%d %%)"
+msgstr ""
+
+#: dissectcodethread.rsinvaliddissectcodefile
+msgid "Invalid dissect code file"
+msgstr ""
+
+#: dissectcodethread.rstdissectcodethreadgetcalllistcalledwithanonemptylist
+msgid "TDissectCodeThread.getCallList called with a non empty list"
+msgstr ""
+
+#: dissectcodeunit.rsdone
+msgctxt "dissectcodeunit.rsdone"
+msgid "done"
+msgstr ""
+
+#: dissectcodeunit.rspleaseselectsomethingtoscan
+msgid "Please select something to scan"
+msgstr ""
+
+#: dissectcodeunit.rsstart
+msgctxt "dissectcodeunit.rsstart"
+msgid "Start"
+msgstr "Début"
+
+#: dissectcodeunit.rsstop
+msgctxt "dissectcodeunit.rsstop"
+msgid "Stop"
+msgstr "Stop"
+
+#: dotnettypes.rsdnt2byte
+msgctxt "dotnettypes.rsdnt2byte"
+msgid "2 Byte"
+msgstr "2 Byte"
+
+#: dotnettypes.rsdnt2bytesigned
+msgid "2 Byte (Signed)"
+msgstr ""
+
+#: dotnettypes.rsdnt4byte
+msgctxt "dotnettypes.rsdnt4byte"
+msgid "4 Byte"
+msgstr "4 Byte"
+
+#: dotnettypes.rsdnt4bytesigned
+msgid "4 Byte (Signed)"
+msgstr ""
+
+#: dotnettypes.rsdnt8byte
+msgid "8 Byte"
+msgstr ""
+
+#: dotnettypes.rsdnt8bytesigned
+msgid "8 Byte (Signed)"
+msgstr ""
+
+#: dotnettypes.rsdntarray
+msgid "Array"
+msgstr ""
+
+#: dotnettypes.rsdntbool
+msgid "bool"
+msgstr ""
+
+#: dotnettypes.rsdntbyte
+msgctxt "dotnettypes.rsdntbyte"
+msgid "Byte"
+msgstr "Byte"
+
+#: dotnettypes.rsdntbytesigned
+msgid "Byte (Signed)"
+msgstr ""
+
+#: dotnettypes.rsdntchar
+msgid "char"
+msgstr ""
+
+#: dotnettypes.rsdntclass
+msgid "Class"
+msgstr ""
+
+#: dotnettypes.rsdntcmod_opt
+msgid "CMOD_OPT"
+msgstr ""
+
+#: dotnettypes.rsdntcmod_reqd
+msgid "CMOD_REQD"
+msgstr ""
+
+#: dotnettypes.rsdntdouble
+msgctxt "dotnettypes.rsdntdouble"
+msgid "Double"
+msgstr ""
+
+#: dotnettypes.rsdntend
+msgid "END"
+msgstr ""
+
+#: dotnettypes.rsdntfloat
+msgctxt "dotnettypes.rsdntfloat"
+msgid "Float"
+msgstr "Nombre"
+
+#: dotnettypes.rsdntfunctionpointer
+msgid "Function Pointer"
+msgstr ""
+
+#: dotnettypes.rsdntgenericinst
+msgid "GenericInst"
+msgstr ""
+
+#: dotnettypes.rsdntinternal
+msgid "Internal"
+msgstr ""
+
+#: dotnettypes.rsdntmax
+msgid "MAX"
+msgstr ""
+
+#: dotnettypes.rsdntmodifier
+msgid "Modifier"
+msgstr ""
+
+#: dotnettypes.rsdntmvar
+msgid "MVar"
+msgstr ""
+
+#: dotnettypes.rsdntobject
+msgid "Object"
+msgstr "Objet"
+
+#: dotnettypes.rsdntpinned
+msgid "Pinned"
+msgstr ""
+
+#: dotnettypes.rsdntpointer
+msgctxt "dotnettypes.rsdntpointer"
+msgid "Pointer"
+msgstr "Pointeur"
+
+#: dotnettypes.rsdntreference
+msgid "Reference"
+msgstr "Référence"
+
+#: dotnettypes.rsdntsentinel
+msgid "Sentinel"
+msgstr ""
+
+#: dotnettypes.rsdntsigned
+msgctxt "dotnettypes.rsdntsigned"
+msgid "Signed"
+msgstr ""
+
+#: dotnettypes.rsdntstring
+msgctxt "dotnettypes.rsdntstring"
+msgid "String"
+msgstr "Chaîne de caractères"
+
+#: dotnettypes.rsdntszarray
+msgid "SZ Array"
+msgstr ""
+
+#: dotnettypes.rsdnttypedbyref
+msgid "Typed By Ref"
+msgstr ""
+
+#: dotnettypes.rsdntunsigned
+msgid "Unsigned"
+msgstr ""
+
+#: dotnettypes.rsdntvaluetype
+msgid "ValueType"
+msgstr "Type de valeur"
+
+#: dotnettypes.rsdntvar
+msgid "Var"
+msgstr ""
+
+#: dotnettypes.rsdntvoid
+msgid "void"
+msgstr ""
+
+#: driverlist.rsdlnothingfound
+msgctxt "driverlist.rsdlnothingfound"
+msgid "nothing found"
+msgstr "Rien n'a été trouvé"
+
+#: extratrainercomponents.rsundefineddescription
+msgid "undefined description"
+msgstr ""
+
+#: extratrainercomponents.rsundefinedhotkey
+msgid "undefined hotkey"
+msgstr ""
+
+#: feces.rsbcryptcouldnotbeused
+msgid "bcrypt could not be used"
+msgstr ""
+
+#: feces.rscheatenginesignaturefiles
+msgid "Cheat engine signature files"
+msgstr ""
+
+#: feces.rscouldnotopenthealgorithmprovider
+msgid "Could not open the algorithm provider"
+msgstr ""
+
+#: feces.rsfailedcreatinghasalgorithmprovider
+msgctxt "feces.rsfailedcreatinghasalgorithmprovider"
+msgid "Failed creating has algorithm provider"
+msgstr ""
+
+#: feces.rsfailedcreatinghasalgorithmprovider2
+msgctxt "feces.rsfailedcreatinghasalgorithmprovider2"
+msgid "Failed creating has algorithm provider"
+msgstr ""
+
+#: feces.rsfailedcreatinghash
+msgid "Failed creating hash"
+msgstr ""
+
+#: feces.rsfailedcreatinghash2
+msgid "Failed creating hash 2"
+msgstr ""
+
+#: feces.rsfailedgettingtheobjectlength
+msgid "Failed getting the object length"
+msgstr ""
+
+#: feces.rsfailedhashingtable
+msgid "Failed hashing table"
+msgstr ""
+
+#: feces.rsfailedhashingtable2
+msgid "Failed hashing table 2"
+msgstr ""
+
+#: feces.rsfailedtofinishthehash
+msgid "Failed to finish the hash"
+msgstr ""
+
+#: feces.rsfailedtofinishthehash2
+msgid "Failed to finish the hash 2"
+msgstr ""
+
+#: feces.rsfailedtogethashlength
+msgid "Failed to get hashlength"
+msgstr ""
+
+#: feces.rsfailedtogethashlength2
+msgid "Failed to get hashlength 2"
+msgstr ""
+
+#: feces.rsfailedtogetsignaturesize
+msgid "Failed to get the signature size"
+msgstr ""
+
+#: feces.rsfailedtoloadcheatenginepublickey
+msgid "Failed to load cheat engine public key"
+msgstr ""
+
+#: feces.rsfailedtoloadprivatekey
+msgid "Failed to load private key"
+msgstr ""
+
+#: feces.rsfailedtoloadthetablepublickey
+msgid "Failed to load the table public key"
+msgstr ""
+
+#: feces.rsinvalidpublickey
+msgid "The provided public key is invalid(Not signed by the Cheat Engine guy). Remove the signature section to load this table"
+msgstr ""
+
+#: feces.rsispasswordcorrect
+msgid "Is the password correct?"
+msgstr "Le mot de passe est-il correct ?"
+
+#: feces.rsnopublickey
+msgid "This table's signature does not contain a PublicKey element"
+msgstr ""
+
+#: feces.rsnosignedhash
+msgid "This table's signature does not contain a SignedHash element"
+msgstr ""
+
+#: feces.rsselectyourcheatenginesignaturefile
+msgid "Select your cheat engine signature file"
+msgstr ""
+
+#: feces.rsthistablehasbeenmodified
+msgid "This table has been modified. To load this table, remove the signature part with an editor (And check the file for suspicious things while you're at it)"
+msgstr ""
+
+#: fileaccess.rsnogetnamedsecurityinfo
+msgid "no GetNamedSecurityInfo"
+msgstr ""
+
+#: fileaccess.rsnogetsecurityinfo
+msgid "no GetSecurityInfo"
+msgstr ""
+
+#: fileaccess.rsnosetentriesinacl
+msgid "no SetEntriesInAcl"
+msgstr ""
+
+#: fileaccess.rsnosetnamedsecurityinfo
+msgid "no SetNamedSecurityInfo"
+msgstr ""
+
+#: filemapping.rsdoesnotexist
+msgid "%s does not exist"
+msgstr "%s n'éxiste pas"
+
+#: filemapping.rsfailedcreatingaproperview
+msgid "Failed creating a proper view"
+msgstr ""
+
+#: filemapping.rsmappingfailed
+msgid "Mapping failed"
+msgstr ""
+
+#: findwindowunit.rsnothingfound
+msgid "Nothing found"
+msgstr "Rien n'a été trouvé"
+
+#: findwindowunit.rsthespecifiedrangeisinvalid
+msgid "The specified range is invalid"
+msgstr ""
+
+#: formaddresschangeunit.rsacaddoffset
+msgid "Add Offset"
+msgstr "Ajouter"
+
+#: formaddresschangeunit.rsacremoveoffset
+msgid "Remove Offset"
+msgstr "Supprimer"
+
+#: formaddresschangeunit.rsaddressofpointer
+msgid "Address of pointer"
+msgstr "Adresse du pointeur"
+
+#: formaddresschangeunit.rsfillinthenrofbytesafterthelocationthepointerpoints
+msgid "Fill in the nr. of bytes after the location the pointer points to"
+msgstr ""
+
+#: formaddresschangeunit.rsisnotavalidoffset
+msgid "%s is not a valid offset"
+msgstr ""
+
+#: formaddresschangeunit.rsnotalloffsetshavebeenfilledin
+msgid "Not all offsets have been filled in"
+msgstr ""
+
+#: formaddresschangeunit.rsoffsethex
+msgid "Offset (Hex)"
+msgstr ""
+
+#: formaddresschangeunit.rsresultofnextpointer
+msgid "Result of next pointer"
+msgstr ""
+
+#: formaddresschangeunit.rstheoffsetyouchosebringsitto
+msgid "The offset you chose brings it to"
+msgstr ""
+
+#: formaddresschangeunit.rsthispointerpointstoaddress
+msgid "This pointer points to address"
+msgstr ""
+
+#: formaddtocodelist.rspleasefillinavalidfromaddress
+msgctxt "formaddtocodelist.rspleasefillinavalidfromaddress"
+msgid "Please fill in a valid 'From' address"
+msgstr ""
+
+#: formaddtocodelist.rspleasefillinavalidtoaddress
+msgctxt "formaddtocodelist.rspleasefillinavalidtoaddress"
+msgid "Please fill in a valid 'To' address"
+msgstr ""
+
+#: formaddtocodelist.rsregion
+msgid "Region"
+msgstr "Région"
+
+#: formaddtocodelist.rsregiontoadd
+msgctxt "formaddtocodelist.rsregiontoadd"
+msgid "Region to add"
+msgstr "Région à ajouter"
+
+#: formchangedaddresses.rsareyouwishtodelete
+msgid "Are you sure you wish to delete these entries(s)?"
+msgstr "Voulez-vous vraiment supprimer cette/ces entrée(s) ?"
+
+#: formchangedaddresses.rschangedaddressesby
+msgid "Changed Addresses by %x"
+msgstr "Adresses changées par %x"
+
+#: formchangedaddresses.rsclose
+msgctxt "formchangedaddresses.rsclose"
+msgid "Close"
+msgstr "Fermer"
+
+#: formchangedaddresses.rsdeleteaddresses
+msgid "Delete addresses"
+msgstr "Adresses supprimées"
+
+#: formchangedaddresses.rsdesignatesomeaddresses
+msgid "Please designate a group to at least some addresses"
+msgstr ""
+
+#: formchangedaddresses.rsinvalidgroups
+msgid "Invalid groups"
+msgstr "Groupes invalides"
+
+#: formchangedaddresses.rsnoaddressesleftforgroup
+msgid "There are no addresses left for group %d"
+msgstr ""
+
+#: formchangedaddresses.rsnodescription
+msgid "No Description"
+msgstr "Aucune description"
+
+#: formchangedaddresses.rsstop
+msgctxt "formchangedaddresses.rsstop"
+msgid "Stop"
+msgstr "Stop"
+
+#: formdesignerunit.rsformdesignercaption
+msgctxt "formdesignerunit.rsformdesignercaption"
+msgid "Form Designer"
+msgstr ""
+
+#: formdesignerunit.rsformfilesfrmfrm
+msgid "Form files(*.frm)|*.FRM"
+msgstr ""
+
+#: formdesignerunit.rsformfileslfmlfm
+msgid "Form files(*.lfm)|*.LFM"
+msgstr ""
+
+#: formdesignerunit.rsinvalidobject
+msgid "{Invalid object}"
+msgstr "{Objet invalide}"
+
+#: formdesignerunit.rsshowcheckboxesforboolean
+msgid "Show checkboxes for boolean"
+msgstr ""
+
+#: formdifferentbitsizeunit.rsthelasttimeyouscannedthenumberofbitswasandnowitisp
+msgid "The last time you scanned the number of bits was %s and now it is %s. Please tell me how and how much i must change the bit offset to scan successfully. (Left+right arrow keys move the bits)"
+msgstr ""
+
+#: formdifferentbitsizeunit.rswelldoneyoufoundaeasteregg
+msgid "Well done, you found a easter egg!"
+msgstr ""
+
+#: formfoundcodelistextraunit.rsprobablebasepointer
+msgid "Probable base pointer =%s"
+msgstr ""
+
+#: formfoundcodelistextraunit.rsthevalueofthepointerneededtofindthisaddressisproba
+msgid "The value of the pointer needed to find this address is probably %s"
+msgstr ""
+
+#: formhotkeyunit.rsalt
+msgctxt "formhotkeyunit.rsalt"
+msgid "Alt"
+msgstr "Alt"
+
+#: formhotkeyunit.rsapplicationskey
+msgctxt "formhotkeyunit.rsapplicationskey"
+msgid "Applications key"
+msgstr ""
+
+#: formhotkeyunit.rsbackspace
+msgctxt "formhotkeyunit.rsbackspace"
+msgid "Backspace"
+msgstr "Barre d'espace"
+
+#: formhotkeyunit.rscapslock
+msgctxt "formhotkeyunit.rscapslock"
+msgid "Caps Lock"
+msgstr ""
+
+#: formhotkeyunit.rsclear
+msgctxt "formhotkeyunit.rsclear"
+msgid "Clear"
+msgstr "Vider"
+
+#: formhotkeyunit.rsctrl
+msgctxt "formhotkeyunit.rsctrl"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: formhotkeyunit.rsdelete
+msgctxt "formhotkeyunit.rsdelete"
+msgid "Delete"
+msgstr "Supprimer"
+
+#: formhotkeyunit.rsdownarrow
+msgctxt "formhotkeyunit.rsdownarrow"
+msgid "Down Arrow"
+msgstr ""
+
+#: formhotkeyunit.rsend
+msgctxt "formhotkeyunit.rsend"
+msgid "End"
+msgstr "Fin"
+
+#: formhotkeyunit.rsenter
+msgctxt "formhotkeyunit.rsenter"
+msgid "Enter"
+msgstr "Entrée"
+
+#: formhotkeyunit.rsesc
+msgctxt "formhotkeyunit.rsesc"
+msgid "Esc"
+msgstr "Echap"
+
+#: formhotkeyunit.rsexecute
+msgctxt "formhotkeyunit.rsexecute"
+msgid "Execute"
+msgstr "Exécuter"
+
+#: formhotkeyunit.rshelp
+msgctxt "formhotkeyunit.rshelp"
+msgid "Help"
+msgstr "Aide"
+
+#: formhotkeyunit.rshome
+msgctxt "formhotkeyunit.rshome"
+msgid "Home"
+msgstr "Accueil"
+
+#: formhotkeyunit.rsinsert
+msgctxt "formhotkeyunit.rsinsert"
+msgid "Insert"
+msgstr "Insérer"
+
+#: formhotkeyunit.rsleftarrow
+msgctxt "formhotkeyunit.rsleftarrow"
+msgid "Left Arrow"
+msgstr ""
+
+#: formhotkeyunit.rsleftwindowskey
+msgctxt "formhotkeyunit.rsleftwindowskey"
+msgid "Left Windows key"
+msgstr ""
+
+#: formhotkeyunit.rsnumeric
+msgctxt "formhotkeyunit.rsnumeric"
+msgid "numeric"
+msgstr ""
+
+#: formhotkeyunit.rsnumlock
+msgctxt "formhotkeyunit.rsnumlock"
