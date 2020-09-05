@@ -11344,3 +11344,4624 @@ msgid "ToolButton1"
 msgstr ""
 
 #: tfrmmemoryallochandler.btnreload.caption
+msgid "Reload"
+msgstr ""
+
+#: tfrmmemoryallochandler.button1.caption
+msgid "Check Address"
+msgstr ""
+
+#: tfrmmemoryallochandler.caption
+msgid "Memory Allocations"
+msgstr "Allocations de mémoire"
+
+#: tfrmmemoryallochandler.cbhookallocs.caption
+msgid "Hook alloc functions"
+msgstr ""
+
+#: tfrmmemoryallochandler.groupbox1.caption
+msgid "Data"
+msgstr ""
+
+#: tfrmmemoryallochandler.label1.caption
+msgid "Flags:"
+msgstr ""
+
+#: tfrmmemoryallochandler.label2.caption
+msgid "Base Address:"
+msgstr ""
+
+#: tfrmmemoryallochandler.label3.caption
+msgid "HeapHandle"
+msgstr ""
+
+#: tfrmmemoryallochandler.label4.caption
+msgctxt "tfrmmemoryallochandler.label4.caption"
+msgid "Size:"
+msgstr "Taille :"
+
+#: tfrmmemoryallochandler.lblbaseaddress.caption
+msgctxt "tfrmmemoryallochandler.lblbaseaddress.caption"
+msgid "xxxx"
+msgstr ""
+
+#: tfrmmemoryallochandler.lblerr.caption
+msgid "Couldn't find in heap. Found using the Alloc hook. (Not very useful)"
+msgstr ""
+
+#: tfrmmemoryallochandler.lblflags.caption
+msgctxt "TFRMMEMORYALLOCHANDLER.LBLFLAGS.CAPTION"
+msgid "xxxx"
+msgstr ""
+
+#: tfrmmemoryallochandler.lblheaphandle.caption
+msgctxt "TFRMMEMORYALLOCHANDLER.LBLHEAPHANDLE.CAPTION"
+msgid "xxxx"
+msgstr ""
+
+#: tfrmmemoryallochandler.lblsize.caption
+msgctxt "TFRMMEMORYALLOCHANDLER.LBLSIZE.CAPTION"
+msgid "xxxx"
+msgstr ""
+
+#: tfrmmemoryallochandler.statusbar1.panels[0].text
+msgctxt "TFRMMEMORYALLOCHANDLER.STATUSBAR1.PANELS[0].TEXT"
+msgid "-"
+msgstr ""
+
+#: tfrmmemoryallochandler.statusbar1.panels[1].text
+msgid "--"
+msgstr ""
+
+#: tfrmmemreccombobox.btncancel.caption
+msgctxt "TFRMMEMRECCOMBOBOX.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmmemreccombobox.btnok.caption
+msgctxt "TFRMMEMRECCOMBOBOX.BTNOK.CAPTION"
+msgid "OK"
+msgstr ""
+
+#: tfrmmemreccombobox.caption
+msgctxt "TFRMMEMRECCOMBOBOX.CAPTION"
+msgid "Change value"
+msgstr "Changer la valeur"
+
+#: tfrmmemreccombobox.label1.caption
+msgid "Change value to:"
+msgstr "Changer la valeur pour :"
+
+#: tfrmmemviewpreferences.btnfont.caption
+msgid "Change disassembler font"
+msgstr ""
+
+#: tfrmmemviewpreferences.btnhexfont.caption
+msgid "Change hexview font"
+msgstr ""
+
+#: tfrmmemviewpreferences.btnregisterviewfont.caption
+msgid "Change registerview font"
+msgstr ""
+
+#: tfrmmemviewpreferences.button2.caption
+msgctxt "tfrmmemviewpreferences.button2.caption"
+msgid "Apply"
+msgstr ""
+
+#: tfrmmemviewpreferences.button3.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.BUTTON3.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmmemviewpreferences.caption
+msgid "Disassembler Preferences"
+msgstr ""
+
+#: tfrmmemviewpreferences.cbcolorgroup.text
+msgctxt "tfrmmemviewpreferences.cbcolorgroup.text"
+msgid "Normal"
+msgstr "Normal"
+
+#: tfrmmemviewpreferences.cbfontquality.hint
+msgctxt "TFRMMEMVIEWPREFERENCES.CBFONTQUALITY.HINT"
+msgid "The font quality can impact speed"
+msgstr ""
+
+#: tfrmmemviewpreferences.cbshowstatusbar.caption
+msgid "Show statusbar"
+msgstr ""
+
+#: tfrmmemviewpreferences.edthexspacebetweenlines.text
+msgctxt "TFRMMEMVIEWPREFERENCES.EDTHEXSPACEBETWEENLINES.TEXT"
+msgid "0"
+msgstr ""
+
+#: tfrmmemviewpreferences.edtjlspacing.text
+msgctxt "TFRMMEMVIEWPREFERENCES.EDTJLSPACING.TEXT"
+msgid "2"
+msgstr ""
+
+#: tfrmmemviewpreferences.edtjlthickness.text
+msgctxt "TFRMMEMVIEWPREFERENCES.EDTJLTHICKNESS.TEXT"
+msgid "1"
+msgstr ""
+
+#: tfrmmemviewpreferences.edtspaceabovelines.text
+msgctxt "TFRMMEMVIEWPREFERENCES.EDTSPACEABOVELINES.TEXT"
+msgid "0"
+msgstr ""
+
+#: tfrmmemviewpreferences.edtspacebelowlines.text
+msgctxt "TFRMMEMVIEWPREFERENCES.EDTSPACEBELOWLINES.TEXT"
+msgid "0"
+msgstr ""
+
+#: tfrmmemviewpreferences.groupbox1.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.GROUPBOX1.CAPTION"
+msgid "Normal"
+msgstr "Normal"
+
+#: tfrmmemviewpreferences.groupbox2.caption
+msgid "Disassembler"
+msgstr ""
+
+#: tfrmmemviewpreferences.groupbox3.caption
+msgid "Hexview"
+msgstr ""
+
+#: tfrmmemviewpreferences.groupbox4.caption
+msgctxt "tfrmmemviewpreferences.groupbox4.caption"
+msgid "Jumplines"
+msgstr ""
+
+#: tfrmmemviewpreferences.groupbox5.caption
+msgctxt "tfrmmemviewpreferences.groupbox5.caption"
+msgid "Space between lines"
+msgstr ""
+
+#: tfrmmemviewpreferences.groupbox6.caption
+msgid "Register panel"
+msgstr ""
+
+#: tfrmmemviewpreferences.label1.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.LABEL1.CAPTION"
+msgid "Font quality"
+msgstr ""
+
+#: tfrmmemviewpreferences.label3.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.LABEL3.CAPTION"
+msgid "Space between lines"
+msgstr ""
+
+#: tfrmmemviewpreferences.label4.caption
+msgid "Thickness"
+msgstr ""
+
+#: tfrmmemviewpreferences.label5.caption
+msgid "Spacing"
+msgstr ""
+
+#: tfrmmemviewpreferences.label6.caption
+msgid "Above"
+msgstr ""
+
+#: tfrmmemviewpreferences.label7.caption
+msgid "Below"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblcall.caption
+msgctxt "tfrmmemviewpreferences.lblcall.caption"
+msgid "Call color"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblconditionaljump.caption
+msgctxt "tfrmmemviewpreferences.lblconditionaljump.caption"
+msgid "Conditional jump color"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblhex.caption
+msgctxt "tfrmmemviewpreferences.lblhex.caption"
+msgid "Hexadecimal color"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblhexexample.caption
+msgctxt "tfrmmemviewpreferences.lblhexexample.caption"
+msgid "Example"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblnormal.caption
+msgid "Default color"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblregister.caption
+msgctxt "tfrmmemviewpreferences.lblregister.caption"
+msgid "Register color"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblregisterexample.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.LBLREGISTEREXAMPLE.CAPTION"
+msgid "Example"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblsymbol.caption
+msgctxt "tfrmmemviewpreferences.lblsymbol.caption"
+msgid "Symbol color"
+msgstr ""
+
+#: tfrmmemviewpreferences.lblunconditionaljump.caption
+msgctxt "tfrmmemviewpreferences.lblunconditionaljump.caption"
+msgid "Unconditional jump color"
+msgstr ""
+
+#: tfrmmemviewpreferences.mirestoretodefaults.caption
+msgid "Restore to defaults"
+msgstr ""
+
+#: tfrmmergepointerscanresultsettings.button1.caption
+msgctxt "TFRMMERGEPOINTERSCANRESULTSETTINGS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr ""
+
+#: tfrmmergepointerscanresultsettings.button2.caption
+msgctxt "TFRMMERGEPOINTERSCANRESULTSETTINGS.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmmergepointerscanresultsettings.caption
+msgid "Merge pointerscan results"
+msgstr ""
+
+#: tfrmmergepointerscanresultsettings.groupbox1.caption
+msgctxt "TFRMMERGEPOINTERSCANRESULTSETTINGS.GROUPBOX1.CAPTION"
+msgid "Description"
+msgstr "Description"
+
+#: tfrmmergepointerscanresultsettings.lbldescription.caption
+msgctxt "TFRMMERGEPOINTERSCANRESULTSETTINGS.LBLDESCRIPTION.CAPTION"
+msgid "Label1"
+msgstr ""
+
+#: tfrmmergepointerscanresultsettings.rggroupmethod.caption
+msgid "Group method"
+msgstr ""
+
+#: tfrmmodifyregisters.button1.caption
+msgctxt "TFRMMODIFYREGISTERS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr ""
+
+#: tfrmmodifyregisters.button2.caption
+msgctxt "TFRMMODIFYREGISTERS.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmmodifyregisters.caption
+msgid "Modify register(s) at xxxxxxxx"
+msgstr ""
+
+#: tfrmmodifyregisters.cbaf.caption
+msgid "AF"
+msgstr ""
+
+#: tfrmmodifyregisters.cbcf.caption
+msgid "CF"
+msgstr ""
+
+#: tfrmmodifyregisters.cbof.caption
+msgid "OF"
+msgstr ""
+
+#: tfrmmodifyregisters.cbpf.caption
+msgid "PF"
+msgstr ""
+
+#: tfrmmodifyregisters.cbsf.caption
+msgid "SF"
+msgstr ""
+
+#: tfrmmodifyregisters.cbzf.caption
+msgid "ZF"
+msgstr ""
+
+#: tfrmmodifyregisters.label1.caption
+msgid "EAX"
+msgstr ""
+
+#: tfrmmodifyregisters.label16.caption
+msgctxt "tfrmmodifyregisters.label16.caption"
+msgid "Flags"
+msgstr ""
+
+#: tfrmmodifyregisters.label17.caption
+msgid "R8"
+msgstr ""
+
+#: tfrmmodifyregisters.label18.caption
+msgid "R9"
+msgstr ""
+
+#: tfrmmodifyregisters.label19.caption
+msgid "R10"
+msgstr ""
+
+#: tfrmmodifyregisters.label2.caption
+msgid "EBX"
+msgstr ""
+
+#: tfrmmodifyregisters.label20.caption
+msgid "R11"
+msgstr ""
+
+#: tfrmmodifyregisters.label21.caption
+msgid "R12"
+msgstr ""
+
+#: tfrmmodifyregisters.label22.caption
+msgid "R13"
+msgstr ""
+
+#: tfrmmodifyregisters.label23.caption
+msgid "R14"
+msgstr ""
+
+#: tfrmmodifyregisters.label24.caption
+msgid "R15"
+msgstr ""
+
+#: tfrmmodifyregisters.label25.caption
+msgid "Leave blank if you don't want to edit the register or flag"
+msgstr ""
+
+#: tfrmmodifyregisters.label3.caption
+msgid "ECX"
+msgstr ""
+
+#: tfrmmodifyregisters.label4.caption
+msgid "EDX"
+msgstr ""
+
+#: tfrmmodifyregisters.label5.caption
+msgid "ESI"
+msgstr ""
+
+#: tfrmmodifyregisters.label6.caption
+msgid "EDI"
+msgstr ""
+
+#: tfrmmodifyregisters.label7.caption
+msgid "EBP"
+msgstr ""
+
+#: tfrmmodifyregisters.label8.caption
+msgid "ESP"
+msgstr ""
+
+#: tfrmmodifyregisters.label9.caption
+msgid "EIP"
+msgstr ""
+
+#: tfrmmodulesafety.button1.caption
+msgctxt "TFRMMODULESAFETY.BUTTON1.CAPTION"
+msgid "Add"
+msgstr "Ajouter"
+
+#: tfrmmodulesafety.button2.caption
+msgctxt "TFRMMODULESAFETY.BUTTON2.CAPTION"
+msgid "OK"
+msgstr ""
+
+#: tfrmmodulesafety.caption
+msgid "Module safety"
+msgstr ""
+
+#: tfrmmodulesafety.cbglobaldeny.caption
+msgid "Global"
+msgstr ""
+
+#: tfrmmodulesafety.rballowlist.caption
+msgid "Prevent all modules from getting loaded except:"
+msgstr ""
+
+#: tfrmmodulesafety.rbdenylist.caption
+msgid "Allow all modules to be loaded except:"
+msgstr ""
+
+#: tfrmmodulesafety.remove1.caption
+msgctxt "TFRMMODULESAFETY.REMOVE1.CAPTION"
+msgid "Remove"
+msgstr "Supprimer"
+
+#: tfrmmultilineinputquery.button1.caption
+msgctxt "TFRMMULTILINEINPUTQUERY.BUTTON1.CAPTION"
+msgid "OK"
+msgstr ""
+
+#: tfrmmultilineinputquery.button2.caption
+msgctxt "TFRMMULTILINEINPUTQUERY.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmmultilineinputquery.lblprompt.caption
+msgctxt "TFRMMULTILINEINPUTQUERY.LBLPROMPT.CAPTION"
+msgid "caption"
+msgstr ""
+
+#: tfrmnetworkconfig.btnconnect.caption
+msgctxt "TFRMNETWORKCONFIG.BTNCONNECT.CAPTION"
+msgid "Connect"
+msgstr ""
+
+#: tfrmnetworkconfig.button2.caption
+msgctxt "TFRMNETWORKCONFIG.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmnetworkconfig.caption
+msgid "Connect to server"
+msgstr ""
+
+#: tfrmnetworkconfig.edtport.text
+msgid "52736"
+msgstr ""
+
+#: tfrmnetworkconfig.groupbox1.caption
+msgid "Discovered servers"
+msgstr ""
+
+#: tfrmnetworkconfig.label1.caption
+msgctxt "TFRMNETWORKCONFIG.LABEL1.CAPTION"
+msgid "Host"
+msgstr ""
+
+#: tfrmnetworkconfig.label2.caption
+msgctxt "TFRMNETWORKCONFIG.LABEL2.CAPTION"
+msgid "Port"
+msgstr ""
+
+#: tfrmnetworkconfig.listview1.columns[0].caption
+msgctxt "TFRMNETWORKCONFIG.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "IP"
+msgstr ""
+
+#: tfrmnetworkconfig.listview1.columns[1].caption
+msgctxt "TFRMNETWORKCONFIG.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Port"
+msgstr ""
+
+#: tfrmnetworkconfig.menuitem1.caption
+msgctxt "TFRMNETWORKCONFIG.MENUITEM1.CAPTION"
+msgid "Refresh list"
+msgstr ""
+
+#: tfrmnetworkdatacompression.caption
+msgid "Compression level"
+msgstr ""
+
+#: tfrmnetworkdatacompression.label1.caption
+msgid "Change the compression level you wish to use when transferring/receiving memory."
+msgstr ""
+
+#: tfrmnetworkdatacompression.lblmaxcompression.caption
+msgid "Max Compression"
+msgstr ""
+
+#: tfrmnetworkdatacompression.lblnone.caption
+msgid "No Compression"
+msgstr ""
+
+#: tfrmpaging.button1.caption
+msgid "Go"
+msgstr ""
+
+#: tfrmpaging.caption
+msgctxt "tfrmpaging.caption"
+msgid "Paging"
+msgstr ""
+
+#: tfrmpaging.cb64bit.caption
+msgctxt "tfrmpaging.cb64bit.caption"
+msgid "64-bit"
+msgstr ""
+
+#: tfrmpaging.cb8byteentries.caption
+msgid "8-byte entries"
+msgstr ""
+
+#: tfrmpaging.label1.caption
+msgid "Fill in the physical address of the paging base (or just cr3)"
+msgstr ""
+
+#: tfrmpaging.menuitem1.caption
+msgctxt "TFRMPAGING.MENUITEM1.CAPTION"
+msgid "Find"
+msgstr ""
+
+#: tfrmpastetableentry.button1.caption
+msgctxt "TFRMPASTETABLEENTRY.BUTTON1.CAPTION"
+msgid "Paste"
+msgstr "Coller"
+
+#: tfrmpastetableentry.button2.caption
+msgctxt "TFRMPASTETABLEENTRY.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmpastetableentry.caption
+msgid "Paste table entries"
+msgstr ""
+
+#: tfrmpastetableentry.edtoffset.text
+msgctxt "TFRMPASTETABLEENTRY.EDTOFFSET.TEXT"
+msgid "0"
+msgstr ""
+
+#: tfrmpastetableentry.groupbox1.caption
+msgctxt "TFRMPASTETABLEENTRY.GROUPBOX1.CAPTION"
+msgid "Description"
+msgstr "Description"
+
+#: tfrmpastetableentry.groupbox2.caption
+msgctxt "TFRMPASTETABLEENTRY.GROUPBOX2.CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmpastetableentry.label1.caption
+msgid "Text to find:"
+msgstr ""
+
+#: tfrmpastetableentry.label2.caption
+msgid "Replace with:"
+msgstr ""
+
+#: tfrmpastetableentry.label3.caption
+msgid "Adjust address by: "
+msgstr ""
+
+#: tfrmpeinfo.button1.caption
+msgctxt "TFRMPEINFO.BUTTON1.CAPTION"
+msgid "Info"
+msgstr ""
+
+#: tfrmpeinfo.caption
+msgid "Portable Executable (PE) Info"
+msgstr ""
+
+#: tfrmpeinfo.groupbox1.caption
+msgid "MZ-Start"
+msgstr ""
+
+#: tfrmpeinfo.groupbox2.caption
+msgctxt "TFRMPEINFO.GROUPBOX2.CAPTION"
+msgid "Info"
+msgstr ""
+
+#: tfrmpeinfo.label1.caption
+msgid "No file opened"
+msgstr ""
+
+#: tfrmpeinfo.label2.caption
+msgctxt "TFRMPEINFO.LABEL2.CAPTION"
+msgid "address"
+msgstr ""
+
+#: tfrmpeinfo.micopyeverything.caption
+msgid "Copy everything to clipboard"
+msgstr ""
+
+#: tfrmpeinfo.micopytab.caption
+msgid "Copy tab to clipboard"
+msgstr ""
+
+#: tfrmpeinfo.radiobutton1.caption
+msgctxt "TFRMPEINFO.RADIOBUTTON1.CAPTION"
+msgid "File"
+msgstr "Fichier"
+
+#: tfrmpeinfo.radiobutton2.caption
+msgid "Memory"
+msgstr ""
+
+#: tfrmpeinfo.tabsheet1.caption
+msgctxt "TFRMPEINFO.TABSHEET1.CAPTION"
+msgid "All"
+msgstr "Tout"
+
+#: tfrmpeinfo.tabsheet2.caption
+msgid "Imports"
+msgstr ""
+
+#: tfrmpeinfo.tabsheet3.caption
+msgid "Exports"
+msgstr ""
+
+#: tfrmpeinfo.tabsheet4.caption
+msgid "Base Relocations"
+msgstr ""
+
+#: tfrmpointerrescanconnectdialog.btncancel.caption
+msgctxt "TFRMPOINTERRESCANCONNECTDIALOG.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmpointerrescanconnectdialog.btnok.caption
+msgctxt "tfrmpointerrescanconnectdialog.btnok.caption"
+msgid "Connect"
+msgstr ""
+
+#: tfrmpointerrescanconnectdialog.caption
+msgid "Join rescan"
+msgstr ""
+
+#: tfrmpointerrescanconnectdialog.edthost.text
+msgctxt "tfrmpointerrescanconnectdialog.edthost.text"
+msgid "localhost"
+msgstr ""
+
+#: tfrmpointerrescanconnectdialog.edtport.text
+msgid "52739"
+msgstr ""
+
+#: tfrmpointerrescanconnectdialog.lblhost.caption
+msgctxt "tfrmpointerrescanconnectdialog.lblhost.caption"
+msgid "Host"
+msgstr ""
+
+#: tfrmpointerrescanconnectdialog.lblport.caption
+msgctxt "tfrmpointerrescanconnectdialog.lblport.caption"
+msgid "Port"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.btncancel.caption
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmpointerscanconnectdialog.btnok.caption
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.BTNOK.CAPTION"
+msgid "Connect"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.caption
+msgid "Connect to active pointerscanner"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.cbpriority.text
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.CBPRIORITY.TEXT"
+msgid "Normal"
+msgstr "Normal"
+
+#: tfrmpointerscanconnectdialog.cbuseloadedpointermap.caption
+msgctxt "tfrmpointerscanconnectdialog.cbuseloadedpointermap.caption"
+msgid "Use saved pointermap"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.cbuseloadedpointermap.hint
+msgid "If you use this option you can omit the downloading of the pointermap"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.edthost.text
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.EDTHOST.TEXT"
+msgid "localhost"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.edtport.text
+msgctxt "tfrmpointerscanconnectdialog.edtport.text"
+msgid "52737"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.edtthreadcount.text
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.EDTTHREADCOUNT.TEXT"
+msgid "2"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.lblhost.caption
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.LBLHOST.CAPTION"
+msgid "Host"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.lblnrofthread.caption
+msgctxt "tfrmpointerscanconnectdialog.lblnrofthread.caption"
+msgid "Nr of threads scanning: "
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.lblport.caption
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.LBLPORT.CAPTION"
+msgid "Port"
+msgstr ""
+
+#: tfrmpointerscanconnectdialog.lblpriority.caption
+msgctxt "tfrmpointerscanconnectdialog.lblpriority.caption"
+msgid "Priority"
+msgstr ""
+
+#: tfrmprocessinfo.button1.caption
+msgctxt "TFRMPROCESSINFO.BUTTON1.CAPTION"
+msgid "OK"
+msgstr ""
+
+#: tfrmprocessinfo.button2.caption
+msgid "Threads>>"
+msgstr ""
+
+#: tfrmprocessinfo.caption
+msgid "Process/System Info"
+msgstr ""
+
+#: tfrmprocessinfo.label1.caption
+msgid "CR3:"
+msgstr ""
+
+#: tfrmprocessinfo.label2.caption
+msgid "CR4:"
+msgstr ""
+
+#: tfrmprocessinfo.label3.caption
+msgid "PEProcess:"
+msgstr ""
+
+#: tfrmprocessinfo.label4.caption
+msgid "IDT:"
+msgstr ""
+
+#: tfrmprocessinfo.label5.caption
+msgid "SDT:"
+msgstr ""
+
+#: tfrmprocessinfo.label6.caption
+msgid "SSDT:"
+msgstr ""
+
+#: tfrmprocessinfo.label7.caption
+msgid "GDT:"
+msgstr ""
+
+#: tfrmprocessinfo.label8.caption
+msgid "Valid Handle:"
+msgstr ""
+
+#: tfrmprocessinfo.label9.caption
+msgid "CR0:"
+msgstr ""
+
+#: tfrmprocessinfo.lblcr0.caption
+msgid "lblcr0"
+msgstr ""
+
+#: tfrmprocessinfo.lblcr3.caption
+msgid "lblcr3"
+msgstr ""
+
+#: tfrmprocessinfo.lblcr4.caption
+msgid "lblcr4"
+msgstr ""
+
+#: tfrmprocessinfo.lblgdt.caption
+msgid "lblGdt"
+msgstr ""
+
+#: tfrmprocessinfo.lblisvalid.caption
+msgid "lblisvalid"
+msgstr ""
+
+#: tfrmprocessinfo.lblpeprocess.caption
+msgid "lblPEPROCESS"
+msgstr ""
+
+#: tfrmprocessinfo.lblsdt.caption
+msgid "lblSdt"
+msgstr ""
+
+#: tfrmprocessinfo.lblssdt.caption
+msgid "lblSsdt"
+msgstr ""
+
+#: tfrmprocesswatcher.btnattach.caption
+msgid "Attach to process"
+msgstr ""
+
+#: tfrmprocesswatcher.btnopen.caption
+msgid "Open process"
+msgstr "Ouvrir un Processus"
+
+#: tfrmprocesswatcher.caption
+msgctxt "tfrmprocesswatcher.caption"
+msgid "Process watcher"
+msgstr ""
+
+#: tfrmprocesswatcher.showthreadids1.caption
+msgid "Show ThreadID's"
+msgstr ""
+
+#: tfrmprocesswatcherextra.caption
+msgid "Processwatcher Extra"
+msgstr ""
+
+#: tfrmreferencedfunctions.caption
+msgctxt "tfrmreferencedfunctions.caption"
+msgid "Referenced functions"
+msgstr ""
+
+#: tfrmreferencedfunctions.lvcalllist.columns[0].caption
+msgctxt "TFRMREFERENCEDFUNCTIONS.LVCALLLIST.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmreferencedfunctions.lvcalllist.columns[1].caption
+msgctxt "tfrmreferencedfunctions.lvcalllist.columns[1].caption"
+msgid "Refcount"
+msgstr ""
+
+#: tfrmreferencedfunctions.menuitem1.caption
+msgid "Copy list to clipboard"
+msgstr ""
+
+#: tfrmreferencedstrings.caption
+msgid "Referenced Strings"
+msgstr ""
+
+#: tfrmreferencedstrings.find1.caption
+msgctxt "TFRMREFERENCEDSTRINGS.FIND1.CAPTION"
+msgid "Find"
+msgstr "Trouver"
+
+#: tfrmreferencedstrings.findnext1.caption
+msgctxt "TFRMREFERENCEDSTRINGS.FINDNEXT1.CAPTION"
+msgid "Find Next"
+msgstr ""
+
+#: tfrmreferencedstrings.lvstringlist.columns[0].caption
+msgctxt "TFRMREFERENCEDSTRINGS.LVSTRINGLIST.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmreferencedstrings.lvstringlist.columns[1].caption
+msgctxt "TFRMREFERENCEDSTRINGS.LVSTRINGLIST.COLUMNS[1].CAPTION"
+msgid "Refcount"
+msgstr ""
+
+#: tfrmreferencedstrings.lvstringlist.columns[2].caption
+msgctxt "TFRMREFERENCEDSTRINGS.LVSTRINGLIST.COLUMNS[2].CAPTION"
+msgid "Unicode"
+msgstr ""
+
+#: tfrmreferencedstrings.lvstringlist.columns[3].caption
+msgctxt "tfrmreferencedstrings.lvstringlist.columns[3].caption"
+msgid "String"
+msgstr "Chaîne de caractères"
+
+#: tfrmreferencedstrings.search1.caption
+msgctxt "tfrmreferencedstrings.search1.caption"
+msgid "Search"
+msgstr "Rechercher"
+
+#: tfrmrescanpointer.button1.caption
+msgctxt "TFRMRESCANPOINTER.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: tfrmrescanpointer.button2.caption
+msgctxt "TFRMRESCANPOINTER.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmrescanpointer.caption
+msgid "Rescan pointerlist"
+msgstr ""
+
+#: tfrmrescanpointer.cbbasepointermustbeinrange.caption
+msgid "Base pointer must be in range"
+msgstr ""
+
+#: tfrmrescanpointer.cbchangebasepointeroffset.caption
+msgid "Change base pointer address by specific offset"
+msgstr ""
+
+#: tfrmrescanpointer.cbdelay.caption
+msgid "Delay rescan for"
+msgstr ""
+
+#: tfrmrescanpointer.cbfilteroutaccessible.caption
+msgid "Only filter out accessible pointers"
+msgstr ""
+
+#: tfrmrescanpointer.cbluafilter.caption
+msgid "Lua filter. function"
+msgstr ""
+
+#: tfrmrescanpointer.cbluafilter.hint
+msgid "When checked this will call the given function for every pointer being evaluated. Return true if it's valid, false if not"
+msgstr ""
+
+#: tfrmrescanpointer.cbmustendwithspecificoffsets.caption
+msgid "Must end with offsets"
+msgstr ""
+
+#: tfrmrescanpointer.cbmuststartwithspecificoffsets.caption
+msgid "Must start with offsets"
+msgstr ""
+
+#: tfrmrescanpointer.cbnovaluecheck.caption
+msgid "Only filter out invalid pointers"
+msgstr ""
+
+#: tfrmrescanpointer.cbrepeat.caption
+msgid "Repeat rescan until stopped"
+msgstr ""
+
+#: tfrmrescanpointer.cbusesavedpointermap.caption
+msgctxt "TFRMRESCANPOINTER.CBUSESAVEDPOINTERMAP.CAPTION"
+msgid "Use saved pointermap"
+msgstr "Utiliser un Pointermap sauvegardé"
+
+#: tfrmrescanpointer.cbusesavedpointermap.hint
+msgid "Normally this should not be used. Saved pointermaps are best suited for the initial scan."
+msgstr ""
+
+#: tfrmrescanpointer.cbvaluetype.text
+msgctxt "tfrmrescanpointer.cbvaluetype.text"
+msgid "4 Byte"
+msgstr ""
+
+#: tfrmrescanpointer.edtbaseend.text
+msgctxt "TFRMRESCANPOINTER.EDTBASEEND.TEXT"
+msgid "FFFFFFFFFFFFFFFF"
+msgstr ""
+
+#: tfrmrescanpointer.edtbasestart.text
+msgctxt "TFRMRESCANPOINTER.EDTBASESTART.TEXT"
+msgid "0000000000000000"
+msgstr ""
+
+#: tfrmrescanpointer.edtdelay.text
+msgctxt "TFRMRESCANPOINTER.EDTDELAY.TEXT"
+msgid "0"
+msgstr ""
+
+#: tfrmrescanpointer.edtnewbase.text
+msgid "12345678"
+msgstr ""
+
+#: tfrmrescanpointer.edtrescanfunction.text
+msgid "RescanFilter"
+msgstr ""
+
+#: tfrmrescanpointer.label1.caption
+msgid "seconds"
+msgstr ""
+
+#: tfrmrescanpointer.label2.caption
+msgid "New base address"
+msgstr "Nouvelle adresse de base"
+
+#: tfrmrescanpointer.label3.caption
+msgid "Original base address"
+msgstr "Adresse originale"
+
+#: tfrmrescanpointer.lbland.caption
+msgctxt "tfrmrescanpointer.lbland.caption"
+msgid "and"
+msgstr ""
+
+#: tfrmrescanpointer.lblluaparams.caption
+msgid "(base, offsets, target):bool"
+msgstr ""
+
+#: tfrmrescanpointer.lbloffset.caption
+msgid "=XXXX"
+msgstr ""
+
+#: tfrmrescanpointer.lbloriginalbase.caption
+msgid "<address>"
+msgstr "<address>"
+
+#: tfrmrescanpointer.rbfindaddress.caption
+msgid "Address to find:"
+msgstr "Adresse à trouver :"
+
+#: tfrmrescanpointer.rbfindvalue.caption
+msgid "Value to find:"
+msgstr "Valeur à trouver :"
+
+#: tfrmresumepointerscan.btnnotifyspecificips.caption
+msgid "Setup specific IP's to notify"
+msgstr ""
+
+#: tfrmresumepointerscan.button1.caption
+msgctxt "tfrmresumepointerscan.button1.caption"
+msgid "Resume"
+msgstr "Reprendre"
+
+#: tfrmresumepointerscan.button2.caption
+msgctxt "TFRMRESUMEPOINTERSCAN.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmresumepointerscan.caption
+msgid "Resume pointerscan"
+msgstr "Reprendre le Scan des Pointeurs"
+
+#: tfrmresumepointerscan.cbbroadcast.caption
+msgid "Broadcast that a scan has started"
+msgstr ""
+
+#: tfrmresumepointerscan.cbbroadcast.hint
+msgid "When checked will send a broadcast message on the local network which will tell pointer scanner systems to join this scan if they are set to auto join"
+msgstr ""
+
+#: tfrmresumepointerscan.cbdistributedscanning.caption
+msgid "Allow distributed scanning"
+msgstr ""
+
+#: tfrmresumepointerscan.cbdistributedscanning.hint
+msgid "Opens a port that other systems running the pointerscanner can connect to and help out with the scan"
+msgstr ""
+
+#: tfrmresumepointerscan.combobox1.text
+msgctxt "TFRMRESUMEPOINTERSCAN.COMBOBOX1.TEXT"
+msgid "Normal"
+msgstr "Normal"
+
+#: tfrmresumepointerscan.edtdistributedport.text
+msgctxt "TFRMRESUMEPOINTERSCAN.EDTDISTRIBUTEDPORT.TEXT"
+msgid "52737"
+msgstr ""
+
+#: tfrmresumepointerscan.edtthreadcount.text
+msgctxt "TFRMRESUMEPOINTERSCAN.EDTTHREADCOUNT.TEXT"
+msgid "2"
+msgstr ""
+
+#: tfrmresumepointerscan.label1.caption
+msgid "Rescan pointermaps"
+msgstr "Rescanner les pointermaps"
+
+#: tfrmresumepointerscan.label9.caption
+msgctxt "TFRMRESUMEPOINTERSCAN.LABEL9.CAPTION"
+msgid "Nr of threads scanning: "
+msgstr ""
+
+#: tfrmresumepointerscan.lblport.caption
+msgid "Port:"
+msgstr ""
+
+#: tfrmresumepointerscan.listview1.columns[0].caption
+msgctxt "TFRMRESUMEPOINTERSCAN.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Filename"
+msgstr "Nom du fichier"
+
+#: tfrmresumepointerscan.listview1.columns[1].caption
+msgctxt "TFRMRESUMEPOINTERSCAN.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmresumepointerscan.listview1.columns[2].caption
+msgid "Found"
+msgstr "Trouvé"
+
+#: tfrmresumepointerscan.menuitem1.caption
+msgid "Add pointermap"
+msgstr "Ajouter un niveau de pointeur"
+
+#: tfrmsavedisassembly.button1.caption
+msgctxt "TFRMSAVEDISASSEMBLY.BUTTON1.CAPTION"
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: tfrmsavedisassembly.caption
+msgctxt "TFRMSAVEDISASSEMBLY.CAPTION"
+msgid "Save disassembled output"
+msgstr ""
+
+#: tfrmsavedisassembly.cbaddress.caption
+msgctxt "TFRMSAVEDISASSEMBLY.CBADDRESS.CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmsavedisassembly.cbbytes.caption
+msgctxt "TFRMSAVEDISASSEMBLY.CBBYTES.CAPTION"
+msgid "bytes"
+msgstr ""
+
+#: tfrmsavedisassembly.cbopcode.caption
+msgid "opcode"
+msgstr ""
+
+#: tfrmsavedisassembly.label1.caption
+msgctxt "TFRMSAVEDISASSEMBLY.LABEL1.CAPTION"
+msgid "From"
+msgstr "De"
+
+#: tfrmsavedisassembly.label2.caption
+msgctxt "TFRMSAVEDISASSEMBLY.LABEL2.CAPTION"
+msgid "To"
+msgstr "Vers"
+
+#: tfrmsavememoryregion.button1.caption
+msgctxt "TFRMSAVEMEMORYREGION.BUTTON1.CAPTION"
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: tfrmsavememoryregion.button2.caption
+msgctxt "TFRMSAVEMEMORYREGION.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmsavememoryregion.button3.caption
+msgctxt "tfrmsavememoryregion.button3.caption"
+msgid "Add"
+msgstr "Ajouter"
+
+#: tfrmsavememoryregion.caption
+msgid "Save memoryregion"
+msgstr ""
+
+#: tfrmsavememoryregion.dontinclude.caption
+msgid "Don't include Cheat Engine header in file"
+msgstr ""
+
+#: tfrmsavememoryregion.label1.caption
+msgid "Add the region(s) of memory you want to save"
+msgstr ""
+
+#: tfrmsavememoryregion.label2.caption
+msgctxt "TFRMSAVEMEMORYREGION.LABEL2.CAPTION"
+msgid "From"
+msgstr "De"
+
+#: tfrmsavememoryregion.label3.caption
+msgctxt "TFRMSAVEMEMORYREGION.LABEL3.CAPTION"
+msgid "To"
+msgstr "Vers"
+
+#: tfrmsavememoryregion.miclearlist.caption
+msgctxt "TFRMSAVEMEMORYREGION.MICLEARLIST.CAPTION"
+msgid "Clear list"
+msgstr "Vider la liste"
+
+#: tfrmselectionlist.btnok.caption
+msgid "    OK    "
+msgstr "OK"
+
+#: tfrmselectionlist.caption
+msgid "title"
+msgstr "Titre"
+
+#: tfrmselectionlist.label1.caption
+msgctxt "tfrmselectionlist.label1.caption"
+msgid "caption"
+msgstr ""
+
+#: tfrmsetcrosshair.btnapply.caption
+msgid "Apply crosshair"
+msgstr ""
+
+#: tfrmsetcrosshair.caption
+msgid "D3D: Set Crosshair"
+msgstr ""
+
+#: tfrmsetcrosshair.label1.caption
+msgid "Alphablend"
+msgstr ""
+
+#: tfrmsetcrosshair.menuitem1.caption
+msgctxt "TFRMSETCROSSHAIR.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Fichier"
+
+#: tfrmsetcrosshair.menuitem2.caption
+msgid "Load image"
+msgstr ""
+
+#: tfrmsetuppsnnode.btncancel.caption
+msgctxt "TFRMSETUPPSNNODE.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmsetuppsnnode.btnok.caption
+msgid "Launch"
+msgstr ""
+
+#: tfrmsetuppsnnode.button1.caption
+msgid "Setup trusted IP list"
+msgstr ""
+
+#: tfrmsetuppsnnode.caption
+msgid "Setup pointerscan network node"
+msgstr ""
+
+#: tfrmsetuppsnnode.cballowchildren.caption
+msgid "Allow children to connect to me"
+msgstr ""
+
+#: tfrmsetuppsnnode.cballowparents.caption
+msgid "Allow parents to connect to me"
+msgstr ""
+
+#: tfrmsetuppsnnode.cballowtempfiles.caption
+msgid "Allow temp file usage"
+msgstr ""
+
+#: tfrmsetuppsnnode.cballowtempfiles.hint
+msgid "When checked it will save the scandata files it receives into temporary files on the harddisk"
+msgstr ""
+
+#: tfrmsetuppsnnode.cbautotrustchildren.caption
+msgid "Automatically trust stability of all new childnodes"
+msgstr ""
+
+#: tfrmsetuppsnnode.cbautotrustchildren.hint
+msgid "Normally when a worker terminates before the scan is done it will send all it's paths to it's connected node and then close, but if the system would crash it wouldn't be able to send it's queues to the node, causing in a loss of possible paths to examine"
+msgstr ""
+
+#: tfrmsetuppsnnode.cbconnecttoothernode.caption
+msgid "Connect to other node as"
+msgstr ""
+
+#: tfrmsetuppsnnode.cbconnecttoothernode.hint
+msgid "Connect to another system as it's parent or child"
+msgstr ""
+
+#: tfrmsetuppsnnode.cbmaxfoundresults.caption
+msgid "Stop scans after finding max amount of results"
+msgstr ""
+
+#: tfrmsetuppsnnode.cbmaxfoundresults.hint
+msgid "This will terminate all the children and disconnect from the parent after having found at least the given amount of results"
+msgstr ""
+
+#: tfrmsetuppsnnode.cbmaxtimetoscan.caption
+msgid "Stop scans after specific time"
+msgstr ""
+
+#: tfrmsetuppsnnode.cbmaxtimetoscan.hint
+msgid "This will terminate all the children and disconnect from the parent after scanning for the given amount of time."
+msgstr ""
+
+#: tfrmsetuppsnnode.cbpriority.text
+msgctxt "tfrmsetuppsnnode.cbpriority.text"
+msgid "Lower"
+msgstr ""
+
+#: tfrmsetuppsnnode.edtconnectip.text
+msgid "127.0.0.1"
+msgstr ""
+
+#: tfrmsetuppsnnode.edtconnectport.text
+msgctxt "TFRMSETUPPSNNODE.EDTCONNECTPORT.TEXT"
+msgid "52737"
+msgstr ""
+
+#: tfrmsetuppsnnode.edtport.text
+msgctxt "TFRMSETUPPSNNODE.EDTPORT.TEXT"
+msgid "52737"
+msgstr ""
+
+#: tfrmsetuppsnnode.edtthreadcount.hint
+msgid "The number of threads to scan."
+msgstr ""
+
+#: tfrmsetuppsnnode.edtthreadcount.text
+msgctxt "TFRMSETUPPSNNODE.EDTTHREADCOUNT.TEXT"
+msgid "0"
+msgstr ""
+
+#: tfrmsetuppsnnode.label3.caption
+msgid "Found pointer paths"
+msgstr ""
+
+#: tfrmsetuppsnnode.label4.caption
+msgctxt "TFRMSETUPPSNNODE.LABEL4.CAPTION"
+msgid "Seconds"
+msgstr ""
+
+#: tfrmsetuppsnnode.lblip.caption
+msgctxt "tfrmsetuppsnnode.lblip.caption"
+msgid "IP"
+msgstr ""
+
+#: tfrmsetuppsnnode.lbllistenport.caption
+msgid "Listen port"
+msgstr ""
+
+#: tfrmsetuppsnnode.lblpassword.caption
+msgctxt "TFRMSETUPPSNNODE.LBLPASSWORD.CAPTION"
+msgid "Password"
+msgstr "Mot de passe"
+
+#: tfrmsetuppsnnode.lblpasswordchild.caption
+msgctxt "TFRMSETUPPSNNODE.LBLPASSWORDCHILD.CAPTION"
+msgid "Password"
+msgstr "Mot de passe"
+
+#: tfrmsetuppsnnode.lblpasswordparent.caption
+msgctxt "tfrmsetuppsnnode.lblpasswordparent.caption"
+msgid "Password"
+msgstr "Mot de passe"
+
+#: tfrmsetuppsnnode.lblport.caption
+msgctxt "TFRMSETUPPSNNODE.LBLPORT.CAPTION"
+msgid "Port"
+msgstr ""
+
+#: tfrmsetuppsnnode.lblpriority.caption
+msgctxt "TFRMSETUPPSNNODE.LBLPRIORITY.CAPTION"
+msgid "Priority"
+msgstr "Priorité"
+
+#: tfrmsetuppsnnode.lblpublicname.caption
+msgid "Public name"
+msgstr "Nom public"
+
+#: tfrmsetuppsnnode.lblthreadcount.caption
+msgid "Threadcount"
+msgstr ""
+
+#: tfrmsetuppsnnode.rbconnectaschild.caption
+msgid "child"
+msgstr "Enfant"
+
+#: tfrmsetuppsnnode.rbconnectasparent.caption
+msgid "parent"
+msgstr "Parent"
+
+#: tfrmsortpointerlist.button1.caption
+msgctxt "TFRMSORTPOINTERLIST.BUTTON1.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmsortpointerlist.caption
+msgid "Sorting"
+msgstr ""
+
+#: tfrmsortpointerlist.label1.caption
+msgid "Sorting the pointerlist. Please wait...."
+msgstr ""
+
+#: tfrmsortpointerlist.lbltimeleft.caption
+msgctxt "TFRMSORTPOINTERLIST.LBLTIMELEFT.CAPTION"
+msgid "Estimated time left:"
+msgstr ""
+
+#: tfrmstacktrace.caption
+msgctxt "tfrmstacktrace.caption"
+msgid "Stacktrace"
+msgstr ""
+
+#: tfrmstacktrace.listview1.columns[0].caption
+msgid "PC"
+msgstr ""
+
+#: tfrmstacktrace.listview1.columns[1].caption
+msgid "Stack"
+msgstr ""
+
+#: tfrmstacktrace.listview1.columns[2].caption
+msgid "Frame"
+msgstr ""
+
+#: tfrmstacktrace.listview1.columns[3].caption
+msgid "Return"
+msgstr "Retour"
+
+#: tfrmstacktrace.listview1.columns[4].caption
+msgctxt "tfrmstacktrace.listview1.columns[4].caption"
+msgid "Parameters"
+msgstr "Paramètres"
+
+#: tfrmstacktrace.mimanualstackwalk.caption
+msgid "Manual input"
+msgstr "Entrée manuelle"
+
+#: tfrmstacktrace.refresh1.caption
+msgctxt "TFRMSTACKTRACE.REFRESH1.CAPTION"
+msgid "Refresh"
+msgstr "Actualiser"
+
+#: tfrmstackview.caption
+msgid "Stack View"
+msgstr ""
+
+#: tfrmstackview.lvstack.columns[0].caption
+msgctxt "TFRMSTACKVIEW.LVSTACK.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmstackview.lvstack.columns[1].caption
+msgctxt "TFRMSTACKVIEW.LVSTACK.COLUMNS[1].CAPTION"
+msgid "Value"
+msgstr "Valeur"
+
+#: tfrmstackview.lvstack.columns[2].caption
+msgid "Secondary"
+msgstr ""
+
+#: tfrmstackview.menuitem1.caption
+msgctxt "TFRMSTACKVIEW.MENUITEM1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstackview.menuitem2.caption
+msgctxt "TFRMSTACKVIEW.MENUITEM2.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstackview.menuitem3.caption
+msgid "Lock and add this view to a structure dissect window"
+msgstr ""
+
+#: tfrmstackview.menuitem4.caption
+msgctxt "TFRMSTACKVIEW.MENUITEM4.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstackview.menuitem5.caption
+msgctxt "TFRMSTACKVIEW.MENUITEM5.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstackview.menuitem6.caption
+msgid "Copy Line"
+msgstr "Copier la ligne"
+
+#: tfrmstackview.miaddebp.caption
+msgctxt "tfrmstackview.miaddebp.caption"
+msgid "(ebp+*)"
+msgstr ""
+
+#: tfrmstackview.miaddesp.caption
+msgctxt "tfrmstackview.miaddesp.caption"
+msgid "(esp+*)"
+msgstr ""
+
+#: tfrmstackview.miaddref.caption
+msgctxt "tfrmstackview.miaddref.caption"
+msgid "(ref+*) Ref will be %x"
+msgstr ""
+
+#: tfrmstackview.micopyaddress.caption
+msgid "Copy Address"
+msgstr "Copier l'adresse"
+
+#: tfrmstackview.micopysecondary.caption
+msgid "Copy Secondary"
+msgstr ""
+
+#: tfrmstackview.micopyvalue.caption
+msgid "Copy Value"
+msgstr "Copier la valeur"
+
+#: tfrmstackview.mifind.caption
+msgctxt "TFRMSTACKVIEW.MIFIND.CAPTION"
+msgid "Find"
+msgstr "Trouver"
+
+#: tfrmstackview.mifindnext.caption
+msgid "Find Next..."
+msgstr "Trouver le suivant..."
+
+#: tfrmstackview.milockandtrace.caption
+msgid "Lock and do manual stacktrace"
+msgstr ""
+
+#: tfrmstackview.misetcolor.caption
+msgid "Set background color to address"
+msgstr ""
+
+#: tfrmstringmap.btnfree.caption
+msgid "Free the current list"
+msgstr ""
+
+#: tfrmstringmap.btnscan.caption
+msgctxt "tfrmstringmap.btnscan.caption"
+msgid "Generate string map"
+msgstr ""
+
+#: tfrmstringmap.btnshowlist.caption
+msgctxt "tfrmstringmap.btnshowlist.caption"
+msgid "<<Show list"
+msgstr ""
+
+#: tfrmstringmap.caption
+msgid "String map"
+msgstr ""
+
+#: tfrmstringmap.cbcasesensitive.caption
+msgctxt "tfrmstringmap.cbcasesensitive.caption"
+msgid "Case sensitive"
+msgstr ""
+
+#: tfrmstringmap.cbmustbestart.caption
+msgctxt "tfrmstringmap.cbmustbestart.caption"
+msgid "Must be start"
+msgstr ""
+
+#: tfrmstringmap.cbregexp.caption
+msgctxt "tfrmstringmap.cbregexp.caption"
+msgid "Strings must match reg exp"
+msgstr ""
+
+#: tfrmstringmap.cbsavetodisk.caption
+msgctxt "tfrmstringmap.cbsavetodisk.caption"
+msgid "Save to disk"
+msgstr ""
+
+#: tfrmstringmap.lblstringcount.caption
+msgid "Stringcount: 0"
+msgstr ""
+
+#: tfrmstringmap.listview1.columns[0].caption
+msgctxt "TFRMSTRINGMAP.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmstringmap.listview1.columns[1].caption
+msgctxt "TFRMSTRINGMAP.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "String"
+msgstr "Chaîne de caractères"
+
+#: tfrmstringmap.mifind.caption
+msgctxt "tfrmstringmap.mifind.caption"
+msgid "Find..."
+msgstr "Trouver..."
+
+#: tfrmstringmap.minext.caption
+msgid "Next"
+msgstr "Suivant"
+
+#: tfrmstringpointerscan.btnnewscan.caption
+msgctxt "tfrmstringpointerscan.btnnewscan.caption"
+msgid "New Scan"
+msgstr "Nouveau Scan"
+
+#: tfrmstringpointerscan.btnscan.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.BTNSCAN.CAPTION"
+msgid "Scan"
+msgstr "Scanner"
+
+#: tfrmstringpointerscan.caption
+msgctxt "tfrmstringpointerscan.caption"
+msgid "Structure spider"
+msgstr ""
+
+#: tfrmstringpointerscan.cbcasesensitive.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.CBCASESENSITIVE.CAPTION"
+msgid "Case sensitive"
+msgstr ""
+
+#: tfrmstringpointerscan.cbhasshadow.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.CBHASSHADOW.CAPTION"
+msgid "Has Shadow"
+msgstr ""
+
+#: tfrmstringpointerscan.cbhasshadow.hint
+msgctxt "TFRMSTRINGPOINTERSCAN.CBHASSHADOW.HINT"
+msgid "Use this if you're spidering a previously saved memory region that currently resides in a different location."
+msgstr ""
+
+#: tfrmstringpointerscan.cbhasshadow2.caption
+msgctxt "tfrmstringpointerscan.cbhasshadow2.caption"
+msgid "Has Shadow"
+msgstr ""
+
+#: tfrmstringpointerscan.cbhasshadow2.hint
+msgctxt "tfrmstringpointerscan.cbhasshadow2.hint"
+msgid "Use this if you're spidering a previously saved memory region that currently resides in a different location."
+msgstr ""
+
+#: tfrmstringpointerscan.cbmappointervalues.caption
+msgid "Store values during scan"
+msgstr "Sauvegarder les valeurs durant un Scan"
+
+#: tfrmstringpointerscan.cbmappointervalues.hint
+msgid "During the scan the values of pointer will be stored in memory for quick lookup when the same address is encountered again"
+msgstr ""
+
+#: tfrmstringpointerscan.cbmustbestart.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.CBMUSTBESTART.CAPTION"
+msgid "Must be start"
+msgstr ""
+
+#: tfrmstringpointerscan.cbpointerinrange.caption
+msgid "Pointer must be in range"
+msgstr ""
+
+#: tfrmstringpointerscan.cbregexp.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.CBREGEXP.CAPTION"
+msgid "Strings must match reg exp"
+msgstr ""
+
+#: tfrmstringpointerscan.cbreusestringmap.caption
+msgid "Use existing stringmap"
+msgstr ""
+
+#: tfrmstringpointerscan.combocomparetype.text
+msgctxt "TFRMSTRINGPOINTERSCAN.COMBOCOMPARETYPE.TEXT"
+msgid "4 Bytes"
+msgstr ""
+
+#: tfrmstringpointerscan.combotype.text
+msgctxt "TFRMSTRINGPOINTERSCAN.COMBOTYPE.TEXT"
+msgid "String"
+msgstr "Chaîne de caractères"
+
+#: tfrmstringpointerscan.edtalignsize.text
+msgctxt "TFRMSTRINGPOINTERSCAN.EDTALIGNSIZE.TEXT"
+msgid "4"
+msgstr "4"
+
+#: tfrmstringpointerscan.edtmaxlevel.text
+msgctxt "TFRMSTRINGPOINTERSCAN.EDTMAXLEVEL.TEXT"
+msgid "2"
+msgstr "2"
+
+#: tfrmstringpointerscan.edtstructsize.text
+msgctxt "TFRMSTRINGPOINTERSCAN.EDTSTRUCTSIZE.TEXT"
+msgid "4096"
+msgstr "4096"
+
+#: tfrmstringpointerscan.lblalign.caption
+msgid "Alignsize"
+msgstr ""
+
+#: tfrmstringpointerscan.lbland.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.LBLAND.CAPTION"
+msgid "and"
+msgstr "et"
+
+#: tfrmstringpointerscan.lblbaseregion.caption
+msgid "Base region"
+msgstr "Région de base"
+
+#: tfrmstringpointerscan.lblcompare.caption
+msgid "Compare type"
+msgstr "Comparer le type"
+
+#: tfrmstringpointerscan.lblextra.caption
+msgid "Compare against"
+msgstr "Comparer entre"
+
+#: tfrmstringpointerscan.lblinfo.caption
+msgctxt "tfrmstringpointerscan.lblinfo.caption"
+msgid "Info"
+msgstr "Info"
+
+#: tfrmstringpointerscan.lblmaxlevel.caption
+msgid "Max Level"
+msgstr "Niveau Max"
+
+#: tfrmstringpointerscan.lblsize.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.LBLSIZE.CAPTION"
+msgid "Size"
+msgstr "Taille"
+
+#: tfrmstringpointerscan.lblsize2.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.LBLSIZE2.CAPTION"
+msgid "Size"
+msgstr "Taille"
+
+#: tfrmstringpointerscan.lblstring.caption
+msgid "String:"
+msgstr "Chaîne de caractères :"
+
+#: tfrmstringpointerscan.lblstructsize.caption
+msgid "Structsize"
+msgstr ""
+
+#: tfrmstringpointerscan.lblvds.caption
+msgid "Variable display type"
+msgstr ""
+
+#: tfrmstringpointerscan.menuitem1.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Fichier"
+
+#: tfrmstringpointerscan.menuitem4.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MENUITEM4.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tfrmstringpointerscan.menuitem5.caption
+msgctxt "tfrmstringpointerscan.menuitem5.caption"
+msgid "Rescan"
+msgstr "Rescan"
+
+#: tfrmstringpointerscan.menuitem6.caption
+msgid "Filter pointerlist"
+msgstr "Filtrer la liste des Pointeurs"
+
+#: tfrmstringpointerscan.menuitem7.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MENUITEM7.CAPTION"
+msgid "New Window"
+msgstr "Nouvelle fenêtre"
+
+#: tfrmstringpointerscan.miclearcache.caption
+msgid "Clear pointer cache"
+msgstr "Vider le cache des pointeurs"
+
+#: tfrmstringpointerscan.mifind.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MIFIND.CAPTION"
+msgid "Find..."
+msgstr "Trouver..."
+
+#: tfrmstringpointerscan.mifindnext.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MIFINDNEXT.CAPTION"
+msgid "Find Next"
+msgstr "Trouver le suivant"
+
+#: tfrmstringpointerscan.minewscan.caption
+msgid "New scan"
+msgstr "Nouveau Scan"
+
+#: tfrmstringpointerscan.miopen.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MIOPEN.CAPTION"
+msgid "Open"
+msgstr "Ouvrir"
+
+#: tfrmstringpointerscan.rbdatascan.caption
+msgid "Data scan"
+msgstr "Scan de Données"
+
+#: tfrmstringpointerscan.rbdiffdontcare.caption
+msgid "Don't care for difference"
+msgstr "Ne pas se soucier d'une différence"
+
+#: tfrmstringpointerscan.rbmustbedifferent.caption
+msgid "Must be different"
+msgstr "Doit être différent"
+
+#: tfrmstringpointerscan.rbmustbesame.caption
+msgid "Must be the same"
+msgstr "Doit être identique"
+
+#: tfrmstringpointerscan.rbstringscan.caption
+msgid "String scan"
+msgstr ""
+
+#: tfrmstructurelinker.btncancel.caption
+msgctxt "TFRMSTRUCTURELINKER.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmstructurelinker.btnlink.caption
+msgid "Link"
+msgstr ""
+
+#: tfrmstructurelinker.caption
+msgid "Structure linker"
+msgstr ""
+
+#: tfrmstructurelinker.cbfilllocal.caption
+msgid "Fill in 'Local' structures"
+msgstr ""
+
+#: tfrmstructurelinker.cbnoexactmatches.caption
+msgid "Fill in pointers that point into a structure instead of the start"
+msgstr ""
+
+#: tfrmstructurelinker.cboverridelocal.caption
+msgid "Override 'Local' structures when needed"
+msgstr ""
+
+#: tfrmstructurelinker.label1.caption
+msgid "Fill in the known addresses of these structures (Can be blank if unknown or unrelated)"
+msgstr ""
+
+#: tfrmstructures.caption
+msgctxt "TFRMSTRUCTURES.CAPTION"
+msgid "Memory dissect"
+msgstr "Dissection de la mémoire"
+
+#: tfrmstructures2.addextraaddress1.caption
+msgid "Add extra address"
+msgstr ""
+
+#: tfrmstructures2.caption
+msgctxt "TFRMSTRUCTURES2.CAPTION"
+msgid "Structure dissect"
+msgstr "Disséquer la Structure"
+
+#: tfrmstructures2.definenewstructure1.caption
+msgid "Define new structure"
+msgstr "Définir une nouvelle structure"
+
+#: tfrmstructures2.deletecurrentstructure1.caption
+msgid "Delete structure"
+msgstr "Supprimer la structure"
+
+#: tfrmstructures2.file1.caption
+msgctxt "TFRMSTRUCTURES2.FILE1.CAPTION"
+msgid "File"
+msgstr "Fichier"
+
+#: tfrmstructures2.headercontrol1.sections[0].text
+msgid "Offset-description"
+msgstr "Description de l'Offset"
+
+#: tfrmstructures2.menuitem2.caption
+msgctxt "TFRMSTRUCTURES2.MENUITEM2.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstructures2.menuitem3.caption
+msgid "Save values"
+msgstr "Sauvegarder les valeurs"
+
+#: tfrmstructures2.menuitem4.caption
+msgctxt "TFRMSTRUCTURES2.MENUITEM4.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstructures2.menuitem5.caption
+msgid "Add new group"
+msgstr "Ajouter un nouveau groupe"
+
+#: tfrmstructures2.menuitem6.caption
+msgid "Find value"
+msgstr "Trouver la valeur"
+
+#: tfrmstructures2.menuitem7.caption
+msgctxt "TFRMSTRUCTURES2.MENUITEM7.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstructures2.menuitem8.caption
+msgid "Rearrange structurelist"
+msgstr ""
+
+#: tfrmstructures2.miaddchildelement.caption
+msgid "Add child element"
+msgstr "Ajouter un élément Enfant"
+
+#: tfrmstructures2.miaddelement.caption
+msgid "Add element"
+msgstr "Ajouter un élément"
+
+#: tfrmstructures2.miaddtoaddresslist.caption
+msgid "Add to address list"
+msgstr "Ajouter à la liste d'adresses"
+
+#: tfrmstructures2.miautocreate.caption
+msgctxt "TFRMSTRUCTURES2.MIAUTOCREATE.CAPTION"
+msgid "Autocreate local structures when expanding undefined pointer types"
+msgstr ""
+
+#: tfrmstructures2.miautodestroylocal.caption
+msgctxt "TFRMSTRUCTURES2.MIAUTODESTROYLOCAL.CAPTION"
+msgid "Autodestroy local structures when closed"
+msgstr ""
+
+#: tfrmstructures2.miautofillgaps.caption
+msgctxt "TFRMSTRUCTURES2.MIAUTOFILLGAPS.CAPTION"
+msgid "Fill gaps automatically"
+msgstr ""
+
+#: tfrmstructures2.miautoguess.caption
+msgid "Autoguess offset types"
+msgstr ""
+
+#: tfrmstructures2.miautostructsize.caption
+msgid "Autocreate structure size: 4096"
+msgstr ""
+
+#: tfrmstructures2.miback.caption
+msgctxt "tfrmstructures2.miback.caption"
+msgid "Back"
+msgstr "Retour"
+
+#: tfrmstructures2.mibrowseaddress.caption
+msgid "Memory browse this address"
+msgstr ""
+
+#: tfrmstructures2.mibrowsepointer.caption
+msgid "Memory browse pointer"
+msgstr ""
+
+#: tfrmstructures2.michangecolors.caption
+msgctxt "tfrmstructures2.michangecolors.caption"
+msgid "Settings"
+msgstr "Options"
+
+#: tfrmstructures2.michangeelement.caption
+msgid "Change element"
+msgstr "Changer d'élément"
+
+#: tfrmstructures2.michangetype.caption
+msgid "Change Type"
+msgstr "Changer le Type"
+
+#: tfrmstructures2.michangetype2byte.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPE2BYTE.CAPTION"
+msgid "2 Byte"
+msgstr ""
+
+#: tfrmstructures2.michangetype2bytehex.caption
+msgid "2 Byte (Hex)"
+msgstr ""
+
+#: tfrmstructures2.michangetype4byte.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPE4BYTE.CAPTION"
+msgid "4 Byte"
+msgstr ""
+
+#: tfrmstructures2.michangetype4bytehex.caption
+msgid "4 Byte (Hex)"
+msgstr ""
+
+#: tfrmstructures2.michangetype8bytehex.caption
+msgid "8 Byte (Hex)"
+msgstr ""
+
+#: tfrmstructures2.michangetypearrayofbyte.caption
+msgid "Array Of Byte"
+msgstr "Tableau de Byte"
+
+#: tfrmstructures2.michangetypebyte.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEBYTE.CAPTION"
+msgid "Byte"
+msgstr "Byte"
+
+#: tfrmstructures2.michangetypebytehex.caption
+msgid "Byte (Hex)"
+msgstr ""
+
+#: tfrmstructures2.michangetypedouble.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEDOUBLE.CAPTION"
+msgid "Double"
+msgstr "Double"
+
+#: tfrmstructures2.michangetypefloat.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEFLOAT.CAPTION"
+msgid "Float"
+msgstr "Nombre"
+
+#: tfrmstructures2.michangetypepointer.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEPOINTER.CAPTION"
+msgid "Pointer"
+msgstr "Pointeur"
+
+#: tfrmstructures2.michangetypestring.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPESTRING.CAPTION"
+msgid "String"
+msgstr "Chaîne de caractères"
+
+#: tfrmstructures2.michangetypeunicode.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEUNICODE.CAPTION"
+msgid "Unicode"
+msgstr "Unicode"
+
+#: tfrmstructures2.michangevalue.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGEVALUE.CAPTION"
+msgid "Change value"
+msgstr "Changer la valeur"
+
+#: tfrmstructures2.miclear.caption
+msgid "Delete all structures"
+msgstr "Supprimer toutes les structures"
+
+#: tfrmstructures2.micommands.caption
+msgid "Structure Options"
+msgstr "Options de Structures"
+
+#: tfrmstructures2.micommonalityscan.caption
+msgid "Scan for commonalities using the structure compare window"
+msgstr ""
+
+#: tfrmstructures2.micopy.caption
+msgid "Copy element(s)"
+msgstr "Copier les éléments"
+
+#: tfrmstructures2.midefaulthexadecimal.caption
+msgid "New integer types default to hexadecimal"
+msgstr ""
+
+#: tfrmstructures2.midefinenewstructurefromdebugdata.caption
+msgid "Define new structure from debug data"
+msgstr ""
+
+#: tfrmstructures2.mideleteelement.caption
+msgid "Delete element(s)"
+msgstr ""
+
+#: tfrmstructures2.midonotsavelocal.caption
+msgctxt "TFRMSTRUCTURES2.MIDONOTSAVELOCAL.CAPTION"
+msgid "Do not save autocreated local structures"
+msgstr ""
+
+#: tfrmstructures2.mieverythinghex.caption
+msgid "View everything as hexadecimal"
+msgstr ""
+
+#: tfrmstructures2.miexpandall.caption
+msgid "Expand all defined and undefined pointers"
+msgstr ""
+
+#: tfrmstructures2.miexpandalldefined.caption
+msgid "Expand all defined pointers"
+msgstr ""
+
+#: tfrmstructures2.miexportall.caption
+msgid "Export all structures"
+msgstr ""
+
+#: tfrmstructures2.mifillgaps.caption
+msgid "Fill gaps"
+msgstr ""
+
+#: tfrmstructures2.mifindrelations.caption
+msgid "Find relations"
+msgstr "Trouver les relations"
+
+#: tfrmstructures2.mifullupgrade.caption
+msgid "Upgrade this child to full structure"
+msgstr ""
+
+#: tfrmstructures2.migenerategroupscan.caption
+msgctxt "TFRMSTRUCTURES2.MIGENERATEGROUPSCAN.CAPTION"
+msgid "Generate groupscan command"
+msgstr ""
+
+#: tfrmstructures2.minewwindow.caption
+msgctxt "TFRMSTRUCTURES2.MINEWWINDOW.CAPTION"
+msgid "New window"
+msgstr "Nouvelle fenêtre"
+
+#: tfrmstructures2.mipaste.caption
+msgid "Paste elements(s)"
+msgstr "Coller les éléments"
+
+#: tfrmstructures2.mirecalculateaddress.caption
+msgctxt "TFRMSTRUCTURES2.MIRECALCULATEADDRESS.CAPTION"
+msgid "Recalculate address"
+msgstr ""
+
+#: tfrmstructures2.mirlecompression.caption
+msgid "Enable RLE Compression"
+msgstr ""
+
+#: tfrmstructures2.miseperatorcommonalityscanner.caption
+msgctxt "TFRMSTRUCTURES2.MISEPERATORCOMMONALITYSCANNER.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstructures2.miseperatorstructcommandsandlist.caption
+msgctxt "TFRMSTRUCTURES2.MISEPERATORSTRUCTCOMMANDSANDLIST.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstructures2.mishowaddresses.caption
+msgid "Show addresses"
+msgstr ""
+
+#: tfrmstructures2.mishowtypeforentrieswithnodescription.caption
+msgid "Show type for entries with no description"
+msgstr ""
+
+#: tfrmstructures2.miupdateinterval.caption
+msgid "Update interval: 500"
+msgstr ""
+
+#: tfrmstructures2.miupdateoffsets.caption
+msgid "Update this and following offsets"
+msgstr ""
+
+#: tfrmstructures2.miview.caption
+msgctxt "TFRMSTRUCTURES2.MIVIEW.CAPTION"
+msgid "View"
+msgstr ""
+
+#: tfrmstructures2.n2.caption
+msgctxt "TFRMSTRUCTURES2.N2.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmstructures2.n3.caption
+msgctxt "TFRMSTRUCTURES2.N3.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tfrmstructures2.n4.caption
+msgctxt "TFRMSTRUCTURES2.N4.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tfrmstructures2.n5.caption
+msgctxt "TFRMSTRUCTURES2.N5.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tfrmstructures2.n7.caption
+msgctxt "TFRMSTRUCTURES2.N7.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tfrmstructures2.n8.caption
+msgctxt "TFRMSTRUCTURES2.N8.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tfrmstructures2.open1.caption
+msgid "Import"
+msgstr "Importer"
+
+#: tfrmstructures2.renamestructure1.caption
+msgctxt "TFRMSTRUCTURES2.RENAMESTRUCTURE1.CAPTION"
+msgid "Rename structure"
+msgstr "Renommer la structure"
+
+#: tfrmstructures2.save1.caption
+msgid "Export current structure"
+msgstr ""
+
+#: tfrmstructures2.structures1.caption
+msgid "Structures"
+msgstr ""
+
+#: tfrmstructures2elementinfo.button1.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: tfrmstructures2elementinfo.button2.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmstructures2elementinfo.caption
+msgid "Structure Info"
+msgstr ""
+
+#: tfrmstructures2elementinfo.cbexpandchangesaddress.caption
+msgid "Expanding this node will change the address"
+msgstr ""
+
+#: tfrmstructures2elementinfo.cbhexadecimal.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.CBHEXADECIMAL.CAPTION"
+msgid "Hexadecimal"
+msgstr "Héxadécimal"
+
+#: tfrmstructures2elementinfo.cbsigned.caption
+msgctxt "tfrmstructures2elementinfo.cbsigned.caption"
+msgid "Signed"
+msgstr ""
+
+#: tfrmstructures2elementinfo.cbstructtype.text
+msgid "Undefined"
+msgstr ""
+
+#: tfrmstructures2elementinfo.cbtype.text
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.CBTYPE.TEXT"
+msgid "4 Bytes"
+msgstr "4 Bytes"
+
+#: tfrmstructures2elementinfo.edtbytesize.text
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.EDTBYTESIZE.TEXT"
+msgid "0"
+msgstr "0"
+
+#: tfrmstructures2elementinfo.edtchildstart.text
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.EDTCHILDSTART.TEXT"
+msgid "0"
+msgstr "0"
+
+#: tfrmstructures2elementinfo.edtoffset.text
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.EDTOFFSET.TEXT"
+msgid "0"
+msgstr "0"
+
+#: tfrmstructures2elementinfo.label1.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.LABEL1.CAPTION"
+msgid "Description"
+msgstr "Description"
+
+#: tfrmstructures2elementinfo.label2.caption
+msgctxt "tfrmstructures2elementinfo.label2.caption"
+msgid "Bytesize"
+msgstr ""
+
+#: tfrmstructures2elementinfo.label3.caption
+msgctxt "tfrmstructures2elementinfo.label3.caption"
+msgid "Offset"
+msgstr "Offset"
+
+#: tfrmstructures2elementinfo.label4.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.LABEL4.CAPTION"
+msgid "Type"
+msgstr "Type"
+
+#: tfrmstructures2elementinfo.label5.caption
+msgid "Structure pointed to"
+msgstr ""
+
+#: tfrmstructures2elementinfo.label6.caption
+msgid "Background Color"
+msgstr ""
+
+#: tfrmstructures2elementinfo.lbloffsetinto.caption
+msgid "Offset into"
+msgstr ""
+
+#: tfrmstructuresaddelement.button1.caption
+msgctxt "TFRMSTRUCTURESADDELEMENT.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: tfrmstructuresaddelement.button2.caption
+msgctxt "TFRMSTRUCTURESADDELEMENT.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmstructuresaddelement.caption
+msgid "Add Element"
+msgstr "Ajouter un élément"
+
+#: tfrmstructuresaddelement.cbpointerto.caption
+msgid "pointer to:"
+msgstr "Pointe vers :"
+
+#: tfrmstructuresaddelement.edtbytesize.text
+msgctxt "TFRMSTRUCTURESADDELEMENT.EDTBYTESIZE.TEXT"
+msgid "0"
+msgstr "0"
+
+#: tfrmstructuresaddelement.edtdescription.text
+msgctxt "TFRMSTRUCTURESADDELEMENT.EDTDESCRIPTION.TEXT"
+msgid "undefined"
+msgstr "indéfini"
+
+#: tfrmstructuresaddelement.edtoffset.text
+msgctxt "TFRMSTRUCTURESADDELEMENT.EDTOFFSET.TEXT"
+msgid "0"
+msgstr "0"
+
+#: tfrmstructuresaddelement.label1.caption
+msgid "description"
+msgstr "Description"
+
+#: tfrmstructuresaddelement.label2.caption
+msgctxt "TFRMSTRUCTURESADDELEMENT.LABEL2.CAPTION"
+msgid "Bytesize"
+msgstr ""
+
+#: tfrmstructuresaddelement.label3.caption
+msgctxt "TFRMSTRUCTURESADDELEMENT.LABEL3.CAPTION"
+msgid "Offset"
+msgstr Offset""
+
+#: tfrmstructuresconfig.button1.caption
+msgctxt "TFRMSTRUCTURESCONFIG.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: tfrmstructuresconfig.button2.caption
+msgctxt "TFRMSTRUCTURESCONFIG.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmstructuresconfig.button3.caption
+msgid "Font"
+msgstr ""
+
+#: tfrmstructuresconfig.caption
+msgid "Dissect Data Config"
+msgstr "Configuration de la dissection des données"
+
+#: tfrmstructuresconfig.cbautocreate.caption
+msgctxt "tfrmstructuresconfig.cbautocreate.caption"
+msgid "Autocreate local structures when expanding undefined pointer types"
+msgstr ""
+
+#: tfrmstructuresconfig.cbautodestroylocal.caption
+msgctxt "tfrmstructuresconfig.cbautodestroylocal.caption"
+msgid "Autodestroy local structures when closed"
+msgstr ""
+
+#: tfrmstructuresconfig.cbautofillgaps.caption
+msgctxt "tfrmstructuresconfig.cbautofillgaps.caption"
+msgid "Fill gaps automatically"
+msgstr ""
+
+#: tfrmstructuresconfig.cbautoguesscustomtypes.caption
+msgid "Autoguess custom types"
+msgstr ""
+
+#: tfrmstructuresconfig.cbdefaulthex.caption
+msgid "Default to hexadecimal for new integer entries"
+msgstr ""
+
+#: tfrmstructuresconfig.cbdonotsavelocal.caption
+msgctxt "tfrmstructuresconfig.cbdonotsavelocal.caption"
+msgid "Do not save autocreated local structures"
+msgstr ""
+
+#: tfrmstructuresconfig.cbpositionaddressesovercolumns.caption
+msgid "Position Addresses Over Columns"
+msgstr ""
+
+#: tfrmstructuresconfig.combobackground.text
+msgctxt "TFRMSTRUCTURESCONFIG.COMBOBACKGROUND.TEXT"
+msgid "Normal"
+msgstr "Normal"
+
+#: tfrmstructuresconfig.edtautostructsize.text
+msgctxt "TFRMSTRUCTURESCONFIG.EDTAUTOSTRUCTSIZE.TEXT"
+msgid "4096"
+msgstr ""
+
+#: tfrmstructuresconfig.edtmaxautoexpandlevel.text
+msgctxt "TFRMSTRUCTURESCONFIG.EDTMAXAUTOEXPANDLEVEL.TEXT"
+msgid "1"
+msgstr "1"
+
+#: tfrmstructuresconfig.groupbox1.caption
+msgid "Colors"
+msgstr "Couleurs"
+
+#: tfrmstructuresconfig.groupbox2.caption
+msgid "Default options for new structures"
+msgstr ""
+
+#: tfrmstructuresconfig.groupbox3.caption
+msgid "Global options"
+msgstr ""
+
+#: tfrmstructuresconfig.label1.caption
+msgctxt "TFRMSTRUCTURESCONFIG.LABEL1.CAPTION"
+msgid "Default"
+msgstr ""
+
+#: tfrmstructuresconfig.label1.hint
+msgid "Color used when only one column"
+msgstr ""
+
+#: tfrmstructuresconfig.label2.caption
+msgid "Different"
+msgstr "Différent"
+
+#: tfrmstructuresconfig.label2.hint
+msgid "Color used when only one group and not all columns have the same value, or when multiple groups but not every group has matching columns"
+msgstr ""
+
+#: tfrmstructuresconfig.label3.caption
+msgid "Group Equal"
+msgstr "Groupe égal"
+
+#: tfrmstructuresconfig.label3.hint
+msgid "Color used when multiple groups and every member of every group has the same value, and that value matches that of each group"
+msgstr ""
+
+#: tfrmstructuresconfig.label4.caption
+msgid "Autocreate structure size"
+msgstr ""
+
+#: tfrmstructuresconfig.label5.caption
+msgid "Max auto-expand level:"
+msgstr ""
+
+#: tfrmstructuresconfig.label7.caption
+msgid "Equal"
+msgstr "Egal"
+
+#: tfrmstructuresconfig.label7.hint
+msgid "Color used when only one group and all columns have the same value"
+msgstr ""
+
+#: tfrmstructuresconfig.label9.caption
+msgid "Group Different"
+msgstr ""
+
+#: tfrmstructuresconfig.label9.hint
+msgid "Color used when multiple groups and every member of every group has the same value, but not each group has the same value"
+msgstr ""
+
+#: tfrmsymboleventtakinglong.button1.caption
+msgid "Cancel this symbol lookup"
+msgstr ""
+
+#: tfrmsymboleventtakinglong.caption
+msgid "Symbol lookup taking long"
+msgstr ""
+
+#: tfrmsymboleventtakinglong.cbskipallsymbols.caption
+msgid "And skip all symbols until loaded"
+msgstr ""
+
+#: tfrmsymboleventtakinglong.cbskipthissymbol.caption
+msgid "And skip this symbol until loaded"
+msgstr ""
+
+#: tfrmsymboleventtakinglong.label1.caption
+msgid "The symbolloader is still busy enumerating the symbols and the current symbol being looked up is taking a while (and taking away time to enumerate the symbols)"
+msgstr ""
+
+#: tfrmsymboleventtakinglong.label2.caption
+msgid "This window will autoclose once the symbol has been found"
+msgstr ""
+
+#: tfrmsymboleventtakinglong.lblsymbol.caption
+msgid "lblSymbol"
+msgstr ""
+
+#: tfrmsymboleventtakinglong.lbltype.caption
+msgid "Symbol:"
+msgstr "Symbole :"
+
+#: tfrmsymbolhandler.button1.caption
+msgid "Add symbol"
+msgstr "Ajouter un symbole"
+
+#: tfrmsymbolhandler.caption
+msgid "Symbol config"
+msgstr ""
+
+#: tfrmsymbolhandler.delete1.caption
+msgctxt "TFRMSYMBOLHANDLER.DELETE1.CAPTION"
+msgid "Delete"
+msgstr "Supprimer"
+
+#: tfrmsymbolhandler.label1.caption
+msgid "Userdefined symbols:"
+msgstr ""
+
+#: tfrmsymbolhandler.label2.caption
+msgctxt "TFRMSYMBOLHANDLER.LABEL2.CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmsymbolhandler.label3.caption
+msgid "Unique symbolname"
+msgstr ""
+
+#: tfrmsymbolhandler.listview1.columns[0].caption
+msgid "Symbolname"
+msgstr ""
+
+#: tfrmsymbolhandler.listview1.columns[1].caption
+msgctxt "TFRMSYMBOLHANDLER.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tfrmsymbolhandler.listview1.columns[2].caption
+msgid "AllocSize"
+msgstr ""
+
+#: tfrmsymbolhandler.menuitem1.caption
+msgid "Delete all"
+msgstr "Supprimer tout"
+
+#: tfrmsymbolhandler.panel3.caption
+msgid "Panel3"
+msgstr ""
+
+#: tfrmthreadlist.caption
+msgctxt "tfrmthreadlist.caption"
+msgid "Threadlist"
+msgstr ""
+
+#: tfrmthreadlist.lbliswow64.caption
+msgid "Hold ctrl when expanding to see the 32-bit context of a thread"
+msgstr ""
+
+#: tfrmthreadlist.menuitem1.caption
+msgid "Stackview"
+msgstr ""
+
+#: tfrmthreadlist.mibreak.caption
+msgctxt "TFRMTHREADLIST.MIBREAK.CAPTION"
+msgid "Break"
+msgstr ""
+
+#: tfrmthreadlist.micleardebugregisters.caption
+msgid "Clear debug registers"
+msgstr ""
+
+#: tfrmthreadlist.micopyvaluetoclipboard.caption
+msgid "Copy value to clipboard"
+msgstr "Copier la valeur dans le presse-papier"
+
+#: tfrmthreadlist.mifreezethread.caption
+msgid "Freeze thread"
+msgstr "Geler le fil"
+
+#: tfrmthreadlist.miresumethread.caption
+msgid "Resume thread"
+msgstr "Reprendre le fil"
+
+#: tfrmthreadlistex.button1.caption
+msgctxt "TFRMTHREADLISTEX.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: tfrmthreadlistex.caption
+msgid "ThreadInfo"
+msgstr ""
+
+#: tfrmtracerconfig.btncancel.caption
+msgctxt "TFRMTRACERCONFIG.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmtracerconfig.btnok.caption
+msgctxt "TFRMTRACERCONFIG.BTNOK.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: tfrmtracerconfig.caption
+msgid "Break and Trace config"
+msgstr ""
+
+#: tfrmtracerconfig.cbdereferenceaddresses.caption
+msgid "Dereference Addresses (Slows down)"
+msgstr ""
+
+#: tfrmtracerconfig.cbsavestack.caption
+msgid "Save stack snapshots (Eats memory)"
+msgstr ""
+
+#: tfrmtracerconfig.cbskipsystemmodules.caption
+msgid "Skip system modules"
+msgstr ""
+
+#: tfrmtracerconfig.cbstepover.caption
+msgid "Step over instead of single step"
+msgstr ""
+
+#: tfrmtracerconfig.edtmaxtrace.text
+msgctxt "TFRMTRACERCONFIG.EDTMAXTRACE.TEXT"
+msgid "1000"
+msgstr ""
+
+#: tfrmtracerconfig.label1.caption
+msgid "Maximal trace count:"
+msgstr ""
+
+#: tfrmtracerconfig.label2.caption
+msgid "Stop condition (Optional, LUA format)"
+msgstr ""
+
+#: tfrmtracerconfig.label3.caption
+msgid "Start condition (Optional, LUA format)"
+msgstr ""
+
+#: tfrmtracerconfig.rbbreakonaccess.caption
+msgctxt "tfrmtracerconfig.rbbreakonaccess.caption"
+msgid "Break on Access"
+msgstr ""
+
+#: tfrmtracerconfig.rbbreakonwrite.caption
+msgctxt "tfrmtracerconfig.rbbreakonwrite.caption"
+msgid "Break on Write"
+msgstr ""
+
+#: tfrmultimap.btnexecuted.caption
+msgid "Code has been executed"
+msgstr ""
+
+#: tfrmultimap.btnfiltercallcount.caption
+msgid "Filter out routine(s) where callcount is NOT"
+msgstr ""
+
+#: tfrmultimap.btnfiltermodule.caption
+msgid "Filter out routines not in a specific module"
+msgstr ""
+
+#: tfrmultimap.btnnotcalled.caption
+msgid "Filter out routine(s) that where not CALL'ed"
+msgstr ""
+
+#: tfrmultimap.btnnotexecuted.caption
+msgid "Code did not get executed"
+msgstr ""
+
+#: tfrmultimap.btnpause.caption
+msgid "Pause/Resume"
+msgstr ""
+
+#: tfrmultimap.btnresetcount.caption
+msgid "Reset Count"
+msgstr ""
+
+#: tfrmultimap.btnret.caption
+msgid "Filter out return from RET's"
+msgstr ""
+
+#: tfrmultimap.btnstart.caption
+msgctxt "TFRMULTIMAP.BTNSTART.CAPTION"
+msgid "Start"
+msgstr "Début"
+
+#: tfrmultimap.btnstop.caption
+msgctxt "TFRMULTIMAP.BTNSTOP.CAPTION"
+msgid "Stop"
+msgstr "Stop"
+
+#: tfrmultimap.button5.caption
+msgid "Show matching routines"
+msgstr ""
+
+#: tfrmultimap.button6.caption
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#: tfrmultimap.button6.hint
+msgid "If you lost track of what happened, use this. It will set execution count back to 0 of all the branches it has found"
+msgstr ""
+
+#: tfrmultimap.caption
+msgctxt "tfrmultimap.caption"
+msgid "Ultimap"
+msgstr ""
+
+#: tfrmultimap.cbfilterfuturepaths.caption
+msgid "Filter future branches"
+msgstr ""
+
+#: tfrmultimap.cbfilterfuturepaths.hint
+msgid "When checked (default) will mark all subsequent paths after this as filtered out"
+msgstr ""
+
+#: tfrmultimap.cbfilteroutnewentries.caption
+msgid "Mark all new branches as filtered out"
+msgstr ""
+
+#: tfrmultimap.cbfilteroutnewentries.hint
+msgid "When this checkbox is ticked all newly added code entry points will be marked as entries that do not match the filters"
+msgstr ""
+
+#: tfrmultimap.cblogtofile.caption
+msgid "Log directly to file"
+msgstr ""
+
+#: tfrmultimap.cbparsedata.caption
+msgid "Parse data"
+msgstr ""
+
+#: tfrmultimap.cbpreemptiveflush.caption
+msgid "Preemptive flushing"
+msgstr ""
+
+#: tfrmultimap.cbpreemptiveflush.hint
+msgid "When enabled Cheat Engine will flush the data for each cpu instead of only when the buffer is full"
+msgstr ""
+
+#: tfrmultimap.edit1.text
+msgctxt "TFRMULTIMAP.EDIT1.TEXT"
+msgid "1"
+msgstr "1"
+
+#: tfrmultimap.edtbufsize.text
+msgid "4194304"
+msgstr ""
+
+#: tfrmultimap.edtfilename.text
+msgid "c:\\log.dat"
+msgstr ""
+
+#: tfrmultimap.edtworkercount.text
+msgctxt "TFRMULTIMAP.EDTWORKERCOUNT.TEXT"
+msgid "1"
+msgstr "1"
+
+#: tfrmultimap.label1.caption
+msgid "Worker threads"
+msgstr ""
+
+#: tfrmultimap.label2.caption
+msgid "Event buffer size"
+msgstr ""
+
+#: tfrmultimap.label3.caption
+msgctxt "TFRMULTIMAP.LABEL3.CAPTION"
+msgid "0"
+msgstr "0"
+
+#: tfrmultimap.label4.caption
+msgctxt "TFRMULTIMAP.LABEL4.CAPTION"
+msgid "Label4"
+msgstr ""
+
+#: tfrmultimap.label5.caption
+msgid "Banch targets:"
+msgstr ""
+
+#: tfrmultimap.label6.caption
+msgid "General tip: \"Pause/Resume\", \"Code did not get executed\" and \"Code has been executed\" can be rightclicked and assigned a hotkey for use inside games so you don't have to alt tab out"
+msgstr ""
+
+#: tfrmultimap.lbllastfilterresult.caption
+msgid "Last filter results:"
+msgstr ""
+
+#: tfrmultimap.listview1.columns[0].caption
+msgid "Address To"
+msgstr ""
+
+#: tfrmultimap.listview1.columns[1].caption
+msgid "Last origin"
+msgstr ""
+
+#: tfrmultimap.listview1.columns[2].caption
+msgctxt "TFRMULTIMAP.LISTVIEW1.COLUMNS[2].CAPTION"
+msgid "Count"
+msgstr "Compte"
+
+#: tfrmultimap.menuitem1.caption
+msgid "Add selection to code list"
+msgstr ""
+
+#: tfrmultimap.menuitem2.caption
+msgid "Flush buffers"
+msgstr ""
+
+#: tfrmultimap.miremovehotkey.caption
+msgid "Remove hotkey"
+msgstr ""
+
+#: tfrmultimap.misethotkey.caption
+msgid "Set hotkey"
+msgstr "Assigner un raccourci"
+
+#: tfrmultimap.panel2.caption
+msgid "Panel2"
+msgstr ""
+
+#: tfrmwatchlist.caption
+msgid "Watch list"
+msgstr ""
+
+#: tfrmwatchlist.lvwatchlist.columns[0].caption
+msgid "Address/Expression"
+msgstr "Adresse/Expression"
+
+#: tfrmwatchlist.lvwatchlist.columns[1].caption
+msgctxt "TFRMWATCHLIST.LVWATCHLIST.COLUMNS[1].CAPTION"
+msgid "Value"
+msgstr "Valeur"
+
+#: tfrmwatchlist.menuitem1.caption
+msgctxt "TFRMWATCHLIST.MENUITEM1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmwatchlist.menuitem2.caption
+msgctxt "TFRMWATCHLIST.MENUITEM2.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmwatchlist.menuitem3.caption
+msgid "Refresh values"
+msgstr "Rafraîchir les valeurs"
+
+#: tfrmwatchlist.menuitem4.caption
+msgid "Browse memory region"
+msgstr "Parcourir les régions de mémoire"
+
+#: tfrmwatchlist.miadditem.caption
+msgctxt "TFRMWATCHLIST.MIADDITEM.CAPTION"
+msgid "Add Item"
+msgstr "Ajouter un élément"
+
+#: tfrmwatchlist.micopytoclipboard.caption
+msgid "Copy expression(s) to clipboard"
+msgstr ""
+
+#: tfrmwatchlist.micopytoclipboardex.caption
+msgid "Copy expression(s) and value(s) to clipboard"
+msgstr "Copier les expressions et valeurs"
+
+#: tfrmwatchlist.mideleteitems.caption
+msgid "Delete Item(s)"
+msgstr "Supprimer le(s) objet(s)"
+
+#: tfrmwatchlist.miedititem.caption
+msgid "Edit Item"
+msgstr "Modifier l'objet"
+
+#: tfrmwatchlist.mipastefromclipboard.caption
+msgid "Paste expression(s) from clipboard"
+msgstr "Coller les expressions depuis le Presse-Papier"
+
+#: tfrmwatchlist.mirefresh.caption
+msgctxt "TFRMWATCHLIST.MIREFRESH.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfrmwatchlistaddentry.btncancel.caption
+msgctxt "TFRMWATCHLISTADDENTRY.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tfrmwatchlistaddentry.btnok.caption
+msgctxt "TFRMWATCHLISTADDENTRY.BTNOK.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: tfrmwatchlistaddentry.caption
+msgid "Add watcher entry"
+msgstr ""
+
+#: tfrmwatchlistaddentry.edtexpression.texthint
+msgid "Expression"
+msgstr "Expression"
+
+#: tfrmwatchlistaddentry.rgtype.caption
+msgctxt "TFRMWATCHLISTADDENTRY.RGTYPE.CAPTION"
+msgid "Type"
+msgstr "Type"
+
+#: thotkeyform.bitbtn1.caption
+msgctxt "THOTKEYFORM.BITBTN1.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: thotkeyform.btnapply.caption
+msgctxt "THOTKEYFORM.BTNAPPLY.CAPTION"
+msgid "Apply"
+msgstr "Appliquer"
+
+#: thotkeyform.btncancel.caption
+msgctxt "THOTKEYFORM.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: thotkeyform.btncreatehotkey.caption
+msgid "Create hotkey"
+msgstr "Créer un raccourci"
+
+#: thotkeyform.btnedithotkey.caption
+msgid "Edit Hotkey"
+msgstr "Modifier un raccourci clavier"
+
+#: thotkeyform.button2.caption
+msgctxt "THOTKEYFORM.BUTTON2.CAPTION"
+msgid "Clear"
+msgstr "Vider"
+
+#: thotkeyform.caption
+msgid "Set/Change hotkey"
+msgstr "Assigner/Changer un raccourci clavier"
+
+#: thotkeyform.cbforceenglishactivate.caption
+msgctxt "thotkeyform.cbforceenglishactivate.caption"
+msgid "Force English"
+msgstr "Forcer l'anglais"
+
+#: thotkeyform.cbforceenglishactivate.hint
+msgctxt "thotkeyform.cbforceenglishactivate.hint"
+msgid "Tries to set the language of the windows speech synthesizer to English when speaking this. Won't speak if there is no English voice installed"
+msgstr ""
+
+#: thotkeyform.cbforceenglishdeactivate.caption
+msgctxt "THOTKEYFORM.CBFORCEENGLISHDEACTIVATE.CAPTION"
+msgid "Force English"
+msgstr ""
+
+#: thotkeyform.cbforceenglishdeactivate.hint
+msgctxt "THOTKEYFORM.CBFORCEENGLISHDEACTIVATE.HINT"
+msgid "Tries to set the language of the windows speech synthesizer to English when speaking this. Won't speak if there is no English voice installed"
+msgstr ""
+
+#: thotkeyform.cbfreezedirection.text
+msgctxt "thotkeyform.cbfreezedirection.text"
+msgid "Toggle freeze"
+msgstr ""
+
+#: thotkeyform.edtactivatetext.text
+msgid "{MRDescription} Activated"
+msgstr ""
+
+#: thotkeyform.edtdeactivatetext.text
+msgid "{MRDescription} Deactivated"
+msgstr ""
+
+#: thotkeyform.edtdescription.hint
+msgid "When autogenerating a trainer this field will be used as description"
+msgstr ""
+
+#: thotkeyform.label1.caption
+msgid "Type the keys you want to set the hotkey to"
+msgstr ""
+
+#: thotkeyform.label2.caption
+msgid "Description (Optional)"
+msgstr "Description (Optionnel)"
+
+#: thotkeyform.lblactivatesound.caption
+msgid "Activate sound"
+msgstr "Activer le son"
+
+#: thotkeyform.lbldeactivatesound.caption
+msgid "Deactivate sound"
+msgstr "Désactiver le son"
+
+#: thotkeyform.listview1.columns[0].caption
+msgctxt "THOTKEYFORM.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Hotkey"
+msgstr ""
+
+#: thotkeyform.listview1.columns[1].caption
+msgid "On Hotkey"
+msgstr "Sur raccourci clavier"
+
+#: thotkeyform.listview1.columns[2].caption
+msgctxt "THOTKEYFORM.LISTVIEW1.COLUMNS[2].CAPTION"
+msgid "Value"
+msgstr "Valeur"
+
+#: thotkeyform.listview1.columns[3].caption
+msgctxt "THOTKEYFORM.LISTVIEW1.COLUMNS[3].CAPTION"
+msgid "Description"
+msgstr "Description"
+
+#: thotkeyform.miaddsound.caption
+msgid "Add sounds"
+msgstr "Ajouter des sons"
+
+#: thotkeyform.midelete.caption
+msgctxt "THOTKEYFORM.MIDELETE.CAPTION"
+msgid "Delete"
+msgstr "Supprimer"
+
+#: thotkeyform.tabsheet1.caption
+msgid "TabSheet1"
+msgstr ""
+
+#: thotkeyform.tabsheet2.caption
+msgid "TabSheet2"
+msgstr ""
+
+#: tinputboxtop.button1.caption
+msgctxt "TINPUTBOXTOP.BUTTON1.CAPTION"
+msgid "OK"
+msgstr ""
+
+#: tinputboxtop.button2.caption
+msgctxt "TINPUTBOXTOP.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tinputboxtop.edit1.text
+msgid "edit1"
+msgstr ""
+
+#: tinputboxtop.label1.caption
+msgctxt "TINPUTBOXTOP.LABEL1.CAPTION"
+msgid "Label1"
+msgstr ""
+
+#: tlgunit.rsyouwin
+msgid "OMG, You must have cheated or don't have a life. (Although some people claim that thats the same)"
+msgstr ""
+
+#: tmainform.a1.caption
+msgid "a"
+msgstr ""
+
+#: tmainform.actautoassemble.caption
+msgid "actAutoAssemble"
+msgstr ""
+
+#: tmainform.actmemoryview.caption
+msgid "actMemoryView"
+msgstr ""
+
+#: tmainform.actopen.hint
+msgid "Open a cheat table or unprotected cetrainer"
+msgstr ""
+
+#: tmainform.actopendissectstructure.caption
+msgid "actOpenDissectStructure"
+msgstr ""
+
+#: tmainform.actopenluaengine.caption
+msgid "actOpenLuaEngine"
+msgstr ""
+
+#: tmainform.actsave.hint
+msgid "Save your current data. Save as .exe to create a standalone trainer"
+msgstr ""
+
+#: tmainform.address1.caption
+msgctxt "TMAINFORM.ADDRESS1.CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tmainform.advancedbutton.caption
+msgctxt "TMAINFORM.ADVANCEDBUTTON.CAPTION"
+msgid "Advanced Options"
+msgstr ""
+
+#: tmainform.advancedbutton.hint
+msgid "Codelist and pause"
+msgstr ""
+
+#: tmainform.andlabel.caption
+msgctxt "TMAINFORM.ANDLABEL.CAPTION"
+msgid "and"
+msgstr ""
+
+#: tmainform.b1.caption
+msgid "b"
+msgstr ""
+
+#: tmainform.browsethismemoryarrea1.caption
+msgctxt "TMAINFORM.BROWSETHISMEMORYARREA1.CAPTION"
+msgid "Browse this memory region"
+msgstr "Parcourir cette région de la mémoire"
+
+#: tmainform.browsethismemoryregion1.caption
+msgctxt "TMAINFORM.BROWSETHISMEMORYREGION1.CAPTION"
+msgid "Browse this memory region"
+msgstr ""
+
+#: tmainform.browsethismemoryregioninthedisassembler1.caption
+msgctxt "TMAINFORM.BROWSETHISMEMORYREGIONINTHEDISASSEMBLER1.CAPTION"
+msgid "Disassemble this memory region"
+msgstr "Désassembler Cette région de la mémoire"
+
+#: tmainform.btnaddaddressmanually.caption
+msgid "Add Address Manually"
+msgstr "Ajouter une adresse manuellement"
+
+#: tmainform.btnfirst.caption
+msgid "First Scan2"
+msgstr "Premier Scan 2"
+
+#: tmainform.btnmemoryview.caption
+msgid "Memory View"
+msgstr "Vue Mémoire"
+
+#: tmainform.btnnewscan.caption
+msgctxt "TMAINFORM.BTNNEWSCAN.CAPTION"
+msgid "First Scan"
+msgstr ""
+
+#: tmainform.btnnext.caption
+msgid "Next scan 2"
+msgstr "Scan Suivant 2"
+
+#: tmainform.btnnextscan.caption
+msgctxt "TMAINFORM.BTNNEXTSCAN.CAPTION"
+msgid "Next Scan"
+msgstr "Scan Suivant"
+
+#: tmainform.btnsetspeedhack2.caption
+msgctxt "TMAINFORM.BTNSETSPEEDHACK2.CAPTION"
+msgid "Apply"
+msgstr "Appliquer"
+
+#: tmainform.c1.caption
+msgid "c"
+msgstr ""
+
+#: tmainform.calculatenewvaluepart21.caption
+msgid "Recalculate new addresses"
+msgstr "Recalculer les nouvelles adresses"
+
+#: tmainform.caption
+msgctxt "tmainform.caption"
+msgid "Cheat Engine 6.8.3"
+msgstr ""
+
+#: tmainform.cbcasesensitive.caption
+msgctxt "TMAINFORM.CBCASESENSITIVE.CAPTION"
+msgid "Case sensitive"
+msgstr ""
+
+#: tmainform.cbcodepage.caption
+msgctxt "TMAINFORM.CBCODEPAGE.CAPTION"
+msgid "Codepage"
+msgstr ""
+
+#: tmainform.cbcopyonwrite.caption
+msgid "CopyOnWrite"
+msgstr "Copie sur écriture"
+
+#: tmainform.cbcopyonwrite.hint
+msgctxt "tmainform.cbcopyonwrite.hint"
+msgid "Unchecked:"
+msgstr ""
+
+#: tmainform.cbexecutable.caption
+msgid "Executable"
+msgstr "Exécutable"
+
+#: tmainform.cbexecutable.hint
+msgctxt "TMAINFORM.CBEXECUTABLE.HINT"
+msgid "Unchecked:"
+msgstr ""
+
+#: tmainform.cbfastscan.caption
+msgid "Fast Scan"
+msgstr "Scan Rapide"
+
+#: tmainform.cbfastscan.hint
+msgid "Speeds up the scan and decreases useless results by skipping unaligned memory, or only scans addresses ending with specific digits"
+msgstr ""
+
+#: tmainform.cbfloatsimple.caption
+msgid "Simple values only"
+msgstr "Seulement les valeurs simples"
+
+#: tmainform.cbhexadecimal.caption
+msgctxt "TMAINFORM.CBHEXADECIMAL.CAPTION"
+msgid "Hex"
+msgstr "Hex"
+
+#: tmainform.cbhexadecimal.hint
+msgid "When checked the value you type in is hexadecimal"
+msgstr ""
+
+#: tmainform.cbnot.caption
+msgid "Not"
+msgstr "N'est pas :"
+
+#: tmainform.cbnot.hint
+msgid "When checked CE will find everything EXCEPT the value/range you've given"
+msgstr ""
+
+#: tmainform.cbpausewhilescanning.caption
+msgid "Pause the game while scanning"
+msgstr "Mettre en pause le jeu durant le Scan"
+
+#: tmainform.cbpercentage.caption
+msgid "Percent"
+msgstr ""
+
+#: tmainform.cbspeedhack.caption
+msgid "Enable Speedhack"
+msgstr "Activer le Speedhack"
+
+#: tmainform.cbspeedhack.hint
+msgid "Enable speedhack"
+msgstr "Activer le Speedhack"
+
+#: tmainform.cbunicode.caption
+msgctxt "TMAINFORM.CBUNICODE.CAPTION"
+msgid "UTF-16"
+msgstr ""
+
+#: tmainform.cbunrandomizer.caption
+msgctxt "TMAINFORM.CBUNRANDOMIZER.CAPTION"
+msgid "Unrandomizer"
+msgstr ""
+
+#: tmainform.cbwritable.caption
+msgid "Writable"
+msgstr "Accessible en écriture"
+
+#: tmainform.cbwritable.hint
+msgctxt "TMAINFORM.CBWRITABLE.HINT"
+msgid "Unchecked:"
+msgstr ""
+
+#: tmainform.change1.caption
+msgid "Change record"
+msgstr "Changer "
+
+#: tmainform.changescript1.caption
+msgctxt "TMAINFORM.CHANGESCRIPT1.CAPTION"
+msgid "Change script"
+msgstr ""
+
+#: tmainform.commentbutton.caption
+msgid "Table Extras"
+msgstr ""
+
+#: tmainform.copy1.caption
+msgctxt "TMAINFORM.COPY1.CAPTION"
+msgid "Copy"
+msgstr "Copier"
+
+#: tmainform.copy2.caption
+msgctxt "TMAINFORM.COPY2.CAPTION"
+msgid "Copy"
+msgstr "Copier"
+
+#: tmainform.creategroup.caption
+msgid "Create Header"
+msgstr "Créer une En-tête"
+
+#: tmainform.createprocess1.caption
+msgctxt "TMAINFORM.CREATEPROCESS1.CAPTION"
+msgid "Create Process"
+msgstr "Créer un Processus"
+
+#: tmainform.cut1.caption
+msgctxt "TMAINFORM.CUT1.CAPTION"
+msgid "Cut"
+msgstr "Couper"
+
+#: tmainform.cut2.caption
+msgctxt "TMAINFORM.CUT2.CAPTION"
+msgid "Cut"
+msgstr "Couper"
+
+#: tmainform.d1.caption
+msgid "d"
+msgstr ""
+
+#: tmainform.deletethisrecord1.caption
+msgid "Delete this record"
+msgstr "Supprimer cet élément"
+
+#: tmainform.description1.caption
+msgctxt "TMAINFORM.DESCRIPTION1.CAPTION"
+msgid "Description"
+msgstr "Description"
+
+#: tmainform.e1.caption
+msgid "e"
+msgstr ""
+
+#: tmainform.edit3.caption
+msgid "&Edit"
+msgstr "&Modifier"
+
+#: tmainform.editsh2.text
+msgctxt "TMAINFORM.EDITSH2.TEXT"
+msgid "1"
+msgstr ""
+
+#: tmainform.edtalignment.text
+msgctxt "TMAINFORM.EDTALIGNMENT.TEXT"
+msgid "4"
+msgstr ""
+
+#: tmainform.file1.caption
+msgid "&File"
+msgstr "&Fichier"
+
+#: tmainform.findoutwhataccessesthisaddress1.caption
+msgctxt "TMAINFORM.FINDOUTWHATACCESSESTHISADDRESS1.CAPTION"
+msgid "Find out what accesses this address"
+msgstr ""
+
+#: tmainform.forcerechecksymbols1.caption
+msgctxt "TMAINFORM.FORCERECHECKSYMBOLS1.CAPTION"
+msgid "Force recheck symbols"
+msgstr "Forcer la vérification des symboles"
+
+#: tmainform.foundcountlabel.caption
+msgctxt "TMAINFORM.FOUNDCOUNTLABEL.CAPTION"
+msgid "0"
+msgstr ""
+
+#: tmainform.foundcountlabel.hint
+msgid "This shows the amount of addresses found"
+msgstr ""
+
+#: tmainform.foundlist3.columns[0].caption
+msgctxt "TMAINFORM.FOUNDLIST3.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tmainform.foundlist3.columns[1].caption
+msgctxt "TMAINFORM.FOUNDLIST3.COLUMNS[1].CAPTION"
+msgid "Value"
+msgstr "Valeur"
+
+#: tmainform.foundlist3.columns[2].caption
+msgctxt "TMAINFORM.FOUNDLIST3.COLUMNS[2].CAPTION"
+msgid "Previous"
+msgstr "Précédent"
+
+#: tmainform.foundlist3.hint
+msgid "This list shows all the found addresses that matched your last scan"
+msgstr ""
+
+#: tmainform.freezealladdresses2.caption
+msgid "Toggle Selected Records"
+msgstr "Activer/Désactiver les éléments séléctionnés"
+
+#: tmainform.fromaddress.text
+msgid "00000000"
+msgstr ""
+
+#: tmainform.gbscanoptions.caption
+msgid "Memory Scan Options"
+msgstr "Options de Scan Mémoire"
+
+#: tmainform.helpindex1.caption
+msgid "Cheat Engine Help"
+msgstr "Aide de Cheat Engine"
+
+#: tmainform.hint
+msgid " "
+msgstr ""
+
+#: tmainform.label1.caption
+msgctxt "TMAINFORM.LABEL1.CAPTION"
+msgid "Start"
+msgstr "Début"
+
+#: tmainform.label2.caption
+msgctxt "TMAINFORM.LABEL2.CAPTION"
+msgid "Stop"
+msgstr "Stop"
+
+#: tmainform.label54.caption
+msgid "Speed"
+msgstr "Vitesse"
+
+#: tmainform.label6.caption
+msgctxt "TMAINFORM.LABEL6.CAPTION"
+msgid "Found:"
+msgstr "Trouvé :"
+
+#: tmainform.lblcomparetosavedscan.caption
+msgid "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+msgstr ""
+
+#: tmainform.lblscantype.caption
+msgid "Scan Type"
+msgstr "Type de Scan"
+
+#: tmainform.lblsh0.caption
+msgctxt "TMAINFORM.LBLSH0.CAPTION"
+msgid "0"
+msgstr ""
+
+#: tmainform.lblsh20.caption
+msgctxt "TMAINFORM.LBLSH20.CAPTION"
+msgid "500"
+msgstr ""
+
+#: tmainform.lblsigned.caption
+msgid "This table has been signed by"
+msgstr ""
+
+#: tmainform.lblvaluetype.caption
+msgid "Value Type"
+msgstr "Type de valeur"
+
+#: tmainform.load1.caption
+msgctxt "TMAINFORM.LOAD1.CAPTION"
+msgid "Load"
+msgstr "Charger"
+
+#: tmainform.menuitem1.caption
+msgid "Select All"
+msgstr "Tout séléctionner"
+
+#: tmainform.menuitem10.caption
+msgctxt "TMAINFORM.MENUITEM10.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem11.caption
+msgctxt "TMAINFORM.MENUITEM11.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem12.caption
+msgid "Cheat Engine Tutorial (64-Bit)"
+msgstr "Tutoriel de Cheat Engine (64-Bit)"
+
+#: tmainform.menuitem13.caption
+msgctxt "TMAINFORM.MENUITEM13.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem14.caption
+msgctxt "TMAINFORM.MENUITEM14.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem15.caption
+msgid "Cheat Engine Tutorial Games"
+msgstr "Jeux Tutoriels de Cheat Engine"
+
+#: tmainform.menuitem19.caption
+msgctxt "TMAINFORM.MENUITEM19.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem2.caption
+msgid "New Item1"
+msgstr ""
+
+#: tmainform.menuitem3.caption
+msgctxt "TMAINFORM.MENUITEM3.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem4.caption
+msgctxt "TMAINFORM.MENUITEM4.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem5.caption
+msgctxt "TMAINFORM.MENUITEM5.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem6.caption
+msgctxt "TMAINFORM.MENUITEM6.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem7.caption
+msgid "Quit"
+msgstr "Quitter"
+
+#: tmainform.menuitem8.caption
+msgctxt "TMAINFORM.MENUITEM8.CAPTION"
+msgid "Open Process"
+msgstr "Ouvrir un Processus"
+
+#: tmainform.menuitem9.caption
+msgid "Generate generic trainer lua script from table"
+msgstr ""
+
+#: tmainform.mi3d.caption
+msgid "D3D"
+msgstr ""
+
+#: tmainform.miabout.caption
+msgctxt "TMAINFORM.MIABOUT.CAPTION"
+msgid "About"
+msgstr "A propos"
+
+#: tmainform.miaddaddress.caption
+msgid "Add selected addresses to the addresslist"
+msgstr "Ajouter l'adresse sélectionnée"
+
+#: tmainform.miaddfile.caption
+msgid "Add file"
+msgstr "Ajouter un fichier"
+
+#: tmainform.miaddtab.caption
+msgid "Add scan tab"
+msgstr "Ajouter un onglet de Scan"
+
+#: tmainform.miallowcollapse.caption
+msgid "Allow left and right arrow keys to collapse and expand"
+msgstr ""
+
+#: tmainform.miasyncscript.caption
+msgid "Execute asynchronous"
+msgstr ""
+
+#: tmainform.mibindactivation.caption
+msgid "Activating this entry activates it's children"
+msgstr ""
+
+#: tmainform.mibinddeactivation.caption
+msgid "Deactivating this entry deactivates it's children"
+msgstr ""
+
+#: tmainform.michangecolor.caption
+msgid "Change Color"
+msgstr "Changer la couleur"
+
+#: tmainform.michangevalue.caption
+msgid "Change value of selected addresses"
+msgstr "Changer la valeur des adresses sélectionées"
+
+#: tmainform.michangevalueback.caption
+msgid "Change value of selected addresses back to previous/saved value"
+msgstr "Changer la valeur des adresses sélectionées avec leur précédente valeur"
+
+#: tmainform.miclosetab.caption
+msgid "Close tab"
+msgstr "Fermer l'onglet"
+
+#: tmainform.micompression.caption
+msgctxt "TMAINFORM.MICOMPRESSION.CAPTION"
+msgid "Compression"
+msgstr "Compression"
+
+#: tmainform.micreateluaform.caption
+msgid "Create form"
+msgstr "Créer un formulaire"
+
+#: tmainform.midbvmfindwhatwritesoraccesses.caption
+msgid "DBVM Find out what writes or accesses this address"
+msgstr ""
+
+#: tmainform.midefinenewcustomtype.caption
+msgid "Define new custom type (Auto Assembler)"
+msgstr ""
+
+#: tmainform.midefinenewcustomtypelua.caption
+msgid "Define new custom type (LUA)"
+msgstr ""
+
+#: tmainform.mideletecustomtype.caption
+msgid "Delete selected custom type"
+msgstr ""
+
+#: tmainform.midisassemble.caption
+msgctxt "tmainform.midisassemble.caption"
+msgid "Disassemble this memory region"
+msgstr ""
+
+#: tmainform.midisplay2byte.caption
+msgctxt "TMAINFORM.MIDISPLAY2BYTE.CAPTION"
+msgid "2 Bytes"
+msgstr ""
+
+#: tmainform.midisplay4byte.caption
+msgctxt "TMAINFORM.MIDISPLAY4BYTE.CAPTION"
+msgid "4 Bytes"
+msgstr ""
+
+#: tmainform.midisplay8byte.caption
+msgctxt "TMAINFORM.MIDISPLAY8BYTE.CAPTION"
+msgid "8 Bytes"
+msgstr "8 Bytes"
+
+#: tmainform.midisplaybyte.caption
+msgctxt "TMAINFORM.MIDISPLAYBYTE.CAPTION"
+msgid "Byte"
+msgstr ""
+
+#: tmainform.midisplaydefault.caption
+msgctxt "TMAINFORM.MIDISPLAYDEFAULT.CAPTION"
+msgid "Default"
+msgstr "Défaut"
+
+#: tmainform.midisplaydouble.caption
+msgctxt "TMAINFORM.MIDISPLAYDOUBLE.CAPTION"
+msgid "Double"
+msgstr ""
+
+#: tmainform.midisplayfloat.caption
+msgctxt "TMAINFORM.MIDISPLAYFLOAT.CAPTION"
+msgid "Float"
+msgstr "Nombre"
+
+#: tmainform.midisplayhex.caption
+msgctxt "TMAINFORM.MIDISPLAYHEX.CAPTION"
+msgid "Hexadecimal"
+msgstr "Héxadécimal"
+
+#: tmainform.midotnet.caption
+msgid ".Net"
+msgstr ".Net"
+
+#: tmainform.mieditcustomtype.caption
+msgid "Edit selected custom type"
+msgstr "Modifier le Type personnalisé sélectionné"
+
+#: tmainform.mienablelcldebug.caption
+msgid "Generate errorlogs"
+msgstr ""
+
+#: tmainform.miflfindwhataccesses.caption
+msgctxt "TMAINFORM.MIFLFINDWHATACCESSES.CAPTION"
+msgid "Find out what accesses this address"
+msgstr "Trouver qui accède à cette adresse"
+
+#: tmainform.miflfindwhatwrites.caption
+msgctxt "TMAINFORM.MIFLFINDWHATWRITES.CAPTION"
+msgid "Find out what writes to this address"
+msgstr "Trouver qui écrit à cette adresse"
+
+#: tmainform.miforgotscan.caption
+msgid "Reload the previous value list (Forgot value scan)"
+msgstr "Recharger la précédente liste de valeurs"
+
+#: tmainform.mifreezenegative.caption
+msgid "Freeze Negative"
+msgstr "Gel négatif"
+
+#: tmainform.mifreezepositive.caption
+msgid "Freeze Positive"
+msgstr "Gel positif"
+
+#: tmainform.migeneratepointermap.caption
+msgid "Generate pointermap"
+msgstr "Générer une Pointermap"
+
+#: tmainform.migetdotnetobjectlist.caption
+msgid "Get object list"
+msgstr "Obtenir la liste des objets"
+
+#: tmainform.migroupconfig.caption
+msgid "Group config"
+msgstr "Configuration des groupes"
+
+#: tmainform.mihelp.caption
+msgid "&Help"
+msgstr "&Aide"
+
+#: tmainform.mihidechildren.caption
+msgid "Hide children when deactivated"
+msgstr "Cacher les liens enfants lorsque désactivé"
+
+#: tmainform.mihookd3d.caption
+msgid "Hook Direct3D"
+msgstr ""
+
+#: tmainform.milanguages.caption
+msgctxt "TMAINFORM.MILANGUAGES.CAPTION"
+msgid "Languages"
+msgstr "Langages"
+
+#: tmainform.milockmouseingame.caption
+msgid "Lock mouse in game window"
+msgstr "Vérouiller la souris dans la fenêtre de jeu"
+
+#: tmainform.miluadocumentation.caption
+msgid "Lua documentation"
+msgstr "Documentation Lua"
+
+#: tmainform.miluaformsseperator.caption
+msgctxt "TMAINFORM.MILUAFORMSSEPERATOR.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.mimanualexpandcollapse.caption
+msgid "Manual expand/collapse"
+msgstr ""
+
+#: tmainform.minetwork.caption
+msgctxt "TMAINFORM.MINETWORK.CAPTION"
+msgid "Network"
+msgstr "Réseau"
+
+#: tmainform.miopenfile.caption
+msgctxt "TMAINFORM.MIOPENFILE.CAPTION"
+msgid "Open File"
+msgstr "Ouvrir un fichier"
+
+#: tmainform.mipresetall.caption
+msgid "Preset: Scan all memory"
+msgstr ""
+
+#: tmainform.mipresetwritable.caption
+msgid "Preset: Scan writable memory"
+msgstr ""
+
+#: tmainform.mirecursivesetvalue.caption
+msgid "Setting a value to this entry sets same value to children"
+msgstr ""
+
+#: tmainform.mirenametab.caption
+msgctxt "TMAINFORM.MIRENAMETAB.CAPTION"
+msgid "Rename"
+msgstr "Renommer"
+
+#: tmainform.miresetrange.caption
+msgid "Reset range"
+msgstr ""
+
+#: tmainform.miresyncformswithlua.caption
+msgid "Resynchronize forms with Lua"
+msgstr "Synchroniser les formulaires avec Lua"
+
+#: tmainform.misave.caption
+msgctxt "TMAINFORM.MISAVE.CAPTION"
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: tmainform.misavefile.caption
+msgid "Save File"
+msgstr "Sauvegarder le fichier"
+
+#: tmainform.misavescanresults.caption
+msgid "Save current scanresults"
+msgstr "Sauvegarder les résultats de Scan actuels"
+
+#: tmainform.miscandirtyonly.caption
+msgid "Scan changed regions only"
+msgstr "Scanner uniquement les régions modifiées"
+
+#: tmainform.miscanpagedonly.caption
+msgid "Scan paged (physical) memory only"
+msgstr ""
+
+#: tmainform.misetcrosshair.caption
+msgid "Set custom crosshair"
+msgstr "Définir un viseur personnalisé"
+
+#: tmainform.misetdropdownoptions.caption
+msgid "Set/Change dropdown selection options"
+msgstr "Ajouter/Changer les options de selection du menu déroulant"
+
+#: tmainform.misetupsnapshotkeys.caption
+msgid "Start and configure snapshot recording"
+msgstr ""
+
+#: tmainform.mishowasbinary.caption
+msgctxt "TMAINFORM.MISHOWASBINARY.CAPTION"
+msgid "Show as binary"
+msgstr "Afficher en binaire"
+
+#: tmainform.mishowassigned.caption
+msgid "Show as signed"
+msgstr "Montrer comme signé"
+
+#: tmainform.mishowcustomtypedebug.caption
+msgid "Show custom type debug info"
+msgstr ""
+
+#: tmainform.mishowluascript.caption
+msgid "Show Cheat Table Lua Script"
+msgstr "Afficher le Script Lua de Tableau de triche"
+
+#: tmainform.mishowpreviousvalue.caption
+msgid "Show previous value column"
+msgstr "Afficher la colonne avec les valeurs précédentes"
+
+#: tmainform.misigntable.caption
+msgid "Sign table"
+msgstr ""
+
+#: tmainform.misnapshothandler.caption
+msgid "Snapshot handler"
+msgstr "Gestionnaire instantané"
+
+#: tmainform.mitable.caption
+msgid "Table"
+msgstr "Tableau"
+
+#: tmainform.mitablistseperator.caption
+msgctxt "TMAINFORM.MITABLISTSEPERATOR.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.mitutorial.caption
+msgid "Cheat Engine Tutorial"
+msgstr "Tutoriel de Cheat Engine"
+
+#: tmainform.miundovalue.caption
+msgid "Undo last edit"
+msgstr "Annuler les dernières modifications"
+
+#: tmainform.miwireframe.caption
+msgid "Toggle wireframe mode"
+msgstr ""
+
+#: tmainform.mizbuffer.caption
+msgid "Toggle disabled zbuffer"
+msgstr ""
+
+#: tmainform.mizeroterminate.caption
+msgid "Zero-Terminate string"
+msgstr ""
+
+#: tmainform.n1.caption
+msgctxt "TMAINFORM.N1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.n4.caption
+msgctxt "TMAINFORM.N4.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.n5.caption
+msgctxt "TMAINFORM.N5.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.n6.caption
+msgctxt "TMAINFORM.N6.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.n7.caption
+msgctxt "TMAINFORM.N7.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.n8.caption
+msgctxt "TMAINFORM.N8.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.new1.caption
+msgctxt "TMAINFORM.NEW1.CAPTION"
+msgid "Clear list"
+msgstr "Vider la liste"
+
+#: tmainform.ools1.caption
+msgid "&Tools"
+msgstr "&Outils"
+
+#: tmainform.openprocess1.caption
+msgid "Open Process window"
+msgstr "Ouvrir la fenêtre des processus"
+
+#: tmainform.paste1.caption
+msgctxt "TMAINFORM.PASTE1.CAPTION"
+msgid "Paste"
+msgstr "Coller"
+
+#: tmainform.paste2.caption
+msgctxt "TMAINFORM.PASTE2.CAPTION"
+msgid "Paste"
+msgstr "Coller"
+
+#: tmainform.plugins1.caption
+msgctxt "TMAINFORM.PLUGINS1.CAPTION"
+msgid "Plugins"
+msgstr "Plugins"
+
+#: tmainform.plugins2.caption
+msgid "P&lugins"
+msgstr ""
+
+#: tmainform.pointerscanforthisaddress1.caption
+msgid "Pointer scan for this address"
+msgstr "Scan de Pointeur sur cette adresse"
+
+#: tmainform.process1.caption
+msgid "&Process"
+msgstr "&Processus"
+
+#: tmainform.processlabel.caption
+msgid "No Process Selected"
+msgstr "Aucun Processus séléctionné"
+
+#: tmainform.progressbar.hint
+msgid "This shows how far Cheat Engine is with searching"
+msgstr ""
+
+#: tmainform.rbbit.caption
+msgid "Bits"
+msgstr ""
+
+#: tmainform.rbdec.caption
+msgctxt "TMAINFORM.RBDEC.CAPTION"
+msgid "Decimal"
+msgstr "Décimal"
+
+#: tmainform.rbfsmaligned.caption
+msgid "Alignment"
+msgstr "Alignement"
+
+#: tmainform.rbfsmaligned.hint
+msgid "When set and fastscan is enabled will scan the memory address if it is dividable by the given value"
+msgstr ""
+
+#: tmainform.rbfsmlastdigts.caption
+msgid "Last Digits"
+msgstr "Derniers numéros"
+
+#: tmainform.rbfsmlastdigts.hint
+msgid "When set and fastscan is enabled will only scan and return addresses that end with the given digits"
+msgstr ""
+
+#: tmainform.removeselectedaddresses1.caption
+msgctxt "TMAINFORM.REMOVESELECTEDADDRESSES1.CAPTION"
+msgid "Remove selected addresses"
+msgstr ""
+
+#: tmainform.rt1.caption
+msgid "Rounded (default)"
+msgstr ""
+
+#: tmainform.rt2.caption
+msgid "Rounded (extreme)"
+msgstr ""
+
+#: tmainform.rt3.caption
+msgid "Truncated"
+msgstr ""
+
+#: tmainform.save1.caption
+msgctxt "TMAINFORM.SAVE1.CAPTION"
+msgid "Save As..."
+msgstr "Sauvegarder sous..."
+
+#: tmainform.sbopenprocess.hint
+msgid "Select a process to open"
+msgstr "Séléctionner un Processus à ouvrir"
+
+#: tmainform.scantext.caption
+msgctxt "tmainform.scantext.caption"
+msgid "Scan Value"
+msgstr ""
+
+#: tmainform.scantext2.caption
+msgctxt "TMAINFORM.SCANTEXT2.CAPTION"
+msgid "Scan Value"
+msgstr "Scanner la valeur"
+
+#: tmainform.selectallitems1.caption
+msgid "Select all items"
+msgstr "Sélectionner tout les objets"
+
+#: tmainform.sep1.caption
+msgctxt "TMAINFORM.SEP1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.sep2.caption
+msgctxt "TMAINFORM.SEP2.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.setbreakpoint1.caption
+msgctxt "tmainform.setbreakpoint1.caption"
+msgid "Find out what writes to this address"
+msgstr "Trouver qui écrit à cette adresse"
+
+#: tmainform.sethotkey1.caption
+msgid "Assign Hotkey"
+msgstr "Assigner un raccourci clavier"
+
+#: tmainform.settings1.caption
+msgctxt "TMAINFORM.SETTINGS1.CAPTION"
+msgid "Settings"
+msgstr "Options"
+
+#: tmainform.settingsbutton.caption
+msgctxt "TMAINFORM.SETTINGSBUTTON.CAPTION"
+msgid "Settings"
+msgstr "Options"
+
+#: tmainform.showashexadecimal1.caption
+msgctxt "TMAINFORM.SHOWASHEXADECIMAL1.CAPTION"
+msgid "Show as hexadecimal"
+msgstr "Afficher en Hexadécimal"
+
+#: tmainform.smarteditaddresses1.caption
+msgid "Smart edit address(es)"
+msgstr "Edition intelligente des adresses"
+
+#: tmainform.speedbutton2.hint
+msgid "Delete all addresses from the list"
+msgstr "Supprimer toutes les adresses sélectionnées de la liste"
+
+#: tmainform.speedbutton3.hint
+msgid "Copy all selected items to the address list"
+msgstr "Copier toutes les adresses sélectionnées vers la liste d'adresses"
+
+#: tmainform.toaddress.text
+msgid "ffffffff"
+msgstr ""
+
+#: tmainform.type1.caption
+msgctxt "TMAINFORM.TYPE1.CAPTION"
+msgid "Type"
+msgstr "Type"
+
+#: tmainform.undoscan.caption
+msgid "Undo Scan"
+msgstr "Annuler le Scan"
+
+#: tmainform.value1.caption
+msgctxt "TMAINFORM.VALUE1.CAPTION"
+msgid "Value"
+msgstr "Valeur"
+
+#: tmemorybrowser.addthisaddresstothelist1.caption
+msgctxt "TMEMORYBROWSER.ADDTHISADDRESSTOTHELIST1.CAPTION"
+msgid "Add this address to the list"
+msgstr "Ajouter cette adresse à la liste"
+
+#: tmemorybrowser.aflabel.caption
+msgid "AF 0"
+msgstr ""
+
+#: tmemorybrowser.all1.caption
+msgid "Full stack"
+msgstr ""
+
+#: tmemorybrowser.allocatenonpagedmemory1.caption
+msgid "Allocate nonpaged memory"
+msgstr ""
+
+#: tmemorybrowser.assemble1.caption
+msgid "Assemble"
+msgstr "Assembler"
+
+#: tmemorybrowser.assemblycode1.caption
+msgid "Find assembly code"
+msgstr "Trouver du code de l'assembleur"
+
+#: tmemorybrowser.autoinject1.caption
+msgid "Auto Assemble"
+msgstr "Auto-assembler"
+
+#: tmemorybrowser.back1.caption
+msgctxt "TMEMORYBROWSER.BACK1.CAPTION"
+msgid "Back"
+msgstr "Retour"
+
+#: tmemorybrowser.breakandtraceinstructions1.caption
+msgid "Break and trace instructions"
+msgstr ""
+
+#: tmemorybrowser.breakpointlist1.caption
+msgid "Breakpointlist"
+msgstr ""
+
+#: tmemorybrowser.caption
+msgid "Memory Viewer"
+msgstr "Visionneur de mémoire"
+
+#: tmemorybrowser.cflabel.caption
+msgid "CF 0"
+msgstr ""
+
+#: tmemorybrowser.change1.caption
+msgctxt "TMEMORYBROWSER.CHANGE1.CAPTION"
+msgid "Edit"
+msgstr "Modifier"
+
+#: tmemorybrowser.changestateofregisteratthislocation1.caption
+msgid "Change register at this location"
+msgstr ""
+
+#: tmemorybrowser.continueanddetachdebugger1.caption
+msgid "Continue and  detach debugger"
+msgstr ""
+
+#: tmemorybrowser.copybytes.caption
+msgctxt "TMEMORYBROWSER.COPYBYTES.CAPTION"
+msgid "Bytes"
+msgstr ""
+
+#: tmemorybrowser.copybytesandopcodes.caption
+msgid "Bytes+Opcodes"
+msgstr ""
+
+#: tmemorybrowser.copyopcodes.caption
+msgid "Opcodes"
+msgstr ""
+
+#: tmemorybrowser.copytoclipboard1.caption
+msgctxt "TMEMORYBROWSER.COPYTOCLIPBOARD1.CAPTION"
+msgid "Copy to clipboard"
+msgstr "Copier vers le presse-papier"
+
+#: tmemorybrowser.createthread1.caption
+msgid "Create Thread"
+msgstr "Créer un Fil"
+
+#: tmemorybrowser.cslabel.caption
+msgid "CS 0000"
+msgstr ""
+
+#: tmemorybrowser.cut1.caption
+msgctxt "tmemorybrowser.cut1.caption"
+msgid "Copy to clipboard"
+msgstr "Copier vers le presse-papier"
+
+#: tmemorybrowser.debug1.caption
+msgctxt "TMEMORYBROWSER.DEBUG1.CAPTION"
+msgid "Debug"
+msgstr ""
+
+#: tmemorybrowser.debugstrings1.caption
+msgctxt "TMEMORYBROWSER.DEBUGSTRINGS1.CAPTION"
+msgid "Debug strings"
+msgstr ""
+
+#: tmemorybrowser.dflabel.caption
+msgid "DF 0"
+msgstr ""
+
+#: tmemorybrowser.disectwindow1.caption
+msgid "Dissect window(s)"
+msgstr ""
+
+#: tmemorybrowser.dispbytes.caption
+msgid "Byte hex"
+msgstr "Byte Hex"
+
+#: tmemorybrowser.dispchar.caption
+msgid "Byte decimal"
+msgstr "Byte Décimal"
+
+#: tmemorybrowser.dispdouble.caption
+msgctxt "TMEMORYBROWSER.DISPDOUBLE.CAPTION"
+msgid "Double"
+msgstr "Double"
+
+#: tmemorybrowser.dispdwords.caption
+msgid "4 Byte hex"
+msgstr "4 Byte Hex"
+
+#: tmemorybrowser.dispfloat.caption
+msgctxt "TMEMORYBROWSER.DISPFLOAT.CAPTION"
+msgid "Float"
+msgstr "Nombre"
+
+#: tmemorybrowser.dispints.caption
+msgid "4 Byte decimal"
+msgstr ""
+
+#: tmemorybrowser.displaytype1.caption
+msgid "Display Type"
+msgstr "Afficher"
+
+#: tmemorybrowser.displongs.caption
+msgid "8 Byte decimal"
+msgstr "8 Byte Décimal"
+
+#: tmemorybrowser.dispqwords.caption
+msgid "8 Byte hex"
+msgstr "8 Byte Hex"
+
+#: tmemorybrowser.dispshorts.caption
+msgid "2 Byte decimal"
+msgstr "2 Byte Décimal"
+
+#: tmemorybrowser.dispwords.caption
+msgid "2 Byte hex"
+msgstr ""
+
+#: tmemorybrowser.dissectcode1.caption
+msgid "Dissect code"
+msgstr "Disséquer le code"
+
+#: tmemorybrowser.dissectdata1.caption
+msgctxt "TMEMORYBROWSER.DISSECTDATA1.CAPTION"
+msgid "Pointer scan"
+msgstr "Scan de Pointeur"
+
+#: tmemorybrowser.dissectpeheaders1.caption
+msgid "Dissect PE headers"
+msgstr ""
+
+#: tmemorybrowser.driverlist1.caption
+msgctxt "TMEMORYBROWSER.DRIVERLIST1.CAPTION"
+msgid "Driver list"
+msgstr "Liste des pilotes"
+
+#: tmemorybrowser.dslabel.caption
+msgid "DS 0000"
+msgstr ""
+
+#: tmemorybrowser.eaxlabel.caption
+msgid "EAX 00000000"
+msgstr ""
+
+#: tmemorybrowser.ebplabel.caption
+msgctxt "TMEMORYBROWSER.EBPLABEL.CAPTION"
+msgid "EBP 00000000"
+msgstr ""
+
+#: tmemorybrowser.ebxlabel.caption
+msgctxt "TMEMORYBROWSER.EBXLABEL.CAPTION"
+msgid "EBX 00000000"
+msgstr ""
+
+#: tmemorybrowser.ecxlabel.caption
+msgctxt "TMEMORYBROWSER.ECXLABEL.CAPTION"
+msgid "ECX 00000000"
+msgstr ""
+
+#: tmemorybrowser.edilabel.caption
+msgctxt "TMEMORYBROWSER.EDILABEL.CAPTION"
+msgid "EDI 00000000"
+msgstr ""
+
+#: tmemorybrowser.edxlabel.caption
+msgctxt "TMEMORYBROWSER.EDXLABEL.CAPTION"
+msgid "EDX 00000000"
+msgstr ""
+
+#: tmemorybrowser.eiplabel.caption
+msgctxt "TMEMORYBROWSER.EIPLABEL.CAPTION"
+msgid "EIP 00000000"
+msgstr ""
+
+#: tmemorybrowser.enumeratedllsandsymbols1.caption
+msgid "Enumerate DLL's and Symbols"
+msgstr ""
+
+#: tmemorybrowser.esilabel.caption
+msgctxt "TMEMORYBROWSER.ESILABEL.CAPTION"
+msgid "ESI 00000000"
+msgstr ""
+
+#: tmemorybrowser.eslabel.caption
+msgid "ES 0000"
+msgstr ""
+
+#: tmemorybrowser.esplabel.caption
+msgctxt "TMEMORYBROWSER.ESPLABEL.CAPTION"
+msgid "ESP 00000000"
+msgstr ""
+
+#: tmemorybrowser.extra1.caption
+msgctxt "TMEMORYBROWSER.EXTRA1.CAPTION"
+msgid "Tools"
+msgstr "Outils"
+
+#: tmemorybrowser.file1.caption
+msgctxt "TMEMORYBROWSER.FILE1.CAPTION"
+msgid "File"
+msgstr "Fichier"
+
+#: tmemorybrowser.fillmemory1.caption
+msgid "Fill Memory"
+msgstr "Remplir la mémoire"
+
+#: tmemorybrowser.findmemory1.caption
+msgid "Find memory"
+msgstr "Trouver la mémoire"
+
+#: tmemorybrowser.findoutwhataddressesthisinstructionaccesses1.caption
+msgid "Find out what addresses this instruction accesses"
+msgstr "Trouver quelles adresses accèdent à cette instruction"
+
+#: tmemorybrowser.findstaticpointers1.caption
+msgctxt "TMEMORYBROWSER.FINDSTATICPOINTERS1.CAPTION"
+msgid "Find static addresses"
+msgstr "Trouver l'adresse statique"
+
+#: tmemorybrowser.follow1.caption
+msgctxt "TMEMORYBROWSER.FOLLOW1.CAPTION"
+msgid "Follow"
+msgstr "Suivre"
+
+#: tmemorybrowser.fslabel.caption
+msgid "FS 0000"
+msgstr ""
+
+#: tmemorybrowser.gdtlist1.caption
+msgid "GDT list"
+msgstr ""
+
+#: tmemorybrowser.getaddress1.caption
+msgid "Get address"
+msgstr "Obtenir l'adresse"
+
+#: tmemorybrowser.goto1.caption
+msgid "Goto address"
+msgstr "Aller vers l'adresse"
+
+#: tmemorybrowser.gotoaddress1.caption
+msgid "Go to address"
+msgstr "Aller vers l'adresse"
+
+#: tmemorybrowser.gslabel.caption
+msgid "GS 0000"
+msgstr ""
+
+#: tmemorybrowser.heaps1.caption
+msgid "Heaplist"
+msgstr ""
+
+#: tmemorybrowser.idtlist1.caption
+msgid "IDT list"
+msgstr ""
+
+#: tmemorybrowser.injectdll1.caption
+msgid "Inject DLL"
+msgstr "Injection DLL"
+
+#: tmemorybrowser.jumplines1.caption
+msgctxt "TMEMORYBROWSER.JUMPLINES1.CAPTION"
+msgid "Jumplines"
+msgstr "Sauts de ligne"
+
+#: tmemorybrowser.kernelmodesymbols1.caption
+msgid "Kernelmode symbols"
+msgstr ""
+
+#: tmemorybrowser.kerneltools1.caption
+msgid "Kernel tools"
+msgstr ""
+
+#: tmemorybrowser.label14.caption
+msgctxt "TMEMORYBROWSER.LABEL14.CAPTION"
+msgid "Registers:"
+msgstr "Registres :"
+
+#: tmemorybrowser.label15.caption
+msgctxt "TMEMORYBROWSER.LABEL15.CAPTION"
+msgid "Flags"
+msgstr ""
+
+#: tmemorybrowser.label16.caption
+msgid "Segment Registers"
+msgstr ""
+
+#: tmemorybrowser.loadmemolryregion1.caption
+msgid "Load memory region"
+msgstr "Charger la région de la mémoire"
+
+#: tmemorybrowser.loadsymbolfile1.caption
+msgid "Load symbol file"
+msgstr ""
+
+#: tmemorybrowser.lvstacktracedata.columns[0].caption
+msgctxt "TMEMORYBROWSER.LVSTACKTRACEDATA.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Adresse"
+
+#: tmemorybrowser.lvstacktracedata.columns[1].caption
+msgid "DWORD"
+msgstr ""
+
+#: tmemorybrowser.lvstacktracedata.columns[2].caption
+msgctxt "TMEMORYBROWSER.LVSTACKTRACEDATA.COLUMNS[2].CAPTION"
+msgid "Value"
+msgstr "Valeur"
+
+#: tmemorybrowser.lvstacktracedata.hint
+msgid "Shows the current stack."
+msgstr ""
+
+#: tmemorybrowser.makepagewritable1.caption
+msgid "Change page protection"
+msgstr ""
+
+#: tmemorybrowser.maxstacktracesize1.caption
+msgid "Max stack: 4096"
+msgstr ""
+
+#: tmemorybrowser.memoryregions1.caption
+msgid "Memory Regions"
+msgstr ""
+
+#: tmemorybrowser.menuitem1.caption
+msgctxt "TMEMORYBROWSER.MENUITEM1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.menuitem10.caption
+msgid "All strings"
+msgstr ""
+
+#: tmemorybrowser.menuitem11.caption
+msgid "Search for accessible strings"
+msgstr ""
+
+#: tmemorybrowser.menuitem12.caption
+msgid "Apply changes to file"
+msgstr ""
+
+#: tmemorybrowser.menuitem13.caption
+msgctxt "TMEMORYBROWSER.MENUITEM13.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.menuitem14.caption
+msgid "Use windows debug symbols"
+msgstr ""
+
+#: tmemorybrowser.menuitem15.caption
+msgid "Overlay with structure"
+msgstr ""
+
+#: tmemorybrowser.menuitem16.caption
+msgctxt "TMEMORYBROWSER.MENUITEM16.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.menuitem17.caption
+msgid "Generate structure from datastream and template"
+msgstr ""
+
+#: tmemorybrowser.menuitem18.caption
+msgid "Graphical memory view"
+msgstr ""
+
+#: tmemorybrowser.menuitem19.caption
+msgctxt "TMEMORYBROWSER.MENUITEM19.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.menuitem2.caption
+msgid "Select current function"
+msgstr ""
+
+#: tmemorybrowser.menuitem20.caption
+msgid "Load trace"
+msgstr ""
+
+#: tmemorybrowser.menuitem21.caption
+msgid "Text Encoding"
+msgstr ""
+
+#: tmemorybrowser.menuitem22.caption
+msgid "Watch memory page access"
+msgstr ""
+
+#: tmemorybrowser.menuitem23.caption
+msgid "Set/Unset bookmark"
+msgstr ""
+
+#: tmemorybrowser.menuitem24.caption
+msgid "Goto bookmark"
+msgstr "Aller au Marque-Page"
+
+#: tmemorybrowser.menuitem25.caption
+msgid "User write history"
+msgstr ""
+
+#: tmemorybrowser.menuitem27.caption
+msgid "Watchlist"
+msgstr ""
+
+#: tmemorybrowser.menuitem28.caption
+msgctxt "TMEMORYBROWSER.MENUITEM28.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.menuitem29.caption
+msgid "Compare data/structures"
+msgstr "Comparer des Données/Structures"
+
+#: tmemorybrowser.menuitem3.caption
+msgctxt "TMEMORYBROWSER.MENUITEM3.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.menuitem4.caption
+msgid "Data Breakpoint"
+msgstr ""
+
+#: tmemorybrowser.menuitem5.caption
+msgctxt "TMEMORYBROWSER.MENUITEM5.CAPTION"
+msgid "Break on Access"
+msgstr ""
+
+#: tmemorybrowser.menuitem6.caption
+msgctxt "TMEMORYBROWSER.MENUITEM6.CAPTION"
+msgid "Break on Write"
+msgstr ""
+
+#: tmemorybrowser.menuitem7.caption
+msgctxt "TMEMORYBROWSER.MENUITEM7.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.menuitem8.caption
+msgctxt "TMEMORYBROWSER.MENUITEM8.CAPTION"
+msgid "Break and trace"
+msgstr ""
+
+#: tmemorybrowser.menuitem9.caption
+msgid "Change fade timer"
+msgstr ""
+
+#: tmemorybrowser.miaddebp.caption
+msgctxt "TMEMORYBROWSER.MIADDEBP.CAPTION"
+msgid "(ebp+*)"
+msgstr ""
+
+#: tmemorybrowser.miaddesp.caption
+msgctxt "TMEMORYBROWSER.MIADDESP.CAPTION"
+msgid "(esp+*)"
+msgstr ""
+
+#: tmemorybrowser.miaddref.caption
+msgctxt "TMEMORYBROWSER.MIADDREF.CAPTION"
+msgid "(ref+*) Ref will be %x"
+msgstr ""
+
+#: tmemorybrowser.miaddtothecodelist.caption
+msgid "Add to the code list"
+msgstr "Ajouter à la liste de codes"
+
+#: tmemorybrowser.mibinutils.caption
+msgid "BinUtils"
+msgstr ""
+
+#: tmemorybrowser.mibinutilsselect.caption
+msgctxt "TMEMORYBROWSER.MIBINUTILSSELECT.CAPTION"
+msgid "None"
+msgstr "Aucun(e)"
+
+#: tmemorybrowser.mibreakonexceptions.caption
+msgid "Break on unexpected exceptions"
+msgstr ""
+
+#: tmemorybrowser.michangeprotectionr.caption
+msgctxt "TMEMORYBROWSER.MICHANGEPROTECTIONR.CAPTION"
+msgid "Read"
+msgstr "Lire"
+
+#: tmemorybrowser.michangeprotectionre.caption
+msgid "Read Execute"
+msgstr "Lire et éxécuter"
+
+#: tmemorybrowser.michangeprotectionrw.caption
+msgid "Read Write"
+msgstr "Lire et écrire"
+
+#: tmemorybrowser.michangeprotectionrwe.caption
+msgid "Read Write Execute"
+msgstr ""
+
+#: tmemorybrowser.micodefilter.caption
+msgctxt "TMEMORYBROWSER.MICODEFILTER.CAPTION"
+msgid "Code Filter"
+msgstr ""
+
+#: tmemorybrowser.miconditionalbreak.caption
+msgid "Set/Change break condition"
+msgstr ""
+
+#: tmemorybrowser.micopybytesonly.caption
+msgid "Bytes only (no address)"
+msgstr "Bytes seulement (pas d'adresse)"
+
+#: tmemorybrowser.midebugbreak.caption
+msgctxt "TMEMORYBROWSER.MIDEBUGBREAK.CAPTION"
+msgid "Break"
+msgstr "Pause"
+
+#: tmemorybrowser.midebugevents.caption
+msgid "Debug events"
+msgstr ""
+
+#: tmemorybrowser.midebugexecutetillreturn.caption
+msgid "Execute till return"
+msgstr ""
+
+#: tmemorybrowser.midebugrun.caption
+msgctxt "TMEMORYBROWSER.MIDEBUGRUN.CAPTION"
+msgid "Run"
+msgstr "Lancer"
+
+#: tmemorybrowser.midebugruntill.caption
+msgid "Run till..."
+msgstr ""
+
+#: tmemorybrowser.midebugsetaddress.caption
+msgid "Set Address"
+msgstr "Définir une adresse"
+
+#: tmemorybrowser.midebugstep.caption
+msgid "Step"
+msgstr ""
+
+#: tmemorybrowser.midebugstepover.caption
+msgid "Step Over"
+msgstr ""
+
+#: tmemorybrowser.midebugtogglebreakpoint.caption
+msgctxt "TMEMORYBROWSER.MIDEBUGTOGGLEBREAKPOINT.CAPTION"
+msgid "Toggle breakpoint"
+msgstr ""
+
+#: tmemorybrowser.mideletebp.caption
+msgid "Delete Breakpoint"
+msgstr ""
+
+#: tmemorybrowser.midisassemblertype.caption
+msgid "Disassembly output"
+msgstr ""
+
+#: tmemorybrowser.midisassembly32.caption
+msgid "32-bit"
+msgstr ""
+
+#: tmemorybrowser.midisassembly64.caption
+msgctxt "TMEMORYBROWSER.MIDISASSEMBLY64.CAPTION"
+msgid "64-bit"
+msgstr ""
+
+#: tmemorybrowser.midisassemblyautodetect.caption
+msgid "Autodetect"
+msgstr "Détection automatique"
+
+#: tmemorybrowser.midissectdata.caption
+msgid "Dissect data/structures old"
+msgstr ""
+
+#: tmemorybrowser.midissectdata2.caption
+msgid "Dissect data/structures"
+msgstr "Disséquer des Données/Structures"
+
+#: tmemorybrowser.miexceptionignorelist.caption
+msgid "Manage exception code filter"
+msgstr ""
+
+#: tmemorybrowser.miexceptionregionautoaddallocs.caption
+msgctxt "TMEMORYBROWSER.MIEXCEPTIONREGIONAUTOADDALLOCS.CAPTION"
+msgid "Automatically add allocated memory by CE as watched regions"
+msgstr ""
+
+#: tmemorybrowser.miexceptionregionmanagelist.caption
+msgid "Manage exception region list"
+msgstr ""
+
+#: tmemorybrowser.miexceptionregionseperator.caption
+msgctxt "TMEMORYBROWSER.MIEXCEPTIONREGIONSEPERATOR.CAPTION"
+msgid "-"
+msgstr ""
