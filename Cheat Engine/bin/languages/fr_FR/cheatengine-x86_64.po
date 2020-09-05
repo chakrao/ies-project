@@ -15965,3 +15965,1076 @@ msgstr ""
 msgctxt "TMEMORYBROWSER.MIEXCEPTIONREGIONSEPERATOR.CAPTION"
 msgid "-"
 msgstr ""
+
+#: tmemorybrowser.mifindwhataccesses.caption
+msgctxt "tmemorybrowser.mifindwhataccesses.caption"
+msgid "Find out what accesses this address"
+msgstr "Trouver qui accède à cette adresse"
+
+#: tmemorybrowser.mifindwhatwrites.caption
+msgid "Find out what writes this address"
+msgstr "Trouver qui écrit à cette adresse"
+
+#: tmemorybrowser.mignuassembler.caption
+msgid "GNU Assembler"
+msgstr "Assembleur GNU"
+
+#: tmemorybrowser.migotobookmark0.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK0.CAPTION"
+msgid "Bookmark 0"
+msgstr "Marque-Page 0"
+
+#: tmemorybrowser.migotobookmark1.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK1.CAPTION"
+msgid "Bookmark 1"
+msgstr "Marque-Page 1"
+
+#: tmemorybrowser.migotobookmark2.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK2.CAPTION"
+msgid "Bookmark 2"
+msgstr "Marque-Page 2"
+
+#: tmemorybrowser.migotobookmark3.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK3.CAPTION"
+msgid "Bookmark 3"
+msgstr "Marque-Page 3"
+
+#: tmemorybrowser.migotobookmark4.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK4.CAPTION"
+msgid "Bookmark 4"
+msgstr "Marque-Page 4"
+
+#: tmemorybrowser.migotobookmark5.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK5.CAPTION"
+msgid "Bookmark 5"
+msgstr "Marque-Page 5"
+
+#: tmemorybrowser.migotobookmark6.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK6.CAPTION"
+msgid "Bookmark 6"
+msgstr "Marque-Page 6"
+
+#: tmemorybrowser.migotobookmark7.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK7.CAPTION"
+msgid "Bookmark 7"
+msgstr "Marque-Page 7"
+
+#: tmemorybrowser.migotobookmark8.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK8.CAPTION"
+msgid "Bookmark 8"
+msgstr "Marque-Page 8"
+
+#: tmemorybrowser.migotobookmark9.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK9.CAPTION"
+msgid "Bookmark 9"
+msgstr "Marque-Page 9"
+
+#: tmemorybrowser.mihvback.caption
+msgctxt "TMEMORYBROWSER.MIHVBACK.CAPTION"
+msgid "Back"
+msgstr "Retour"
+
+#: tmemorybrowser.mihvfollow.caption
+msgctxt "tmemorybrowser.mihvfollow.caption"
+msgid "Follow"
+msgstr "Suivre"
+
+#: tmemorybrowser.milock.caption
+msgctxt "TMEMORYBROWSER.MILOCK.CAPTION"
+msgid "Link with other hexview"
+msgstr ""
+
+#: tmemorybrowser.milockrowsize.caption
+msgid "Lock current rowsize"
+msgstr ""
+
+#: tmemorybrowser.miluaengine.caption
+msgctxt "TMEMORYBROWSER.MILUAENGINE.CAPTION"
+msgid "Lua Engine"
+msgstr "Moteur Lua"
+
+#: tmemorybrowser.mipaging.caption
+msgctxt "TMEMORYBROWSER.MIPAGING.CAPTION"
+msgid "Paging"
+msgstr ""
+
+#: tmemorybrowser.mipointerspider.caption
+msgctxt "TMEMORYBROWSER.MIPOINTERSPIDER.CAPTION"
+msgid "Structure spider"
+msgstr ""
+
+#: tmemorybrowser.mireferencedfunctions.caption
+msgctxt "TMEMORYBROWSER.MIREFERENCEDFUNCTIONS.CAPTION"
+msgid "Referenced functions"
+msgstr "Fonctions référencées"
+
+#: tmemorybrowser.mireplacewithnops.caption
+msgctxt "TMEMORYBROWSER.MIREPLACEWITHNOPS.CAPTION"
+msgid "Replace with code that does nothing"
+msgstr "Remplacer avec du code qui ne fait rien"
+
+#: tmemorybrowser.mirununhandled.caption
+msgid "Run Unhandled"
+msgstr ""
+
+#: tmemorybrowser.miseperators.caption
+msgid "Seperators"
+msgstr "Séparateurs"
+
+#: tmemorybrowser.misepevery2bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY2BYTES.CAPTION"
+msgid "2 Bytes"
+msgstr ""
+
+#: tmemorybrowser.misepevery4bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY4BYTES.CAPTION"
+msgid "4 Bytes"
+msgstr ""
+
+#: tmemorybrowser.misepevery8bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY8BYTES.CAPTION"
+msgid "8 Bytes"
+msgstr ""
+
+#: tmemorybrowser.misetbookmark0.caption
+msgctxt "tmemorybrowser.misetbookmark0.caption"
+msgid "Bookmark 0"
+msgstr "Marque-Page 0"
+
+#: tmemorybrowser.misetbookmark1.caption
+msgctxt "tmemorybrowser.misetbookmark1.caption"
+msgid "Bookmark 1"
+msgstr "Marque-Page 1"
+
+#: tmemorybrowser.misetbookmark2.caption
+msgctxt "tmemorybrowser.misetbookmark2.caption"
+msgid "Bookmark 2"
+msgstr "Marque-Page 2"
+
+#: tmemorybrowser.misetbookmark3.caption
+msgctxt "tmemorybrowser.misetbookmark3.caption"
+msgid "Bookmark 3"
+msgstr "Marque-Page 3"
+
+#: tmemorybrowser.misetbookmark4.caption
+msgctxt "tmemorybrowser.misetbookmark4.caption"
+msgid "Bookmark 4"
+msgstr "Marque-Page 4"
+
+#: tmemorybrowser.misetbookmark5.caption
+msgctxt "tmemorybrowser.misetbookmark5.caption"
+msgid "Bookmark 5"
+msgstr "Marque-Page 5"
+
+#: tmemorybrowser.misetbookmark6.caption
+msgctxt "tmemorybrowser.misetbookmark6.caption"
+msgid "Bookmark 6"
+msgstr "Marque-Page 6"
+
+#: tmemorybrowser.misetbookmark7.caption
+msgctxt "tmemorybrowser.misetbookmark7.caption"
+msgid "Bookmark 7"
+msgstr "Marque-Page 7"
+
+#: tmemorybrowser.misetbookmark8.caption
+msgctxt "tmemorybrowser.misetbookmark8.caption"
+msgid "Bookmark 8"
+msgstr "Marque-Page 8"
+
+#: tmemorybrowser.misetbookmark9.caption
+msgctxt "tmemorybrowser.misetbookmark9.caption"
+msgid "Bookmark 9"
+msgstr "Marque-Page 9"
+
+#: tmemorybrowser.mishowdifference.caption
+msgctxt "TMEMORYBROWSER.MISHOWDIFFERENCE.CAPTION"
+msgid "Show difference"
+msgstr "Afficher la différence"
+
+#: tmemorybrowser.mishowindisassembler.caption
+msgid "Show in disassembler"
+msgstr "Afficher dans le Désassembleur"
+
+#: tmemorybrowser.mishowinhexview.caption
+msgid "Show in hexview"
+msgstr "Afficher sous forme Hexadécimale"
+
+#: tmemorybrowser.mishowrelative.caption
+msgid "Show relative addresses"
+msgstr "Afficher les adresses relatives"
+
+#: tmemorybrowser.misvcopy.caption
+msgctxt "TMEMORYBROWSER.MISVCOPY.CAPTION"
+msgid "Copy"
+msgstr "Copier"
+
+#: tmemorybrowser.mitextencoding16.caption
+msgctxt "tmemorybrowser.mitextencoding16.caption"
+msgid "UTF-16"
+msgstr ""
+
+#: tmemorybrowser.mitextencodingascii.caption
+msgid "Ascii"
+msgstr ""
+
+#: tmemorybrowser.mitextencodingcodepage.caption
+msgctxt "TMEMORYBROWSER.MITEXTENCODINGCODEPAGE.CAPTION"
+msgid "Codepage"
+msgstr ""
+
+#: tmemorybrowser.mitextencodingutf8.caption
+msgid "UTF-8"
+msgstr ""
+
+#: tmemorybrowser.mitextpreferences.caption
+msgctxt "TMEMORYBROWSER.MITEXTPREFERENCES.CAPTION"
+msgid "Preferences"
+msgstr "Préférences"
+
+#: tmemorybrowser.mitogglebreakpoint.caption
+msgctxt "tmemorybrowser.mitogglebreakpoint.caption"
+msgid "Toggle breakpoint"
+msgstr ""
+
+#: tmemorybrowser.miultimap.caption
+msgctxt "TMEMORYBROWSER.MIULTIMAP.CAPTION"
+msgid "Ultimap"
+msgstr ""
+
+#: tmemorybrowser.miultimap2.caption
+msgid "Ultimap 2"
+msgstr ""
+
+#: tmemorybrowser.miunexpectedexceptionbreakalways.caption
+msgctxt "TMEMORYBROWSER.MIUNEXPECTEDEXCEPTIONBREAKALWAYS.CAPTION"
+msgid "Always"
+msgstr "Toujours"
+
+#: tmemorybrowser.miunexpectedexceptionbreakifinregion.caption
+msgid "Only in specified regions"
+msgstr "Seulement dans les régions spécifiées"
+
+#: tmemorybrowser.miunexpectedexceptionbreaknever.caption
+msgctxt "TMEMORYBROWSER.MIUNEXPECTEDEXCEPTIONBREAKNEVER.CAPTION"
+msgid "Never"
+msgstr "Jamais"
+
+#: tmemorybrowser.miuserdefinedcomment.caption
+msgid "Set/Change comment"
+msgstr ""
+
+#: tmemorybrowser.miuserdefinedheader.caption
+msgid "Set/Change header"
+msgstr ""
+
+#: tmemorybrowser.modulesonly1.caption
+msgid "Modules only"
+msgstr "Modules seulement"
+
+#: tmemorybrowser.n1.caption
+msgctxt "TMEMORYBROWSER.N1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n10.caption
+msgctxt "TMEMORYBROWSER.N10.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n11.caption
+msgctxt "TMEMORYBROWSER.N11.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n12.caption
+msgctxt "TMEMORYBROWSER.N12.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n13.caption
+msgctxt "TMEMORYBROWSER.N13.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n14.caption
+msgctxt "TMEMORYBROWSER.N14.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n15.caption
+msgctxt "TMEMORYBROWSER.N15.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n16.caption
+msgctxt "TMEMORYBROWSER.N16.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n17.caption
+msgctxt "TMEMORYBROWSER.N17.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmemorybrowser.n18.caption
+msgctxt "TMEMORYBROWSER.N18.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.n19.caption
+msgctxt "TMEMORYBROWSER.N19.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.n2.caption
+msgctxt "TMEMORYBROWSER.N2.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.n3.caption
+msgctxt "TMEMORYBROWSER.N3.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.n4.caption
+msgctxt "TMEMORYBROWSER.N4.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.n5.caption
+msgctxt "TMEMORYBROWSER.N5.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.n6.caption
+msgctxt "TMEMORYBROWSER.N6.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.n7.caption
+msgctxt "TMEMORYBROWSER.N7.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.n8.caption
+msgctxt "TMEMORYBROWSER.N8.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tmemorybrowser.newwindow1.caption
+msgctxt "TMEMORYBROWSER.NEWWINDOW1.CAPTION"
+msgid "New window"
+msgstr "Nouvelle fenêtre"
+
+#: tmemorybrowser.nonsystemmodulesonly1.caption
+msgid "Non system modules only"
+msgstr "Seulement les modules non Système"
+
+#: tmemorybrowser.oflabel.caption
+msgid "OF 0"
+msgstr ""
+
+#: tmemorybrowser.onlyshowjumplineswithinrange1.caption
+msgid "Only show jumplines within range"
+msgstr ""
+
+#: tmemorybrowser.opendlldialog.title
+msgid "Select the module you want to inject"
+msgstr "Sélectionnez le module à injecter"
+
+#: tmemorybrowser.pastefromclipboard1.caption
+msgid "Paste from clipboard"
+msgstr "Coller depuis le presse-papier"
+
+#: tmemorybrowser.pflabel.caption
+msgid "PF 0"
+msgstr ""
+
+#: tmemorybrowser.plugins1.caption
+msgctxt "TMEMORYBROWSER.PLUGINS1.CAPTION"
+msgid "Plugins"
+msgstr "Plugins"
+
+#: tmemorybrowser.referencedstrings1.caption
+msgid "Referenced strings"
+msgstr ""
+
+#: tmemorybrowser.reservememory1.caption
+msgid "Allocate Memory"
+msgstr "Allouer de la mémoire"
+
+#: tmemorybrowser.savedisassemledoutput1.caption
+msgctxt "TMEMORYBROWSER.SAVEDISASSEMLEDOUTPUT1.CAPTION"
+msgid "Save disassembled output"
+msgstr ""
+
+#: tmemorybrowser.savememoryregion1.caption
+msgid "Save memory region"
+msgstr "Sauvegarder la région de mémoire"
+
+#: tmemorybrowser.sbshowfloats.caption
+msgid ">"
+msgstr ">"
+
+#: tmemorybrowser.scanforcodecaves1.caption
+msgid "Scan for code caves"
+msgstr ""
+
+#: tmemorybrowser.search1.caption
+msgid "Search memory..."
+msgstr "Recherche mémoire..."
+
+#: tmemorybrowser.search2.caption
+msgctxt "TMEMORYBROWSER.SEARCH2.CAPTION"
+msgid "Search"
+msgstr "Rechercher"
+
+#: tmemorybrowser.sericedescriptortable1.caption
+msgid "Service Descriptor Table"
+msgstr ""
+
+#: tmemorybrowser.setsymbolsearchpath1.caption
+msgid "Set symbol searchpath"
+msgstr ""
+
+#: tmemorybrowser.sflabel.caption
+msgid "SF 0"
+msgstr "SF 0"
+
+#: tmemorybrowser.showjumplines1.caption
+msgid "Show jumplines"
+msgstr "Afficher les sauts de lignes"
+
+#: tmemorybrowser.showmoduleaddresses1.caption
+msgid "Show module addresses"
+msgstr "Afficher les module des adresses"
+
+#: tmemorybrowser.showsymbols1.caption
+msgid "Show symbols"
+msgstr "Afficher les symboles"
+
+#: tmemorybrowser.showvaluesofstaticaddresses1.caption
+msgid "Show 'Comment' row"
+msgstr "Afficher la section 'Commentaires'"
+
+#: tmemorybrowser.sslabel.caption
+msgid "SS 0000"
+msgstr ""
+
+#: tmemorybrowser.stacktrace1.caption
+msgctxt "TMEMORYBROWSER.STACKTRACE1.CAPTION"
+msgid "Stacktrace"
+msgstr ""
+
+#: tmemorybrowser.stacktrace2.caption
+msgctxt "TMEMORYBROWSER.STACKTRACE2.CAPTION"
+msgid "Stacktrace"
+msgstr ""
+
+#: tmemorybrowser.symbolhandler1.caption
+msgid "Userdefined symbols"
+msgstr "Symboles définis par l'utilisateur"
+
+#: tmemorybrowser.threadlist1.caption
+msgctxt "TMEMORYBROWSER.THREADLIST1.CAPTION"
+msgid "Threadlist"
+msgstr "Liste des fils"
+
+#: tmemorybrowser.view1.caption
+msgctxt "TMEMORYBROWSER.VIEW1.CAPTION"
+msgid "View"
+msgstr "Vue"
+
+#: tmemorybrowser.watchmemoryallocations1.caption
+msgid "Watch memory allocations"
+msgstr "Voir les allocations de mémoire"
+
+#: tmemorybrowser.zflabel.caption
+msgid "ZF 0"
+msgstr ""
+
+#: tprocesswindow.btnnetwork.caption
+msgctxt "TPROCESSWINDOW.BTNNETWORK.CAPTION"
+msgid "Network"
+msgstr "Réseau"
+
+#: tprocesswindow.button4.caption
+msgid "Attach debugger to process"
+msgstr "Ajouter le Débugger au Processus"
+
+#: tprocesswindow.cancelbutton.caption
+msgctxt "TPROCESSWINDOW.CANCELBUTTON.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tprocesswindow.caption
+msgctxt "TPROCESSWINDOW.CAPTION"
+msgid "Process List"
+msgstr "Liste des Processus"
+
+#: tprocesswindow.filter1.caption
+msgctxt "TPROCESSWINDOW.FILTER1.CAPTION"
+msgid "Filter"
+msgstr "Filtre"
+
+#: tprocesswindow.inputpidmanually1.caption
+msgid "Input PID manually"
+msgstr ""
+
+#: tprocesswindow.menuitem1.caption
+msgctxt "TPROCESSWINDOW.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Fichier"
+
+#: tprocesswindow.menuitem2.caption
+msgctxt "TPROCESSWINDOW.MENUITEM2.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tprocesswindow.menuitem3.caption
+msgctxt "TPROCESSWINDOW.MENUITEM3.CAPTION"
+msgid "Process watcher"
+msgstr "Observateur de Processus"
+
+#: tprocesswindow.menuitem4.caption
+msgctxt "TPROCESSWINDOW.MENUITEM4.CAPTION"
+msgid "View"
+msgstr "View"
+
+#: tprocesswindow.menuitem5.caption
+msgctxt "TPROCESSWINDOW.MENUITEM5.CAPTION"
+msgid "Preferences"
+msgstr "Préférences"
+
+#: tprocesswindow.michangefont.caption
+msgid "Change font"
+msgstr "Changer la police"
+
+#: tprocesswindow.micreateprocess.caption
+msgctxt "TPROCESSWINDOW.MICREATEPROCESS.CAPTION"
+msgid "Create Process"
+msgstr "Créer un Processus"
+
+#: tprocesswindow.miopenfile.caption
+msgctxt "tprocesswindow.miopenfile.caption"
+msgid "Open File"
+msgstr "Ouvrir un fichier"
+
+#: tprocesswindow.miownprocessesonly.caption
+msgid "Only show processes of the current user"
+msgstr "N'afficher que les Processus de l'utilisateur actuel"
+
+#: tprocesswindow.miprocesslistlong.caption
+msgid "Process List (Long)"
+msgstr "Liste des processus (Longue)"
+
+#: tprocesswindow.mishowinvisibleitems.caption
+msgid "Show invisible windows"
+msgstr ""
+
+#: tprocesswindow.miskipsystemprocesses.caption
+msgid "Only show non-system processes"
+msgstr "N'afficher que les Processus qui ne sont pas du Système"
+
+#: tprocesswindow.n1.caption
+msgctxt "TPROCESSWINDOW.N1.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tprocesswindow.n2.caption
+msgctxt "TPROCESSWINDOW.N2.CAPTION"
+msgid "-"
+msgstr "-"
+
+#: tprocesswindow.okbutton.caption
+msgctxt "TPROCESSWINDOW.OKBUTTON.CAPTION"
+msgid "Open"
+msgstr "Ouvrir"
+
+#: trainergenerator.rsaaaaw
+msgid "aaaaw :("
+msgstr "Ahhh :("
+
+#: trainergenerator.rsabout
+msgctxt "trainergenerator.rsabout"
+msgid "About"
+msgstr "A propos"
+
+#: trainergenerator.rsalreadyatrainerformdefined
+msgid "There is already a trainer form defined. Continuing will erase the current trainerscript and cheats in the trainer and replace them with the current hotkeys defined in your current cheat table (Layout and images will remain unchanged). Continue ?"
+msgstr ""
+
+#: trainergenerator.rsareyousure
+msgid "Are you sure?"
+msgstr "Etes-vous sur ?"
+
+#: trainergenerator.rsautogenwarningpart1
+msgid "This is autogenerated code. Changing code in this block will"
+msgstr ""
+
+#: trainergenerator.rsautogenwarningpart2
+msgid "get erased and rewritten if you regenerate the trainer code"
+msgstr ""
+
+#: trainergenerator.rsbutallowdecrease
+msgid "but allow decrease"
+msgstr "Mais autoriser l'augmentation"
+
+#: trainergenerator.rsbutallowincrease
+msgid "but allow increase"
+msgstr "Mais autoriser la diminution"
+
+#: trainergenerator.rsby
+msgid "by"
+msgstr "par"
+
+#: trainergenerator.rscheatentries
+msgid "Cheat Entries"
+msgstr "Entrées de triche"
+
+#: trainergenerator.rsclose
+msgctxt "trainergenerator.rsclose"
+msgid "Close"
+msgstr "Fermer"
+
+#: trainergenerator.rsdeactive
+msgid "(De)active"
+msgstr "(In)actif"
+
+#: trainergenerator.rsdecrease
+msgid "Decrease"
+msgstr "Diminuer"
+
+#: trainergenerator.rsdesignuserinterfacemanually
+msgid "Design userinterface manually"
+msgstr ""
+
+#: trainergenerator.rsdontsupportcheatengineoryourself
+msgid "Don't support Cheat Engine (or yourself)"
+msgstr ""
+
+#: trainergenerator.rsdosomethingwith
+msgid "Do something with"
+msgstr "Faire quelque chose avec"
+
+#: trainergenerator.rseffect
+msgid "Effect"
+msgstr "Effet"
+
+#: trainergenerator.rsgobacktogenerateddesigner
+msgid "Go back to generated designer"
+msgstr ""
+
+#: trainergenerator.rshotkey
+msgctxt "trainergenerator.rshotkey"
+msgid "Hotkey"
+msgstr "Raccourci"
+
+#: trainergenerator.rsincrease
+msgid "Increase"
+msgstr "Augmenter"
+
+#: trainergenerator.rsinvalidtrainerscript
+msgid "The current lua script only has a half TRAINERGENERATORSTART/TRAINERGENERATORSTOP block. Please fix this first (Removing is the easiest option)"
+msgstr ""
+
+#: trainergenerator.rsnocheatpanel
+msgid "The current trainer form does not have a panel named 'CHEATPANEL' so can not be reused by the automated trainer generator.%sDo you want to start from scratch? (If you want to create a trainer from your current script you can just save your table as .EXE instead of using the automated trainer generator)"
+msgstr ""
+
+#: trainergenerator.rsonclosewarning
+msgid "This form had an onClose event. Good thing this was only a stub, else Cheat Engine would have terminated"
+msgstr ""
+
+#: trainergenerator.rspleaseselecttypeinaprocessname
+msgid "Please select/type in a processname"
+msgstr ""
+
+#: trainergenerator.rsselectthecheatentryyouwanttosetthehotkeyfor
+msgid "Select the cheat entry you want to set the hotkey for"
+msgstr "Sélectionnez l'entrée de triche pour laquelle vous voullez assigner le raccourci"
+
+#: trainergenerator.rsset
+msgid "Set"
+msgstr "Mettre"
+
+#: trainergenerator.rsthankyou
+msgid "Thank you! :)"
+msgstr "Merci !"
+
+#: trainergenerator.rstipyoudonthavetousethetrainergeneratorifyoudontwantto
+msgid "Tip: You don't have to use the trainer generator if you don't want to. You can just save your table as .EXE or CETRAINER"
+msgstr ""
+
+#: trainergenerator.rsto
+msgid "to"
+msgstr "vers"
+
+#: trainergenerator.rsunfreeze
+msgid "(Un)Freeze"
+msgstr "(Dé)geler"
+
+#: trainergenerator.rsyouneedacheattablewithcheatentries
+msgid "You need a cheat table with cheat entries"
+msgstr ""
+
+#: tregisters.caption
+msgid "Registers"
+msgstr "Registres"
+
+#: tregisters.eaxlabel.caption
+msgid "EAX 00000000FFFFFFFF"
+msgstr ""
+
+#: tregisters.ebplabel.caption
+msgctxt "tregisters.ebplabel.caption"
+msgid "EBP 00000000"
+msgstr ""
+
+#: tregisters.ebxlabel.caption
+msgctxt "tregisters.ebxlabel.caption"
+msgid "EBX 00000000"
+msgstr ""
+
+#: tregisters.ecxlabel.caption
+msgctxt "tregisters.ecxlabel.caption"
+msgid "ECX 00000000"
+msgstr ""
+
+#: tregisters.edilabel.caption
+msgctxt "tregisters.edilabel.caption"
+msgid "EDI 00000000"
+msgstr ""
+
+#: tregisters.edxlabel.caption
+msgctxt "tregisters.edxlabel.caption"
+msgid "EDX 00000000"
+msgstr ""
+
+#: tregisters.eiplabel.caption
+msgctxt "tregisters.eiplabel.caption"
+msgid "EIP 00000000"
+msgstr ""
+
+#: tregisters.esilabel.caption
+msgctxt "tregisters.esilabel.caption"
+msgid "ESI 00000000"
+msgstr ""
+
+#: tregisters.esplabel.caption
+msgctxt "tregisters.esplabel.caption"
+msgid "ESP 00000000"
+msgstr ""
+
+#: tregisters.label14.caption
+msgctxt "tregisters.label14.caption"
+msgid "Registers:"
+msgstr "Registres :"
+
+#: tregisters.menuitem1.caption
+msgid "Copy registers to clipboard"
+msgstr "Copier les registres"
+
+#: tregisters.menuitem2.caption
+msgid "Copy full context block to clipboard"
+msgstr ""
+
+#: tregisters.sbshowfloats.caption
+msgctxt "TREGISTERS.SBSHOWFLOATS.CAPTION"
+msgid "F"
+msgstr "F"
+
+#: tregisters.sbshowfloats.hint
+msgctxt "TREGISTERS.SBSHOWFLOATS.HINT"
+msgid "Floating point registers"
+msgstr ""
+
+#: tregisters.sbshowstack.caption
+msgctxt "TREGISTERS.SBSHOWSTACK.CAPTION"
+msgid "S"
+msgstr "S"
+
+#: tregisters.sbshowstack.hint
+msgctxt "TREGISTERS.SBSHOWSTACK.HINT"
+msgid "Stack view"
+msgstr ""
+
+#: ttlg.caption
+msgid "TLG:The Lame Game"
+msgstr "TLG : The Lame Game"
+
+#: ttlg.label1.caption
+msgid "Score:"
+msgstr "Score :"
+
+#: ttlg.label2.caption
+msgctxt "TTLG.LABEL2.CAPTION"
+msgid "0"
+msgstr "0"
+
+#: ttypeform.button1.caption
+msgctxt "TTYPEFORM.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: ttypeform.button2.caption
+msgctxt "TTYPEFORM.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: ttypeform.caption
+msgctxt "TTYPEFORM.CAPTION"
+msgid "Type"
+msgstr "Type"
+
+#: ttypeform.cbcodepage.caption
+msgctxt "TTYPEFORM.CBCODEPAGE.CAPTION"
+msgid "Codepage"
+msgstr ""
+
+#: ttypeform.cbunicode.caption
+msgctxt "TTYPEFORM.CBUNICODE.CAPTION"
+msgid "Unicode"
+msgstr "Unicode"
+
+#: ttypeform.edit1.text
+msgctxt "TTYPEFORM.EDIT1.TEXT"
+msgid "10"
+msgstr "10"
+
+#: ttypeform.edit2.text
+msgctxt "TTYPEFORM.EDIT2.TEXT"
+msgid "1"
+msgstr "1"
+
+#: ttypeform.label1.caption
+msgid "Select the new type:"
+msgstr "Sélectionner le nouveau type :"
+
+#: ttypeform.label10.caption
+msgctxt "TTYPEFORM.LABEL10.CAPTION"
+msgid "6"
+msgstr "6"
+
+#: ttypeform.label11.caption
+msgctxt "TTYPEFORM.LABEL11.CAPTION"
+msgid "7"
+msgstr "7"
+
+#: ttypeform.label2.caption
+msgctxt "TTYPEFORM.LABEL2.CAPTION"
+msgid "Length"
+msgstr "Taille"
+
+#: ttypeform.label4.caption
+msgctxt "TTYPEFORM.LABEL4.CAPTION"
+msgid "0"
+msgstr "0"
+
+#: ttypeform.label5.caption
+msgctxt "TTYPEFORM.LABEL5.CAPTION"
+msgid "1"
+msgstr "1"
+
+#: ttypeform.label6.caption
+msgctxt "TTYPEFORM.LABEL6.CAPTION"
+msgid "2"
+msgstr "2"
+
+#: ttypeform.label7.caption
+msgctxt "TTYPEFORM.LABEL7.CAPTION"
+msgid "3"
+msgstr "3"
+
+#: ttypeform.label8.caption
+msgctxt "TTYPEFORM.LABEL8.CAPTION"
+msgid "4"
+msgstr "4"
+
+#: ttypeform.label9.caption
+msgctxt "TTYPEFORM.LABEL9.CAPTION"
+msgid "5"
+msgstr "5"
+
+#: ttypeform.lengthlabel.caption
+msgctxt "TTYPEFORM.LENGTHLABEL.CAPTION"
+msgid "Length"
+msgstr "Taille"
+
+#: tvaluechangeform.button1.caption
+msgctxt "TVALUECHANGEFORM.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "OK"
+
+#: tvaluechangeform.button2.caption
+msgctxt "TVALUECHANGEFORM.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tvaluechangeform.caption
+msgid "Change Offset: ########"
+msgstr "Modifier l'Offset : ########"
+
+#: tvaluechangeform.cbunicode.caption
+msgctxt "TVALUECHANGEFORM.CBUNICODE.CAPTION"
+msgid "Unicode"
+msgstr "Unicode"
+
+#: tvaluechangeform.cbvartype.text
+msgid "1 Byte"
+msgstr "1 Byte"
+
+#: tvaluechangeform.valuetext.text
+msgid "ValueText"
+msgstr "Valeur de texte"
+
+#: typepopup.rsinvalidlength
+msgid "Invalid length"
+msgstr "Taille invalide"
+
+#: unrandomizer.rsthefollowingaddressesgotchanged
+msgid "The following addresses got changed"
+msgstr "Les adresses suivantes ont été modifiées"
+
+#: unrandomizer.rstheunrandomizerwillcurrentlynotworkon64bitapplicat
+msgid "The unrandomizer will currently not work on 64-bit applications"
+msgstr ""
+
+#: valuechange.rschangeoffset
+msgid "Change offset %s"
+msgstr "Modifier l'Offset"
+
+#: valuechange.rspartofthestringisunreadable
+msgid "Part of the string is unreadable!"
+msgstr "Une partie de la chaîne de caractères est illisible !"
+
+#: vartypestrings.rs_vtall
+msgctxt "vartypestrings.rs_vtall"
+msgid "All"
+msgstr "Tout"
+
+#: vartypestrings.rs_vtautoassembler
+msgid "Auto Assembler Script"
+msgstr "Script de l'Auto Assembleur"
+
+#: vartypestrings.rs_vtbinary
+msgctxt "vartypestrings.rs_vtbinary"
+msgid "Binary"
+msgstr "Binaire"
+
+#: vartypestrings.rs_vtbyte
+msgctxt "vartypestrings.rs_vtbyte"
+msgid "Byte"
+msgstr "Byte"
+
+#: vartypestrings.rs_vtbytearray
+msgctxt "vartypestrings.rs_vtbytearray"
+msgid "Array of byte"
+msgstr "Tableau de Byte"
+
+#: vartypestrings.rs_vtcodepagestring
+msgid "CodePage String"
+msgstr ""
+
+#: vartypestrings.rs_vtcustom
+msgid "Custom"
+msgstr "Personnalisé"
+
+#: vartypestrings.rs_vtdouble
+msgctxt "vartypestrings.rs_vtdouble"
+msgid "Double"
+msgstr "Double"
+
+#: vartypestrings.rs_vtdword
+msgctxt "vartypestrings.rs_vtdword"
+msgid "4 Bytes"
+msgstr "4 Bytes"
+
+#: vartypestrings.rs_vtgrouped
+msgid "Grouped"
+msgstr "Groupé"
+
+#: vartypestrings.rs_vtpointer
+msgctxt "vartypestrings.rs_vtpointer"
+msgid "Pointer"
+msgstr "Pointeur"
+
+#: vartypestrings.rs_vtqword
+msgctxt "vartypestrings.rs_vtqword"
+msgid "8 Bytes"
+msgstr "8 Bytes"
+
+#: vartypestrings.rs_vtsingle
+msgctxt "vartypestrings.rs_vtsingle"
+msgid "Float"
+msgstr "Nombre"
+
+#: vartypestrings.rs_vtstring
+msgctxt "vartypestrings.rs_vtstring"
+msgid "String"
+msgstr "Chaîne de caractères"
+
+#: vartypestrings.rs_vtunicodestring
+msgid "Unicode String"
+msgstr "Chaîne de caractères Unicode"
+
+#: vartypestrings.rs_vtwidestring
+msgid "Widestring"
+msgstr "Large Chaîne de caractères"
+
+#: vartypestrings.rs_vtword
+msgctxt "vartypestrings.rs_vtword"
+msgid "2 Bytes"
+msgstr "2 Bytes"
+
+#: vehdebugger.rscheatenginefailedtogetintotheconfig
+msgid "Cheat Engine failed to get into the config of the selected program. (Error=%s)"
+msgstr ""
+
+#: vehdebugger.rserrorwhiletryingtocreatetheconfigurationstructure
+msgid "Error while trying to create the configuration structure! (Which effectively renders this whole feature useless) Errorcode=%s"
+msgstr ""
+
+#: vehdebugger.rsfailureduplicatingtheeventhandlestotheotherprocess
+msgid "Failure duplicating the event handles to the other process"
+msgstr "Echec lors de la duplication"
+
+#: vehdebugger.rsfailureduplicatingthefilemapping
+msgid "Failure duplicating the filemapping"
+msgstr "Echec lors de la duplication"
+
+#: vehdebugger.rsvehdebugerror
+msgid "VEH Debug error"
+msgstr "Erreur de débug VEH"
+
+#: virtualmemory.rsnomemoryfoundinthespecifiedregion
+msgctxt "virtualmemory.rsnomemoryfoundinthespecifiedregion"
+msgid "No memory found in the specified region"
+msgstr "Aucune mémoire trouvée dans la région spécifiée"
+
+#: virtualmemory.rsnotenoughmemoryfreetoscan
+msgctxt "virtualmemory.rsnotenoughmemoryfreetoscan"
+msgid "Not enough memory free to scan"
+msgstr "Mémoire libre insuffisante pour effectuer un Scan"
+
+#: vmxfunctions.rsbigerror
+msgctxt "vmxfunctions.rsbigerror"
+msgid "Error"
+msgstr "Erreur"
+
+#: vmxfunctions.rsinvalidinstruction
+msgid "Invalid instruction"
+msgstr "Instruction invalide"
+
+#: vmxfunctions.rssmallerror
+msgctxt "vmxfunctions.rssmallerror"
+msgid "error"
+msgstr "Erreur"
+
+#: windowsdebugger.rserrorattachingthewindowsdebugger
+msgid "Error attaching the windows debugger: %s"
+msgstr "Erreur lors de l'ajout de la fenêtre du débugger"
+
+#: zstreamext.rsaseekwasdoneforanotherpurpose
+msgid "A seek was done for another purpose than getting the position"
+msgstr ""
