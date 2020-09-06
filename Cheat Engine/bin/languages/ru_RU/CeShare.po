@@ -258,3 +258,124 @@ msgstr "Неверный ответ с сервера:"
 #: SDNR
 msgid "Server did not respond"
 msgstr "Сервер не ответил"
+
+#: ceshare_account-f.Caption
+msgid "CEShare Login"
+msgstr "Вход в CEShare"
+
+#: ceshare_account-lblUsername.Caption
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: ceshare_account-lblPassword.Caption
+msgid "Password"
+msgstr "Пароль"
+
+#: ceshare_account-lblRegister.Caption
+msgid "Register"
+msgstr "Регистрация"
+
+#: ceshare_account-cbLogoutWhenLoadingTables.Caption
+msgid "Logout when loading ceshare tables"
+msgstr "Выйти из системы при загрузке таблиц ceshare"
+
+#: ceshare_account-cbLogoutWhenLoadingTables.Hint
+msgid ""
+"When checked you will get logged out when loading a ceshare table. This to "
+"prevent malicious tables from using your account"
+msgstr ""
+"Если флажок установлен, то вы выйдете из системы при загрузке таблицы "
+"ceshare. Это предотвращает использование вашей учётной записи вредоносными "
+"таблицами"
+
+#: ceshare_permissions
+msgid "Are you sure you wish to change the owner?"
+msgstr "Вы уверены, что хотите сменить владельца?"
+
+#: ceshare_permissions1
+msgid "Access has been updated"
+msgstr "Доступ обновлен"
+
+#: ceshare_publish
+msgid "Are you sure you wish to delete this table?"
+msgstr "Вы уверены, что хотите удалить эту таблицу?"
+
+#: ceshare_publish
+msgid "Table successfuly deleted"
+msgstr "Таблица успешно удалена"
+
+#: ceshare_publish
+msgid "processname is empty"
+msgstr "пустое имя процесса"
+
+#: ceshare_publish
+msgid "title is empty"
+msgstr "пустой заголовок"
+
+#: ceshare_publish
+msgid "data is empty"
+msgstr "данные пусты"
+
+#: ceshare_publish
+msgid "description is empty"
+msgstr "пустое описание"
+
+#: ceshare_publish
+msgid "Thank you, your table has been published"
+msgstr "Спасибо, ваша таблица была опубликована"
+
+#: ceshare_publish
+msgid "No id given"
+msgstr "ID не указан"
+
+#: ceshare_publish
+msgid "Thank you, your table has been updated"
+msgstr "Спасибо, ваша таблица обновлена"
+
+#: ceshare_publish
+msgid "Please select a cheattable to update"
+msgstr "Пожалуйста, выберите чит-таблицу для обновления"
+
+#: ceshare_publish
+msgid "Invalid background update query list"
+msgstr "Неверный список запросов на обновление в фоновом режиме"
+
+#: ceshare_publish
+msgid ""
+"Are you sure you wish to let 'Everyone' overwrite your table in the ceshare "
+"system ?"
+msgstr ""
+"Вы действительно хотите разрешить «Всем» перезаписать вашу таблицу в системе "
+"ceshare?"
+
+#: ceshare_publish
+msgid "Do you wish to sign this table?"
+msgstr "Вы хотите подписать эту таблицу?"
+
+#: ceshare_querycheats
+msgid "Contact who?"
+msgstr "Связаться с кем?"
+
+#: ceshare_querycheats
+msgid "Site Admin"
+msgstr "Администратор сайта"
+
+#: ceshare_querycheats
+msgid "Table Owner"
+msgstr "Владелец таблицы"
+
+#: ceshare_querycheats
+msgid ""
+"Sorry, but there are currently no tables for this target. Perhaps you can be "
+"the first"
+msgstr ""
+"Извините, но в настоящее время нет таблиц для этой цели. Возможно, вы можете "
+"быть первым"
+
+#: ceshare_requests
+msgid "Requests"
+msgstr "Запросы"
+
+#: ceshare_requests
+msgid "Score="
+msgstr "Оценка="

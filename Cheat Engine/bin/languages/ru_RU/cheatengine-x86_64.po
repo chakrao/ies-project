@@ -1,0 +1,111 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: Cheat Engine 7.2 RU\n"
+"Language-Team: SER[G]ANT <rzn.dsa@gmail.com>\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru_RU\n"
+"X-Generator: Poedit 2.4.1\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"MIME-Version: 1.0\n"
+
+#: aboutunit.rsareyousureyouwanttolaunchdbvm
+msgid "Are you sure you want to launch DBVM? You seem to be running in 32-bit, so don't really need it that badly (Except for ultimap and cloaked operations)"
+msgstr "Вы уверены, что хотите запустить DBVM? На 32-битной системе от неё мало пользы (За исключением Ultimap и скрытых операций)"
+
+#: aboutunit.rsdidyoureallythinkyoudfindaneastereggbydoingthiswel
+msgid "Did you really think you'd find an easter egg by doing this? Well, you know what? You where right!"
+msgstr "Вы действительно думали, что нашли бы так пасхалку? А знаете что? Вы правы!"
+
+#: aboutunit.rslaunchdbvmwasnotassigned
+msgid "launchdbvm was not assigned"
+msgstr "launchdbvm не был определён"
+
+#: aboutunit.rsthismeansthatyourecurrentlynotrunningdbvm
+msgid "This means that you're currently not running dbvm, but that your system is capable of running it"
+msgstr "В настоящее время DBVM не запущена, но ваша система способна работать с ней"
+
+#: aboutunit.rsthismeansthatyoursystemisrunningdbvm
+msgid "This means that your system is running dbvm. This means ce will make use of some advanced tools that are otherwise unavailable"
+msgstr "На вашей системе запущена DBVM. А это значит, что Cheat Engine будет использовать дополнительные инструменты, которые ранее были недоступны"
+
+#: aboutunit.rsthismeansthatyouwillneedanewcpuinteltobeabletouset
+msgid "This means that you will need a new cpu (intel) to be able to use the advanced dbvm options"
+msgstr "Для использования дополнительных настроек DBVM, вам нужен новый процессор (Intel)"
+
+#: aboutunit.rsyoursystemdoesnotsupportdbvm
+msgid "Your system does not support DBVM. Perhaps it is already inside a VM"
+msgstr "Ваша система не поддерживает DBVM. "
+
+#: aboutunit.rsyoursystemisrunningdbvmversion
+msgid "Your system is running DBVM version %s"
+msgstr "На вашей системе запущена DBVM v%s"
+
+#: aboutunit.rsyoursystemsupportsdbvm
+msgid "Your system supports DBVM"
+msgstr "Ваша система поддерживает DBVM"
+
+#: accesscheck.rsbutyoudohavemodifyrights
+msgid "But you do have modify rights"
+msgstr "Но у вас есть права на изменение"
+
+#: accesscheck.rsnodeleterights
+msgid "No delete rights"
+msgstr "Нет прав на удаление"
+
+#: accesscheck.rsnofilecreationrightsornofileoverwriterights
+msgid "No file creation rights or no file overwrite rights"
+msgstr "Нет прав на создание или перезапись файла"
+
+#: accesscheck.rsnofiledeletionrights
+msgid "No file deletion rights"
+msgstr "Нет прав на удаление файла"
+
+#: accesscheck.rsnofilemodificationrights
+msgid "No file modification rights"
+msgstr "Нет прав на изменение файла"
+
+#: accessedmemory.rsamerror
+msgctxt "accessedmemory.rsamerror"
+msgid "Error"
+msgstr "Ошибка"
+
+#: accessedmemory.rsamyoucantsaveanemptylist
+msgid "You can't save an empty list"
+msgstr "Вы не можете сохранить пустой список"
+
+#: addresslist.rsactive
+msgctxt "addresslist.rsactive"
+msgid "Active"
+msgstr "Актив."
+
+#: addresslist.rsaddress
+msgctxt "addresslist.rsaddress"
+msgid "Address"
+msgstr "Адрес"
+
+#: addresslist.rsaladdaddress
+msgid "Add address"
+msgstr "Добавить адрес"
+
+#: addresslist.rsalautoassemblescritp
+msgid "Auto Assemble script"
+msgstr "Скрипт автоассемблера"
+
+#: addresslist.rsalnodescription
+msgctxt "addresslist.rsalnodescription"
+msgid "No description"
+msgstr "Нет описания"
+
+#: addresslist.rschangedescription
+msgid "Change Description"
+msgstr "Изменить описание"
+
+#: addresslist.rschangevalue
+msgid "Change Value"
+msgstr "Изменить значение"
+
+#: addresslist.rsdescription
+msgc
