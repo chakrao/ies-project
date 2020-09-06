@@ -108,4 +108,153 @@ msgid "Change Value"
 msgstr "Изменить значение"
 
 #: addresslist.rsdescription
-msgc
+msgctxt "addresslist.rsdescription"
+msgid "Description"
+msgstr "Описание"
+
+#: addresslist.rsdoyouwanttodeletetheselectedaddress
+msgid "Do you want to delete the selected address?"
+msgstr "Вы хотите удалить выбранный адрес?"
+
+#: addresslist.rsdoyouwanttodeletetheselectedaddresses
+msgid "Do you want to delete the selected addresses?"
+msgstr "Вы хотите удалить выбранные адреса?"
+
+#: addresslist.rsnotallvaluetypescouldhandlethevalue
+msgid "Not all value types could handle the value %s"
+msgstr "Не все типы значений могут обработать значение «%s»"
+
+#: addresslist.rsscript
+msgid "<script>"
+msgstr "<скрипт>"
+
+#: addresslist.rssortonclick
+msgid "Sort on click"
+msgstr "Сортировать по клику"
+
+#: addresslist.rsthevaluecouldnotbeparsed
+msgid "The value %s could not be parsed"
+msgstr "Значение «%s» невозможно проанализировать"
+
+#: addresslist.rstype
+msgctxt "addresslist.rstype"
+msgid "Type"
+msgstr "Тип"
+
+#: addresslist.rsvalue
+msgctxt "addresslist.rsvalue"
+msgid "Value"
+msgstr "Значение"
+
+#: addresslist.rswhatvaluetochangethisto
+msgid "what value to change this to?"
+msgstr "на какое значение изменить?"
+
+#: addresslist.rswhatwillbethenewdescription
+msgid "What will be the new description?"
+msgstr "Каким будет новое описание?"
+
+#: addressparser.rsapthisisnotavalidaddress
+msgid "This is not a valid address"
+msgstr "Этот адрес недопустим"
+
+#: advancedoptionsunit.rsaocheatenginefailedtogetintotheconfigofselectedprogram
+msgid "Cheat Engine failed to get into the config of the selected program."
+msgstr "Cheat Engine не удалось попасть в конфигурацию выбранной программы."
+
+#: advancedoptionsunit.rsaoerrorwhiletryingtocreatethesharedkeystructureetc
+msgid "Error while trying to create the shared key structure! (Which efficiently renders this whole feature useless)"
+msgstr "Ошибка при попытке создания общей ключевой структуры! (Что делает эту функцию бесполезной)"
+
+#: advancedoptionsunit.rsaoyoucanonlyloadexefiles
+msgctxt "advancedoptionsunit.rsaoyoucanonlyloadexefiles"
+msgid "You can only load EXE files"
+msgstr "Вы можете загружать только EXE файлы"
+
+#: advancedoptionsunit.rsareyousureyouwishtodeletetheseentries
+msgid "Are you sure you wish to delete these entries?"
+msgstr "Вы уверены, что хотите удалить эти записи?"
+
+#: advancedoptionsunit.rsdelete
+msgctxt "advancedoptionsunit.rsdelete"
+msgid "Delete"
+msgstr "Удалить"
+
+#: advancedoptionsunit.rsgivethenewnameofthisentry
+msgid "Give the new name of this entry"
+msgstr "Укажите новое название этой записи"
+
+#: advancedoptionsunit.rsnewname
+msgid "New name"
+msgstr "Новое название"
+
+#: advancedoptionsunit.rspaused
+msgid "paused"
+msgstr "остановлен"
+
+#: advancedoptionsunit.rspausethegame
+msgctxt "advancedoptionsunit.rspausethegame"
+msgid "Pause the game"
+msgstr "Остановить процесс игры"
+
+#: advancedoptionsunit.rsresumethegame
+msgid "Resume the game"
+msgstr "Возобновить процесс игры"
+
+#: advancedoptionsunit.rsthememoryatthisaddresscouldntbewritten
+msgctxt "advancedoptionsunit.rsthememoryatthisaddresscouldntbewritten"
+msgid "The memory at this address couldn't be written"
+msgstr "Нельзя записать в память по этому адресу"
+
+#: advancedoptionsunit.straddressalreadyinthelist
+msgctxt "advancedoptionsunit.straddressalreadyinthelist"
+msgid "This address is already in the list"
+msgstr "Этот адрес уже находится в списке"
+
+#: advancedoptionsunit.stralreadyinthelist
+msgid "This byte is already part of another opcode already present in the list"
+msgstr "Этот байт уже является частью другой инструкции, уже представленной в списке"
+
+#: advancedoptionsunit.strcecode
+msgid "Code:"
+msgstr "Код:"
+
+#: advancedoptionsunit.strchangeof
+msgid "Change of "
+msgstr "Изменение "
+
+#: advancedoptionsunit.strcode
+msgid "Code :"
+msgstr "Код :"
+
+#: advancedoptionsunit.strcouldntrestorecode
+msgid "Error when trying to restore this code!"
+msgstr "Произошла ошибка при попытке восстановления этого кода!"
+
+#: advancedoptionsunit.strcouldntwrite
+msgctxt "advancedoptionsunit.strcouldntwrite"
+msgid "The memory at this address couldn't be written"
+msgstr "Нельзя записать в память по этому адресу"
+
+#: advancedoptionsunit.strfindwhatcodeaccesses
+msgid "Find out what addresses this code accesses"
+msgstr "Найти адреса, к которым обращается эта инструкция"
+
+#: advancedoptionsunit.strfindwhatcodereads
+msgid "Find out what addresses this code reads from"
+msgstr "Найти адреса, из которых читает эта инструкция"
+
+#: advancedoptionsunit.strfindwhatcodewrites
+msgctxt "advancedoptionsunit.strfindwhatcodewrites"
+msgid "Find out what addresses this code writes to"
+msgstr "Найти адреса, по которым записывает эта инструкция"
+
+#: advancedoptionsunit.strnamececode
+msgid "What name do you want to give this code?"
+msgstr "Какое название вы хотите дать этому коду?"
+
+#: advancedoptionsunit.strnotreadable
+msgid "This address is not readable"
+msgstr "Этот адрес не читаем"
+
+#: advancedoptionsunit.strn
