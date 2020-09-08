@@ -549,4 +549,123 @@ msgstr "Массив байт «%s» не найден"
 msgid "The bytes at %s are not what was expected"
 msgstr "Байты по адресу %s не те, что ожидались"
 
-#: autoassembler.rsthecodeinjectionwa
+#: autoassembler.rsthecodeinjectionwassuccessfull
+msgid "The code injection was successfull"
+msgstr "Инъекция кода прошла успешно"
+
+#: autoassembler.rsthefiledoesnotexist
+msgid "The file %s does not exist"
+msgstr "Файла «%s» не существует"
+
+#: autoassembler.rsthefollowingkerneladdresseswhereallocated
+msgid "The following kernel addresses where allocated"
+msgstr "Следующие адреса пространства ядра были выделены"
+
+#: autoassembler.rstheidentifierhasalreadybeendeclared
+msgid "The identifier %s has already been declared"
+msgstr "Идентификатор «%s» уже был объявлен"
+
+#: autoassembler.rsthememoryatcannotberead
+msgid "The memory at +%s can not be read"
+msgstr "Память по адресу +%s не может быть считана"
+
+#: autoassembler.rsthememoryatcouldnotbefullyread
+msgid "The memory at %s could not be fully read"
+msgstr "Память по адресу %s не может быть считана полностью"
+
+#: autoassembler.rsthereiscodedefinedwithoutspecifyingtheaddressitbel
+msgid "There is code defined without specifying the address it belongs to"
+msgstr "Был определён код без указания адреса, которому он принадлежит"
+
+#: autoassembler.rsthisaddressspecifierisnotvalid
+msgid "This address specifier is not valid"
+msgstr "Этот спецификатор адреса не допустим"
+
+#: autoassembler.rsthiscodecanbeinjectedareyousure
+msgid "This code can be injected. Are you sure?"
+msgstr "Вы уверены, что хотите выполнить инъекцию кода?"
+
+#: autoassembler.rsthisinstructioncantbecompiled
+msgid "This instruction can't be compiled"
+msgstr "Эта инструкция не может быть скомпилирована"
+
+#: autoassembler.rswassupposedtobeaddedtothesymbollistbutitisntdeclar
+msgid "%s was supposed to be added to the symbollist, but it isn't declared"
+msgstr "«%s» должен был быть добавлен в список символов, но он не объявлен"
+
+#: autoassembler.rswrongsyntaxallocidentifiersizeinbytes
+msgid "Wrong syntax. ALLOC(identifier,sizeinbytes)"
+msgstr "Неверный синтаксис. ALLOC(идентификатор,размер в байтах)"
+
+#: autoassembler.rswrongsyntaxaobscanmodulename11223355
+msgid "Wrong syntax. AOBSCANMODULE(name, module, 11 22 33 ** 55)"
+msgstr "Неверный синтаксис. AOBSCANMODULE(название, модуль, 11 22 33 ** 55)"
+
+#: autoassembler.rswrongsyntaxaobscanname11223355
+msgid "Wrong syntax. AOBSCAN(name,11 22 33 ** 55)"
+msgstr "Неверный синтаксис. AOBSCAN(название,11 22 33 ** 55)"
+
+#: autoassembler.rswrongsyntaxaobscanregion
+msgid "Wrong syntax. AOBSCANREGION(name, startaddress, stopaddress, 11 22 33 ** 55)"
+msgstr "Неверный синтаксис. AOBSCANREGION(название, стартовый адрес, конечный адрес, 11 22 33 ** 55)"
+
+#: autoassembler.rswrongsyntaxassertaddress1122335566
+msgid "Wrong syntax. ASSERT(address,11 22 33 ** 55 66)"
+msgstr "Неверный синтаксис. ASSERT(адрес,11 22 33 ** 55 66)"
+
+#: autoassembler.rswrongsyntaxcreatethreadaddress
+msgid "Wrong syntax. CreateThread(address)"
+msgstr "Неверный синтаксис. CreateThread(адрес)"
+
+#: autoassembler.rswrongsyntaxdefinenamewhatever
+msgid "Wrong syntax. DEFINE(name,whatever)"
+msgstr "Неверный синтаксис. DEFINE(название,что угодно)"
+
+#: autoassembler.rswrongsyntaxglobalallocnamesize
+msgid "Wrong syntax. GLOBALALLOC(name,size)"
+msgstr "Неверный синтаксис. GLOBALALLOC(название,размер)"
+
+#: autoassembler.rswrongsyntaxincludefilenamecea
+msgid "Wrong syntax. Include(filename.cea)"
+msgstr "Неверный синтаксис. Include(название файла.cea)"
+
+#: autoassembler.rswrongsyntaxkallocidentifiersizeinbytes
+msgid "Wrong syntax. kalloc(identifier,sizeinbytes)"
+msgstr "Неверный синтаксис. kalloc(идентификатор,размер в байтах)"
+
+#: autoassembler.rswrongsyntaxloadbinaryaddressfilename
+msgid "Wrong syntax. LoadBinary(address,filename)"
+msgstr "Неверный синтаксис. LoadBinary(адрес,название файла)"
+
+#: autoassembler.rswrongsyntaxloadlibraryfilename
+msgid "Wrong syntax. LoadLibrary(filename)"
+msgstr "Неверный синтаксис. LoadLibrary(название файла)"
+
+#: autoassembler.rswrongsyntaxluacall
+msgid "Wrong Syntax. LuaCall(luacommand)"
+msgstr "Неверный синтаксис. LuaCall(команда lua)"
+
+#: autoassembler.rswrongsyntaxreadmemaddresssize
+msgid "Wrong syntax. ReadMem(address,size)"
+msgstr "Неверный синтаксис. ReadMem(адрес,размер)"
+
+#: autoassembler.rswrongsyntaxreassemble
+msgid "Wrong syntax. Reassemble(address)"
+msgstr "Неверный синтаксис. Reassemble(адрес)"
+
+#: autoassembler.rswrongsyntaxsharedallocnamesize
+msgid "Wrong syntax. SHAREDALLOC(name,size)"
+msgstr "Неверный синтаксис. SHAREDALLOC(название,размер)"
+
+#: autoassembler.rsxcouldnotbefound
+msgctxt "autoassembler.rsxcouldnotbefound"
+msgid "%s could not be found"
+msgstr "%s не может быть найден"
+
+#: autoassembler.rsyoucanonlyhaveonedisablesection
+msgid "You can only have one disable section"
+msgstr "В скрипте может быть только одна секция [DISABLE]"
+
+#: autoassembler.rsyoucanonlyhaveoneenablesection
+msgid "You can only have one enable section"
+msgstr "В скрипте 
