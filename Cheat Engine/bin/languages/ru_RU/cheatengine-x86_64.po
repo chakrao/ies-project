@@ -668,4 +668,132 @@ msgstr "В скрипте может быть только одна секция
 
 #: autoassembler.rsyoucanonlyhaveoneenablesection
 msgid "You can only have one enable section"
-msgstr "В скрипте 
+msgstr "В скрипте может быть только одна секция [ENABLE]"
+
+#: autoassembler.rsyouhavntspecifiedadisablesection
+msgid "You havn't specified a disable section"
+msgstr "В скрипте отсутствует секция [DISABLE]"
+
+#: autoassembler.rsyouhavntspecifiedaenablesection
+msgid "You havn't specified a enable section"
+msgstr "В скрипте отсутствует секция [ENABLE]"
+
+#: bigmemallochandler.rsallocerror
+msgid "VirtualAlloc failed. You probably don't have enough system memory free. Either install more RAM, or increase the maximum allowed paging size"
+msgstr "Сбой VirtualAlloc. Вероятно у вас недостаточно свободной оперативной памяти. Или установите больше оперативной памяти на ваш компьютер, или увеличьте файл подкачки до максимально доступного размера"
+
+#: bigmemallochandler.rsbmavirtualallocfailedyouprobablydonthaveenoughtvirtualmemoryfreeetc
+msgid "VirtualAlloc failed. You probably don't have enough virtual memory free. Use the 64-bit version instead"
+msgstr "Сбой VirtualAlloc. Вероятно у вас недостаточно свободной виртуальной памяти. Используйте 64-битную версию"
+
+#: bigmemallochandler.rscepointerscanmemorymanager
+msgid "CE Pointerscan memory manager"
+msgstr "Менеджер памяти сканера указателей"
+
+#: byteinterpreter.rsbibyte
+msgid "(byte)"
+msgstr "(byte)"
+
+#: byteinterpreter.rsbidouble
+msgid "(double)"
+msgstr "(double)"
+
+#: byteinterpreter.rsbidword
+msgid "(dword)"
+msgstr "(dword)"
+
+#: byteinterpreter.rsbifloat
+msgid "(float)"
+msgstr "(float)"
+
+#: byteinterpreter.rsbiqword
+msgid "(qword)"
+msgstr "(qword)"
+
+#: byteinterpreter.rsbiword
+msgid "(word)"
+msgstr "(word)"
+
+#: cedebugger.rscontinue
+msgid "Continue?"
+msgstr "Продолжить?"
+
+#: cedebugger.rsdebugerror
+msgid "I couldn't attach the debugger to this process! You could try to open the process using the processpicker and try that! If that also doesn't work check if you have debugging rights."
+msgstr "Не удалось присоединить отладчик к этому процессу! Попробуйте открыть процесс, используя опцию «Создать процесс» в окне «Список процессов», и повторите попытку! Если и в этот раз не сработает, проверьте, имеете ли вы отладочные привилегии."
+
+#: cedebugger.rsdonotclosece
+msgid "If you close Cheat Engine while the game is running, the game will close too. Are you sure you want to do this?"
+msgstr "Если вы закроете Cheat Engine при запущенной игре, то она тоже закроется. Вы уверены, что хотите это сделать?"
+
+#: cedebugger.rspleasetargetanotherprocess
+msgid "Please target another process"
+msgstr "Пожалуйста, выберите другой процесс"
+
+#: cedebugger.rsthiswillattachthedebuggerofcheatenginetothecurrent
+msgid "This will attach the debugger of Cheat Engine to the current process."
+msgstr "К текущему процессу будет присоединён отладчик Cheat Engine."
+
+#: cedebugger.rsyoumustfirstopenaprocess
+msgid "You must first open a process"
+msgstr "Сначала вы должны открыть процесс"
+
+#: cefuncproc.rsapplicationskey
+msgctxt "cefuncproc.rsapplicationskey"
+msgid "Applications key"
+msgstr "AppsKey"
+
+#: cefuncproc.rsbackspace
+msgctxt "cefuncproc.rsbackspace"
+msgid "Backspace"
+msgstr "BckSp"
+
+#: cefuncproc.rsbreak
+msgctxt "cefuncproc.rsbreak"
+msgid "Break"
+msgstr "Break"
+
+#: cefuncproc.rscapslock
+msgctxt "cefuncproc.rscapslock"
+msgid "Caps Lock"
+msgstr "CapsLock"
+
+#: cefuncproc.rscefpdllinjectionfailedsymbollookuperror
+msgid "Dll injection failed: symbol lookup error"
+msgstr "Инъекция dll не удалась: ошибка поиска символа"
+
+#: cefuncproc.rscefpicantgettheprocesslistyouarepropablyuseinwindowsntetc
+msgctxt "cefuncproc.rscefpicantgettheprocesslistyouarepropablyuseinwindowsntetc"
+msgid "I can't get the process list. You are propably using windows NT. Use the window list instead!"
+msgstr "Не удалось получить список процессов. Возможно вы используете систему Windows NT. Воспользуйтесь списком окон вместо списка процессов!"
+
+#: cefuncproc.rsdeletekey
+msgid "Delete "
+msgstr "Del "
+
+#: cefuncproc.rsdownarrow
+msgctxt "cefuncproc.rsdownarrow"
+msgid "Down Arrow"
+msgstr "Down"
+
+#: cefuncproc.rsfailedexecutingthefunctionofthedll
+msgid "Failed executing the function of the dll"
+msgstr "Не удалось выполнить функцию dll"
+
+#: cefuncproc.rsfailedinjectingthedll
+msgid "Failed injecting the DLL"
+msgstr "Не удалось выполнить инъекцию DLL"
+
+#: cefuncproc.rsfailedtoallocatememory
+msgid "Failed to allocate memory"
+msgstr "Не удалось выделить память"
+
+#: cefuncproc.rsfailedtoexecutethedllloader
+msgid "Failed to execute the dll loader"
+msgstr "Не удалось запустить загрузчик dll"
+
+#: cefuncproc.rsfailedtoinjectthedllloader
+msgid "Failed to inject the dll loader"
+msgstr "Не удалось выполнить инъекцию загрузчика dll"
+
+#: cefuncproc.rs
