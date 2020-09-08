@@ -257,4 +257,157 @@ msgstr "Какое название вы хотите дать этому код
 msgid "This address is not readable"
 msgstr "Этот адрес не читаем"
 
-#: advancedoptionsunit.strn
+#: advancedoptionsunit.strnotthesame
+msgid "The memory at this address isn't what it should be! Continue?"
+msgstr "Область памяти по этому адресу не та, что должна быть! Продолжить?"
+
+#: advancedoptionsunit.strnotwhatitshouldbe
+msgid "The memory at this address is'nt what it should be! Continue?"
+msgstr "Область памяти по этому адресу не та, что должна быть! Продолжить?"
+
+#: advancedoptionsunit.strpartofopcodeinthelist
+msgid "At least one of these bytes is already in the list"
+msgstr "По крайней мере один из этих байтов уже находится в списке"
+
+#: advancedoptionsunit.strselectexefor3d
+msgid "Select the executable of the Direct-3D game"
+msgstr "Выберите исполняемый файл Direct-3D игры"
+
+#: assemblerarm.rscannotbeencoded
+msgid " can not be encoded using 8 bits and double rotate"
+msgstr " не может быть закодировано с использованием 8 бит и двойного поворота"
+
+#: assemblerarm.rsdistanceistoobig
+msgid "Distance is too big"
+msgstr "Расстояние слишком большое"
+
+#: assemblerarm.rsinvaliddestinationregister
+msgid "Invalid destination register"
+msgstr "Неверный регистр назначения"
+
+#: assemblerarm.rsinvalidfirstoperandregister
+msgid "Invalid first operand register"
+msgstr "Неверный регистр операнда"
+
+#: assemblerarm.rsinvalidopcode
+msgid "Invalid opcode"
+msgstr "Недопустимая инструкция"
+
+#: assemblerarm.rsinvalidparameter1
+msgid "Invalid parameter 1"
+msgstr "Недопустимый параметр 1"
+
+#: assemblerarm.rsinvalidparameter2
+msgid "Invalid parameter 2"
+msgstr "Недопустимый параметр 2"
+
+#: assemblerarm.rsinvalidparameter3
+msgid "Invalid parameter 3"
+msgstr "Недопустимый параметр 3"
+
+#: assemblerarm.rsinvalidparameter4
+msgid "Invalid parameter 4"
+msgstr "Недопустимый параметр 4"
+
+#: assemblerarm.rsinvalidparameters
+msgid "invalid parameters"
+msgstr "недопустимые параметры"
+
+#: assemblerarm.rsinvalidregister
+msgctxt "assemblerarm.rsinvalidregister"
+msgid "Invalid register"
+msgstr "Недопустимый регистр"
+
+#: assemblerarm.rsinvalidregisterinregisterlist
+msgid "Invalid register in register list:"
+msgstr "Недопустимый регистр в списке регистров:"
+
+#: assemblerarm.rsinvalidregisterlist
+msgid "Invalid register list"
+msgstr "Недопустимый список регистров"
+
+#: assemblerarm.rsinvalidshift
+msgid "Invalid shift"
+msgstr "Недопустимый сдвиг"
+
+#: assemblerarm.rsinvalidshiftparameters
+msgid "invalid shift parameters"
+msgstr "недопустимые параметры сдвига"
+
+#: assemblerarm.rsinvalidshiftregister
+msgid "Invalid shift register"
+msgstr "Недопустимый сдвиговой регистр"
+
+#: assemblerarm.rsthedestinationaddressmustbedividableby4
+msgid "The destination address must be dividable by 4"
+msgstr "Адрес назначения должен быть кратен 4"
+
+#: assemblerarm.rsthedistanceistoobig
+msgid "The distance is too big"
+msgstr "Расстояние слишком большое"
+
+#: assemblerarm.rsthevalue
+msgid "The value "
+msgstr "Значение "
+
+#: assemblerarm.rsthisinstructionclassdoesnotallow
+msgid "This instruction class does not allow a register based shift"
+msgstr "Этот класс инструкции не поддерживает сдвиговой регистр"
+
+#: assemblerarm.rstodochangethistoa12byteinstruction
+msgid "Todo: Change this to a 12 byte instruction: LDR/STR [PC,#16] - B PC - DD offset"
+msgstr "Задача: Изменить на 12 байтовую инструкцию: LDR/STR [PC,#16] - B PC - DD offset"
+
+#: assemblerunit.rsassemblererror
+msgid "Assembler error"
+msgstr "Ошибка ассемблера"
+
+#: assemblerunit.rsidontunderstandwhatyoumeanwith
+msgid "I don't understand what you mean with "
+msgstr "Не понятно, что вы имели в виду, написав "
+
+#: assemblerunit.rsinvalid
+msgid "Invalid"
+msgstr "Недопустимо"
+
+#: assemblerunit.rsinvalidaddress
+msgctxt "assemblerunit.rsinvalidaddress"
+msgid "Invalid address"
+msgstr "Недопустимый адрес"
+
+#: assemblerunit.rsinvalidmultiplier
+msgid "Invalid multiplier"
+msgstr "Недопустимый множитель"
+
+#: assemblerunit.rsinvalidregister
+msgctxt "assemblerunit.rsinvalidregister"
+msgid "Invalid register"
+msgstr "Недопустимый регистр"
+
+#: assemblerunit.rsinvalidvaluefor32bit
+msgid "The value provided can not be encoded in a 32-bit field"
+msgstr "Приведённое значение не может быть закодировано в 32-битном поле"
+
+#: assemblerunit.rsnegativeregisterscannotbeencoded
+msgid "Negative registers can not be encoded"
+msgstr "Негативные регистры не могут быть закодированы"
+
+#: assemblerunit.rsoffsettoobig
+msgid "offset too big"
+msgstr "смещение слишком большое"
+
+#: assemblerunit.rstheassemblertriedtosetaregistevaluethatistoohigh
+msgid "The assembler tried to set a register value that is too high"
+msgstr "Ассемблер пытался установить слишком большое значение регистра"
+
+#: assemblerunit.rswtfisa
+msgid "WTF is a "
+msgstr "Что за "
+
+#: autoassembler.rsaaerror
+msgid "Error: "
+msgstr "Ошибка: "
+
+#: autoassembler.rsaaerrorinthestructuredefinitionof
+msgid "Error in the structure definition of %s at line %d"
+msgstr "Ош
