@@ -410,4 +410,143 @@ msgstr "Ошибка: "
 
 #: autoassembler.rsaaerrorinthestructuredefinitionof
 msgid "Error in the structure definition of %s at line %d"
-msgstr "Ош
+msgstr "Ошибка в определении структуры %s в строке %d"
+
+#: autoassembler.rsaaerrorwhilesacnningforaobs
+msgid "Error while scanning for AOB's : "
+msgstr "Ошибка при сканировании массива байт: "
+
+#: autoassembler.rsaaisareservedword
+msgid "%s is a reserved word"
+msgstr "%s является зарезервированным словом"
+
+#: autoassembler.rsaaluaerrorinthescriptatline
+msgid "Lua error in the script at line "
+msgstr "Ошибка Lua в скрипте в строке "
+
+#: autoassembler.rsaamodulenotfound
+msgid "module not found:"
+msgstr "модуль не найден:"
+
+#: autoassembler.rsaanoendfound
+msgid "No end found"
+msgstr "Не найдено окончание"
+
+#: autoassembler.rsaanoideawhatxis
+msgid "No idea what %s is"
+msgstr "Без понятия что такое %s"
+
+#: autoassembler.rsaathearrayofbytenamed
+msgid "The array of byte named %s could not be found"
+msgstr "Массив байт с именем %s не может быть найден"
+
+#: autoassembler.rscouldnotbefound
+msgctxt "autoassembler.rscouldnotbefound"
+msgid "%s could not be found"
+msgstr "«%s» не может быть найден"
+
+#: autoassembler.rscouldnotbeinjected
+msgid "%s could not be injected"
+msgstr "Нельзя выполнить инъекцию «%s»"
+
+#: autoassembler.rsdefinealreadydefined
+msgid "Define %s already defined"
+msgstr "Определение «%s» уже определено"
+
+#: autoassembler.rserrorinline
+msgid "Error in line %s (%s) :%s"
+msgstr "Ошибка в строке %s (%s): %s"
+
+#: autoassembler.rsfailurealloc
+msgid "Failure allocating memory near %.8x"
+msgstr "Неудачное выделение памяти около %.8x"
+
+#: autoassembler.rsfailuretoallocatememory
+msgid "Failure to allocate memory"
+msgstr "Не удалось выделить память"
+
+#: autoassembler.rsforwardjumpwithnolabeldefined
+msgid "Forward jump with no label defined"
+msgstr "Переход вперёд без определённой метки"
+
+#: autoassembler.rsgoto
+msgid "Go to "
+msgstr "Перейти по "
+
+#: autoassembler.rsinvalidaddressforreadmem
+msgid "Invalid address for ReadMem"
+msgstr "Недопустимый адрес для ReadMem"
+
+#: autoassembler.rsinvalidsizeforreadmem
+msgid "Invalid size for ReadMem"
+msgstr "Недопустимый размер для ReadMem"
+
+#: autoassembler.rsisbeingredeclared
+msgid "%s is being redeclared"
+msgstr "%s повторно объявлен"
+
+#: autoassembler.rsisnotavalidbytestring
+msgid "%s is not a valid bytestring"
+msgstr "%s не является допустимой байтовой строкой"
+
+#: autoassembler.rsisnotavalididentifier
+msgid "%s is not a valid identifier"
+msgstr "%s не является допустимым идентификатором"
+
+#: autoassembler.rsisnotavalidsize
+msgid "%s is not a valid size"
+msgstr "%s не является допустимым размером"
+
+#: autoassembler.rslabelisbeingdefinedmorethanonce
+msgid "label %s is being defined more than once"
+msgstr "метка «%s» определена больше одного раза"
+
+#: autoassembler.rslabelisnotdefinedinthescript
+msgid "label %s is not defined in the script"
+msgstr "метка «%s» не определена в скрипте"
+
+#: autoassembler.rsmissingexcept
+msgid "The {$TRY} at line %d has no matching {$EXCEPT}"
+msgstr "{$TRY} в строке %d не совпадает с {$EXCEPT}"
+
+#: autoassembler.rsneedtousekernelmodereadwriteprocessmemory
+msgid "You need to use kernelmode read/writeprocessmemory if you want to use KALLOC"
+msgstr "Если вы хотите воспользоваться KALLOC, вам нужно использовать read/writeprocessmemory режима ядра"
+
+#: autoassembler.rsnopreferedrangeallocwarning
+msgid "None of the ALLOC statements specify a prefered address.  Did you take into account that the JMP instruction is going to be 14 bytes long?"
+msgstr "Ни в одной из функций ALLOC не указан предпочтительный адрес. Вы учли, что инструкция JMP будет иметь длину 14 байт?"
+
+#: autoassembler.rsnotallinstructionscouldbeinjected
+msgid "Not all instructions could be injected"
+msgstr "Не все инструкции пригодны к инъекции"
+
+#: autoassembler.rssorrybutwithoutthedriverkallocwillnotfunction
+msgid "Sorry, but without the driver KALLOC will not function"
+msgstr "Извините, но KALLOC не будет функционировать без драйвера"
+
+#: autoassembler.rssyntaxerror
+msgid "Syntax error"
+msgstr "Ошибка синтаксиса"
+
+#: autoassembler.rssyntaxerrorfullaccessaddresssize
+msgid "Syntax error. FullAccess(address,size)"
+msgstr "Ошибка синтаксиса. FullAccess(адрес,размер)"
+
+#: autoassembler.rstheaddressincreatethreadisnotvalid
+msgid "The address in createthread(%s) is not valid"
+msgstr "Недопустимый адрес в createthread(%s)"
+
+#: autoassembler.rstheaddressinloadbinaryisnotvalid
+msgid "The address in loadbinary(%s,%s) is not valid"
+msgstr "Недопустимый адрес в loadbinary(%s,%s)"
+
+#: autoassembler.rsthearrayofbytecouldnotbefound
+msgid "The array of byte '%s' could not be found"
+msgstr "Массив байт «%s» не найден"
+
+#: autoassembler.rsthebytesatarenotwhatwasexpected
+msgid "The bytes at %s are not what was expected"
+msgstr "Байты по адресу %s не те, что ожидались"
+
+#: autoassembler.rsthecodeinjectionwa
