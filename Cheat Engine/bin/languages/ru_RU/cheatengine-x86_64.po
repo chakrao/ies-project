@@ -962,4 +962,102 @@ msgstr "Неверное число параметров"
 msgid "Parameter 3 is not a valid function"
 msgstr "Параметр 3 не является допустимой функцией"
 
-#: customtypeha
+#: customtypehandler.rscthparameter4isnotavalidfunction
+msgid "Parameter 4 is not a valid function"
+msgstr "Параметр 4 не является допустимой функцией"
+
+#: customtypehandler.rsfailurecreatingluaobject
+msgid "Failure creating lua object"
+msgstr "Не удалось создать lua объект"
+
+#: customtypehandler.rsinvalidfunctiontypename
+msgid "invalid functiontypename"
+msgstr "недопустимый functiontypename"
+
+#: customtypehandler.rsinvalidtypename
+msgid "invalid typename"
+msgstr "недопустимый typename"
+
+#: customtypehandler.rsonlyreturntypenamebytecountandfunctiontypename
+msgid "Only return typename, bytecount and functiontypename"
+msgstr "Возвращать только typename, bytecount и functiontypename"
+
+#: customtypehandler.rsundefinederror
+msgctxt "customtypehandler.rsundefinederror"
+msgid "Undefined error"
+msgstr "Неопределённая ошибка"
+
+#: d3dhookunit.rsd3dhookfailuretomapthesharedmemoryobject
+msgid "D3DHook: Failure to map the shared memory object"
+msgstr "Перехват D3D: Не удалось сопоставить объект разделяемой памяти"
+
+#: d3dhookunit.rsd3dhookfailuretoopenthesharedmemoryobject
+msgid "D3DHook: Failure to open the shared memory object"
+msgstr "Перехват D3D: Не удалось открыть объект разделяемой памяти"
+
+#: d3dhookunit.rsthed3dhookobjecthasnotbeencreatedyet
+msgid "The d3dhook object has not been created yet"
+msgstr "Объект d3dhook ещё не создан"
+
+#: dbk32functions.rsapcrules
+msgid "APC rules"
+msgstr "Правила асинхронного вызова процедуры"
+
+#: dbk32functions.rscouldnotlaunchdbvm
+msgid "Could not launch DBVM: The Intel-VT feature has been disabled in your BIOS"
+msgstr "Не удалось запустить DBVM: функция Intel-VT была отключена в вашем БИОСе"
+
+#: dbk32functions.rsdbk32error
+msgid "DBK32 error"
+msgstr "Ошибка DBK32"
+
+#: dbk32functions.rsdbkerror
+msgid "DBK Error"
+msgstr "Ошибка DBK"
+
+#: dbk32functions.rsdrivererror
+msgid "Driver error"
+msgstr "Ошибка драйвера"
+
+#: dbk32functions.rsfailuretoconfigurethedriver
+msgid "Failure to configure the driver"
+msgstr "Не удалось сконфигурировать драйвер"
+
+#: dbk32functions.rsfailuretoconfiguretheultimapdriver
+msgid "Failure to configure the ultimap driver"
+msgstr "Сбой настройки драйвера ultimap"
+
+#: dbk32functions.rsinvalidmsraddress
+msgid "Invalid MSR address:"
+msgstr "Неверный адрес моделезависимого регистра:"
+
+#: dbk32functions.rsmsrsareunavailable
+msgid "msrs are unavailable"
+msgstr "моделезависимые регистры недоступны"
+
+#: dbk32functions.rspleaserebootandpressf8duringboot
+msgid "The driver failed to load due to signing issues. If you have secure boot enabled in your BIOS, set it to \"Other OS\" or disable it. Alternatively, boot with driver signing policy disabled, or sign the driver yourself"
+msgstr "Не удалось загрузить драйвер из-за проблем с подписью. Если в вашем BIOS'е включена безопасная загрузка, то установите её в «Other OS» или отключите. Также можно выполнить загрузку с отключённой политикой подписи драйвера или подписать драйвер самостоятельно"
+
+#: dbk32functions.rspleaserunthe64bitversionofce
+msgid "Please run the 64-bit version of Cheat Engine"
+msgstr "Пожалуйста, запустите 64-битную версию Cheat Engine"
+
+#: dbk32functions.rsthedrivercouldntbeopened
+msgid "The driver couldn't be opened! It's not loaded or not responding. Luckely you are running dbvm so it's not a total waste. Do you wish to force load the driver?"
+msgstr "Драйвер не открывается. Он не загружается или не отвечает. К счастью, DBVM запущен, так что это не пустая трата времени. Вы хотите принудительно загрузить драйвер?"
+
+#: dbk32functions.rsthedrivercouldntbeopenedtryagain
+msgid "The driver couldn't be opened! It's not loaded or not responding. I recommend to reboot your system and try again"
+msgstr "Драйвер не открывается. Он не загружается или не отвечает. Рекомендуется перезагрузить вашу систему и попробовать снова"
+
+#: dbk32functions.rsthedriverfailedtosuccessfullyinitialize
+msgid "The driver failed to successfully initialize. Some functions may not completely work"
+msgstr "Драйвер не удалось успешно инициализировать. Некоторые функции могут работать не полностью"
+
+#: dbk32functions.rsthedriverthatiscurrentlyloaded
+msgid "The driver that is currently loaded belongs to a different version of Cheat Engine. Please unload this driver or reboot."
+msgstr "Драйвер, который загружен в данный момент, принадлежит другой версии Cheat Engine. Пожалуйста, выгрузите его или перезагрузитесь."
+
+#: dbk32functions.rstheservicecouldntgetopened
+msgid "The service couldn't get opened and also couldn't get created. Check if you have the needed rights to create a service, or call your system admin (Who'll probably beat you up for even trying this). Untill this is fixed you won't be able to make use of the enhancements the driver gives you"
