@@ -1061,3 +1061,134 @@ msgstr "Драйвер, который загружен в данный моме
 
 #: dbk32functions.rstheservicecouldntgetopened
 msgid "The service couldn't get opened and also couldn't get created. Check if you have the needed rights to create a service, or call your system admin (Who'll probably beat you up for even trying this). Untill this is fixed you won't be able to make use of the enhancements the driver gives you"
+msgstr "Служба не открывается и не создаётся. Проверьте, есть ли у вас необходимые права для создания службы или вызовите вашего системного администратора (Который, скорее всего, побьёт вас за это). Пока это не будет исправлено, вы не сможете использовать улучшения, который даёт вам драйвер"
+
+#: dbk32functions.rstheservicecouldntgetopenedultimap
+msgid "The ultimap service couldn't get opened and also couldn't get created.  (No admin rights?)"
+msgstr "Служба Ultimap не открывается и не создаётся. (Нет прав администратора?)"
+
+#: dbk32functions.rsyouaremissingthedriver
+msgid "You are missing the driver. Try reinstalling cheat engine, and try to disable your anti-virus before doing so."
+msgstr "У вас отсутствует драйвер. Попробуйте переустановить Cheat Engine, отключив перед этим ваш антивирус."
+
+#: dbk64secondaryloader.rserrorwhiletryingtoloadthedriveratpart
+msgid "Error while trying to load the driver at part "
+msgstr "Ошибка при попытке загрузить драйвер у части "
+
+#: dbk64secondaryloader.rsmoduleloaderdailedtomdbk64systomemoryap
+msgid "ModuleLoader failed to map dbk64.sys to memory"
+msgstr "ModuleLoader не удалось сопоставить dbk64.sys в память"
+
+#: dbk64secondaryloader.rsseemslikedbvmisntloadedafterall
+msgid "seems like dbvm isn't loaded after all"
+msgstr "кажется, DBVM всё-таки не загрузился"
+
+#: dbk64secondaryloader.rssuccessthedriverhasbeenloaded
+msgid "Success. The driver has been loaded thanks to dbvm"
+msgstr "Успех. Драйвер был загружен благодаря DBVM"
+
+#: dbk64secondaryloader.rsthedriverfailedtoinitialize
+msgid "The driver failed to initialize"
+msgstr "Не удалось инициализировать драйвер"
+
+#: dbvmloadmanual.rschecking
+msgid "<Checking>"
+msgstr "<Проверка>"
+
+#: dbvmloadmanual.rscpu
+msgid "CPU "
+msgstr "ЦП "
+
+#: dbvmloadmanual.rscpualreadyrunningdbvm
+msgid "This cpu is already running DBVM"
+msgstr "На этом ЦП уже запущена DBVM"
+
+#: dbvmloadmanual.rsloaded
+msgid "Loaded:"
+msgstr "Загружен:"
+
+#: dbvmloadmanual.rsnotloaded
+msgid "Not loaded"
+msgstr "Не загружен"
+
+#: debugeventhandler.rsdebughandleaccessviolationdebugeventnow
+msgid "Debug HandleAccessViolationDebugEvent now"
+msgstr "Теперь отладьте HandleAccessViolationDebugEvent"
+
+#: debugeventhandler.rsspecialcase
+msgid "Special case"
+msgstr "Особый случай"
+
+#: debuggertypedefinitions.rsbreak
+msgctxt "debuggertypedefinitions.rsbreak"
+msgid "Break"
+msgstr "Прерывание"
+
+#: debuggertypedefinitions.rsbreakandtrace
+msgctxt "debuggertypedefinitions.rsbreakandtrace"
+msgid "Break and trace"
+msgstr "Прерваться и трассировать"
+
+#: debuggertypedefinitions.rschangereg
+msgid "Change reg"
+msgstr "Изменить регулярное выражение"
+
+#: debuggertypedefinitions.rsdbvmbreakpoint
+msgctxt "debuggertypedefinitions.rsdbvmbreakpoint"
+msgid "DBVM Breakpoint"
+msgstr "DBVM брейкпоинт"
+
+#: debuggertypedefinitions.rsexceptionbreakpoint
+msgid "Exception Breakpoint"
+msgstr "Исключение"
+
+#: debuggertypedefinitions.rsfindcode
+msgid "Find code"
+msgstr "Найти инструкцию"
+
+#: debuggertypedefinitions.rsfindcodeaccess
+msgid "Find code access"
+msgstr "Найти обращение к коду"
+
+#: debuggertypedefinitions.rshardwarebreakpoint
+msgid "Hardware Breakpoint"
+msgstr "Аппаратный"
+
+#: debuggertypedefinitions.rsonexecute
+msgid "On Execute"
+msgstr "На Выполнение"
+
+#: debuggertypedefinitions.rsonreadwrite
+msgid "On Read/Write"
+msgstr "На Чтение/Запись"
+
+#: debuggertypedefinitions.rsonwrite
+msgid "On Write"
+msgstr "На Чтение"
+
+#: debuggertypedefinitions.rssoftwarebreakpoint
+msgid "Software Breakpoint"
+msgstr "Программный"
+
+#: debughelper.rsaddbreakpointaninvaliddebugregisterisused
+msgid "AddBreakpoint: An invalid debug register is used"
+msgstr "Добавление брейкпоинта: Используется недопустимый отладочный регистр"
+
+#: debughelper.rsall4debugregistersarecurrentlyusedupfreeoneandtrya
+msgid "All debug registers are currently used up. Free one and try again"
+msgstr "В настоящие время используются все отладочные регистры. Освободите один из них и попробуйте снова"
+
+#: debughelper.rsalldebugregistersareusedup
+msgid "All debug registers are used up"
+msgstr "Используются все отладочные регистры"
+
+#: debughelper.rsalldebugregistersareusedupdoyouwanttouseasoftwarebp
+msgid "All debug registers are used up. Do you want to use a software breakpoint?"
+msgstr "Используются все отладочные регистры. Хотите воспользоваться программным брейкпоинтом?"
+
+#: debughelper.rsasktoenablenx
+msgid ""
+"For execute page exceptions the target process must support No-Execute page support. Currently this process doesn't have this enabled, but if you think the process itself does support it you can enable it.\n"
+"Do you wish to enable No-Execute support for this process?\n"
+msgstr ""
+"Для выполнения страничного исключения процесс цели должен поддерживать функцию «No Execute» На данный момент, в этом проце
