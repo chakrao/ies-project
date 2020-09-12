@@ -1191,4 +1191,106 @@ msgid ""
 "For execute page exceptions the target process must support No-Execute page support. Currently this process doesn't have this enabled, but if you think the process itself does support it you can enable it.\n"
 "Do you wish to enable No-Execute support for this process?\n"
 msgstr ""
-"Для выполнения страничного исключения процесс цели должен поддерживать функцию «No Execute» На данный момент, в этом проце
+"Для выполнения страничного исключения процесс цели должен поддерживать функцию «No Execute» На данный момент, в этом процессе данная функция не включена, но если вы думаете, что он её поддерживает, то вы можете её включить\n"
+"Вы хотите включить поддержку «No Execute» для этого процесса?\n"
+
+#: debughelper.rsbreakpointerror
+msgid "Breakpoint error:"
+msgstr "Ошибка брейкпоинта:"
+
+#: debughelper.rscalledfromanunexpectedthread
+msgid "Called from an unexpected thread"
+msgstr "Вызван из непредвиденного потока"
+
+#: debughelper.rscalledfromdebuggerthread
+msgid "Called from debugger thread"
+msgstr "Вызван из потока отладчика"
+
+#: debughelper.rscalledfrommainthread
+msgid "Called from main thread"
+msgstr "Вызван из основного потока"
+
+#: debughelper.rscantenabledep
+msgid "Data execution prevention is not enabled in this process and can not be enabled"
+msgstr "Предотвращение выполнения данных не включено в этом процессе и не может быть включено"
+
+#: debughelper.rsdebuggerattachaborted
+msgid "Debugger attach aborted"
+msgstr "Присоединение отладчика прервано"
+
+#: debughelper.rsdebuggerattachtimeout
+msgctxt "debughelper.rsdebuggerattachtimeout"
+msgid "Debugger attach timeout"
+msgstr "Время на подсоединение отладчика истекло"
+
+#: debughelper.rsdebuggercrash
+msgid "Debugger Crash"
+msgstr "Сбой отладчика"
+
+#: debughelper.rsdebuggerfailedtoattach
+msgid "Debugger failed to attach"
+msgstr "Отладчику не удалось присоединиться"
+
+#: debughelper.rsdebuggerinterfacedoesnotsupportdbvmbreakpoints
+msgid "Debugger interface %s does not support DBVM breakpoints"
+msgstr "Интерфейс отладчика %s не поддерживает DBVM брейкпоинты"
+
+#: debughelper.rsdebuggerinterfacedoesnotsupportsoftwarebreakpoints
+msgid "Debugger interface %s does not support software breakpoints"
+msgstr "Интерфейс отладчика «%s» не поддерживает программные брейкпоинты"
+
+#: debughelper.rsdebuggerthreadisatpoint
+msgid "debuggerthread is at point "
+msgstr "поток отладчика находится в "
+
+#: debughelper.rsdepsettingtimeout
+msgid "Timeout while trying to set DEP policy. Continue with the breakpoint?"
+msgstr "Превышено время ожидания при попытке установить политику предотвращение выполнения данных. Продолжить с брейкпоинта?"
+
+#: debughelper.rsfaileddep
+msgid "Failed enabling No Execute"
+msgstr "Не удалось включить «No Execute»"
+
+#: debughelper.rsfaileddeppermanently
+msgid "Failed enabling No Execute AND blocked it from every changing. Fuck"
+msgstr "Не удалось включить «No Execute» и заблокировать от каждого изменения. Бля"
+
+#: debughelper.rsfailuregettingdepinformation
+msgid "Failure getting DEP information for this process. No Execute Breakpoint support"
+msgstr "Невозможно получить информацию о функции предотвращения выполнения данных для этого процесса. Отсутствует поддержка выполнения брейкпоинтов"
+
+#: debughelper.rslastlocation
+msgid " (Last location:"
+msgstr " (Последнее расположение:"
+
+#: debughelper.rsno
+msgctxt "debughelper.rsno"
+msgid "No"
+msgstr "Нет"
+
+#: debughelper.rsnoexecutepageexceptionsforyou
+msgid "Execute page exception breakpoints are not possible on your system"
+msgstr "Выполнение страничного исключения невозможно на вашей системе"
+
+#: debughelper.rsnoform
+msgid "No form"
+msgstr "Нет формы"
+
+#: debughelper.rsonlythedebuggerthreadisallowedtosetthecurrentthread
+msgid "Only the debugger thread is allowed to set the current thread"
+msgstr "Только потоку отладчика позволено установить текущий поток"
+
+#: debughelper.rsoutofhwbreakpoints
+msgid "All debug registers are used up and this debugger interface does not support software Breakpoints. Remove some and try again"
+msgstr "Используются все отладочные регистры, а этот интерфейс отладчика не поддерживает программные брейкпоинты. Освободите один из регистров и попробуйте снова"
+
+#: debughelper.rsprocesssucksnodepsupport
+msgid "Ooops, looks like the process does not support No Execute"
+msgstr "Упс, похоже, что процесс не поддерживает «No Execute»"
+
+#: debughelper.rsthedebuggerattachhastimedout
+msgid ""
+"The debugger attach is taking a while. This is normal when there are many symbols or the system is slow so please be patient. But if you don't have the time to wait or the program has crashes to desktop, then you can cancel this wait. Beware though that you may have to restart the target process if you do wish to debug anyhow.\n"
+"Do you wish to wait longer?\n"
+msgstr ""
+"Присоединение отладчика займёт время. Это нормально, когда существует много символов или система работает медленно, так что будьте терпеливы. Но если у вас нет времени на ожидание или программа аварийно завершается, то вы можете отменить это ожидание. Однако имейте в виду, что это не остановит процесс присоединения, происходящий в данный момент в процессе цели, поэтому вам может потребоваться перезапуск процесса цели, если вы всё равно захотите отладить его (и он всё равно может застыть на несколько мгнове
