@@ -796,4 +796,170 @@ msgstr "Не удалось запустить загрузчик dll"
 msgid "Failed to inject the dll loader"
 msgstr "Не удалось выполнить инъекцию загрузчика dll"
 
-#: cefuncproc.rs
+#: cefuncproc.rsgetprocaddressnotfound
+msgid "GetProcAddress not found"
+msgstr "GetProcAddress не найден"
+
+#: cefuncproc.rsicantgettheprocesslistyouarepropablyusingwindowsnt
+msgctxt "cefuncproc.rsicantgettheprocesslistyouarepropablyusingwindowsnt"
+msgid "I can't get the process list. You are propably using windows NT. Use the window list instead!"
+msgstr "Не удалось получить список процессов. Возможно вы используете систему Windows NT. Воспользуйтесь списком окон вместо списка процессов!"
+
+#: cefuncproc.rsleftarrow
+msgctxt "cefuncproc.rsleftarrow"
+msgid "Left Arrow"
+msgstr "Left"
+
+#: cefuncproc.rsleftmb
+msgid "Left MB"
+msgstr "LMB"
+
+#: cefuncproc.rsleftwindowskey
+msgctxt "cefuncproc.rsleftwindowskey"
+msgid "Left Windows key"
+msgstr "LWin"
+
+#: cefuncproc.rsloadlibraryanotfound
+msgid "LoadLibraryA not found"
+msgstr "LoadLibraryA не найден"
+
+#: cefuncproc.rsmiddlemb
+msgid "Middle MB"
+msgstr "MMB"
+
+#: cefuncproc.rsnokernel32dllloaded
+msgid "No kernel32.dll loaded"
+msgstr "kernel32.dll не загружен"
+
+#: cefuncproc.rsnotconvertable
+msgid "Not convertable"
+msgstr "Не конвертируемая"
+
+#: cefuncproc.rsnotsupportedinthisversion
+msgid "not supported in this version"
+msgstr "не поддерживается в этой версии"
+
+#: cefuncproc.rsnumeric
+msgctxt "cefuncproc.rsnumeric"
+msgid "numeric"
+msgstr "Numpad"
+
+#: cefuncproc.rsnumlock
+msgctxt "cefuncproc.rsnumlock"
+msgid "Num Lock"
+msgstr "NumLk"
+
+#: cefuncproc.rspagedown
+msgctxt "cefuncproc.rspagedown"
+msgid "Page Down"
+msgstr "PgDn"
+
+#: cefuncproc.rspageup
+msgctxt "cefuncproc.rspageup"
+msgid "Page Up"
+msgstr "PgUp"
+
+#: cefuncproc.rsposition
+msgid " Position"
+msgstr " Позиция"
+
+#: cefuncproc.rsprintscreen
+msgctxt "cefuncproc.rsprintscreen"
+msgid "Print Screen"
+msgstr "PrtScn"
+
+#: cefuncproc.rsrightarrow
+msgctxt "cefuncproc.rsrightarrow"
+msgid "Right Arrow"
+msgstr "Right"
+
+#: cefuncproc.rsrightmb
+msgid "Right MB"
+msgstr "RMB"
+
+#: cefuncproc.rsrightwindowskey
+msgctxt "cefuncproc.rsrightwindowskey"
+msgid "Right Windows key"
+msgstr "RWin"
+
+#: cefuncproc.rsscrolllock
+msgctxt "cefuncproc.rsscrolllock"
+msgid "Scroll Lock"
+msgstr "ScrLk"
+
+#: cefuncproc.rsspacebar
+msgctxt "cefuncproc.rsspacebar"
+msgid "Space bar"
+msgstr "Space"
+
+#: cefuncproc.rstheinjectionthreadtooklongerthan10secondstoexecute
+msgid "The injection thread took longer than 10 seconds to execute. Injection routine not freed"
+msgstr "Выполнение инъекции заняло больше времени, чем отведённые 10 секунд. Процедура инъекции не освобождается"
+
+#: cefuncproc.rsunknownerrorduringinjection
+msgid "Unknown error during injection"
+msgstr "Во время инъекции произошла неизвестная ошибка"
+
+#: cefuncproc.rsuparrow
+msgctxt "cefuncproc.rsuparrow"
+msgid "Up Arrow"
+msgstr "Up"
+
+#: ceguicomponents.rsinvalidformdata
+msgid "Invalid formdata"
+msgstr "Недопустимые данные о форме"
+
+#: celazysocket.rsdisconnectedwhilereceivingdata
+msgid "Disconnected while receiving data"
+msgstr "Отключен при получении данных"
+
+#: celazysocket.rsdisconnectedwhilesendingdata
+msgid "Disconnected while sending data"
+msgstr "Отключен при отправке данных"
+
+#: celazysocket.rserrorwhilereceivingdata
+msgid "Error while receiving data: "
+msgstr "Ошибка при получении данных: "
+
+#: celazysocket.rserrorwhilesendingdata
+msgid "Error while sending data: "
+msgstr "Ошибка при отправке данных: "
+
+#: celazysocket.rstimeoutwhilereceivingdata
+msgid "Timeout while receiving data"
+msgstr "Тайм-аут при получении данных"
+
+#: celazysocket.rstimeoutwhilesendingdata
+msgid "Timeout while sending data"
+msgstr "Тайм-аут при отправке данных"
+
+#: changeoffsetunit.rsthisisnotanvalidvalue
+msgctxt "changeoffsetunit.rsthisisnotanvalidvalue"
+msgid "This is not an valid value"
+msgstr "Недопустимое значение"
+
+#: cheatengine.rstrainerusesdriver
+msgid "This trainer can load and use a device driver. Run it ? (Answering no will prevent you from using this trainer)"
+msgstr "Этот тренер может загрузить и использовать драйвер устройства. Запустить его? (Ответ «Нет» не позволит вам использовать этот трейнер)"
+
+#: customtypehandler.rsacustomfunctiontypewithnamealreadyexists
+msgid "A custom function type with name %s already exists"
+msgstr "Пользовательский тип функции с именем «%s» уже существует"
+
+#: customtypehandler.rsacustomtypewithnamealreadyexists
+msgid "A custom type with name %s already exists"
+msgstr "Пользовательский тип с именем «%s» уже существует"
+
+#: customtypehandler.rsbytesizeis0
+msgid "bytesize is 0"
+msgstr "размер байт равен 0"
+
+#: customtypehandler.rscthinvalidnumberofparameters
+msgid "Invalid number of parameters"
+msgstr "Неверное число параметров"
+
+#: customtypehandler.rscthparameter3isnotavalidfunction
+msgid "Parameter 3 is not a valid function"
+msgstr "Параметр 3 не является допустимой функцией"
+
+#: customtypeha
