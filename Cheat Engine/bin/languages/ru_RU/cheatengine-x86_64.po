@@ -1667,4 +1667,146 @@ msgid "Select your cheat engine signature file"
 msgstr "Выберите ваш файл подписи Cheat Engine"
 
 #: feces.rsthistablehasbeenmodified
-msgid "This table has been modified. To load this table, remove the signature part with an editor (And check the file for suspicious things while you're at it)
+msgid "This table has been modified. To load this table, remove the signature part with an editor (And check the file for suspicious things while you're at it)"
+msgstr "Данная таблица была изменена. Чтобы загрузить эту таблицу, удалите часть с подписью при помощи редактора (заодно проверьте файл на наличие подозрительных вещей)"
+
+#: fileaccess.rsnogetnamedsecurityinfo
+msgid "no GetNamedSecurityInfo"
+msgstr "GetNamedSecurityInfo не назначен"
+
+#: fileaccess.rsnogetsecurityinfo
+msgid "no GetSecurityInfo"
+msgstr "GetSecurityInfo не назначен"
+
+#: fileaccess.rsnosetentriesinacl
+msgid "no SetEntriesInAcl"
+msgstr "GetSecurityInfo не назначен"
+
+#: fileaccess.rsnosetnamedsecurityinfo
+msgid "no SetNamedSecurityInfo"
+msgstr "GetSecurityInfo не назначен"
+
+#: filemapping.rsdoesnotexist
+msgid "%s does not exist"
+msgstr "%s не существует"
+
+#: filemapping.rsfailedcreatingaproperview
+msgid "Failed creating a proper view"
+msgstr "Неудачное создание надлежащего вида"
+
+#: filemapping.rsmappingfailed
+msgid "Mapping failed"
+msgstr "Сбой маппинга"
+
+#: findwindowunit.rsnothingfound
+msgid "Nothing found"
+msgstr "Ничего не найдено"
+
+#: findwindowunit.rsthespecifiedrangeisinvalid
+msgid "The specified range is invalid"
+msgstr "Указанный диапазон недопустим"
+
+#: formaddresschangeunit.rsacaddoffset
+msgid "Add Offset"
+msgstr "Добавить смещение"
+
+#: formaddresschangeunit.rsacaddoffsethint
+msgid "Click: Add New Offset. Ctrl+Click: Add New Offset to the opposite location"
+msgstr "Клик: Добавить новое смещение. Ctrl+Клик: Добавить новое смещение в противоположное место"
+
+#: formaddresschangeunit.rsacremoveoffset
+msgctxt "formaddresschangeunit.rsacremoveoffset"
+msgid "Remove Offset"
+msgstr "Убрать смещение"
+
+#: formaddresschangeunit.rsacremoveoffsethint
+msgid "Click: Remove Offset. Ctrl+Click: Remove Offset from the opposite location"
+msgstr "Клик: Удалить смещение. Ctrl+Клик: Удалить смещение из противоположного расположения"
+
+#: formaddresschangeunit.rsaddressofpointer
+msgid "Address of pointer"
+msgstr "Адрес указателя"
+
+#: formaddresschangeunit.rsfillinthenrofbytesafterthelocationthepointerpoints
+msgid "Fill in the nr. of bytes after the location the pointer points to"
+msgstr "Заполните смещение после адреса на который указывает указатель"
+
+#: formaddresschangeunit.rsisnotavalidoffset
+msgid "%s is not a valid offset"
+msgstr "%s не является допустимым смещением"
+
+#: formaddresschangeunit.rsnotalloffsetshavebeenfilledin
+msgid "Not all offsets have been filled in"
+msgstr "Заполнены не все смещения"
+
+#: formaddresschangeunit.rsoffsethex
+msgid "Offset (Hex)"
+msgstr "Смещение (Hex)"
+
+#: formaddresschangeunit.rsresultofnextpointer
+msgid "Result of next pointer"
+msgstr "След. указатель"
+
+#: formaddresschangeunit.rstheoffsetyouchosebringsitto
+msgid "The offset you chose brings it to"
+msgstr "Смещение приводит к"
+
+#: formaddresschangeunit.rsthispointerpointstoaddress
+msgid "This pointer points to address"
+msgstr "Указатель указывает на адрес"
+
+#: formaddtocodelist.rspleasefillinavalidfromaddress
+msgctxt "formaddtocodelist.rspleasefillinavalidfromaddress"
+msgid "Please fill in a valid 'From' address"
+msgstr "Пожалуйста, заполните допустимый адрес в поле «От»"
+
+#: formaddtocodelist.rspleasefillinavalidtoaddress
+msgctxt "formaddtocodelist.rspleasefillinavalidtoaddress"
+msgid "Please fill in a valid 'To' address"
+msgstr "Пожалуйста, заполните допустимый адрес в поле «До»"
+
+#: formaddtocodelist.rsregion
+msgid "Region"
+msgstr "Регион"
+
+#: formaddtocodelist.rsregiontoadd
+msgid "Region to add"
+msgstr "Добавляемый регион"
+
+#: formchangedaddresses.rsareyouwishtodelete
+msgid "Are you sure you wish to delete these entries(s)?"
+msgstr "Вы действительно хотите удалить эти записи?"
+
+#: formchangedaddresses.rschangedaddressesby
+msgid "Accessed addresses by %x"
+msgstr "Адреса, по которым осуществлялся доступ по %x"
+
+#: formchangedaddresses.rsclose
+msgctxt "formchangedaddresses.rsclose"
+msgid "Close"
+msgstr "Закрыть"
+
+#: formchangedaddresses.rscodeaccessesaddresses
+msgid "The following %d addresses have been accessed by the code you selected"
+msgstr "Доступ к следующим %d адресам осуществлялся по выбранному вами коду"
+
+#: formchangedaddresses.rscodeaccessessingleaddress
+msgid "This address has been accessed by the code you selected"
+msgstr "Доступ к этому адресу осуществлялся по выбранному вами коду"
+
+#: formchangedaddresses.rsdeleteaddresses
+msgid "Delete addresses"
+msgstr "Удалить адреса"
+
+#: formchangedaddresses.rsdesignatesomeaddresses
+msgid "Please designate a group to at least some addresses"
+msgstr "Пожалуйста, назначьте группу хотя бы некоторым адресам"
+
+#: formchangedaddresses.rsenterluaformula
+msgid "Enter a Lua formula to use to filter. E.g RCX==0x2301adc0.  Empty for no filter"
+msgstr "Введите формулу Lua для фильтрации. Например, RCX==0x2301adc0. Если пусто, то без фильтрации."
+
+#: formchangedaddresses.rsfilter
+msgctxt "formchangedaddresses.rsfilter"
+msgid "Filter"
+msgstr "Фильтр"
