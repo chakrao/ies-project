@@ -1485,4 +1485,186 @@ msgctxt "dotnettypes.rsdntfloat"
 msgid "Float"
 msgstr "Float"
 
-#: dotnettypes.rsdn
+#: dotnettypes.rsdntfunctionpointer
+msgid "Function Pointer"
+msgstr "Указатель функции"
+
+#: dotnettypes.rsdntgenericinst
+msgid "GenericInst"
+msgstr "GenericInst"
+
+#: dotnettypes.rsdntinternal
+msgid "Internal"
+msgstr "Internal"
+
+#: dotnettypes.rsdntmax
+msgid "MAX"
+msgstr "MAX"
+
+#: dotnettypes.rsdntmodifier
+msgid "Modifier"
+msgstr "Модификатор"
+
+#: dotnettypes.rsdntmvar
+msgid "MVar"
+msgstr "MVar"
+
+#: dotnettypes.rsdntobject
+msgid "Object"
+msgstr "Объект"
+
+#: dotnettypes.rsdntpinned
+msgid "Pinned"
+msgstr "Pinned"
+
+#: dotnettypes.rsdntpointer
+msgctxt "dotnettypes.rsdntpointer"
+msgid "Pointer"
+msgstr "Указатель"
+
+#: dotnettypes.rsdntreference
+msgid "Reference"
+msgstr "Reference"
+
+#: dotnettypes.rsdntsentinel
+msgid "Sentinel"
+msgstr "Sentinel"
+
+#: dotnettypes.rsdntsigned
+msgid "Signed"
+msgstr "Знаковое"
+
+#: dotnettypes.rsdntstring
+msgctxt "dotnettypes.rsdntstring"
+msgid "String"
+msgstr "Строка"
+
+#: dotnettypes.rsdntszarray
+msgid "SZ Array"
+msgstr "SZ Array"
+
+#: dotnettypes.rsdnttypedbyref
+msgid "Typed By Ref"
+msgstr "Типизированная ссылка"
+
+#: dotnettypes.rsdntunsigned
+msgid "Unsigned"
+msgstr "Без знака"
+
+#: dotnettypes.rsdntvaluetype
+msgid "ValueType"
+msgstr "Тип значения"
+
+#: dotnettypes.rsdntvar
+msgid "Var"
+msgstr "Переменная"
+
+#: dotnettypes.rsdntvoid
+msgid "void"
+msgstr "void"
+
+#: driverlist.rsdlnothingfound
+msgctxt "driverlist.rsdlnothingfound"
+msgid "nothing found"
+msgstr "ничего не найдено"
+
+#: extratrainercomponents.rsundefineddescription
+msgid "undefined description"
+msgstr "описание отсутствует"
+
+#: extratrainercomponents.rsundefinedhotkey
+msgid "undefined hotkey"
+msgstr "горячая клавиша не определена"
+
+#: feces.rsbcryptcouldnotbeused
+msgid "bcrypt could not be used"
+msgstr "bcrypt не может быть использован"
+
+#: feces.rscheatenginesignaturefiles
+msgid "Cheat engine signature files"
+msgstr "Файлы подписи Cheat Engine"
+
+#: feces.rscouldnotopenthealgorithmprovider
+msgid "Could not open the algorithm provider"
+msgstr "Не удалось открыть поставщика алгоритма"
+
+#: feces.rsfailedcreatinghasalgorithmprovider
+msgctxt "feces.rsfailedcreatinghasalgorithmprovider"
+msgid "Failed creating has algorithm provider"
+msgstr "Неудачное создание поставщика алгоритма"
+
+#: feces.rsfailedcreatinghasalgorithmprovider2
+msgctxt "feces.rsfailedcreatinghasalgorithmprovider2"
+msgid "Failed creating has algorithm provider"
+msgstr "Неудачное создание поставщика алгоритма"
+
+#: feces.rsfailedcreatinghash
+msgid "Failed creating hash"
+msgstr "Неудачное создание хэша"
+
+#: feces.rsfailedcreatinghash2
+msgid "Failed creating hash 2"
+msgstr "Неудачное создание хэша 2"
+
+#: feces.rsfailedgettingtheobjectlength
+msgid "Failed getting the object length"
+msgstr "Неудачное получение длины объекта"
+
+#: feces.rsfailedhashingtable
+msgid "Failed hashing table"
+msgstr "Неудачное хеширование таблицы"
+
+#: feces.rsfailedhashingtable2
+msgid "Failed hashing table 2"
+msgstr "Неудачное хеширование таблицы 2"
+
+#: feces.rsfailedtofinishthehash
+msgid "Failed to finish the hash"
+msgstr "Не удалось завершить хэш"
+
+#: feces.rsfailedtofinishthehash2
+msgid "Failed to finish the hash 2"
+msgstr "Не удалось завершить хэш 2"
+
+#: feces.rsfailedtogethashlength
+msgid "Failed to get hashlength"
+msgstr "Не удалось получить длину хэша"
+
+#: feces.rsfailedtogethashlength2
+msgid "Failed to get hashlength 2"
+msgstr "Не удалось получить длину хэша 2"
+
+#: feces.rsfailedtogetsignaturesize
+msgid "Failed to get the signature size"
+msgstr "Не удалось получить размер подписи"
+
+#: feces.rsfailedtoloadcheatenginepublickey
+msgid "Failed to load cheat engine public key"
+msgstr "Не удалось загрузить открытый ключ Cheat Engine"
+
+#: feces.rsfailedtoloadprivatekey
+msgid "Failed to load private key"
+msgstr "Не удалось загрузить секретный ключ"
+
+#: feces.rsfailedtoloadthetablepublickey
+msgid "Failed to load the table public key"
+msgstr "Не удалось загрузить открытый ключ таблицы"
+
+#: feces.rsinvalidpublickey
+msgid "The provided public key is invalid(Not signed by the Cheat Engine guy). Remove the signature section to load this table"
+msgstr "Предоставленный открытый ключ недействителен. Удалите секцию подписи, чтобы загрузить эту таблицу"
+
+#: feces.rsnopublickey
+msgid "This table's signature does not contain a PublicKey element"
+msgstr "Подпись этой таблицы не содержит элемент PublicKey"
+
+#: feces.rsnosignedhash
+msgid "This table's signature does not contain a SignedHash element"
+msgstr "Подпись этой таблицы не содержит элемент SignedHash"
+
+#: feces.rsselectyourcheatenginesignaturefile
+msgid "Select your cheat engine signature file"
+msgstr "Выберите ваш файл подписи Cheat Engine"
+
+#: feces.rsthistablehasbeenmodified
+msgid "This table has been modified. To load this table, remove the signature part with an editor (And check the file for suspicious things while you're at it)
