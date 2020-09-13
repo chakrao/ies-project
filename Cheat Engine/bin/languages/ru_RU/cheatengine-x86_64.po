@@ -1293,4 +1293,196 @@ msgid ""
 "The debugger attach is taking a while. This is normal when there are many symbols or the system is slow so please be patient. But if you don't have the time to wait or the program has crashes to desktop, then you can cancel this wait. Beware though that you may have to restart the target process if you do wish to debug anyhow.\n"
 "Do you wish to wait longer?\n"
 msgstr ""
-"Присоединение отладчика займёт время. Это нормально, когда существует много символов или система работает медленно, так что будьте терпеливы. Но если у вас нет времени на ожидание или программа аварийно завершается, то вы можете отменить это ожидание. Однако имейте в виду, что это не остановит процесс присоединения, происходящий в данный момент в процессе цели, поэтому вам может потребоваться перезапуск процесса цели, если вы всё равно захотите отладить его (и он всё равно может застыть на несколько мгнове
+"Присоединение отладчика займёт время. Это нормально, когда существует много символов или система работает медленно, так что будьте терпеливы. Но если у вас нет времени на ожидание или программа аварийно завершается, то вы можете отменить это ожидание. Однако имейте в виду, что это не остановит процесс присоединения, происходящий в данный момент в процессе цели, поэтому вам может потребоваться перезапуск процесса цели, если вы всё равно захотите отладить его (и он всё равно может застыть на несколько мгновений, в ожидании символов).\n"
+"(Это окно исчезнет автоматически после завершения присоединения. Закрыть его вручную равнозначно нажатию кнопки отмены)\n"
+"Вы хотите подождать подольше?\n"
+
+#: debughelper.rsthefollowingaddressesexecute
+msgid "The following codes execute %s"
+msgstr "Следующие коды выполняют %s"
+
+#: debughelper.rsthefollowingopcodesaccessed
+msgid "The following opcodes accessed %s"
+msgstr "Следующие инструкции обращались к %s"
+
+#: debughelper.rsthefollowingopcodeswriteto
+msgid "The following opcodes write to %s"
+msgstr "Следующие инструкции записывают в %s"
+
+#: debughelper.rsthisdebuggerinterfacedoesntsupportbreakonentryyet
+msgid "This debugger interface :'%s' doesn't support Break On Entry yet"
+msgstr "Этот интерфейс отладчика : «%s» пока не поддерживает прерывание на точке входа"
+
+#: debughelper.rsunreadableaddress
+msgid "Unreadable address"
+msgstr "Нечитаемый адрес"
+
+#: debughelper.rsunreadablememoryunabletosetsoftwarebreakpoint
+msgid "Unreadable memory. Unable to set software breakpoint"
+msgstr "Нечитаемая память. Не удалось установить программный брейкпоинт"
+
+#: debughelper.rsyes
+msgctxt "debughelper.rsyes"
+msgid "Yes"
+msgstr "Да"
+
+#: disassemblerviewlinesunit.rscall
+msgid "(Call)"
+msgstr "(Вызов)"
+
+#: disassemblerviewlinesunit.rscon
+msgid "(Conditional)"
+msgstr "(Условный)"
+
+#: disassemblerviewlinesunit.rsinvaliddisassembly
+msgid "Invalid disassembly"
+msgstr "Недопустимое дизассемблирование"
+
+#: disassemblerviewlinesunit.rsmemory
+msgid "(Code/Data)"
+msgstr "(Код/Данные)"
+
+#: disassemblerviewlinesunit.rsun
+msgid "(Unconditional)"
+msgstr "(Безусловный)"
+
+#: disassemblerviewunit.rsaddress
+msgctxt "disassemblerviewunit.rsaddress"
+msgid "Address"
+msgstr "Адрес"
+
+#: disassemblerviewunit.rsbytes
+msgctxt "disassemblerviewunit.rsbytes"
+msgid "Bytes"
+msgstr "Байты"
+
+#: disassemblerviewunit.rscomment
+msgctxt "disassemblerviewunit.rscomment"
+msgid "Comment"
+msgstr "Комментарий"
+
+#: disassemblerviewunit.rscopy
+msgctxt "disassemblerviewunit.rscopy"
+msgid "Copy"
+msgstr "Копировать"
+
+#: disassemblerviewunit.rsopcode
+msgid "Opcode"
+msgstr "Инструкция"
+
+#: disassemblerviewunit.rspleaseopenaprocessfirst
+msgid "Please open a process first"
+msgstr "Сначала откройте процесс"
+
+#: disassemblerviewunit.rsstructuresarebeingparsed
+msgid "Structures are being parsed"
+msgstr "Идёт анализ структур"
+
+#: disassemblerviewunit.rssymbolsarebeingloaded
+msgid "Symbols are being loaded (%d %%)"
+msgstr "Символы загружаются (%d %%)"
+
+#: dissectcodethread.rsinvaliddissectcodefile
+msgid "Invalid dissect code file"
+msgstr "Неверный файл анализа кода"
+
+#: dissectcodethread.rstdissectcodethreadgetcalllistcalledwithanonemptylist
+msgid "TDissectCodeThread.getCallList called with a non empty list"
+msgstr "TDissectCodeThread.getCallList был вызван с непустым списком"
+
+#: dissectcodeunit.rsdissectdataloaded
+msgid "Dissect data loaded"
+msgstr "Анализ данных загружен"
+
+#: dissectcodeunit.rsdone
+msgctxt "dissectcodeunit.rsdone"
+msgid "done"
+msgstr "готово"
+
+#: dissectcodeunit.rspleaseselectsomethingtoscan
+msgid "Please select something to scan"
+msgstr "Пожалуйста, выберите что-то для начала сканирования"
+
+#: dissectcodeunit.rsstart
+msgctxt "dissectcodeunit.rsstart"
+msgid "Start"
+msgstr "Запустить"
+
+#: dissectcodeunit.rsstop
+msgctxt "dissectcodeunit.rsstop"
+msgid "Stop"
+msgstr "Остановить"
+
+#: dotnettypes.rsdnt2byte
+msgid "2 Byte"
+msgstr "2 Байта"
+
+#: dotnettypes.rsdnt2bytesigned
+msgid "2 Byte (Signed)"
+msgstr "2 Байта (Знаковое)"
+
+#: dotnettypes.rsdnt4byte
+msgid "4 Byte"
+msgstr "4 Байта"
+
+#: dotnettypes.rsdnt4bytesigned
+msgid "4 Byte (Signed)"
+msgstr "4 Байта (Знаковое)"
+
+#: dotnettypes.rsdnt8byte
+msgctxt "dotnettypes.rsdnt8byte"
+msgid "8 Byte"
+msgstr "8 Байт"
+
+#: dotnettypes.rsdnt8bytesigned
+msgid "8 Byte (Signed)"
+msgstr "8 Байт (Знаковое)"
+
+#: dotnettypes.rsdntarray
+msgid "Array"
+msgstr "Массив"
+
+#: dotnettypes.rsdntbool
+msgid "bool"
+msgstr "bool"
+
+#: dotnettypes.rsdntbyte
+msgctxt "dotnettypes.rsdntbyte"
+msgid "Byte"
+msgstr "1 Байт"
+
+#: dotnettypes.rsdntbytesigned
+msgid "Byte (Signed)"
+msgstr "1 Байт (Знаковое)"
+
+#: dotnettypes.rsdntchar
+msgid "char"
+msgstr "символ"
+
+#: dotnettypes.rsdntclass
+msgid "Class"
+msgstr "Класс"
+
+#: dotnettypes.rsdntcmod_opt
+msgid "CMOD_OPT"
+msgstr "CMOD_OPT"
+
+#: dotnettypes.rsdntcmod_reqd
+msgid "CMOD_REQD"
+msgstr "CMOD_REQD"
+
+#: dotnettypes.rsdntdouble
+msgctxt "dotnettypes.rsdntdouble"
+msgid "Double"
+msgstr "Double"
+
+#: dotnettypes.rsdntend
+msgid "END"
+msgstr "Конец"
+
+#: dotnettypes.rsdntfloat
+msgctxt "dotnettypes.rsdntfloat"
+msgid "Float"
+msgstr "Float"
+
+#: dotnettypes.rsdn
