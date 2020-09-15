@@ -2325,4 +2325,144 @@ msgid "Unrandomizer"
 msgstr "Антирандомайзер"
 
 #: formsettingsunit.rsyouhaventselectedanymemorytypethiswillresultinchea
-msgid "You haven't selected any memory type. This will result in Cheat Engine finding NO memory! Are you s
+msgid "You haven't selected any memory type. This will result in Cheat Engine finding NO memory! Are you stupid?"
+msgstr "Вы не выбрали ни один из типов памяти. Это приведёт к тому, что Cheat Engine не сможет производить поиск. Вы что, дурак?"
+
+#: formsettingsunit.strprocesswatcherwillpreventunloader
+msgid "Enabling the process watcher will prevent the unloader from working"
+msgstr "Включение «Наблюдателя процесса» будет препятствовать работе разгрузчика"
+
+#: foundcodeunit.rsfctheswillsetasiftwarebreakpointint3oneverysingleopcodeetc
+msgid "This will set a Software Breakpoint (int3) on every single opcode that will be reported here. Are you sure ?"
+msgstr "Будет установлен программный брейкпоинт (int3) на каждую инструкцию находящуюся в списке. Вы уверены?"
+
+#: foundcodeunit.strclose
+msgctxt "foundcodeunit.strclose"
+msgid "Close"
+msgstr "Закрыть"
+
+#: foundlisthelper.rserror
+msgctxt "foundlisthelper.rserror"
+msgid "Error"
+msgstr "Ошибка"
+
+#: foundlisthelper.rsundefinederror
+msgctxt "foundlisthelper.rsundefinederror"
+msgid "Undefined error"
+msgstr "Неопределённая ошибка"
+
+#: frmadconfigunit.rspercentageshown
+msgid "Percentage shown"
+msgstr "Процент показа"
+
+#: frmautoinjectunit.rsareyousureyouwanttoclose
+msgid "Are you sure you want to close %s ?"
+msgstr "Вы уверены, что хотите закрыть %s ?"
+
+#: frmautoinjectunit.rsautoassembler
+msgid "Auto assembler"
+msgstr "Автоассемблер"
+
+#: frmautoinjectunit.rsceafilter
+msgid "Cheat Engine Assembly (*.CEA)|*.CEA|All Files ( *.* )|*.*"
+msgstr "Cheat Engine Ассемблирование (*.CEA)|*.CEA|Все файлы ( *.* )|*.*"
+
+#: frmautoinjectunit.rscegafilter
+msgid "Cheat Engine GNU Assembly (*.CEGA)|*.CEGA|All Files ( *.* )|*.*"
+msgstr "Cheat Engine GNU Ассемблирование (*.CEGA)|*.CEGA|Все файлы ( *.* )|*.*"
+
+#: frmautoinjectunit.rscodeinjecttemplate
+msgid "Code inject template"
+msgstr "Шаблон инъекции кода"
+
+#: frmautoinjectunit.rscodeneedsenableanddisable
+msgid "The code needs an [ENABLE] and a [DISABLE] section if you want to use this script as a table entry"
+msgstr "Скрипт должен содержать секции [ENABLE] и [DISABLE], чтобы его можно было добавить в таблицу"
+
+#: frmautoinjectunit.rscoderelocationtemplate
+msgid "Code relocation template"
+msgstr "Шаблон перемещения кода"
+
+#: frmautoinjectunit.rsendaddresslastbytesareincludedifnecesary
+msgid "End address (last bytes are included if necessary)"
+msgstr "Конечный адрес"
+
+#: frmautoinjectunit.rserrorcouldnotfinduniqueaobtriedcode
+msgid "ERROR: Could not find unique AOB, tried code \""
+msgstr "ОШИБКА: Не удалось найти уникальный массив байт. Испытанный код «"
+
+#: frmautoinjectunit.rserrorinscript
+msgid "Error in script %s : %s"
+msgstr "Ошибка в скрипте %s : %s"
+
+#: frmautoinjectunit.rserrorinscriptnotab
+msgid "Error in script : %s"
+msgstr "Ошибка в скрипте : %s"
+
+#: frmautoinjectunit.rseverythingok
+msgid "Everything ok"
+msgstr "Всё в порядке"
+
+#: frmautoinjectunit.rsexecutescript
+msgid "Execute script"
+msgstr "Выполнить скрипт"
+
+#: frmautoinjectunit.rsfailedallocatingmemoryforthescript
+msgid "Failed allocating memory for the script"
+msgstr "Не удалось выделить память для скрипта"
+
+#: frmautoinjectunit.rsfailedcreatingcallingstubforscriptlocatedataddress
+msgid "Failed creating calling stub for script located at address "
+msgstr "Неудачное создание вызывающей заглушки для скрипта, расположенного по адресу "
+
+#: frmautoinjectunit.rsfailedtoaddtotablenotallcodeisinjectable
+msgid "Failed to add to table. Not all code is injectable"
+msgstr "Не удалось добавить в таблицу. Не весь код пригоден к инъекции"
+
+#: frmautoinjectunit.rsfailedwritingthescripttotheprocess
+msgid "failed writing the script to the process"
+msgstr "не удалось записать скрипт в процесс"
+
+#: frmautoinjectunit.rsfailureloadingundercdll
+msgid "Failure loading undercdll"
+msgstr "Не удалось загрузить undercdll"
+
+#: frmautoinjectunit.rsgnuascript
+msgid "GNU Assembler Script"
+msgstr "Скрипт GNU Ассемблера"
+
+#: frmautoinjectunit.rsluafilter
+msgid "LUA Script (*.LUA)|*.LUA|All Files ( *.* )|*.*"
+msgstr "LUA Скрипт (*.LUA)|*.LUA|Все файлы ( *.* )|*.*"
+
+#: frmautoinjectunit.rsluascript
+msgid "LUA Script"
+msgstr "LUA Скрипт"
+
+#: frmautoinjectunit.rsnewnamequestion
+msgid "What should the new name be?"
+msgstr "Каким должно быть новое имя?"
+
+#: frmautoinjectunit.rsnotallcodeisinjectable
+msgid ""
+"Not all code is injectable.\n"
+"%s\n"
+"Are you sure you want to edit it to this?\n"
+msgstr ""
+"Не весь код пригоден к инъекции.\n"
+"%s\n"
+"Вы уверены, что не хотите отредактировать его?\n"
+
+#: frmautoinjectunit.rsonwhataddressdoyouwantthejump
+msgid "On what address do you want the jump?"
+msgstr "На каком адресе вы хотите установить переход?"
+
+#: frmautoinjectunit.rsrenametab
+msgid "Rename tab"
+msgstr "Переименовать вкладку"
+
+#: frmautoinjectunit.rsscript
+msgid "Script "
+msgstr "Скрипт "
+
+#: frmautoinject
