@@ -2178,4 +2178,151 @@ msgstr "%s не является допустимым интервалом"
 
 #: formsettingsunit.rslanguages
 msgctxt "formsettingsunit.rslanguages"
-ms
+msgid "Languages"
+msgstr "Язык"
+
+#: formsettingsunit.rslower
+msgctxt "formsettingsunit.rslower"
+msgid "Lower"
+msgstr "Ниже обычного"
+
+#: formsettingsunit.rslowest
+msgctxt "formsettingsunit.rslowest"
+msgid "Lowest"
+msgstr "Низший"
+
+#: formsettingsunit.rsluaoptions
+msgctxt "formsettingsunit.rsluaoptions"
+msgid "Lua"
+msgstr "Lua"
+
+#: formsettingsunit.rsnewlanguageset
+msgid "New language set"
+msgstr "Новый язык задан"
+
+#: formsettingsunit.rsnextscan
+msgctxt "formsettingsunit.rsnextscan"
+msgid "Next Scan"
+msgstr "Отсев"
+
+#: formsettingsunit.rsnoname
+msgid "No Name"
+msgstr "Без имени"
+
+#: formsettingsunit.rsnormal
+msgctxt "formsettingsunit.rsnormal"
+msgid "Normal"
+msgstr "Обычный"
+
+#: formsettingsunit.rspausetheselectedprocess
+msgid "Pause the selected process"
+msgstr "Остановить выбранный процесс"
+
+#: formsettingsunit.rspleasebootwithunsigneddriversallowedf8duringbootor
+msgid "Please boot with unsigned drivers allowed(F8 during boot), or sign the driver yourself"
+msgstr "Загрузите систему с неподписанным драйвером (клавиша F8 во время загрузки) или подпишите его самостоятельно"
+
+#: formsettingsunit.rsplugins
+msgctxt "formsettingsunit.rsplugins"
+msgid "Plugins"
+msgstr "Плагины"
+
+#: formsettingsunit.rspopuphidecheatengine
+msgid "Popup/Hide cheat engine"
+msgstr "Всплытие/Скрытие Cheat Engine"
+
+#: formsettingsunit.rsrequiresdbvm
+msgid "(Requires DBVM)"
+msgstr "(Требуется DBVM)"
+
+#: formsettingsunit.rsrestartce
+msgid "It is recommended to restart Cheat Engine for this change to take effect"
+msgstr "Чтобы изменения вступили в силу, рекомендуется перезапустить Cheat Engine"
+
+#: formsettingsunit.rsscansettings
+msgctxt "formsettingsunit.rsscansettings"
+msgid "Scan Settings"
+msgstr "Настройки поиска"
+
+#: formsettingsunit.rssigning
+msgid "Signing"
+msgstr "Подписание"
+
+#: formsettingsunit.rsspectreregistrychanged
+msgid "The registry keys has been changed accordingly.  Reboot your system to make it take effect"
+msgstr "Ключи реестра были изменены.  Перезагрузите вашу систему, чтобы изменения вступили в силу"
+
+#: formsettingsunit.rsspectrerestore
+msgid "Your protection has been restored. Please restart your system to make it take effect"
+msgstr "Ваша защита была восстановлена. Пожалуйста, перезагрузите вашу систему, чтобы изменения вступили в силу"
+
+#: formsettingsunit.rsspectrewarning
+msgid ""
+"WARNING! Making kernelmode possible will slightly increase the speed of your system, BUT it will make you vulnerable to Spectre attacks\n"
+"Are you ok with this? (You can later re-enable this protection)\n"
+msgstr ""
+"ПРЕДУПРЕЖДЕНИЕ! Создание возможности отладки ядра немного увеличит скорость вашей системы, но сделает вас уязвимым к атаке с применением эксплойта «Spectre»\n"
+"Вы нормально к этому относитесь?\n"
+
+#: formsettingsunit.rsspeedhackspeed
+msgid "Speedhack speed"
+msgstr "Спидхак - скорость"
+
+#: formsettingsunit.rstext
+msgctxt "formsettingsunit.rstext"
+msgid "Text"
+msgstr "Текст"
+
+#: formsettingsunit.rsthescanbuffersizehastobegreaterthan0
+msgid "The scanbuffer size has to be greater than 0"
+msgstr "Размер буфера поиска должен быть больше, чем 0"
+
+#: formsettingsunit.rsthevalueforthekeypollintervalisinvalid
+msgid "the value for the keypoll interval (%s is invalid"
+msgstr "%s  не является допустимым значением для интервала опроса клавиш"
+
+#: formsettingsunit.rsthevalueforthewaitbetweenhotkeypressesisinvalid
+msgid "the value for the wait between hotkey presses (%s is invalid"
+msgstr "%s не является допустимым значением для задержки между повторным срабатыванием горячей клавиши"
+
+#: formsettingsunit.rsthispluginisalreadyloaded
+msgid "This plugin is already loaded"
+msgstr "Этот плагин уже загружен"
+
+#: formsettingsunit.rstimecritical
+msgctxt "formsettingsunit.rstimecritical"
+msgid "TimeCritical"
+msgstr "Критичный по времени"
+
+#: formsettingsunit.rstogglebetweenfirstlastscancompare
+msgid "Toggle between first/last scan compare"
+msgstr "Переключение между первым/последним сравнением поиска"
+
+#: formsettingsunit.rstogglethespeedhack
+msgid "Toggle the speedhack"
+msgstr "Переключить спидхак"
+
+#: formsettingsunit.rstools
+msgctxt "formsettingsunit.rstools"
+msgid "Tools"
+msgstr "Инструменты"
+
+#: formsettingsunit.rsunchangedvalue
+msgid "Unchanged Value"
+msgstr "Значение не изменилось"
+
+#: formsettingsunit.rsundolastscan
+msgid "Undo last scan"
+msgstr "Возврат предыдущего отсева"
+
+#: formsettingsunit.rsunknowninitialvalue
+msgid "Unknown Initial Value"
+msgstr "Неизвестное начальное значение"
+
+#: formsettingsunit.rsunrandomizer
+msgctxt "formsettingsunit.rsunrandomizer"
+msgid "Unrandomizer"
+msgstr "Антирандомайзер"
+
+#: formsettingsunit.rsyouhaventselectedanymemorytypethiswillresultinchea
+msgid "You haven't selected any memory type. This will result in Cheat Engine finding NO memory! Are you s
