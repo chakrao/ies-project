@@ -1986,4 +1986,196 @@ msgid "Execute+Read+Write"
 msgstr "Выполнение+Чтение+Запись"
 
 #: formmemoryregionsunit.rsexecutewritecopy
-msgid "Exec
+msgid "Execute+Write Copy"
+msgstr "Выполнение+Запись+Копирование"
+
+#: formmemoryregionsunit.rsfailedtodelete
+msgid "Failed to delete %s"
+msgstr "Не удалось удалить %s"
+
+#: formmemoryregionsunit.rsfree
+msgid "Free"
+msgstr "Свободный"
+
+#: formmemoryregionsunit.rsguard
+msgid "Guard"
+msgstr "Защищаемый"
+
+#: formmemoryregionsunit.rsimage
+msgctxt "formmemoryregionsunit.rsimage"
+msgid "Image"
+msgstr "Образ"
+
+#: formmemoryregionsunit.rsmapped
+msgid "Mapped"
+msgstr "Проецируемый"
+
+#: formmemoryregionsunit.rsmemoryregions
+msgctxt "formmemoryregionsunit.rsmemoryregions"
+msgid "Memory regions"
+msgstr "Регионы памяти"
+
+#: formmemoryregionsunit.rsmemoryregionssaving
+msgid "Memory regions - Saving(%s/%s)"
+msgstr "Регионы памяти - Сохранение (%s/%s)"
+
+#: formmemoryregionsunit.rsnoaccess
+msgctxt "formmemoryregionsunit.rsnoaccess"
+msgid "No Access"
+msgstr "Нет доступа"
+
+#: formmemoryregionsunit.rsnocache
+msgid "No Cache"
+msgstr "Не кэшировать"
+
+#: formmemoryregionsunit.rsprivate
+msgid "Private"
+msgstr "Закрытый"
+
+#: formmemoryregionsunit.rsread
+msgid "Read"
+msgstr "Чтение"
+
+#: formmemoryregionsunit.rsreadwrite
+msgid "Read+Write"
+msgstr "Чтение+Запись"
+
+#: formmemoryregionsunit.rsreserve
+msgid "Reserve"
+msgstr "Резервный"
+
+#: formmemoryregionsunit.rstherearealreadymemoryfileswiththisnamedoyouwanttod
+msgid "There are already memoryfiles with this name. Do you want to delete them? (choosing no will add the file(s) to empty slots)"
+msgstr "Файл с таким же названием уже существует. Хотите его удалить? (если выберите «Нет», файл будет сохранён с таким же названием, но с немного другим расширением)"
+
+#: formmemoryregionsunit.rsthereisnofreeslot
+msgid "There is no free slot"
+msgstr "Нет свободных слотов"
+
+#: formmemoryregionsunit.rswritecopy
+msgctxt "formmemoryregionsunit.rswritecopy"
+msgid "Write Copy"
+msgstr "Запись+Копирование"
+
+#: formsettingsunit.rs2bytes
+msgctxt "formsettingsunit.rs2bytes"
+msgid "2 Bytes"
+msgstr "2 Байта"
+
+#: formsettingsunit.rs4bytes
+msgctxt "formsettingsunit.rs4bytes"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: formsettingsunit.rs8bytes
+msgctxt "formsettingsunit.rs8bytes"
+msgid "8 Bytes"
+msgstr "8 Байт"
+
+#: formsettingsunit.rsallcustomtypes
+msgid "All Custom Types"
+msgstr "Все пользовательские типы"
+
+#: formsettingsunit.rsarrayofbyte
+msgctxt "formsettingsunit.rsarrayofbyte"
+msgid "Array of byte"
+msgstr "Массив байт"
+
+#: formsettingsunit.rsattachtoforegroundprocess
+msgid "Attach to current foreground process"
+msgstr "Присоединиться к текущему приоритетному процессу"
+
+#: formsettingsunit.rsbinary
+msgctxt "formsettingsunit.rsbinary"
+msgid "Binary"
+msgstr "Двоичный"
+
+#: formsettingsunit.rsbyte
+msgctxt "formsettingsunit.rsbyte"
+msgid "Byte"
+msgstr "1 Байт"
+
+#: formsettingsunit.rscancelthecurrentscan
+msgid "Cancel the current scan"
+msgstr "Отменить текущий поиск"
+
+#: formsettingsunit.rschangedvalue
+msgid "Changed Value"
+msgstr "Значение изменилось"
+
+#: formsettingsunit.rschangetypeto
+msgid "Change type to"
+msgstr "Изменить тип на"
+
+#: formsettingsunit.rsdebuggeroptions
+msgctxt "formsettingsunit.rsdebuggeroptions"
+msgid "Debugger Options"
+msgstr "Параметры отладчика"
+
+#: formsettingsunit.rsdebugrun
+msgid "Debug->Run"
+msgstr "Отладка->Запустить"
+
+#: formsettingsunit.rsdecreasedvalue
+msgid "Decreased Value"
+msgstr "Значение уменьшилось"
+
+#: formsettingsunit.rsdouble
+msgctxt "formsettingsunit.rsdouble"
+msgid "Double"
+msgstr "Double"
+
+#: formsettingsunit.rsextra
+msgctxt "formsettingsunit.rsextra"
+msgid "Extra"
+msgstr "Дополнительно"
+
+#: formsettingsunit.rsfailmmregistry
+msgid "Failure getting the Memory Management registry key"
+msgstr "Не удалось получить ключ реестра «Memory Managements»"
+
+#: formsettingsunit.rsfailuretoopenregistry
+msgid "Failure to open the registry entry"
+msgstr "Не удалось открыть запись реестра"
+
+#: formsettingsunit.rsfloat
+msgctxt "formsettingsunit.rsfloat"
+msgid "Float"
+msgstr "Float"
+
+#: formsettingsunit.rsgeneralsettings
+msgctxt "formsettingsunit.rsgeneralsettings"
+msgid "General Settings"
+msgstr "Общие настройки"
+
+#: formsettingsunit.rshigher
+msgctxt "formsettingsunit.rshigher"
+msgid "Higher"
+msgstr "Выше обычного"
+
+#: formsettingsunit.rshighest
+msgctxt "formsettingsunit.rshighest"
+msgid "Highest"
+msgstr "Высший"
+
+#: formsettingsunit.rshotkeys
+msgctxt "formsettingsunit.rshotkeys"
+msgid "Hotkeys"
+msgstr "Горячие клавиши"
+
+#: formsettingsunit.rsidle
+msgctxt "formsettingsunit.rsidle"
+msgid "Idle"
+msgstr "Простаивающий"
+
+#: formsettingsunit.rsincreasedvalue
+msgid "Increased Value"
+msgstr "Значение увеличилось"
+
+#: formsettingsunit.rsisnotavalidinterval
+msgid "%s is not a valid interval"
+msgstr "%s не является допустимым интервалом"
+
+#: formsettingsunit.rslanguages
+msgctxt "formsettingsunit.rslanguages"
+ms
