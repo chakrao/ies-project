@@ -2465,4 +2465,164 @@ msgstr "Переименовать вкладку"
 msgid "Script "
 msgstr "Скрипт "
 
-#: frmautoinject
+#: frmautoinjectunit.rsscript1
+msgid "Script 1"
+msgstr "Скрипт 1"
+
+#: frmautoinjectunit.rsstartaddress
+msgid "Start address"
+msgstr "Начальный адрес"
+
+#: frmautoinjectunit.rsthumbinstructionsarenotyetimplemented
+msgid "Thumb instructions are not yet implemented"
+msgstr "Thumb инструкции ещё не реализованы"
+
+#: frmautoinjectunit.rswhatidentifierdoyouwanttouse
+msgid "What do you want to name the symbol for the injection point?"
+msgstr "Какое название вы хотите дать символу, указывающему на место инъекции?"
+
+#: frmautoinjectunit.rswritecode
+msgid "Write code"
+msgstr "Записать код"
+
+#: frmbranchmapperunit.rsfoundnr
+msgid "Found %d"
+msgstr "Найдено %d"
+
+#: frmbranchmapperunit.rssaveresultstofile
+msgid "Save results to file"
+msgstr "Сохранить результаты в файл"
+
+#: frmbranchmapperunit.rsstartmapping
+msgid "Start Mapping"
+msgstr "Запустить"
+
+#: frmbranchmapperunit.rsstop
+msgctxt "frmbranchmapperunit.rsstop"
+msgid "Stop"
+msgstr "Остановить"
+
+#: frmbreakpointlistunit.rsbpareyousureyouwishtochangethistoapegewidebp
+msgid "Are you sure you wish to change this to a pagewide breakpoint?"
+msgstr "Вы уверены, что хотите изменить ширину страницы брейкпоинтов?"
+
+#: frmchangedaddressescommonalityscannerunit.rsbaseaddress
+msgctxt "frmchangedaddressescommonalityscannerunit.rsbaseaddress"
+msgid "Base Address"
+msgstr "Базовый адрес"
+
+#: frmchangedaddressescommonalityscannerunit.rsdblclicklaunchcomp
+msgid "Doubleclick to launch structure compare"
+msgstr "Двойной клик для запуска сравнения структуры"
+
+#: frmchangedaddressescommonalityscannerunit.rsshowresults
+msgid "Doubleclick to show scanner/results"
+msgstr "Двойной клик для показа сканера/результатов"
+
+#: frmcodecavescannerunit.rsclosingthiswindowwillalsostopthescannerareyousure
+msgid "Closing this window will also stop the scanner. Are you sure?"
+msgstr "Закрытие этого окна приведёт к остановке поиска. Вы уверены?"
+
+#: frmcodecavescannerunit.rspleaseprovideavalidsizeforthewantedcodecave
+msgid "Please provide a valid size for the wanted code cave"
+msgstr "Пожалуйста, предоставьте допустимый размер для требуемого «code cave»"
+
+#: frmcodecavescannerunit.rspleaseprovideavalidstartaddress
+msgid "Please provide a valid start address"
+msgstr "Пожалуйста, предоставьте допустимый начальный адрес"
+
+#: frmcodecavescannerunit.rspleaseprovideavalidstopaddress
+msgid "Please provide a valid stop address"
+msgstr "Пожалуйста, предоставьте допустимый конечный адрес"
+
+#: frmcodecavescannerunit.rspleasetellmeyoudontneedacodecavethissmall
+msgid "Please tell me you don't need a code cave this small!!!"
+msgstr "Пожалуйста, скажите мне, что вам не нужен «code cave» такого маленького размера!!!"
+
+#: frmcodefilterunit.rsaddresslist
+msgid "Address List (%d)"
+msgstr "Список адресов (%d)"
+
+#: frmcodefilterunit.rsassemblyscanpleasewait
+msgid "Assembly Scan. Please wait"
+msgstr "Поиск инструкций. Пожалуйста, подождите"
+
+#: frmcodefilterunit.rscancel
+msgid "Cancel List Refresh"
+msgstr "Отменить обновление"
+
+#: frmcodefilterunit.rscodefilter
+msgid "Code Filter"
+msgstr "Фильтр кода"
+
+#: frmcodefilterunit.rsfilteringaddresses
+msgid "Filtering addresses"
+msgstr "Фильтрация адресов"
+
+#: frmcodefilterunit.rsno
+msgctxt "frmcodefilterunit.rsno"
+msgid "No"
+msgstr "Нет"
+
+#: frmcodefilterunit.rsopenanaddressfile
+msgid "Open an address file"
+msgstr "Открыть файл"
+
+#: frmcodefilterunit.rssaveanaddressfile
+msgid "Save an address file"
+msgstr "Сохранить файл"
+
+#: frmcodefilterunit.rssettingbreakpoints
+msgid "Setting breakpoints"
+msgstr "Установка брейкпоинтов"
+
+#: frmcodefilterunit.rsshowrefreshlist
+msgctxt "frmcodefilterunit.rsshowrefreshlist"
+msgid "Refresh list"
+msgstr "Обновить список"
+
+#: frmcodefilterunit.rsxisaninvalidrange
+msgid "%s is an invalid range (xxxx-xxxx)"
+msgstr "%s - недопустимый диапазон (xxxx-xxxx)"
+
+#: frmcodefilterunit.rsyes
+msgctxt "frmcodefilterunit.rsyes"
+msgid "Yes"
+msgstr "Да"
+
+#: frmdebugsymbolstructurelistunit.rstherearestructuresinthislist
+msgid "There are %d structures in this list"
+msgstr "В этом списке %d структур(ы)"
+
+#: frmdisassemblyscanunit.rsdone
+msgctxt "frmdisassemblyscanunit.rsdone"
+msgid "Done"
+msgstr "Готово"
+
+#: frmdisassemblyscanunit.rsdsclose
+msgctxt "frmdisassemblyscanunit.rsdsclose"
+msgid "Close"
+msgstr "Закрыть"
+
+#: frmdisassemblyscanunit.rsdsscanerror
+msgid "scan error"
+msgstr "ошибка сканирования"
+
+#: frmdissectwindowunit.rsdissectwindows
+msgid "Dissect Windows"
+msgstr "Анализ окон"
+
+#: frmdissectwindowunit.rsgivethenewtextforthiswindow
+msgid "Give the new text for this window"
+msgstr "Укажите новый текст для этого окна"
+
+#: frmdissectwindowunit.rsinvis
+msgid "Invis"
+msgstr "Скрытое"
+
+#: frmdissectwindowunit.rsremoved
+msgid "Removed"
+msgstr "Удалено"
+
+#: frmenumeratedllsunit.rsnothingfound
+msgctxt "frmenumeratedllsuni
