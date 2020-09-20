@@ -2625,4 +2625,180 @@ msgid "Removed"
 msgstr "Удалено"
 
 #: frmenumeratedllsunit.rsnothingfound
-msgctxt "frmenumeratedllsuni
+msgctxt "frmenumeratedllsunit.rsnothingfound"
+msgid "nothing found"
+msgstr "ничего не найдено"
+
+#: frmexceptionregionlistunit.rsconfirmdeleteregion
+msgid "Are you sure you wish to remove the range %s?"
+msgstr "Вы уверены, что хотите удалить диапазон %s?"
+
+#: frmexceptionregionlistunit.rseraselistquestion
+msgid "Are you sure the erase the list?"
+msgstr "Вы уверены, что стёрли список?"
+
+#: frmexetrainergeneratorunit.rsarchive
+msgid " ARCHIVE:"
+msgstr " АРХИВ:"
+
+#: frmexetrainergeneratorunit.rscetrainermaker
+msgid "CE trainer maker"
+msgstr "Генератор трейнера"
+
+#: frmexetrainergeneratorunit.rsdecompressor
+msgid " DECOMPRESSOR:"
+msgstr " ДЕКОМПРЕССОР:"
+
+#: frmexetrainergeneratorunit.rsdefault
+msgctxt "frmexetrainergeneratorunit.rsdefault"
+msgid "Default"
+msgstr "Стандартное"
+
+#: frmexetrainergeneratorunit.rsfailureonwriting
+msgid "failure on writing"
+msgstr "ошибка при записи"
+
+#: frmexetrainergeneratorunit.rsfailureopeningthetrainerforresourceupdates
+msgid "Failure opening the trainer for resource updates. Make sure you do not watch the creation"
+msgstr "Не удалось открыть трейнер для обновления ресурса. Убедитесь, что трейнер не запущен"
+
+#: frmexetrainergeneratorunit.rsfastest
+msgid "Fastest"
+msgstr "Быстрое"
+
+#: frmexetrainergeneratorunit.rsgenerate
+msgid "Generate"
+msgstr "Создать"
+
+#: frmexetrainergeneratorunit.rsiconupdateerror
+msgid "icon update error"
+msgstr "ошибка при обновлении иконки"
+
+#: frmexetrainergeneratorunit.rsinvalidicon
+msgid "(Invalid icon)"
+msgstr "(Недопустимая иконка)"
+
+#: frmexetrainergeneratorunit.rsinvalidicontype
+msgid "(Invalid icon type)"
+msgstr "(Недопустимый тип иконки)"
+
+#: frmexetrainergeneratorunit.rsmax
+msgid "Max"
+msgstr "Максимум"
+
+#: frmexetrainergeneratorunit.rsnewfoldername
+msgid "New foldername"
+msgstr "Новое название папки"
+
+#: frmexetrainergeneratorunit.rsnone
+msgctxt "frmexetrainergeneratorunit.rsnone"
+msgid "None"
+msgstr "Никакого"
+
+#: frmexetrainergeneratorunit.rssaving
+msgctxt "frmexetrainergeneratorunit.rssaving"
+msgid "Saving..."
+msgstr "Сохранение..."
+
+#: frmexetrainergeneratorunit.rsthetrainerhasbeensuccessfullygenerated
+msgid "The trainer has been successfully generated"
+msgstr "Трейнер успешно создан"
+
+#: frmexetrainergeneratorunit.rstrainerfilemissing
+msgid "Copying %s.dat to %s failed. Please make sure the file still exists"
+msgstr "Не удалось выполнить копирование %s.dat в %s. Пожалуйста, убедитесь, что файл всё ещё существует"
+
+#: frmexetrainergeneratorunit.rsupdatefailed
+msgid "Failure updating the trainer resource information: %d"
+msgstr "Не удалось обновить информацию о ресурсе трейнера: %d"
+
+#: frmfilepatcherunit.rsfilepatcher
+msgid "File Patcher: "
+msgstr "Патчер файла: "
+
+#: frmfillmemoryunit.rsfmregiontoolarge
+msgid "Region too large"
+msgstr "Регион слишком большой"
+
+#: frmfillmemoryunit.rspleasefillinavalidfillvalue
+msgid "Please fill in a valid 'Fill' value"
+msgstr "Пожалуйста, заполните допустимое значение в поле «Заполнить»"
+
+#: frmfillmemoryunit.rspleasefillinavalidfromaddress
+msgctxt "frmfillmemoryunit.rspleasefillinavalidfromaddress"
+msgid "Please fill in a valid 'From' address"
+msgstr "Пожалуйста, заполните допустимый адрес в поле «От»"
+
+#: frmfillmemoryunit.rspleasefillinavalidtoaddress
+msgctxt "frmfillmemoryunit.rspleasefillinavalidtoaddress"
+msgid "Please fill in a valid 'To' address"
+msgstr "Пожалуйста, заполните допустимый адрес в поле «До»"
+
+#: frmfindstaticsunit.rsfsstructorarray
+msgid "struct or array"
+msgstr "структура или массив"
+
+#: frmfindstaticsunit.rsfsunreadablepointer
+msgid "Unreadable pointer"
+msgstr "Нечитаемый указатель"
+
+#: frmfindstaticsunit.strscan
+msgctxt "frmfindstaticsunit.strscan"
+msgid "Scan"
+msgstr "Сканировать"
+
+#: frmfindstaticsunit.strstop
+msgctxt "frmfindstaticsunit.strstop"
+msgid "Stop"
+msgstr "Остановить"
+
+#: frmfindstaticsunit.strstopping
+msgid "Stopping..."
+msgstr "Остановка..."
+
+#: frmfloatingpointpanelunit.rsfppextended
+msgid "Extended (default)"
+msgstr "Расширенные (по умолчанию)"
+
+#: frmgdtunit.rsgdtaccessed
+msgid "Accessed="
+msgstr "Обращение="
+
+#: frmgdtunit.rsgdtavl
+msgid "AVL="
+msgstr "Доступен для использования системным ПО="
+
+#: frmgdtunit.rsgdtcodesegment
+msgid "Code Segment"
+msgstr "Сегмент кода"
+
+#: frmgdtunit.rsgdtconforming
+msgid "Conforming="
+msgstr "Подчинённый="
+
+#: frmgdtunit.rsgdtdatasegment
+msgid "Data Segment"
+msgstr "Сегмент данных"
+
+#: frmgdtunit.rsgdtdpl
+msgid "DPL="
+msgstr "Дескриптор уровня привилегий="
+
+#: frmgdtunit.rsgdtexpansiondirection
+msgid "Expansion direction="
+msgstr "Направление расширения="
+
+#: frmgdtunit.rsgdtnotpresent
+msgid "Not present"
+msgstr "Не представлен"
+
+#: frmgdtunit.rsgdtreadable
+msgid "Readable="
+msgstr "Читаемость="
+
+#: frmgdtunit.rsgdtreaderror
+msgid "Read error"
+msgstr "Ошибка чтения"
+
+#: frmgdtunit.rsgdtsystemsegment
+msgi
