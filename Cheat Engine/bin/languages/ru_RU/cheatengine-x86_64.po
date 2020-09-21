@@ -2946,4 +2946,148 @@ msgstr "Перейти по адресу"
 
 #: frmmemviewpreferencesunit.rsbackgroundcolor
 msgctxt "frmmemviewpreferencesunit.rsbackgroundcolor"
-msgid
+msgid "Background color"
+msgstr "Цвет фона"
+
+#: frmmemviewpreferencesunit.rscallcolor
+msgctxt "frmmemviewpreferencesunit.rscallcolor"
+msgid "Call color"
+msgstr "Цвет вызова"
+
+#: frmmemviewpreferencesunit.rsconditionaljumpcolor
+msgctxt "frmmemviewpreferencesunit.rsconditionaljumpcolor"
+msgid "Conditional jump color"
+msgstr "Цвет условного перехода"
+
+#: frmmemviewpreferencesunit.rsdcbreakpoint
+msgid "Breakpoint"
+msgstr "Брейкпоинт"
+
+#: frmmemviewpreferencesunit.rsdchighlighted
+msgctxt "frmmemviewpreferencesunit.rsdchighlighted"
+msgid "Highlighted"
+msgstr "Выделенный"
+
+#: frmmemviewpreferencesunit.rsdchighlightedbreakpoint
+msgid "Highlighted breakpoint"
+msgstr "Выделенный брейкпоинт"
+
+#: frmmemviewpreferencesunit.rsdchighlightedbreakpointsecondary
+msgid "Highlighted breakpoint secondary"
+msgstr "Выделенный брейкпоинт v2"
+
+#: frmmemviewpreferencesunit.rsdchighlightedsecondary
+msgid "Highlighted secondary"
+msgstr "Выделенный v2"
+
+#: frmmemviewpreferencesunit.rsdchighlightedultimap2
+msgid "Highlighted Ultimap2"
+msgstr "Выделенный Ultimap2"
+
+#: frmmemviewpreferencesunit.rsdchighlightedultimap2secondary
+msgid "Highlighted Ultimap2 secondary"
+msgstr "Выделенный Ultimap2 v2"
+
+#: frmmemviewpreferencesunit.rsdcnormal
+msgctxt "frmmemviewpreferencesunit.rsdcnormal"
+msgid "Normal"
+msgstr "Обычный"
+
+#: frmmemviewpreferencesunit.rsdcultimap2
+msgid "Ultimap2"
+msgstr "Ultimap2"
+
+#: frmmemviewpreferencesunit.rshexadecimalcolor
+msgctxt "frmmemviewpreferencesunit.rshexadecimalcolor"
+msgid "Hexadecimal color"
+msgstr "Цвет 16-ричных значений"
+
+#: frmmemviewpreferencesunit.rsnormalcolor
+msgid "Normal color"
+msgstr "Обычный цвет"
+
+#: frmmemviewpreferencesunit.rsregistercolor
+msgctxt "frmmemviewpreferencesunit.rsregistercolor"
+msgid "Register color"
+msgstr "Цвет регистра"
+
+#: frmmemviewpreferencesunit.rssymbolcolor
+msgctxt "frmmemviewpreferencesunit.rssymbolcolor"
+msgid "Symbol color"
+msgstr "Цвет символа"
+
+#: frmmemviewpreferencesunit.rsunconditionaljumpcolor
+msgctxt "frmmemviewpreferencesunit.rsunconditionaljumpcolor"
+msgid "Unconditional jump color"
+msgstr "Цвет безусловного перехода"
+
+#: frmmergepointerscanresultsettingsunit.rscopiesthesourceptrfilestotheworkingfolder
+msgid "Copies the source .ptr.# files to the working folder of the main PTR"
+msgstr "Копирование исходных .ptr.# файлов в рабочую папку"
+
+#: frmmergepointerscanresultsettingsunit.rslinksdirectlytothepathsofthesourceptrfiles
+msgid ""
+"Links directly to the paths of the source .ptr.# files.\n"
+"Note: The result will be unusable by other systems that do not have the same path layout, until you generate new results"
+msgstr ""
+"Прямые ссылки на цепочки указателей из исходных .ptr.# файлов.\n"
+"Примечание: Результат будет непригодным для использования другими системами, у которых нет того же расположения цепочек указателей, до тех пор, пока вы не сгенерируете новый"
+
+#: frmmergepointerscanresultsettingsunit.rsmovesthesourceptrfilestotheworkingfolder
+msgid ""
+"Moves the source .ptr.# files to the working folder of the main PTR\n"
+"Note: This destroys the source"
+msgstr ""
+"Перемещение исходных .ptr.# файлов в рабочую папку\n"
+"Примечание: это разрушит первоисточник"
+
+#: frmmodifyregistersunit.rsmodifyregisterssat
+msgid "Modify registers(s) at %s"
+msgstr "Изменить регистр(ы) у %s"
+
+#: frmmodifyregistersunit.rspleasefillinavalidvaluefor
+msgid "Please fill in a valid value for"
+msgstr "Пожалуйста, заполните допустимое значение для"
+
+#: frmpagingunit.rsfailurereadingphysicalmemory
+msgid "failure reading physical memory"
+msgstr "сбой чтения физической памяти"
+
+#: frmpagingunit.rsnotfound
+msgid "Not found"
+msgstr "Не найден"
+
+#: frmpointerrescanconnectdialogunit.rscouldnotberesolved
+msgctxt "frmpointerrescanconnectdialogunit.rscouldnotberesolved"
+msgid " could not be resolved"
+msgstr " не разрешён"
+
+#: frmpointerrescanconnectdialogunit.rshost
+msgctxt "frmpointerrescanconnectdialogunit.rshost"
+msgid "host:"
+msgstr "хост:"
+
+#: frmpointerscanconnectdialogunit.rshostcouldnotberesolved
+msgid "host: %s could not be resolved"
+msgstr "хост: %s не разрешён"
+
+#: frmpointerscanconnectdialogunit.rsuseloadedpointermap
+msgid "Use loaded pointermap:"
+msgstr "Использовать загруженную карту указателей:"
+
+#: frmprocesswatcherunit.rsconventionalids
+msgid "----Conventional ID's----"
+msgstr "----Обычные идентификаторы----"
+
+#: frmprocesswatcherunit.rsfailedstartingtheprocesswatcher
+msgid "Failed starting the process watcher"
+msgstr "Не удалось запустить «Наблюдатель процесса»"
+
+#: frmprocesswatcherunit.rsfirstselectaprocess
+msgctxt "frmprocesswatcherunit.rsfirstselectaprocess"
+msgid "First select a process!"
+msgstr "Сначала выберите процесс!"
+
+#: frmprocesswatcherunit.rsisntavalidprocessid
+msgctxt "frmprocesswatcherunit.rsisntavalidprocessid"
+msgid "%s is
