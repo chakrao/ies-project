@@ -3090,4 +3090,126 @@ msgstr "Сначала выберите процесс!"
 
 #: frmprocesswatcherunit.rsisntavalidprocessid
 msgctxt "frmprocesswatcherunit.rsisntavalidprocessid"
-msgid "%s is
+msgid "%s isn't a valid processID"
+msgstr "%s не является допустимым идентификатором процесса"
+
+#: frmprocesswatcherunit.rsprocessid
+msgid "ProcessID="
+msgstr "Идентификатор процесса="
+
+#: frmprocesswatcherunit.rsprocesswatcherthreaderror
+msgid "processwatcher: thread error:%s"
+msgstr "«Наблюдатель процесса»: ошибка потока: %s"
+
+#: frmprocesswatcherunit.rsthreadid
+msgid "ThreadID:"
+msgstr "Идентификатор Потока:"
+
+#: frmregistersunit.rslabelregisterhint
+msgid ""
+"DoubleClick: Browse this memory region.\n"
+"Right Mouse Click: Register Value will be copied to Clipboard and Context Menu will open.\n"
+msgstr ""
+"Двойной клик: Просмотр этого региона памяти\n"
+"Клик правой кнопки мыши: Значение регистра будет скопировано в буфер обмена и откроется контекстное меню.\n"
+
+#: frmregistersunit.rsnodescription
+msgctxt "frmregistersunit.rsnodescription"
+msgid "No Description"
+msgstr "Нет описания"
+
+#: frmrescanpointerunit.rsadd
+msgctxt "frmrescanpointerunit.rsadd"
+msgid "Add"
+msgstr "Добавить"
+
+#: frmrescanpointerunit.rsnotalltheendoffsetshavebeenfilledin
+msgid "Not all the end offsets have been filled in"
+msgstr "Заполнены не все поля со смещениями, которыми должен заканчиваться указатель"
+
+#: frmrescanpointerunit.rsnotallthestartoffsetshavebeenfilledin
+msgid "Not all the start offsets have been filled in"
+msgstr "Заполнены не все поля со смещениями, которыми должен начинаться указатель"
+
+#: frmrescanpointerunit.rsremove
+msgctxt "frmrescanpointerunit.rsremove"
+msgid "Remove"
+msgstr "Убрать"
+
+#: frmrescanpointerunit.rsrpentertheipaddressestonotifyexplicitly
+msgctxt "frmrescanpointerunit.rsrpentertheipaddressestonotifyexplicitly"
+msgid "Enter the IP addresses to notify explicitly"
+msgstr "Введите IP-адреса для уведомления"
+
+#: frmrescanpointerunit.rsrpfirstoffset
+msgid "First offset"
+msgstr "Первое смещение"
+
+#: frmrescanpointerunit.rsrpiplist
+msgctxt "frmrescanpointerunit.rsrpiplist"
+msgid "IP List"
+msgstr "Список IP"
+
+#: frmrescanpointerunit.rsrplastoffset
+msgctxt "frmrescanpointerunit.rsrplastoffset"
+msgid "Last offset"
+msgstr "Последнее смещение"
+
+#: frmrescanpointerunit.rsrpthefunction
+msgid "The function %s(base, offsets, target) has not yet been defined. Please define it first"
+msgstr "Функция %s(base, offsets, target) ещё не определена. Сначала определите её"
+
+#: frmrescanpointerunit.rsrpusesavedpointermap
+msgid "Use saved pointermap: "
+msgstr "Сохранённая карта указателей: "
+
+#: frmrescanpointerunit.rsrpusesavedpointermap2
+msgctxt "frmrescanpointerunit.rsrpusesavedpointermap2"
+msgid "Use saved pointermap"
+msgstr "Использовать сохранённую карту указателей"
+
+#: frmresumepointerscanunit.rsentertheaddressthisscanshouldlookfor
+msgid "Enter the address this scan should look for"
+msgstr "Введите адрес, который следует искать"
+
+#: frmresumepointerscanunit.rsnewpointermap
+msgid "New pointermap"
+msgstr "Новая карта указателей"
+
+#: frmresumepointerscanunit.rsrpsentertheipaddressestonotifyexplicitly
+msgctxt "frmresumepointerscanunit.rsrpsentertheipaddressestonotifyexplicitly"
+msgid "Enter the IP addresses to notify explicitly"
+msgstr "Введите IP-адреса для уведомления"
+
+#: frmresumepointerscanunit.rsrpsiplist
+msgctxt "frmresumepointerscanunit.rsrpsiplist"
+msgid "IP List"
+msgstr "Список IP"
+
+#: frmresumepointerscanunit.rsrpswasnotfound
+msgid " was not found"
+msgstr " не был найден"
+
+#: frmsavememoryregionunit.rsisnotavalidaddress
+msgctxt "frmsavememoryregionunit.rsisnotavalidaddress"
+msgid "%s is not a valid address"
+msgstr "%s не является допустимым адресом"
+
+#: frmsavememoryregionunit.rsnostartaddress
+msgid "If you don't include the header data you'll have to specify the startaddress yourself when loading the file(That means Cheat Engine wont fill in the startaddress text field when loaded for you)"
+msgstr "Если вы не включите данные заголовка, вам нужно будет самостоятельно указать начальный адрес при загрузке файла. (Обычно Cheat Engine заполняет начальный адрес в текстовое поле за вас)"
+
+#: frmsavememoryregionunit.rsnotallthememorywasreadablein
+msgid "Not all the memory was readable in"
+msgstr "Не вся память оказалась читаемой в"
+
+#: frmsavememoryregionunit.rspleaseaddatleastoneaddressregiontothelist
+msgid "Please add at least one address region to the list"
+msgstr "Пожалуйста, добавьте в список хотя бы один регион памяти"
+
+#: frmsavesnapshotsunit.rsssareyousureyouwishtothrowawaythesesnapshots
+msgid "Are you sure you wish to throw away these snapshots?"
+msgstr "Вы уверены, что хотите отбросить эти снимки?"
+
+#: frmsnapshothandlerunit.rsshcompare
+msgctxt "frmsnapshothandlerunit.rsshcompare"
