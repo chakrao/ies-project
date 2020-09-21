@@ -2801,4 +2801,149 @@ msgid "Read error"
 msgstr "Ошибка чтения"
 
 #: frmgdtunit.rsgdtsystemsegment
-msgi
+msgid "System Segment"
+msgstr "Системный сегмент"
+
+#: frmgdtunit.rsgdtwritable
+msgid "Writable="
+msgstr "Возможность записи="
+
+#: frmgroupscanalgoritmgeneratorunit.rsadd
+msgctxt "frmgroupscanalgoritmgeneratorunit.rsadd"
+msgid "Add"
+msgstr "Добавить"
+
+#: frmgroupscanalgoritmgeneratorunit.rsgsgblocksizemustbeprovided
+msgid "blocksize must be provided"
+msgstr "должен быть предоставлен размер блока"
+
+#: frmgroupscanalgoritmgeneratorunit.rsgsgshouldbeatleast
+msgid "Should be at least %d"
+msgstr "Должен быть как минимум %d"
+
+#: frmgroupscanalgoritmgeneratorunit.rspickedhint
+msgid "When checked this element will get added to the addresslist. Note: If all checkboxes are disabled, ALL elements will be added"
+msgstr "Если галочка установлена, то этот элемент добавиться в список адресов. Примечание: Если сняты все галочки, то будут добавлены ВСЕ элементы"
+
+#: frmgroupscanalgoritmgeneratorunit.rswildcard
+msgid "Skip nr of bytes:"
+msgstr "Не учитывать тип:"
+
+#: frmidtunit.rsidt16bitinterruptgate
+msgid "16-bit interrupt gate"
+msgstr "16-битный шлюз прерывания"
+
+#: frmidtunit.rsidt16biytrapgate
+msgid "16-bit trap gate"
+msgstr "16-битный шлюз ловушки"
+
+#: frmidtunit.rsidt32bitinterruptgate
+msgid "32-bit interrupt gate"
+msgstr "32-битный шлюз прерывания"
+
+#: frmidtunit.rsidt32biytrapgate
+msgid "32-bit trap gate"
+msgstr "32-битный шлюз ловушки"
+
+#: frmidtunit.rsidtdpl
+msgid " DPL="
+msgstr " Дескриптор уровня привилегий="
+
+#: frmidtunit.rsidtnotpresent
+msgid "not present"
+msgstr "не представлен"
+
+#: frmidtunit.rsidttaskgate
+msgid "task gate"
+msgstr "шлюз задачи"
+
+#: frmidtunit.rsidtunkownidt
+msgid "unknown IDT"
+msgstr "неизвестная ТДП"
+
+#: frmloadmemoryunit.rsloadintomemory
+msgid "Load %s into memory"
+msgstr "Загрузить «%s» в память"
+
+#: frmloadmemoryunit.rsnotallthememorycanbewritteninthecurrentmemoryregion
+msgid "Not all the memory can be written in the current memory region. Do you want to force as much as possible into the given region and just discard what can not be written? (Really bad idea)"
+msgstr "Не вся память может быть записана в текущем регионе памяти. Хотите ли вы записать в данный регион столько, сколько возможно, а то что не поместится, то просто отбросить? (На самом деле, плохая идея)"
+
+#: frmloadmemoryunit.rswrotebytesoutof
+msgid "Wrote %d bytes out of %d"
+msgstr "Записано %d байта из %d"
+
+#: frmloadmemoryunit.strinvalidfile
+msgid "This is a invalid memory region file. I'll assume this file has no header data"
+msgstr "Недопустимый файл с регионом памяти. Наверное у этого файла нет данных заголовка"
+
+#: frmluaengineunit.rserror
+msgid "Script Error"
+msgstr "Ошибка скрипта"
+
+#: frmluaengineunit.rsleerrorinline
+msgid "Error in line "
+msgstr "Ошибка в строке "
+
+#: frmluaengineunit.rsleonlyonescriptcanbedebuggedatatimeetc
+msgid "Only one script can be debugged at a time. Continue executing this script without the debugger?"
+msgstr "Одновременно можно производить отладку только одного скрипта. Продолжить выполнение этого скрипта без отладчика?"
+
+#: frmluaengineunit.rsleundefinederror
+msgctxt "frmluaengineunit.rsleundefinederror"
+msgid "Undefined error"
+msgstr "Неопределённая ошибка"
+
+#: frmluaengineunit.rsleuserclickedstop
+msgid "User clicked stop"
+msgstr "Пользователь нажал стоп"
+
+#: frmmemoryallochandlerunit.rsevent1failure
+msgid "Event1 failure:"
+msgstr "Неудавшееся событие 1:"
+
+#: frmmemoryallochandlerunit.rsevent2failure
+msgid "Event2 failure:"
+msgstr "Неудавшееся событие 2:"
+
+#: frmmemoryallochandlerunit.rsevent3failure
+msgid "Event3 failure:"
+msgstr "Неудавшееся событие 3:"
+
+#: frmmemoryallochandlerunit.rsfailuretohook
+msgid "Failure to hook"
+msgstr "Не удалось перехватить"
+
+#: frmmemoryallochandlerunit.rsfailuretoinitialize
+msgid "Failure to initialize"
+msgstr "Не удалось инициализировать"
+
+#: frmmemoryallochandlerunit.rsheapcount
+msgid "Heapcount=%s"
+msgstr "Количество куч=%s"
+
+#: frmmemoryallochandlerunit.rsqueuedmemoryeventswaiting
+msgid "Queued memory events waiting: %s"
+msgstr "Событий в очереди ожидания: %s"
+
+#: frmmemoryrecorddropdownsettingsunit.rsdddropdownotionsfor
+msgid "Dropdown options for "
+msgstr "Настройки выпадающего списка для "
+
+#: frmmemoryviewexunit.rsaddresszoom
+msgid "Address : %s zoom : %s"
+msgstr "Адрес : %s масштабирование : %s"
+
+#: frmmemoryviewexunit.rsfillintheaddressyouwanttogoto
+msgctxt "frmmemoryviewexunit.rsfillintheaddressyouwanttogoto"
+msgid "Fill in the address you want to go to"
+msgstr "Заполните адрес, по которому вы хотите перейти"
+
+#: frmmemoryviewexunit.rsgotoaddress
+msgctxt "frmmemoryviewexunit.rsgotoaddress"
+msgid "Goto Address"
+msgstr "Перейти по адресу"
+
+#: frmmemviewpreferencesunit.rsbackgroundcolor
+msgctxt "frmmemviewpreferencesunit.rsbackgroundcolor"
+msgid
