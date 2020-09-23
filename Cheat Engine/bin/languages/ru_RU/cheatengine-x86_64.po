@@ -3213,3 +3213,141 @@ msgstr "Вы уверены, что хотите отбросить эти сн�
 
 #: frmsnapshothandlerunit.rsshcompare
 msgctxt "frmsnapshothandlerunit.rsshcompare"
+msgid "Compare"
+msgstr "Сравнение"
+
+#: frmsnapshothandlerunit.rsshdissectandcomparememoryofselectedsnapshots
+msgid "Dissect and compare memory of selected snapshots"
+msgstr "Анализ и сравнение памяти выбранного снимка"
+
+#: frmsnapshothandlerunit.rsshdissectmemoryofselectedsnapshot
+msgid "Dissect memory of selected snapshot"
+msgstr "Анализ памяти выбранного снимка"
+
+#: frmsnapshothandlerunit.rsshfunctions
+msgid " Function(s): "
+msgstr " Функции: "
+
+#: frmsnapshothandlerunit.rsshlockandaddtostructuredissect
+msgctxt "frmsnapshothandlerunit.rsshlockandaddtostructuredissect"
+msgid "Lock and add to structure dissect"
+msgstr "Заблокировать и добавить в анализ структуры"
+
+#: frmsnapshothandlerunit.rsshnewwindow
+msgctxt "frmsnapshothandlerunit.rsshnewwindow"
+msgid "<New window>"
+msgstr "<Новое окно>"
+
+#: frmsnapshothandlerunit.rsshselectthestructuredissectwindowyouwishtoaddthisregionto
+msgctxt "frmsnapshothandlerunit.rsshselectthestructuredissectwindowyouwishtoaddthisregionto"
+msgid "Select the structure dissect window you wish to add this region to"
+msgstr "Выберите окно анализа структуры, в который вы хотите добавить этот регион"
+
+#: frmsnapshothandlerunit.rsshthestructureslistisbroken
+msgctxt "frmsnapshothandlerunit.rsshthestructureslistisbroken"
+msgid "The structures list is broken"
+msgstr "Повреждён список структур"
+
+#: frmsnapshothandlerunit.rsshview
+msgctxt "frmsnapshothandlerunit.rsshview"
+msgid "View"
+msgstr "Просмотр"
+
+#: frmsortpointerlistunit.rstimeleft
+msgid "Estimated time left"
+msgstr "Время до окончания"
+
+#: frmstackviewunit.rslockandaddtostructuredissect
+msgctxt "frmstackviewunit.rslockandaddtostructuredissect"
+msgid "Lock and add to structure dissect"
+msgstr "Заблокировать и добавить в анализ структуры"
+
+#: frmstackviewunit.rsnewwindow
+msgctxt "frmstackviewunit.rsnewwindow"
+msgid "<New window>"
+msgstr "<Новое окно>"
+
+#: frmstackviewunit.rsselectthestructuredissectwindowyouwishtoaddthisreg
+msgctxt "frmstackviewunit.rsselectthestructuredissectwindowyouwishtoaddthisreg"
+msgid "Select the structure dissect window you wish to add this region to"
+msgstr "Выберите окно анализа структуры, в который вы хотите добавить этот регион"
+
+#: frmstackviewunit.rssvthisstackviewwindowhasallocatedstacksnapshotsetc
+msgid "This stackview window has allocated stack snapshots in the target process. Do you wish to free them?"
+msgstr "Данное окно выделило множество снимков в указанном процессе. Вы хотите освободить их?"
+
+#: frmstackviewunit.rsthestructureslistisbroken
+msgctxt "frmstackviewunit.rsthestructureslistisbroken"
+msgid "The structures list is broken"
+msgstr "Повреждён список структур"
+
+#: frmstringmapunit.rsbtnshowlist
+msgid "<<Show list"
+msgstr "<<Показать список"
+
+#: frmstringmapunit.rserror
+msgid "Error="
+msgstr "Ошибка="
+
+#: frmstringmapunit.rsgenerateregexprenginefailed
+msgid "GenerateRegExprEngine failed"
+msgstr "Сбой GenerateRegExprEngine"
+
+#: frmstringmapunit.rsgeneratestringmap
+msgid "Generate string map"
+msgstr "Создать карту строк"
+
+#: frmstringmapunit.rsnoreadablememoryfound
+msgctxt "frmstringmapunit.rsnoreadablememoryfound"
+msgid "No readable memory found"
+msgstr "Читаемой памяти не найдено"
+
+#: frmstringmapunit.rsstop
+msgctxt "frmstringmapunit.rsstop"
+msgid "Stop"
+msgstr "Остановить"
+
+#: frmstringmapunit.rsstringcount
+msgid "Stringcount: %s"
+msgstr "Количество строк: %s"
+
+#: frmstringmapunit.rsunhandledtstringscancrash
+msgid "Unhandled TStringScan crash"
+msgstr "Необработанный сбой TStringScan"
+
+#: frmstringpointerscanunit.rsareyousureyo
+msgctxt "frmstringpointerscanunit.rsareyousureyo"
+msgid "Are you sure you wish to start a new scan?"
+msgstr "Вы уверены, что хотите начать новое сканирование?"
+
+#: frmstringpointerscanunit.rsgeneratedscanning
+msgctxt "frmstringpointerscanunit.rsgeneratedscanning"
+msgid "Generated. Scanning..."
+msgstr "Сгенерировано. Сканирование..."
+
+#: frmstringpointerscanunit.rsgeneratingstringmap
+msgctxt "frmstringpointerscanunit.rsgeneratingstringmap"
+msgid "Generating stringmap"
+msgstr "Генерация карты строк"
+
+#: frmstringpointerscanunit.rsscan
+msgctxt "frmstringpointerscanunit.rsscan"
+msgid "Scan"
+msgstr "Сканировать"
+
+#: frmstringpointerscanunit.rsscanningfoun
+msgctxt "frmstringpointerscanunit.rsscanningfoun"
+msgid "Scanning... Found %s"
+msgstr "Сканирование... Найдено %s"
+
+#: frmstringpointerscanunit.rsspsuaddress
+msgctxt "frmstringpointerscanunit.rsspsuaddress"
+msgid "Address"
+msgstr "Адрес"
+
+#: frmstringpointerscanunit.rsspsuaddress2
+msgctxt "frmstringpointerscanunit.rsspsuaddress2"
+msgid "Address 2"
+msgstr "Адрес 2"
+
+#: frmstringpointerscanunit.rsspsuerrordurings
