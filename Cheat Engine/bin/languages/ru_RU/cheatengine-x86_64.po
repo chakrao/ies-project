@@ -3350,4 +3350,157 @@ msgctxt "frmstringpointerscanunit.rsspsuaddress2"
 msgid "Address 2"
 msgstr "Адрес 2"
 
-#: frmstringpointerscanunit.rsspsuerrordurings
+#: frmstringpointerscanunit.rsspsuerrorduringscannoscanresults
+msgctxt "frmstringpointerscanunit.rsspsuerrorduringscannoscanresults"
+msgid "Error during scan. No scanresults available"
+msgstr "Ошибка во время сканирования. Нет доступных результатов сканирования"
+
+#: frmstringpointerscanunit.rsspsuexception
+msgctxt "frmstringpointerscanunit.rsspsuexception"
+msgid "Exception:"
+msgstr "Исключение:"
+
+#: frmstringpointerscanunit.rsspsufound
+msgctxt "frmstringpointerscanunit.rsspsufound"
+msgid "Found:"
+msgstr "Найдено:"
+
+#: frmstringpointerscanunit.rsspsufuuuu
+msgctxt "frmstringpointerscanunit.rsspsufuuuu"
+msgid "FUUUU"
+msgstr "ФУУУУ"
+
+#: frmstringpointerscanunit.rsspsufuuuuu
+msgctxt "frmstringpointerscanunit.rsspsufuuuuu"
+msgid "FUUUUU"
+msgstr "ФУУУУУ"
+
+#: frmstringpointerscanunit.rsspsunotyetimplemented
+msgctxt "frmstringpointerscanunit.rsspsunotyetimplemented"
+msgid "Not yet implemented"
+msgstr "Ещё не реализовано"
+
+#: frmstringpointerscanunit.rsspsuoffset
+msgctxt "frmstringpointerscanunit.rsspsuoffset"
+msgid "Offset "
+msgstr "Смещение "
+
+#: frmstringpointerscanunit.rsspsurescan
+msgctxt "frmstringpointerscanunit.rsspsurescan"
+msgid "Rescan"
+msgstr "Отсев"
+
+#: frmstringpointerscanunit.rsspsuscandonefound
+msgctxt "frmstringpointerscanunit.rsspsuscandonefound"
+msgid "Scan done! Found "
+msgstr "Сканирование закончено! Найдено "
+
+#: frmstringpointerscanunit.rsstop
+msgctxt "frmstringpointerscanunit.rsstop"
+msgid "Stop"
+msgstr "Остановить"
+
+#: frmstringpointerscanunit.rsterminating
+msgctxt "frmstringpointerscanunit.rsterminating"
+msgid "Terminating..."
+msgstr "Завершение..."
+
+#: frmstringpointerscanunit.rsthisaddressisnotaccessible
+msgctxt "frmstringpointerscanunit.rsthisaddressisnotaccessible"
+msgid "This address is not accessible"
+msgstr "Этот адрес не доступен"
+
+#: frmstructurecompareunit.rsareyousureyo
+msgctxt "frmstructurecompareunit.rsareyousureyo"
+msgid "Are you sure you wish to start a new scan?"
+msgstr "Вы уверены, что хотите начать новый поиск?"
+
+#: frmstructurecompareunit.rsgeneratedscanning
+msgctxt "frmstructurecompareunit.rsgeneratedscanning"
+msgid "Generated. Scanning..."
+msgstr "Сгенерировано. Сканирование..."
+
+#: frmstructurecompareunit.rsgeneratingstringmap
+msgctxt "frmstructurecompareunit.rsgeneratingstringmap"
+msgid "Generating stringmap"
+msgstr "Генерация карты строк"
+
+#: frmstructurecompareunit.rsinvalidgroup
+msgid "Group %d address %s (%s) is not valid"
+msgstr "Группа %d адрес %s (%s) недопустим"
+
+#: frmstructurecompareunit.rsmaxaddressesshown
+msgid "Max addresses shown :"
+msgstr "Количество отображаемых адресов:"
+
+#: frmstructurecompareunit.rsmaxreached
+msgid "...<max reached>..."
+msgstr "...<достигнут максимум>..."
+
+#: frmstructurecompareunit.rssameaddress
+msgid "This will result in 0 results as address %s appears multiple times"
+msgstr "Это приведёт к нулевому результату, т.к. адрес %s появляется многократно"
+
+#: frmstructurecompareunit.rsscan
+msgctxt "frmstructurecompareunit.rsscan"
+msgid "Scan"
+msgstr "Поиск"
+
+#: frmstructurecompareunit.rsscanningfoun
+msgctxt "frmstructurecompareunit.rsscanningfoun"
+msgid "Scanning... Found %s"
+msgstr "Сканирование... Найдено %s"
+
+#: frmstructurecompareunit.rsspsinvalidstruct
+msgid "Invalid structure pointerfile"
+msgstr "Недопустимый файл указателя структуры"
+
+#: frmstructurecompareunit.rsspslock
+msgctxt "frmstructurecompareunit.rsspslock"
+msgid "Lock"
+msgstr "Заблокировать"
+
+#: frmstructurecompareunit.rsspsneednewce
+msgid "You'll need a newer CE version to open this file"
+msgstr "Для открытия этого файла вам нужна новая версия Cheat Engine"
+
+#: frmstructurecompareunit.rsspsnoerror
+msgid "No error"
+msgstr "Ошибки нет"
+
+#: frmstructurecompareunit.rsspsuaddress
+msgctxt "frmstructurecompareunit.rsspsuaddress"
+msgid "Address"
+msgstr "Адрес"
+
+#: frmstructurecompareunit.rsspsuaddress2
+msgctxt "frmstructurecompareunit.rsspsuaddress2"
+msgid "Address 2"
+msgstr "Адрес 2"
+
+#: frmstructurecompareunit.rsspsuerrorduringscannoscanresults
+msgctxt "frmstructurecompareunit.rsspsuerrorduringscannoscanresults"
+msgid "Error during scan. No scanresults available"
+msgstr "Ошибка во время сканирования. Нет доступных результатов сканирования"
+
+#: frmstructurecompareunit.rsspsuexception
+msgctxt "frmstructurecompareunit.rsspsuexception"
+msgid "Exception:"
+msgstr "Исключение:"
+
+#: frmstructurecompareunit.rsspsufound
+msgctxt "frmstructurecompareunit.rsspsufound"
+msgid "Found:"
+msgstr "Найдено:"
+
+#: frmstructurecompareunit.rsspsufuuuu
+msgctxt "frmstructurecompareunit.rsspsufuuuu"
+msgid "FUUUU"
+msgstr "ФУУУУ"
+
+#: frmstructurecompareunit.rsspsufuuuuu
+msgctxt "frmstructurecompareunit.rsspsufuuuuu"
+msgid "FUUUUU"
+msgstr "ФУУУУУ"
+
+#: frmstructureco
