@@ -3668,4 +3668,111 @@ msgstr "Поиск"
 #: frmtracerunit.rstypetheluaconditionyouwanttosearchforexampleeax0x1
 msgid ""
 "Type the (LUA) condition you want to search for (Example: EAX==0x1234)    \n"
-"Also available: reference
+"Also available: referencedAddress (integer), referencedBytes (bytetable), instruction (string)\n"
+msgstr ""
+"Введите условие (LUA), которое вы хотите найти(Пример: EAX == 0x1234)\n"
+"Также доступно: referencedAddress (целое число), referencedBytes (байты), instruction (строка).\n"
+
+#: frmultimap2unit.rscantbeparsed
+msgid "\" can't be parsed"
+msgstr "» не может быть проанализирован"
+
+#: frmultimap2unit.rsclosingwillfreeallcollecteddata
+msgid "Closing will free all collected data. Continue? (Tip: You can minimize this window instead)"
+msgstr "Закрытие освободит все собранные данные. Продолжить? (Совет: Вместо этого вы можете просто свернуть окно)"
+
+#: frmultimap2unit.rscpu
+msgid "CPU"
+msgstr "ЦП"
+
+#: frmultimap2unit.rsdasherror
+msgid " -error"
+msgstr " -ошибка"
+
+#: frmultimap2unit.rsdoesntexistandcantbecreated
+msgid " does not exist and can not be created"
+msgstr " не существует и не может быть создан"
+
+#: frmultimap2unit.rsfailureloadinglibipt
+msgid "Failure loading libipt"
+msgstr "Не удалось загрузить libipt"
+
+#: frmultimap2unit.rsfirstopenaprocess
+msgid "First open a process"
+msgstr "Сначала откройте процесс"
+
+#: frmultimap2unit.rsforsomeweirdreason
+msgid "For some weird reason \""
+msgstr "По какой-то странной причине «"
+
+#: frmultimap2unit.rsinstructionpointerlistsize
+msgctxt "frmultimap2unit.rsinstructionpointerlistsize"
+msgid "Instruction Pointer List Size:"
+msgstr "Размер списка указателя инструкции:"
+
+#: frmultimap2unit.rsisaninvalidrange
+msgid " is an invalid range"
+msgstr " не является допустимым диапазоном"
+
+#: frmultimap2unit.rsmaxamountofrangesreachedforyourcpu
+msgid "Max amount of ranges reached for your CPU. Clear one first"
+msgstr "Достигнуто максимальное количество диапазонов для вашего процессора"
+
+#: frmultimap2unit.rsmodulelist
+msgid "Module list"
+msgstr "Список модулей"
+
+#: frmultimap2unit.rsonlyforintelcpus
+msgid "Sorry, but Ultimap2 only works on Intel CPU's"
+msgstr "Извините, но Ultimap2 работает только с процессорами Intel"
+
+#: frmultimap2unit.rspaused
+msgctxt "frmultimap2unit.rspaused"
+msgid "Paused"
+msgstr "На паузе"
+
+#: frmultimap2unit.rsprocessingdata
+msgid ""
+"Processing\n"
+"Data\n"
+msgstr ""
+"Обработка\n"
+"Данные\n"
+
+#: frmultimap2unit.rsputbetweentomarsasanautostoprange
+msgid "(Put between *'s to mark as an auto stop range)"
+msgstr "(Поместите между * , чтобы отметить как диапазон автоматической остановки)"
+
+#: frmultimap2unit.rsrangesemptyforallmax
+msgid "Ranges: (Empty for all) (Max %d)"
+msgstr "Диапазоны: (Пусто для всех) (Макс. %d)"
+
+#: frmultimap2unit.rsrangesneeddbvminwindows10
+msgid "To use ranges with Ultimap2 in windows 10, you must hide the fact that you use ranges from it. To be able to do that DBVM needs to be running. There is a chance running DBVM can crash your system and make you lose your data(So don't forget to save first). Do you want to run DBVM?"
+msgstr "Для успешного использования диапазонов с Ultimap2 в Windows 10 вы должны скрыть этот факт. Для этого нужно запустить DBVM. Правда существует шанс, что запуск DBVM может привести к краху системы и потере не сохранённых данных(Так что, не забудьте сначала сохраниться). Вы хотите запустить DBVM?"
+
+#: frmultimap2unit.rsrecording2
+msgid "Recording"
+msgstr "Запись"
+
+#: frmultimap2unit.rsselectamoduleorgiveyourownrange
+msgid "Select a module or give your own range"
+msgstr "Выберите модуль или задайте диапазон"
+
+#: frmultimap2unit.rssorrybutyourcpudoesntseemtobeabletosetatargetprocess
+msgid "Sorry, but your CPU doesn't seem to be able to set a target PROCESS"
+msgstr "Извините, но кажется, что ваш процессор не в состоянии установить процесс в качестве цели"
+
+#: frmultimap2unit.rssorrybutyourcpuseemstobeleackingiptfeature
+msgid "Sorry, but your CPU seems to be lacking the Intel Processor Trace feature which Ultimap2 makes use of"
+msgstr "Извините, но кажется, что у вашего процессора отсутствует функция Intel Processor Trace, которую использует Ultimap2"
+
+#: frmultimap2unit.rssorrybutyourcpusimplementationoftheiptfeatureistooold
+msgid "Sorry, but your CPU's implementation of the Intel Processor Trace feature is too old. Ultimap uses multiple ToPA entries"
+msgstr "Извините, но реализация функции Intel Processor Trace на вашем процессоре слишком стара. Ultimap использует многократные записи таблицы физических адресов"
+
+#: frmultimap2unit.rstargetadifferentprocess
+msgid "Target a different process. Ultimap2 will suspend the target when the buffer is full, and suspending the thing that empties the buffer is not a good idea"
+msgstr "Укажите другой процесс. Ultimap2 приостановит выбранный процесс при переполненном буфере, а приостановка штуки, что очищает буфер - не самая хорошая идея"
+
+#: frmultimap2unit.rstherangeyouhaveprovidedisanexitrange
