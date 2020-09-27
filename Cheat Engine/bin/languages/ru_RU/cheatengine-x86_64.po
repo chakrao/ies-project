@@ -3903,4 +3903,198 @@ msgstr "Неверная команда группового поиска"
 
 #: groupscancommandparser.rsgscpwildcardsemptyarenotallowedforoutoforderscans
 msgid "Wildcards/Empty are not allowed for Out of Order scans"
-msgstr "Подстановочные знаки/Незапо
+msgstr "Подстановочные знаки/Незаполненные поля не поддерживаются для сканирований «Не по порядку»"
+
+#: guisafecriticalsection.rscriticalsectionleavewithoutenter
+msgid "Criticalsection leave without enter"
+msgstr "Без входа в критическую секцию"
+
+#: hexviewunit.rsaddress
+msgid "address"
+msgstr "адрес"
+
+#: hexviewunit.rsbase
+msgid "Base"
+msgstr "Базовый адрес"
+
+#: hexviewunit.rsbigfuckingerror
+msgid "Big fucking error"
+msgstr "Чертовски большая ошибка"
+
+#: hexviewunit.rsbytes
+msgid "bytes"
+msgstr "байт"
+
+#: hexviewunit.rsexecute
+msgctxt "hexviewunit.rsexecute"
+msgid "Execute"
+msgstr "Выполнение"
+
+#: hexviewunit.rsexecutereadonly
+msgid "Execute/Read only"
+msgstr "Выполнение/Только Чтение"
+
+#: hexviewunit.rsexecutereadwrite
+msgid "Execute/Read/Write"
+msgstr "Выполнение/Чтение/Запись"
+
+#: hexviewunit.rsexecutewritecopy
+msgid "Execute/Write Copy"
+msgstr "Выполнение/Запись/Копирование"
+
+#: hexviewunit.rsguarded
+msgid "Guarded"
+msgstr "Защищаемая"
+
+#: hexviewunit.rsinvalidbytesperseperatorvalue
+msgid "Invalid BytesPerSeperator value:%s"
+msgstr "Недопустимое значение BytesPerSeperator:%s"
+
+#: hexviewunit.rsmodule
+msgid "Module"
+msgstr "Модуль"
+
+#: hexviewunit.rsnoaccess
+msgctxt "hexviewunit.rsnoaccess"
+msgid "No Access"
+msgstr "Нет доступа"
+
+#: hexviewunit.rsnotcached
+msgid "Not Cached"
+msgstr "Не кэшируется"
+
+#: hexviewunit.rsphysicaladdress
+msgctxt "hexviewunit.rsphysicaladdress"
+msgid "Physical Address"
+msgstr "Физический адрес"
+
+#: hexviewunit.rsprotect
+msgctxt "hexviewunit.rsprotect"
+msgid "Protect"
+msgstr "Защита"
+
+#: hexviewunit.rsreadonly
+msgid "Read Only"
+msgstr "Только Чтение"
+
+#: hexviewunit.rsreadwrite
+msgid "Read/Write"
+msgstr "Чтение/Запись"
+
+#: hexviewunit.rssize
+msgctxt "hexviewunit.rssize"
+msgid "Size"
+msgstr "Размер"
+
+#: hexviewunit.rsthislookslikeanarrayofbytedoyouwanttoinputitasahex
+msgid "This looks like an array of byte. Do you want to input it as a hexadecimal string?"
+msgstr "Выглядит как массив байт. Вы хотите ввести его как шестнадцатеричную строку?"
+
+#: hexviewunit.rsthislookslikeanormalstringdoyouwanttoinputitasastr
+msgid "This looks like a normal string. Do you want to input it as a string ?"
+msgstr "Выглядит как обычная строка. Вы хотите ввести её как строку?"
+
+#: hexviewunit.rswritecombine
+msgctxt "hexviewunit.rswritecombine"
+msgid "Write Combine"
+msgstr "Комбинированная запись"
+
+#: hexviewunit.rswritecopy
+msgctxt "hexviewunit.rswritecopy"
+msgid "Write Copy"
+msgstr "Запись/Копирование"
+
+#: hotkeys.rsdecreasevaluewith
+msgid "Decrease value with:"
+msgstr "Уменьшить значение на:"
+
+#: hotkeys.rsdefaultactivated
+msgid "%s Activated"
+msgstr "%s Activated"
+
+#: hotkeys.rsdefaultdeactivated
+msgid "%s Deactivated"
+msgstr "%s Deactivated"
+
+#: hotkeys.rsdisablescript
+msgid "Disable script"
+msgstr "Выключить скрипт"
+
+#: hotkeys.rsenablescript
+msgid "Enable script"
+msgstr "Включить скрипт"
+
+#: hotkeys.rsfreeze
+msgid "Freeze"
+msgstr "Заморозить"
+
+#: hotkeys.rshotkeyid
+msgid "Hotkey ID=%s"
+msgstr "ID горячей клавиши=%s"
+
+#: hotkeys.rsincreasevaluewith
+msgid "Increase value with:"
+msgstr "Увеличить значение на:"
+
+#: hotkeys.rssetvalueto
+msgid "Set value to:"
+msgstr "Установить значение:"
+
+#: hotkeys.rsspeaktext
+msgid "Speak Text"
+msgstr "Произношение текста"
+
+#: hotkeys.rstexttospeechhint
+msgid ""
+"The text to speak\n"
+"{Description} = The description of the hotkey\n"
+"{MRDescription} = The description field of the memory record\n"
+"{MRValue} = The value of the memory record\n"
+msgstr ""
+"Произносимый текст\n"
+"{Description} = Описание горячей клавиши\n"
+"{MRDescription} = Поле с описанием записи в память\n"
+"{MRValue} = Значение, записываемое  в память\n"
+
+#: hotkeys.rstogglefreeze
+msgid "Toggle freeze"
+msgstr "Заморозить/Разморозить"
+
+#: hotkeys.rstogglefreezeandallowdecrease
+msgid "Toggle freeze and allow decrease"
+msgstr "Только уменьшение"
+
+#: hotkeys.rstogglefreezeandallowincrease
+msgid "Toggle freeze and allow increase"
+msgstr "Только увеличение"
+
+#: hotkeys.rstogglescript
+msgid "Toggle script"
+msgstr "Переключить скрипт"
+
+#: hotkeys.rsunfreeze
+msgid "Unfreeze"
+msgstr "Разморозить"
+
+#: iconstuff.rsfailureopen
+msgid "Failure opening "
+msgstr "Не удалось открыть "
+
+#: iconstuff.rsiconpicker
+msgid "Icon picker"
+msgstr "Средство выбора иконки"
+
+#: iconstuff.rsnoiconfound
+msgid "No icon found in this file"
+msgstr "В файле не найдена какая-либо иконка"
+
+#: iconstuff.rsunhandledext
+msgid "Unhandled file extension"
+msgstr "Неизвестное расширение файла"
+
+#: kerneldebuggerinterface.rsdbkdebug_startdebuggingfailed
+msgid "DBKDebug_StartDebugging failed"
+msgstr "Сбой DBKDebug_StartDebugging"
+
+#: luacaller.rsautoassemblercallbackluafunctionerror
+msgid "AutoAssemblerCallbac
