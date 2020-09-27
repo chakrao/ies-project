@@ -3775,4 +3775,132 @@ msgstr "Извините, но реализация функции Intel Process
 msgid "Target a different process. Ultimap2 will suspend the target when the buffer is full, and suspending the thing that empties the buffer is not a good idea"
 msgstr "Укажите другой процесс. Ultimap2 приостановит выбранный процесс при переполненном буфере, а приостановка штуки, что очищает буфер - не самая хорошая идея"
 
-#: frmultimap2unit.rstherangeyouhaveprovidedisanexitrange
+#: frmultimap2unit.rstherangeyouhaveprovidedisanexitrangebeaware
+msgid "The range you have provided is an 'Exit' range. Be aware that this doesn't mean it will always stop at that range, or that the result is what you expect. A context switch to another thread between the start and stop can add a lot of other data"
+msgstr "Предоставленный вами диапазон является «Выходным» диапазоном. Знайте, это не означает, что он всегда будет останавливаться в этом диапазоне или результат будет тем, что вы ожидали. Переключение контекста на другой поток между началом и концом диапазона может добавить много других данных"
+
+#: frmultimap2unit.rsthesizehastobe12kborhigher
+msgid "The size has to be 12KB or higher"
+msgstr "Размер должен быть 12 Кбайт или больше"
+
+#: frmultimapunit.rsremovehotkey
+msgid "Remove hotkey (%s)"
+msgstr "Убрать горячую клавишу (%s)"
+
+#: frmultimapunit.rsuuerrorduringmap
+msgid "Error during map"
+msgstr "Ошибка при создании карты"
+
+#: frmultimapunit.rsuulastfilterresults
+msgid "Last filter results: filtered out %d left: %d"
+msgstr "Последние результаты фильтра: Отфильтровано %d осталось: %d"
+
+#: frmultimapunit.rsuunew
+msgid " new="
+msgstr " новый="
+
+#: frmultimapunit.rsuuold
+msgid "old="
+msgstr "старый="
+
+#: frmultimapunit.rsuupause
+msgctxt "frmultimapunit.rsuupause"
+msgid "Pause"
+msgstr "Пауза"
+
+#: frmultimapunit.rsuupleaserunthe64bitversionofcheatenginetomakeuseofthisfeature
+msgid "Please run the 64-bit version of Cheat Engine to make use of this feature"
+msgstr "Пожалуйста, запустите 64-битную версию Cheat Engine, чтобы воспользоваться этой функцией"
+
+#: frmultimapunit.rsuuresume
+msgid "Resume"
+msgstr "Возобновить"
+
+#: frmultimapunit.rsuusorrybutthisfeatureisonlyavailableonintelcpus
+msgid "Sorry, but this feature is only available on intel cpu's"
+msgstr "Извините, но данная функция доступна только на процессорах Intel"
+
+#: frmultimapunit.rsuuthemaximumnumberofworkersis64
+msgid "The maximum number of workers is 64"
+msgstr "Максимальное число работников = 64"
+
+#: frmultimapunit.rsuuthisfunctionneedsatleast200bytesfortheheaderofthebuffer
+msgid "This function needs at least 200 bytes for the header of the buffer"
+msgstr "Этой функции нужно как минимум 200 байт для заголовка буфера"
+
+#: frmultimapunit.rsuuthiswillbringbackallfoundinstructions
+msgid "This will bring back all found instructions. Continue?"
+msgstr "Это вернет все найденные инструкции. Продолжить?"
+
+#: frmultimapunit.rsuuthiswillresetthecallcountoffunctionbackto0
+msgid "This will reset the callcount of functions back to 0. This can not be undone. Continue?"
+msgstr "Это сбросит счётчик вызовов функций. Действие не может быть отменено. Продолжить?"
+
+#: frmwatchlistunit.rsunparsable
+msgid "<Unparsable>"
+msgstr "<Не распознан>"
+
+#: frmwatchlistunit.rsunreadable
+msgid "<Unreadable>"
+msgstr "<Не распознан>"
+
+#: gnuassembler.rsbyteswhile
+msgid " bytes while "
+msgstr " байт, в то время как ожидалось "
+
+#: gnuassembler.rsconfigureavalidbinutilssetupfirst
+msgid "Configure a valid binutils setup first"
+msgstr "Сначала правильно сконфигурируйте настройки binutils"
+
+#: gnuassembler.rscouldnotbefound
+msgctxt "gnuassembler.rscouldnotbefound"
+msgid " could not be found"
+msgstr " не может быть найден"
+
+#: gnuassembler.rsdoesntseemtobeavalidelffile
+msgid " doesn't seem to be a valid ELF file"
+msgstr " не является допустимым ELF файлом"
+
+#: gnuassembler.rsgnuassemblererror
+msgid "GNU Assembler error"
+msgstr "Ошибка GNU ассемблера"
+
+#: gnuassembler.rsinvalidelffile
+msgid "Invalid ELF file"
+msgstr "Неверный ELF файл"
+
+#: gnuassembler.rsnobinutilsinstalled
+msgid "No binutils installed"
+msgstr "binutils не установлен"
+
+#: gnuassembler.rstheaobfor
+msgid "The AOB for "
+msgstr "Массив байт для "
+
+#: gnuassembler.rstheproperformatofasectionis
+msgid "The proper format of .asection is : .asection <name> <preferedaddress>"
+msgstr "Правильным форматом .asection является : .asection <имя> <предпочтительный адрес>"
+
+#: gnuassembler.rstheproperformatofmsectionis
+msgid "The proper format of .msection is : .msection <name> <address> <optional expected size>"
+msgstr "Правильным форматом .msection является : .msection <имя> <адрес> <ожидаемый размер(необязательно)>"
+
+#: gnuassembler.rstook
+msgid " took "
+msgstr " занимает "
+
+#: gnuassembler.rswhereexpected
+msgid " where expected"
+msgstr " байт"
+
+#: groupscancommandparser.rsgscpcustomtypenotrecognized
+msgid "Custom type not recognized: "
+msgstr "Пользовательский тип не распознан: "
+
+#: groupscancommandparser.rsgscpinvalidgroupscancommand
+msgid "Invalid groupscan command"
+msgstr "Неверная команда группового поиска"
+
+#: groupscancommandparser.rsgscpwildcardsemptyarenotallowedforoutoforderscans
+msgid "Wildcards/Empty are not allowed for Out of Order scans"
+msgstr "Подстановочные знаки/Незапо
