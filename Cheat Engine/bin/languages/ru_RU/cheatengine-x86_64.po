@@ -3503,4 +3503,169 @@ msgctxt "frmstructurecompareunit.rsspsufuuuuu"
 msgid "FUUUUU"
 msgstr "ФУУУУУ"
 
-#: frmstructureco
+#: frmstructurecompareunit.rsspsunlock
+msgid "Unlock (%.8x-%.8x)"
+msgstr "Разблокировать (%.8x-%.8x)"
+
+#: frmstructurecompareunit.rsspsunotyetimplemented
+msgctxt "frmstructurecompareunit.rsspsunotyetimplemented"
+msgid "Not yet implemented"
+msgstr "Ещё не реализовано"
+
+#: frmstructurecompareunit.rsspsuoffset
+msgctxt "frmstructurecompareunit.rsspsuoffset"
+msgid "Offset "
+msgstr "Смещение "
+
+#: frmstructurecompareunit.rsspsurescan
+msgctxt "frmstructurecompareunit.rsspsurescan"
+msgid "Rescan"
+msgstr "Отсев"
+
+#: frmstructurecompareunit.rsspsuscandonefound
+msgctxt "frmstructurecompareunit.rsspsuscandonefound"
+msgid "Scan done! Found "
+msgstr "Сканирование закончено! Найдено "
+
+#: frmstructurecompareunit.rsstop
+msgctxt "frmstructurecompareunit.rsstop"
+msgid "Stop"
+msgstr "Стоп"
+
+#: frmstructurecompareunit.rsstructurecompare
+msgctxt "frmstructurecompareunit.rsstructurecompare"
+msgid "Structure Compare"
+msgstr "Структурное сравнение"
+
+#: frmstructurecompareunit.rsterminating
+msgctxt "frmstructurecompareunit.rsterminating"
+msgid "Terminating..."
+msgstr "Завершение..."
+
+#: frmstructurecompareunit.rsthisaddressisnotaccessible
+msgctxt "frmstructurecompareunit.rsthisaddressisnotaccessible"
+msgid "This address is not accessible"
+msgstr "Этот адрес не доступен"
+
+#: frmstructurecompareunit.rstoosmallalign
+msgid "Alignsize must be greater than 0"
+msgstr "Размер выравнивания должен быть больше 0"
+
+#: frmstructurelinkerunit.strisnotavalidaddress
+msgctxt "frmstructurelinkerunit.strisnotavalidaddress"
+msgid "%s is not a valid address"
+msgstr "%s не является допустимым адресом"
+
+#: frmstructures2elementinfounit.rss2eiifyoucontinuetheoldlocallydefinedtype
+msgid "If you continue the old locally defined type %s will be deleted. Continue? (Tip: You can make this type into a global type so it can be re-used over again)"
+msgstr "Если вы продолжите, то старый локально определенный тип %s будет удалён. Продолжить? (Совет: Вы можете превратить этот тип в общий, таким образом, он может быть использован снова)"
+
+#: frmstructures2elementinfounit.rss2eilocalstruct
+msgid "Local struct:"
+msgstr "Локальная структура:"
+
+#: frmstructuresconfigunit.rshighlighted
+msgctxt "frmstructuresconfigunit.rshighlighted"
+msgid "Highlighted"
+msgstr "Выделенные"
+
+#: frmstructuresconfigunit.rsnormal
+msgctxt "frmstructuresconfigunit.rsnormal"
+msgid "Normal"
+msgstr "Обычные"
+
+#: frmstructuresnewstructureunit.rsguessfieldtypes
+msgid "Guess Field Types"
+msgstr "Угадать типы полей"
+
+#: frmstructuresnewstructureunit.rssize
+msgid "Size:"
+msgstr "Размер:"
+
+#: frmstructuresnewstructureunit.rsstructurename
+msgid "Structure Name:"
+msgstr "Название структуры:"
+
+#: frmstructuresnewstructureunit.rsuseautotypesifavailable
+msgid "Use Auto Types If Available"
+msgstr "Использовать автоматические типы если доступно"
+
+#: frmstructuresnewstructureunit.rswindowtitle
+msgid "New Structure"
+msgstr "Новая структура"
+
+#: frmthreadlistunit.rscouldntobtaincontext
+msgid "Couldn't obtain context"
+msgstr "Не удалось получить контекст"
+
+#: frmthreadlistunit.rscouldntopenhandle
+msgid "Couldn't open handle"
+msgstr "Не удалось открыть дескриптор"
+
+#: frmthreadlistunit.rscurrent
+msgid "Current"
+msgstr "Текущий"
+
+#: frmthreadlistunit.rsentrypoint
+msgid "Entry Point"
+msgstr "Точка Входа"
+
+#: frmthreadlistunit.rspleasefirstattachthedebuggertothisprocess
+msgid "Please first attach the debugger to this process"
+msgstr "Сначала присоедините отладчик к этому процессу"
+
+#: frmthreadlistunit.rstl1bytes
+msgid "1 byte"
+msgstr "1 байт"
+
+#: frmthreadlistunit.rstl2bytes
+msgid "2 bytes"
+msgstr "2 байта"
+
+#: frmthreadlistunit.rstl4bytes
+msgid "4 bytes"
+msgstr "4 байта"
+
+#: frmthreadlistunit.rstl8bytes
+msgid "8 bytes"
+msgstr "8 байт"
+
+#: frmthreadlistunit.rstlaccess
+msgid "Access"
+msgstr "Доступ"
+
+#: frmthreadlistunit.rstlchangevalue
+msgctxt "frmthreadlistunit.rstlchangevalue"
+msgid "Change value"
+msgstr "Изменить значение"
+
+#: frmthreadlistunit.rstlexecute
+msgctxt "frmthreadlistunit.rstlexecute"
+msgid "Execute"
+msgstr "Выполнение"
+
+#: frmthreadlistunit.rstlfailederrorcode
+msgid "failed. Errorcode="
+msgstr "не удалось. Код ошибки="
+
+#: frmthreadlistunit.rstlio
+msgid "I/O"
+msgstr "Ввод/Вывод"
+
+#: frmthreadlistunit.rstlwhatshouldthenewvalueofthisregisterbe
+msgid "What should the new value of this register be?"
+msgstr "Каким должно быть новое значение этого регистра?"
+
+#: frmthreadlistunit.rstlwrite
+msgid "Write"
+msgstr "Запись"
+
+#: frmtracerunit.rssearch
+msgctxt "frmtracerunit.rssearch"
+msgid "Search"
+msgstr "Поиск"
+
+#: frmtracerunit.rstypetheluaconditionyouwanttosearchforexampleeax0x1
+msgid ""
+"Type the (LUA) condition you want to search for (Example: EAX==0x1234)    \n"
+"Also available: reference
