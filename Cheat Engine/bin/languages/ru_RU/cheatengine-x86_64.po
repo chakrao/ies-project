@@ -4556,3 +4556,145 @@ msgid "Your license to use Cheat Engine has expired. You can buy a license to us
 msgstr "Ваша лицензия на использование Cheat Engine истекла. Для дальнейшего использования программы вы можете приобрести лицензию на 1 месяц за $200, на 6 месяцев за $1000 или на 1 год всего за $1800. Если вы не продлите вашу лицензию, то Cheat Engine будет работать в ограниченном режиме. (например: кнопка «Отсев» будет отключена)"
 
 #: mainunit.rsloadtheassociatedtable
+msgid "Load the associated table? (%s)"
+msgstr "Загрузить ассоциированную таблицу? (%s)"
+
+#: mainunit.rsluascriptcheattable
+msgid "Lua script: Cheat Table"
+msgstr "Lua скрипт: Таблица читов"
+
+#: mainunit.rsmodified
+msgid "Modified"
+msgstr "Модифицирован"
+
+#: mainunit.rsmugenerategroupscancommand
+msgid "Generate groupscan command"
+msgstr "Генерация группового поиска"
+
+#: mainunit.rsnone
+msgid "<none>"
+msgstr "<нет>"
+
+#: mainunit.rsoverlay
+msgid "overlay "
+msgstr "оверлей "
+
+#: mainunit.rspart
+msgid " part "
+msgstr " часть "
+
+#: mainunit.rsprevious
+msgctxt "mainunit.rsprevious"
+msgid "Previous"
+msgstr "Прежнее"
+
+#: mainunit.rsremoveselectedaddress
+msgid "Remove selected address"
+msgstr "Удалить выбранный адрес"
+
+#: mainunit.rsremoveselectedaddresses
+msgctxt "mainunit.rsremoveselectedaddresses"
+msgid "Remove selected addresses"
+msgstr "Удалить выбранные адреса"
+
+#: mainunit.rsrename
+msgctxt "mainunit.rsrename"
+msgid "Rename"
+msgstr "Переименовать"
+
+#: mainunit.rsrenamefile
+msgid "Rename file"
+msgstr "Переименовать файл"
+
+#: mainunit.rsrequiresdbvmcapablecpu
+msgid "This function requires an CPU with virtualization support. If your system has that then make sure that you're currently not running inside a virtual machine. (Windows has some security features that can run programs inside a VM)"
+msgstr "Для этой функции требуется процессор с поддержкой виртуализации. Если ваша система имеет такую поддержку, убедитесь, что в данный момент вы не работаете внутри виртуальной машины. (Windows имеет некоторые функции безопасности, которые могут запускать программы внутри виртуальной машины)"
+
+#: mainunit.rsrequiresdbvmept
+msgid "DBVM find routines needs DBVM for EPT/NP page hooking. Loading DBVM can potentially cause a system freeze. Are you sure?"
+msgstr "Процедура DBVM поиска требует запуска самой DBVM для перехвата EPT/NP страниц. Загрузка DBVM может привести к зависанию системы. Вы уверены?"
+
+#: mainunit.rsrequiresept
+msgid "This function requires that your CPU supports 'Intel Extended Page Table (EPT) or AMD Nested Paging' which your CPU lacks"
+msgstr "Эта функция требует процессора поддерживающего «Расширенную таблицу страниц (EPT)» или «Вложенный пейджинг(NP)»"
+
+#: mainunit.rsrestoreandshow
+msgid "Restore and show"
+msgstr "Восстановить и показать"
+
+#: mainunit.rssaved
+msgid "Saved"
+msgstr "Сохранённое"
+
+#: mainunit.rssavedscanresults
+msgid "Saved scan results"
+msgstr "Сохранённый результат поиска"
+
+#: mainunit.rssavescanresults
+msgid "Save scan results"
+msgstr "Сохранить результат поиска"
+
+#: mainunit.rssavetodisk
+msgid "Save to disk"
+msgstr "Сохранить на диск"
+
+#: mainunit.rsscan
+msgctxt "mainunit.rsscan"
+msgid "Scan"
+msgstr "Поиск"
+
+#: mainunit.rsscanerror
+msgid "Scan error:%s"
+msgstr "Ошибка поиска: %s"
+
+#: mainunit.rsscanresult
+msgid "Scanresult"
+msgstr "Scanresult"
+
+#: mainunit.rsselectthesavedscanresultfromthelistbelow
+msgid "Select the saved scan result from the list below"
+msgstr "Выберите сохранённый результат поиска из списка ниже"
+
+#: mainunit.rssetchangehotkeys
+msgid "Set/Change hotkeys"
+msgstr "Назначить/Изменить горячие клавиши"
+
+#: mainunit.rssethotkeys
+msgid "Set hotkeys"
+msgstr "Назначить горячие клавиши"
+
+#: mainunit.rsshowasbinary
+msgctxt "mainunit.rsshowasbinary"
+msgid "Show as binary"
+msgstr "Показать как двоичное"
+
+#: mainunit.rsshowasdecimal
+msgid "Show as decimal"
+msgstr "Показать как десятичное"
+
+#: mainunit.rsshowashexadecimal
+msgctxt "mainunit.rsshowashexadecimal"
+msgid "Show as hexadecimal"
+msgstr "Показать как шестнадцатеричное"
+
+#: mainunit.rsshown
+msgid "shown"
+msgstr "показывается"
+
+#: mainunit.rsterminatingscan
+msgid "Terminating scan..."
+msgstr "Завершение поиска..."
+
+#: mainunit.rsthankyoufortryingoutcheatenginebecauseithasexpired
+msgid "Thank you for trying out Cheat Engine. Because it has expired Cheat Engine will now close. Is that ok with you?"
+msgstr "Спасибо, что опробовали Cheat Engine. Т.к. пробный период истёк, то Cheat Engine сейчас закроется. С вами всё в порядке?"
+
+#: mainunit.rstheprocessisntfullyopenedindicatingainvalidprocess
+msgid "The process isn't fully opened. Indicating a invalid ProcessID. You still want to find out the EPROCESS? (BSOD is possible)"
+msgstr "Процесс открыт не полностью. Указан недопустимый идентификатор процесса. Вы всё ещё хотите узнать EPROCESS? (возможен BSOD)"
+
+#: mainunit.rsthereareoneormoreautoassemblerentriesorcodechanges
+msgid "There are one or more auto assembler entries or code changes enabled in this table. Do you want them disabled? (without executing the disable part)"
+msgstr "В текущей таблице включен как минимум один скрипт автоассемблера или изменяющий код (см. «Дополнительные возможности»). Вы хотите их отключить? (Без выполнения условий их отключения)"
+
+#: mainunit.rstherecordwithdesc
