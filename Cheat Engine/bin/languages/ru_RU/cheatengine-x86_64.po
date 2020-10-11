@@ -4247,4 +4247,186 @@ msgstr " ещё не поддерживается"
 
 #: luaobject.rsthisisaninvalidclassormethodproperty
 msgid "This is an invalid class or method property"
-msgstr "Эт
+msgstr "Это недопустимый класс или свойство метода"
+
+#: luaobject.rsthistypeofmethod
+msgctxt "luaobject.rsthistypeofmethod"
+msgid "This type of method:"
+msgstr "Этот тип метода:"
+
+#: luastructurefrm.rsgroup1
+msgctxt "luastructurefrm.rsgroup1"
+msgid "Group 1"
+msgstr "Группа 1"
+
+#: luastructurefrm.rsgroupd
+msgid "Group %d"
+msgstr "Группа %d"
+
+#: luasyntax.syns_attrluamstring
+msgid "Multiline String"
+msgstr "Многострочная строка"
+
+#: luasyntax.syns_attrnumber
+msgid "Numbers"
+msgstr "Числа"
+
+#: luasyntax.syns_filterlua
+msgid "Lua Files (*.lua, *.lpr)|*.lua;*.lpr"
+msgstr "Файлы Lua (*.lua, *.lpr)|*.lua;*.lpr"
+
+#: luasyntax.syns_langlua
+msgctxt "luasyntax.syns_langlua"
+msgid "Lua"
+msgstr "Lua"
+
+#: luatablefile.rscreatetablefilerequiresatleastoneparameter
+msgid "createTableFile requires at least one parameter"
+msgstr "для createTableFile требуется по крайней мере один параметр"
+
+#: luatablefile.rserrorraisedwithmessage
+msgid " error raised with message: "
+msgstr " вызвана ошибка с сообщением: "
+
+#: luatablefile.rstabledileentryalreadyexistsforfilename
+msgid "Table file entry already exists for filename: "
+msgstr "Запись файла таблицы уже существует для файла: "
+
+#: luathread.rserrorinnativethreadcalled
+msgid "Error in native thread called "
+msgstr "Ошибка в собственном потоке вызвала "
+
+#: luathread.rsinnativecode
+msgid " in native code:"
+msgstr " в собственном коде:"
+
+#: luathread.rsinvalidfirstparameterforcreatenativethread
+msgid "Invalid first parameter for createNativeThread"
+msgstr "Недопустимый первый параметр для createNativeThread"
+
+#: lua_server.rsalreadyexists
+msgid " already exists"
+msgstr " уже существует"
+
+#: lua_server.rsaluaserverwiththename
+msgid "A luaserver with the name "
+msgstr "luaserver с именем "
+
+#: mainunit.rsand
+msgctxt "mainunit.rsand"
+msgid "and"
+msgstr "и"
+
+#: mainunit.rsaprilfools
+msgid "April fools!!!!"
+msgstr "Первоапрельский дурак!!!!"
+
+#: mainunit.rsareyousure
+msgctxt "mainunit.rsareyousure"
+msgid "Are you sure?"
+msgstr "Вы уверены?"
+
+#: mainunit.rsareyousureyouwanttodelete
+msgctxt "mainunit.rsareyousureyouwanttodelete"
+msgid "Are you sure you want to delete %s?"
+msgstr "Вы уверены, что хотите удалить %s?"
+
+#: mainunit.rsareyousureyouwanttodeletethisform
+msgid "Are you sure you want to delete this form?"
+msgstr "Вы уверены, что хотите удалить эту форму?"
+
+#: mainunit.rsareyousureyouwanttoerasethedatainthecurrenttable
+msgid "Are you sure you want to erase the data in the current table?"
+msgstr "Вы уверены, что хотите стереть все данные в текущей таблице?"
+
+#: mainunit.rsatleastxx
+msgid "at least xx%"
+msgstr "как минимум xx%"
+
+#: mainunit.rsautoassembleedit
+msgid "Auto Assemble edit: %s"
+msgstr "Редактирование: %s"
+
+#: mainunit.rsbetween
+msgid "between %"
+msgstr "между %"
+
+#: mainunit.rsbringscheatenginetofront
+msgid "brings Cheat Engine to front"
+msgstr "переносит Cheat Engine на передний план"
+
+#: mainunit.rscancel
+msgctxt "mainunit.rscancel"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: mainunit.rsceerror
+msgid "CE Error:"
+msgstr "Ошибка:"
+
+#: mainunit.rschangevalue
+msgctxt "mainunit.rschangevalue"
+msgid "Change value"
+msgstr "Изменить значение"
+
+#: mainunit.rschooselanguage
+msgid "Which language do you wish to use?"
+msgstr "Какой язык вы хотите использовать?"
+
+#: mainunit.rsclearrecentfiles
+msgid "Empty Recent Files List"
+msgstr "Очистить список последних файлов"
+
+#: mainunit.rscomparetosavedscan
+msgctxt "mainunit.rscomparetosavedscan"
+msgid "Compare to first/saved scan"
+msgstr "Сравнение с первым/сохранённым результатом поиска"
+
+#: mainunit.rscomparingto
+msgid "Comparing to %s"
+msgstr "Сравнение с %s"
+
+#: mainunit.rscomparingtof
+msgid "Comparing to first scan results"
+msgstr "Сравнение с результатом первого поиска"
+
+#: mainunit.rscurrentprocess
+msgid "Current process"
+msgstr "Текущий процесс"
+
+#: mainunit.rscustomluatype
+msgid "Custom LUA type"
+msgstr "Пользовательский тип LUA"
+
+#: mainunit.rscustomtypename
+msgid "Custom Type Name"
+msgstr "Пользовательское название типа"
+
+#: mainunit.rsdbvmwatchfailed
+msgid "dbvm_watch failed"
+msgstr "Сбой dbvm_watch"
+
+#: mainunit.rsdecimal
+msgctxt "mainunit.rsdecimal"
+msgid "Decimal"
+msgstr "Десятичное"
+
+#: mainunit.rsdelete
+msgctxt "mainunit.rsdelete"
+msgid "Delete"
+msgstr "Удалить"
+
+#: mainunit.rsdoyouwantthegroupwithaddress
+msgid "Do you want a header with address support ?"
+msgstr "Вам нужен заголовок с адресной поддержкой?"
+
+#: mainunit.rsdoyouwanttogotothecheatenginewebsite
+msgid "Do you want to go to the Cheat Engine website?"
+msgstr "Вы хотите перейти на веб-сайт Cheat Engine?"
+
+#: mainunit.rsdoyouwanttoprotectthistrainerfilefromediting
+msgid "Do you want to protect this trainer file from editing?"
+msgstr "Вы хотите защитить этот трейнер от редактирования?"
+
+#: mainunit.rsdoyouwishtomergethecurrenttablewiththistable
+msgid "Do
