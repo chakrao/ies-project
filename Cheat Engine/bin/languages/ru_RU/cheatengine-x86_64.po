@@ -4097,4 +4097,154 @@ msgid "DBKDebug_StartDebugging failed"
 msgstr "Сбой DBKDebug_StartDebugging"
 
 #: luacaller.rsautoassemblercallbackluafunctionerror
-msgid "AutoAssemblerCallbac
+msgid "AutoAssemblerCallback: Lua Function error("
+msgstr "AutoAssemblerCallback: Ошибка Lua функции("
+
+#: luacaller.rsisnotyetsupported
+msgctxt "luacaller.rsisnotyetsupported"
+msgid " is not yet supported"
+msgstr " пока не поддерживается"
+
+#: luacaller.rsstructuredissecteventluafunctionerror
+msgid "StructureDissectEvent: Lua Function error("
+msgstr "StructureDissectEvent: Ошибка Lua функции("
+
+#: luacaller.rsthistypeofmethod
+msgctxt "luacaller.rsthistypeofmethod"
+msgid "This type of method:"
+msgstr "Этот тип метода:"
+
+#: luaclass.rsinvalidclassobject
+msgid "Invalid class object"
+msgstr "Недопустимый объект класса"
+
+#: luadissectcode.rscouldnotbefound
+msgctxt "luadissectcode.rscouldnotbefound"
+msgid " could not be found"
+msgstr " не может быть найден"
+
+#: luadissectcode.rsinvalidparametersfordissect
+msgid "Invalid parameters for dissect"
+msgstr "Недопустимые параметры для анализа"
+
+#: luadissectcode.rsthemodulenamed
+msgid "The module named "
+msgstr "Модуль под названием "
+
+#: luaform.rsthegivenformisnotcompatible
+msgid "The given form is not compatible. Formclass="
+msgstr "Данная форма не совместима. Formclass ="
+
+#: luafoundlist.rscreatefoundlistneedsamemscanobjectasparameter
+msgid "createfoundlist needs a memscan object as parameter"
+msgstr "createfoundlist нуждается в объекте memscan в качестве параметра"
+
+#: luahandler.rscheatengineisbeingafag
+msgid "Cheatengine is being a fag"
+msgstr "Cheat Engine не испытывает желание делать то, что вы хотите"
+
+#: luahandler.rsconditionalbreakpointerror
+msgid "Conditional breakpoint error"
+msgstr "Ошибка условного брейкпоинта"
+
+#: luahandler.rscreatememscanneedsaprogressbarornil
+msgid "createMemScan needs a progressbar or nil. "
+msgstr "createMemScan нуждается в индикаторе выполнения или в nil. "
+
+#: luahandler.rsdeallocatesharedmemoryisnotimplemented
+msgid "deallocateSharedMemory is not implemented (It's not even in the list of available functions)"
+msgstr "deallocateSharedMemory не реализован (Его даже нет в списке доступных функций)"
+
+#: luahandler.rsdebugsetbreakpointneedsatleastanaddress
+msgid "debug_setBreakpoint needs at least an address"
+msgstr "debug_setBreakpoint нуждается, как минимум, в адресе"
+
+#: luahandler.rserror
+msgid "Error:"
+msgstr "Ошибка:"
+
+#: luahandler.rserror2
+msgid " error:"
+msgstr " ошибка:"
+
+#: luahandler.rserror3
+msgid " error"
+msgstr " ошибка"
+
+#: luahandler.rsgetprocesslisttheprovidedlistobjectisnotvalid
+msgid "getProcessList: the provided List object is not valid"
+msgstr "getProcessList: предоставленный объект списка не действителен"
+
+#: luahandler.rsgetthreadlisttheprovidedlistobjectisnotvalid
+msgid "getThreadlist: the provided List object is not valid"
+msgstr "getThreadlist: предоставленный объект списка не действителен"
+
+#: luahandler.rsincorrectnumberofparameters
+msgid "Incorrect number of parameters"
+msgstr "Некорректное число параметров"
+
+#: luahandler.rsinvalidfloat
+msgid "Invalid floating point string:%s"
+msgstr "Недопустимая строка с плавающей точкой: %s"
+
+#: luahandler.rsinvalidint
+msgid "Invalid integer:%s"
+msgstr "Недопустимое целое число: %s"
+
+#: luahandler.rsisnotaprogressbar
+msgid " is not a progressbar"
+msgstr " это не индикатор выполнения"
+
+#: luahandler.rsluapanic
+msgid "LUA panic!"
+msgstr "LUA в панике!"
+
+#: luahandler.rslua_doscriptwasnotcalledromthemainthread
+msgid "LUA_DoScript was not called from the main thread"
+msgstr "LUA_DoScript не был вызван из основного потока"
+
+#: luahandler.rsmainluaerror
+msgid "main.lua error:"
+msgstr "main.lua ошибка:"
+
+#: luahandler.rsmainluaerror2
+msgid "main.lua error"
+msgstr "main.lua ошибка"
+
+#: luahandler.rsnonmainthreadluaerror
+msgid "Lua error in a secondary thread"
+msgstr "Ошибка lua во вторичном потоке"
+
+#: luahandler.rsnumberrequired
+msgid "Number required"
+msgstr "Требуется число"
+
+#: luahandler.rsplaysoundtheparametermustbeatablefileoramemorystream
+msgid "playSound: The parameter must be a table file or a memory stream. Nothing else"
+msgstr "playSound: Параметром должен быть файл таблицы или поток памяти. И ничего другого"
+
+#: luahandler.rspluginaddress
+msgctxt "luahandler.rspluginaddress"
+msgid "Plugin Address"
+msgstr "Расположение плагина"
+
+#: luahandler.rsthistypeisnotsupportedhere
+msgid "This type is not supported here"
+msgstr "Этот тип не поддерживается"
+
+#: luahandler.rsundefinedluaerror
+msgid "Undefined lua error"
+msgstr "Неопределённая ошибка lua"
+
+#: luamemscan.rsnotallparametershavebeenprovided
+msgid "Not all parameters have been provided"
+msgstr "Были предоставлены не все параметры"
+
+#: luaobject.rsisnotyetsupported
+msgctxt "luaobject.rsisnotyetsupported"
+msgid " is not yet supported"
+msgstr " ещё не поддерживается"
+
+#: luaobject.rsthisisaninvalidclassormethodproperty
+msgid "This is an invalid class or method property"
+msgstr "Эт
