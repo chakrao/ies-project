@@ -4429,4 +4429,130 @@ msgid "Do you want to protect this trainer file from editing?"
 msgstr "Вы хотите защитить этот трейнер от редактирования?"
 
 #: mainunit.rsdoyouwishtomergethecurrenttablewiththistable
-msgid "Do
+msgid "Do you wish to merge the current table with this table?"
+msgstr "Вы хотите объединить текущую таблицу с этой?"
+
+#: mainunit.rsedit
+msgctxt "mainunit.rsedit"
+msgid "Edit"
+msgstr "Редактировать"
+
+#: mainunit.rseditaddresses
+msgid "Edit addresses"
+msgstr "Редактирование адресов"
+
+#: mainunit.rsexpired
+msgid "EXPIRED"
+msgstr "Истёк срок действия лицензии"
+
+#: mainunit.rsfailedtoload
+msgid "failed to load"
+msgstr "не удалось загрузить"
+
+#: mainunit.rsfailuresettingthecreateglobalprivilege
+msgid "Failure setting the CreateGlobal privilege."
+msgstr "Не удалось установить привилегии для CreateGlobal."
+
+#: mainunit.rsfailuresettingthedebugprivilege
+msgid "Failure setting the debug privilege. Debugging may be limited."
+msgstr "Не удалось установить отладочные привилегии. Отладка может быть ограничена."
+
+#: mainunit.rsfailuresettingtheloaddriverprivilege
+msgid "Failure setting the load driver privilege. Debugging may be limited."
+msgstr "Не удалось установить привилегии загрузки драйвера. Отладка может быть ограничена."
+
+#: mainunit.rsfailuresettingthesetcbprivilegeprivilege
+msgid "Failure setting the SeTcbPrivilege privilege. Debugging may be limited."
+msgstr "Не удалось установить привилегии SeTcbPrivilege. Отладка может быть ограничена."
+
+#: mainunit.rsfindoutwhataccessesthispointer
+msgid "Find out what accesses this pointer"
+msgstr "Найти инструкции, обращающиеся к этому указателю"
+
+#: mainunit.rsfindoutwhatwritesthispointer
+msgid "Find out what writes this pointer"
+msgstr "Найти инструкции, записывающие по этому указателю"
+
+#: mainunit.rsfindwhataccessestheaddresspointedatbythispointer
+msgid "Find what accesses the address pointed at by this pointer"
+msgstr "Найти инструкции, обращающиеся к указываемому указателем адресу"
+
+#: mainunit.rsfindwhatwritestheaddresspointedatbythispointer
+msgid "Find what writes the address pointed at by this pointer"
+msgstr "Найти инструкции, записывающие по указываемому указателем адресу"
+
+#: mainunit.rsforcetermination
+msgid "Force termination"
+msgstr "Завершить принудительно"
+
+#: mainunit.rsgivethenewfilename
+msgid "Give the new filename"
+msgstr "Укажите новое название файла"
+
+#: mainunit.rsgivethenewvaluefortheselectedaddresses
+msgid "Give the new value for the selected address(es)"
+msgstr "Задайте новое значение для выбранного адреса(ов)"
+
+#: mainunit.rsgroup
+msgid "Group %s"
+msgstr "Группа %s"
+
+#: mainunit.rsgroups
+msgid "Groups"
+msgstr "Группы"
+
+#: mainunit.rsgroupscandatainvalid
+msgid "groupscan data invalid"
+msgstr "неверные данные группового поиска"
+
+#: mainunit.rsgroupscanresultwithnogroupscanparser
+msgid "Groupscan result with no groupscanparser"
+msgstr "У результата группового поиска отсутствует анализатор группового поиска"
+
+#: mainunit.rsheight
+msgid " , height="
+msgstr " , высота="
+
+#: mainunit.rshex
+msgctxt "mainunit.rshex"
+msgid "Hex"
+msgstr "Hex"
+
+#: mainunit.rshexadecimal
+msgctxt "mainunit.rshexadecimal"
+msgid "Hexadecimal"
+msgstr "Шестнадцатеричное"
+
+#: mainunit.rshrmpfbecauseiminagoodmoodillletyougothistimebutdon
+msgid "Hrmpf... Because I'm in a good mood i'll let you go this time. But don't do it again you filthy pirate"
+msgstr "Хмм... Сейчас я в хорошем настроении, поэтому в этот раз я тебя отпущу. Но не делай так больше, мерзкий пират"
+
+#: mainunit.rsinvalidscanfolder
+msgid "%s is not accessible like it should.  Please configure a proper location in the settings"
+msgstr "%s недоступна. Пожалуйста, укажите её правильное расположение в настройках"
+
+#: mainunit.rsinvalidstartaddress
+msgid "Invalid start address: %s"
+msgstr "Недопустимый начальный адрес: %s"
+
+#: mainunit.rsinvalidstopaddress
+msgid "Invalid stop address: %s"
+msgstr "Недопустимый конечный адрес: %s"
+
+#: mainunit.rsisnotavalidspeed
+msgid "%s is not a valid speed"
+msgstr "%s не является допустимой скоростью"
+
+#: mainunit.rsisnotavalidx
+msgid "%s is not a valid xml name"
+msgstr "%s не является допустимым названием xml файла"
+
+#: mainunit.rslanguage
+msgid "Language"
+msgstr "Язык"
+
+#: mainunit.rslicenseexpired
+msgid "Your license to use Cheat Engine has expired. You can buy a license to use cheat engine for 1 month for $200, 6 months for only $1000 and for 1 year for only $1800. If you don't renew your license Cheat Engine will be severely limited in it's abilities. (e.g: Next scan has been disabled)"
+msgstr "Ваша лицензия на использование Cheat Engine истекла. Для дальнейшего использования программы вы можете приобрести лицензию на 1 месяц за $200, на 6 месяцев за $1000 или на 1 год всего за $1800. Если вы не продлите вашу лицензию, то Cheat Engine будет работать в ограниченном режиме. (например: кнопка «Отсев» будет отключена)"
+
+#: mainunit.rsloadtheassociatedtable
