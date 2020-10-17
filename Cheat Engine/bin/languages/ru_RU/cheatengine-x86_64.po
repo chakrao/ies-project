@@ -4793,4 +4793,145 @@ msgstr "Описание"
 
 #: mainunit.strchangedescription2
 msgid "Change the description to:"
-msg
+msgstr "Изменить описание на:"
+
+#: mainunit.strchangemorevalues
+msgid "Change these values to:"
+msgstr "Изменить эти значения на:"
+
+#: mainunit.strchangescript
+msgctxt "mainunit.strchangescript"
+msgid "Change script"
+msgstr "Изменить скрипт"
+
+#: mainunit.strclicktogohome
+msgid "Click here to go to the Cheat Engine homepage"
+msgstr "Кликните здесь для перехода на домашнюю страницу Cheat Engine"
+
+#: mainunit.strconfirmprocesstermination
+msgid "This will close the current process. Are you sure you want to do this?"
+msgstr "Это действие закроет текущий процесс. Вы уверены, что хотите это сделать?"
+
+#: mainunit.strconfirmundo
+msgid "Do you really want to go back to the results of the previous scan?"
+msgstr "Вы действительно хотите вернуться к результату предыдущего поиска?"
+
+#: mainunit.strdeleteaddress
+msgid "Delete this address"
+msgstr "Удалить этот адрес"
+
+#: mainunit.strdeleteall
+msgid "Are you sure you want to delete all addresses?"
+msgstr "Вы уверены, что хотите удалить все адреса?"
+
+#: mainunit.strdeletetheseaddresses
+msgid "Delete these addresses"
+msgstr "Удалить эти адреса"
+
+#: mainunit.strdisablecheat
+msgid "Disable cheat"
+msgstr "Отключить чит"
+
+#: mainunit.strdontbother
+msgid "Don't even bother. Cheat Engine uses the main thread to receive messages when the scan is done, freeze it and CE will crash!"
+msgstr "Даже не беспокойтесь. Cheat Engine использует основной поток для приёма информации об окончании процесса поиска. Если вы заморозите его, то Cheat Engine аварийно завершится!"
+
+#: mainunit.strenablecheat
+msgid "Enable cheat"
+msgstr "Включить чит"
+
+#: mainunit.strerror
+msgctxt "mainunit.strerror"
+msgid "Error"
+msgstr "Ошибка"
+
+#: mainunit.strerrorwhileopeningprocess
+msgid "Error while opening this process"
+msgstr "Возникла ошибка при открытии этого процесса"
+
+#: mainunit.strerrorwhileopeningprocessmac
+msgid ". Have you disabled 'System Integrity Protection'(SIP) yet?"
+msgstr ". Вы уже отключили «Защита целостности системы» (SIP)?"
+
+#: mainunit.strforcerecheck
+msgctxt "mainunit.strforcerecheck"
+msgid "Force recheck symbols"
+msgstr "Принудительная перепроверка символов"
+
+#: mainunit.strfreezeaddressinlist
+msgid "Freeze the address in this list"
+msgstr "Заморозить адрес в этом списке"
+
+#: mainunit.strfreezealladdresses
+msgid "Freeze all addresses in this list"
+msgstr "Заморозить все адреса в этом списке"
+
+#: mainunit.strfuture
+msgid "Wow,I never imagined people would use Cheat Engine up to today"
+msgstr "Ничего себе, я и представить не мог, что люди будут пользоваться Cheat Engine и по сей день"
+
+#: mainunit.strhappybirthday
+msgid "Let's sing Happy Birthday for Dark Byte today!"
+msgstr "Давайте петь «Happy Birthday» для Dark Byte!"
+
+#: mainunit.strhideall
+msgid "will hide all windows"
+msgstr "скроет все окна"
+
+#: mainunit.strhideforeground
+msgid "will hide the foreground window"
+msgstr "скроет активное окно"
+
+#: mainunit.strinfoabouttable
+msgid "Info about this table:"
+msgstr "Информация об этой таблице:"
+
+#: mainunit.strkeeplist
+msgid "Keep the current address list/code list?"
+msgstr "Оставить текущую таблицу и список кодов?"
+
+#: mainunit.strmorepointers
+msgid "There are more pointers selected. Do you want to change them as well?"
+msgstr "Выбрано несколько указателей. Их тоже изменить?"
+
+#: mainunit.strmorepointers2
+msgid "You have selected one or more pointers. Do you want to change them as well?"
+msgstr "Вы выбрали один или более указателей. Их тоже изменить?"
+
+#: mainunit.strnewyear
+msgid "And what are your good intentions for this year? ;-)"
+msgstr "Хорошо ли вы вели себя в этом году? ;-)"
+
+#: mainunit.strnotavalidbinarynotation
+msgid " is not a valid binary notation!"
+msgstr " недопустимая двоичная запись!"
+
+#: mainunit.strnotavalidnotation
+msgid "This is not a valid notation"
+msgstr "Недопустимая запись"
+
+#: mainunit.strnotavalidvalue
+msgctxt "mainunit.strnotavalidvalue"
+msgid "This is not an valid value"
+msgstr "Недопустимое значение"
+
+#: mainunit.strnotsameammountofbytes
+msgid "The number of bytes you typed is not the same as the previous ammount. Continue?"
+msgstr "Введённое вами количество байт не совпадает с предыдущим количеством. Продолжить?"
+
+#: mainunit.strnotthesamesize1
+msgid "The text you entered isn't the same size as the original. Continue?"
+msgstr "Введённый вами текст отличается по размеру от оригинального. Продолжить?"
+
+#: mainunit.strnotthesamesize2
+msgid "Not the same size!"
+msgstr "Размер отличается!"
+
+#: mainunit.stropcodechanged
+msgctxt "mainunit.stropcodechanged"
+msgid "The following opcodes changed the selected address"
+msgstr "Следующие инструкции изменили выбранный адрес"
+
+#: mainunit.stropcoderead
+msgid "The following opcodes read from the selected address"
+msgstr "Следующие инс
