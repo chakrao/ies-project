@@ -4697,4 +4697,100 @@ msgstr "Процесс открыт не полностью. Указан нед
 msgid "There are one or more auto assembler entries or code changes enabled in this table. Do you want them disabled? (without executing the disable part)"
 msgstr "В текущей таблице включен как минимум один скрипт автоассемблера или изменяющий код (см. «Дополнительные возможности»). Вы хотите их отключить? (Без выполнения условий их отключения)"
 
-#: mainunit.rstherecordwithdesc
+#: mainunit.rstherecordwithdescriptionhasasinterpretableaddresst
+msgid "The record with description '%s' has as interpretable address '%s'. The recalculation will change it to %s. Do you want to edit it to the new address?"
+msgstr "У записи с описанием «%s» в качестве адреса указан %s. Перерасчёт поменяет этот адрес на %s. Вы хотите изменить этот адрес на новый?"
+
+#: mainunit.rsthisbuttonwillforcecancelascanexpectmemoryleaks
+msgid "This button will force cancel a scan. Expect memory leaks"
+msgstr "После нажатия этой кнопки Cheat Engine принудительно остановит поиск. Ожидайте утечку памяти"
+
+#: mainunit.rsthisbuttonwilltrytocancelthecurrentscanclicktwicet
+msgid "This button will try to cancel the current scan. Click twice to force an exit"
+msgstr "После нажатия этой кнопки Cheat Engine будет пытаться остановить текущий поиск. Кликните дважды для принудительной отмены"
+
+#: mainunit.rsthislistishuge
+msgid "This list is huge and deleting multiple items will require CE to traverse the whole list and can take a while. Are you sure?"
+msgstr "Этот список огромен. Для удаления множественных объектов, Cheat Engine потребуется пройтись по всему списку, что займёт много времени. Вы уверены?"
+
+#: mainunit.rstrytutorial
+msgid "Do you want to try out the tutorial?"
+msgstr "Вы хотите пройти учебное руководство?"
+
+#: mainunit.rsunabletoscanfixyourscansettings
+msgid "Unable to scan. Fix your scan settings and restart cheat engine"
+msgstr "Сканирование невозможно. Исправьте ваши настройки поиска и перезапустите Cheat Engine"
+
+#: mainunit.rsunrandomizerinfo
+msgid "This will scan for and change some routines that are commonly used to generate a random value so they always return the same. Please be aware that there is a chance it overwrites the wrong routines causing the program to crash, or that the program uses an unknown random generator. Continue?"
+msgstr "Будут проверены и изменены некоторые процедуры, которые обычно используются для генерации случайного значения, чтобы они всегда возвращали одно и то же значение. Имейте в виду, что есть шанс перезаписи неверных процедур, и это может привести к аварийному завершению программы или может использоваться неизвестный генератор случайных значений. Продолжить?"
+
+#: mainunit.rsunspecifiederror
+msgid "Unspecified error"
+msgstr "Неустановленная ошибка"
+
+#: mainunit.rsvalue
+msgid "Value %"
+msgstr "Значение %"
+
+#: mainunit.rswasclickedatpositon
+msgid " was clicked at positon "
+msgstr " был кликнут в позиции "
+
+#: mainunit.rswhatareyousayingyouregoingtocontinueusingceillegal
+msgid "WHAT!!! Are you saying you're going to continue using CE ILLEGALLY??? If you say yes, i'm going to mail the cops to get you and send you to jail!!!"
+msgstr "ЧТО?!!! Вы хотите сказать, что и дальше будете нелегально использовать Cheat Engine??? Если вы ответите «Да», то я напишу заявление в полицию, чтобы они вас поймали и отправили за решётку!"
+
+#: mainunit.rswhatdoyouwantthegroupnametobe
+msgid "What do you want the groupname to be?"
+msgstr "Какое название вы хотите дать этой группе?"
+
+#: mainunit.rswhatnamedoyouwanttogivetothesescanresults
+msgid "What name do you want to give to these scanresults?"
+msgstr "Какое название вы хотите дать этому результату поиска?"
+
+#: mainunit.rswhatwillbethenewnameforthistab
+msgid "What will be the new name for this tab?"
+msgstr "Какое название вы хотите дать этой вкладке?"
+
+#: mainunit.rswidth
+msgid "   -   width="
+msgstr "   -   ширина="
+
+#: mainunit.rsyouarelowondiskspaceonthefolderwherethescanresults
+msgid "You are low on diskspace on the folder where the scanresults are stored. Scanning might fail. Are you sure you want to continue?"
+msgstr "Мало места на диске, где находится папка с результатами поиска. Поиск может завершится неудачей. Вы уверены, что хотите продолжить?"
+
+#: mainunit.straccessed
+msgid "The following opcodes accessed the selected address"
+msgstr "Следующие инструкции обращались к выбранным адресам"
+
+#: mainunit.stradd0
+msgid "Do you want to add a '0'-terminator at the end?"
+msgstr "Вы хотите добавить нуль-терминальную строку в конец?"
+
+#: mainunit.stralreadyin
+msgctxt "mainunit.stralreadyin"
+msgid "This address is already in the list"
+msgstr "Этот адрес уже находится в списке"
+
+#: mainunit.stralreadyinlistmultiple
+msgid "One or more addresses where already in the list"
+msgstr "В списке уже есть как минимум один адрес"
+
+#: mainunit.strasktosave
+msgid "You haven't saved your last changes yet. Save Now?"
+msgstr "Вы ещё не сохранили ваши последние изменения. Сохранить сейчас?"
+
+#: mainunit.strchange1value
+msgid "Change this value to:"
+msgstr "Изменить это значение на:"
+
+#: mainunit.strchangedescription1
+msgctxt "mainunit.strchangedescription1"
+msgid "Description"
+msgstr "Описание"
+
+#: mainunit.strchangedescription2
+msgid "Change the description to:"
+msg
