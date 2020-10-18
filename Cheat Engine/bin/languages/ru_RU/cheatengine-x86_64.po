@@ -5278,4 +5278,139 @@ msgstr "Получение адреса пространства ядра"
 
 #: memorybrowserformunit.rsgivethenameofthefunctionyouwanttofindcasesensitive
 msgid "Give the name of the function you want to find (Case sensitive,certain words can cause blue screens)"
-msgstr "Укажите название функци
+msgstr "Укажите название функции, которую хотите найти (С учётом регистра, определённые слова могут вызвать BSOD)"
+
+#: memorybrowserformunit.rsgotoaddress
+msgid "Goto Address"
+msgstr "Перейти по адресу"
+
+#: memorybrowserformunit.rsheaderfor
+msgid "Header for %s"
+msgstr "Заголовок к %s"
+
+#: memorybrowserformunit.rshowlongshouldachangebeshown
+msgid "How long should a change be shown?"
+msgstr "С каким интервалом следует показывать изменение значений?"
+
+#: memorybrowserformunit.rshowmuchis
+msgid "How much is %s?"
+msgstr "%s - это сколько?"
+
+#: memorybrowserformunit.rshowmuchmemorydoyouwanttoaddtothisprocess
+msgid "How much memory do you want to add to this process?"
+msgstr "Сколько памяти вы хотите выделить этому процессу?"
+
+#: memorybrowserformunit.rshowmuchmemorydoyouwishtoallocate
+msgid "How much memory do you wish to allocate?"
+msgstr "Сколько памяти вы хотите выделить?"
+
+#: memorybrowserformunit.rsidontunderstandwhatyoumeanwith
+msgid "I don't understand what you mean with %s"
+msgstr "Не понятно, что вы имели в виду, написав «%s»"
+
+#: memorybrowserformunit.rsinjectdll
+msgid "Inject dll"
+msgstr "Инъекция dll"
+
+#: memorybrowserformunit.rsinjectdylib
+msgid "Inject DYLIB"
+msgstr "Инъекция DYLIB"
+
+#: memorybrowserformunit.rsinputtheassemblycodetofindwilcardssupported
+msgid "Input the assembly code to find. Wildcards( * ) supported."
+msgstr "Укажите инструкцию для поиска. Поддерживается подстановочный знак ( * )"
+
+#: memorybrowserformunit.rsisnotavalidvalue
+msgctxt "memorybrowserformunit.rsisnotavalidvalue"
+msgid "%s is not a valid value"
+msgstr "%s не является допустимым значением"
+
+#: memorybrowserformunit.rslinkwithotherhexview
+msgctxt "memorybrowserformunit.rslinkwithotherhexview"
+msgid "Link with other hexview"
+msgstr "Связать с другим Hex-редактором"
+
+#: memorybrowserformunit.rsmaxstacktracesize
+msgid "Max stacktrace size"
+msgstr "Максимальный размер трассировки стека"
+
+#: memorybrowserformunit.rsmbbookmark
+msgid "Bookmark %d"
+msgstr "Закладка %d"
+
+#: memorybrowserformunit.rsmbbookmark2
+msgid "Bookmark %d: %s"
+msgstr "Закладка %d: %s"
+
+#: memorybrowserformunit.rsmbcreationoftheremotethreadfailed
+msgid "Creation of the remote thread failed"
+msgstr "Не удалось создать удалённый поток"
+
+#: memorybrowserformunit.rsmbthreadcreated
+msgid "Thread Created"
+msgstr "Поток создан"
+
+#: memorybrowserformunit.rsmemoryviewercurrentlydebuggingthread
+msgid "Memory Viewer - Currently debugging thread %s"
+msgstr "Редактор памяти - Отладка потока %s"
+
+#: memorybrowserformunit.rsmemoryviewerrunning
+msgid "Memory Viewer - Running"
+msgstr "Редактор памяти - Запуск"
+
+#: memorybrowserformunit.rsneedtorundissectcode
+msgid "You will need to run the dissect code routine first before this window is usable. Run it now?"
+msgstr "Сначала вам нужно выполнить «Анализ кода». Выполнить его сейчас?"
+
+#: memorybrowserformunit.rsnewsize
+msgid "New size"
+msgstr "Новый размер"
+
+#: memorybrowserformunit.rsparameters
+msgid "Parameters"
+msgstr "Параметры"
+
+#: memorybrowserformunit.rspleaseenteravalidhexadecimaladdres
+msgid "Please enter a valid hexadecimal addres"
+msgstr "Пожалуйста, введите допустимый шестнадцатеричный адрес"
+
+#: memorybrowserformunit.rspleaseenteravalidhexadecimalvalue
+msgid "Please enter a valid hexadecimal value"
+msgstr "Пожалуйста, введите допустимое шестнадцатеричное значение"
+
+#: memorybrowserformunit.rspleasespecifythenewsymbolsearchpathseperatespaths
+msgid "Please specify the new symbol searchpath (; separates paths)"
+msgstr "Пожалуйста, укажите новый путь поиска символа (точка с запятой разделяет пути)"
+
+#: memorybrowserformunit.rspleasetargetanotherprocess
+msgctxt "memorybrowserformunit.rspleasetargetanotherprocess"
+msgid "Start another version of Cheat Engine and attach to that instead"
+msgstr "Если вы хотите выполнить это действие с Cheat Engine с её же помощью, то вам нужно запустить ещё одну копию"
+
+#: memorybrowserformunit.rspleasetargetaprocessfirst
+msgid "Please target a process first"
+msgstr "Сначала выберите процесс"
+
+#: memorybrowserformunit.rsremovebreakpoint
+msgid "Remove breakpoint"
+msgstr "Удалить брейкпоинт"
+
+#: memorybrowserformunit.rsreplacewithcodethatdoesnothing
+msgctxt "memorybrowserformunit.rsreplacewithcodethatdoesnothing"
+msgid "Replace with code that does nothing"
+msgstr "Заменить ничего не делающим кодом (NOP)"
+
+#: memorybrowserformunit.rsrestorewithorginalcode
+msgctxt "memorybrowserformunit.rsrestorewithorginalcode"
+msgid "Restore with original code"
+msgstr "Восстановить оригинальный код"
+
+#: memorybrowserformunit.rsreturnaddress
+msgid "Return Address"
+msgstr "Адрес возврата"
+
+#: memorybrowserformunit.rsselectthefunctionyouwanttoexecute
+msgid "Select the function you want to execute"
+msgstr "Выберите функцию, которую вы хотите выполнить"
+
+#: memo
