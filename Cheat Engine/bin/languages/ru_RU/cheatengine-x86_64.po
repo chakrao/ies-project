@@ -5118,4 +5118,164 @@ msgstr "Игнорировать значение"
 msgid "Increased value"
 msgstr "Значение увеличилось"
 
-#: mainunit2.s
+#: mainunit2.strincreasedvalueby
+msgid "Increased value by ..."
+msgstr "Значение увеличилось на ..."
+
+#: mainunit2.strneednewerwindowsversion
+msgid "This function only works in Windows 2000+ (perhaps also NT but not tested)"
+msgstr "Эта функция работает только на Windows 2000+ (возможно и на NT)"
+
+#: mainunit2.strnewscan
+msgid "New Scan"
+msgstr "Нов. поиск"
+
+#: mainunit2.strnodescription
+msgctxt "mainunit2.strnodescription"
+msgid "No description"
+msgstr "Нет описания"
+
+#: mainunit2.strok
+msgctxt "mainunit2.strok"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: mainunit2.strsmallerthan
+msgid "Smaller than..."
+msgstr "Меньше чем..."
+
+#: mainunit2.strstart
+msgctxt "mainunit2.strstart"
+msgid "Start"
+msgstr "Запустить"
+
+#: mainunit2.strstop
+msgctxt "mainunit2.strstop"
+msgid "Stop"
+msgstr "Остановить"
+
+#: mainunit2.strtoolong
+msgid "Too long"
+msgstr "Слишком долго"
+
+#: mainunit2.strunchangedvalue
+msgid "Unchanged value"
+msgstr "Значение не изменилось"
+
+#: mainunit2.strunknowninitialvalue
+msgid "Unknown initial value"
+msgstr "Неизвестное значение"
+
+#: mainunit2.strvaluebetween
+msgid "Value between..."
+msgstr "Диапазон"
+
+#: manualmoduleloader.rsmmlallocationerror
+msgid "Allocation error"
+msgstr "Ошибка распределения"
+
+#: manualmoduleloader.rsmmlfailedfindingaddressof
+msgid "failed finding address of "
+msgstr "не удалось найти адрес "
+
+#: manualmoduleloader.rsmmlnotavalidfile
+msgid "not a valid file"
+msgstr "недопустимый файл"
+
+#: manualmoduleloader.rsmmlnotavalidheader
+msgid "Not a valid header"
+msgstr "Недопустимый заголовок"
+
+#: manualmoduleloader.rsmmltriedloadinga64bitmoduleona32bitsystem
+msgid "Tried loading a 64-bit module on a 32-bit system"
+msgstr "Была попытка загрузки 64-битного модуля на 32-битной системе"
+
+#: memdisplay.rsfailurecreatingopenglwindow
+msgid "failure creating opengl window"
+msgstr "не удалось создать OpenGL окно"
+
+#: memdisplay.rsondatareturnedatoosmallmemoryregion
+msgid "OnData returned a too small memory region. It should have returned false instead"
+msgstr "OnData возвратил слишком небольшую область памяти. Вместо этого он должен был вернуть false"
+
+#: memorybrowserformunit.rs0or1
+msgid "(0 or 1)"
+msgstr "(0 или 1)"
+
+#: memorybrowserformunit.rsaddress
+msgctxt "memorybrowserformunit.rsaddress"
+msgid "Address"
+msgstr "Адрес"
+
+#: memorybrowserformunit.rsallocatememory
+msgid "Allocate memory"
+msgstr "Выделить память"
+
+#: memorybrowserformunit.rsassemblyscan
+msgid "Assembly scan"
+msgstr "Поиск инструкций"
+
+#: memorybrowserformunit.rsatleastbyteshavebeenallocatedatdoyouwanttogotheren
+msgid "At least %s bytes have been allocated at %s%sDo you want to go there now?"
+msgstr "Как минимум %s байт(а) было выделено по адресу %s. Вы хотите сейчас перейти туда?"
+
+#: memorybrowserformunit.rsatleastbyteshavebeenallocatedatgotherenow
+msgid "At least %s bytes have been allocated at %s. Go there now?"
+msgstr "Как минимум %s байт(а) было выделено по адресу %s. Перейти туда сейчас?"
+
+#: memorybrowserformunit.rsbecauseofunhandledexeption
+msgid "Because of unhandled exception %s"
+msgstr "Из-за необработанного исключения %s"
+
+#: memorybrowserformunit.rsbetween
+msgid "Between %s"
+msgstr "Между %s"
+
+#: memorybrowserformunit.rschangedisplayfader
+msgid "Change display fader"
+msgstr "Изменить на"
+
+#: memorybrowserformunit.rschangeregister
+msgid "Change register"
+msgstr "Изменить регистр"
+
+#: memorybrowserformunit.rscheatenginesinglelingeassembler
+msgid "Single-line assembler"
+msgstr "Построчный ассемблер"
+
+#: memorybrowserformunit.rscomment
+msgctxt "memorybrowserformunit.rscomment"
+msgid "Comment"
+msgstr "Комментарий"
+
+#: memorybrowserformunit.rscommentfor
+msgid "Comment for %s"
+msgstr "Комментарий к %s"
+
+#: memorybrowserformunit.rscreateremotethread
+msgid "Create remote thread"
+msgstr "Создать удалённый поток"
+
+#: memorybrowserformunit.rsdllinjected
+msgid "DLL Injected"
+msgstr "Инъекция DLL прошла успешно"
+
+#: memorybrowserformunit.rsdoyouwanttoexecuteafunctionofthedll
+msgid "Do you want to execute a function of the dll?"
+msgstr "Вы хотите выполнить функцию dll?"
+
+#: memorybrowserformunit.rserrorallocatingmemory
+msgid "Error allocating memory!"
+msgstr "Возникла ошибка при выделении памяти!"
+
+#: memorybrowserformunit.rsfillintheaddressyouwanttogoto
+msgid "Fill in the address you want to go to"
+msgstr "Заполните адрес, по которому вы хотите перейти"
+
+#: memorybrowserformunit.rsgetkerneladdress
+msgid "Get kernel address"
+msgstr "Получение адреса пространства ядра"
+
+#: memorybrowserformunit.rsgivethenameofthefunctionyouwanttofindcasesensitive
+msgid "Give the name of the function you want to find (Case sensitive,certain words can cause blue screens)"
+msgstr "Укажите название функци
