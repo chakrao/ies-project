@@ -4934,4 +4934,188 @@ msgstr "Следующие инструкции изменили выбранн�
 
 #: mainunit.stropcoderead
 msgid "The following opcodes read from the selected address"
-msgstr "Следующие инс
+msgstr "Следующие инструкции читают из выбранного адреса"
+
+#: mainunit.strphysicalmemory
+msgctxt "mainunit.strphysicalmemory"
+msgid "Physical Memory"
+msgstr "Физическая память"
+
+#: mainunit.strrecalculateaddress
+msgctxt "mainunit.strrecalculateaddress"
+msgid "Recalculate address"
+msgstr "Перерасчёт адреса"
+
+#: mainunit.strrecalculatealladdresses
+msgid "Recalculate all addresses"
+msgstr "Перерасчёт всех адресов"
+
+#: mainunit.strrecalculateselectedaddresses
+msgid "Recalculate selected addresses"
+msgstr "Перерасчёт выбранных адресов"
+
+#: mainunit.strremovefromgroup
+msgid "Remove from group "
+msgstr "Удалить из группы "
+
+#: mainunit.strsaferphysicalmemory
+msgid "Safer memory access"
+msgstr "Безопасный доступ к памяти"
+
+#: mainunit.strscantextcaptiontotext
+msgid "Text:"
+msgstr "Текст:"
+
+#: mainunit.strscantextcaptiontovalue
+msgid "Value:"
+msgstr "Значение:"
+
+#: mainunit.strsearchforarray
+msgid "Search for this array"
+msgstr "Массив"
+
+#: mainunit.strsearchfortext
+msgid "Search for text"
+msgstr "Текст"
+
+#: mainunit.strselectedaddressisapointer
+msgid "The selected address is a pointer. Are you sure? (the base pointer will get the address)"
+msgstr "Выбранный адрес является указателем. Вы уверены? (будет изменён адрес базового указателя)"
+
+#: mainunit.strsethotkey
+msgid "Set a hotkey"
+msgstr "Назначить горячую клавишу"
+
+#: mainunit.strshowasdecimal
+msgid "Show as decimal value"
+msgstr "Показать как десятичное значение"
+
+#: mainunit.strshowashex
+msgid "Show as hexadecimal value"
+msgstr "Показать как шестнадцатеричное значение"
+
+#: mainunit.strunfreezeaddressinlist
+msgid "Unfreeze the address in this list"
+msgstr "Разморозить адрес в этом списке"
+
+#: mainunit.strunfreezealladdresses
+msgid "Unfreeze all addresses in this list"
+msgstr "Разморозить все адреса в этом списке"
+
+#: mainunit.strunhideall
+msgid "will bring all windows back"
+msgstr "возвратит все окна"
+
+#: mainunit.strunhideforeground
+msgid "will bring the foreground window back"
+msgstr "возвратит активное окно"
+
+#: mainunit.strunknownextension
+msgctxt "mainunit.strunknownextension"
+msgid "Unknown extension"
+msgstr "Неизвестное расширение"
+
+#: mainunit.strvalue
+msgctxt "mainunit.strvalue"
+msgid "Value"
+msgstr "Значение"
+
+#: mainunit.strwindowfailedtohide
+msgid "A window failed to hide"
+msgstr "Окну не удалось скрыться"
+
+#: mainunit.strxmess
+msgid "Merry christmas and happy new year"
+msgstr "Весёлого Рождества и счастливого Нового Года"
+
+#: mainunit2.rsenabledisablespeedhack
+msgid "Enable/Disable speedhack."
+msgstr "Включить/Выключить спидхак."
+
+#: mainunit2.rsm2nohotkey
+msgid " (No hotkey)"
+msgstr " (Нет горячей клавиши)"
+
+#: mainunit2.rsnohotkey
+msgid "No hotkey"
+msgstr "Нет горячей клавиши"
+
+#: mainunit2.rspleasewait
+msgid "Please Wait!"
+msgstr "Пожалуйста, подождите!"
+
+#: mainunit2.rsselectanitemfromthelistforasmalldescription
+msgid "Select an item from the list for a small description"
+msgstr "Выберите инструкцию из списка для получения краткой информации"
+
+#: mainunit2.rsusethegameapplicationforawhile
+msgid "Use the game/application for a while and make the address you're watching change. The list will be filled with addresses that contain code that change the watched address."
+msgstr "Укажите адрес, за которым вы хотите проследить, и поиграйте некоторое время. Список будет заполнен адресами инструкций, взаимодействующих с наблюдаемым адресом."
+
+#: mainunit2.straddresshastobereadable
+msgid "The address has to be readable if you want to use this function"
+msgstr "Адрес должен быть читаемым, если вы хотите использовать эту функцию"
+
+#: mainunit2.strautoassemble
+msgid "Assembler"
+msgstr "Ассемблер"
+
+#: mainunit2.strbiggerthan
+msgid "Bigger than..."
+msgstr "Больше чем..."
+
+#: mainunit2.strbug
+msgid "BUG!"
+msgstr "БАГ!"
+
+#: mainunit2.strchangedvalue
+msgctxt "mainunit2.strchangedvalue"
+msgid "Changed value"
+msgstr "Значение изменилось"
+
+#: mainunit2.strcomparetofirstscan
+msgid "Compare to first scan"
+msgstr "Сравнить с первым поиском"
+
+#: mainunit2.strcomparetolastscan
+msgid "Compare to last scan"
+msgstr "Сравнить с последним поиском"
+
+#: mainunit2.strcomparetosavedscan
+msgid "Compare to saved scan"
+msgstr "Сравнить с сохранённым поиском"
+
+#: mainunit2.strdecreasedvalue
+msgid "Decreased value"
+msgstr "Значение уменьшилось"
+
+#: mainunit2.strdecreasedvalueby
+msgid "Decreased value by ..."
+msgstr "Значение уменьшилось на ..."
+
+#: mainunit2.strexact
+msgid "Exact"
+msgstr "Точное"
+
+#: mainunit2.strexactvalue
+msgid "Exact Value"
+msgstr "Точное значение"
+
+#: mainunit2.strfailedtoinitialize
+msgid "Failed to initialize the debugger"
+msgstr "Не удалось инициализировать отладчик"
+
+#: mainunit2.strfirstscan
+msgctxt "mainunit2.strfirstscan"
+msgid "First Scan"
+msgstr "Поиск"
+
+#: mainunit2.strignorevalue
+msgid "Ignore value"
+msgstr "Игнорировать значение"
+
+#: mainunit2.strincreasedvalue
+msgid "Increased value"
+msgstr "Значение увеличилось"
+
+#: mainunit2.s
