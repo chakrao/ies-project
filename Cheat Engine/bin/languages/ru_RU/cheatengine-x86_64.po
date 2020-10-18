@@ -5413,4 +5413,149 @@ msgstr "Адрес возврата"
 msgid "Select the function you want to execute"
 msgstr "Выберите функцию, которую вы хотите выполнить"
 
-#: memo
+#: memorybrowserformunit.rssetbreakpoint
+msgctxt "memorybrowserformunit.rssetbreakpoint"
+msgid "Set breakpoint"
+msgstr "Установить брейкпоинт"
+
+#: memorybrowserformunit.rsshowdifference
+msgctxt "memorybrowserformunit.rsshowdifference"
+msgid "Show difference"
+msgstr "Показать различие"
+
+#: memorybrowserformunit.rssomethinghappened
+msgid "something happened"
+msgstr "что-то случилось"
+
+#: memorybrowserformunit.rssshowstheautoguessvalue
+msgid "(%s shows the autoguess value)"
+msgstr "(%s показывает предполагаемое значение)"
+
+#: memorybrowserformunit.rsstacktrace
+msgctxt "memorybrowserformunit.rsstacktrace"
+msgid "Stacktrace"
+msgstr "Трассировка стека"
+
+#: memorybrowserformunit.rsstopshowingthedifference
+msgid "Stop showing the difference"
+msgstr "Прекратить показывать различие"
+
+#: memorybrowserformunit.rssymbolhandler
+msgid "Symbol handler"
+msgstr "Обработчик символа"
+
+#: memorybrowserformunit.rsthegeneratedcodeisbyteslongbuttheselectedopcodeisb
+msgid "The generated code is %s byte(s) long, but the selected opcode is %s byte(s) long! Do you want to replace the incomplete opcode(s) with NOP's?"
+msgstr "Ваша инструкция занимает %s байт(а), а заменяемая инструкция %s байт(а)! Вы хотите заменить незаполненные байты NOP'ами?"
+
+#: memorybrowserformunit.rstypeyourassemblercodehereaddress
+msgid "Type your assembler code here: (address=%s)"
+msgstr "Введите свой ассемблерный код: (адрес=%s)"
+
+#: memorybrowserformunit.rsunlinkfromotherhexview
+msgid "Unlink from other hexview"
+msgstr "Разорвать связь с другим Hex-редактором"
+
+#: memorybrowserformunit.rsvalue
+msgctxt "memorybrowserformunit.rsvalue"
+msgid "Value"
+msgstr "Значение"
+
+#: memorybrowserformunit.rswhatisthenewvalueof
+msgid "What is the new value of %s?"
+msgstr "Каково новое значение %s?"
+
+#: memorybrowserformunit.rswhatwillbethestartaddressofthisthread
+msgid "What will be the startaddress of this thread?"
+msgstr "Каков будет начальный адрес этого потока?"
+
+#: memorybrowserformunit.rsyouwanttogiveanadditional32bitparameterwillshowupi
+msgid "You want to give an additional 32-bit parameter? (Will show up in (R)/(E)BX)"
+msgstr "Вы хотите задать дополнительный 32-битный параметр? (Будет отображаться в (R)/(E)BX)"
+
+#: memoryrecordunit.rsactivate
+msgctxt "memoryrecordunit.rsactivate"
+msgid "Activate"
+msgstr "Активация"
+
+#: memoryrecordunit.rsadjustmrwithrelativeaddress
+msgid "Do you wish to adjust memory records with relative addresses as well?"
+msgstr "Вы хотите также настроить записи в памяти с относительными адресами?"
+
+#: memoryrecordunit.rsdeactivate
+msgctxt "memoryrecordunit.rsdeactivate"
+msgid "Deactivate"
+msgstr "Деактивация"
+
+#: memoryrecordunit.rsdecreasevalue
+msgid "Decrease Value"
+msgstr "Уменьшить значение"
+
+#: memoryrecordunit.rserror
+msgctxt "memoryrecordunit.rserror"
+msgid "error"
+msgstr "ошибка"
+
+#: memoryrecordunit.rsincreasevalue
+msgid "Increase Value"
+msgstr "Увеличить значение"
+
+#: memoryrecordunit.rsmrnibblesupportisonlyforhexadecimaldisplay
+msgid "Nibble support is only for hexadecimal display"
+msgstr "Полубайт поддерживается только для шестнадцатеричного отображения"
+
+#: memoryrecordunit.rsp
+msgctxt "memoryrecordunit.rsp"
+msgid "P->"
+msgstr "У->"
+
+#: memoryrecordunit.rspqqqqqqqq
+msgid "P->????????"
+msgstr "У->????????"
+
+#: memoryrecordunit.rssetvalue
+msgid "Set Value"
+msgstr "Установить Значение"
+
+#: memoryrecordunit.rstoggleactivation
+msgid "Toggle Activation"
+msgstr "(Де)Активация"
+
+#: memoryrecordunit.rstoggleactivationallowdecrease
+msgid "Toggle Activation Allow Decrease"
+msgstr "Только уменьшение"
+
+#: memoryrecordunit.rstoggleactivationallowincrease
+msgid "Toggle Activation Allow Increase"
+msgstr "Только увеличение"
+
+#: memscan.rsaresultsetwiththisnamealreadyexists
+msgid "A result set with this name(%s) already exists"
+msgstr "Результат с таким же названием (%s) уже существует"
+
+#: memscan.rsdiskwriteerror
+msgid "Disk write error:%s"
+msgstr "Ошибка записи диска: %s"
+
+#: memscan.rsdiskwriteerror2
+msgid "Disk Write Error:%s"
+msgstr "Ошибка записи диска: %s"
+
+#: memscan.rserrorallocatingbytesfortheoldresults
+msgid "Error allocating %s bytes for the old results. buffersize=%s variablesize=%s"
+msgstr "Ошибка, выделяющая %s байт(а) старым результатам. размер буфера=%s размер переменной=%s"
+
+#: memscan.rserrorwhenwhileloadingresult
+msgid "Error while loading result"
+msgstr "Ошибка при загрузке результата"
+
+#: memscan.rsfailedspawningthesavefirstscanthread
+msgid "Failed spawning the Save First Scan thread"
+msgstr "Не удалось породить поток сохранения первого поиска"
+
+#: memscan.rsfailureallocatingmemoryforcopytriedallocatingkb
+msgid "Failure allocating memory for copy. Tried allocating %s KB"
+msgstr "Сбой при выделении памяти для копирования. Попробуйте выделить %s Кбайт(а)"
+
+#: memscan.rsfailurecreatingthescandirectory
+msgid "Failure creating the scan d
