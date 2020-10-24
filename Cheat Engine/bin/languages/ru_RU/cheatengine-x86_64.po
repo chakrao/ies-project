@@ -5558,4 +5558,131 @@ msgid "Failure allocating memory for copy. Tried allocating %s KB"
 msgstr "Сбой при выделении памяти для копирования. Попробуйте выделить %s Кбайт(а)"
 
 #: memscan.rsfailurecreatingthescandirectory
-msgid "Failure creating the scan d
+msgid "Failure creating the scan directory"
+msgstr "Не удалось создать каталог сканирования"
+
+#: memscan.rsforsomereasonthescancontrollerdoesnotexist
+msgid "For some reason the scanController does not exist"
+msgstr "По каким-то причинам отсутствует scanController"
+
+#: memscan.rsinvalidbinarynotation
+msgid "Invalid binary notation"
+msgstr "Недопустимая двоичная запись"
+
+#: memscan.rsisaninvalidvalue
+msgid "%s is an invalid value"
+msgstr "%s не является допустимым значением"
+
+#: memscan.rsisnotavalidcharacterinsideabinarystring
+msgid "%s is not a valid character inside a binary string"
+msgstr "%s- недопустимый символ в двоичной строке"
+
+#: memscan.rsisnotavalidnotation
+msgid "%s is an invalid notation"
+msgstr "%s не является правильной записью"
+
+#: memscan.rsisnotavalidvalue
+msgctxt "memscan.rsisnotavalidvalue"
+msgid "%s is not a valid value"
+msgstr "%s не является допустимым значением"
+
+#: memscan.rsmscustomtypeisnil
+msgid "Custom type is nil"
+msgstr "Пользовательский тип - nil"
+
+#: memscan.rsmsnothingtoscanfor
+msgid "Nothing to scan for"
+msgstr "Нечего сканировать"
+
+#: memscan.rsmsthescanwasforcedtoterminatesubsequentscansmaynotfunctionproperlyetc
+msgid "The scan was forced to terminate. Subsequent scans may not function properly. It's recommended to restart Cheat Engine"
+msgstr "Сканирование было принудительно завершено. Последующие сканирования могут не функционировать должным образом. Рекомендуется перезапустить Cheat Engine"
+
+#: memscan.rsmstupidalignsize
+msgid "Stupid alignsize"
+msgstr "Дурацкое выравнивание размера"
+
+#: memscan.rsnoreadablememoryfound
+msgctxt "memscan.rsnoreadablememoryfound"
+msgid "No readable memory found"
+msgstr "Читаемой памяти не найдено"
+
+#: memscan.rsnotenoughdiskspacefortheaddressfile
+msgid "Not enough diskspace for the address file"
+msgstr "Недостаточно дискового пространства для файла адресов"
+
+#: memscan.rsnotenoughdiskspaceforthememoryfile
+msgid "Not enough diskspace for the memory file"
+msgstr "Недостаточно дискового пространства для файла памяти"
+
+#: memscan.rspleasefillsomethingin
+msgid "Please fill something in"
+msgstr "Пожалуйста, укажите что-нибудь для поиска"
+
+#: memscan.rsthetemporaryscandirectorydoesnotexistcheckyourscan
+msgid "The temporary scan directory %s does not exist. Check your scan settings"
+msgstr "Отсутствует папка «%s» для временных файлов поиска. Проверьте «Настройки поиска»"
+
+#: memscan.rsthread
+msgid "thread "
+msgstr "поток "
+
+#: memscan.rsthreadsynchronizer
+msgid "Thread synchronizer"
+msgstr "Синхронизатор потока"
+
+#: memscan.rstmpandundoarenamesthatmaynotbeusedtryanothername
+msgid "TMP and UNDO are names that may not be used. Try another name"
+msgstr "Названия «TMP» и «UNDO» нельзя использовать. Попробуйте другие"
+
+#: memscan.rsunknown
+msgctxt "memscan.rsunknown"
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: mikmod.rsfailuretoinitializemikmod
+msgid "Failure to initialize MikMod"
+msgstr "Не удалось инициализировать MikMod"
+
+#: networkconfig.rscouldnotberesolved
+msgctxt "networkconfig.rscouldnotberesolved"
+msgid " could not be resolved"
+msgstr " не разрешён"
+
+#: networkconfig.rsfailedconnectingtotheserver
+msgid "Failed connecting to the server"
+msgstr "Не удалось подключиться к серверу"
+
+#: networkconfig.rsfailurecreatingsocket
+msgctxt "networkconfig.rsfailurecreatingsocket"
+msgid "Failure creating socket"
+msgstr "Не удалось создать сокет"
+
+#: networkconfig.rshost
+msgctxt "networkconfig.rshost"
+msgid "host:"
+msgstr "хост:"
+
+#: networkinterfaceapi.rsnoconnection
+msgid "No connection"
+msgstr "Нет соединения"
+
+#: newkernelhandler.rscouldntbeopened
+msgid "%s couldn't be opened"
+msgstr "%s невозможно открыть"
+
+#: newkernelhandler.rsdbvmisnotloadedthisfeatureisnotusable
+msgid "DBVM is not loaded. This feature is not usable"
+msgstr "DBVM не загружена. Эта функция не может использоваться"
+
+#: newkernelhandler.rsdidnotloaddbvm
+msgid "I don't know what you did, you didn't crash, but you also didn't load DBVM"
+msgstr "Я не знаю что вы сделали, аварийного завершения не произошло, но и DBVM также не была загружена"
+
+#: newkernelhandler.rsfucked
+msgid "Something is really messed up on your computer! You don't seem to have a kernel!!!!"
+msgstr "Что-то действительно перепуталось на вашем компьютере! Кажется, у вас отсутствует kernel!!!"
+
+#: newkernelhandler.rspleaserebootandpressf8beforewindowsboots
+msgid "Please reboot and press f8 before windows boots. Then enable unsigned drivers. Alternatively, you could buy yourself a business class certificate and sign the driver yourself (or try debug signing)"
+msgstr "Перезагрузите систему и нажмите клавишу F8 до начала загрузки Windows, и разрешите использование не подписанных драйверов. Кроме того, вы можете купить сертификат бизнес класса и подписать драйвер самостоятельно.
