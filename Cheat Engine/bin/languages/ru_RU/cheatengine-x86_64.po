@@ -5784,4 +5784,204 @@ msgstr "В трейнере присутствует неизвестный ко
 msgid "This version of Cheat Engine doesn't know how to read this trainer! Trainerversion="
 msgstr "Данная версия Cheat Engine не может открыть этот трейнер! Версия трейнера="
 
-#: pars
+#: parsers.rsinvalidinteger
+msgid "Invalid integer"
+msgstr "Недопустимое целое число"
+
+#: peinfofunctions.rspeifnoexports
+msgid "No exports"
+msgstr "Отсутствует экспорт"
+
+#: peinfofunctions.strinvalidfile
+msgid "Invalid file"
+msgstr "Недопустимый файл"
+
+#: peinfounit.rspe32bit
+msgid "32-bit, "
+msgstr "32-бита, "
+
+#: peinfounit.rspeaddressoffunctions
+msgid "AddressOfFunctions = %x"
+msgstr "Адрес таблицы адресов = %x"
+
+#: peinfounit.rspeaddressofnameordinals
+msgid "AddressOfNameOrdinals = %x"
+msgstr "Адрес таблицы ординалов = %x"
+
+#: peinfounit.rspeaddressofnames
+msgid "AddressOfNames = %x"
+msgstr "Адрес таблицы имён = %x"
+
+#: peinfounit.rspeaddressofrawdata
+msgid "Address of raw data = %x"
+msgstr "Адрес RAW данных = %x"
+
+#: peinfounit.rspeagressivetrim
+msgid "Agressive trim, "
+msgstr "Агрессивный сброс, "
+
+#: peinfounit.rspearchitecturespecifictable
+msgid "Architecture-Specific table"
+msgstr "Архитектурно-зависимая таблица"
+
+#: peinfounit.rspebase
+msgid "Base = %x"
+msgstr "Начальный номер экспорта = %x"
+
+#: peinfounit.rspebaseofcode
+msgid "Base of code = %.8x "
+msgstr "Виртуальный адрес секции с кодом = %.8x "
+
+#: peinfounit.rspebaseofdata
+msgid "Base of data = %.8x "
+msgstr "Виртуальный адрес секции с данными = %.8x "
+
+#: peinfounit.rspebaserelocationtable
+msgid "Base-Relocation table"
+msgstr "Таблица базовых перемещений"
+
+#: peinfounit.rspeboundimporttable
+msgid "Bound import table"
+msgstr "Таблица связанного импорта"
+
+#: peinfounit.rspecertificatetabel
+msgid "Certificate table"
+msgstr "Таблица сертификатов"
+
+#: peinfounit.rspecharacterisitics
+msgid "characterisitics=%x (%s)"
+msgstr "флаги=%x (%s)"
+
+#: peinfounit.rspecharacteristics
+msgid "Characteristics = %x (%s)"
+msgstr "Флаги = %x (%s)"
+
+#: peinfounit.rspecharacteristics2
+msgid "Characteristics=%x (should be 0)"
+msgstr "Флаги=%x (должно быть 0)"
+
+#: peinfounit.rspecharacteristicsoriginalfirstthunk
+msgid "Characteristics/OriginalFirstThunk=%x"
+msgstr "Флаги/OriginalFirstThunk=%x"
+
+#: peinfounit.rspechecksum
+msgid "CheckSum = %x "
+msgstr "Контрольная сумма = %x "
+
+#: peinfounit.rspeclrruntimetable
+msgid "CLR Runtime table"
+msgstr "Таблица выполнения CLR"
+
+#: peinfounit.rspecodeview
+msgid "Codeview"
+msgstr "Представление кода"
+
+#: peinfounit.rspedebugfile
+msgid "Debugfile =%s"
+msgstr "Файл отладки =%s"
+
+#: peinfounit.rspedebugginginfotable
+msgid "Debugging info table"
+msgstr "Таблица отладочных данных"
+
+#: peinfounit.rspedelayimportdescriptiontable
+msgid "Delay import descriptor table"
+msgstr "Таблица дескриптора отложенного импорта"
+
+#: peinfounit.rspediscardable
+msgid "discardable, "
+msgstr "отбрасываемый, "
+
+#: peinfounit.rspedllcharacteristics
+msgid "Dll Characteristics = %x "
+msgstr "Флаги dll = %x "
+
+#: peinfounit.rspedosentrypoint
+msgid "dos entrypoint = %.4x:%.4x"
+msgstr "начальное значение регистра IP = %.4x:%.4x"
+
+#: peinfounit.rspedosstack
+msgid "dos stack = %.4x:%.4x"
+msgstr "начальное значение регистра SP = %.4x:%.4x"
+
+#: peinfounit.rspeentrypoint
+msgid "Entry point = %.8x "
+msgstr "Точка входа = %.8x "
+
+#: peinfounit.rspeexceptiontable
+msgid "Exception table"
+msgstr "Таблица исключений"
+
+#: peinfounit.rspeexecutable
+msgid "Executable, "
+msgstr "Исполняемый, "
+
+#: peinfounit.rspeexecutablecode
+msgid "Executable code, "
+msgstr "Исполняемый код, "
+
+#: peinfounit.rspeexecutablememory
+msgid "executable memory, "
+msgstr "исполняемая память, "
+
+#: peinfounit.rspeexporttable
+msgid "Export table"
+msgstr "Таблица экспорта"
+
+#: peinfounit.rspefailureatallocationmemory
+msgid "Failure at allocating memory"
+msgstr "Отказ в выделении памяти"
+
+#: peinfounit.rspefailurereadingmemory
+msgid "Failure reading memory"
+msgstr "Сбой при чтении памяти"
+
+#: peinfounit.rspefilealignment
+msgid "File Alignment = %x "
+msgstr "Выравнивание файла = %x "
+
+#: peinfounit.rspefirstthunk
+msgid "FirstThunk=%x"
+msgstr "FirstThunk=%x"
+
+#: peinfounit.rspeforwarderchain
+msgid "Forwarder Chain=%x (-1 if no forwarders)"
+msgstr "Индекс первого перенаправленного символа=%x (-1 если отсутствует)"
+
+#: peinfounit.rspeglobalpointertable
+msgid "Global pointer table"
+msgstr "Таблица глобального указателя"
+
+#: peinfounit.rspeimport
+msgid "Import %d : %s"
+msgstr "Импорт %d : %s"
+
+#: peinfounit.rspeimportaddresstable
+msgid "import address table"
+msgstr "таблица импортируемых адресов"
+
+#: peinfounit.rspeimports
+msgid "imports:"
+msgstr "импорт:"
+
+#: peinfounit.rspeimporttable
+msgid "Import table"
+msgstr "Таблица импорта"
+
+#: peinfounit.rspeinconsistent
+msgid " (inconsistent)"
+msgstr " (несовместимый)"
+
+#: peinfounit.rspeinitializeddata
+msgid "Initialized data, "
+msgstr "Инициализированные данные, "
+
+#: peinfounit.rspelfanew
+msgid "lfanew="
+msgstr "адрес в файле нового .exe заголовка (PE)="
+
+#: peinfounit.rspeloadconfigtable
+msgid "Load config table"
+msgstr "Таблица конфигурирования загрузки"
+
+#: peinfounit.rspelo
