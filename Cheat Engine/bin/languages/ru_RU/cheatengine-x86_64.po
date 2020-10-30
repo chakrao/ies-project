@@ -5685,4 +5685,103 @@ msgstr "Что-то действительно перепуталось на в�
 
 #: newkernelhandler.rspleaserebootandpressf8beforewindowsboots
 msgid "Please reboot and press f8 before windows boots. Then enable unsigned drivers. Alternatively, you could buy yourself a business class certificate and sign the driver yourself (or try debug signing)"
-msgstr "Перезагрузите систему и нажмите клавишу F8 до начала загрузки Windows, и разрешите использование не подписанных драйверов. Кроме того, вы можете купить сертификат бизнес класса и подписать драйвер самостоятельно.
+msgstr "Перезагрузите систему и нажмите клавишу F8 до начала загрузки Windows, и разрешите использование не подписанных драйверов. Кроме того, вы можете купить сертификат бизнес класса и подписать драйвер самостоятельно."
+
+#: newkernelhandler.rsthedriverneedstobeloadedtobeabletousethisfunction
+msgid "The driver needs to be loaded to be able to use this function."
+msgstr "Драйвер должен быть загружен, чтобы иметь возможность использовать эту функцию."
+
+#: newkernelhandler.rstousethisfunctionyouwillneedtorundbvm
+msgid "To use this function you will need to run DBVM. There is a high chance running DBVM can crash your system and make you lose your data(So don't forget to save first). Do you want to run DBVM?"
+msgstr "Для использования этой функции вам нужно будет запустить DBVM. Существует большая вероятность, что работа DBVM может привести к аварийному завершению вашей системы и потере не сохранённых данных (Так что, не забудьте сначала сохранить их). Вы хотите запустить DBVM?"
+
+#: newkernelhandler.rsyourcpumustbeabletorundbvmtousethisfunction
+msgid "Your cpu must be able to run dbvm to use this function"
+msgstr "Для использования этой функции, ваш процессор должен иметь возможность запуска DBVM"
+
+#: opensave.rsaskifstupid
+msgid "Generating a trainer with the current state of the cheat table will likely result in a completely useless trainer that does nothing. Are you sure?"
+msgstr "Создание трейнера при текущем состоянии таблицы, скорее всего, приведёт к полностью бесполезному трейнеру, который ничего не делает. Вы уверены?"
+
+#: opensave.rsdoesntcontainneededinformationwheretoplacethememor
+msgid "%s doesn't contain needed information where to place the memory"
+msgstr "%s не содержит необходимую информацию о размещении памяти"
+
+#: opensave.rserrorexecutingthistablesluascript
+msgid "Error executing this table's lua script: %s"
+msgstr "Ошибка выполнения lua скрипта: %s"
+
+#: opensave.rserrorexecutingthistablesluascriptentry
+msgid "Error executing this table's lua script named %s: %s"
+msgstr "Ошибка выполнения lua скрипта в этой таблице с именем %s: %s"
+
+#: opensave.rserrorsaving
+msgid "Error saving..."
+msgstr "Ошибка сохранения..."
+
+#: opensave.rsinvalidluafortrainer
+msgid "The lua script in this trainer has some issues and will therefore not load"
+msgstr "lua скрипт в этом тренере имеет некоторые проблемы и поэтому не загружается"
+
+#: opensave.rsosthereisanewerversionifcheatengineoutetc
+msgid "There is a newer version of Cheat Engine out. It's recommended to use that version instead"
+msgstr "Существует более новая версия Cheat Engine. Рекомендуется использовать именно её"
+
+#: opensave.rsosthischeattableiscorrupt
+msgid "This cheat table is corrupt"
+msgstr "Данная таблица читов повреждена"
+
+#: opensave.rstheregionatwaspartiallyorcompletlyunreadable
+msgid "The region at %s was partially or completely unreadable"
+msgstr "Регион «%s» частично или полностью нечитаемый"
+
+#: opensave.rstheversionofisincompatiblewiththisceversion
+msgid "The version of %s is incompatible with this CE version"
+msgstr "Версия %s не совместима с этой версией Cheat Engine"
+
+#: opensave.rsthisisnotavalidcheattable
+msgid "This is not a valid cheat table"
+msgstr "Недопустимая таблица читов"
+
+#: opensave.rsthisisnotavalidxmlfile
+msgid "This is not a valid xml file"
+msgstr "Недопустимый xml файл"
+
+#: opensave.rsthistablecontainsaluascriptdoyouwanttorunit
+msgid "This table contains a lua script. Do you want to run it?"
+msgstr "Эта таблица содержит lua скрипт. Вы хотите его запустить?"
+
+#: opensave.rsunknownextention
+msgctxt "opensave.rsunknownextention"
+msgid "Unknown extension"
+msgstr "Неизвестное расширение"
+
+#: opensave.rsyoucanonlyprotectafileifithasancetrainerextension
+msgid "You can only protect a file if it has an .CETRAINER extension"
+msgstr "Вы можете защитить только файл с расширением .CETRINER"
+
+#: opensave.strcantloadfilepatcher
+msgid "The file patcher can't be loaded by Cheat Engine!"
+msgstr "Этот файл не может быть загружен в Cheat Engine!"
+
+#: opensave.strcantloadprotectedfile
+msgid "This trainer is protected from being opened by CE. Now go away!!!"
+msgstr "Этот трейнер защищён от редактирования в Cheat Engine. Проваливай!!!"
+
+#: opensave.strcorrupticon
+msgid "The icon has been corrupted"
+msgstr "Иконка была повреждена"
+
+#: opensave.strnotacetrainer
+msgid "This is not a trainer made by Cheat Engine (If it is a trainer at all!)"
+msgstr "Этот трейнер не был создан при помощи Cheat Engine (если это вообще трейнер)"
+
+#: opensave.strunknowncomponent
+msgid "There is a unknown component in the trainer! compnr="
+msgstr "В трейнере присутствует неизвестный компонент! compnr="
+
+#: opensave.strunknowntrainerversion
+msgid "This version of Cheat Engine doesn't know how to read this trainer! Trainerversion="
+msgstr "Данная версия Cheat Engine не может открыть этот трейнер! Версия трейнера="
+
+#: pars
