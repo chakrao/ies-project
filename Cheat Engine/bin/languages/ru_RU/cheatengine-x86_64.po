@@ -6166,4 +6166,172 @@ msgstr "Порядок байт HI, "
 
 #: peinfounit.rspereversedbyteslo
 msgid "Reversed bytes LO, "
-msgstr "Порядок байт 
+msgstr "Порядок байт LO, "
+
+#: peinfounit.rspesectionallignment
+msgid "Section allignment = %x "
+msgstr "Выравнивание секций = %x "
+
+#: peinfounit.rspesections
+msgid "-----sections-----"
+msgstr "-----секции-----"
+
+#: peinfounit.rspesharedmemory
+msgid "shared memory, "
+msgstr "разделяемая память, "
+
+#: peinfounit.rspesignature
+msgid "Signature=%x (%s)"
+msgstr "Подпись = % x (%s)"
+
+#: peinfounit.rspesizeofcode
+msgid "Size of code = %x (%d) "
+msgstr "Размер кода = %x (%d) "
+
+#: peinfounit.rspesizeofheader
+msgid "Size Of Headers = %x "
+msgstr "Размер заголовков = %x "
+
+#: peinfounit.rspesizeofheapcommit
+msgid "Size Of Heap Commit = %x "
+msgstr "Размер выделенной кучи = %x "
+
+#: peinfounit.rspesizeofheapreserve
+msgid "Size Of Heap Reserve = %x "
+msgstr "Размер зарезервированной кучи = %x "
+
+#: peinfounit.rspesizeofimage
+msgid "Size Of Image = %x "
+msgstr "Размер образа = %x "
+
+#: peinfounit.rspesizeofinitializeddata
+msgid "Size of initialized data = %x (%d)"
+msgstr "Размер инициализированных данных = %x (%d)"
+
+#: peinfounit.rspesizeofrawdata
+msgid "size of raw data=%x"
+msgstr "размер RAW данных=%x"
+
+#: peinfounit.rspesizeofstackcommit
+msgid "Size Of Stack Commit = %x "
+msgstr "Размер выделенного стека = %x "
+
+#: peinfounit.rspesizeofstackreserve
+msgid "Size Of Stack Reserve = %x "
+msgstr "Размер зарезервированного стека = %x "
+
+#: peinfounit.rspesizeofuninitializeddata
+msgid "Size of uninitialized data = %x (%d) "
+msgstr "Размер неинициализированных данных = %x (%d) "
+
+#: peinfounit.rspestaticaddresses
+msgid "Static addresses"
+msgstr "Статические адреса"
+
+#: peinfounit.rspesubsystem
+msgid "Subsystem = %x "
+msgstr "Подсистема = %x "
+
+#: peinfounit.rspesymbolcount
+msgid "Symbolcount = %x"
+msgstr "Количество символов = %x"
+
+#: peinfounit.rspesymboltableat
+msgid "SymbolTable at %x"
+msgstr "Таблица символов %x"
+
+#: peinfounit.rspesystemfile
+msgid "System file, "
+msgstr "Системный файл, "
+
+#: peinfounit.rspetheheaderofthemodelecouldnobberead
+msgid "The header of the module could not be read"
+msgstr "Заголовок модуля не может быть прочитан"
+
+#: peinfounit.rspetheimagesizeismorethan256
+msgid "The imagesize is more than 256 MB, is this the correct ammount? If not, edit here"
+msgstr "Размер образа больше 256 МБ, это правильное значение? Если нет, отредактируйте здесь"
+
+#: peinfounit.rspethisisnotavakidpefile
+msgid "This is not a valid PE file"
+msgstr "Это не является допустимым PE файлом"
+
+#: peinfounit.rspetimedatastamp
+msgid "Time datastamp=%x"
+msgstr "Временная метка=%x"
+
+#: peinfounit.rspetimedate
+msgid "Time/Date =%d"
+msgstr "Время/Дата = %d"
+
+#: peinfounit.rspetimedatestamp
+msgid "TimeDateStamp=%x (0=not bound -1=bound, and timestamp)"
+msgstr "Временная метка=%x (0=не привязан -1=привязан, временной штамп)"
+
+#: peinfounit.rspetlstable
+msgid "TLS table"
+msgstr "Таблица локального хранилища потоков"
+
+#: peinfounit.rspetype
+msgid "Type = %d"
+msgstr "Тип = %d"
+
+#: peinfounit.rspeuninitializeddata
+msgid "Uninitialized data, "
+msgstr "Неинициализированные данные, "
+
+#: peinfounit.rspeunknown
+msgctxt "peinfounit.rspeunknown"
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: peinfounit.rspeupsystemonly
+msgid "UP system only, "
+msgstr "Только для одного процессора, "
+
+#: peinfounit.rspevirtualaddress
+msgid "Virtual Address=%x"
+msgstr "Виртуальный адрес=%x"
+
+#: peinfounit.rspevirtualaddressbase
+msgid "Virtual address base: %.8x (size=%x (%d))"
+msgstr "Виртуальный адрес базы: %.8x (размер=%x (%d))"
+
+#: peinfounit.rspevirtualsize
+msgid "Virtual Size=%x"
+msgstr "Виртуальный размер=%x"
+
+#: peinfounit.rspewin32versionvalue
+msgid "Win32 Version Value = %x "
+msgstr "Версия Win32 = %x "
+
+#: peinfounit.rspewritablememory
+msgid "writable memory, "
+msgstr "перезаписываемая память, "
+
+#: peinfounit.rsthisisnotavalidimage
+msgid "This is not a valid image"
+msgstr "Недопустимое изображение"
+
+#: plugin.rserrordisabling
+msgid "Error disabling %s"
+msgstr "Ошибка отключения «%s»"
+
+#: plugin.rserrorenabling
+msgid "Error enabling %s"
+msgstr "Ошибка включения «%s»"
+
+#: plugin.rserrorloadingonlydllfilesareallowed
+msgid "Error loading %s. Only DLL files are allowed"
+msgstr "Произошла ошибка при загрузке «%s». Разрешены только DLL файлы"
+
+#: plugin.rserrorloadingthedllismissingtheceplugin_getversione
+msgid "Error loading %s. The dll is missing the CEPlugin_GetVersion export"
+msgstr "Произошла ошибка при загрузке %s. В dll отсутствует экспорт CEPlugin_GetVersion"
+
+#: plugin.rserrorloadingthedllismissingtheceplugin_getversionf
+msgid "Error loading %s. The dll is missing the CEPlugin_GetVersion function"
+msgstr "Произошла ошибка при загрузке %s. В dll отсутствует функция CEPlugin_GetVersion"
+
+#: plugin.rserrorloadingthegetversionfunctionreturnedfalse
+msgid "Error
