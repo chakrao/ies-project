@@ -5984,4 +5984,186 @@ msgstr "адрес в файле нового .exe заголовка (PE)="
 msgid "Load config table"
 msgstr "Таблица конфигурирования загрузки"
 
-#: peinfounit.rspelo
+#: peinfounit.rspeloaderflags
+msgid "Loader Flags = %x "
+msgstr "Флаги загрузчика = %x "
+
+#: peinfounit.rspemachine
+msgid "Machine=%.2x"
+msgstr "Архитектура процессора=%.2x"
+
+#: peinfounit.rspemachine64
+msgid "Machine=%.2x (64 bit)"
+msgstr "Архитектура процессора=%.2x (64 бит)"
+
+#: peinfounit.rspemajorimageversion
+msgid "Major Image Version = %d "
+msgstr "Старшая версия образа = %d "
+
+#: peinfounit.rspemajorlinkerversion
+msgid "Major linker version = %d "
+msgstr "Старшая версия компоновщика = %d "
+
+#: peinfounit.rspemajoroperatingsystemversion
+msgid "Major Operating System Version = %d "
+msgstr "Старшая версия операционной системы  = %d "
+
+#: peinfounit.rspemajorsubsystemversion
+msgid "Major Subsystem Version = %d "
+msgstr "Старшая версия подсистемы = %d "
+
+#: peinfounit.rspemajorversion
+msgid "Major version=%d"
+msgstr "Старшая версия=%d"
+
+#: peinfounit.rspeminorimageversion
+msgid "Minor Image Version = %d "
+msgstr "Младшая версия образа = %d "
+
+#: peinfounit.rspeminorlinlerversion
+msgid "Minor linker version = %d "
+msgstr "Младшая версия компоновщика = %d "
+
+#: peinfounit.rspeminorsubsystemversion
+msgid "Minor Subsystem Version = %d "
+msgstr "Младшая версия подсистемы = %d "
+
+#: peinfounit.rspeminorversion
+msgid "Minor version=%d"
+msgstr "Младшая версия=%d"
+
+#: peinfounit.rspemzheader
+msgid "MZ header"
+msgstr "MZ заголовок"
+
+#: peinfounit.rspename
+msgid "Name = %x (%s)"
+msgstr "Название = %x (%s)"
+
+#: peinfounit.rspename2
+msgid "Name=%x : %s"
+msgstr "Название=%x : %s"
+
+#: peinfounit.rspenetrunfromswap
+msgid "Net: Run from swap, "
+msgstr "Сеть: Запуск из файла подкачки, "
+
+#: peinfounit.rspenodbginfo
+msgid "No DBG info, "
+msgstr "Нет отладочных данных, "
+
+#: peinfounit.rspenolinenumbers
+msgid "No line numbers, "
+msgstr "Нет номеров строк, "
+
+#: peinfounit.rspenolocalsymbols
+msgid "No local symbols, "
+msgstr "Нет локальных символов, "
+
+#: peinfounit.rspenorelocations
+msgid "No relocations, "
+msgstr "Нет перемещений, "
+
+#: peinfounit.rspenotallmemorycouldbereadworkingwithapartialcopyhere
+msgid "Not all memory could be read, working with a partial copy here"
+msgstr "Не вся память может быть прочитана. Работа с частичной копией"
+
+#: peinfounit.rspenotcached
+msgid "not cached, "
+msgstr "не кэшируется, "
+
+#: peinfounit.rspenotpaged
+msgid "not paged, "
+msgstr "не делится на страницы, "
+
+#: peinfounit.rspenumberoffunctions
+msgid "NumberOfFunctions = %d"
+msgstr "Количество элементов в таблице адресов = %d"
+
+#: peinfounit.rspenumberoflinenumbers
+msgid "number of line numbers=%x"
+msgstr "количество номеров строк=%x"
+
+#: peinfounit.rspenumberofnames
+msgid "NumberOfNames = %d"
+msgstr "Количество значений в таблицах имён = %d"
+
+#: peinfounit.rspenumberofrelocations
+msgid "number of relocations=%x"
+msgstr "количество перемещений=%x"
+
+#: peinfounit.rspenumberofrvaandsize
+msgid "Number Of Rva And Sizes = %d "
+msgstr "Количество каталогов в таблице директорий = %d "
+
+#: peinfounit.rspenumberofsections
+msgid "Number of sections=%d"
+msgstr "Количество секций=%d"
+
+#: peinfounit.rspeoptional
+msgid "-----optional-----"
+msgstr "-----дополнительно-----"
+
+#: peinfounit.rspeoptionalheader
+msgid "OptionalHeader size = %x"
+msgstr "Размер дополнительного заголовка = %x"
+
+#: peinfounit.rspeoptionalmagicnumber
+msgid "Optional magic number = %x "
+msgstr "«Магическое» значение = %x "
+
+#: peinfounit.rspepeheader
+msgid "PE header"
+msgstr "PE заголовок"
+
+#: peinfounit.rspepeinfoimagesize
+msgid "PEInfo: Image size"
+msgstr "PE-Инфо: Размер образа"
+
+#: peinfounit.rspepointertolinenumbers
+msgid "Pointer to line numbers=%x"
+msgstr "Указатель на номера строк=%x"
+
+#: peinfounit.rspepointertorawdata
+msgid "Pointer to raw data=%x"
+msgstr "Указатель на RAW данные=%x"
+
+#: peinfounit.rspepointertorelocations
+msgid "Pointer to relocations=%x"
+msgstr "Указатель на перемещения=%x"
+
+#: peinfounit.rspepreferedimagebase
+msgid "Prefered imagebase = %.8x "
+msgstr "Предпочтительный базовый адрес = %.8x "
+
+#: peinfounit.rspepreferedimagebase2
+msgid "Prefered imagebase = %.16x "
+msgstr "Предпочтительный базовый адрес = %.16x "
+
+#: peinfounit.rspereadablememory
+msgid "readable memory, "
+msgstr "читаемая память, "
+
+#: peinfounit.rsperemovablerunfromswap
+msgid "Removable: Run from swap, "
+msgstr "Носитель: Запуск из файла подкачки, "
+
+#: peinfounit.rsperemoved
+msgid "removed, "
+msgstr "удаленный, "
+
+#: peinfounit.rspereserved
+msgid "reserved"
+msgstr "зарезервировано"
+
+#: peinfounit.rsperesourcetable
+msgid "Resource table"
+msgstr "Таблица ресурсов"
+
+#: peinfounit.rspereversedbyteshi
+msgid "Reversed bytes HI, "
+msgstr "Порядок байт HI, "
+
+#: peinfounit.rspereversedbyteslo
+msgid "Reversed bytes LO, "
+msgstr "Порядок байт 
