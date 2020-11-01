@@ -6334,4 +6334,132 @@ msgid "Error loading %s. The dll is missing the CEPlugin_GetVersion function"
 msgstr "Произошла ошибка при загрузке %s. В dll отсутствует функция CEPlugin_GetVersion"
 
 #: plugin.rserrorloadingthegetversionfunctionreturnedfalse
-msgid "Error
+msgid "Error loading %s. The GetVersion function returned FALSE"
+msgstr "Произошла ошибка при загрузке %s. Функция GetVersion возвращает FALSE"
+
+#: plugin.rserrorloadingthisdllrequiresanewerversionofcetofunc
+msgid "Error loading %s. This dll requires a newer version of ce to function properly"
+msgstr "Произошла ошибка при загрузке %s. Эта dll требует более новую версию Cheat Engine для правильного функционирования"
+
+#: plugin.rsismissingtheceplugin_disablepluginexport
+msgid "%s is missing the CEPlugin_DisablePlugin export"
+msgstr "В %s отсутствует экспорт CEPlugin_DisablePlugin"
+
+#: plugin.rsismissingtheceplugin_initializepluginexport
+msgid "%s is missing the CEPlugin_InitializePlugin export"
+msgstr "В %s отсутствует экспорт CEPlugin_InitializePlugin"
+
+#: plugin.rsplugtheplugindllcouldnotbeloaded
+msgid "The plugin dll could not be loaded:"
+msgstr "Dll плагина не может быть загружена:"
+
+#: pluginexports.rsloadmodulefailed
+msgid "LoadModule failed"
+msgstr "Сбой LoadModule"
+
+#: pluginexports.rspluginaddress
+msgctxt "pluginexports.rspluginaddress"
+msgid "Plugin Address"
+msgstr "Расположение плагина"
+
+#: pointeraddresslist.rspalinvalidscandatafile
+msgctxt "pointeraddresslist.rspalinvalidscandatafile"
+msgid "Invalid scandata file"
+msgstr "Неверный файл с данными сканирования"
+
+#: pointeraddresslist.rspalinvalidscandataversion
+msgctxt "pointeraddresslist.rspalinvalidscandataversion"
+msgid "Invalid scandata version"
+msgstr "Неверная версия файла с данными сканирования"
+
+#: pointerscanconnector.rscouldnotberesolved
+msgctxt "pointerscanconnector.rscouldnotberesolved"
+msgid " could not be resolved"
+msgstr " не разрешён"
+
+#: pointerscanconnector.rserrorwhileconnecting
+msgid "Error while connecting: "
+msgstr "Ошибка при подключении: "
+
+#: pointerscanconnector.rsfailurecreatingsocket
+msgctxt "pointerscanconnector.rsfailurecreatingsocket"
+msgid "Failure creating socket"
+msgstr "Не удалось создать сокет"
+
+#: pointerscanconnector.rshost
+msgctxt "pointerscanconnector.rshost"
+msgid "host:"
+msgstr "хост:"
+
+#: pointerscanconnector.rsinvalidresponsefrom
+msgid "invalid response from "
+msgstr "недопустимый ответ от "
+
+#: pointerscanconnector.rssomeoneforgottogivethisconnector
+msgid "Someone forgot to give this connector an OnConnected event..."
+msgstr "Кто-то забыл дать этому соединителю событие OnConnected"
+
+#: pointerscancontroller.rsallpathsreceived
+msgid "All paths received"
+msgstr "Все цепочки получены"
+
+#: pointerscancontroller.rsfailurecopyingtargetprocessmemory
+msgid "Failure copying target process memory"
+msgstr "Не удалось скопировать память выбранного процесса"
+
+#: pointerscancontroller.rsinvaliddata
+msgid "invalid data:"
+msgstr "недопустимые данные:"
+
+#: pointerscancontroller.rsnoupdatefromtheclientforover120sec
+msgid "No update from the client for over 120 seconds"
+msgstr "Нет обновлений от клиента в течение более 120 секунд"
+
+#: pointerscancontroller.rspscachildtriedtoconnect
+msgid "A child tried to connect"
+msgstr "Потомок пытался подключиться"
+
+#: pointerscancontroller.rspscalreadystillconnectedtothischild
+msgid "Already/still connected to this child"
+msgstr "Уже/всё ещё соединён с этим потомком"
+
+#: pointerscancontroller.rspscaparenttriedtoconnect
+msgid "A parent tried to connect"
+msgstr "Родитель пытался подключиться"
+
+#: pointerscancontroller.rspscchildisntidlewhilepreviouslyitwas
+msgid "child isn't idle while previously it was..."
+msgstr "потомок не находится в состоянии простаивания как был ранее..."
+
+#: pointerscancontroller.rspscduringscanfinishing
+msgid "During scan finishing: "
+msgstr "Во время окончания сканирования: "
+
+#: pointerscancontroller.rspscerror
+msgid " (Error: "
+msgstr " (Ошибка: "
+
+#: pointerscancontroller.rspscfailurecreatingsocket
+msgctxt "pointerscancontroller.rspscfailurecreatingsocket"
+msgid "Failure creating socket"
+msgstr "Сбой при создании сокета"
+
+#: pointerscancontroller.rspscfailuretobindport
+msgid "Failure to bind port "
+msgstr "Не удалось привязать порт "
+
+#: pointerscancontroller.rspscfailuretolisten
+msgid "Failure to listen"
+msgstr "Не удалось прослушать"
+
+#: pointerscancontroller.rspscforsomeunknownreasontheuntrustedchildisntidleanymore
+msgid "For some unknown reason the untrusted child isn't idle anymore"
+msgstr "По неизвестным причинам, потомок, к которому нет доверия, больше не находится в состоянии простаивания"
+
+#: pointerscancontroller.rspschelloafterinitializtion
+msgid "HELLO after initializtion"
+msgstr "ПРИВЕТСТВИЕ после инициализации"
+
+#: pointerscancontroller.rspscimpossibleerroruseloadedpointermapwasfalseetc
+msgid "Impossible error: UseLoadedPointermap was false when a child message got handled"
+msgstr "Невозможная ошибка: UseLo
