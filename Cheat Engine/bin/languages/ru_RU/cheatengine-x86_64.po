@@ -7031,4 +7031,146 @@ msgstr "Критичный по времени"
 msgid "To"
 msgstr "До"
 
-#: poi
+#: pointerscannersettingsfrm.rsuseloadedpointermap
+msgctxt "pointerscannersettingsfrm.rsuseloadedpointermap"
+msgid "Use saved pointermap"
+msgstr "Использовать сохранённую карту указателей"
+
+#: pointerscannersettingsfrm.strmaxoffsetsisstupid
+msgid "Sorry, but the max offsets should be 1 or higher, or else disable the checkbox"
+msgstr "Извините, но максимальным смещением должно быть число 1 или больше, в противном случае снимите галочку"
+
+#: pointerscanresultreader.rsbuggedlist
+msgid "BuggedList"
+msgstr "Багнутый список"
+
+#: pointerscanresultreader.rspsrcorruptedpointerscanfile
+msgid "Corrupted pointerscan file"
+msgstr "Повреждённый файл с указателями"
+
+#: pointerscanresultreader.rspsrinvalidpointerscanfileversion
+msgid "Invalid pointerscan file version"
+msgstr "Неверная версия файла сканера указателей"
+
+#: pointerscansettingsipconnectionlist.rspssicladd
+msgctxt "pointerscansettingsipconnectionlist.rspssicladd"
+msgid "Add"
+msgstr "Добавить"
+
+#: pointerscansettingsipconnectionlist.rspssiclhost
+msgid "Host"
+msgstr "Хост"
+
+#: pointerscansettingsipconnectionlist.rspssiclpassword
+msgid "Password"
+msgstr "Пароль"
+
+#: pointerscansettingsipconnectionlist.rspssiclport
+msgid "Port"
+msgstr "Порт"
+
+#: pointerscansettingsipconnectionlist.rspssiclremove
+msgctxt "pointerscansettingsipconnectionlist.rspssiclremove"
+msgid "Remove"
+msgstr "Убавить"
+
+#: pointerscansettingsipconnectionlist.rspssiclstable
+msgid "Stable"
+msgstr "Стабилен"
+
+#: pointervaluelist.rsallocatingbytestobuffer
+msgid "Allocating %s bytes to 'buffer'"
+msgstr "Выделение %s байт(а) в «буфер»"
+
+#: pointervaluelist.rsnomemoryfoundinthespecifiedregion
+msgctxt "pointervaluelist.rsnomemoryfoundinthespecifiedregion"
+msgid "No memory found in the specified region"
+msgstr "В выбранном регионе память не найдена"
+
+#: pointervaluelist.rspointervaluesetuperror
+msgid "Pointer value setup error"
+msgstr "Ошибка установки значения указателя"
+
+#: pointervaluelist.rspvinvalidscandatafile
+msgctxt "pointervaluelist.rspvinvalidscandatafile"
+msgid "Invalid scandata file"
+msgstr "Неверный файл с данными сканирования"
+
+#: pointervaluelist.rspvinvalidscandataversion
+msgctxt "pointervaluelist.rspvinvalidscandataversion"
+msgid "Invalid scandata version"
+msgstr "Неверная версия файла с данными сканирования"
+
+#: pointervaluelist.rspvnotenoughmemoryfreetoscan
+msgctxt "pointervaluelist.rspvnotenoughmemoryfreetoscan"
+msgid "Not enough memory free to scan"
+msgstr "Недостаточно свободной памяти для сканирования"
+
+#: processlist.rsicantgettheprocesslistyouarepropablyusingwindowsnt
+msgctxt "processlist.rsicantgettheprocesslistyouarepropablyusingwindowsnt"
+msgid "I can't get the process list. You are propably using windows NT. Use the window list instead!"
+msgstr "Не удалось получить список процессов. Возможно вы используете систему Windows NT. Воспользуйтесь списком окон вместо списка процессов!"
+
+#: processwindowunit.rsapplications
+msgctxt "processwindowunit.rsapplications"
+msgid "Applications"
+msgstr "Приложения"
+
+#: processwindowunit.rsattachdebuggerornot
+msgid "Are you sure you want to attach the debugger and not just open this process? (You can later on always attach the debugger)"
+msgstr "Вы уверены, что хотите присоединить отладчик, а не просто открыть процесс? (Вы можете присоединить отладчик позднее)"
+
+#: processwindowunit.rscreateprocess
+msgctxt "processwindowunit.rscreateprocess"
+msgid "Create Process"
+msgstr "Создать процесс"
+
+#: processwindowunit.rsentertheprocessid
+msgid "Enter the ProcessID"
+msgstr "Введите идентификатор процесса"
+
+#: processwindowunit.rsfilter
+msgid "Filter"
+msgstr "Фильтр"
+
+#: processwindowunit.rsfirstselectaprocess
+msgctxt "processwindowunit.rsfirstselectaprocess"
+msgid "First select a process!"
+msgstr "Сначала выберите процесс!"
+
+#: processwindowunit.rsisntavalidprocessid
+msgctxt "processwindowunit.rsisntavalidprocessid"
+msgid "%s isn't a valid processID"
+msgstr "%s не является допустимым идентификатором процесса"
+
+#: processwindowunit.rsmanualpid
+msgid "Manual PID"
+msgstr "Ручной ввод идентификатора процесса"
+
+#: processwindowunit.rsoptionallaunchparameters
+msgid "Optional launch parameters"
+msgstr "Дополнительные параметры запуска"
+
+#: processwindowunit.rsphysicalmemory
+msgctxt "processwindowunit.rsphysicalmemory"
+msgid "Physical Memory"
+msgstr "Физическая память"
+
+#: processwindowunit.rspleaseselectanotherprocess
+msgid "Please select another process"
+msgstr "Пожалуйста, выберите другой процесс"
+
+#: processwindowunit.rsprocesses
+msgctxt "processwindowunit.rsprocesses"
+msgid "Processes"
+msgstr "Процессы"
+
+#: processwindowunit.rsprocesslist
+msgid "Process List"
+msgstr "Список процессов"
+
+#: processwindowunit.rsprocesslistlong
+msgid "Process List(long)"
+msgstr "Полный список процессов"
+
+#: processwindowunit.rss
