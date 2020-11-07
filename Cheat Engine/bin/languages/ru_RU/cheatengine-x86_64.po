@@ -6719,4 +6719,155 @@ msgstr "Экспорт прерван"
 msgid "Exporting..."
 msgstr "Экспортирование..."
 
-#: pointerscanne
+#: pointerscannerfrm.rspsexporttodatabase
+msgid "Export to database"
+msgstr "Экспорт в базу данных"
+
+#: pointerscannerfrm.rspsexporttodatabasebiggersizeornot
+msgid "Do you want \"result\" table with indexes and keys? It will take up additional disk space."
+msgstr "Нужна ли вам таблица «результата» с индексами и ключами? Это займёт дополнительное дисковое пространство."
+
+#: pointerscannerfrm.rspsexporttodatabasebiggersizeornot_resultid
+msgid "Do you want resultid column filled? It will take up additional disk space."
+msgstr "Вы хотите, чтобы колонка результатов была заполнена? Это займёт дополнительное дисковое пространство."
+
+#: pointerscannerfrm.rspsfindbyaddresspart1
+msgid "Find by address requires an address. \""
+msgstr "Требуется указать адрес для поиска. «"
+
+#: pointerscannerfrm.rspsfindbyaddresspart2
+msgid "\" is not a valid address"
+msgstr "» не является допустимым адресом"
+
+#: pointerscannerfrm.rspsgeneratingpointermap
+msgctxt "pointerscannerfrm.rspsgeneratingpointermap"
+msgid "Generating pointermap"
+msgstr "Генерация карты указателей"
+
+#: pointerscannerfrm.rspsgiveanamefortheseresults
+msgid "Give a name for these results"
+msgstr "Укажите название для этих результатов"
+
+#: pointerscannerfrm.rspsidle
+msgid " (Idle)"
+msgstr " (Простаивающий)"
+
+#: pointerscannerfrm.rspsimporting
+msgid "Importing..."
+msgstr "Импортирование..."
+
+#: pointerscannerfrm.rspsimporting_sortmethod
+msgid "Do you wish to use offsets sum for sorting?"
+msgstr "Использовать сумму смещений для сортировки?"
+
+#: pointerscannerfrm.rspsimporting_sortornot
+msgid "Do you wish to sort pointerlist by level, then module, then offsets?"
+msgstr "Вы хотите отсортировать список указателей сначала по уровням, потом по модулям, а затем по смещениям?"
+
+#: pointerscannerfrm.rspsinvaliddatabase
+msgid "Invalid database"
+msgstr "Неверная база данных"
+
+#: pointerscannerfrm.rspslastupdate
+msgid "Last update: "
+msgstr "Последнее обновление: "
+
+#: pointerscannerfrm.rspslowestknownpath
+msgid "Lowest known path:"
+msgstr "Минимальная известная цепочка:"
+
+#: pointerscannerfrm.rspsnetwork
+msgctxt "pointerscannerfrm.rspsnetwork"
+msgid "Network"
+msgstr "Сеть"
+
+#: pointerscannerfrm.rspsparent
+msgid "Parent: "
+msgstr "Родитель: "
+
+#: pointerscannerfrm.rspsparentdisconnectedwaitingforreconnect
+msgid "Parent: <disconnected> (Waiting for reconnect)"
+msgstr "Родитель: <отключен> (Ожидание повторного соединения)"
+
+#: pointerscannerfrm.rspsparentnone
+msgid "Parent: <none>"
+msgstr "Родитель: <не имеет>"
+
+#: pointerscannerfrm.rspspathsevaluated
+msgid "Paths evaluated: "
+msgstr "Цепочек определено: "
+
+#: pointerscannerfrm.rspspathsseconds
+msgid "Paths / seconds: (%.0n / s)"
+msgstr "Цепочек в секунду:  (%.0ц /с)"
+
+#: pointerscannerfrm.rspspscanguiupdatetimererror
+msgid "pscangui update timer error: "
+msgstr "ошибка таймера обновления pscangui: "
+
+#: pointerscannerfrm.rspsqueued
+msgid " (Queued: "
+msgstr " (В очереди: "
+
+#: pointerscannerfrm.rspsqueuesize
+msgid "Queuesize: "
+msgstr "Размер очереди: "
+
+#: pointerscannerfrm.rspsrescanning
+msgid "Rescanning"
+msgstr "Отсеивание"
+
+#: pointerscannerfrm.rspsresultsfound
+msgid "Results found: "
+msgstr "Результатов найдено: "
+
+#: pointerscannerfrm.rspsscanduration
+msgid "Scan duration: "
+msgstr "Продолжительность сканирования: "
+
+#: pointerscannerfrm.rspssecondsago
+msgid " seconds ago"
+msgstr " секунд назад"
+
+#: pointerscannerfrm.rspsstaticqueuesize
+msgid "Static queue size: "
+msgstr "Статический размер очереди: "
+
+#: pointerscannerfrm.rspsstatistics
+msgid "Statistics"
+msgstr "Статистика"
+
+#: pointerscannerfrm.rspsthereisalreadyapointerfilewiththsinamepresentinthisdatabase
+msgid "There is already a pointerfile with this name present in this database. Replace it's content with this one ?"
+msgstr "Файл указателя с таким именем уже существует в этой базе данных. Заменить его содержимое?"
+
+#: pointerscannerfrm.rspsthisdatabasedoesntcontainanypointerfiles
+msgid "This database does not contain any pointer files"
+msgstr "Эта база данных не содержит каких-либо файлов с указателями"
+
+#: pointerscannerfrm.rspsthreadcount
+msgid "Threadcount: "
+msgstr "Количество потоков: "
+
+#: pointerscannerfrm.rspsthreads
+msgctxt "pointerscannerfrm.rspsthreads"
+msgid "Threads"
+msgstr "Потоки"
+
+#: pointerscannerfrm.rspstimespentwriting
+msgid "Time spent writing: "
+msgstr "Время, потраченное на запись: "
+
+#: pointerscannerfrm.rspstotalpathsevaluater
+msgid "Total paths evaluated: "
+msgstr "Всего цепочек определено: "
+
+#: pointerscannerfrm.rspstotalpathsseconds
+msgid "Total paths / seconds: (%.0n / s)"
+msgstr "Всего цепочек в секунду:  (%.0ц /с)"
+
+#: pointerscannerfrm.rspstotalqueuesize
+msgid "Total Queuesize: "
+msgstr "Общий размер очереди: "
+
+#: pointerscannerfrm.rspstru
