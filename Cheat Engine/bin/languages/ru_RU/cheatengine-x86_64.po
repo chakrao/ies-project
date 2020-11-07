@@ -6870,4 +6870,165 @@ msgstr "Всего цепочек в секунду:  (%.0ц /с)"
 msgid "Total Queuesize: "
 msgstr "Общий размер очереди: "
 
-#: pointerscannerfrm.rspstru
+#: pointerscannerfrm.rspstrusted
+msgid " (Trusted)"
+msgstr " (Доверяемый)"
+
+#: pointerscannerfrm.rspstrusted2
+msgid "Trusted: "
+msgstr "Доверяемый: "
+
+#: pointerscannerfrm.rspsuniquepointervaluesintarget
+msgid "Unique pointervalues in target:"
+msgstr "Уникальных значений указателя:"
+
+#: pointerscannerfrm.rspsuploadingscandata
+msgid " (Uploading scandata: %.1f%% (%dKB/%dKB : %d KB/sec)"
+msgstr " (Отправка данных сканирования: %.1f%% (%dКбайт/%dКбайт : %d Кбайт/сек)"
+
+#: pointerscannerfrm.rssavingandterminating
+msgctxt "pointerscannerfrm.rssavingandterminating"
+msgid "Saving..."
+msgstr "Сохранение..."
+
+#: pointerscannerfrm.rssleeping
+msgid "Sleeping"
+msgstr "Спящий"
+
+#: pointerscannerfrm.rsstop
+msgctxt "pointerscannerfrm.rsstop"
+msgid "Stop"
+msgstr "Остановить"
+
+#: pointerscannerfrm.rsterminating
+msgid "Terminating"
+msgstr "Завершение"
+
+#: pointerscannerfrm.rsthread
+msgid "Thread"
+msgstr "Поток"
+
+#: pointerscannerfrm.rsthreads
+msgctxt "pointerscannerfrm.rsthreads"
+msgid "Threads"
+msgstr "Потоки"
+
+#: pointerscannerfrm.rstime
+msgid "Time"
+msgstr "Время"
+
+#: pointerscannerfrm.rswritingtodisk
+msgid "Writing to disk"
+msgstr "Запись на диск"
+
+#: pointerscannersettingsfrm.rsadd
+msgctxt "pointerscannersettingsfrm.rsadd"
+msgid "Add"
+msgstr "Добавить"
+
+#: pointerscannersettingsfrm.rsaddress
+msgctxt "pointerscannersettingsfrm.rsaddress"
+msgid "Address"
+msgstr "Адрес"
+
+#: pointerscannersettingsfrm.rscouldnotberesolvedtoanipaddress
+msgid "could not be resolved to an IP address"
+msgstr "не может быть указан в качестве IP-адреса"
+
+#: pointerscannersettingsfrm.rsfilename
+msgid "Filename"
+msgstr "Название файла"
+
+#: pointerscannersettingsfrm.rsfrom
+msgctxt "pointerscannersettingsfrm.rsfrom"
+msgid "From"
+msgstr "От"
+
+#: pointerscannersettingsfrm.rshasaninvalidport
+msgid "%s has an invalid port (%s)"
+msgstr "%s имеет недопустимый порт (%s)"
+
+#: pointerscannersettingsfrm.rshasnotbeengivenavalidaddress
+msgid "%s has not been given a valid address"
+msgstr "%s не дал правильный адрес"
+
+#: pointerscannersettingsfrm.rshigher
+msgctxt "pointerscannersettingsfrm.rshigher"
+msgid "Higher"
+msgstr "Выше обычного"
+
+#: pointerscannersettingsfrm.rshighest
+msgctxt "pointerscannersettingsfrm.rshighest"
+msgid "Highest"
+msgstr "Высший"
+
+#: pointerscannersettingsfrm.rsidle
+msgctxt "pointerscannersettingsfrm.rsidle"
+msgid "Idle"
+msgstr "Простаивающий"
+
+#: pointerscannersettingsfrm.rsinvalidaddress
+msgctxt "pointerscannersettingsfrm.rsinvalidaddress"
+msgid "Invalid address"
+msgstr "Недопустимый адрес"
+
+#: pointerscannersettingsfrm.rslastoffset
+msgctxt "pointerscannersettingsfrm.rslastoffset"
+msgid "Last offset"
+msgstr "Последнее смещение"
+
+#: pointerscannersettingsfrm.rslimitscantospecifiedregionfile
+msgctxt "pointerscannersettingsfrm.rslimitscantospecifiedregionfile"
+msgid "Limit scan to specified region file"
+msgstr "Ограничить сканирование заданным файлом с регионами"
+
+#: pointerscannersettingsfrm.rslower
+msgctxt "pointerscannersettingsfrm.rslower"
+msgid "Lower"
+msgstr "Ниже обычного"
+
+#: pointerscannersettingsfrm.rslowest
+msgctxt "pointerscannersettingsfrm.rslowest"
+msgid "Lowest"
+msgstr "Низший"
+
+#: pointerscannersettingsfrm.rsnocomparefiles
+msgid "If you do not use the compare results with other saved pointermap option you will get billions of useless results and giga/terrabytes of wasted diskspace and rescans will take hours if not days. Are you sure ?"
+msgstr "Если не используйте опцию «Сравнить результат с сохранённой картой указателей», вы получите миллиарды бесполезных результатов и гига/терабайты потраченного впустую дискового пространства, а отсев займёт часы, если не дни. Вы уверены?"
+
+#: pointerscannersettingsfrm.rsnormal
+msgctxt "pointerscannersettingsfrm.rsnormal"
+msgid "Normal"
+msgstr "Обычный"
+
+#: pointerscannersettingsfrm.rspleasefillinanaddresstolookfor
+msgid "Please fill in an address to look for"
+msgstr "Пожалуйста, укажите что-то для поиска"
+
+#: pointerscannersettingsfrm.rsremove
+msgctxt "pointerscannersettingsfrm.rsremove"
+msgid "Remove"
+msgstr "Убавить"
+
+#: pointerscannersettingsfrm.rsreusedthesamefile
+msgid "This file is already in the list of scandata files to be used"
+msgstr "Этот файл уже находится в списке используемых файлов данных сканирования"
+
+#: pointerscannersettingsfrm.rsscandatafilter
+msgid "All files (*.*)|*.*|Scan Data (*.scandata)|*.scandata"
+msgstr "Все файлы (*.*)|*.*|Данные сканирования (*.scandata)|*.scandata"
+
+#: pointerscannersettingsfrm.rsselectafile
+msgid "<Select a file>"
+msgstr "<Выберите файл>"
+
+#: pointerscannersettingsfrm.rstimecritical
+msgctxt "pointerscannersettingsfrm.rstimecritical"
+msgid "TimeCritical"
+msgstr "Критичный по времени"
+
+#: msgctxt "pointerscannersettingsfrm.rsto"
+msgid "To"
+msgstr "До"
+
+#: poi
