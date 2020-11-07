@@ -6568,4 +6568,155 @@ msgstr "Родитель попытался послать мне отрицат
 msgid "The parent tried to send me more paths than allowed (after update)"
 msgstr "Родитель попытался послать мне больше путей, чем позволено (после обновления)"
 
-#: pointerscancontroller.rspscthepo
+#: pointerscancontroller.rspscthepointerlisthandlerwasdestroyedwithoutagoodreason
+msgid "The pointerlisthandler was destroyed without a good reason"
+msgstr "pointerlisthandler был испорчен по неизвестным причинам"
+
+#: pointerscancontroller.rspscthescanwasterminated
+msgid "The scan was terminated"
+msgstr "Сканирование прервано"
+
+#: pointerscancontroller.rspsctheuploadwasterminated
+msgid "The upload was terminated"
+msgstr "Отправка прервана"
+
+#: pointerscancontroller.rspscworking
+msgid ":Working"
+msgstr ":Работает"
+
+#: pointerscancontroller.rspscwritingtodisk
+msgid ":Writing to disk"
+msgstr ":Записывает на диск"
+
+#: pointerscancontroller.rssavingpointermap
+msgid "Saving pointermap"
+msgstr "Сохранение карты указателей"
+
+#: pointerscannerfrm.rsactive
+msgctxt "pointerscannerfrm.rsactive"
+msgid "Active"
+msgstr "Активный"
+
+#: pointerscannerfrm.rsaddressspecifiersfoundinthewholeprocess
+msgid "Address specifiers found in the whole process"
+msgstr "Адресов, найденных во всём процессе"
+
+#: pointerscannerfrm.rsareyousureyouwishyouforceadisconnect
+msgid "Are you sure you wish you force a disconnect. The current paths will be lost"
+msgstr "Вы уверены, что хотите принудительно отключиться? Текущие цепочки будут потеряны"
+
+#: pointerscannerfrm.rsbaseaddress
+msgctxt "pointerscannerfrm.rsbaseaddress"
+msgid "Base Address"
+msgstr "Базовый адрес"
+
+#: pointerscannerfrm.rsceinjectedpointerscan
+msgid "CE Injected Pointerscan"
+msgstr "Внедрённый сканер указателей"
+
+#: pointerscannerfrm.rscurrentlevel
+msgid "Current Level"
+msgstr "Текущий уровень"
+
+#: pointerscannerfrm.rserrorduringscan
+msgid "Error during scan"
+msgstr "Ошибка во время сканирования"
+
+#: pointerscannerfrm.rsevaluated
+msgid "Evaluated"
+msgstr "Определено"
+
+#: pointerscannerfrm.rsgeneratingpointermap
+msgid "Generating pointermap..."
+msgstr "Генерация карты указателей..."
+
+#: pointerscannerfrm.rsisnotavalid4bytevalue
+msgid "%s is not a valid 4 byte value"
+msgstr "%s не является допустимым 4-байтовым значением"
+
+#: pointerscannerfrm.rsisnotavaliddoublevalue
+msgid "%s is not a valid double value"
+msgstr "%s не является допустимым double значением"
+
+#: pointerscannerfrm.rsisnotavalidfloatingpointvalue
+msgid "%s is not a valid floating point value"
+msgstr "%s не является допустимым float значением"
+
+#: pointerscannerfrm.rslookingfor
+msgid "Looking for"
+msgstr "Ищу в"
+
+#: pointerscannerfrm.rsoffset
+msgid "Offset"
+msgstr "Смещение"
+
+#: pointerscannerfrm.rsonlythefirst1000000entrieswillbedisplayed
+msgid "Only the first 1000000 entries will be displayed. Rescan will still work with all results.  (This is normal for a pointerscan, you MUST do a few rescans)"
+msgstr "В списке будет отображаться только первый 1.000.000 записей. Но «Отсев» будет работать со всеми найденными результатами (Это нормально для сканера указателей, вы должны выполнить «Отсев» несколько раз)"
+
+#: pointerscannerfrm.rsoutofdiskspacecleanupthediskorstop
+msgid "OUT OF DISKSPACE! Clean up the disk or stop"
+msgstr "НЕДОСТАТОЧНО ДИСКОВОГО ПРОСТРАНСТВА! Освободите место на диске или прекратите это действие"
+
+#: pointerscannerfrm.rspointercount
+msgid "Pointer paths"
+msgstr "Цепочек указателя"
+
+#: pointerscannerfrm.rspointerpathsfound
+msgid "Pointer paths found"
+msgstr "Найдено цепочек указателя"
+
+#: pointerscannerfrm.rspointerscan
+msgctxt "pointerscannerfrm.rspointerscan"
+msgid "Pointer scan"
+msgstr "Сканер указателей"
+
+#: pointerscannerfrm.rspointerscanresult
+msgid "pointerscan result"
+msgstr "Указатель"
+
+#: pointerscannerfrm.rspointsto
+msgid "Points to"
+msgstr "Указывает на"
+
+#: pointerscannerfrm.rspsactive
+msgid " (Active)"
+msgstr " (Активно)"
+
+#: pointerscannerfrm.rspschildren
+msgid "Children:"
+msgstr "Потомок:"
+
+#: pointerscannerfrm.rspsconnectingto
+msgid "Connecting to:"
+msgstr "Соединение с:"
+
+#: pointerscannerfrm.rspsdisconnected
+msgid " (Disconnected)"
+msgstr " (Отключен)"
+
+#: pointerscannerfrm.rspsdownloadingandhandlingresults
+msgid " (Downloading and handling results)"
+msgstr " (Загрузка и обработка результатов)"
+
+#: pointerscannerfrm.rspsdownloadingscandata
+msgid "Downloading scandata: %.1f%% (%dKB/%dKB : %d KB/sec)"
+msgstr "Загрузка данных сканирования: %.1f%% (%dКбайт/%dКбайт : %d Кбайт/сек)"
+
+#: pointerscannerfrm.rspsdoyouwishtoresumethecurrentpointerscanatalatertime
+msgid "Do you wish to resume the current pointerscan at a later time?"
+msgstr "Вы желаете возобновить текущее сканирование указателя позднее?"
+
+#: pointerscannerfrm.rspsdynamicqueusize
+msgid " Dynamic queue size:"
+msgstr " Динамический размер очереди: "
+
+#: pointerscannerfrm.rspsexportaborted
+msgid "Export aborted"
+msgstr "Экспорт прерван"
+
+#: pointerscannerfrm.rspsexporting
+msgid "Exporting..."
+msgstr "Экспортирование..."
+
+#: pointerscanne
