@@ -6462,4 +6462,110 @@ msgstr "ПРИВЕТСТВИЕ после инициализации"
 
 #: pointerscancontroller.rspscimpossibleerroruseloadedpointermapwasfalseetc
 msgid "Impossible error: UseLoadedPointermap was false when a child message got handled"
-msgstr "Невозможная ошибка: UseLo
+msgstr "Невозможная ошибка: UseLoadedPointermap оказался ложным, когда сообщение потомка было обработано"
+
+#: pointerscancontroller.rspscinvalidchildpassword
+msgid "Invalid child password"
+msgstr "Неверный пароль потомка"
+
+#: pointerscancontroller.rspscinvalidcommandwhilewaitingforhello
+msgid "Invalid command while waiting for hello"
+msgstr "Неверная команда во время ожидания приветствия"
+
+#: pointerscancontroller.rspscinvalidhandshakesignature
+msgid "Invalid handshake signature"
+msgstr "Недопустимая подпись квитирования"
+
+#: pointerscancontroller.rspscinvalidmessage
+msgid "Invalid message"
+msgstr "Неверное сообщение"
+
+#: pointerscancontroller.rspscinvalidmessagereceived
+msgid "Invalid message received"
+msgstr "Получено неверное сообщение"
+
+#: pointerscancontroller.rspscinvalidparentpassword
+msgid "Invalid parent password"
+msgstr "Неверный пароль потомка"
+
+#: pointerscancontroller.rspscinvalidqueuefile
+msgid "Invalid queue file"
+msgstr "Недопустимый файл очереди"
+
+#: pointerscancontroller.rspscinvalidreplyforpsupdatereplycmdcurrentscanhasended
+msgid "Invalid reply for PSUPDATEREPLYCMD_CURRENTSCANHASENDED"
+msgstr "Недопустимый ответ для PSUPDATEREPLYCMD_CURRENTSCANHASENDED"
+
+#: pointerscancontroller.rspscinvalidresultreceivedafteruploadingthescanresults
+msgid "Invalid result received after uploading the scanresults"
+msgstr "Неверный результат, полученный после загрузки результатов сканирования"
+
+#: pointerscancontroller.rspscinvalidresultreceivedfrompsupdatereplycmdherearesomepaths
+msgid "Invalid result received from PSUPDATEREPLYCMD_HEREARESOMEPATHS"
+msgstr "Получен неверный результат от PSUPDATEREPLYCMD_HEREARESOMEPATHS"
+
+#: pointerscancontroller.rspscinvalidscandatareceivedfilecount
+msgid "Invalid scandata received. filecount=0"
+msgstr "Получены неверные данные сканирования. Количество файлов = 0"
+
+#: pointerscancontroller.rspscinvalidupdatestatusreplyreceived
+msgid "Invalid UpdateStatus reply received"
+msgstr "Получен неправильный ответ от UpdateStatus"
+
+#: pointerscancontroller.rspscnewscanstartedwhilenotdone
+msgid "New scan started while not done"
+msgstr "Началось новое сканирование, в то время как не закончилось предыдущее"
+
+#: pointerscancontroller.rspscnoresumeptrfilereaderpresent
+msgid "no resume ptr file reader present"
+msgstr "отсутствует средство чтения ptr файлов"
+
+#: pointerscancontroller.rspscparentdidntrespondproperlytopscmdprepareformytermination
+msgid "Parent didn't respond properly to PSCMD_PREPAREFORMYTERMINATION"
+msgstr "Родитель не ответил должным образов на PSCMD_PREPAREFORMYTERMINATION"
+
+#: pointerscancontroller.rspscsleeping
+msgid ":Sleeping"
+msgstr ":Спит"
+
+#: pointerscancontroller.rspscsuccesfullysentscandatatochild
+msgid "Succesfully sent scandata to child"
+msgstr "Данный сканирования успешно отправлены потомку"
+
+#: pointerscancontroller.rspscterminated
+msgid ":Terminated"
+msgstr ":Завершённый"
+
+#: pointerscancontroller.rspscthechilddidntrespondtopsupdatereplycmdeverythingokasexpected
+msgid "The child didn't respond to PSUPDATEREPLYCMD_EVERYTHINGOK as expected"
+msgstr "Потомок не отвечал на PSUPDATEREPLYCMD_EVERYTHINGOK как ожидалось"
+
+#: pointerscancontroller.rspscthechildissendingmeresultsofadifferentscan
+msgid "The child is sending me results of a different scan"
+msgstr "Потомок отправляет мне результаты разного сканирования"
+
+#: pointerscancontroller.rspscthechildtriedtosendanegativeamount
+msgid "The child tried to send a negative amount"
+msgstr "Потомок пытался послать отрицательную сумму"
+
+#: pointerscancontroller.rspscthechildtriedtosendmeresultswhileiwasstillbusy
+msgid "The child tried to send me results while I was still busy"
+msgstr "Потомок пытался отправить мне результаты, когда я был ещё занят"
+
+#: pointerscancontroller.rspscthechildtriedtosendmorepathsatoncethanallowed
+msgid "The child tried to send more paths at once than allowed"
+msgstr "Потомок пытался отправить больше цепочек, чем позволено за один раз"
+
+#: pointerscancontroller.rspscthechildtriedtosendmorepathsthanallowedafterarequest
+msgid "The child tried to send more paths than allowed after a request"
+msgstr "Потомок пытался отправить больше цепочек, чем позволено после запроса"
+
+#: pointerscancontroller.rspsctheparenttriedtosendmeanegativeammountofpaths
+msgid "The parent tried to send me a negative ammount of paths"
+msgstr "Родитель попытался послать мне отрицательное число цепочек"
+
+#: pointerscancontroller.rspsctheparenttriedtosendmemorepathsthanallowedaafterupdate
+msgid "The parent tried to send me more paths than allowed (after update)"
+msgstr "Родитель попытался послать мне больше путей, чем позволено (после обновления)"
+
+#: pointerscancontroller.rspscthepo
