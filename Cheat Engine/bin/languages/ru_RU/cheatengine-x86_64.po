@@ -7308,4 +7308,137 @@ msgstr "Укажите название для этой структуры"
 #: structuresfrm.rsgivethenewnameofthisstructure
 msgctxt "structuresfrm.rsgivethenewnameofthisstructure"
 msgid "Give the new name of this structure"
-msgstr "Укажите новое названи
+msgstr "Укажите новое название для этой структуры"
+
+#: structuresfrm.rshowmanybytesdoyouwanttoshiftthisandfollowingoffset
+msgid "How many bytes do you want to shift this and following offsets?"
+msgstr "На сколько байт вы хотите сдвинуть это и последующие смещения?"
+
+#: structuresfrm.rsihavenoideawhatmeans
+msgctxt "structuresfrm.rsihavenoideawhatmeans"
+msgid "I have no idea what %s means"
+msgstr "Понятия не имею, что означает «%s»"
+
+#: structuresfrm.rslockmemory
+msgctxt "structuresfrm.rslockmemory"
+msgid "Lock memory"
+msgstr "Заблокировать память"
+
+#: structuresfrm.rsmemorydissect
+msgctxt "structuresfrm.rsmemorydissect"
+msgid "Memory dissect"
+msgstr "Анализ памяти"
+
+#: structuresfrm.rsnewinterval
+msgctxt "structuresfrm.rsnewinterval"
+msgid "New interval"
+msgstr "Новый интервал"
+
+#: structuresfrm.rspleasegiveastartingoffsettoevaluate
+msgctxt "structuresfrm.rspleasegiveastartingoffsettoevaluate"
+msgid "Please give a starting offset to evaluate"
+msgstr "Пожалуйста, укажите начальное смещение для вычисления"
+
+#: structuresfrm.rspleasegiveastartingsizeofthestructyoucanchangethis
+msgctxt "structuresfrm.rspleasegiveastartingsizeofthestructyoucanchangethis"
+msgid "Please give a starting size of the struct (You can change this later if needed)"
+msgstr "Пожалуйста, укажите начальный размер структуры (Вы можете изменить его позже при необходимости)"
+
+#: structuresfrm.rspleasegivethesizeoftheblocktoevaluate
+msgctxt "structuresfrm.rspleasegivethesizeoftheblocktoevaluate"
+msgid "Please give the size of the block to evaluate"
+msgstr "Пожалуйста, укажите размер блока для вычисления"
+
+#: structuresfrm.rspointerto
+msgctxt "structuresfrm.rspointerto"
+msgid "Pointer"
+msgstr "Указатель"
+
+#: structuresfrm.rsrecalculatebaseofstructure
+msgctxt "structuresfrm.rsrecalculatebaseofstructure"
+msgid "Recalculate base of structure"
+msgstr "Перерасчёт начала структуры"
+
+#: structuresfrm.rsrenamestructure
+msgctxt "structuresfrm.rsrenamestructure"
+msgid "Rename structure"
+msgstr "Переименовать структуру"
+
+#: structuresfrm.rsstructuredefine
+msgctxt "structuresfrm.rsstructuredefine"
+msgid "Structure define"
+msgstr "Определение структуры"
+
+#: structuresfrm.rsstructuredefiner
+msgctxt "structuresfrm.rsstructuredefiner"
+msgid "Structure definer"
+msgstr "Определитель структуры"
+
+#: structuresfrm.rsstructureviewlock
+msgctxt "structuresfrm.rsstructureviewlock"
+msgid "Structure view lock"
+msgstr "Заблокировать вид структуры"
+
+#: structuresfrm.rsthisisnotavalidstructurefile
+msgctxt "structuresfrm.rsthisisnotavalidstructurefile"
+msgid "This is not a valid structure file"
+msgstr "Недопустимый файл структуры"
+
+#: structuresfrm.rsthisisquiteabigstructurehowmanybytesdoyouwanttosav
+msgctxt "structuresfrm.rsthisisquiteabigstructurehowmanybytesdoyouwanttosav"
+msgid "This is quite a big structure. How many bytes do you want to save?"
+msgstr "Это довольно большая структура. Сколько байт вы хотите сохранить?"
+
+#: structuresfrm.rsunkownfileextension
+msgctxt "structuresfrm.rsunkownfileextension"
+msgid "Unknown file extension"
+msgstr "Неизвестное расширения файла"
+
+#: structuresfrm.rsunlockmemory
+msgctxt "structuresfrm.rsunlockmemory"
+msgid "Unlock memory"
+msgstr "Разблокировать памяти"
+
+#: structuresfrm.rsunnamedstructure
+msgctxt "structuresfrm.rsunnamedstructure"
+msgid "unnamed structure"
+msgstr "безымянная структура"
+
+#: structuresfrm.rsupdateinterval
+msgctxt "structuresfrm.rsupdateinterval"
+msgid "Update interval"
+msgstr "Интервал обновления"
+
+#: structuresfrm.rswhichgroupdoyouwanttosetthisaddressto
+msgctxt "structuresfrm.rswhichgroupdoyouwanttosetthisaddressto"
+msgid "Which group do you want to set this address to?"
+msgstr "В какую группу вы хотите определить этот адрес?"
+
+#: structuresfrm.rswrongversion
+msgctxt "structuresfrm.rswrongversion"
+msgid "This structure file was generated with a newer version of Cheat Engine. (That means there's more than likely a new version so please update....)"
+msgstr "Этот файл структуры был создан в более новой версии Cheat Engine. (Скорее всего это означает, что вышла новая версия. Обновитесь...)"
+
+#: structuresfrm2.rs2bytewithvalue2
+msgid "2 Byte: %s"
+msgstr "2 Байта: %s"
+
+#: structuresfrm2.rsaddressvalue
+msgid "Address: Value"
+msgstr "Адрес: Значение"
+
+#: structuresfrm2.rsareyousureyouwanttodelete
+msgctxt "structuresfrm2.rsareyousureyouwanttodelete"
+msgid "Are you sure you want to delete %s?"
+msgstr "Вы уверены, что хотите удалить «%s»?"
+
+#: structuresfrm2.rsareyousureyouwanttoremoveallstructures
+msgctxt "structuresfrm2.rsareyousureyouwanttoremoveallstructures"
+msgid "Are you sure you want to remove all structures?"
+msgstr "Вы уверены, что хотите удалить все структуры?"
+
+#: structuresfrm2.rsarrayofbyte
+msgid "Array of Byte"
+msgstr "Массив байт"
+
+#: structuresfrm2.rsautogenera
