@@ -7598,4 +7598,170 @@ msgid "Pointer"
 msgstr "Указатель"
 
 #: structuresfrm2.rsrecalculatebaseofstructure
-msgctxt "structu
+msgctxt "structuresfrm2.rsrecalculatebaseofstructure"
+msgid "Recalculate base of structure"
+msgstr "Перерасчёт начала структуры"
+
+#: structuresfrm2.rsrenamestructure
+msgctxt "structuresfrm2.rsrenamestructure"
+msgid "Rename structure"
+msgstr "Переименовать структуру"
+
+#: structuresfrm2.rssf2areyousureyouwanttodeleteallthedefinedstructures
+msgid "Are you sure you want to delete all the defined structures ?"
+msgstr "Вы уверены, что хотите удалить все определённые структуры?"
+
+#: structuresfrm2.rssf2areyousureyouwanttodeletethestructurenamed
+msgid "Are you sure you want to delete the structure named :"
+msgstr "Вы уверены, что хотите удалить структуру с названием:"
+
+#: structuresfrm2.rssf2autocreatedfrom
+msgid "Autocreated from "
+msgstr "Автосоздано из "
+
+#: structuresfrm2.rssf2autocreatestructure
+msgid "Autocreate structure"
+msgstr "Автосозданная структура"
+
+#: structuresfrm2.rssf2autocreatestructuresize
+msgid "Autocreate structure size: "
+msgstr "Размер автосозданной структуры: "
+
+#: structuresfrm2.rssf2changevalue
+msgctxt "structuresfrm2.rssf2changevalue"
+msgid "Change Value"
+msgstr "Изменить значение"
+
+#: structuresfrm2.rssf2defaultsize
+msgid "Default size:"
+msgstr "Размер по умолчанию:"
+
+#: structuresfrm2.rssf2deletegroup
+msgid "Delete group"
+msgstr "Удалить группу"
+
+#: structuresfrm2.rssf2givethenewname
+msgid "Give the new name"
+msgstr "Укажите новое название"
+
+#: structuresfrm2.rssf2givethenewnameforthegroup
+msgid "Give the new name for the group"
+msgstr "Укажите новое название для этой группы"
+
+#: structuresfrm2.rssf2givethenewnameforthisstructure
+msgid "Give the new name for this structure"
+msgstr "Укажите новое название для этой структуры"
+
+#: structuresfrm2.rssf2group
+msgctxt "structuresfrm2.rssf2group"
+msgid "Group "
+msgstr "Группа "
+
+#: structuresfrm2.rssf2group1
+msgctxt "structuresfrm2.rssf2group1"
+msgid "Group 1"
+msgstr "Группа 1"
+
+#: structuresfrm2.rssf2group2
+msgctxt "structuresfrm2.rssf2group2"
+msgid "Group "
+msgstr "Группа "
+
+#: structuresfrm2.rssf2grouppicker
+msgid "Group picker"
+msgstr "Средство выбора группы"
+
+#: structuresfrm2.rssf2hex
+msgid " (Hex)"
+msgstr " (Шестнадцатиричное)"
+
+#: structuresfrm2.rssf2nameforthisgroup
+msgid "Name for this group"
+msgstr "Название для этой группы"
+
+#: structuresfrm2.rssf2newcolumnname
+msgid "New column name"
+msgstr "Новое имя столбца"
+
+#: structuresfrm2.rssf2newgroup
+msgid "<New group>"
+msgstr "<Новая группа>"
+
+#: structuresfrm2.rssf2newgroup2
+msgctxt "structuresfrm2.rssf2newgroup2"
+msgid "New group"
+msgstr "Новая группа"
+
+#: structuresfrm2.rssf2newvalueforthisaddress
+msgid "New value for this address:"
+msgstr "Новое значение для этого адреса:"
+
+#: structuresfrm2.rssf2rename
+msgctxt "structuresfrm2.rssf2rename"
+msgid "Rename"
+msgstr "Переименовать"
+
+#: structuresfrm2.rssf2renamegroup
+msgid "Rename group"
+msgstr "Переименовать группу"
+
+#: structuresfrm2.rssf2secletthegroupthiscolumnshouldbecomepartof
+msgid "Select the group this column should become part of"
+msgstr "Выберите группу, частью которой должен стать этот столбец"
+
+#: structuresfrm2.rssf2setnamerename
+msgid "Set name/Rename"
+msgstr "Установить/изменить название"
+
+#: structuresfrm2.rssf2shadowcopyat
+msgid "Lock ( Shadowcopy at %s )"
+msgstr "Заблокировать ( Теневая копия %s )"
+
+#: structuresfrm2.rssf2signed
+msgid " (Signed)"
+msgstr " (Знаковое)"
+
+#: structuresfrm2.rssf2structurerename
+msgid "Structure rename"
+msgstr "Переименование структуры"
+
+#: structuresfrm2.rssf2thegapbetweenoffset
+msgid "The gap between offset %x and %x is %d bytes long. Autofill this?"
+msgstr "Промежуток между смещением %x и %x равен %d байт(а). Заполнить автоматически?"
+
+#: structuresfrm2.rssf2thegroupscancommandhasbeencopiedtotheclipboard
+msgid "The groupscan command has been copied to the clipboard"
+msgstr "Групповой поиск был скопирован в буфер обмена"
+
+#: structuresfrm2.rssf2to
+msgid " to "
+msgstr " на "
+
+#: structuresfrm2.rssf2tstructcolumncreateerror
+msgid "TStructColumn.create Error"
+msgstr "Ошибка TStructColumn.create"
+
+#: structuresfrm2.rssf2unknowncustomtype
+msgid "Unknown custom type"
+msgstr "Неизвестный пользовательский тип"
+
+#: structuresfrm2.rssf2whatnameshouldthiscolumnhave
+msgid "What name should this column have?"
+msgstr "Какое название должен иметь этот столбец?"
+
+#: structuresfrm2.rssignedinteger
+msgid "Signed Integer"
+msgstr "Целое со знаком"
+
+#: structuresfrm2.rsspider
+msgid "Spider"
+msgstr "Структурный паук"
+
+#: structuresfrm2.rsstructalreadyexists
+msgid "The structure named %s already exists. Are you sure you want to make another structure with this name ?"
+msgstr "Структура под названием «%s» уже существует. Вы уверены, что хотите создать ещё одну структуру с тем же названием?"
+
+#: structuresfrm2.rsstructuredefine
+msgctxt "structuresfrm2.rsstructuredefine"
+msgid "Structure define"
+msgstr "Определение
