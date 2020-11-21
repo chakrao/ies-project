@@ -8067,4 +8067,202 @@ msgstr "Изменить"
 
 #: tcomments.button1.caption
 msgctxt "tcomments.button1.caption"
-m
+msgid "Close"
+msgstr "Закрыть"
+
+#: tcomments.caption
+msgctxt "tcomments.caption"
+msgid "Comments"
+msgstr "Комментарии"
+
+#: tcomments.tscomment.caption
+msgctxt "TCOMMENTS.TSCOMMENT.CAPTION"
+msgid "Comments"
+msgstr "Комментарии"
+
+#: tfindwindow.btncancel.caption
+msgctxt "TFINDWINDOW.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfindwindow.btnok.caption
+msgctxt "TFINDWINDOW.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfindwindow.caption
+msgctxt "TFINDWINDOW.CAPTION"
+msgid "Find"
+msgstr "Поиск"
+
+#: tfindwindow.cbunicode.caption
+msgctxt "tfindwindow.cbunicode.caption"
+msgid "Unicode"
+msgstr "Юникод"
+
+#: tfindwindow.label2.caption
+msgctxt "tfindwindow.label2.caption"
+msgid "From"
+msgstr "От"
+
+#: tfindwindow.label3.caption
+msgctxt "tfindwindow.label3.caption"
+msgid "To"
+msgstr "До"
+
+#: tfindwindow.labelarray.caption
+msgid "Array to scan"
+msgstr "Диапазон поиска"
+
+#: tfindwindow.labeltype.caption
+msgid "Type:"
+msgstr "Тип:"
+
+#: tfindwindow.rbarbyte.caption
+msgid "(Array of) byte"
+msgstr "(Массив) байт"
+
+#: tfindwindow.rbtext.caption
+msgctxt "TFINDWINDOW.RBTEXT.CAPTION"
+msgid "Text"
+msgstr "Текст"
+
+#: tform1.label1.caption
+msgctxt "TFORM1.LABEL1.CAPTION"
+msgid "Filter"
+msgstr "Фильтр"
+
+#: tformaddresschange.btncancel.caption
+msgctxt "TFORMADDRESSCHANGE.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tformaddresschange.btnok.caption
+msgctxt "TFORMADDRESSCHANGE.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tformaddresschange.caption
+msgctxt "tformaddresschange.caption"
+msgid "Change address"
+msgstr "Изменить адрес"
+
+#: tformaddresschange.cbcodepage.caption
+msgctxt "tformaddresschange.cbcodepage.caption"
+msgid "Codepage"
+msgstr "Кодовая страница"
+
+#: tformaddresschange.cbhex.caption
+msgctxt "tformaddresschange.cbhex.caption"
+msgid "Hexadecimal"
+msgstr "Шестнадцатиричное"
+
+#: tformaddresschange.cbpointer.caption
+msgctxt "tformaddresschange.cbpointer.caption"
+msgid "Pointer"
+msgstr "Указатель"
+
+#: tformaddresschange.cbsigned.caption
+msgctxt "tformaddresschange.cbsigned.caption"
+msgid "Signed"
+msgstr "Знаковое"
+
+#: tformaddresschange.cbunicode.caption
+msgctxt "TFORMADDRESSCHANGE.CBUNICODE.CAPTION"
+msgid "Unicode"
+msgstr "Юникод"
+
+#: tformaddresschange.cbvartype.text
+msgctxt "tformaddresschange.cbvartype.text"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: tformaddresschange.label2.caption
+msgid "Startbit:"
+msgstr "Стартовый бит:"
+
+#: tformaddresschange.labeladdress.caption
+msgctxt "tformaddresschange.labeladdress.caption"
+msgid "Address:"
+msgstr "Адрес:"
+
+#: tformaddresschange.labeldescription.caption
+msgctxt "tformaddresschange.labeldescription.caption"
+msgid "Description"
+msgstr "Описание"
+
+#: tformaddresschange.labeltype.caption
+msgctxt "tformaddresschange.labeltype.caption"
+msgid "Type"
+msgstr "Тип"
+
+#: tformaddresschange.lblvalue.caption
+msgid "=Value"
+msgstr "=Значение"
+
+#: tformaddresschange.lengthlabel.caption
+msgctxt "tformaddresschange.lengthlabel.caption"
+msgid "Length"
+msgstr "Длина"
+
+#: tformaddresschange.miaddaddresstolist.caption
+msgctxt "TFORMADDRESSCHANGE.MIADDADDRESSTOLIST.CAPTION"
+msgid "Add this address to the list"
+msgstr "Добавить этот адрес в таблицу"
+
+#: tformaddresschange.miaddoffsetabove.caption
+msgid "Add Offset Above"
+msgstr "Добавить смещение выше"
+
+#: tformaddresschange.miaddoffsetbelow.caption
+msgid "Add Offset Below"
+msgstr "Добавить смещение ниже"
+
+#: tformaddresschange.micopy.caption
+msgctxt "TFORMADDRESSCHANGE.MICOPY.CAPTION"
+msgid "Copy"
+msgstr "Копировать"
+
+#: tformaddresschange.micopyaddresstoclipboard.caption
+msgid "Copy this address to Clipboard"
+msgstr "Скопировать этот адрес в буфер обмена"
+
+#: tformaddresschange.micut.caption
+msgctxt "TFORMADDRESSCHANGE.MICUT.CAPTION"
+msgid "Cut"
+msgstr "Вырезать"
+
+#: tformaddresschange.mipaste.caption
+msgctxt "TFORMADDRESSCHANGE.MIPASTE.CAPTION"
+msgid "Paste"
+msgstr "Вставить"
+
+#: tformaddresschange.miremoveoffset.caption
+msgctxt "tformaddresschange.miremoveoffset.caption"
+msgid "Remove Offset"
+msgstr "Удалить смещение"
+
+#: tformaddresschange.miupdateafterinterval.caption
+msgid "Only update the offset after a specific amount of time"
+msgstr "Обновлять смещение только через определённый промежуток времени"
+
+#: tformaddresschange.miupdateonreinterpretonly.caption
+msgid "Only update the offset when the memory record gets reinterpreted"
+msgstr "Обновлять смещение только после выполнения записи в памяти"
+
+#: tformdebugstrings.button1.caption
+msgctxt "TFORMDEBUGSTRINGS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tformdebugstrings.caption
+msgctxt "tformdebugstrings.caption"
+msgid "Debug strings"
+msgstr "Отладочные строки"
+
+#: tformdesigner.calendar.hint
+msgctxt "tformdesigner.calendar.hint"
+msgid "Calendar"
+msgstr "Календарь"
+
+#: tformdesigner.
