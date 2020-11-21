@@ -7883,4 +7883,188 @@ msgstr "В данный момент вы не можете изменить э�
 
 #: tableconverter.rstoooldtable
 msgid "This table is too old to be used. Get Cheat engine 5.6 and open/resave this table"
-msgstr "Эта таблица слиш
+msgstr "Эта таблица слишком старая, чтобы использовать её в этой версии программы. Установите Cheat Engine 5.6, откройте/пересохраните эту таблицу"
+
+#: tabout.button1.caption
+msgctxt "tabout.button1.caption"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tabout.button2.caption
+msgid "Donate"
+msgstr "Пожертвовать"
+
+#: tabout.button2.hint
+msgid "If you like Cheat Engine and want to contribute something to the development, just send a donation using Paypal."
+msgstr "Если вам понравился Cheat Engine и вы хотите внести вклад в его развитие, просто отправьте пожертвование, используя PayPal."
+
+#: tabout.caption
+msgid "About Cheat Engine"
+msgstr "О программе"
+
+#: tabout.label1.caption
+msgid "Made by: Dark Byte"
+msgstr "Автор: Dark Byte"
+
+#: tabout.label10.caption
+msgid "Script engine powered by Lua"
+msgstr "Скриптовый движок основан на Lua"
+
+#: tabout.label2.caption
+msgid "Thanks to:"
+msgstr "Благодарность:"
+
+#: tabout.label4.caption
+msgid "Patreon"
+msgstr "Патреон"
+
+#: tabout.label5.caption
+msgid "And all the other people that helped me out"
+msgstr "И всем остальным, кто помогал"
+
+#: tabout.label8.caption
+msgid "Website"
+msgstr "Веб-сайт"
+
+#: tabout.label9.caption
+msgid "Message Board"
+msgstr "Форум"
+
+#: tabout.lbldbvm.caption
+msgid "your system may or may not support dbvm"
+msgstr "ваша система может поддерживать DBVM, а может и нет"
+
+#: tadvancedoptions.button1.caption
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tadvancedoptions.button2.caption
+msgid "Button2"
+msgstr "Кнопка2"
+
+#: tadvancedoptions.button3.caption
+msgid "Button3"
+msgstr "Кнопка3"
+
+#: tadvancedoptions.caption
+msgctxt "tadvancedoptions.caption"
+msgid "Code list/Pause"
+msgstr "Список кодов/Пауза"
+
+#: tadvancedoptions.lvcodelist.columns[0].caption
+msgctxt "tadvancedoptions.lvcodelist.columns[0].caption"
+msgid "Address"
+msgstr "Адрес"
+
+#: tadvancedoptions.lvcodelist.columns[1].caption
+msgctxt "tadvancedoptions.lvcodelist.columns[1].caption"
+msgid "Name"
+msgstr "Название"
+
+#: tadvancedoptions.findoutwhatthiscodechanges1.caption
+msgctxt "tadvancedoptions.findoutwhatthiscodechanges1.caption"
+msgid "Find out what addresses this code writes to"
+msgstr "Найти адреса, по которым записывает эта инструкция"
+
+#: tadvancedoptions.label1.caption
+msgid "Code list:"
+msgstr "Список кодов:"
+
+#: tadvancedoptions.midbvmfindwhatcodeaccesses.caption
+msgid "DBVM Find...."
+msgstr "DBVM Поиск...."
+
+#: tadvancedoptions.minewgroup.caption
+msgctxt "tadvancedoptions.minewgroup.caption"
+msgid "New group"
+msgstr "Новая группа"
+
+#: tadvancedoptions.mireplacewithnops.caption
+msgctxt "tadvancedoptions.mireplacewithnops.caption"
+msgid "Replace with code that does nothing"
+msgstr "Заменить ничего не делающим кодом (NOP)"
+
+#: tadvancedoptions.mirestorewithoriginal.caption
+msgctxt "tadvancedoptions.mirestorewithoriginal.caption"
+msgid "Restore with original code"
+msgstr "Восстановить оригинальный код"
+
+#: tadvancedoptions.misetcolor.caption
+msgid "Set color"
+msgstr "Установить цвет"
+
+#: tadvancedoptions.opendialog1.title
+msgid "Select the file you want to search"
+msgstr "Выберите файл, который вы хотите найти"
+
+#: tadvancedoptions.openthedisassemblerhere1.caption
+msgid "Open the disassembler at this location"
+msgstr "Открыть дизассемблер в этом месте"
+
+#: tadvancedoptions.pausebutton.hint
+msgctxt "tadvancedoptions.pausebutton.hint"
+msgid "Pause the game"
+msgstr "Остановить процесс игры"
+
+#: tadvancedoptions.remove1.caption
+msgid "Remove from list"
+msgstr "Удалить из списка"
+
+#: tadvancedoptions.rename1.caption
+msgctxt "tadvancedoptions.rename1.caption"
+msgid "Rename"
+msgstr "Переименовать"
+
+#: tadvancedoptions.replaceall1.caption
+msgid "Replace all"
+msgstr "Заменить NOP'ами все инструкции в списке"
+
+#: tadvancedoptions.savebutton.hint
+msgid "Create a standalone trainer"
+msgstr "Создать автономный трейнер"
+
+#: tcalloralldialog.button1.caption
+msgctxt "tcalloralldialog.button1.caption"
+msgid "All"
+msgstr "Все"
+
+#: tcalloralldialog.button1.caption tcalloralldialog.button2.caption
+msgctxt "TCALLORALLDIALOG.BUTTON1.CAPTION"
+msgid "Call's only"
+msgstr "Только вызовы"
+
+#: tcalloralldialog.button3.caption
+msgctxt "TCALLORALLDIALOG.BUTTON3.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tcalloralldialog.caption
+msgctxt "tcalloralldialog.caption"
+msgid "Code Filter"
+msgstr "Фильтр кода"
+
+#: tcalloralldialog.label1.caption
+msgid "Load all instructions into the list or just the CALL's ?"
+msgstr "Загрузить все инструкции в список или только вызовы?"
+
+#: tchangeoffset.cancel.caption
+msgctxt "TCHANGEOFFSET.CANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tchangeoffset.caption
+msgid "Recalculate address"
+msgstr "Перерасчёт адреса"
+
+#: tchangeoffset.cbhexadecimal.caption
+msgctxt "tchangeoffset.cbhexadecimal.caption"
+msgid "Hexadecimal"
+msgstr "Шестнадцатеричный"
+
+#: tchangeoffset.change.caption
+msgid "Change"
+msgstr "Изменить"
+
+#: tcomments.button1.caption
+msgctxt "tcomments.button1.caption"
+m
