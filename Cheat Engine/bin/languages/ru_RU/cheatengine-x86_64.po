@@ -8785,4 +8785,109 @@ msgstr "Процедуры обращения к региону памяти"
 msgid "Read/Write Process Memory  (Will cause slower scans)"
 msgstr "Чтение/Запись Памяти Процесса (может снизить скорость поиска)"
 
-#: tformsettings.cbluaga
+#: tformsettings.cbluagarbagecollectall.caption
+msgid "Collect all garbage every few seconds"
+msgstr "Собирать весь мусор каждые"
+
+#: tformsettings.cbluaonlycollectwhenlarger.caption
+msgid "Only when the size is bigger than:"
+msgstr "Только когда размер больше чем:"
+
+#: tformsettings.cbluapassivegarbagecollection.caption
+msgid "Passive garbage collection"
+msgstr "Пассивная сборка мусора"
+
+#: tformsettings.cbluapassivegarbagecollection.hint
+msgid "Constantly runs a few steps of the garbage collector sequence. (Will take a while till all garbage is cleaned if there is a lot)"
+msgstr "Постоянное выполнение нескольких шагов последовательности сборщика мусора. (Займёт некоторое время, пока весь мусор не будет очищен, если его много)"
+
+#: tformsettings.cbmemimage.caption
+msgid "MEM_IMAGE:Memory that is mapped into the view of an image section"
+msgstr "MEM_IMAGE: Страницы памяти в пределах региона сопоставляются в представление изображения раздела"
+
+#: tformsettings.cbmemmapped.caption
+msgid "MEM_MAPPED:Memory that is mapped into the view of a section. (E.g:File mapping, emulator memory, slow)"
+msgstr "MEM_MAPPED: Страницы памяти в пределах региона сопоставляются в представление раздела (Снижает скорость)"
+
+#: tformsettings.cbmemprivate.caption
+msgid "MEM_PRIVATE:Memory that is private."
+msgstr "MEM_PRIVATE: Страницы памяти в пределах частного региона."
+
+#: tformsettings.cbneverchangeprotection.hint
+msgid "When enabled CE will never call \"VirtualProtectEx\" before it changes memory. This means that read-only memory can not be changed then.  (code is usually read only)"
+msgstr "Если включено, то Cheat Engine никогда не будет вызывать «VirtualProtectEx» перед изменением памяти. В этом случае постоянная память не может быть изменена."
+
+#: tformsettings.cbneverchangeprotection.caption
+msgid "Never change memory protection when editing"
+msgstr "Никогда не изменять защиту памяти при редактировании"
+
+#: tformsettings.cbalwaysforceload.caption
+msgid "Always force load modules"
+msgstr "Принудительная загрузка модулей"
+
+#: tformsettings.cbalwaysforceload.hint
+msgid ""
+"When enabled CE's internal injectDLL routine will not use loadlibrary in the target at all and always use manual mapping to load the dll\n"
+"(When disabled CE will still use manual mapping when normal dll injection fails)"
+msgstr ""
+"Если включено, то внутренняя процедура внедрения dll не будет использовать библиотеку загрузки, а всегда будет использовать ручной маппинг для загрузки dll\n"
+"(Если выключено, то Cheat Engine будет по-прежнему использовать ручной маппинг при сбое обычной инъекции dll)"
+
+#: tformsettings.cbalwayssigntable.caption
+msgid "Always sign Cheat Tables when saving"
+msgstr "Всегда подписывать  чит таблицы при сохранении"
+
+#: tformsettings.cboldpointeraddmethod.caption
+msgid "Pointer adding: Append pointerline instead of insert"
+msgstr "Добавление указателя: Вставка вместо замены"
+
+#: tformsettings.cboverridedefaultfont.caption
+msgid "Override the default font (Requires a restart)"
+msgstr "Заменить шрифт по умолчанию (Требуется перезапуск)"
+
+#: tformsettings.cboverrideexistingbps.caption
+msgid "Override existing breakpoints when setting breakpoints"
+msgstr "Снимать уже установленные брейкпоинты при установке новых"
+
+#: tformsettings.cbpausewhenscanningonbydefault.caption
+msgid "Pause while scanning on by default"
+msgstr "Останавливать процесс игры при поиске"
+
+#: tformsettings.cbprocessicons.caption
+msgid "Get process icons for processlist"
+msgstr "Показывать иконки в списке процессов"
+
+#: tformsettings.cbprocessiconsonly.caption
+msgid "Only show processes with an icon"
+msgstr "Показывать только иконки процессов"
+
+#: tformsettings.cbprocesswatcher.caption
+msgid "Enable use of the Process Watcher"
+msgstr "Разрешить использование «Наблюдателя процесса»"
+
+#: tformsettings.cbprocesswatcheropenshandles.caption
+msgid "Open handle to processes on creation"
+msgstr "Открывать дескриптор процессов при их создании"
+
+#: tformsettings.cbsavewindowpos.caption
+msgid "Save window positions"
+msgstr "Сохранять позицию окон"
+
+#: tformsettings.cbshowallwindows.caption
+msgid "Show all windows in the taskbar"
+msgstr "Показывать все окна Cheat Engine на панели задач"
+
+#: tformsettings.cbshowassigned.caption
+msgid "Show values as if they are signed"
+msgstr "Показывать значения как знаковые (только для целых чисел)"
+
+#: tformsettings.cbshowlanguagemenuitem.caption
+msgid "Show language selection menu item at the main screen"
+msgstr "Показывать меню выбора языка в главном окне"
+
+#: tformsettings.cbshowmainmenu.caption
+msgid "Show main menu"
+msgstr "Показывать главное меню"
+
+#: tformsettings.cbshowprocesslist.caption
+msgid "Show process li
