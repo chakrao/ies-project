@@ -8890,4 +8890,108 @@ msgid "Show main menu"
 msgstr "Показывать главное меню"
 
 #: tformsettings.cbshowprocesslist.caption
-msgid "Show process li
+msgid "Show process list in main menu"
+msgstr "Показывать список процессов в главном меню"
+
+#: tformsettings.cbshowtools.caption
+msgid "Show 'tools' menu item"
+msgstr "Показывать меню «Инструменты» в главном меню"
+
+#: tformsettings.cbshowundo.caption
+msgid "Show undo button"
+msgstr "Показывать кнопку «Возврат»"
+
+#: tformsettings.cbsimplecopypaste.caption
+msgid "Simple paste"
+msgstr "Простая вставка"
+
+#: tformsettings.cbskip_page_nocache.caption
+msgid "Don't scan memory that is protected with the No Cache option"
+msgstr "Не искать в памяти с атрибутом защиты «Не кэшировать»"
+
+#: tformsettings.cbskip_page_nocache.hint
+msgid "Some systems crash when trying to read memory with this protection. If that happens check this option."
+msgstr "Некоторые системы аварийно завершаются при попытке чтения памяти с этим атрибутом защиты. Включите эту опцию, если это происходит."
+
+#: tformsettings.cbskip_page_writecombine.caption
+msgid "Don't scan memory that is protected with the Write Combine option"
+msgstr "Не сканировать память, защищенную с помощью параметра \"Комбинировать записи\""
+
+#: tformsettings.cbupdatefoundlist.caption
+msgid "Update the list of found addresses even after scanning"
+msgstr "Постоянное обновление списка найденных адресов"
+
+#: tformsettings.cbusemacdebugger.caption
+msgid "Use Mac debugger"
+msgstr "Использовать Mac отладчик"
+
+#: tformsettings.cbusethreadforfreeze.caption
+msgid "Use thread for freeze"
+msgstr "Использовать поток для заморозки"
+
+#: tformsettings.cbusevehdebugger.caption
+msgid "Use VEH Debugger"
+msgstr "Использовать VEH отладчик"
+
+#: tformsettings.cbusewindowsdebugger.caption
+msgid "Use windows debugger"
+msgstr "Использовать Windows отладчик"
+
+#: tformsettings.cbvehrealcontextonthreadcreation.caption
+msgid "Get/Set thread context on creation"
+msgstr "Чтение/запись контекста при создании потока"
+
+#: tformsettings.cbwaitafterguiupdate.caption
+msgid "Wait after gui updates"
+msgstr "Небольшая задержка между обновлениями графического интерфейса пользователя"
+
+#: tformsettings.cbwaitafterguiupdate.hint
+msgid ""
+"Sometimes when using one of the \"find out what...\" functions they get hit so often that the gui has no time to update, resulting in anoying behaviour like certain windows not closing or unresponsive buttons.\n"
+"With this option enabled the debugger will give the gui some time to handle the messages before it sends it a new update.\n"
+"Downside: The game may become slightly slower when using these functions. (Of course, if it has been hammering the gui, it would already have been frozen)"
+msgstr ""
+"Иногда обращение к функции «Найти инструкции/адреса...» происходит настолько часто, что графический интерфейс пользователя не успевает обновляться, и это приводит к некорректному поведению, такому, как невозможность закрытия некоторых окон или нереагирующие кнопки.\n"
+"При включении этой опции, отладчик предоставит графическому интерфейсу пользователя некоторое время для обработки сообщений, перед тем, как последует его следующее обновление.\n"
+"Недостаток: Игра может немного притормаживать, во время использования функций «Найти инструкции/адреса...»"
+
+#: tformsettings.cbwriteloggingon.caption
+msgid "Enable write logging by default"
+msgstr "Включить ведение журнала записей по умолчанию"
+
+#: tformsettings.cbwriteloggingon.hint
+msgid "When enabled CE will record writes done by the user and allows the user to undo those changes"
+msgstr "При включении этой опции Cheat Engine будет записывать сделанные пользователем записи, предоставляя возможность отменить внесённые изменения"
+
+#: tformsettings.cgalltypes.caption
+msgid "The all type includes"
+msgstr "Тип значения «Все» включает в себя"
+
+#: tformsettings.checkbox1.caption
+msgid "Try to prevent detection of the debugger"
+msgstr "Пытаться обойти обнаружение отладчика"
+
+#: tformsettings.checkbox4.caption
+msgid "Use APC to create new threads"
+msgstr "Использовать асинхронный вызов процедуры для создания новых потоков"
+
+#: tformsettings.codefinder.caption
+msgid "CodeFinder"
+msgstr "Определитель кода"
+
+#: tformsettings.combothreadpriority.text
+msgctxt "tformsettings.combothreadpriority.text"
+msgid "Higher"
+msgstr "Выше обычного"
+
+#: tformsettings.default1.caption
+msgctxt "tformsettings.default1.caption"
+msgid "Default"
+msgstr "По умолчанию"
+
+#: tformsettings.editautoattach.hint
+msgid "Type the name of the process you want to automatically open. Note: Only works when NO process has been opened yet"
+msgstr "Укажите название процесса, который вы хотите открывать автоматически. Примечание: Работает, если только ни один процесс ещё не был открыт"
+
+#: tformsettings.editfreezeinterval.hint
+msgid "The number of milliseconds that Cheat Engine will wait before resetting the frozen addresses to thei
