@@ -8626,4 +8626,163 @@ msgstr "Найти инструкции, записывающие по этом�
 
 #: tformpointerorpointee.button2.caption
 msgid "Find what writes to the address pointed at by this pointer"
-m
+msgstr "Найти инструкции, записывающие по указываемому адресу"
+
+#: tformpointerorpointee.caption
+msgid "Cheat Engine Pointer"
+msgstr "Указатель"
+
+#: tformpointerorpointee.label1.caption
+msgid "This is a pointer."
+msgstr "Это указатель."
+
+#: tformscanning.caption
+msgid "Scanning..."
+msgstr "Сканирование..."
+
+#: tformsettings.aboutlabel.caption
+msgid "About CE"
+msgstr "О программе"
+
+#: tformsettings.askforreplacewithnops.caption
+msgid "Ask for replace with nop"
+msgstr "Спрашивать перед заменой NOP'ами"
+
+#: tformsettings.assembler.caption
+msgctxt "tformsettings.assembler.caption"
+msgid "Debugger Options"
+msgstr "Параметры отладчика"
+
+#: tformsettings.btncancel.caption
+msgctxt "TFORMSETTINGS.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tformsettings.btnexcludeprocesses.caption
+msgid "More..."
+msgstr "Подробнее..."
+
+#: tformsettings.btnmakekerneldebugpossible.caption
+msgid "Make possible"
+msgstr "Сделать возможным"
+
+#: tformsettings.btnok.caption
+msgctxt "TFORMSETTINGS.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tformsettings.btnrestorekernelprotection.caption
+msgid "Restore Protection"
+msgstr "Восстановить защиту"
+
+#: tformsettings.btnselectlanguage.caption
+msgid "Select Language"
+msgstr "Выбрать язык"
+
+#: tformsettings.btnsetfont.caption
+msgctxt "tformsettings.btnsetfont.caption"
+msgid "Set Font"
+msgstr "Установить шрифт"
+
+#: tformsettings.btnsettoolshortcut.caption
+msgid "Set shortcut"
+msgstr "Задать"
+
+#: tformsettings.btntooldelete.caption
+msgctxt "TFORMSETTINGS.BTNTOOLDELETE.CAPTION"
+msgid "Delete"
+msgstr "Удалить"
+
+#: tformsettings.btntoolnew.caption
+msgctxt "tformsettings.btntoolnew.caption"
+msgid "New"
+msgstr "Новый"
+
+#: tformsettings.button4.caption
+msgid "Add new"
+msgstr "Добавить новый"
+
+#: tformsettings.button5.caption
+msgctxt "TFORMSETTINGS.BUTTON5.CAPTION"
+msgid "Delete"
+msgstr "Удалить"
+
+#: tformsettings.caption
+msgid "Cheat Engine settings"
+msgstr "Настройки Cheat Engine"
+
+#: tformsettings.cballocsaddtowatchedregions.caption
+msgctxt "TFORMSETTINGS.CBALLOCSADDTOWATCHEDREGIONS.CAPTION"
+msgid "Automatically add allocated memory by CE as watched regions"
+msgstr "Автоматически добавлять выделенную Cheat Engine'ом память в качестве наблюдаемого региона"
+
+#: tformsettings.cbalwaysaskforpassword.caption
+msgid "Always ask for password when signing"
+msgstr "Всегда спрашивать пароль при подписании"
+
+#: tformsettings.cbalwaysautoattach.caption
+msgid "Even autoattach when another process has already been selected"
+msgstr "Автоматически присоединяться, даже если был выбран другой процесс"
+
+#: tformsettings.cbcanstepkernelcode.caption
+msgid "Ability to step through kernel code"
+msgstr "Возможность пошагового выполнения кода ядра"
+
+#: tformsettings.cbcenteronpopup.caption
+msgid "Center Cheat Engine when bringing to front"
+msgstr "Центрировать Cheat Engine при переносе на передний план"
+
+#: tformsettings.cbdontopenhandle.caption
+msgid "Do not try to obtain handles"
+msgstr "Не пытаться получить дескрипторы"
+
+#: tformsettings.cbdontusetempdir.caption
+msgid "Don't store the temporary scanfiles in the windows tempdir"
+msgstr "Не хранить временные файлы поиска в системной папке «TEMP»"
+
+#: tformsettings.cbdpiaware.caption
+msgid "DPI Aware (Requires a restart)"
+msgstr "Учитывать DPI (Требуется перезапуск)"
+
+#: tformsettings.cbfastscan.caption
+msgid "Fast scan on by default"
+msgstr "Быстрый поиск по умолчанию"
+
+#: tformsettings.cbglobaldebug.caption
+msgid "Use Global Debug routines"
+msgstr "Использовать процедуры глобальной отладки"
+
+#: tformsettings.cbhandlebreakpoints.caption
+msgid "Handle beakpoints not caused by CE"
+msgstr "Обрабатывать брейкпоинты, вызванными не Cheat Engine"
+
+#: tformsettings.cbhideallwindows.caption
+msgid "Hide some/all windows instead of trying to bring cheat engine to front"
+msgstr "Скрывать некоторые/все окна вместо попытки перенести Cheat Engine на передний план"
+
+#: tformsettings.cbincremental.caption
+msgid "Incremental value"
+msgstr "Инкрементное значение"
+
+#: tformsettings.cbinjectdllwithapc.caption
+msgid "Use APC to inject dll's"
+msgstr "Использовать асинхронный вызов процедуры для инъекции dll"
+
+#: tformsettings.cbkdebug.caption
+msgid "Use kernelmode debugger"
+msgstr "Использовать отладчик режима ядра"
+
+#: tformsettings.cbkernelopenprocess.caption
+msgctxt "tformsettings.cbkernelopenprocess.caption"
+msgid "Open Process"
+msgstr "Открытие процесса"
+
+#: tformsettings.cbkernelquerymemoryregion.caption
+msgid "Query memory region routines"
+msgstr "Процедуры обращения к региону памяти"
+
+#: tformsettings.cbkernelreadwriteprocessmemory.caption
+msgid "Read/Write Process Memory  (Will cause slower scans)"
+msgstr "Чтение/Запись Памяти Процесса (может снизить скорость поиска)"
+
+#: tformsettings.cbluaga
