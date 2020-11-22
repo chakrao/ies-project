@@ -8483,3 +8483,147 @@ msgid "Different sized row of bits"
 msgstr "Строка битов разного размера"
 
 #: tformdifferentbitsize.label1.caption
+msgid "The last time you scanned the number of bits was 90 and now it is 12. Please tell me how and how much i must change the bit offset to successfully scan. (Left arrow+right arrow move the bits)"
+msgstr "При последнем сканировании число бит равнялось 90, а сейчас 12. Укажите на сколько нужно изменить разрядное смещение для успешного сканирования. (Используйте клавиши «Left» и «Right»)"
+
+#: tformdifferentbitsize.ohnoyoufoundme1.caption
+msgid "Oh no! You found me!!!"
+msgstr "О нет! Вы нашли меня!!!"
+
+#: tformfoundcodelistextra.button1.caption
+msgctxt "TFORMFOUNDCODELISTEXTRA.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tformfoundcodelistextra.caption
+msgid "Extra info"
+msgstr "Дополнительная информация"
+
+#: tformfoundcodelistextra.copyaddresstoclipboard1.caption
+msgid "Copy info to clipboard"
+msgstr "Копировать информацию в буфер обмена"
+
+#: tformfoundcodelistextra.copyguesstoclipboard1.caption
+msgid "Copy easy guess to clipboard"
+msgstr "Копировать вероятное значение указателя"
+
+#: tformfoundcodelistextra.label18.caption
+msgid "The registers shown here are AFTER the instruction has been executed"
+msgstr "Указаны значения регистров после выполнения инструкции"
+
+#: tformfoundcodelistextra.lblphysicaladdress.caption
+msgid "Physical Address=XXXXXXXX"
+msgstr "Физический адрес=XXXXXXXX"
+
+#: tformfoundcodelistextra.lblvirtualaddress.caption
+msgid "Virtual Address=XXXXXXXX"
+msgstr "Виртуальный адрес=XXXXXXXX"
+
+#: tformfoundcodelistextra.sbshowfloats.caption
+msgctxt "tformfoundcodelistextra.sbshowfloats.caption"
+msgid "F"
+msgstr "F"
+
+#: tformfoundcodelistextra.sbshowfloats.hint
+msgctxt "tformfoundcodelistextra.sbshowfloats.hint"
+msgid "Floating point registers"
+msgstr "Регистры с плавающей точкой"
+
+#: tformfoundcodelistextra.sbshowstack.caption
+msgctxt "tformfoundcodelistextra.sbshowstack.caption"
+msgid "S"
+msgstr "С"
+
+#: tformfoundcodelistextra.sbshowstack.hint
+msgctxt "tformfoundcodelistextra.sbshowstack.hint"
+msgid "Stack view"
+msgstr "Просмотр стека"
+
+#: tformhotkey.button1.caption
+msgctxt "TFORMHOTKEY.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tformhotkey.button2.caption
+msgctxt "TFORMHOTKEY.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tformhotkey.caption
+msgid "Change hotkey"
+msgstr "Изменить горячую клавишу"
+
+#: tformhotkey.label1.caption
+msgid "Press the new hotkey combination in below:"
+msgstr "Нажмите новую комбинацию клавиш:"
+
+#: tformmemoryregions.button1.caption
+msgctxt "TFORMMEMORYREGIONS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tformmemoryregions.caption
+msgctxt "tformmemoryregions.caption"
+msgid "Memory regions"
+msgstr "Регионы памяти"
+
+#: tformmemoryregions.listview1.columns[0].caption
+msgctxt "TFORMMEMORYREGIONS.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tformmemoryregions.listview1.columns[1].caption
+msgid "Allocation Protect"
+msgstr "Атрибут защиты"
+
+#: tformmemoryregions.listview1.columns[2].caption
+msgid "State"
+msgstr "Состояние"
+
+#: tformmemoryregions.listview1.columns[3].caption
+msgctxt "tformmemoryregions.listview1.columns[3].caption"
+msgid "Protect"
+msgstr "Защита доступа"
+
+#: tformmemoryregions.listview1.columns[4].caption
+msgctxt "TFORMMEMORYREGIONS.LISTVIEW1.COLUMNS[4].CAPTION"
+msgid "Type"
+msgstr "Тип"
+
+#: tformmemoryregions.listview1.columns[5].caption
+msgctxt "tformmemoryregions.listview1.columns[5].caption"
+msgid "Size"
+msgstr "Размер"
+
+#: tformmemoryregions.listview1.columns[6].caption
+msgctxt "tformmemoryregions.listview1.columns[6].caption"
+msgid "Extra"
+msgstr "Дополнительно"
+
+#: tformmemoryregions.savedialog1.title
+msgid "Give the basename of the regions to be saved. (Can be a CT file)"
+msgstr "Задайте базовое название регионам, чтобы сохранить. (Может быть .CT файлом)"
+
+#: tformmemoryregions.saveselectedregions1.caption
+msgid "Save selected regions"
+msgstr "Сохранить выбранный регион"
+
+#: tformmemoryregions.selectallreadablememory1.caption
+msgid "Select all readable memory"
+msgstr "Выбрать всю читаемую память"
+
+#: tformmemoryregions.setselectedregionstobewritable1.caption
+msgid "Set selected regions to be writable"
+msgstr "Установить выбранным регионам права на запись"
+
+#: tformmemoryregions.statusbar1.panels[0].text
+msgid "Hold ctrl when opening this window to also see kernelmode regions"
+msgstr "Зажмите Ctrl при открытии этого окна, чтобы видеть регионы режима ядра"
+
+#: tformpointerorpointee.button1.caption
+msgid "Find what writes to this pointer"
+msgstr "Найти инструкции, записывающие по этому указателю"
+
+#: tformpointerorpointee.button2.caption
+msgid "Find what writes to the address pointed at by this pointer"
+m
