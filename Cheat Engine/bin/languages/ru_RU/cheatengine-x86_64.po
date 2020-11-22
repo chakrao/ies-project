@@ -8265,4 +8265,221 @@ msgctxt "tformdesigner.calendar.hint"
 msgid "Calendar"
 msgstr "Календарь"
 
-#: tformdesigner.
+#: tformdesigner.caption
+msgctxt "tformdesigner.caption"
+msgid "Form Designer"
+msgstr "Дизайнер форм"
+
+#: tformdesigner.cebutton.hint
+msgid "Button"
+msgstr "Кнопка"
+
+#: tformdesigner.cecheckbox.hint
+msgid "CheckBox"
+msgstr "Флажок"
+
+#: tformdesigner.cecombobox.hint
+msgid "ComboBox"
+msgstr "Выпадающий список"
+
+#: tformdesigner.ceedit.hint
+msgctxt "tformdesigner.ceedit.hint"
+msgid "Edit"
+msgstr "Поле для ввода"
+
+#: tformdesigner.cegroupbox.hint
+msgid "GroupBox"
+msgstr "Группа"
+
+#: tformdesigner.ceimage.hint
+msgctxt "tformdesigner.ceimage.hint"
+msgid "Image"
+msgstr "Рисунок"
+
+#: tformdesigner.celabel.hint
+msgid "Label"
+msgstr "Надпись"
+
+#: tformdesigner.celistbox.hint
+msgid "Listbox"
+msgstr "Список"
+
+#: tformdesigner.celistview.hint
+msgid "ListView"
+msgstr "Представление списка"
+
+#: tformdesigner.cememo.hint
+msgid "Memo"
+msgstr "Многострочное поле"
+
+#: tformdesigner.ceopendialog.hint
+msgid "Opendialog"
+msgstr "Диалог открытия файла"
+
+#: tformdesigner.cepagecontrol.hint
+msgid "PageControl"
+msgstr "Набор страниц"
+
+#: tformdesigner.cepanel.hint
+msgid "Panel"
+msgstr "Панель"
+
+#: tformdesigner.ceprogressbar.hint
+msgid "ProgressBar"
+msgstr "Линейка прогресса"
+
+#: tformdesigner.ceradiogroup.hint
+msgid "RadioGroup"
+msgstr "Группа переключателей"
+
+#: tformdesigner.cesavedialog.hint
+msgid "Savedialog"
+msgstr "Диалог сохранения файла"
+
+#: tformdesigner.cesplitter.hint
+msgid "Splitter"
+msgstr "Разделитель"
+
+#: tformdesigner.cetimer.hint
+msgid "Timer"
+msgstr "Таймер"
+
+#: tformdesigner.cetogglebox.hint
+msgid "Togglebox"
+msgstr "Переключатель"
+
+#: tformdesigner.cetrackbar.hint
+msgid "TrackBar"
+msgstr "Линейка отслеживания"
+
+#: tformdesigner.cetreeview.hint
+msgid "Treeview"
+msgstr "Представление дерева"
+
+#: tformdesigner.checklistbox.hint
+msgctxt "tformdesigner.checklistbox.hint"
+msgid "CheckListBox"
+msgstr "Список с флажками"
+
+#: tformdesigner.finddialog.hint
+msgctxt "tformdesigner.finddialog.hint"
+msgid "FindDialog"
+msgstr "Диалог поиска текста"
+
+#: tformdesigner.mainmenu.hint
+msgctxt "TFORMDESIGNER.MAINMENU.HINT"
+msgid "MainMenu"
+msgstr "Главное меню"
+
+#: tformdesigner.menuitem1.caption
+msgctxt "tformdesigner.menuitem1.caption"
+msgid "File"
+msgstr "Файл"
+
+#: tformdesigner.menuitem2.caption
+msgid "Add unlisted object"
+msgstr "Добавьте не включенный в список объект"
+
+#: tformdesigner.miadditems.caption
+msgid "Add Items"
+msgstr "Добавить элементы"
+
+#: tformdesigner.miaddsubmenu.caption
+msgid "Add sub menu items"
+msgstr "Добавить подэлементы меню"
+
+#: tformdesigner.miaddtab.caption
+msgid "Add Tab"
+msgstr "Добавить вкладку"
+
+#: tformdesigner.mianchoreditor.caption
+msgctxt "tformdesigner.mianchoreditor.caption"
+msgid "Anchor Editor"
+msgstr "Редактор привязок"
+
+#: tformdesigner.mianchoreditor2.caption
+msgctxt "tformdesigner.mianchoreditor2.caption"
+msgid "Anchor Editor"
+msgstr "Редактор привязок"
+
+#: tformdesigner.mibringtofront.caption
+msgid "Bring to front"
+msgstr "Перенести на передний план"
+
+#: tformdesigner.midelete.caption
+msgctxt "TFORMDESIGNER.MIDELETE.CAPTION"
+msgid "Delete"
+msgstr "Удалить"
+
+#: tformdesigner.miload.caption
+msgctxt "tformdesigner.miload.caption"
+msgid "Load"
+msgstr "Загрузить"
+
+#: tformdesigner.miloadlfm.caption
+msgid "Load LFM"
+msgstr "Загрузить LFM"
+
+#: tformdesigner.mimenumovedown.caption
+msgid "Move down"
+msgstr "Переместить ниже"
+
+#: tformdesigner.mimenumoveup.caption
+msgid "Move up"
+msgstr "Переместить выше"
+
+#: tformdesigner.misave.caption
+msgctxt "tformdesigner.misave.caption"
+msgid "Save"
+msgstr "Сохранить"
+
+#: tformdesigner.misavelfm.caption
+msgid "Save LFM"
+msgstr "Сохранить LFM"
+
+#: tformdesigner.misendtoback.caption
+msgid "Send to back"
+msgstr "Отправить на задний план"
+
+#: tformdesigner.misetupmainmenu.caption
+msgid "Add menu items"
+msgstr "Добавить элементы меню"
+
+#: tformdesigner.noselection.caption
+msgid "NoSelection"
+msgstr "NoSelection"
+
+#: tformdesigner.paintbox.hint
+msgid "PaintBox"
+msgstr "Полотно для рисования"
+
+#: tformdesigner.popupmenu.hint
+msgctxt "TFORMDESIGNER.POPUPMENU.HINT"
+msgid "PopupMenu"
+msgstr "Всплывающее меню"
+
+#: tformdesigner.radiobutton.hint
+msgctxt "tformdesigner.radiobutton.hint"
+msgid "RadioButton"
+msgstr "Переключатель"
+
+#: tformdesigner.scrollbox.hint
+msgctxt "tformdesigner.scrollbox.hint"
+msgid "ScrollBox"
+msgstr "Область прокрутки"
+
+#: tformdesigner.selectdirectorydialog.hint
+msgctxt "tformdesigner.selectdirectorydialog.hint"
+msgid "SelectDirectoryDialog"
+msgstr "Диалог выбора директории"
+
+#: tformdifferentbitsize.button1.caption
+msgctxt "TFORMDIFFERENTBITSIZE.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tformdifferentbitsize.caption
+msgid "Different sized row of bits"
+msgstr "Строка битов разного размера"
+
+#: tformdifferentbitsize.label1.caption
