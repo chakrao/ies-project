@@ -8994,4 +8994,157 @@ msgid "Type the name of the process you want to automatically open. Note: Only w
 msgstr "Укажите название процесса, который вы хотите открывать автоматически. Примечание: Работает, если только ни один процесс ещё не был открыт"
 
 #: tformsettings.editfreezeinterval.hint
-msgid "The number of milliseconds that Cheat Engine will wait before resetting the frozen addresses to thei
+msgid "The number of milliseconds that Cheat Engine will wait before resetting the frozen addresses to their original value."
+msgstr "Количество миллисекунд, которые Cheat Engine будет ожидать, прежде чем сбросить замороженные адреса к их исходному значению."
+
+#: tformsettings.editupdatefoundinterval.hint
+msgid "The number of milliseconds that Cheat Engine will wait before refreshing the list of found addresses"
+msgstr "Количество миллисекунд, которые Cheat Engine будет ожидать, прежде чем обновить список найденных адресов"
+
+#: tformsettings.editupdateinterval.hint
+msgid "The number of milliseconds that Cheat Engine will wait before refreshing the list of addresses"
+msgstr "Количество миллисекунд, которые Cheat Engine будет ожидать, прежде чем обновить список адресов"
+
+#: tformsettings.edtrepeatdelay.hint
+msgid ""
+"The delay in milliseconds to wait before starting a next scan when the 'repeat' checkbox is ticked\n"
+"\n"
+"0=no wait\n"
+msgstr ""
+"Задержка в миллисекундах перед началом следующего поиска, в случае если включения опция «Повторение»\n"
+"0=без задержки\n"
+
+#: tformsettings.extra.caption
+msgctxt "TFORMSETTINGS.EXTRA.CAPTION"
+msgid "Extra"
+msgstr "Дополнительно"
+
+#: tformsettings.gbunexpectedexceptionhandling.caption
+msgid "When CE starts default behaviour for unexpected breakpoints"
+msgstr "Поведение по умолчанию для непредвиденных брейкпоинтов"
+
+#: tformsettings.generalsettings.caption
+msgctxt "tformsettings.generalsettings.caption"
+msgid "General Settings"
+msgstr "Общие настройки"
+
+#: tformsettings.groupbox1.caption
+msgid "Address list specific"
+msgstr "Особенности списка адресов"
+
+#: tformsettings.groupbox2.caption
+msgid "Debugger interface config"
+msgstr "Конфигурация отладочного интерфейса"
+
+#: tformsettings.groupbox3.caption
+msgid "Use the following CE Kernel routines instead of the original windows version"
+msgstr "Использовать следующие процедуры ядра Cheat Engine вместо оригинальных процедур Windows"
+
+#: tformsettings.groupbox4.caption
+msgid "Prefered breakpoint method"
+msgstr "Предпочитаемый метод прерывания"
+
+#: tformsettings.groupbox5.caption
+msgid "Table: Lua scripts"
+msgstr "Таблица: Lua скрипты"
+
+#: tformsettings.label1.caption
+msgid "Size of scanbuffer (KB) :"
+msgstr "Размер буфера поиска (Кбайт):"
+
+#: tformsettings.label10.caption
+msgid "Current Language:"
+msgstr "Текущий язык:"
+
+#: tformsettings.label11.caption
+msgctxt "tformsettings.label11.caption"
+msgid "ms"
+msgstr "мс"
+
+#: tformsettings.label12.caption
+msgctxt "TFORMSETTINGS.LABEL12.CAPTION"
+msgid "ms"
+msgstr "мс"
+
+#: tformsettings.label13.caption
+msgctxt "tformsettings.label13.caption"
+msgid "Update interval"
+msgstr "Интервал обновления"
+
+#: tformsettings.label14.caption
+msgid "Freeze interval"
+msgstr "Интервал заморозки"
+
+#: tformsettings.label15.caption
+msgid "(Can affect scan speed a lot)"
+msgstr "(Может сильно повлиять на скорость поиска)"
+
+#: tformsettings.label16.caption
+msgctxt "tformsettings.label16.caption"
+msgid "When a table has a lua script, execute it:"
+msgstr "Выполнять lua скрипт, если он присутствует в таблице:"
+
+#: tformsettings.label17.caption
+msgid "Seconds"
+msgstr "Секунд"
+
+#: tformsettings.label18.caption
+msgid "Found address list update interval"
+msgstr "Интервал обновления списка найденных адресов"
+
+#: tformsettings.label19.caption
+msgctxt "TFORMSETTINGS.LABEL19.CAPTION"
+msgid "ms"
+msgstr "мс"
+
+#: tformsettings.label2.caption
+msgid "Store the temporary scanfiles here instead:"
+msgstr "Расположение временных файлов поиска:"
+
+#: tformsettings.label20.caption
+msgid "Megabyte"
+msgstr "Мбайт"
+
+#: tformsettings.label21.caption
+msgid "Scan the following memory region types:"
+msgstr "Сканировать следующие типы регионов памяти:"
+
+#: tformsettings.label22.caption
+msgid "The following plugins are available:"
+msgstr "Доступны следующие плагины:"
+
+#: tformsettings.label23.caption
+msgid "Automatically attach to processes named"
+msgstr "Автоматически присоединяться к процессам под именем"
+
+#: tformsettings.label24.caption
+msgid "(Seperate entries with ; )"
+msgstr "(Разделяйте записи точкой с запятой)"
+
+#: tformsettings.label25.caption
+msgctxt "tformsettings.label25.caption"
+msgid "ms"
+msgstr "мс"
+
+#: tformsettings.label3.caption
+msgid "Thread priority"
+msgstr "Приоритет потока"
+
+#: tformsettings.label4.caption
+msgid "Single line assembler:"
+msgstr "Построчный ассемблер:"
+
+#: tformsettings.label5.caption
+msgid "Default return value"
+msgstr "Возвращаемое значение по умолчанию"
+
+#: tformsettings.label6.caption
+msgid "Size of stack to record on \"Find what... routines\""
+msgstr "Размер стека для записи по «Найти инструкции/адреса...»"
+
+#: tformsettings.label7.caption
+msgctxt "tformsettings.label7.caption"
+msgid "Bytes"
+msgstr "Байт"
+
+#: tformsettings.label8.caption
