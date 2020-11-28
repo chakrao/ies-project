@@ -9303,4 +9303,148 @@ msgstr "Горячие клавиши"
 
 #: tformsettings.tskerneldebugconfig.caption
 msgid "Kernel Debug"
-msgstr "Отладка ядр
+msgstr "Отладка ядра"
+
+#: tformsettings.tslua.caption
+msgctxt "TFORMSETTINGS.TSLUA.CAPTION"
+msgid "Lua"
+msgstr "Lua"
+
+#: tformsettings.tsmacdebuggerinterface.caption
+msgid "Mac Debug"
+msgstr "Mac Отладчик"
+
+#: tformsettings.tsvehdebugconfig.caption
+msgid "VEH Debugger"
+msgstr "VEH отладчик"
+
+#: tformsettings.tswindowsdebuggerconfig.caption
+msgid "Windows Debugger"
+msgstr "Windows отладчик"
+
+#: tformsettings.unrandomizer.caption
+msgctxt "tformsettings.unrandomizer.caption"
+msgid "Unrandomizer"
+msgstr "Антирандомайзер"
+
+#: tfoundcodedialog.addtothecodelist1.caption
+msgctxt "TFOUNDCODEDIALOG.ADDTOTHECODELIST1.CAPTION"
+msgid "Add to the codelist"
+msgstr "Добавить в список кодов"
+
+#: tfoundcodedialog.btnaddtocodelist.caption
+msgctxt "tfoundcodedialog.btnaddtocodelist.caption"
+msgid "Add to the codelist"
+msgstr "Добавить в список кодов"
+
+#: tfoundcodedialog.btnaddtocodelist.hint
+msgid "The selected addresses will be added to the code list in the advanced options window."
+msgstr "Выбранные адреса будут добавлены к списку кодов в окне «Дополнительные возможности»."
+
+#: tfoundcodedialog.btnextrainfo.caption
+msgid "More information"
+msgstr "Дополнительная информация"
+
+#: tfoundcodedialog.btnextrainfo.hint
+msgid "Shows more information about the state of the system when that instruction got executed"
+msgstr "Дополнительные сведения о состоянии системы после выполнения инструкции"
+
+#: tfoundcodedialog.btnok.caption
+msgctxt "TFOUNDCODEDIALOG.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfoundcodedialog.btnopendisassembler.caption
+msgid "Show disassembler"
+msgstr "Показать в дизассемблере"
+
+#: tfoundcodedialog.btnopendisassembler.hint
+msgid "This will open the memoryview and bring the disassemblerview to the selected address"
+msgstr "Открывает «Редактор памяти» и переносит на выбранный адрес"
+
+#: tfoundcodedialog.btnreplacewithnops.caption
+msgctxt "tfoundcodedialog.btnreplacewithnops.caption"
+msgid "Replace"
+msgstr "Заменить NOP'ами"
+
+#: tfoundcodedialog.btnreplacewithnops.hint
+msgid "This will replace the selected addresses with code that does nothing. (Nops)"
+msgstr "Заменяет выбранные адреса NOP'ами и добавляет их в список кодов"
+
+#: tfoundcodedialog.caption
+msgctxt "tfoundcodedialog.caption"
+msgid "The following opcodes changed the selected address"
+msgstr "Следующие инструкции изменили выбранный адрес"
+
+#: tfoundcodedialog.copyselectiontoclipboard1.caption
+msgctxt "tfoundcodedialog.copyselectiontoclipboard1.caption"
+msgid "Copy selection to clipboard"
+msgstr "Копировать выбранное в буфер обмена"
+
+#: tfoundcodedialog.foundcodelist.columns[0].caption
+msgctxt "TFOUNDCODEDIALOG.FOUNDCODELIST.COLUMNS[0].CAPTION"
+msgid "Count"
+msgstr "Хиты"
+
+#: tfoundcodedialog.foundcodelist.columns[1].caption
+msgctxt "tfoundcodedialog.foundcodelist.columns[1].caption"
+msgid "Instruction"
+msgstr "Инструкция"
+
+#: tfoundcodedialog.menuitem1.caption
+msgctxt "tfoundcodedialog.menuitem1.caption"
+msgid "Select all"
+msgstr "Выбрать все"
+
+#: tfoundcodedialog.mifindwhataccesses.caption
+msgid "Check if found opcodes also access other addresses (max 8)"
+msgstr "Проверять инструкции на обращение к другим адресам (макс. 8)"
+
+#: tfoundcodedialog.misavetofile.caption
+msgid "Save selection to file"
+msgstr "Сохранить выбранное в файл"
+
+#: tfoundcodedialog.moreinfo1.caption
+msgctxt "tfoundcodedialog.moreinfo1.caption"
+msgid "More Info"
+msgstr "Дополнительная информация"
+
+#: tfoundcodedialog.replacewithcodethatdoesnothingnop1.caption
+msgid "Replace with code that does nothing (NOP)"
+msgstr "Заменить ничего не делающим кодом (NOP)"
+
+#: tfoundcodedialog.showthisaddressinthedisassembler1.caption
+msgid "Show this address in the disassembler"
+msgstr "Показать этот адрес в дизассемблере"
+
+#: tframehotkeyconfig.button3.caption
+msgctxt "tframehotkeyconfig.button3.caption"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tframehotkeyconfig.cbstoponrelease.caption
+msgid "Stop on release"
+msgstr "Остановить при отжатии клавиши"
+
+#: tframehotkeyconfig.edthotkeydelay.hint
+msgid "Lets you specify how quickly a hotkey is repeated"
+msgstr "Позволяет определить, как быстро горячая клавиша может быть повторно активирована"
+
+#: tframehotkeyconfig.edtkeypollinterval.hint
+msgid "Determines how quickly a hotkey keypress is detected"
+msgstr "Определяет, как быстро будет обнаружено нажатие горячей клавиши"
+
+#: tframehotkeyconfig.label1.caption
+msgid "Functions"
+msgstr "Назначения"
+
+#: tframehotkeyconfig.label2.caption
+msgctxt "tframehotkeyconfig.label2.caption"
+msgid "Hotkey"
+msgstr "Горячая клавиша"
+
+#: tframehotkeyconfig.label3.caption
+msgid "Speed delta"
+msgstr "Дельта скорости"
+
+#: tframehotkeyconfig.label4.capt
