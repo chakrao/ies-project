@@ -9447,4 +9447,166 @@ msgstr "Горячая клавиша"
 msgid "Speed delta"
 msgstr "Дельта скорости"
 
-#: tframehotkeyconfig.label4.capt
+#: tframehotkeyconfig.label4.caption
+msgid "Keypoll interval (milliseconds)"
+msgstr "Интервал опроса клавиш (в миллисекундах)"
+
+#: tframehotkeyconfig.label5.caption
+msgid "Delay between reactivating hotkeys"
+msgstr "Задержка между повторной активацией горячих клавиш"
+
+#: tframehotkeyconfig.label52.caption
+msgid "Speed"
+msgstr "Скорость"
+
+#: tframehotkeyconfig.menuitem1.caption
+msgctxt "TFRAMEHOTKEYCONFIG.MENUITEM1.CAPTION"
+msgid "Clear list"
+msgstr "Очистить список"
+
+#: tfrmaaeditprefs.btnfont.caption
+msgid "font"
+msgstr "шрифт"
+
+#: tfrmaaeditprefs.button1.caption
+msgctxt "TFRMAAEDITPREFS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmaaeditprefs.button2.caption
+msgctxt "TFRMAAEDITPREFS.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmaaeditprefs.caption
+msgid "Editor preferences"
+msgstr "Настройки редактора"
+
+#: tfrmaaeditprefs.cbfontquality.hint
+msgctxt "TFRMAAEDITPREFS.CBFONTQUALITY.HINT"
+msgid "The font quality can impact speed"
+msgstr "Качество шрифта может повлиять на скорость"
+
+#: tfrmaaeditprefs.cbshowgutter.caption
+msgid "Show bar on left"
+msgstr "Показывать панель слева"
+
+#: tfrmaaeditprefs.cbshowlinenumbers.caption
+msgid "Show line numbers"
+msgstr "Показывать нумерацию строк"
+
+#: tfrmaaeditprefs.cbsmarttab.caption
+msgid "Smart tab"
+msgstr "Умная вкладка"
+
+#: tfrmaaeditprefs.cbtabstospace.caption
+msgid "Tabs to space"
+msgstr "Табуляция пробелом"
+
+#: tfrmaaeditprefs.label1.caption
+msgid "Tab Width"
+msgstr "Ширина табуляции"
+
+#: tfrmaaeditprefs.label2.caption
+msgctxt "TFRMAAEDITPREFS.LABEL2.CAPTION"
+msgid "Font quality"
+msgstr "Качество шрифта"
+
+#: tfrmaccessedmemory.btnclearsmallsnapshot.caption
+msgctxt "tfrmaccessedmemory.btnclearsmallsnapshot.caption"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmaccessedmemory.btnclearsmallsnapshot1.caption
+msgctxt "TFRMACCESSEDMEMORY.BTNCLEARSMALLSNAPSHOT1.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmaccessedmemory.button1.caption
+msgctxt "tfrmaccessedmemory.button1.caption"
+msgid "Set hotkeys"
+msgstr "Установить горячие клавиши"
+
+#: tfrmaccessedmemory.button2.caption
+msgctxt "tfrmaccessedmemory.button2.caption"
+msgid "Start"
+msgstr "Запустить"
+
+#: tfrmaccessedmemory.button3.caption
+msgctxt "tfrmaccessedmemory.button3.caption"
+msgid "Stop"
+msgstr "Остановить"
+
+#: tfrmaccessedmemory.caption
+msgid "Find accessed memory regions"
+msgstr "Обнаружение регионов памяти, к которым происходило обращение"
+
+#: tfrmaccessedmemory.label1.caption
+msgid "Hotkey to (re)start monitoring"
+msgstr "Горячая клавиша (пере)запуска наблюдения"
+
+#: tfrmaccessedmemory.label2.caption
+msgid ""
+"This function will try to find out all accessed memory regions over a period of time and store it's results into an .mregion file which you can use with other functions that can make use of it (e.g pointerscan)\n"
+"\n"
+"Note: This will enable the dbk kernel module and if your windows version isn't supported this could potentially BSOD you. (So save your data)\n"
+msgstr ""
+"Эта функция постарается обнаружить все регионы памяти, к которым происходило обращение в определённый промежуток времени и сохранит полученный результат в файл .mregion, который может быть применён в других функциях Cheat Engine, способных использовать его (например: Сканер указателей).\n"
+"\n"
+"Примечание: Будет запущен модуль ядра «dbk» и если ваша система его не поддерживает, то может произойти BSOD (Так что, сохраните ваши данные)\n"
+
+#: tfrmaccessedmemory.label3.caption
+msgid "Hotkey to stop monitoring"
+msgstr "Горячая клавиша остановки наблюдения"
+
+#: tfrmaccessedmemory.listview1.columns[0].caption
+msgctxt "tfrmaccessedmemory.listview1.columns[0].caption"
+msgid "From"
+msgstr "От"
+
+#: tfrmaccessedmemory.listview1.columns[1].caption
+msgctxt "tfrmaccessedmemory.listview1.columns[1].caption"
+msgid "To"
+msgstr "К"
+
+#: tfrmaccessedmemory.menuitem1.caption
+msgctxt "tfrmaccessedmemory.menuitem1.caption"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmaccessedmemory.menuitem2.caption
+msgid "Open region file"
+msgstr "Открыть файл регионов"
+
+#: tfrmaccessedmemory.menuitem3.caption
+msgid "Save region file"
+msgstr "Сохранить файл регионов"
+
+#: tfrmaccessedmemory.menuitem4.caption
+msgctxt "TFRMACCESSEDMEMORY.MENUITEM4.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmadconfig.caption
+msgid "Support Cheat Engine"
+msgstr "Поддержка Cheat Engine"
+
+#: tfrmadconfig.cbcanclose.caption
+msgid "Has header"
+msgstr "Имеет заголовок"
+
+#: tfrmadconfig.cbownurl.caption
+msgid "Show my own page"
+msgstr "Показать собственную страницу"
+
+#: tfrmadconfig.groupbox1.caption
+msgctxt "tfrmadconfig.groupbox1.caption"
+msgid "Position"
+msgstr "Позиция"
+
+#: tfrmadconfig.groupbox2.caption
+msgid "Extra url"
+msgstr "Дополнительный url"
+
+#: tfrmadconfig.label1.caption
+msgid "Thank you for supporting Cheat Engine. And to thank you for that I'll let yo
