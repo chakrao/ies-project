@@ -9148,3 +9148,159 @@ msgid "Bytes"
 msgstr "Байт"
 
 #: tformsettings.label8.caption
+msgctxt "tformsettings.label8.caption"
+msgid "Max log size (nr of entries)"
+msgstr "Максимальный размер журнала(количество записей)"
+
+#: tformsettings.label9.caption
+msgid "The folowing languages are available:"
+msgstr "Доступны следующие языки:"
+
+#: tformsettings.languages.caption
+msgctxt "tformsettings.languages.caption"
+msgid "Languages"
+msgstr "Язык"
+
+#: tformsettings.lblapplicationtool.caption
+msgid "Application/Command"
+msgstr "Приложение/Команда"
+
+#: tformsettings.lblcurrentlanguage.caption
+msgid "English"
+msgstr "English"
+
+#: tformsettings.lblrepeatdelay.caption
+msgid "Repeat scan delay"
+msgstr "Задержка повторного поиска"
+
+#: tformsettings.lblshortcut.caption
+msgid "Shortcut:"
+msgstr "Быстрый вызов:"
+
+#: tformsettings.lblthreadfollowing.caption
+msgid "Thread following:"
+msgstr "Отслеживание потока:"
+
+#: tformsettings.lbltoolsname.caption
+msgctxt "TFORMSETTINGS.LBLTOOLSNAME.CAPTION"
+msgid "Name"
+msgstr "Название"
+
+#: tformsettings.lvtools.columns[0].caption
+msgctxt "TFORMSETTINGS.LVTOOLS.COLUMNS[0].CAPTION"
+msgid "Name"
+msgstr "Название"
+
+#: tformsettings.lvtools.columns[1].caption
+msgid "Application"
+msgstr "Приложение"
+
+#: tformsettings.lvtools.columns[2].caption
+msgid "Shortcut"
+msgstr "Быстрый вызов"
+
+#: tformsettings.menuitem1.caption
+msgid "Refresh"
+msgstr "Обновить"
+
+#: tformsettings.miluaexecalways.caption
+msgctxt "TFORMSETTINGS.MILUAEXECALWAYS.CAPTION"
+msgid "Always"
+msgstr "Всегда"
+
+#: tformsettings.miluaexecask.caption
+msgctxt "tformsettings.miluaexecask.caption"
+msgid "Always ask"
+msgstr "Всегда спрашивать"
+
+#: tformsettings.miluaexecnever.caption
+msgctxt "TFORMSETTINGS.MILUAEXECNEVER.CAPTION"
+msgid "Never"
+msgstr "Никогда"
+
+#: tformsettings.miluaexecsignedonly.caption
+msgctxt "tformsettings.miluaexecsignedonly.caption"
+msgid "Only when signed, else ask"
+msgstr "Только если есть подпись, иначе спрашивать"
+
+#: tformsettings.miunexpectedbreakpointsbreak.caption
+msgctxt "TFORMSETTINGS.MIUNEXPECTEDBREAKPOINTSBREAK.CAPTION"
+msgid "Break"
+msgstr "Прерываться"
+
+#: tformsettings.miunexpectedbreakpointsbreakwheninsideregion.caption
+msgid "Break when inside specific regions"
+msgstr "Прерываться в определённых регионах"
+
+#: tformsettings.miunexpectedbreakpointsignore.caption
+msgid "Ignore"
+msgstr "Игнорировать"
+
+#: tformsettings.plugins.caption
+msgctxt "tformsettings.plugins.caption"
+msgid "Plugins"
+msgstr "Плагины"
+
+#: tformsettings.rbdebugasbreakpoint.caption
+msgid "Hardware Breakpoints (Max 4)"
+msgstr "Аппаратные брейкпоинты (Максимум 4)"
+
+#: tformsettings.rbgdebuggerinterface.caption
+msgid "Debugger method"
+msgstr "Метод отладки"
+
+#: tformsettings.rbint3asbreakpoint.caption
+msgid "Int3 instructions (Execute BP only, falls back to hardware bp) (Unlimited)"
+msgstr "Инструкции int3 (Неограниченно)"
+
+#: tformsettings.rbmacdebugtasklevel.caption
+msgid "Task Level"
+msgstr "Уровень задачи"
+
+#: tformsettings.rbmacdebugthreadlevel.caption
+msgid "Thread level"
+msgstr "Уровень потока"
+
+#: tformsettings.rbpageexceptions.caption
+msgid "Page exceptions (Extremely slow to unplayable, buggy, best used if nothing else works. Does not use debug registers)"
+msgstr "Страничные исключения (Чрезвычайно медленный метод. Не использует отладочные регистры)"
+
+#: tformsettings.rbvehhookthreadcreation.caption
+msgid "Hook thread-create and destroy api's"
+msgstr "Перехват API создания и уничтожения потока"
+
+#: tformsettings.rbvehpollthread.caption
+msgid "Poll for threads"
+msgstr "Опрос для потоков"
+
+#: tformsettings.rbvehuseprocesswatcher.caption
+msgid "Use processwatcher"
+msgstr "Использовать «Наблюдатель процесса»"
+
+#: tformsettings.replacewithnops.caption
+msgid "Replace incomplete opcodes with nops"
+msgstr "Заменять NOP'ами незаполненные байты"
+
+#: tformsettings.replacewithnops.hint
+msgid "If you type in a opcode and it is smaller than the opcode you replaced, it will fill the missing bytes with NOP instructions. If the opcode is longer it will replace the opcode(s) that have been overwritten with NOP's"
+msgstr ""
+"Если указанная вами инструкция будет меньше по размеру, чем заменяемая инструкция, то оставшиеся незаполненные байты будут заменены NOP'ами.\n"
+"Если больше, то NOP'ами будут заменены незаполненные байты, оставшиеся от инструкции ниже по коду"
+
+#: tformsettings.scansettings.caption
+msgctxt "tformsettings.scansettings.caption"
+msgid "Scan Settings"
+msgstr "Настройки поиска"
+
+#: tformsettings.tauntoldosuser.caption
+msgid "I really recommend upgrading to Windows 2000 or later mister Flintstone"
+msgstr "Мистер Флинстоун, я настоятельно рекомендую вам обновить вашу систему до Windows 2000 или старше"
+
+#: tformsettings.tshotkeys.caption
+msgctxt "tformsettings.tshotkeys.caption"
+msgid "Hotkeys"
+msgstr "Горячие клавиши"
+
+#: tformsettings.tskerneldebugconfig.caption
+msgid "Kernel Debug"
+msgstr "Отладка ядр
