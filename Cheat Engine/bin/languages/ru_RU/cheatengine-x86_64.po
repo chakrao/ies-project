@@ -9609,4 +9609,189 @@ msgid "Extra url"
 msgstr "Дополнительный url"
 
 #: tfrmadconfig.label1.caption
-msgid "Thank you for supporting Cheat Engine. And to thank you for that I'll let yo
+msgid "Thank you for supporting Cheat Engine. And to thank you for that I'll let you share in the generated traffic"
+msgstr "Спасибо за поддержку Cheat Engine. В благодарность за это, вы можете указать и свой URL"
+
+#: tfrmadconfig.label2.caption
+msgid "Format"
+msgstr "Формат"
+
+#: tfrmadconfig.lblextra.caption
+msgid "Extra parameters"
+msgstr "Дополнительные параметры"
+
+#: tfrmadconfig.lblpercentage.caption
+msgid "Percentage shown: 75%"
+msgstr "Процент показа: 75%"
+
+#: tfrmadconfig.lblurl.caption
+msgid "Url"
+msgstr "URL-адрес"
+
+#: tfrmaddtocodelist.button1.caption
+msgctxt "TFRMADDTOCODELIST.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmaddtocodelist.button2.caption
+msgctxt "TFRMADDTOCODELIST.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmaddtocodelist.caption
+msgctxt "tfrmaddtocodelist.caption"
+msgid "Region to add"
+msgstr "Добавляемый регион"
+
+#: tfrmaddtocodelist.label1.caption
+msgctxt "TFRMADDTOCODELIST.LABEL1.CAPTION"
+msgid "From"
+msgstr "От"
+
+#: tfrmaddtocodelist.label2.caption
+msgctxt "TFRMADDTOCODELIST.LABEL2.CAPTION"
+msgid "To"
+msgstr "До"
+
+#: tfrmapihooktemplatesettings.button1.caption
+msgctxt "TFRMAPIHOOKTEMPLATESETTINGS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmapihooktemplatesettings.button2.caption
+msgctxt "tfrmapihooktemplatesettings.button2.caption"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmapihooktemplatesettings.caption
+msgid "Api hook template"
+msgstr "Шаблон перехвата API"
+
+#: tfrmapihooktemplatesettings.label1.caption
+msgid "Original api address:"
+msgstr "Оригинальный адрес API:"
+
+#: tfrmapihooktemplatesettings.label2.caption
+msgid "New api address:"
+msgstr "Новый адрес API:"
+
+#: tfrmapihooktemplatesettings.label3.caption
+msgid "Address where to store the new original api call:"
+msgstr "Адрес хранения нового вызова оригинального API:"
+
+#: tfrmapihooktemplatesettings.label4.caption
+msgid "(optional, in case your dll uses a variable for the call)"
+msgstr "(в случае, если ваша dll использует переменную для вызова)"
+
+#: tfrmapihooktemplatesettings.label5.caption
+msgid "Note: The addresses can also be exportnames of dll's"
+msgstr "Примечание: Адресами так же могут быть экспортные имена dll"
+
+#: tfrmassemblyscan.btnok.caption
+msgctxt "tfrmassemblyscan.btnok.caption"
+msgid "Scan"
+msgstr "Поиск"
+
+#: tfrmassemblyscan.caption
+msgctxt "tfrmassemblyscan.caption"
+msgid "Assembly scan"
+msgstr "Поиск инструкций"
+
+#: tfrmassemblyscan.lblfrom.caption
+msgctxt "TFRMASSEMBLYSCAN.LBLFROM.CAPTION"
+msgid "From"
+msgstr "От"
+
+#: tfrmassemblyscan.lblinputassemblycode.caption
+msgctxt "tfrmassemblyscan.lblinputassemblycode.caption"
+msgid "Input the assembly code to find. Wildcards( * ) supported."
+msgstr ""
+"Укажите инструкцию для поиска. \n"
+"Поддерживается подстановочный знак( * )"
+
+#: tfrmassemblyscan.lblto.caption
+msgctxt "TFRMASSEMBLYSCAN.LBLTO.CAPTION"
+msgid "To"
+msgstr "До"
+
+#: tfrmautoinject.aapref1.caption
+msgctxt "tfrmautoinject.aapref1.caption"
+msgid "Preferences"
+msgstr "Настройки"
+
+#: tfrmautoinject.apihook1.caption
+msgid "API Hook"
+msgstr "Перехват API"
+
+#: tfrmautoinject.assigntocurrentcheattable1.caption
+msgid "Assign to current cheat table"
+msgstr "Добавить к текущей таблице"
+
+#: tfrmautoinject.btnexecute.caption
+msgctxt "tfrmautoinject.btnexecute.caption"
+msgid "Execute"
+msgstr "Выполнить"
+
+#: tfrmautoinject.caption
+msgid "Auto assemble"
+msgstr "Автоассемблер"
+
+#: tfrmautoinject.cheattablecompliantcodee1.caption
+msgid "Cheat Table framework code"
+msgstr "Вставить секции [ENABLE] и [DISABLE]"
+
+#: tfrmautoinject.close1.caption
+msgctxt "TFRMAUTOINJECT.CLOSE1.CAPTION"
+msgid "Close"
+msgstr "Закрыть"
+
+#: tfrmautoinject.codeinjection1.caption
+msgid "Code injection"
+msgstr "Инъекция кода"
+
+#: tfrmautoinject.coderelocation1.caption
+msgid "Code relocation"
+msgstr "Перемещение кода"
+
+#: tfrmautoinject.emplate1.caption
+msgid "Template"
+msgstr "Шаблон"
+
+#: tfrmautoinject.exit1.caption
+msgid "Exit"
+msgstr "Выход"
+
+#: tfrmautoinject.file1.caption
+msgctxt "TFRMAUTOINJECT.FILE1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmautoinject.inject1.caption
+msgid "Inject"
+msgstr "Инъекция"
+
+#: tfrmautoinject.injectincurrentprocess1.caption
+msgid "Inject into current process"
+msgstr "Выполнить инъекцию в текущий процесс"
+
+#: tfrmautoinject.injectintocurrentprocessandexecute1.caption
+msgid "Inject into current process and execute"
+msgstr "Выполнить инъекцию в текущий процесс и выполнить"
+
+#: tfrmautoinject.load1.caption
+msgctxt "tfrmautoinject.load1.caption"
+msgid "Open"
+msgstr "Открыть"
+
+#: tfrmautoinject.menuaobinjection.caption
+msgid "AOB Injection"
+msgstr "Инъекция (AOB)"
+
+#: tfrmautoinject.menufullinjection.caption
+msgid "Full Injection"
+msgstr "Инъекция (Полная)"
+
+#: tfrmautoinject.menuitem2.caption
+msgctxt "tfrmautoinject.menuitem2.caption"
+msgid "Lua syntax highlighting preferences"
+msgstr "Настройки под
