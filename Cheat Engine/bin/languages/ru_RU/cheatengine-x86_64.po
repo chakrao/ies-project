@@ -9794,4 +9794,188 @@ msgstr "Инъекция (Полная)"
 #: tfrmautoinject.menuitem2.caption
 msgctxt "tfrmautoinject.menuitem2.caption"
 msgid "Lua syntax highlighting preferences"
-msgstr "Настройки под
+msgstr "Настройки подсветки синтаксиса Lua"
+
+#: tfrmautoinject.menuitem3.caption
+msgid "Auto assembler syntax highlighting preferences"
+msgstr "Настройки подсветки синтаксиса автоассемблера"
+
+#: tfrmautoinject.micalllua.caption
+msgid "Call CE lua function"
+msgstr "Вызов функции CE lua"
+
+#: tfrmautoinject.micopy.caption
+msgctxt "tfrmautoinject.micopy.caption"
+msgid "&Copy"
+msgstr "&Копировать"
+
+#: tfrmautoinject.micut.caption
+msgctxt "tfrmautoinject.micut.caption"
+msgid "Cu&t"
+msgstr "&Вырезать"
+
+#: tfrmautoinject.mifind.caption
+msgctxt "tfrmautoinject.mifind.caption"
+msgid "&Find..."
+msgstr "&Найти..."
+
+#: tfrmautoinject.mifindnext.caption
+msgctxt "tfrmautoinject.mifindnext.caption"
+msgid "Find Next"
+msgstr "Найти далее"
+
+#: tfrmautoinject.miluasyntaxcheck.caption
+msgctxt "tfrmautoinject.miluasyntaxcheck.caption"
+msgid "Syntax Check"
+msgstr "Проверка синтаксиса"
+
+#: tfrmautoinject.mimoveleft.caption
+msgid "Move left"
+msgstr "Переместить влево"
+
+#: tfrmautoinject.mimoveright.caption
+msgid "Move right"
+msgstr "Переместить вправо"
+
+#: tfrmautoinject.minewtab.caption
+msgctxt "tfrmautoinject.minewtab.caption"
+msgid "New Tab"
+msgstr "Новая вкладка"
+
+#: tfrmautoinject.minewwindow.caption
+msgctxt "tfrmautoinject.minewwindow.caption"
+msgid "New Window"
+msgstr "Новое окно"
+
+#: tfrmautoinject.mipaste.caption
+msgctxt "tfrmautoinject.mipaste.caption"
+msgid "&Paste"
+msgstr "&Вставить"
+
+#: tfrmautoinject.miredo.caption
+msgctxt "tfrmautoinject.miredo.caption"
+msgid "Redo"
+msgstr "Вернуть"
+
+#: tfrmautoinject.mirenametab.caption
+msgctxt "tfrmautoinject.mirenametab.caption"
+msgid "Rename"
+msgstr "Переименовать"
+
+#: tfrmautoinject.mireplace.caption
+msgctxt "tfrmautoinject.mireplace.caption"
+msgid "Replace"
+msgstr "Заменить"
+
+#: tfrmautoinject.miundo.caption
+msgctxt "tfrmautoinject.miundo.caption"
+msgid "&Undo"
+msgstr "&Отменить"
+
+#: tfrmautoinject.opendialog1.title
+msgctxt "tfrmautoinject.opendialog1.title"
+msgid "Open CE assembly file"
+msgstr "Открыть файл автоассемблера"
+
+#: tfrmautoinject.save1.caption
+msgctxt "TFRMAUTOINJECT.SAVE1.CAPTION"
+msgid "Save"
+msgstr "Сохранить"
+
+#: tfrmautoinject.saveas1.caption
+msgctxt "tfrmautoinject.saveas1.caption"
+msgid "Save As..."
+msgstr "Сохранить как..."
+
+#: tfrmautoinject.savedialog1.title
+msgctxt "TFRMAUTOINJECT.SAVEDIALOG1.TITLE"
+msgid "Open CE assembly file"
+msgstr "Открыть файл автоассемблера"
+
+#: tfrmautoinject.syntaxhighlighting1.caption
+msgid "Syntax highlighting"
+msgstr "Подсветка синтаксиса"
+
+#: tfrmautoinject.view1.caption
+msgctxt "tfrmautoinject.view1.caption"
+msgid "View"
+msgstr "Вид"
+
+#: tfrmbranchmapper.button1.caption
+msgid "Start mapping"
+msgstr "Запустить"
+
+#: tfrmbranchmapper.caption
+msgid "Branch Mapper"
+msgstr "Сопоставитель ветвей"
+
+#: tfrmbranchmapper.label1.caption
+msgid "Record branch destinations in the following threads:"
+msgstr "Запись назначений ветвей в следующих потоках:"
+
+#: tfrmbranchmapper.label2.caption
+msgid "Found: "
+msgstr "Найдено: "
+
+msgctxt "tfrmbranchmapper.button2.caption"
+msgid "Save results to file"
+msgstr "Сохранить результат в файл"
+
+#: tfrmbreakpointcondition.button1.caption
+msgctxt "TFRMBREAKPOINTCONDITION.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmbreakpointcondition.button2.caption
+msgctxt "TFRMBREAKPOINTCONDITION.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmbreakpointcondition.caption
+msgid "Breakpoint condition"
+msgstr "Условие брейкпоинта"
+
+#: tfrmbreakpointcondition.label1.caption
+msgid "Give a formula that must return true if you want the breakpoint to trigger a break"
+msgstr "Задайте формулу, которая должна возвращать TRUE для инициирования прерывания брейкпоинтом"
+
+#: tfrmbreakpointcondition.label2.caption
+msgid "Example: EAX == 0x1234  (case sensitive and hexadecimal starts with 0x )"
+msgstr "Пример: EAX == 0x1234 (с учётом регистра, шестнадцатеричные значения начинаются с 0x)"
+
+#: tfrmbreakpointcondition.rbcomplex.caption
+msgid "Complex"
+msgstr "Сложное"
+
+#: tfrmbreakpointcondition.rbeasy.caption
+msgid "Easy"
+msgstr "Простое"
+
+#: tfrmbreakpointcondition.tabsheet1.caption
+msgid "Easy formula"
+msgstr "Простая формула"
+
+#: tfrmbreakpointcondition.tabsheet2.caption
+msgid "Complex function"
+msgstr "Сложная функция"
+
+#: tfrmbreakpointlist.caption
+msgid "Breakpoint list"
+msgstr "Список брейкпоинтов"
+
+#: tfrmbreakpointlist.listview1.columns[0].caption
+msgctxt "TFRMBREAKPOINTLIST.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmbreakpointlist.listview1.columns[1].caption
+msgctxt "TFRMBREAKPOINTLIST.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Size"
+msgstr "Размер"
+
+#: tfrmbreakpointlist.listview1.columns[2].caption
+msgid "Trigger"
+msgstr "Инициирование"
+
+#: tfrmbreakpointlist.listview1.columns[3].caption
+msgctx
