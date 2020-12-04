@@ -9978,4 +9978,162 @@ msgid "Trigger"
 msgstr "Инициирование"
 
 #: tfrmbreakpointlist.listview1.columns[3].caption
-msgctx
+msgctxt "TFRMBREAKPOINTLIST.LISTVIEW1.COLUMNS[3].CAPTION"
+msgid "Type"
+msgstr "Тип"
+
+#: tfrmbreakpointlist.listview1.columns[4].caption
+msgid "On Hit"
+msgstr "При срабатывании"
+
+#: tfrmbreakpointlist.listview1.columns[5].caption
+msgctxt "tfrmbreakpointlist.listview1.columns[5].caption"
+msgid "Active"
+msgstr "Активный"
+
+#: tfrmbreakpointlist.listview1.columns[6].caption
+msgid "Pending deletion"
+msgstr "Ожидание удаления"
+
+#: tfrmbreakpointlist.menuitem2.caption
+msgid "Disable breakpoint"
+msgstr "Снять брейкпоинт"
+
+#: tfrmbreakpointlist.midelbreakpoint.caption
+msgid "Delete breakpoint"
+msgstr "Удалить брейкпоинт"
+
+#: tfrmbreakpointlist.mipagewide.caption
+msgid "Change to pagewide breakpoint"
+msgstr "Изменить ширину страницы брейкпоинтов"
+
+#: tfrmbreakpointlist.misetcondition.caption
+msgid "Set/change condition"
+msgstr "Задать/изменить условие"
+
+#: tfrmbreakpointlist.mishowshadow.caption
+msgid "Show shadow breakpoints"
+msgstr "Показывать скрытые данные"
+
+#: tfrmcallfilter.button1.caption
+msgctxt "tfrmcallfilter.button1.caption"
+msgid "From Dissect Code"
+msgstr "Из анализа кода"
+
+#: tfrmcallfilter.button1.hint
+msgctxt "tfrmcallfilter.button1.hint"
+msgid "Disassembles the code and marks calls.  This can be inaccurate and might end up writing 0xcc's at random/wrong locations"
+msgstr "Разбирает код и отмечает вызовы. Может быть не точным может привести к записи опкода 0xcc в случайных/неправильных местах"
+
+#: tfrmcallfilter.button2.caption
+msgctxt "tfrmcallfilter.button2.caption"
+msgid "From Trace"
+msgstr "Из трассировки"
+
+#: tfrmcallfilter.button2.hint
+msgctxt "tfrmcallfilter.button2.hint"
+msgid "Load a previous trace and filters out the CALL's from there"
+msgstr "Загружает предшествующую трассировку и отфильтровывает от туда вызовы"
+
+#: tfrmcallfilter.button3.caption
+msgctxt "TFRMCALLFILTER.BUTTON3.CAPTION"
+msgid "Start"
+msgstr "Запустить"
+
+#: tfrmcallfilter.button4.caption
+msgctxt "TFRMCALLFILTER.BUTTON4.CAPTION"
+msgid "Stop"
+msgstr "Стоп"
+
+#: tfrmcallfilter.button5.caption
+msgctxt "tfrmcallfilter.button5.caption"
+msgid "From File"
+msgstr "Из файла"
+
+#: tfrmcallfilter.button6.caption
+msgid "Has been called"
+msgstr "Был вызван"
+
+#: tfrmcallfilter.button7.caption
+msgid "Has not been called"
+msgstr "Не был вызван"
+
+#: tfrmcallfilter.button8.caption
+msgid "Has an execution count of "
+msgstr "Имеет количество выполнения "
+
+#: tfrmcallfilter.caption
+msgid "Call Filter"
+msgstr "Фильтр вызовов"
+
+#: tfrmcallfilter.checkbox1.caption
+msgid "Mark everything being called as unwanted"
+msgstr "Отметить все вызванные как нежелательные"
+
+#: tfrmcallfilter.checkbox1.hint
+msgid "Use this to automatically remove breakpoints that are being called. "
+msgstr "Используйте это для автоматического удаления брейкпоинтов, которые были вызваны."
+
+#: tfrmcallfilter.groupbox1.caption
+msgid "Load call list"
+msgstr "Загрузить список вызовов"
+
+#: tfrmcallfilter.label1.caption
+msgid "This will place software breakpoints on all known calls and then keep track of those that are of interest to you, and discard the ones that are not"
+msgstr "Это установит программные брейкопинты на все известные вызовы и будет отслеживать те, что представляют для вас интерес, отбрасывая остальные"
+
+#: tfrmcallfilter.label2.caption
+msgid "Call List"
+msgstr "Список вызовов"
+
+#: tfrmcallfilter.listview1.columns[0].caption
+msgctxt "TFRMCALLFILTER.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmcallfilter.listview1.columns[1].caption
+msgid "Execution count"
+msgstr "Кол-во выполнений"
+
+#: tfrmcallfilter.listview1.columns[2].caption
+msgid "Total execution count"
+msgstr "Общее кол-во выполнений"
+
+#: tfrmbreakthread.button1.caption
+msgctxt "TFRMBREAKTHREAD.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmbreakthread.button2.caption
+msgctxt "TFRMBREAKTHREAD.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmbreakthread.caption
+msgid "Break Thread"
+msgstr "Прерывание потока"
+
+#: tfrmbreakthread.label1.caption
+msgid "This process has more than 1 thread. Select the thread you wish to break"
+msgstr "Этот процесс имеет более одного потока. Выберите тот, что хотите прервать"
+
+#: tfrmcapturedtimers.button1.caption
+msgctxt "TFRMCAPTUREDTIMERS.BUTTON1.CAPTION"
+msgid "Close"
+msgstr "Закрыть"
+
+#: tfrmcapturedtimers.button2.caption
+msgid "Send timer messages"
+msgstr "Отправка сообщений"
+
+#: tfrmcapturedtimers.caption
+msgid "Captured Timers"
+msgstr "Захваченные таймеры"
+
+#: tfrmcapturedtimers.label1.caption
+msgid "The following WM_TIMER messages have been received"
+msgstr "Следующие сообщения WM_TIMER были получены"
+
+#: tfrmcapturedtimers.listview1.columns[0].caption
+msgid "Window Handle"
+msgstr "Дескриптор 
