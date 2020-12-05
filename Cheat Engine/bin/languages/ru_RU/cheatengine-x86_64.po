@@ -10136,4 +10136,163 @@ msgstr "Следующие сообщения WM_TIMER были получены
 
 #: tfrmcapturedtimers.listview1.columns[0].caption
 msgid "Window Handle"
-msgstr "Дескриптор 
+msgstr "Дескриптор окна"
+
+#: tfrmcapturedtimers.listview1.columns[1].caption
+msgid "Window Title"
+msgstr "Заголовок окна"
+
+#: tfrmcapturedtimers.listview1.columns[2].caption
+msgid "Window Class"
+msgstr "Класс окна"
+
+#: tfrmcapturedtimers.listview1.columns[3].caption
+msgid "Timer ID"
+msgstr "ID таймера"
+
+#: tfrmcapturedtimers.listview1.columns[4].caption
+msgid "TimerProc"
+msgstr "TimerProc"
+
+#: tfrmcapturedtimers.listview1.columns[5].caption
+msgctxt "TFRMCAPTUREDTIMERS.LISTVIEW1.COLUMNS[5].CAPTION"
+msgid "Count"
+msgstr "Хиты"
+
+#: tfrmcelistviewitemeditor.btnadditem.caption
+msgctxt "tfrmcelistviewitemeditor.btnadditem.caption"
+msgid "Add Item"
+msgstr "Добавить элемент"
+
+#: tfrmcelistviewitemeditor.btnaddsubitem.caption
+msgid "Add SubItem"
+msgstr "Добавить подэлемент"
+
+#: tfrmcelistviewitemeditor.btncancel.caption
+msgctxt "TFRMCELISTVIEWITEMEDITOR.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmcelistviewitemeditor.btndelete.caption
+msgctxt "tfrmcelistviewitemeditor.btndelete.caption"
+msgid "Delete"
+msgstr "Удалить"
+
+#: tfrmcelistviewitemeditor.btnok.caption
+msgctxt "TFRMCELISTVIEWITEMEDITOR.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmcelistviewitemeditor.caption
+msgid "Item editor"
+msgstr "Редактор элементов"
+
+#: tfrmcelistviewitemeditor.lbltext.caption
+msgctxt "tfrmcelistviewitemeditor.lbltext.caption"
+msgid "Text"
+msgstr "Текст"
+
+#: tfrmchangedaddresses.browsethismemoryregion1.caption
+msgctxt "tfrmchangedaddresses.browsethismemoryregion1.caption"
+msgid "Browse this memory region"
+msgstr "Просмотреть этот регион памяти"
+
+#: tfrmchangedaddresses.caption
+msgid "Changed Addresses"
+msgstr "Изменённые адреса"
+
+#: tfrmchangedaddresses.cbdisplaytype.text
+msgctxt "TFRMCHANGEDADDRESSES.CBDISPLAYTYPE.TEXT"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: tfrmchangedaddresses.changedlist.columns[0].caption
+msgctxt "TFRMCHANGEDADDRESSES.CHANGEDLIST.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmchangedaddresses.changedlist.columns[1].caption
+msgctxt "tfrmchangedaddresses.changedlist.columns[1].caption"
+msgid "Value"
+msgstr "Значение"
+
+#: tfrmchangedaddresses.changedlist.columns[2].caption
+msgctxt "tfrmchangedaddresses.changedlist.columns[2].caption"
+msgid "Count"
+msgstr "Хиты"
+
+#: tfrmchangedaddresses.labelcodeaddress.caption
+msgid "Code Address"
+msgstr "Адрес кода"
+
+#: tfrmchangedaddresses.lblinfo.caption
+msgid "The following addresses have been accessed by the code you selected"
+msgstr "К следующим адресам был получен доступ по выбранному вами коду"
+
+#: tfrmchangedaddresses.micbshowashexadecimal.caption
+msgctxt "tfrmchangedaddresses.micbshowashexadecimal.caption"
+msgid "Show as hexadecimal"
+msgstr "Показать как шестнадцатеричное"
+
+#: tfrmchangedaddresses.michangevalue.caption
+msgctxt "tfrmchangedaddresses.michangevalue.caption"
+msgid "Change value"
+msgstr "Изменение адреса"
+
+#: tfrmchangedaddresses.micodeaddressbrowsememoryregion.caption
+msgid "Browse Memory Region"
+msgstr "Просмотреть регион памяти"
+
+#: tfrmchangedaddresses.micodeaddresscopy.caption
+msgid "Copy Code Address to Clipboard"
+msgstr "Копировать адрес кода в буфер обмена"
+
+#: tfrmchangedaddresses.micodeaddressdisassemblememoryregion.caption
+msgid "Disassemble Memory Region"
+msgstr "Разобрать область памяти"
+
+#: tfrmchangedaddresses.micommonalitiessubgroup.caption
+msgid "Find commonalities between addresses"
+msgstr "Найти совпадения между адресами"
+
+#: tfrmchangedaddresses.micopyaddresstoclipboard.caption
+msgctxt "tfrmchangedaddresses.micopyaddresstoclipboard.caption"
+msgid "Copy address to clipboard"
+msgstr "Копировать адрес в буфер обмена"
+
+#: tfrmchangedaddresses.micopytoaddresslist.caption
+msgid "Copy selected addresses to addresslist"
+msgstr "Копировать выбранные адреса в таблицу"
+
+#: tfrmchangedaddresses.micopyvaluetoclipboard.caption
+msgctxt "tfrmchangedaddresses.micopyvaluetoclipboard.caption"
+msgid "Copy value to clipboard"
+msgstr "Копировать значение в буфер обмена"
+
+#: tfrmchangedaddresses.mideleteselectedentries.caption
+msgid "Delete selected entries"
+msgstr "Удалить выбранные записи"
+
+#: tfrmchangedaddresses.midissect.caption
+msgid "Open dissect data with selected addresses"
+msgstr "Открыть «Анализ структуры» с выбранными адресами"
+
+#: tfrmchangedaddresses.migroupclear.caption
+msgid "Clear Selection"
+msgstr "Очистить выбор"
+
+#: tfrmchangedaddresses.mimarkasgroup1.caption
+msgid "Mark selection as group 1"
+msgstr "Отметить выбранное как группа 1"
+
+#: tfrmchangedaddresses.mimarkasgroup2.caption
+msgid "Mark selection as group 2 (Nothing means everything else)"
+msgstr "Отметить выбранное как группа 2"
+
+#: tfrmchangedaddresses.miresetcount.caption
+msgid "Reset count"
+msgstr "Сбросить хиты"
+
+#: tfrmchangedaddresses.miscanforcommonalities.caption
+msgid "Scan for commonalities"
+msgs
