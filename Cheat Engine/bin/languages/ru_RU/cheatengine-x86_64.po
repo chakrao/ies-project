@@ -10295,4 +10295,130 @@ msgstr "Сбросить хиты"
 
 #: tfrmchangedaddresses.miscanforcommonalities.caption
 msgid "Scan for commonalities"
-msgs
+msgstr "Поиск совпадений"
+
+#: tfrmchangedaddresses.misetfilter.caption
+msgctxt "tfrmchangedaddresses.misetfilter.caption"
+msgid "Filter"
+msgstr "Фильтр"
+
+#: tfrmchangedaddresses.okbutton.caption
+msgctxt "tfrmchangedaddresses.okbutton.caption"
+msgid "Stop"
+msgstr "Остановить"
+
+#: tfrmchangedaddresses.showregisterstates1.caption
+msgid "Show register states"
+msgstr "Показать состояния регистров"
+
+#: tfrmcodefilter.btncancel.caption
+msgctxt "TFRMCODEFILTER.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmchangedaddressescommonalityscanner.caption
+msgid "Commonality scanner"
+msgstr "Сканер совпадений"
+
+#: tfrmchangedaddressescommonalityscanner.lvregisters.columns[0].caption
+msgid "Register"
+msgstr "Регистр"
+
+#: tfrmchangedaddressescommonalityscanner.lvregisters.columns[1].caption
+msgid "Status"
+msgstr "Состояние"
+
+#: tfrmcodefilter.btncancel.hint
+msgid "Cancels the current operation"
+msgstr "Отменяет текущую операцию"
+
+#: tfrmcodefilter.btnfilteroutexecutedaddresses.caption
+msgid "Has not been executed"
+msgstr "Не был выполнен"
+
+#: tfrmcodefilter.btnfilteroutexecutedaddresses.hint
+msgid "Removes all addresses from the list that have been executed, and resets the breakpoints on the remaining addresses if the filter is active"
+msgstr "Удаляет все адреса из списка, которые были выполнены, и сбрасывает брейкпоинты на оставшихся адресах, если фильтр активен"
+
+#: tfrmcodefilter.btnfilteroutnonexecutedaddresses.caption
+msgid "Has been executed"
+msgstr "Был выполнен"
+
+#: tfrmcodefilter.btnfilteroutnonexecutedaddresses.hint
+msgid "Removes all addresses from the list that have not been executed, and resets the breakpoints on the remaining addresses if the filter is active"
+msgstr "Удаляет все адреса из списка, которые не были выполнены, и сбрасывает брейкпоинты на оставшихся адресах, если фильтр активен"
+
+#: tfrmcodefilter.btnloadaddressesbydisassembling.caption
+msgid "From disassembler"
+msgstr "Из дизассемблера"
+
+#: tfrmcodefilter.btnloadaddressesbydisassembling.hint
+msgctxt "TFRMCODEFILTER.BTNLOADADDRESSESBYDISASSEMBLING.HINT"
+msgid "Disassembles the code and marks calls.  This can be inaccurate and might end up writing 0xcc's at random/wrong locations"
+msgstr "Разбирает код и отмечает вызовы. Может быть не точным может привести к записи опкода 0xcc в случайных/неправильных местах"
+
+#: tfrmcodefilter.btnloadaddressesfromfile.caption
+msgctxt "TFRMCODEFILTER.BTNLOADADDRESSESFROMFILE.CAPTION"
+msgid "From File"
+msgstr "Из файла"
+
+#: tfrmcodefilter.btnloadaddressesfromfile.hint
+msgid "Loads a file containing a list of addresses (e.g from a previous filter session or from the branch mapper)"
+msgstr "Загружает файл, содержащий список адресов (например, от предыдущей сессии фильтра или от сопоставителя ветвей)"
+
+#: tfrmcodefilter.btnloadaddressesfromtrace.caption
+msgctxt "TFRMCODEFILTER.BTNLOADADDRESSESFROMTRACE.CAPTION"
+msgid "From Trace"
+msgstr "Из трассировки"
+
+#: tfrmcodefilter.btnloadaddressesfromtrace.hint
+msgctxt "TFRMCODEFILTER.BTNLOADADDRESSESFROMTRACE.HINT"
+msgid "Load a previous trace and filters out the CALL's from there"
+msgstr "Загружает предшествующую трассировку и отфильтровывает от туда вызовы"
+
+#: tfrmcodefilter.btnshowlist.caption
+msgctxt "TFRMCODEFILTER.BTNSHOWLIST.CAPTION"
+msgid "Refresh list"
+msgstr "Обновить список"
+
+#: tfrmcodefilter.btnstart.caption
+msgctxt "TFRMCODEFILTER.BTNSTART.CAPTION"
+msgid "Start"
+msgstr "Запустить"
+
+#: tfrmcodefilter.btnstop.caption
+msgctxt "TFRMCODEFILTER.BTNSTOP.CAPTION"
+msgid "Stop"
+msgstr "Стоп"
+
+#: tfrmcodefilter.button1.caption
+msgid "From unwind info"
+msgstr "Из информации о раскрутке"
+
+#: tfrmcodefilter.caption
+msgctxt "TFRMCODEFILTER.CAPTION"
+msgid "Code Filter"
+msgstr "Фильтр кода"
+
+#: tfrmcodefilter.frmlaunchbranchmapper.caption
+msgctxt "TFRMCODEFILTER.FRMLAUNCHBRANCHMAPPER.CAPTION"
+msgid "Launch branch mapper"
+msgstr "Запуск сопоставителя ветвей"
+
+#: tfrmcodefilter.frmlaunchbranchmapper.hint
+msgid ""
+"Starts a single stepping (branch only) trace and records all unique IP's encountered.  You can use the results from this with the \"From File\" address list\n"
+"Make sure that the code you're interested in is executed at least once\n"
+"\n"
+"<WARNING: SLOW and recommended as last resort>\n"
+msgstr ""
+"Запускает пошаговую трассировку (только ветвление) и записывает все обнаруженные уникальные IP. Вы можете использовать результат вместе со списков адресов «Из файла»\n"
+"Убедитесь, что интересующий вас код был выполнен хотя бы раз\n"
+"<ПРЕДУПРЕЖДЕНИЕ: МЕДЛЕННЫЙ и рекомендуемый как последнее средство>\n"
+
+#: tfrmcodefilter.groupbox1.caption
+msgid "Load address list"
+msgstr "Загрузка списка адресов"
+
+#: tfrmcodefilter.label1.caption
+msg
