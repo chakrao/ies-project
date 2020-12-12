@@ -10421,4 +10421,146 @@ msgid "Load address list"
 msgstr "Загрузка списка адресов"
 
 #: tfrmcodefilter.label1.caption
-msg
+msgid ""
+"This will place software breakpoints(0xcc) on many locations of interest (Usually CALLs) and then track which ones get executed and which ones do not.\n"
+"By specifying that some code has been executed and some not you can filter down the list till it's only ones you're interested in\n"
+msgstr ""
+"Фильтр кода устанавливает программные брейкпоинты(0xcc) на многие места, представляющие интерес(обычно это вызовы), а затем отслеживает какие из них выполняются, а какие нет.\n"
+"Указав, какой код был выполнен, а какой нет, вы можете отфильтровывать список до тех пор, пока он не станет вам интересен.\n"
+
+#: tfrmcodefilter.label3.caption
+msgid "Addresses executed since last filter operation:"
+msgstr "Адреса, выполненные начиная с последней работы фильтра:"
+
+#: tfrmcodefilter.lbladdresslist.caption
+msgid "Address List"
+msgstr "Список адресов"
+
+#: tfrmcodefilter.lblstatus.caption
+msgid "Doing something"
+msgstr "Что-то делает"
+
+#: tfrmcodefilter.lvresults.columns[0].caption
+msgctxt "TFRMCODEFILTER.LVRESULTS.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmcodefilter.lvresults.columns[1].caption
+msgid "Executed"
+msgstr "Выполнен"
+
+#: tfrmcodefilter.miclearlist.caption
+msgctxt "TFRMCODEFILTER.MICLEARLIST.CAPTION"
+msgid "Clear list"
+msgstr "Очистить список"
+
+#: tfrmcodefilter.mideleteselecteditems.caption
+msgctxt "TFRMCODEFILTER.MIDELETESELECTEDITEMS.CAPTION"
+msgid "Delete selected addresses"
+msgstr "Удалить выбранные адреса"
+
+#: tfrmcodefilter.misaveaddresslist.caption
+msgctxt "TFRMCODEFILTER.MISAVEADDRESSLIST.CAPTION"
+msgid "Save addresslist"
+msgstr "Сохранить список адресов"
+
+#: tfrmcodecavescanner.btnstart.caption
+msgctxt "TFRMCODECAVESCANNER.BTNSTART.CAPTION"
+msgid "Start"
+msgstr "Запустить"
+
+#: tfrmcodecavescanner.caption
+msgid "Scan for codecaves"
+msgstr "Поиск «code caves»"
+
+#: tfrmcodecavescanner.cbnoexecute.caption
+msgid "Also scan non-executable read-only memory"
+msgstr "Искать и в неисполняемой постоянной памяти"
+
+#: tfrmcodecavescanner.copytoclipboard1.caption
+msgid "Copy selection(s) to clipboard"
+msgstr "Копировать выделенное в буфер обмена"
+
+#: tfrmcodecavescanner.label1.caption
+msgid "Start Address"
+msgstr "Начальный адрес"
+
+#: tfrmcodecavescanner.label2.caption
+msgid "Stop Address"
+msgstr "Конечный адрес"
+
+#: tfrmcodecavescanner.label3.caption
+msgid "Size of cave"
+msgstr "Размер cave'а"
+
+#: tfrmconfigunrandomizer.button1.caption
+msgctxt "TFRMCONFIGUNRANDOMIZER.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmconfigunrandomizer.button2.caption
+msgctxt "TFRMCONFIGUNRANDOMIZER.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmconfigunrandomizer.caption
+msgid "Randomizer config"
+msgstr "Конфигурация рандомизатора"
+
+#: tfrmconfigunrandomizer.cbincremental.caption
+msgctxt "tfrmconfigunrandomizer.cbincremental.caption"
+msgid "Incremental value"
+msgstr "Инкрементное значение"
+
+#: tfrmconfigunrandomizer.label1.caption
+msgctxt "tfrmconfigunrandomizer.label1.caption"
+msgid "Default return value"
+msgstr "Возвращаемое значение"
+
+#: tfrmd3dhooksnapshotconfig.btnclearfullsnapshot.caption
+msgctxt "TFRMD3DHOOKSNAPSHOTCONFIG.BTNCLEARFULLSNAPSHOT.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmd3dhooksnapshotconfig.btnclearsmallsnapshot.caption
+msgctxt "TFRMD3DHOOKSNAPSHOTCONFIG.BTNCLEARSMALLSNAPSHOT.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmd3dhooksnapshotconfig.caption
+msgid "D3DHook: Configure snapshot"
+msgstr "Перехват D3D: Настройка снимка"
+
+#: tfrmd3dhooksnapshotconfig.cbalsooutputpng.caption
+msgid "Also save picture next to snapshot file"
+msgstr "Сохранять картинку рядом с файлом снимка"
+
+#: tfrmd3dhooksnapshotconfig.cbalsooutputpng.hint
+msgid "Use this if you have a more efficient way of rendering .PNG's to select the snapshot you wish"
+msgstr "Используйте это, если у вас есть более эффективный способ визуализации .PNG"
+
+#: tfrmd3dhooksnapshotconfig.cbcleardepth.caption
+msgid "Clear depth buffer"
+msgstr "Очистить буфер глубины"
+
+#: tfrmd3dhooksnapshotconfig.cbprogressive.caption
+msgid "Progressive snapshots (Do not clear background)"
+msgstr "Прогрессивные снимки (фон не очищается)"
+
+#: tfrmd3dhooksnapshotconfig.edtfullsnapshot.hint
+msgid "When this key is pressed all renders that occur will be stored"
+msgstr "При нажатии этой клавиши будут сохранены все происходящие рендеры"
+
+#: tfrmd3dhooksnapshotconfig.edtsmallsnapshot.hint
+msgid "When this key is pressed all renders that occur below the mouse cursor will be stored"
+msgstr "При нажатии этой клавиши будут сохранены все рендеры, происходящие под курсором мыши"
+
+#: tfrmd3dhooksnapshotconfig.label1.caption
+msgid "Snapshot folder"
+msgstr "Папка хранения снимков"
+
+#: tfrmd3dhooksnapshotconfig.label2.caption
+msgid "Full snapshot key"
+msgstr "Полный снимок"
+
+#: tfrmd3dhooksna
