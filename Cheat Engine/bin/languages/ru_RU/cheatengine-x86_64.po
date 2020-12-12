@@ -10717,4 +10717,130 @@ msgctxt "TFRMDBVMWATCHCONFIG.CBSAVESTACK.CAPTION"
 msgid "Log stack"
 msgstr "Регистрация стека"
 
-#: tfrmdbvmwatchconf
+#: tfrmdbvmwatchconfig.cbsavestack.hint
+msgid "Saves a stacksnapshot of 4KB for each logged entry"
+msgstr "Сохраняет снимок стека размером 4 КБ для каждой зарегистрированной записи"
+
+#: tfrmdbvmwatchconfig.cbwholepage.caption
+msgctxt "TFRMDBVMWATCHCONFIG.CBWHOLEPAGE.CAPTION"
+msgid "Log whole page instead of address range"
+msgstr "Регистрация всей страницы вместо диапазона адресов"
+
+#: tfrmdbvmwatchconfig.gbaccesstype.caption
+msgid "Access Type"
+msgstr "Тип доступа"
+
+#: tfrmdbvmwatchconfig.label3.caption
+msgid "Max buffersize (entries)"
+msgstr "Максимальный размер буфера (записи)"
+
+#: tfrmdbvmwatchconfig.lblphysicaladdress.caption
+msgctxt "TFRMDBVMWATCHCONFIG.LBLPHYSICALADDRESS.CAPTION"
+msgid "Physical Address: "
+msgstr "Физический адрес: "
+
+#: tfrmdbvmwatchconfig.lblvirtualaddress.caption
+msgctxt "TFRMDBVMWATCHCONFIG.LBLVIRTUALADDRESS.CAPTION"
+msgid "Virtual Address: "
+msgstr "Виртуальный адрес: "
+
+#: tfrmdbvmwatchconfig.rbexecuteaccess.caption
+#: tfrmdbvmwatchconfig.rbreadaccess.caption
+msgctxt "TFRMDBVMWATCHCONFIG.RBREADACCESS.CAPTION"
+msgid "Read/Write Access"
+msgstr "Доступ на Чтения/Запись"
+
+#: tfrmdbvmwatchconfig.rbwriteaccess.caption
+msgctxt "TFRMDBVMWATCHCONFIG.RBWRITEACCESS.CAPTION"
+msgid "Write Access "
+msgstr "Доступ на запись "
+
+#: tfrmdebuggerattachtimeout.button1.caption
+msgid "Cancel wait"
+msgstr "Отменить ожидание"
+
+#: tfrmdebuggerattachtimeout.caption
+msgctxt "tfrmdebuggerattachtimeout.caption"
+msgid "Debugger attach timeout"
+msgstr "Ожидание присоединения отладчика"
+
+#: tfrmdebuggerattachtimeout.label1.caption
+msgid ""
+"The debugger attach is taking a while. This is normal when there are many symbols or the system is slow so please be patient. But if you don't have the time to wait or the program has crashed to desktop, then you can cancel this wait. \n"
+"\n"
+"Beware though that this will not stop the attaching process currently going on in the target process so you may have to restart the target process if you do wish to debug anyhow (and it may still freeze a few moments while symbols are being waited for)\n"
+"\n"
+"(This window will disappear automatically when attaching has finished. Closing it manually is the same as pressing cancel)\n"
+msgstr ""
+"Присоединение отладчика займёт время. Это нормально, когда существует много символов или система работает медленно, так что будьте терпеливы. Но если у вас нет времени на ожидание или программа аварийно завершилась, то вы можете отменить это ожидание.\n"
+"\n"
+"Однако имейте в виду, что это не остановит процесс присоединения, происходящий в данный момент в процессе цели, поэтому вам может потребоваться перезапуск процесса цели, если вы всё равно захотите отладить его (и он всё равно может застыть на несколько мгновений, в ожидании символов).\n"
+"\n"
+"(Это окно исчезнет автоматически после завершения присоединения. Закрыть его вручную равнозначно нажатию кнопки отмены)\n"
+
+#: tfrmdebugsymbolstructurelist.btnsearch.caption
+msgctxt "tfrmdebugsymbolstructurelist.btnsearch.caption"
+msgid "Search"
+msgstr "Найти"
+
+#: tfrmdebugsymbolstructurelist.btnselect.caption
+msgctxt "tfrmdebugsymbolstructurelist.btnselect.caption"
+msgid "Select"
+msgstr "Выбрать"
+
+#: tfrmdebugsymbolstructurelist.caption
+msgid "Symbol structures"
+msgstr "Структуры символов"
+
+#: tfrmdebugsymbolstructurelist.label2.caption
+msgid "Search pattern:"
+msgstr "Шаблон поиска:"
+
+#: tfrmdebugsymbolstructurelist.lblcount.caption
+msgctxt "tfrmdebugsymbolstructurelist.lblcount.caption"
+msgid "There are currently xxx structures in the database"
+msgstr "В настоящее время xxx структур имеются в базе данных"
+
+#: tfrmdebugsymbolstructurelist.lvstructlist.columns[0].caption
+msgctxt "tfrmdebugsymbolstructurelist.lvstructlist.columns[0].caption"
+msgid "Structures"
+msgstr "Структуры"
+
+#: tfrmdebugevents.button1.caption
+msgctxt "TFRMDEBUGEVENTS.BUTTON1.CAPTION"
+msgid "Close"
+msgstr "Закрыть"
+
+#: tfrmdebugevents.caption
+msgid "Debug Events"
+msgstr "Отладочные события"
+
+#: tfrmdebugevents.menuitem1.caption
+msgctxt "TFRMDEBUGEVENTS.MENUITEM1.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmdisassemblyscan.btncancel.caption
+msgctxt "TFRMDISASSEMBLYSCAN.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmdisassemblyscan.caption
+msgid "Assemblyscan"
+msgstr "Поиск инструкций"
+
+#: tfrmdisassemblyscan.menuitem1.caption
+msgid "Go to this address"
+msgstr "Перейти к этому адресу"
+
+#: tfrmdisassemblyscan.menuitem2.caption
+msgctxt "TFRMDISASSEMBLYSCAN.MENUITEM2.CAPTION"
+msgid "Copy selection to clipboard"
+msgstr "Копировать выбранное в буфер обмена"
+
+#: tfrmdissectwindow.button1.caption
+msgctxt "tfrmdissectwindow.button1.caption"
+msgid "More Info"
+msgstr "Больше информации"
+
+#: tfrme
