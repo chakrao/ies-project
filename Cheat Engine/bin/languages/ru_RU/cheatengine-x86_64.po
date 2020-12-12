@@ -10563,4 +10563,158 @@ msgstr "Папка хранения снимков"
 msgid "Full snapshot key"
 msgstr "Полный снимок"
 
-#: tfrmd3dhooksna
+#: tfrmd3dhooksnapshotconfig.label3.caption
+msgid "Focused snapshot key"
+msgstr "Фокусированный снимок"
+
+#: tfrmd3dhooksnapshotconfig.mbcancel.caption
+msgctxt "TFRMD3DHOOKSNAPSHOTCONFIG.MBCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmd3dhooksnapshotconfig.mbok.caption
+msgctxt "TFRMD3DHOOKSNAPSHOTCONFIG.MBOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmd3dhooksnapshotconfig.rgpictureformat.caption
+msgid "Picture format"
+msgstr "Формат изображения"
+
+#: tfrmd3dtrainergeneratoroptions.btnclear.caption
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.BTNCLEAR.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmd3dtrainergeneratoroptions.button2.caption
+msgid "Set background picture"
+msgstr "Фоновое изображение"
+
+#: tfrmd3dtrainergeneratoroptions.button3.caption
+msgctxt "tfrmd3dtrainergeneratoroptions.button3.caption"
+msgid "Set Font"
+msgstr "Установить шрифт"
+
+#: tfrmd3dtrainergeneratoroptions.button4.caption
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.BUTTON4.CAPTION"
+msgid "Close"
+msgstr "Закрыть"
+
+#: tfrmd3dtrainergeneratoroptions.caption
+msgid "Direct3D Hook Options"
+msgstr "Настройки перехвата Direct3D"
+
+#: tfrmd3dtrainergeneratoroptions.cballowdrag.caption
+msgid "Allow user to drag trainer around"
+msgstr "Разрешить перетаскивать трейнер"
+
+#: tfrmd3dtrainergeneratoroptions.cbhascheckbox.caption
+msgid "Cheats have checkboxes"
+msgstr "Имеются чекбоксы"
+
+#: tfrmd3dtrainergeneratoroptions.cbshowhotkeys.caption
+msgid "Show hotkeys"
+msgstr "Показать горячие клавиши"
+
+#: tfrmd3dtrainergeneratoroptions.cbstretch.caption
+msgid "Scale the background image"
+msgstr "Масштабировать"
+
+#: tfrmd3dtrainergeneratoroptions.cbstretch.hint
+#: tfrmd3dtrainergeneratoroptions.cbused3dkeys.caption
+msgid "Use button to hide/show trainer"
+msgstr "Использовать клавишу для скрытия/показа трейнера"
+
+#: tfrmd3dtrainergeneratoroptions.label1.caption
+msgid "Transparency"
+msgstr "Прозрачность"
+
+#: tfrmd3dtrainergeneratoroptions.label2.caption
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.LABEL2.CAPTION"
+msgid "Position"
+msgstr "Позиция"
+
+#: tfrmd3dtrainergeneratoroptions.label3.caption
+msgid "Background picture:"
+msgstr "Фоновое изображение:"
+
+#: tfrmd3dtrainergeneratoroptions.label4.caption
+msgid "Distance between lines in pixels"
+msgstr "Расстояние между строк в пикселях"
+
+#: tfrmd3dtrainergeneratoroptions.label5.caption
+msgid "Text distance from top"
+msgstr "Расстояние текста от вершины"
+
+#: tfrmd3dtrainergeneratoroptions.label6.caption
+msgid "Text distance from border"
+msgstr "Расстояние текста от края"
+
+#: tfrmd3dtrainergeneratoroptions.lbltextcolor.caption
+msgid "Font text"
+msgstr "Шрифт текста"
+
+#: tfrmd3dtrainergeneratoroptions.rbbottomleft.caption
+msgid "Bottom left"
+msgstr "Внизу слева"
+
+#: tfrmd3dtrainergeneratoroptions.rbbottomright.caption
+msgid "Bottom right"
+msgstr "Внизу справа"
+
+#: tfrmd3dtrainergeneratoroptions.rbcenter.caption
+msgid "Center"
+msgstr "В центре"
+
+#: tfrmd3dtrainergeneratoroptions.rbtopleft.caption
+msgid "Top left"
+msgstr "Вверху слева"
+
+#: tfrmd3dtrainergeneratoroptions.rbtopright.caption
+msgid "Top right"
+msgstr "Вверху справа"
+
+#: tfrmdbvmloadmanual.caption
+msgid "Manual load DBVM"
+msgstr "Ручная загрузка DBVM"
+
+#: tfrmdbvmwatchconfig.btnok.caption
+msgctxt "TFRMDBVMWATCHCONFIG.BTNOK.CAPTION"
+msgid "Start watch"
+msgstr "Начать наблюдение"
+
+#: tfrmdbvmwatchconfig.button2.caption
+msgctxt "TFRMDBVMWATCHCONFIG.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmdbvmwatchconfig.caption
+msgid "DBVM Watch Config"
+msgstr "Конфигурация наблюдения DBVM"
+
+#: tfrmdbvmwatchconfig.cblockpage.caption
+msgctxt "TFRMDBVMWATCHCONFIG.CBLOCKPAGE.CAPTION"
+msgid "Lock page"
+msgstr "Заблокировать страницу"
+
+#: tfrmdbvmwatchconfig.cblockpage.hint
+msgctxt "TFRMDBVMWATCHCONFIG.CBLOCKPAGE.HINT"
+msgid "This prevents the given page to get swapped out and later replaced by another physical address.  (Make sure you unlock before the game quits)"
+msgstr "Предотвращает смену данной страницы, а позже заменяет другим физическим адресом (Убедитесь, что вы сделали разблокировку перед выходом из игры)"
+
+#: tfrmdbvmwatchconfig.cbmultiplerip.caption
+msgctxt "TFRMDBVMWATCHCONFIG.CBMULTIPLERIP.CAPTION"
+msgid "Same instruction multiple times (different registers)"
+msgstr "Одна и та же инструкция многократно (разные регистры)"
+
+#: tfrmdbvmwatchconfig.cbsavefpu.caption
+msgctxt "TFRMDBVMWATCHCONFIG.CBSAVEFPU.CAPTION"
+msgid "Log FPU data"
+msgstr "Регистрация данных FPU"
+
+#: tfrmdbvmwatchconfig.cbsavestack.caption
+msgctxt "TFRMDBVMWATCHCONFIG.CBSAVESTACK.CAPTION"
+msgid "Log stack"
+msgstr "Регистрация стека"
+
+#: tfrmdbvmwatchconf
