@@ -10843,4 +10843,196 @@ msgctxt "tfrmdissectwindow.button1.caption"
 msgid "More Info"
 msgstr "Больше информации"
 
-#: tfrme
+#: tfrmexceptionignorelist.btnadd.caption
+msgctxt "tfrmexceptionignorelist.btnadd.caption"
+msgid "Add Exception "
+msgstr "Добавить исключение"
+
+#: tfrmexceptionignorelist.midelete.caption
+msgctxt "tfrmexceptionignorelist.midelete.caption"
+msgid "Delete"
+msgstr "Удалить"
+
+#: tfrmdissectcode.btnstart.caption
+msgctxt "tfrmdissectcode.btnstart.caption"
+msgid "Start"
+msgstr "Запустить"
+
+#: tfrmdissectcode.caption
+msgid "Dissect Code"
+msgstr "Анализ кода"
+
+#: tfrmdissectcode.cbincludesystemmodules.caption
+msgctxt "tfrmdissectcode.cbincludesystemmodules.caption"
+msgid "Include system modules"
+msgstr "Включая системные модули"
+
+#: tfrmdissectcode.label1.caption
+msgid "Maximum offset:"
+msgstr "Максимальное смещение:"
+
+#: tfrmdissectcode.label11.caption
+msgid "Calls:"
+msgstr "Вызовов:"
+
+#: tfrmdissectcode.label2.caption
+msgid "Select the module(s) to dissect"
+msgstr "Выберите модули для анализа"
+
+#: tfrmdissectcode.label3.caption
+msgid "Hold CTRL to select multiple"
+msgstr "Зажмите Ctrl для мультивыбора"
+
+#: tfrmdissectcode.label4.caption
+msgid "String references found:"
+msgstr "Найдено ссылок на строки:"
+
+#: tfrmdissectcode.label5.caption
+msgid "Conditional Jumps:"
+msgstr "Условных переходов:"
+
+#: tfrmdissectcode.label6.caption
+msgctxt "tfrmdissectcode.label6.caption"
+msgid "Estimated time left:"
+msgstr "Время до окончания:"
+
+#: tfrmdissectcode.label9.caption
+msgid "Unconditional Jumps:"
+msgstr "Безусловных переходов:"
+
+#: tfrmdissectcode.menuitem1.caption
+msgctxt "tfrmdissectcode.menuitem1.caption"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmdissectcode.menuitem2.caption
+msgctxt "tfrmdissectcode.menuitem2.caption"
+msgid "Open"
+msgstr "Открыть"
+
+#: tfrmdissectcode.menuitem3.caption
+msgctxt "tfrmdissectcode.menuitem3.caption"
+msgid "Save"
+msgstr "Сохранить"
+
+#: tfrmdissectwindow.button1.caption
+msgctxt "TFRMDISSECTWINDOW.BUTTON1.CAPTION"
+msgid "More Info"
+msgstr "Больше информации"
+
+#: tfrmdissectwindow.button2.caption
+msgid "Toggle visible"
+msgstr "Показать/Скрыть"
+
+#: tfrmdissectwindow.button3.caption
+msgid "Close window"
+msgstr "Закрыть окно"
+
+#: tfrmdissectwindow.button4.caption
+msgid "Capture Timer Messages"
+msgstr "Сообщения таймера"
+
+#: tfrmdissectwindow.button5.caption
+msgctxt "TFRMDISSECTWINDOW.BUTTON5.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmdissectwindow.button6.caption
+msgid "Change text"
+msgstr "Изменить текст"
+
+#: tfrmdissectwindow.caption
+msgctxt "tfrmdissectwindow.caption"
+msgid "Dissect Windows"
+msgstr "Анализ окон"
+
+#: tfrmdotnetobjectlist.caption
+msgid ".Net Object List"
+msgstr "Список .Net объектов"
+
+#: tfrmdotnetobjectlist.listview1.columns[0].caption
+msgctxt "TFRMDOTNETOBJECTLIST.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmdotnetobjectlist.listview1.columns[1].caption
+msgid "Classname"
+msgstr "Название класса"
+
+#: tfrmdriverlist.button1.caption
+msgctxt "TFRMDRIVERLIST.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmdriverlist.caption
+msgctxt "tfrmdriverlist.caption"
+msgid "Driver list"
+msgstr "Список драйверов"
+
+#: tfrmdriverlist.find1.caption
+msgctxt "tfrmdriverlist.find1.caption"
+msgid "Find"
+msgstr "Поиск"
+
+#: tfrmdriverloaded.label1.caption
+msgid "DBK64 LOADED"
+msgstr "DBK64 ЗАГРУЖЕН"
+
+#: tfrmedithistory.button1.caption
+msgctxt "TFRMEDITHISTORY.BUTTON1.CAPTION"
+msgid "Refresh"
+msgstr "Обновить"
+
+#: tfrmedithistory.caption
+msgid "Write log"
+msgstr "Журнал записей"
+
+#: tfrmedithistory.cblogwrites.caption
+msgctxt "TFRMEDITHISTORY.CBLOGWRITES.CAPTION"
+msgid "Enable write logging"
+msgstr "Включить ведение журнала записей"
+
+#: tfrmedithistory.label1.caption
+msgctxt "tfrmedithistory.label1.caption"
+msgid "Max log size (nr of entries)"
+msgstr "Максимальный размер журнала(количество записей)"
+
+#: tfrmedithistory.lvwritelog.columns[0].caption
+msgctxt "TFRMEDITHISTORY.LVWRITELOG.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmedithistory.lvwritelog.columns[1].caption
+msgctxt "TFRMEDITHISTORY.LVWRITELOG.COLUMNS[1].CAPTION"
+msgid "Original bytes"
+msgstr "Ориг. байты"
+
+#: tfrmedithistory.lvwritelog.columns[2].caption
+msgctxt "TFRMEDITHISTORY.LVWRITELOG.COLUMNS[2].CAPTION"
+msgid "New bytes"
+msgstr "Новые байты"
+
+#: tfrmedithistory.miundo.caption
+msgctxt "TFRMEDITHISTORY.MIUNDO.CAPTION"
+msgid "Undo"
+msgstr "Отменить"
+
+#: tfrmexceptionignorelist.btnadd.caption
+msgctxt "TFRMEXCEPTIONIGNORELIST.BTNADD.CAPTION"
+msgid "Add"
+msgstr "Добавить"
+
+#: tfrmexceptionignorelist.caption
+msgid "Exception ignore list"
+msgstr "Список игнорируемых исключений"
+
+#: tfrmexceptionignorelist.label1.caption
+msgid "The following exceptions will be ignored"
+msgstr "Будут игнорированы следующие исключения"
+
+#: tfrmexceptionignorelist.label2.caption
+msgid "Exception code"
+msgstr "Код исключения"
+
+#: tfrmexceptionregionlist.btnadd.caption
+msgctxt "TFRME
