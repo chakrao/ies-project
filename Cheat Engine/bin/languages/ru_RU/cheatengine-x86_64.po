@@ -11200,4 +11200,186 @@ msgid "Tiny"
 msgstr "Крошечный"
 
 #: tfrmexetrainergenerator.cbtiny.hint
-msgid "Only put the train
+msgid "Only put the trainer data in the trainer. The user must have Cheat Engine installed to run this trainer"
+msgstr "Включает в себя только данные. Для запуска такого трейнера у пользователя должен быть установлен Cheat Engine"
+
+#: tfrmexetrainergenerator.cbvehdebug.caption
+msgctxt "TFRMEXETRAINERGENERATOR.CBVEHDEBUG.CAPTION"
+msgid "VEH Debugger"
+msgstr "VEH отладчик"
+
+#: tfrmexetrainergenerator.combocompression.text
+msgctxt "tfrmexetrainergenerator.combocompression.text"
+msgid "Max"
+msgstr "Макс."
+
+#: tfrmexetrainergenerator.groupbox1.caption
+msgid "Process"
+msgstr "Процесс"
+
+#: tfrmexetrainergenerator.groupbox2.caption
+msgid "Features used"
+msgstr "Используемые функции"
+
+#: tfrmexetrainergenerator.groupbox3.caption
+msgid "Extra files"
+msgstr "Дополнительные файлы"
+
+#: tfrmexetrainergenerator.groupbox4.caption
+msgid "Trainer size"
+msgstr "Размер трейнера"
+
+#: tfrmexetrainergenerator.label1.caption
+msgctxt "tfrmexetrainergenerator.label1.caption"
+msgid "Compression"
+msgstr "Сжатие"
+
+#: tfrmexetrainergenerator.listview1.columns[0].caption
+msgctxt "TFRMEXETRAINERGENERATOR.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmexetrainergenerator.listview1.columns[1].caption
+msgid "Relative folder"
+msgstr "Папка"
+
+#: tfrmexetrainergenerator.mieditfolder.caption
+msgid "Edit folder"
+msgstr "Изменить папку"
+
+#: tfrmexetrainergenerator.rb32.caption
+msgid "Target process is 32-bit"
+msgstr "Целью является 32-битный процесс"
+
+#: tfrmexetrainergenerator.rb64.caption
+msgid "Target process is 64-bit"
+msgstr "Целью является 64-битный процесс"
+
+#: tfrmfoundlistpreferences.btncancel.caption
+msgctxt "tfrmfoundlistpreferences.btncancel.caption"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmfoundlistpreferences.btnfont.caption
+msgid "Font"
+msgstr "Шрифт"
+
+#: tfrmfoundlistpreferences.btnok.caption
+msgctxt "tfrmfoundlistpreferences.btnok.caption"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmfoundlistpreferences.caption
+msgid "Foundlist Customizer"
+msgstr "Настройщик списка"
+
+#: tfrmfoundlistpreferences.cbshowstaticasstatic.caption
+msgid "Show static addresses using their static notation"
+msgstr "Показывать статические адреса с помощью их статической нотации"
+
+#: tfrmfoundlistpreferences.label1.caption
+msgid "Static"
+msgstr "Статический"
+
+#: tfrmfoundlistpreferences.label2.caption
+msgctxt "tfrmfoundlistpreferences.label2.caption"
+msgid "Example"
+msgstr "Пример"
+
+#: tfrmfoundlistpreferences.label3.caption
+msgid "Dynamic"
+msgstr "Динамический"
+
+#: tfrmfoundlistpreferences.label4.caption
+msgid "Normal value"
+msgstr "Стандартное значение"
+
+#: tfrmfoundlistpreferences.label5.caption
+msgctxt "tfrmfoundlistpreferences.label5.caption"
+msgid "Changed value"
+msgstr "Изменённое значение"
+
+#: tfrmfoundlistpreferences.label6.caption
+msgctxt "tfrmfoundlistpreferences.label6.caption"
+msgid "Background color"
+msgstr "Цвет фона"
+
+#: tfrmfoundlistpreferences.listview1.columns[0].caption
+msgctxt "tfrmfoundlistpreferences.listview1.columns[0].caption"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmfoundlistpreferences.listview1.columns[1].caption
+msgctxt "tfrmfoundlistpreferences.listview1.columns[1].caption"
+msgid "Value"
+msgstr "Значение"
+
+#: tfrmhighlightereditor.button1.caption
+msgctxt "tfrmhighlightereditor.button1.caption"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmhighlightereditor.button2.caption
+msgctxt "tfrmhighlightereditor.button2.caption"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmhighlightereditor.caption
+msgid "Highlighter configurator"
+msgstr "Конфигуратор подсветки"
+
+#: tfrmhighlightereditor.cbbold.caption
+msgid "Bold"
+msgstr "Полужирный"
+
+#: tfrmhighlightereditor.cbitalic.caption
+msgid "Italic"
+msgstr "Курсив"
+
+#: tfrmhighlightereditor.cbstrikeout.caption
+msgid "Strikeout"
+msgstr "Зачёркнутый"
+
+#: tfrmhighlightereditor.cbunderline.caption
+msgid "Underline"
+msgstr "Подчёркнутый"
+
+#: tfrmhighlightereditor.label2.caption
+msgctxt "tfrmhighlightereditor.label2.caption"
+msgid "Background Color"
+msgstr "Цвет фона"
+
+#: tfrmhighlightereditor.label3.caption
+msgid "Foreground Color"
+msgstr "Цвет текста"
+
+#: tfrmhighlightereditor.label4.caption
+msgid "Style"
+msgstr "Стиль"
+
+#: tfrmfilepatcher.button1.caption
+msgid "Patch"
+msgstr "Патч"
+
+#: tfrmfilepatcher.caption
+msgid "File patcher"
+msgstr "Патчер файла"
+
+#: tfrmfilepatcher.lblbaseaddress.caption
+msgid "Base address (MZ header)"
+msgstr "Базовый адрес (MZ заголовок)"
+
+#: tfrmfilepatcher.lblfilename.caption
+msgctxt "tfrmfilepatcher.lblfilename.caption"
+msgid "Filename"
+msgstr "Название файла"
+
+#: tfrmfilepatcher.rbauto.caption
+msgid "Apply changes for specified module"
+msgstr "Применить изменения для указанного модуля"
+
+#: tfrmfilepatcher.rbmanual.caption
+msgid "Manual"
+msgstr "Вручную"
+
+#: tfrm
