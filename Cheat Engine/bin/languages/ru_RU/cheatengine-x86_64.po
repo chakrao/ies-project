@@ -11035,4 +11035,169 @@ msgid "Exception code"
 msgstr "Код исключения"
 
 #: tfrmexceptionregionlist.btnadd.caption
-msgctxt "TFRME
+msgctxt "TFRMEXCEPTIONREGIONLIST.BTNADD.CAPTION"
+msgid "Add"
+msgstr "Добавить"
+
+#: tfrmexceptionregionlist.caption
+msgid "Exception region list"
+msgstr "Список исключений в регионах"
+
+#: tfrmexceptionregionlist.cbautoaddallocs.caption
+msgid "Automatically add user allocations"
+msgstr "Автодобавление пользовательских выделений"
+
+#: tfrmexceptionregionlist.label1.caption
+msgid "The following regions will cause a debugger break when an unhandled exception happens inside them"
+msgstr "Следующие регионы вызовут прерывание отладчика, когда в них произойдёт необработанное исключение"
+
+#: tfrmexceptionregionlist.label2.caption
+msgctxt "TFRMEXCEPTIONREGIONLIST.LABEL2.CAPTION"
+msgid "Start address"
+msgstr "Стартовый адрес"
+
+#: tfrmexceptionregionlist.label3.caption
+msgid "End address"
+msgstr "Конечный адрес"
+
+#: tfrmexceptionregionlist.miclear.caption
+msgctxt "TFRMEXCEPTIONREGIONLIST.MICLEAR.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmexceptionregionlist.mifile.caption
+msgctxt "TFRMEXCEPTIONREGIONLIST.MIFILE.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmexceptionregionlist.miopen.caption
+msgid "Open..."
+msgstr "Открыть..."
+
+#: tfrmexceptionregionlist.misave.caption
+msgid "Save..."
+msgstr "Сохранить..."
+
+#: tfrmenumeratedlls.button1.caption
+msgctxt "TFRMENUMERATEDLLS.BUTTON1.CAPTION"
+msgid "Close"
+msgstr "Закрыть"
+
+#: tfrmenumeratedlls.button2.caption
+msgid "Cancel Enum"
+msgstr "Отмена"
+
+#: tfrmenumeratedlls.caption
+msgid "Enumerate DLL's"
+msgstr "Список загруженных DLL"
+
+#: tfrmenumeratedlls.copysymbolname.caption
+msgid "Copy Symbol Name"
+msgstr "Копировать имя символа"
+
+#: tfrmenumeratedlls.find.caption
+msgctxt "TFRMENUMERATEDLLS.FIND.CAPTION"
+msgid "Find"
+msgstr "Поиск"
+
+#: tfrmenumeratedlls.label2.caption
+msgid "Symbols"
+msgstr "Символы"
+
+#: tfrmexcludehide.button1.caption
+msgctxt "TFRMEXCLUDEHIDE.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmexcludehide.button2.caption
+msgctxt "TFRMEXCLUDEHIDE.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmexcludehide.caption
+msgid "Show/Hide settings"
+msgstr "Настройки показа/скрытия"
+
+#: tfrmexcludehide.label1.caption
+msgid "Select the processes you want to exclude from being hidden. Doubleclick the process to add it to the list. (Or remove it from the list)"
+msgstr "Выберите процессы, которые не будут скрыты. Двойной клик по процессу добавит его в список (или удалит из него)"
+
+#: tfrmexcludehide.label2.caption
+msgid "Current process list"
+msgstr "Список текущих процессов"
+
+#: tfrmexcludehide.label3.caption
+msgid "List of processes that will not hide"
+msgstr "Процессы, которые не скроются"
+
+#: tfrmexcludehide.label4.caption
+msgid "Select the way cheat Engine hides/shows windows. (Will not work if a window that gets hidden or shown is not responding. E.g:Paused)"
+msgstr "Выберите способ скрытия/показа окон. (Не сработает, если окно не ответит. Например: процесс остановлен)"
+
+#: tfrmexcludehide.radiobutton1.caption
+msgid "Only hide/show the foreground window"
+msgstr "Скрывать/показывать только активное окно"
+
+#: tfrmexcludehide.radiobutton2.caption
+msgid "Hide/show ALL windows"
+msgstr "Скрывать/показывать ВСЕ окна"
+
+#: tfrmexetrainergenerator.btnaddfile.caption
+msgid "Add file(s)"
+msgstr "Добавить файл(ы)"
+
+#: tfrmexetrainergenerator.btngeneratetrainer.caption
+msgctxt "tfrmexetrainergenerator.btngeneratetrainer.caption"
+msgid "Generate"
+msgstr "Сгенерировать"
+
+#: tfrmexetrainergenerator.btnremovefile.caption
+msgid "Remove file"
+msgstr "Убрать файл"
+
+#: tfrmexetrainergenerator.button1.caption
+msgid "Change EXE Icon"
+msgstr "Изменить иконку"
+
+#: tfrmexetrainergenerator.button3.caption
+msgid "Add folder"
+msgstr "Добавить папку"
+
+#: tfrmexetrainergenerator.caption
+msgid "Exe Trainer Generator"
+msgstr "Генератор EXE трейнера"
+
+#: tfrmexetrainergenerator.cbd3dhook.caption
+msgid "D3DHook"
+msgstr "Перехват D3D"
+
+#: tfrmexetrainergenerator.cbdotnet.caption
+msgid ".NET"
+msgstr ".NET"
+
+#: tfrmexetrainergenerator.cbgigantic.caption
+msgid "Gigantic"
+msgstr "Гигантский"
+
+#: tfrmexetrainergenerator.cbgigantic.hint
+msgid "Puts the Cheat Engine executable, dll's and other requirements into the trainer"
+msgstr "Включает в себя исполняемый файл Cheat Engine, dll'ки и другие необходимые файлы"
+
+#: tfrmexetrainergenerator.cbkerneldebug.caption
+msgid "Kernel Tools"
+msgstr "Инструменты ядра"
+
+#: tfrmexetrainergenerator.cbmodplayer.caption
+msgid "Module Player"
+msgstr "Модульный проигрыватель"
+
+#: tfrmexetrainergenerator.cbspeedhack.caption
+msgid "Speedhack"
+msgstr "Спидхак"
+
+#: tfrmexetrainergenerator.cbtiny.caption
+msgid "Tiny"
+msgstr "Крошечный"
+
+#: tfrmexetrainergenerator.cbtiny.hint
+msgid "Only put the train
