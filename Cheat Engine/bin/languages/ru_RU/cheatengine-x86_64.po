@@ -11575,4 +11575,214 @@ msgctxt "TFRMHEAPS.BUTTON1.CAPTION"
 msgid "Close"
 msgstr "Закрыть"
 
-#: tfrmheaps.capti
+#: tfrmheaps.caption
+msgid "Current Heaplist"
+msgstr "Текущий список куч"
+
+#: tfrmheaps.listview1.columns[0].caption
+msgctxt "TFRMHEAPS.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmheaps.listview1.columns[1].caption
+msgctxt "TFRMHEAPS.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Size"
+msgstr "Размер"
+
+#: tfrmhotkeyex.button1.caption
+msgctxt "TFRMHOTKEYEX.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmhotkeyex.button2.caption
+msgctxt "TFRMHOTKEYEX.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmhotkeyex.button3.caption
+msgctxt "TFRMHOTKEYEX.BUTTON3.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmhotkeyex.caption
+msgid "Set Hotkey"
+msgstr "Назначение горячих клавиш"
+
+#: tfrmhotkeyex.label1.caption
+msgid "Press the key combination you want to use"
+msgstr "Нажмите комбинацию, которую хотите использовать"
+
+#: tfrmidt.caption
+msgid "IDT"
+msgstr "Таблица дескрипторов прерываний"
+
+#: tfrmloadmemory.button1.caption
+msgctxt "TFRMLOADMEMORY.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmloadmemory.button2.caption
+msgctxt "TFRMLOADMEMORY.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmloadmemory.button3.caption
+msgctxt "TFRMLOADMEMORY.BUTTON3.CAPTION"
+msgid "Edit"
+msgstr "Редактировать"
+
+#: tfrmloadmemory.caption
+msgid "Load Memory Region"
+msgstr "Загрузить регион памяти"
+
+#: tfrmloadmemory.label1.caption
+msgctxt "TFRMLOADMEMORY.LABEL1.CAPTION"
+msgid "Address:"
+msgstr "Адрес:"
+
+#: tfrmluaengine.btnexecute.caption
+msgctxt "TFRMLUAENGINE.BTNEXECUTE.CAPTION"
+msgid "Execute"
+msgstr "Выполнить"
+
+#: tfrmluaengine.caption
+msgctxt "tfrmluaengine.caption"
+msgid "Lua Engine"
+msgstr "Lua Engine"
+
+#: tfrmluaengine.cbshowonprint.caption
+msgid "Show on \"print\""
+msgstr "Всплытие окна Lua Engine при вызове функции «print»"
+
+#: tfrmluaengine.groupbox1.caption
+msgctxt "tfrmluaengine.groupbox1.caption"
+msgid "Output"
+msgstr "Вывод"
+
+#: tfrmluaengine.menuitem1.caption
+msgctxt "TFRMLUAENGINE.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmluaengine.menuitem11.caption
+msgctxt "tfrmluaengine.menuitem11.caption"
+msgid "New window"
+msgstr "Новое окно"
+
+#: tfrmluaengine.menuitem15.caption
+msgctxt "tfrmluaengine.menuitem15.caption"
+msgid "Lua syntax highlighting preferences"
+msgstr "Настройки подсветки синтаксиса Lua"
+
+#: tfrmluaengine.menuitem2.caption
+msgid "Open script"
+msgstr "Открыть скрипт"
+
+#: tfrmluaengine.menuitem3.caption
+msgid "Save current script"
+msgstr "Сохранить текущий скрипт"
+
+#: tfrmluaengine.menuitem5.caption
+msgid "Clear output"
+msgstr "Очистить вывод"
+
+#: tfrmluaengine.miautocomplete.caption
+msgid "Autocomplete"
+msgstr "Автозавершение"
+
+#: tfrmluaengine.micopy.caption
+msgctxt "tfrmluaengine.micopy.caption"
+msgid "Copy"
+msgstr "Копировать"
+
+#: tfrmluaengine.micut.caption
+msgctxt "tfrmluaengine.micut.caption"
+msgid "Cut"
+msgstr "Вырезать"
+
+#: tfrmluaengine.midebug.caption
+msgctxt "tfrmluaengine.midebug.caption"
+msgid "Debug"
+msgstr "Отладка"
+
+#: tfrmluaengine.mifind.caption
+msgctxt "tfrmluaengine.mifind.caption"
+msgid "Find"
+msgstr "Найти"
+
+#: tfrmluaengine.mifindreplace.caption
+msgctxt "tfrmluaengine.mifindreplace.caption"
+msgid "Find/Replace"
+msgstr "Найти/Заменить"
+
+#: tfrmluaengine.mipaste.caption
+msgctxt "tfrmluaengine.mipaste.caption"
+msgid "Paste"
+msgstr "Вставить"
+
+#: tfrmluaengine.miredo.caption
+msgctxt "tfrmluaengine.miredo.caption"
+msgid "Redo"
+msgstr "Вернуть"
+
+#: tfrmluaengine.miresizeoutput.caption
+msgid "Resize output on resize"
+msgstr "Изменять размер вывода при изменении размера окна"
+
+#: tfrmluaengine.mirun.caption
+msgctxt "tfrmluaengine.mirun.caption"
+msgid "Run"
+msgstr "Запустить"
+
+#: tfrmluaengine.misavecurrentscriptas.caption
+msgid "Save current script as..."
+msgstr "Сохранить текущий скрипт как..."
+
+#: tfrmluaengine.misetbreakpoint.caption
+msgid "Set breakpoint"
+msgstr "Установить брейкпоинт"
+
+#: tfrmluaengine.mishowscriptinoutput.caption
+msgid "Show script in output"
+msgstr "Показывать скрипт в выводе"
+
+#: tfrmluaengine.misinglestep.caption
+msgid "Single step"
+msgstr "Шаг"
+
+#: tfrmluaengine.miundo.caption
+msgctxt "tfrmluaengine.miundo.caption"
+msgid "Undo"
+msgstr "Отменить"
+
+#: tfrmluaengine.miview.caption
+msgctxt "TFRMLUAENGINE.MIVIEW.CAPTION"
+msgid "View"
+msgstr "Вид"
+
+#: tfrmluaengine.tbrun.hint
+msgid "Continue"
+msgstr "Продолжить"
+
+#: tfrmluaengine.tbsinglestep.hint
+msgid "Single Step"
+msgstr "Шаг"
+
+#: tfrmluaengine.tbstopdebug.hint
+msgctxt "TFRMLUAENGINE.TBSTOPDEBUG.HINT"
+msgid "Stop"
+msgstr "Стоп"
+
+#: tfrmluascriptquestion.button1.caption
+msgctxt "TFRMLUASCRIPTQUESTION.BUTTON1.CAPTION"
+msgid "Yes"
+msgstr "Да"
+
+#: tfrmluascriptquestion.button2.caption
+msgctxt "TFRMLUASCRIPTQUESTION.BUTTON2.CAPTION"
+msgid "No"
+msgstr "Нет"
+
+#: tfrmluascriptquestion.caption
+msgid "Execute this lua script?"
+msgstr "Выполнить этот lua скри
