@@ -11785,4 +11785,156 @@ msgstr "Нет"
 
 #: tfrmluascriptquestion.caption
 msgid "Execute this lua script?"
-msgstr "Выполнить этот lua скри
+msgstr "Выполнить этот lua скрипт?"
+
+#: tfrmluascriptquestion.groupbox5.caption
+msgid "Future reference:"
+msgstr "Дальнейшая ссылка:"
+
+#: tfrmluascriptquestion.label16.caption
+msgctxt "tfrmluascriptquestion.label16.caption"
+msgid "When a table has a lua script, execute it:"
+msgstr "Выполнять lua скрипт, если он присутствует в таблице:"
+
+#: tfrmluascriptquestion.rbalways.caption
+msgctxt "tfrmluascriptquestion.rbalways.caption"
+msgid "Always"
+msgstr "Всегда"
+
+#: tfrmluascriptquestion.rbalways.hint
+msgid "Don't show this dialog anymore and always execute the scripts"
+msgstr "Больше не показывать этот диалог и всегда выполнять скрипты"
+
+#: tfrmluascriptquestion.rbalwaysask.caption
+msgctxt "tfrmluascriptquestion.rbalwaysask.caption"
+msgid "Always ask"
+msgstr "Всегда спрашивать"
+
+#: tfrmluascriptquestion.rbalwaysask.hint
+msgid "Always show this dialog, even if trusted"
+msgstr "Всегда показывайте этот диалог, даже если доверяете"
+
+#: tfrmluascriptquestion.rbnever.caption
+msgctxt "tfrmluascriptquestion.rbnever.caption"
+msgid "Never"
+msgstr "Никогда"
+
+#: tfrmluascriptquestion.rbnever.hint
+msgid "Don't show this dialog anymore and never execute the scripts"
+msgstr "Больше не показывать этот диалог и никогда не выполнять скрипты"
+
+#: tfrmluascriptquestion.rbsignedonly.caption
+msgctxt "tfrmluascriptquestion.rbsignedonly.caption"
+msgid "Only when signed, else ask"
+msgstr "Только если подписан, иначе спрашивать"
+
+#: tfrmluascriptquestion.rbsignedonly.hint
+msgid "Only automatically execute lua scripts from trusted sources, else ask"
+msgstr "Автоматически выполнять lua скрипты только из доверяемых источников, иначе спрашивать"
+
+#: tfrmmanualstacktraceconfig.btncancel.caption
+msgctxt "TFRMMANUALSTACKTRACECONFIG.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmmanualstacktraceconfig.btnok.caption
+msgctxt "TFRMMANUALSTACKTRACECONFIG.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmmanualstacktraceconfig.caption
+msgid "Manual stacktrace config"
+msgstr "Конфигурация ручной трассировки стека"
+
+#: tfrmmanualstacktraceconfig.cbuseshadow.caption
+msgid "Use shadow copy"
+msgstr "Использовать теневую копию"
+
+#: tfrmmanualstacktraceconfig.label1.caption
+msgid "Original base"
+msgstr "Оригинальная основа"
+
+#: tfrmmanualstacktraceconfig.label3.caption
+msgctxt "TFRMMANUALSTACKTRACECONFIG.LABEL3.CAPTION"
+msgid "Size"
+msgstr "Размер"
+
+#: tfrmmanualstacktraceconfig.label4.caption
+msgid "New copy"
+msgstr "Новая копия"
+
+#: tfrmmemoryallochandler.btnreload.caption
+msgid "Reload"
+msgstr "Обновить"
+
+#: tfrmmemoryallochandler.button1.caption
+msgid "Check Address"
+msgstr "Проверить адрес"
+
+#: tfrmmemoryallochandler.caption
+msgid "Memory Allocations"
+msgstr "Распределение памяти"
+
+#: tfrmmemoryallochandler.cbhookallocs.caption
+msgid "Hook alloc functions"
+msgstr "Перехват функции alloc"
+
+#: tfrmmemoryallochandler.groupbox1.caption
+msgid "Data"
+msgstr "Данные"
+
+#: tfrmmemoryallochandler.label1.caption
+msgid "Flags:"
+msgstr "Флаги:"
+
+#: tfrmmemoryallochandler.label2.caption
+msgid "Base Address:"
+msgstr "Базовый адрес:"
+
+#: tfrmmemoryallochandler.label3.caption
+msgid "HeapHandle"
+msgstr "Дескриптор кучи:"
+
+#: tfrmmemoryallochandler.label4.caption
+msgctxt "tfrmmemoryallochandler.label4.caption"
+msgid "Size:"
+msgstr "Размер:"
+
+#: tfrmmemoryallochandler.lblerr.caption
+msgid "Couldn't find in heap. Found using the Alloc hook. (Not very useful)"
+msgstr "Не удалось найти в куче. Воспользуйтесь перехватом функции Alloc. (Не очень полезный метод)"
+
+#: tfrmmemoryrecorddropdownsettings.btncancel.caption
+msgctxt "TFRMMEMORYRECORDDROPDOWNSETTINGS.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmmemoryrecorddropdownsettings.btnok.caption
+msgctxt "TFRMMEMORYRECORDDROPDOWNSETTINGS.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmmemoryrecorddropdownsettings.caption
+msgid "Dropdown options"
+msgstr "Настройки выпадающего списка"
+
+#: tfrmmemoryrecorddropdownsettings.cbdisallowuserinput.caption
+msgid "Disallow manual user input"
+msgstr "Запретить ручной ввод данных пользователем"
+
+#: tfrmmemoryrecorddropdownsettings.cbdisplayasdropdownitem.caption
+msgid "Make the record display values like the dropdown list"
+msgstr "Отображать значения записи как в выпадающ. списке"
+
+#: tfrmmemoryrecorddropdownsettings.cbonlyshowdescription.caption
+msgid "Only show the description part"
+msgstr "Показывать только описание"
+
+#: tfrmmemoryrecorddropdownsettings.copy1.caption
+msgctxt "TFRMMEMORYRECORDDROPDOWNSETTINGS.COPY1.CAPTION"
+msgid "Copy"
+msgstr "Копировать"
+
+#: tfrmmemoryrecorddropdownsettings.cut1.caption
+msgctxt "TFRMMEMORYRECORDDROPDOWNSETTINGS.CUT1.CAPTION"
+msgid "Cu
