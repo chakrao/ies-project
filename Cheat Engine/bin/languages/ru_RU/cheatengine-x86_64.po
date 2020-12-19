@@ -11382,4 +11382,197 @@ msgstr "Применить изменения для указанного мод
 msgid "Manual"
 msgstr "Вручную"
 
-#: tfrm
+#: tfrmfillmemory.button1.caption
+msgctxt "TFRMFILLMEMORY.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmfillmemory.button2.caption
+msgctxt "TFRMFILLMEMORY.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmfillmemory.caption
+msgid "Fill memory"
+msgstr "Заполнить память"
+
+#: tfrmfillmemory.label1.caption
+msgctxt "TFRMFILLMEMORY.LABEL1.CAPTION"
+msgid "From"
+msgstr "От"
+
+#: tfrmfillmemory.label2.caption
+msgctxt "TFRMFILLMEMORY.LABEL2.CAPTION"
+msgid "To"
+msgstr "До"
+
+#: tfrmfillmemory.label3.caption
+msgid "Fill with"
+msgstr "Заполнить"
+
+#: tfrmfinddialog.btnfind.caption
+msgctxt "TFRMFINDDIALOG.BTNFIND.CAPTION"
+msgid "Find"
+msgstr "Найти"
+
+#: tfrmfinddialog.button1.caption
+msgctxt "TFRMFINDDIALOG.BUTTON1.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmfinddialog.caption
+msgctxt "TFRMFINDDIALOG.CAPTION"
+msgid "Find"
+msgstr "Найти"
+
+#: tfrmfinddialog.cbcasesensitive.caption
+msgctxt "TFRMFINDDIALOG.CBCASESENSITIVE.CAPTION"
+msgid "Case sensitive"
+msgstr "С учётом регистра"
+
+#: tfrmfinddialog.label1.caption
+msgctxt "TFRMFINDDIALOG.LABEL1.CAPTION"
+msgid "Text"
+msgstr "Текст"
+
+#: tfrmfinddialog.lbldescription.caption
+msgid "Enter the text to search:"
+msgstr "Введите текст для поиска:"
+
+#: tfrmfinddialog.rgupdown.caption
+msgid "Direction"
+msgstr "Направление"
+
+#: tfrmfindstatics.button1.caption
+msgctxt "tfrmfindstatics.button1.caption"
+msgid "Stopping..."
+msgstr "Остановка..."
+
+#: tfrmfindstatics.caption
+msgctxt "tfrmfindstatics.caption"
+msgid "Find static addresses"
+msgstr "Поиск статических адресов"
+
+#: tfrmfindstatics.checkbox1.caption
+msgid "Only disassemble and check executable code"
+msgstr "Только разбирать и проверять исполняемый код"
+
+#: tfrmfindstatics.label1.caption
+msgctxt "TFRMFINDSTATICS.LABEL1.CAPTION"
+msgid "From"
+msgstr "От"
+
+#: tfrmfindstatics.label2.caption
+msgctxt "tfrmfindstatics.label2.caption"
+msgid "To:"
+msgstr "До:"
+
+#: tfrmfindstatics.label4.caption
+msgid "Filter addresses"
+msgstr "Отфильтровать адреса"
+
+#: tfrmfindstatics.label5.caption
+msgctxt "TFRMFINDSTATICS.LABEL5.CAPTION"
+msgid "From"
+msgstr "От"
+
+#: tfrmfindstatics.label6.caption
+msgctxt "TFRMFINDSTATICS.LABEL6.CAPTION"
+msgid "To:"
+msgstr "До:"
+
+#: tfrmfindstatics.listview1.columns[0].caption
+msgctxt "TFRMFINDSTATICS.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmfindstatics.listview1.columns[1].caption
+msgid "Pointer?"
+msgstr "Указатель?"
+
+#: tfrmfindstatics.listview1.columns[2].caption
+msgid "Reference count"
+msgstr "Кол-во ссылок"
+
+#: tfrmfloatingpointpanel.caption
+msgid "FPU"
+msgstr "Регистры с плавающей точкой"
+
+#: tfrmfloatingpointpanel.cbclassicview.caption
+msgid "Classic view"
+msgstr "Классический вид"
+
+#: tfrmfloatingpointpanel.cbcontextsection.text
+msgctxt "TFRMFLOATINGPOINTPANEL.CBCONTEXTSECTION.TEXT"
+msgid "XMMRegisters"
+msgstr "Регистры XMM"
+
+#: tfrmfloatingpointpanel.cbdisplaytype.text
+msgctxt "TFRMFLOATINGPOINTPANEL.CBDISPLAYTYPE.TEXT"
+msgid "Float"
+msgstr "Float"
+
+#: tfrmfloatingpointpanel.tabsheet2.caption
+msgctxt "tfrmfloatingpointpanel.tabsheet2.caption"
+msgid "Extended"
+msgstr "Расширенные"
+
+#: tfrmgdtinfo.caption
+msgid "GDT"
+msgstr "Таблица глобальных дескрипторов"
+
+#: tfrmgnuassembler.caption
+msgid "GNU Assembler+"
+msgstr "GNU Ассемблер+"
+
+#: tfrmgroupscanalgoritmgenerator.btncancel.caption
+msgctxt "TFRMGROUPSCANALGORITMGENERATOR.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmgroupscanalgoritmgenerator.btnok.caption
+msgctxt "TFRMGROUPSCANALGORITMGENERATOR.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmgroupscanalgoritmgenerator.caption
+msgctxt "tfrmgroupscanalgoritmgenerator.caption"
+msgid "Generate groupscan command"
+msgstr "Генерация группового поиска"
+
+#: tfrmgroupscanalgoritmgenerator.cboutoforder.caption
+msgid "Out of order"
+msgstr "Не по порядку"
+
+#: tfrmgroupscanalgoritmgenerator.cbtypealigned.caption
+msgid "Must be type-aligned"
+msgstr "Выровнять по типу"
+
+#: tfrmgroupscanalgoritmgenerator.lblblockalignment.caption
+msgid "Block alignment"
+msgstr "Выравнивание блока"
+
+#: tfrmgroupscanalgoritmgenerator.lblblocksize.caption
+msgid "Blocksize"
+msgstr "Размер блока"
+
+#: tfrmgroupscanalgoritmgenerator.lblmin.caption
+msgid "lblMin"
+msgstr "lblMin"
+
+#: tfrmgroupscanalgoritmgenerator.lblmustbedividable.caption
+msgid "Must be dividable by 4"
+msgstr "Должно быть кратно 4"
+
+#: tfrmgroupscanalgoritmgenerator.lblwildcardexplanation.caption
+msgid "Leave a value empty or use * for wildcard"
+msgstr ""
+"Оставьте значение пустым или воспользуйтесь\n"
+"подстановочным знаком *"
+
+#: tfrmheaps.button1.caption
+msgctxt "TFRMHEAPS.BUTTON1.CAPTION"
+msgid "Close"
+msgstr "Закрыть"
+
+#: tfrmheaps.capti
