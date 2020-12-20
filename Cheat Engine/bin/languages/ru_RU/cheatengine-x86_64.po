@@ -11937,4 +11937,186 @@ msgstr "Копировать"
 
 #: tfrmmemoryrecorddropdownsettings.cut1.caption
 msgctxt "TFRMMEMORYRECORDDROPDOWNSETTINGS.CUT1.CAPTION"
-msgid "Cu
+msgid "Cut"
+msgstr "Вырезать"
+
+#: tfrmmemoryrecorddropdownsettings.label1.caption
+msgid "Leave empty for no dropdown list"
+msgstr "Не заполняйте, если выпадающий список вам не нужен"
+
+#: tfrmmemoryrecorddropdownsettings.label2.caption
+msgid "Value:Description or (memrecdescription)"
+msgstr "Значение:Описание"
+
+#: tfrmmemoryrecorddropdownsettings.label3.caption
+msgid "*:Text Value to display if no value in the list is found"
+msgstr "*: Текстовое значение для отображения, если значение не найдено в списке"
+
+#: tfrmmemoryrecorddropdownsettings.lblformat.caption
+msgid "Format:"
+msgstr "Формат:"
+
+#: tfrmmemoryrecorddropdownsettings.paste1.caption
+msgctxt "TFRMMEMORYRECORDDROPDOWNSETTINGS.PASTE1.CAPTION"
+msgid "Paste"
+msgstr "Вставить"
+
+#: tfrmmemoryrecorddropdownsettings.undo1.caption
+msgctxt "TFRMMEMORYRECORDDROPDOWNSETTINGS.UNDO1.CAPTION"
+msgid "Undo"
+msgstr "Отменить"
+
+#: tfrmmemoryviewex.btnmemmap.caption
+msgid "Fetch memory map"
+msgstr "Извлечь карту"
+
+#: tfrmmemoryviewex.btnmemmap.hint
+msgid "Current memory size of visible screen, press to set scroll size to match this as closely as possible"
+msgstr "Нажмите, чтобы размер прокрутки как можно точнее соответствовал текущего размеру памяти видимого экрана"
+
+#: tfrmmemoryviewex.caption
+msgid "Graphical Memory View "
+msgstr "Графическое представление памяти "
+
+#: tfrmmemoryviewex.cbaddresslist.text
+msgctxt "TFRMMEMORYVIEWEX.CBADDRESSLIST.TEXT"
+msgid "Current Memory"
+msgstr "Текущая память"
+
+#: tfrmmemoryviewex.cbaddresslistonly.caption
+msgid "Only show addresslist memory"
+msgstr "Показывать только адреса из списка найденных адресов"
+
+#: tfrmmemoryviewex.cbcolor.text
+msgid "RGBA"
+msgstr "RGBA"
+
+#: tfrmmemoryviewex.cbsavedlist.text
+msgctxt "TFRMMEMORYVIEWEX.CBSAVEDLIST.TEXT"
+msgid "Current Memory"
+msgstr "Текущая память"
+
+#: tfrmmemoryviewex.cbtype.text
+msgctxt "tfrmmemoryviewex.cbtype.text"
+msgid "Byte"
+msgstr "Байт"
+
+#: tfrmmemoryviewex.cbcompare.caption
+msgctxt "tfrmmemoryviewex.cbcompare.caption"
+msgid "Compare against"
+msgstr "Сравнить с"
+
+#: tfrmmemoryviewex.edtpitch.hint
+msgid "Number of bytes a row exists out"
+msgstr "Число байт вне строки"
+
+#: tfrmmemoryviewex.label1.caption
+msgctxt "TFRMMEMORYVIEWEX.LABEL1.CAPTION"
+msgid "Type"
+msgstr "Тип"
+
+#: tfrmmemoryviewex.label2.caption
+msgid "Pixels per line"
+msgstr "Пикселей на линию"
+
+#: tfrmmemoryviewex.label3.caption
+msgid "Color"
+msgstr "Цветовая модель"
+
+#: tfrmmemoryviewex.lbladdress.caption
+msgctxt "TFRMMEMORYVIEWEX.LBLADDRESS.CAPTION"
+msgid "Address:"
+msgstr "Адрес:"
+
+#: tfrmmemoryviewex.lblzoom.caption
+msgid "Zoom:"
+msgstr "Масштабирование:"
+
+#: tfrmmemoryviewex.rbor.caption
+msgid "Or"
+msgstr "или"
+
+#: tfrmmemoryviewex.rband.caption
+msgid "And"
+msgstr "и"
+
+#: tfrmmemoryviewex.rbxor.caption
+msgid "Xor"
+msgstr "исключающее ИЛИ"
+
+#: tfrmmemreccombobox.btncancel.caption
+msgctxt "TFRMMEMRECCOMBOBOX.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmmemreccombobox.btnok.caption
+msgctxt "TFRMMEMRECCOMBOBOX.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmmemreccombobox.caption
+msgctxt "TFRMMEMRECCOMBOBOX.CAPTION"
+msgid "Change value"
+msgstr "Изменить значение"
+
+#: tfrmmemreccombobox.label1.caption
+msgid "Change value to:"
+msgstr "Изменить значение на:"
+
+#: tfrmmemviewpreferences.btnfont.caption
+msgid "Change disassembler font"
+msgstr "Изменить шрифт дизассемблера"
+
+#: tfrmmemviewpreferences.btnhexfont.caption
+msgid "Change hexview font"
+msgstr "Изменить шрифт Hex-редактора"
+
+#: tfrmmemviewpreferences.btnregisterviewfont.caption
+msgid "Change registerview font"
+msgstr "Изменить шрифт панели регистров"
+
+#: tfrmmemviewpreferences.button2.caption
+msgctxt "tfrmmemviewpreferences.button2.caption"
+msgid "Apply"
+msgstr "Применить"
+
+#: tfrmmemviewpreferences.button3.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.BUTTON3.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmmemviewpreferences.caption
+msgid "Disassembler Preferences"
+msgstr "Настройки дизассемблера"
+
+#: tfrmmemviewpreferences.cbcolorgroup.text
+msgctxt "tfrmmemviewpreferences.cbcolorgroup.text"
+msgid "Normal"
+msgstr "Стандартный"
+
+#: tfrmmemviewpreferences.cbfontquality.hint
+msgctxt "tfrmmemviewpreferences.cbfontquality.hint"
+msgid "The font quality can impact speed"
+msgstr "Качество шрифта может повлиять на скорость"
+
+#: tfrmmemviewpreferences.cbshowstatusbar.caption
+msgid "Show statusbar"
+msgstr "Показать строку состояния"
+
+#: tfrmmemviewpreferences.groupbox6.caption
+msgid "Register panel"
+msgstr "Панель регистров"
+
+#: tfrmmemviewpreferences.lblregisterexample.caption
+msgid "Example"
+msgstr "Пример"
+
+#: tfrmmemviewpreferences.groupbox1.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.GROUPBOX1.CAPTION"
+msgid "Normal"
+msgstr "Стандартный"
+
+#: tfrmmemviewpreferences.groupbox2.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.GROUPBOX2.CAPTION"
+msgid "Disassembler"
+msgstr "Дизассем
