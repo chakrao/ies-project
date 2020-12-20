@@ -12119,4 +12119,172 @@ msgstr "Стандартный"
 #: tfrmmemviewpreferences.groupbox2.caption
 msgctxt "TFRMMEMVIEWPREFERENCES.GROUPBOX2.CAPTION"
 msgid "Disassembler"
-msgstr "Дизассем
+msgstr "Дизассемблер"
+
+#: tfrmmemviewpreferences.groupbox3.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.GROUPBOX3.CAPTION"
+msgid "Hexview"
+msgstr "Hex-редактор"
+
+#: tfrmmemviewpreferences.groupbox4.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.GROUPBOX4.CAPTION"
+msgid "Jumplines"
+msgstr "Линии переходов"
+
+#: tfrmmemviewpreferences.groupbox5.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.GROUPBOX5.CAPTION"
+msgid "Space between lines"
+msgstr "Расстояние между линиями"
+
+#: tfrmmemviewpreferences.label1.caption
+msgctxt "tfrmmemviewpreferences.label1.caption"
+msgid "Font quality"
+msgstr "Качество шрифта"
+
+#: tfrmmemviewpreferences.label3.caption
+msgctxt "tfrmmemviewpreferences.label3.caption"
+msgid "Space between lines"
+msgstr "Расстояние между линиями"
+
+#: tfrmmemviewpreferences.label4.caption
+msgid "Thickness"
+msgstr "Толщина"
+
+#: tfrmmemviewpreferences.label5.caption
+msgid "Spacing"
+msgstr "Интервал"
+
+#: tfrmmemviewpreferences.label6.caption
+msgctxt "tfrmmemviewpreferences.label6.caption"
+msgid "Above"
+msgstr "Сверху"
+
+#: tfrmmemviewpreferences.label7.caption
+msgctxt "tfrmmemviewpreferences.label7.caption"
+msgid "Below"
+msgstr "Снизу"
+
+#: tfrmmemviewpreferences.lblcall.caption
+msgctxt "tfrmmemviewpreferences.lblcall.caption"
+msgid "Call color"
+msgstr "Цвет вызова"
+
+#: tfrmmemviewpreferences.lblconditionaljump.caption
+msgctxt "tfrmmemviewpreferences.lblconditionaljump.caption"
+msgid "Conditional jump color"
+msgstr "Цвет условного перехода"
+
+#: tfrmmemviewpreferences.lblhex.caption
+msgctxt "tfrmmemviewpreferences.lblhex.caption"
+msgid "Hexadecimal color"
+msgstr "Цвет 16-ричных значений"
+
+#: tfrmmemviewpreferences.lblhexexample.caption
+msgctxt "tfrmmemviewpreferences.lblhexexample.caption"
+msgid "Example"
+msgstr "Пример"
+
+#: tfrmmemviewpreferences.lblnormal.caption
+msgid "Default color"
+msgstr "Цвет по умолчанию"
+
+#: tfrmmemviewpreferences.lblregister.caption
+msgctxt "tfrmmemviewpreferences.lblregister.caption"
+msgid "Register color"
+msgstr "Цвет регистра"
+
+#: tfrmmemviewpreferences.lblregisterexample.caption
+msgctxt "TFRMMEMVIEWPREFERENCES.LBLREGISTEREXAMPLE.CAPTION"
+msgid "Example"
+msgstr "Пример"
+
+#: tfrmmemviewpreferences.lblsymbol.caption
+msgctxt "tfrmmemviewpreferences.lblsymbol.caption"
+msgid "Symbol color"
+msgstr "Цвет символа"
+
+#: tfrmmemviewpreferences.lblunconditionaljump.caption
+msgctxt "tfrmmemviewpreferences.lblunconditionaljump.caption"
+msgid "Unconditional jump color"
+msgstr "Цвет безусловного перехода"
+
+#: tfrmmemviewpreferences.mirestoretodefaults.caption
+msgid "Restore to defaults"
+msgstr "Восстановить цвета по умолчанию"
+
+#: tfrmmicrotransactions.bitbtn1.caption
+msgid "BUY 10 for $0.99"
+msgstr "КУПИТЬ 10 за $0.99"
+
+#: tfrmmicrotransactions.bitbtn2.caption
+msgid "BUY 100 for $8.99"
+msgstr "КУПИТЬ 100 за $8.99"
+
+#: tfrmmicrotransactions.bitbtn3.caption
+msgid "BUY 1000 for $79.99"
+msgstr "КУПИТЬ 100 за $79.99"
+
+#: tfrmmicrotransactions.caption
+msgid "Cheat-E-Coins"
+msgstr "CE-Монеты"
+
+#: tfrmmicrotransactions.label1.caption
+msgid "Cheat-E-coins left in your inventory:"
+msgstr "CE-Монет в вашем инвентаре: "
+
+#: tfrmmergepointerscanresultsettings.button1.caption
+msgctxt "TFRMMERGEPOINTERSCANRESULTSETTINGS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmmergepointerscanresultsettings.button2.caption
+msgctxt "TFRMMERGEPOINTERSCANRESULTSETTINGS.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmmergepointerscanresultsettings.caption
+msgctxt "tfrmmergepointerscanresultsettings.caption"
+msgid "Merge pointerscan results"
+msgstr "Объединение результатов поиска указателя"
+
+#: tfrmmergepointerscanresultsettings.groupbox1.caption
+msgctxt "TFRMMERGEPOINTERSCANRESULTSETTINGS.GROUPBOX1.CAPTION"
+msgid "Description"
+msgstr "Описание"
+
+#: tfrmmergepointerscanresultsettings.rggroupmethod.caption
+msgid "Group method"
+msgstr "Групповой метод"
+
+#: tfrmmodifyregisters.button1.caption
+msgctxt "TFRMMODIFYREGISTERS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmmodifyregisters.button2.caption
+msgctxt "TFRMMODIFYREGISTERS.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmmodifyregisters.cbchangeext.caption
+msgctxt "tfrmmodifyregisters.cbchangeext.caption"
+msgid "Change extended state (FPU/XMM)"
+msgstr "Изменить расширенное состояние (FPU/XMM)"
+
+#: tfrmmodifyregisters.cbusedbvm.caption
+msgid "Use DBVM Cloaked BP's"
+msgstr "Использовать скрытые DBVM брейкопинты"
+
+#: tfrmmodifyregisters.edtpa.texthint
+msgctxt "tfrmmodifyregisters.edtpa.texthint"
+msgid "Physical Address"
+msgstr "Физический адрес"
+
+#: tfrmmodifyregisters.caption
+msgid "Modify register(s) at xxxxxxxx"
+msgstr "Изменить регистр(ы) в xxxxxxxx"
+
+#: tfrmmodifyregisters.label16.caption
+msgctxt "tfrmmodifyregisters.label16.caption"
+msgid "Flags"
+ms
