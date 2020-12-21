@@ -12287,4 +12287,180 @@ msgstr "Изменить регистр(ы) в xxxxxxxx"
 #: tfrmmodifyregisters.label16.caption
 msgctxt "tfrmmodifyregisters.label16.caption"
 msgid "Flags"
-ms
+msgstr "Флаги"
+
+#: tfrmmodifyregisters.label25.caption
+msgid "Leave blank if you don't want to edit the register or flag"
+msgstr "Не заполняйте, если вы не хотите редактировать регистр или флаг"
+
+#: tfrmmodulesafety.button1.caption
+msgctxt "TFRMMODULESAFETY.BUTTON1.CAPTION"
+msgid "Add"
+msgstr "Добавить"
+
+#: tfrmmodulesafety.button2.caption
+msgctxt "TFRMMODULESAFETY.BUTTON2.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmmodulesafety.caption
+msgid "Module safety"
+msgstr "Безопасность модуля"
+
+#: tfrmmodulesafety.cbglobaldeny.caption
+msgid "Global"
+msgstr "Общее"
+
+#: tfrmmodulesafety.rballowlist.caption
+msgid "Prevent all modules from getting loaded except:"
+msgstr "Запретить модулям быть загруженными, кроме:"
+
+#: tfrmmodulesafety.rbdenylist.caption
+msgid "Allow all modules to be loaded except:"
+msgstr "Разрешить, кроме:"
+
+#: tfrmmodulesafety.remove1.caption
+msgctxt "TFRMMODULESAFETY.REMOVE1.CAPTION"
+msgid "Remove"
+msgstr "Убрать"
+
+#: tfrmmultilineinputquery.button1.caption
+msgctxt "TFRMMULTILINEINPUTQUERY.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmmultilineinputquery.button2.caption
+msgctxt "TFRMMULTILINEINPUTQUERY.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmmultilineinputquery.lblprompt.caption
+msgctxt "tfrmmultilineinputquery.lblprompt.caption"
+msgid "caption"
+msgstr "заголовок"
+
+#: tfrmnetworkconfig.btnconnect.caption
+msgctxt "TFRMNETWORKCONFIG.BTNCONNECT.CAPTION"
+msgid "Connect"
+msgstr "Соединение"
+
+#: tfrmnetworkconfig.button2.caption
+msgctxt "TFRMNETWORKCONFIG.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmnetworkconfig.caption
+msgid "Connect to server"
+msgstr "Подключение к серверу"
+
+#: tfrmnetworkconfig.groupbox1.caption
+msgid "Discovered servers"
+msgstr "Обнаруженные серверы"
+
+#: tfrmnetworkconfig.label1.caption
+msgctxt "TFRMNETWORKCONFIG.LABEL1.CAPTION"
+msgid "Host"
+msgstr "Хост"
+
+#: tfrmnetworkconfig.label2.caption
+msgctxt "TFRMNETWORKCONFIG.LABEL2.CAPTION"
+msgid "Port"
+msgstr "Порт"
+
+#: tfrmnetworkconfig.listview1.columns[0].caption
+msgctxt "tfrmnetworkconfig.listview1.columns[0].caption"
+msgid "IP"
+msgstr "IP-адрес"
+
+#: tfrmnetworkconfig.listview1.columns[1].caption
+msgctxt "TFRMNETWORKCONFIG.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Port"
+msgstr "Порт"
+
+#: tfrmnetworkconfig.menuitem1.caption
+msgid "Refresh list"
+msgstr "Обновить список"
+
+#: tfrmnetworkdatacompression.caption
+msgid "Compression level"
+msgstr "Уровень сжатия"
+
+#: tfrmnetworkdatacompression.label1.caption
+msgid "Change the compression level you wish to use when transferring/receiving memory."
+msgstr "Укажите желаемый уровень сжатия при передаче/приёме памяти. Подберите хороший баланс между мощностью процессора и пропускной способностью сети."
+
+#: tfrmnetworkdatacompression.lblmaxcompression.caption
+msgid "Max Compression"
+msgstr "Максимальное сжатие"
+
+#: tfrmnetworkdatacompression.lblnone.caption
+msgid "No Compression"
+msgstr "Без сжатия"
+
+#: tfrmopenfileasprocessdialog.caption
+msgid "Open binary file"
+msgstr "Открытый бинарный файл"
+
+#: tfrmopenfileasprocessdialog.label1.caption
+msgctxt "TFRMOPENFILEASPROCESSDIALOG.LABEL1.CAPTION"
+msgid "Start address"
+msgstr "Начальный адрес"
+
+#: tfrmopenfileasprocessdialog.mbok.caption
+msgctxt "TFRMOPENFILEASPROCESSDIALOG.MBOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmopenfileasprocessdialog.mkcancel.caption
+msgctxt "TFRMOPENFILEASPROCESSDIALOG.MKCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmopenfileasprocessdialog.rb32.caption
+msgid "32-Bit"
+msgstr "32-Бита"
+
+#: tfrmopenfileasprocessdialog.rb64.caption
+msgid "64-Bit"
+msgstr "64-Бита"
+
+#: tfrmpaging.button1.caption
+msgid "Go"
+msgstr "Запустить"
+
+#: tfrmpaging.caption
+msgctxt "tfrmpaging.caption"
+msgid "Paging"
+msgstr "Страничная организация памяти"
+
+#: tfrmpaging.cb64bit.caption
+msgctxt "tfrmpaging.cb64bit.caption"
+msgid "64-bit"
+msgstr "64-бит"
+
+#: tfrmpaging.cb8byteentries.caption
+msgid "8-byte entries"
+msgstr "8-байт. записи"
+
+#: tfrmpaging.label1.caption
+msgid "Fill in the physical address of the paging base (or just cr3)"
+msgstr "Физический базовый адрес каталога страниц (или CR3)"
+
+#: tfrmpaging.menuitem1.caption
+msgctxt "TFRMPAGING.MENUITEM1.CAPTION"
+msgid "Find"
+msgstr "Поиск"
+
+#: tfrmpastetableentry.button1.caption
+msgctxt "TFRMPASTETABLEENTRY.BUTTON1.CAPTION"
+msgid "Paste"
+msgstr "Вставить"
+
+#: tfrmpastetableentry.button2.caption
+msgctxt "TFRMPASTETABLEENTRY.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmpastetableentry.caption
+msgid "Paste table entries"
+msgstr
