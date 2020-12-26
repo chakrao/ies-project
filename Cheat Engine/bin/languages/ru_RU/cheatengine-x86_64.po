@@ -12463,4 +12463,181 @@ msgstr "Отмена"
 
 #: tfrmpastetableentry.caption
 msgid "Paste table entries"
-msgstr
+msgstr "Вставка записей в таблицу"
+
+#: tfrmpastetableentry.cbchildrenaswell.caption
+msgid "Adjust children as well"
+msgstr "Скорректировать и дочерние записи"
+
+#: tfrmpastetableentry.groupbox1.caption
+msgctxt "TFRMPASTETABLEENTRY.GROUPBOX1.CAPTION"
+msgid "Description"
+msgstr "Описание"
+
+#: tfrmpastetableentry.groupbox2.caption
+msgctxt "TFRMPASTETABLEENTRY.GROUPBOX2.CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmpastetableentry.label1.caption
+msgid "Text to find:"
+msgstr "Текст для поиска:"
+
+#: tfrmpastetableentry.label2.caption
+msgid "Replace with:"
+msgstr "Заменить на:"
+
+#: tfrmpastetableentry.label3.caption
+msgid "Adjust address by: "
+msgstr "Скорректировать на: "
+
+#: tfrmpeinfo.button1.caption
+msgctxt "TFRMPEINFO.BUTTON1.CAPTION"
+msgid "Info"
+msgstr "?"
+
+#: tfrmpeinfo.caption
+msgid "Portable Executable (PE) Info"
+msgstr "(PE) Информация"
+
+#: tfrmpeinfo.groupbox1.caption
+msgid "MZ-Start"
+msgstr "MZ-Начало"
+
+#: tfrmpeinfo.groupbox2.caption
+msgctxt "TFRMPEINFO.GROUPBOX2.CAPTION"
+msgid "Info"
+msgstr "Информация"
+
+#: tfrmpeinfo.label1.caption
+msgid "No file opened"
+msgstr "Файл не открыт"
+
+#: tfrmpeinfo.label2.caption
+msgctxt "TFRMPEINFO.LABEL2.CAPTION"
+msgid "address"
+msgstr "адрес"
+
+#: tfrmpeinfo.micopyeverything.caption
+msgid "Copy everything to clipboard"
+msgstr "Копировать всё в буфер обмена"
+
+#: tfrmpeinfo.micopytab.caption
+msgid "Copy tab to clipboard"
+msgstr "Копировать вкладку в буфер обмена"
+
+#: tfrmpeinfo.radiobutton1.caption
+msgctxt "TFRMPEINFO.RADIOBUTTON1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmpeinfo.radiobutton2.caption
+msgid "Memory"
+msgstr "Память"
+
+#: tfrmpeinfo.tabsheet1.caption
+msgctxt "TFRMPEINFO.TABSHEET1.CAPTION"
+msgid "All"
+msgstr "Все"
+
+#: tfrmpeinfo.tabsheet2.caption
+msgid "Imports"
+msgstr "Импорт"
+
+#: tfrmpeinfo.tabsheet3.caption
+msgid "Exports"
+msgstr "Экспорт"
+
+#: tfrmpeinfo.tabsheet4.caption
+msgid "Base Relocations"
+msgstr "Перемещения"
+
+#: tfrmpointerrescanconnectdialog.btncancel.caption
+msgctxt "TFRMPOINTERRESCANCONNECTDIALOG.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmpointerrescanconnectdialog.btnok.caption
+msgctxt "tfrmpointerrescanconnectdialog.btnok.caption"
+msgid "Connect"
+msgstr "Соединение"
+
+#: tfrmpointerrescanconnectdialog.caption
+msgctxt "tfrmpointerrescanconnectdialog.caption"
+msgid "Join rescan"
+msgstr "Присоединиться к отсеву"
+
+#: tfrmpointerrescanconnectdialog.lblhost.caption
+msgctxt "tfrmpointerrescanconnectdialog.lblhost.caption"
+msgid "Host"
+msgstr "Хост"
+
+#: tfrmpointerrescanconnectdialog.lblport.caption
+msgctxt "tfrmpointerrescanconnectdialog.lblport.caption"
+msgid "Port"
+msgstr "Порт"
+
+#: tfrmpointerscanconnectdialog.btncancel.caption
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmpointerscanconnectdialog.btnok.caption
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.BTNOK.CAPTION"
+msgid "Connect"
+msgstr "Соединение"
+
+#: tfrmpointerscanconnectdialog.caption
+msgid "Connect to active pointerscanner"
+msgstr "Соединение с активным сканером указателей"
+
+#: tfrmpointerscanconnectdialog.cbpriority.text
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.CBPRIORITY.TEXT"
+msgid "Normal"
+msgstr "Обычный"
+
+#: tfrmpointerscanconnectdialog.cbuseloadedpointermap.caption
+msgctxt "tfrmpointerscanconnectdialog.cbuseloadedpointermap.caption"
+msgid "Use saved pointermap"
+msgstr "Использовать сохранённую карту указателей"
+
+#: tfrmpointerscanconnectdialog.cbuseloadedpointermap.hint
+msgid "If you use this option you can omit the downloading of the pointermap"
+msgstr "Если вы воспользуетесь этой опцией, то вы можете пренебречь загрузкой карты указателей"
+
+#: tfrmpointerscanconnectdialog.lblhost.caption
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.LBLHOST.CAPTION"
+msgid "Host"
+msgstr "Хост"
+
+#: tfrmpointerscanconnectdialog.lblnrofthread.caption
+msgctxt "tfrmpointerscanconnectdialog.lblnrofthread.caption"
+msgid "Nr of threads scanning: "
+msgstr "Потоков сканирования: "
+
+#: tfrmpointerscanconnectdialog.lblport.caption
+msgctxt "TFRMPOINTERSCANCONNECTDIALOG.LBLPORT.CAPTION"
+msgid "Port"
+msgstr "Порт"
+
+#: tfrmpointerscanconnectdialog.lblpriority.caption
+msgctxt "tfrmpointerscanconnectdialog.lblpriority.caption"
+msgid "Priority"
+msgstr "Приоритет"
+
+#: tfrmpointerscanner.btnconnect.caption
+msgctxt "TFRMPOINTERSCANNER.BTNCONNECT.CAPTION"
+msgid "Add to connection list"
+msgstr "Добавить к списку соединений"
+
+#: tfrmpointerscanner.btndecreasethreadcount.caption
+msgctxt "TFRMPOINTERSCANNER.BTNDECREASETHREADCOUNT.CAPTION"
+msgid "Decrease worker count"
+msgstr "Уменьшить число работников"
+
+#: tfrmpointerscanner.btnincreasethreadcount.caption
+msgctxt "TFRMPOINTERSCANNER.BTNINCREASETHREADCOUNT.CAPTION"
+msgid "Increase worker count"
+msgstr "Увеличить число работников"
+
+#: tfrmpo
