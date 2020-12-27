@@ -12884,4 +12884,100 @@ msgid ""
 "Compressed .PTR files can not be read out by older Cheat Engine versions\n"
 msgstr ""
 "Слегка сжимает создаваемые .PTR файлы. Таким образом, они занимают меньше места и тем самым ускоряется время их записи на диск.\n"
-"В большинстве случаев, узким местом сканера указателей является скорость записи на диск, поэтому эта опция рекомендуема к исполь
+"В большинстве случаев, узким местом сканера указателей является скорость записи на диск, поэтому эта опция рекомендуема к использованию.\n"
+"\n"
+"Сжатые .PTR файлы не будут читаться более старыми версиями Cheat Engine\n"
+
+#: tfrmpointerscannersettings.cbconnecttonode.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.CBCONNECTTONODE.CAPTION"
+msgid "Connect to pointerscan node"
+msgstr "Подключиться к узлу сканера указателей"
+
+#: tfrmpointerscannersettings.cbconnecttonode.hint
+msgid ""
+"When checked will send a broadcast message on the local network which will tell pointer scanner systems to join this scan if they are set to auto join\n"
+"\n"
+"You can use \"Setup specific IP's to notify\" to notify systems of this scan that are outside of the local network\n"
+msgstr ""
+"Если включено, то по локальной сети будет отправлено сообщение, которое велит другим устройствам с запущенным сканером указателей присоединиться к текущему сканированию, если у них включена опция «Автоприсоединение к поиску и отсеву».\n"
+"\n"
+"Вы можете воспользоваться кнопкой «Уведомляемые IP-адреса», чтобы зарегистрировать устройства, находящиеся за пределами локальной сети\n"
+
+#: tfrmpointerscannersettings.cbheaponly.caption
+msgid "Only allow static and heap addresses in the path"
+msgstr "Только статические адреса и адреса куч"
+
+#: tfrmpointerscannersettings.cbheaponly.hint
+msgid "If the address you search for isn't a heap address, the scan will return 0 results"
+msgstr "Если адрес, который вы ищете, не является адресом кучи, то результатом сканирования будет 0"
+
+#: tfrmpointerscannersettings.cbincludesystemmodules.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.CBINCLUDESYSTEMMODULES.CAPTION"
+msgid "Include system modules"
+msgstr "Включая системные модули"
+
+#: tfrmpointerscannersettings.cblimitscantoregionfile.caption
+msgctxt "tfrmpointerscannersettings.cblimitscantoregionfile.caption"
+msgid "Limit scan to specified region file"
+msgstr "Ограничить сканирование заданным файлом с регионами"
+
+#: tfrmpointerscannersettings.cbmaxoffsetspernode.caption
+msgid "Max different offsets per node:"
+msgstr "Максимум разных смещений на узел:"
+
+#: tfrmpointerscannersettings.cbmaxoffsetspernode.hint
+msgid ""
+"When the pointerscan looks through the list of pointers with a specific value, it goes through every single pointer that has that value. Every time increasing the offset slightly.\n"
+"With this feature enabled the pointerscan will only check the first few pointers with that value.\n"
+"\n"
+"pro: Extremely fast, and the results have the lowest pointer paths possible.\n"
+"con: You'll miss a lot of pointers that might be valid too \n"
+msgstr ""
+"Когда сканер указателей ищет определённое значение в списке указателей, то он проходит по каждому указателю, имеющему это значение, каждый раз немного увеличивая смещение.\n"
+"С использованием данной опции, сканер указателей проверит только несколько первых указателей с искомым значением.\n"
+"\n"
+"Довод «За»: Чрезвычайно быстро. Указатели имеют наименьший уровень .\n"
+"Довод «Против»: Вы пропустите много верных указателей\n"
+
+#: tfrmpointerscannersettings.cbmustendwithspecificoffset.caption
+msgid "Pointers must end with specific offsets"
+msgstr "Указатели оканчиваются конкретными смещениями"
+
+#: tfrmpointerscannersettings.cbmuststartwithbase.caption
+msgid "Base address must be in specific range"
+msgstr "Диапазон базового адреса"
+
+#: tfrmpointerscannersettings.cbmuststartwithbase.hint
+msgid ""
+"Will only mark the given range as valid base address (Will reduce the number of results)\n"
+"This internally makes use of the \"Only find paths with a static address\" feature by marking the provided range as static only, so it must be enabled.\n"
+msgstr ""
+"Указанный диапазон адресов будет использован для поиска правильного базового адреса (Сократит количество результатов).\n"
+"Работает совместно с опцией «Искать только цепочки со статическим адресом».\n"
+
+#: tfrmpointerscannersettings.cbnegativeoffsets.caption
+msgid "Also scan for negative offsets"
+msgstr "Сканировать и на наличие отрицательных смещений"
+
+#: tfrmpointerscannersettings.cbnegativeoffsets.hint
+msgid ""
+"Let's you scan for negative offsets\n"
+"Can not be used in combination with compressed pointerscan files\n"
+msgstr ""
+"Позволяет вам производить сканирование на наличие отрицательных смещений\n"
+"Не может использоваться совместно с «Сжатие файла с результатом сканирования»\n"
+
+#: tfrmpointerscannersettings.cbnoloop.caption
+msgid "No looping pointers"
+msgstr "Без циклических указателей"
+
+#: tfrmpointerscannersettings.cbnoloop.hint
+msgid ""
+"This will filter out pointerpaths that ended up in a loop\n"
+"e.g:\n"
+"base->p1->p2->p3->p1->p4\n"
+"\n"
+"you could just as well do base->p1->p4 then, so throw this one away (base->p1->p4 will be found another way)\n"
+"\n"
+"pro: Less results so less diskspace used\n"
+"con: slightly slows down the scan as it needs to check for loops every single iteration \n"
