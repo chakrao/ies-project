@@ -12640,4 +12640,160 @@ msgctxt "TFRMPOINTERSCANNER.BTNINCREASETHREADCOUNT.CAPTION"
 msgid "Increase worker count"
 msgstr "Увеличить число работников"
 
-#: tfrmpo
+#: tfrmpointerscanner.btnstoprescanloop.caption
+msgid "Stop rescan loop"
+msgstr "Прекратить"
+
+#: tfrmpointerscanner.btnstopscan.caption
+msgctxt "TFRMPOINTERSCANNER.BTNSTOPSCAN.CAPTION"
+msgid "Stop"
+msgstr "Остановить"
+
+#: tfrmpointerscanner.btnstopscan.hint
+msgid "This will stop the current scan and show you the results it has found"
+msgstr "Остановит текущее сканирование и выведет найденный результат"
+
+#: tfrmpointerscanner.caption
+msgctxt "TFRMPOINTERSCANNER.CAPTION"
+msgid "Pointer scan"
+msgstr "Сканирование указателей"
+
+#: tfrmpointerscanner.cbnonresponsive.caption
+msgid "Non responsive connection"
+msgstr "Не отвечающее соединение"
+
+#: tfrmpointerscanner.cbpriority.text
+msgctxt "TFRMPOINTERSCANNER.CBPRIORITY.TEXT"
+msgid "Normal"
+msgstr "Обычный"
+
+#: tfrmpointerscanner.cbtestcrappyconnection.caption
+msgctxt "TFRMPOINTERSCANNER.CBTESTCRAPPYCONNECTION.CAPTION"
+msgid "Simulate no connection"
+msgstr "Нет соединения"
+
+#: tfrmpointerscanner.cbtrusted.caption
+msgid "Trust stability"
+msgstr "Доверять стабильности"
+
+#: tfrmpointerscanner.cbtrusted.hint
+msgid "Trust that this server will not disappear during the scan and that the children it trusts itself won't do so either"
+msgstr "Доверять тому, что этот сервер и потомки, которым он доверяет себя, не пропадут во время сканирования"
+
+#: tfrmpointerscanner.cbtype.text
+msgctxt "tfrmpointerscanner.cbtype.text"
+msgid "4 Byte"
+msgstr "4 Байта"
+
+#: tfrmpointerscanner.file1.caption
+msgctxt "TFRMPOINTERSCANNER.FILE1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmpointerscanner.gbnetwork.caption
+msgctxt "TFRMPOINTERSCANNER.GBNETWORK.CAPTION"
+msgid "Network"
+msgstr "Сеть"
+
+#: tfrmpointerscanner.lblip.caption
+msgctxt "TFRMPOINTERSCANNER.LBLIP.CAPTION"
+msgid "IP"
+msgstr "IP-адрес"
+
+#: tfrmpointerscanner.lblpassword.caption
+msgctxt "TFRMPOINTERSCANNER.LBLPASSWORD.CAPTION"
+msgid "Password"
+msgstr "Пароль"
+
+#: tfrmpointerscanner.lblport.caption
+msgctxt "TFRMPOINTERSCANNER.LBLPORT.CAPTION"
+msgid "Port"
+msgstr "Порт"
+
+#: tfrmpointerscanner.lblprogressbar1.caption
+msgctxt "tfrmpointerscanner.lblprogressbar1.caption"
+msgid "Generating pointermap"
+msgstr "Генерация карты указателей"
+
+#: tfrmpointerscanner.lblthreadpriority.caption
+msgctxt "TFRMPOINTERSCANNER.LBLTHREADPRIORITY.CAPTION"
+msgid "Scanner thread priority:"
+msgstr "Приоритет потока сканера:"
+
+#: tfrmpointerscanner.menuitem1.caption
+msgid "Show modulelist"
+msgstr "Показать список модулей"
+
+#: tfrmpointerscanner.menuitem2.caption
+msgid "Distributed pointer scan"
+msgstr "Распределённое сканирование указателей"
+
+#: tfrmpointerscanner.method3fastspeedandaveragememoryusage1.caption
+msgid "Scan for pointer"
+msgstr "Сканирование указателей"
+
+#: tfrmpointerscanner.micreatepsnnode.caption
+msgid "Setup as PSN worker and/or node"
+msgstr "Настройка работника и/или узла сетевого сканера указателей"
+
+#: tfrmpointerscanner.midisconnect.caption
+msgid "Disconnect"
+msgstr "Отключение"
+
+#: tfrmpointerscanner.miexporttosqlite.caption
+msgctxt "TFRMPOINTERSCANNER.MIEXPORTTOSQLITE.CAPTION"
+msgid "Export to sqlite database"
+msgstr "Экспортировать в базу данных sqlite"
+
+#: tfrmpointerscanner.miforcedisconnect.caption
+msgid "Unsafe disconnect"
+msgstr "Небезопасное отключение"
+
+#: tfrmpointerscanner.mihexadecimal.caption
+msgctxt "tfrmpointerscanner.mihexadecimal.caption"
+msgid "Hexadecimal"
+msgstr "Шестнадцатиричное"
+
+#: tfrmpointerscanner.miimportfromsqlite.caption
+msgctxt "TFRMPOINTERSCANNER.MIIMPORTFROMSQLITE.CAPTION"
+msgid "Import from sqlite database"
+msgstr "Импортировать из базы данных sqlite"
+
+#: tfrmpointerscanner.miresume.caption
+msgid "Resume scan"
+msgstr "Возобновить сканирование"
+
+#: tfrmpointerscanner.misigned.caption
+msgctxt "tfrmpointerscanner.misigned.caption"
+msgid "Signed"
+msgstr "Знаковое"
+
+#: tfrmpointerscanner.new1.caption
+msgctxt "TFRMPOINTERSCANNER.NEW1.CAPTION"
+msgid "New"
+msgstr "Новый"
+
+#: tfrmpointerscanner.open1.caption
+msgctxt "TFRMPOINTERSCANNER.OPEN1.CAPTION"
+msgid "Open"
+msgstr "Открыть"
+
+#: tfrmpointerscanner.pointerscanner1.caption
+msgid "Pointer scanner"
+msgstr "Сканер указателей"
+
+#: tfrmpointerscanner.rescanmemory1.caption
+msgid "Rescan memory - Removes pointers not pointing to the right address"
+msgstr "Отсев - Удаляет указатели, не указывающие на верный адрес"
+
+#: tfrmpointerscanner.resyncmodulelist1.caption
+msgid "Resync modulelist"
+msgstr "Синхронизировать список модулей"
+
+#: tfrmpointerscanner.savedialog1.title
+msgid "Specify the filename you want to store the results"
+msgstr "Укажите название файла, в который вы хотите сохранить результат"
+
+#: tfrmpointerscanner.savedialog2.title
+msgid "Specify the filename for the pointermap you're about to generate"
+msgstr "Определите название файла для карты указателей, котору
