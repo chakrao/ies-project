@@ -13075,4 +13075,90 @@ msgstr "Обрабатывать адреса стека первого пото
 #: tfrmpointerscannersettings.cbstaticstacks.hint
 msgid ""
 "This allows the stack of threads to be seen as static addresses by the pointerscan.\n"
-"The main thread is always a sure b
+"The main thread is always a sure bet that it's the first one in the list. And often the second thread created is pretty stable as well.\n"
+"With more there's a bigger change they get created and destroyed randomly\n"
+"\n"
+"When a program enters a function and exits it, the stack pointer decreases and increases, and the data there gets written to.\n"
+"The farther the game is inside function calls, the more static the older data will be.\n"
+"\n"
+"With max stack offset: you can set the max size that can be deemed as static enough.\n"
+"\n"
+"pro: It finds paths otherwise never found\n"
+"con: More results, more diskspace \n"
+msgstr ""
+"Позволяет стекам потоков быть замеченными сканером указателей как статические адреса.\n"
+"Основной поток всегда будет первым в списке. Второй создаваемый поток, зачастую, тоже весьма стабилен.\n"
+"А вот при большем числе потоков бывают большие изменения, т.к. другие потоки создаются и уничтожаются в произвольном порядке.\n"
+"\n"
+"Когда программа входит и выходит из функции, то указатель стека увеличивается/уменьшается и в него записываются данные.\n"
+"Чем глубже игра находится в вызовах функции, тем более статическими становятся старые данные.\n"
+"\n"
+"С максимальным смещением стека вы можете задать максимальный размер, который может считаться достаточно статичным.\n"
+"\n"
+"Довод «За»: Найдутся такие цепочки, которые иначе не нашлись бы.\n"
+"Довод «Против»: Больше результатов, больше необходимого места на диске.\n"
+
+#: tfrmpointerscannersettings.cbuseheapdata.caption
+msgid "Improve pointerscan with gathered heap data"
+msgstr "Улучшить сканирование за счёт собранных данных куч"
+
+#: tfrmpointerscannersettings.cbuseheapdata.hint
+msgid ""
+"When this is checked the heap is used to figure out the offset sizes, instead of blindly guessing them.\n"
+"pro: Greatly improve speed and a lot less useless results\n"
+"con: if the game allocates gigantic chunks of heap memory, and then divides it up itself, this will give wrong results.\n"
+"\n"
+"In other cases this will give perfect pointers \n"
+msgstr ""
+"Если включено, то будут использоваться данные из кучи, чтобы вычислить размеры смещения, вместо слепого их угадывания\n"
+"\n"
+"Довод «За:» Значительно улучшается скорость и уменьшается число бесполезных результатов.\n"
+"Довод «Против:» Если игра выделяет гигантские блоки памяти из «кучи», а затем распределяет их для себя, то будет дан неверный результат.\n"
+"\n"
+"В других случаях это даёт идеальные указатели\n"
+
+#: tfrmpointerscannersettings.cbuseloadedpointermap.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.CBUSELOADEDPOINTERMAP.CAPTION"
+msgid "Use saved pointermap"
+msgstr "Использовать сохранённую карту указателей"
+
+#: tfrmpointerscannersettings.cbuseloadedpointermap.hint
+msgid ""
+"Use this if you have created a pointermap on a system that runs the game, but you wish to do the scan on another system (or multiple systems).\n"
+"Checking this option will open a dialog where you can select the pointermap\n"
+msgstr ""
+"Воспользуйтесь этим, если вы создали карту указателей игры на одной операционной системе и желаете выполнить сканирование на другой системе.\n"
+"Включение этой опции откроет диалог, где вы сможете выбрать карту указателей\n"
+
+#: tfrmpointerscannersettings.cbvaluetype.text
+msgctxt "TFRMPOINTERSCANNERSETTINGS.CBVALUETYPE.TEXT"
+msgid "4 Byte"
+msgstr "4 Байта"
+
+#: tfrmpointerscannersettings.combobox1.text
+msgctxt "TFRMPOINTERSCANNERSETTINGS.COMBOBOX1.TEXT"
+msgid "Normal"
+msgstr "Обычный"
+
+#: tfrmpointerscannersettings.edtthreadstacks.hint
+msgid ""
+"Fill in the total number of threads that should be allowed to be used as a stack lookup.\n"
+"Thread 1 is usually the main thread of the game, but if that one spawns another thread for game related events, you might want to have that secondary thread as well.\n"
+"More threads is not recommend as they may get created and destroyed on the fly, and are therefore useless as a lookup base, but it depends on the game.\n"
+msgstr ""
+"Заполните общее количество потоков, для которых будет включен поиск в стеке.\n"
+"Поток 1 - обычно это главный поток игры, но если игра создает ещё один поток для связанных с ней событий, то вам может потребоваться и он.\n"
+"Число потоков больше, чем 2 не рекомендуется, т.к. остальные могут создаваться и уничтожаться на лету, а значит бесполезны в качестве базы для поиска. Впрочем, это зависит от игры\n"
+
+#: tfrmpointerscannersettings.label1.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.LABEL1.CAPTION"
+msgid "Password"
+msgstr "Пароль"
+
+#: tfrmpointerscannersettings.label10.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.LABEL10.CAPTION"
+msgid "From"
+msgstr "От"
+
+#: tfrmpointerscannersettings.label11.caption
+msgctxt "TFRMPOINTERSCAN
