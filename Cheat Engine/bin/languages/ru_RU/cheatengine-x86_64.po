@@ -12981,3 +12981,98 @@ msgid ""
 "\n"
 "pro: Less results so less diskspace used\n"
 "con: slightly slows down the scan as it needs to check for loops every single iteration \n"
+msgstr ""
+"Будут отфильтровываться циклические указатели.\n"
+"Пример циклического указателя:\n"
+"«Базовый указатель->у1->у2->у3->у1->у4»\n"
+"\n"
+"С таким же успехом, можно сделать просто «Базовый указатель->у1->у4», отбросив все остальные указатели в цепочке.\n"
+"\n"
+"Довод «За»: Меньше результатов, меньше необходимого места на диске\n"
+"Довод «Против»: Слегка замедляет сканирование, т.к. нужно будет многократно проверять на цикличность\n"
+
+#: tfrmpointerscannersettings.cbnoreadonly.caption
+msgid "Don't include pointers with read-only nodes"
+msgstr "Исключить указатели с узлами «Только для чтения»"
+
+#: tfrmpointerscannersettings.cbnoreadonly.hint
+msgid ""
+"When checked the pointerscan will throw away memory that is readonly. So when it looks for paths, it won't encounter paths that pass through read only memory blocks.\n"
+"\n"
+"When it's unchecked, it does include readonly memory\n"
+"\n"
+"\n"
+"pro: faster, less useless results\n"
+"con: If the game decides to mark a pointer as readonly ce won't find it \n"
+msgstr ""
+"Если включено, то сканер указателей будет отбрасывать память «только для чтения». Поэтому, при поиске\n"
+"цепочек указателя, сканер не столкнётся с цепочками, пересекающимися с блоками памяти «только для чтения».\n"
+"\n"
+"Довод «За»: Быстрее, меньше бесполезных результатов.\n"
+"Довод «Против»: Если игра решает отметить указатель как «только для чтения», то Cheat Engine его не найдёт\n"
+
+#: tfrmpointerscannersettings.cbonlyonestatic.caption
+msgid "Stop traversing a path when a static has been found"
+msgstr "Остановить прохождение по цепочке при нахождении статического адреса"
+
+#: tfrmpointerscannersettings.cbonlyonestatic.hint
+msgid ""
+"When the pointerscanner goes through the list of pointervalues with a specific value, this will stop exploring other paths as soon as it encounters a static pointer to that value\n"
+"\n"
+"pro: Fast\n"
+"con: You may miss some valid results \n"
+msgstr ""
+"Когда сканер указателей проходит по списку со значениями указателя, ища определённое значение, и натыкается на статический указатель на это значение, то анализ прекращается.\n"
+"\n"
+"Довод «За»: Высокая скорость.\n"
+"Довод «Против»: Вы можете пропустить некоторые рабочие указатели\n"
+
+#: tfrmpointerscannersettings.cbshowadvancedoptions.caption
+msgid "Show advanced options"
+msgstr "Показать дополнительные настройки"
+
+#: tfrmpointerscannersettings.cbshowadvancedoptions.caption
+#: tfrmpointerscannersettings.cbstackonly.caption
+msgid "Stack addresses as ONLY static address"
+msgstr "Рассматривать адреса стека только как статические"
+
+#: tfrmpointerscannersettings.cbstackonly.hint
+msgid ""
+"Enable this if you wish to only find pointer paths with a stack address.\n"
+"Combine this with \"Only find paths with a static address\" (default on) else this option will have no effect\n"
+"\n"
+"pro: You'll only get paths from the stack\n"
+"con: You don't get get paths from random dll's or the .exe \n"
+msgstr ""
+"Включите, если вы хотите найти только цепочки указателей с адресом стека. Используйте только вместе с опцией\n"
+"«Искать только цепочки со статическим адресом» (включена по умолчанию), в противном случае, не будет никакого эффекта.\n"
+"\n"
+"Довод «За»: Будут находится только цепочки указателей к стеку\n"
+"Довод «Против»: Не будут находится цепочки указателей к различным dll или .exe\n"
+
+#: tfrmpointerscannersettings.cbstaticonly.caption
+msgid "Only find paths with a static address"
+msgstr "Искать только цепочки со статическим адресом"
+
+#: tfrmpointerscannersettings.cbstaticonly.hint
+msgid ""
+"When checked the pointerscan will only store a path when it starts with a static address. (or easily looked up address)\n"
+"When it's disabled, it finds every single pointer path\n"
+"\n"
+"pro: Fast\n"
+"con: It may miss pointers that are accessed by special paths like thread local storage. (but even then they'd be useless for ce as they will change)\n"
+msgstr ""
+"Если включено, то сканер указателей будет сохранять только цепочки, начинающиеся со статического адреса (или с легко находимого адреса).\n"
+"Если выключено, то будут сохраняться любые цепочки.\n"
+"\n"
+"Довод «За»: Высокая скорость.\n"
+"Довод «Против»: Могут быть пропущены указатели, доступ к которым осуществляется по специальным цепочкам, наподобие локальной памяти потока (в любом случае, они бесполезны для Cheat Engine, так как будут меняться)\n"
+
+#: tfrmpointerscannersettings.cbstaticstacks.caption
+msgid "Allow stack addresses of the first thread(s) to be handled as static"
+msgstr "Обрабатывать адреса стека первого потока как статические"
+
+#: tfrmpointerscannersettings.cbstaticstacks.hint
+msgid ""
+"This allows the stack of threads to be seen as static addresses by the pointerscan.\n"
+"The main thread is always a sure b
