@@ -12796,4 +12796,92 @@ msgstr "Укажите название файла, в который вы хо�
 
 #: tfrmpointerscanner.savedialog2.title
 msgid "Specify the filename for the pointermap you're about to generate"
-msgstr "Определите название файла для карты указателей, котору
+msgstr "Определите название файла для карты указателей, которую вы собираетесь генерировать"
+
+#: tfrmpointerscannersettings.btncancel.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmpointerscannersettings.btnok.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmpointerscannersettings.caption
+msgid "Pointerscanner scanoptions"
+msgstr "Настройки сканера указателей"
+
+#: tfrmpointerscannersettings.cbacceptnonmodulevtable.caption
+msgid "Also accept non-module addresses"
+msgstr "Допускаются и не модульные адреса"
+
+#: tfrmpointerscannersettings.cballigned.caption
+msgid "Addresses must be 32-bit alligned"
+msgstr "Адреса должны быть выровнены по границе 32 бит"
+
+#: tfrmpointerscannersettings.cballigned.hint
+msgid ""
+"When enabled, only pointers that are stored in an address dividable by 4 are looked at\n"
+"When disabled, it won't bother.\n"
+"\n"
+"pro: Fast scans\n"
+"Con: On some horrible designed games that you shouldn't even play it won't find the paths\n"
+msgstr ""
+"Если включено, то будут проверяться только те указатели, которые хранятся в адресах, кратных 4\n"
+"\n"
+"Довод «За»: Быстрое сканирование.\n"
+"Довод «Против»: В некоторых ужасно сделанных играх, в которые вам не стоит даже играть, не будет найдено ни одного указателя\n"
+
+#: tfrmpointerscannersettings.cballowruntimeworkers.caption
+msgid "Allow scanners to connect at runtime"
+msgstr "Разрешить подключение сканеров во время выполнения"
+
+#: tfrmpointerscannersettings.cballowruntimeworkers.hint
+msgctxt "TFRMPOINTERSCANNERSETTINGS.CBALLOWRUNTIMEWORKERS.HINT"
+msgid "Opens a port that other systems running the pointerscanner can connect to and help out with the scan"
+msgstr "Открывает порт, к которому могут подключиться другие системы с запущенным сканером указателей и помочь со сканированием"
+
+#: tfrmpointerscannersettings.cbclasspointersonly.caption
+msgid "First element of pointerstruct must point to module (e.g vtable)"
+msgstr "Первый элемент структуры должен указывать на модуль (например: vtable)"
+
+#: tfrmpointerscannersettings.cbclasspointersonly.hint
+msgid ""
+"Object oriented programming languages tend to implement classobjects by having a pointer in the first element to something that describes the class\n"
+"With this option enabled, ce will check if it's a classobject by checking that rule. If not, it won't see it as a pointer.\n"
+"pro:Tremendous speed increase and almost perfect pointers\n"
+"con:Doesn't work with runtime generated classes (java, .net) \n"
+msgstr ""
+"Объектно-ориентированные языки программирования обычно реализуют объекты класса посредством указателя в первом элементе на что-то, что описывает класс.\n"
+"Если включено, то Cheat Engine будет проверять указатель по этому принципу, но если этот принцип не соблюдается, то такой адрес не будет считаться указателем.\n"
+"\n"
+"Довод «За»: Невероятный прирост скорости и почти идеальные указатели.\n"
+"Довод «Против»: Не работает с классами, сгенерированными во время выполнения (java, .net)\n"
+
+#: tfrmpointerscannersettings.cbcomparetootherpointermaps.caption
+msgid "Compare results with other saved pointermap(s)"
+msgstr "Сравнить результат с сохранённой картой указателей"
+
+#: tfrmpointerscannersettings.cbcomparetootherpointermaps.hint
+msgid ""
+"When ticked you can add other pointermaps which will be used to verify that the pointers it finds are correct. You will have to fill in the correct address for each pointermap you provide.\n"
+"Note: expect at least the size of the game itself in memory for every pointermap used\n"
+msgstr ""
+"С включением этой опции, вы сможете добавить другие карты указателей, которые будут использоваться для проверки находимых указателей на корректность.\n"
+"Вам нужно указать правильный адрес для каждой представленной вами карты указателей.\n"
+"Примечание: Для каждой используемой карты указателей понадобиться соизмеримое с размером игры место на диске\n"
+
+#: tfrmpointerscannersettings.cbcompressedpointerscanfile.caption
+msgid "Compressed pointerscan file"
+msgstr "Сжатие файла с результатом сканирования"
+
+#: tfrmpointerscannersettings.cbcompressedpointerscanfile.hint
+msgid ""
+"Compresses the generated .PTR files slightly so they take less space on the disk and less time writing to disk.\n"
+"Most of the time the bottleneck of a pointerscan is disk writing, so it is recommended to use this option.\n"
+"\n"
+"Compressed .PTR files can not be read out by older Cheat Engine versions\n"
+msgstr ""
+"Слегка сжимает создаваемые .PTR файлы. Таким образом, они занимают меньше места и тем самым ускоряется время их записи на диск.\n"
+"В большинстве случаев, узким местом сканера указателей является скорость записи на диск, поэтому эта опция рекомендуема к исполь
