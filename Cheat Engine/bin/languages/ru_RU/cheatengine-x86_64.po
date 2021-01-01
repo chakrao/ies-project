@@ -13337,4 +13337,135 @@ msgid "OK"
 msgstr "Подтвердить"
 
 #: tfrmrescanpointer.button2.caption
-msgctxt 
+msgctxt "TFRMRESCANPOINTER.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmrescanpointer.caption
+msgid "Rescan pointerlist"
+msgstr "Отсеивание списка указателей"
+
+#: tfrmrescanpointer.cbbasepointermustbeinrange.caption
+msgid "Base pointer must be in range"
+msgstr "Базовый указатель должен быть в диапазоне"
+
+#: tfrmrescanpointer.cbchangebasepointeroffset.caption
+msgctxt "TFRMRESCANPOINTER.CBCHANGEBASEPOINTEROFFSET.CAPTION"
+msgid "Change base pointer address by specific offset"
+msgstr "Изменить базовый адрес указателя на определённое смещение"
+
+#: tfrmrescanpointer.cbdelay.caption
+msgid "Delay rescan for"
+msgstr "Задержка отсева в"
+
+#: tfrmrescanpointer.cbfilteroutaccessible.caption
+msgid "Only filter out accessible pointers"
+msgstr "Отсеивать только доступные указатели"
+
+#: tfrmrescanpointer.cbluafilter.caption
+msgid "Lua filter. function"
+msgstr "Lua фильтр. function"
+
+#: tfrmrescanpointer.cbluafilter.hint
+msgid ""
+"When checked this will call the given function for every pointer being evaluated. Return true if it's valid, false if not\n"
+"base is the base address (integer)\n"
+"offset is a table with offsets\n"
+"target is the address the pointer points to. Can be nil\n"
+msgstr ""
+"Если галочка установлена, то указанная функция будет вызываться для каждого проверяемого указателя.\n"
+"Возвращает true, если указатель верный и false, если нет\n"
+"«base» - базовый адрес (целое число)\n"
+"«offsets» - таблица со смещениями\n"
+"«target» - адрес, на который указывает указатель. Может быть нулём\n"
+
+#: tfrmrescanpointer.cbmustendwithspecificoffsets.caption
+msgid "Must end with offsets"
+msgstr "Должно заканчиваться смещением"
+
+#: tfrmrescanpointer.cbmuststartwithspecificoffsets.caption
+msgid "Must start with offsets"
+msgstr "Должно начинаться со смещения"
+
+#: tfrmrescanpointer.cbnovaluecheck.caption
+msgid "Only filter out invalid pointers"
+msgstr "Отсеивать только неверные указатели"
+
+#: tfrmrescanpointer.cbrepeat.caption
+msgid "Repeat rescan until stopped"
+msgstr "Повторять отсеивание до нажатия кнопки «Прекратить»"
+
+#: tfrmrescanpointer.cbusesavedpointermap.caption
+msgctxt "TFRMRESCANPOINTER.CBUSESAVEDPOINTERMAP.CAPTION"
+msgid "Use saved pointermap"
+msgstr "Использовать сохранённую карту указателей"
+
+#: tfrmrescanpointer.cbusesavedpointermap.hint
+msgid ""
+"Normally this should not be used. Saved pointermaps are best suited for the initial scan.\n"
+"One case where it could be useful is where you have a pointerfile that is too big to send to someone else, but the scandata file is not. In that case, ask the other person for the scandata and do the scan on your system against the current pointerfile\n"
+msgstr ""
+"Как правило, эта опция не должна быть задействована, т.к. сохранённые карты указателей лучше всего подходят для первоначального поиска.\n"
+"Единственный случай, когда это может быть полезно, это если у вас есть файл с указателями, который слишком велик, чтобы отправить его кому-то другому, но файлы сканирования весят намного меньше. В этом случае, попросите у другого человека файлы сканирования и произведите поиск на своей системе по отношению к текущему файлу с указателями.\n"
+
+#: tfrmrescanpointer.cbvaluetype.text
+msgctxt "tfrmrescanpointer.cbvaluetype.text"
+msgid "4 Byte"
+msgstr "4 Байта"
+
+#: tfrmrescanpointer.edtrescanfunction.text
+msgid "RescanFilter"
+msgstr "RescanFilter"
+
+#: tfrmrescanpointer.label1.caption
+msgid "seconds"
+msgstr "секунд"
+
+#: tfrmrescanpointer.label2.caption
+msgid "New base address"
+msgstr "Новый базовый адрес"
+
+#: tfrmrescanpointer.label3.caption
+msgid "Original base address"
+msgstr "Оригинальный базовый адрес"
+
+#: tfrmrescanpointer.lbland.caption
+msgctxt "tfrmrescanpointer.lbland.caption"
+msgid "and"
+msgstr "и"
+
+#: tfrmrescanpointer.lblluaparams.caption
+msgid "(base, offsets, target):bool"
+msgstr "(base, offsets, target):bool"
+
+#: tfrmrescanpointer.lbloriginalbase.caption
+msgctxt "TFRMRESCANPOINTER.LBLORIGINALBASE.CAPTION"
+msgid "<address>"
+msgstr "<адрес>"
+
+#: tfrmrescanpointer.rbfindaddress.caption
+msgctxt "tfrmrescanpointer.rbfindaddress.caption"
+msgid "Address to find:"
+msgstr "Поиск адреса:"
+
+#: tfrmrescanpointer.rbfindvalue.caption
+msgctxt "tfrmrescanpointer.rbfindvalue.caption"
+msgid "Value to find:"
+msgstr "Поиск значения адреса:"
+
+#: tfrmresumepointerscan.btnnotifyspecificips.caption
+msgctxt "TFRMRESUMEPOINTERSCAN.BTNNOTIFYSPECIFICIPS.CAPTION"
+msgid "Setup specific IP's to notify"
+msgstr "Уведомляемые IP-адреса"
+
+#: tfrmresumepointerscan.button1.caption
+msgctxt "tfrmresumepointerscan.button1.caption"
+msgid "Resume"
+msgstr "Возобновить"
+
+#: tfrmresumepointerscan.button2.caption
+msgctxt "TFRMRESUMEPOINTERSCAN.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmresumepoi
