@@ -13161,4 +13161,180 @@ msgid "From"
 msgstr "От"
 
 #: tfrmpointerscannersettings.label11.caption
-msgctxt "TFRMPOINTERSCAN
+msgctxt "TFRMPOINTERSCANNERSETTINGS.LABEL11.CAPTION"
+msgid "To:"
+msgstr "До:"
+
+#: tfrmpointerscannersettings.label12.caption
+msgid "Max level"
+msgstr "Макс. уровень:"
+
+#: tfrmpointerscannersettings.label13.caption
+msgid "Pointer path may only be inside this region:"
+msgstr "Регион в котором может быть цепочка указателя:"
+
+#: tfrmpointerscannersettings.label2.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.LABEL2.CAPTION"
+msgid "To"
+msgstr "До"
+
+#: tfrmpointerscannersettings.label3.caption
+msgid "Maximum offset value:"
+msgstr "Макс. значение смещения:"
+
+#: tfrmpointerscannersettings.label9.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.LABEL9.CAPTION"
+msgid "Nr of threads scanning: "
+msgstr "Потоков сканирования: "
+
+#: tfrmpointerscannersettings.lblnumberofstackthreads.caption
+msgid "Number of threads from oldest to newest:"
+msgstr "Количество потоков от старых до новейших:"
+
+#: tfrmpointerscannersettings.lblport.caption
+msgctxt "tfrmpointerscannersettings.lblport.caption"
+msgid "Port:"
+msgstr "Порт:"
+
+#: tfrmpointerscannersettings.lblstacksize.caption
+msgid "Max stackoffset to be deemed static enough:"
+msgstr "Максимальное смещение от статического адреса:"
+
+#: tfrmpointerscannersettings.rbfindaddress.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.RBFINDADDRESS.CAPTION"
+msgid "Scan for address"
+msgstr "Поиск адреса"
+
+#: tfrmpointerscannersettings.rbfindvalue.caption
+msgctxt "TFRMPOINTERSCANNERSETTINGS.RBFINDVALUE.CAPTION"
+msgid "Scan for addresses with value"
+msgstr "Поиск значения адреса"
+
+#: tfrmpointerscannersettings.rbgeneratepointermap.caption
+msgctxt "tfrmpointerscannersettings.rbgeneratepointermap.caption"
+msgid "Generate pointermap"
+msgstr "Создание карты указателей"
+
+#: tfrmrescanpointer.cbusesavedpointermap.caption
+msgctxt "tfrmrescanpointer.cbusesavedpointermap.caption"
+msgid "Use saved pointermap"
+msgstr "Использовать сохранённую карту указателей"
+
+#: tfrmprocessinfo.button1.caption
+msgctxt "TFRMPROCESSINFO.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmprocessinfo.button2.caption
+msgid "Threads>>"
+msgstr "Потоки>>"
+
+#: tfrmprocessinfo.caption
+msgid "Process/System Info"
+msgstr "Информация о процессе/системе"
+
+#: tfrmprocessinfo.label4.caption
+msgid "IDT:"
+msgstr "IDT:"
+
+#: tfrmprocessinfo.label5.caption
+msgid "SDT:"
+msgstr "SDT:"
+
+#: tfrmprocessinfo.label6.caption
+msgid "SSDT:"
+msgstr "SSDT:"
+
+#: tfrmprocessinfo.label7.caption
+msgid "GDT:"
+msgstr "GDT:"
+
+#: tfrmprocessinfo.label8.caption
+msgid "Valid Handle:"
+msgstr "Дескриптор:"
+
+#: tfrmprocesswatcher.btnattach.caption
+msgid "Attach to process"
+msgstr "Присоединиться к процессу"
+
+#: tfrmprocesswatcher.btnopen.caption
+msgid "Open process"
+msgstr "Открыть процесс"
+
+#: tfrmprocesswatcher.caption
+msgctxt "tfrmprocesswatcher.caption"
+msgid "Process watcher"
+msgstr "Наблюдатель процесса"
+
+#: tfrmprocesswatcher.showthreadids1.caption
+msgid "Show ThreadID's"
+msgstr "Показать идентификаторы потока"
+
+#: tfrmprocesswatcherextra.caption
+msgid "Processwatcher Extra"
+msgstr "Дополнительно"
+
+#: tfrmrearrangestructurelist.caption
+msgid "Rearrange structure list"
+msgstr "Упорядочивание списка структур"
+
+#: tfrmreferencedfunctions.caption
+msgctxt "tfrmreferencedfunctions.caption"
+msgid "Referenced functions"
+msgstr "Ссылки на функции"
+
+#: tfrmreferencedfunctions.lvcalllist.columns[0].caption
+msgctxt "TFRMREFERENCEDFUNCTIONS.LVCALLLIST.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmreferencedfunctions.lvcalllist.columns[1].caption
+msgctxt "tfrmreferencedfunctions.lvcalllist.columns[1].caption"
+msgid "Refcount"
+msgstr "Ссылок"
+
+#: tfrmreferencedfunctions.menuitem1.caption
+msgid "Copy list to clipboard"
+msgstr "Копировать список в буфер обмена"
+
+#: tfrmreferencedstrings.caption
+msgid "Referenced Strings"
+msgstr "Ссылки на строки"
+
+#: tfrmreferencedstrings.find1.caption
+msgctxt "TFRMREFERENCEDSTRINGS.FIND1.CAPTION"
+msgid "Find"
+msgstr "Найти"
+
+#: tfrmreferencedstrings.findnext1.caption
+msgctxt "TFRMREFERENCEDSTRINGS.FINDNEXT1.CAPTION"
+msgid "Find Next"
+msgstr "Найти далее"
+
+#: tfrmreferencedstrings.lvstringlist.columns[0].caption
+msgctxt "TFRMREFERENCEDSTRINGS.LVSTRINGLIST.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmreferencedstrings.lvstringlist.columns[1].caption
+msgctxt "TFRMREFERENCEDSTRINGS.LVSTRINGLIST.COLUMNS[1].CAPTION"
+msgid "Refcount"
+msgstr "Ссылок"
+
+#: tfrmreferencedstrings.lvstringlist.columns[2].caption
+msgctxt "tfrmreferencedstrings.lvstringlist.columns[2].caption"
+msgid "String"
+msgstr "Строка"
+
+#: tfrmreferencedstrings.search1.caption
+msgctxt "tfrmreferencedstrings.search1.caption"
+msgid "Search"
+msgstr "Поиск"
+
+#: tfrmrescanpointer.button1.caption
+msgctxt "TFRMRESCANPOINTER.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmrescanpointer.button2.caption
+msgctxt 
