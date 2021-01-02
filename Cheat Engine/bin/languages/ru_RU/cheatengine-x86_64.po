@@ -13468,4 +13468,164 @@ msgctxt "TFRMRESUMEPOINTERSCAN.BUTTON2.CAPTION"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: tfrmresumepoi
+#: tfrmresumepointerscan.caption
+msgid "Resume pointerscan"
+msgstr "Возобновление поиска указателя"
+
+#: tfrmresumepointerscan.cbbroadcast.caption
+msgctxt "TFRMRESUMEPOINTERSCAN.CBBROADCAST.CAPTION"
+msgid "Broadcast that a scan has started"
+msgstr "Уведомить о начале сканирования"
+
+#: tfrmresumepointerscan.cbbroadcast.hint
+msgctxt "tfrmresumepointerscan.cbbroadcast.hint"
+msgid "When checked will send a broadcast message on the local network which will tell pointer scanner systems to join this scan if they are set to auto join"
+msgstr ""
+"Если включено, то по локальной сети будет отправлено сообщение, которое велит другим устройствам с запущенным сканером указателей присоединиться к этому сканированию, если у них включена опция «Автоприсоединение к поиску и отсеву».\n"
+"\n"
+"Вы можете воспользоваться кнопкой «Уведомляемые IP-адреса», чтобы зарегистрировать устройства, находящиеся за пределами локальной сети"
+
+#: tfrmresumepointerscan.cbdistributedscanning.caption
+msgctxt "TFRMRESUMEPOINTERSCAN.CBDISTRIBUTEDSCANNING.CAPTION"
+msgid "Allow distributed scanning"
+msgstr "Разрешить распределённое сканирование"
+
+#: tfrmresumepointerscan.cbdistributedscanning.hint
+msgctxt "tfrmresumepointerscan.cbdistributedscanning.hint"
+msgid "Opens a port that other systems running the pointerscanner can connect to and help out with the scan"
+msgstr "Открывает порт, к которому могут подключиться другие системы с запущенным сканером указателей и помочь со сканированием"
+
+#: tfrmresumepointerscan.combobox1.text
+msgctxt "TFRMRESUMEPOINTERSCAN.COMBOBOX1.TEXT"
+msgid "Normal"
+msgstr "Обычный"
+
+#: tfrmresumepointerscan.label1.caption
+msgid "Rescan pointermaps"
+msgstr "Отсев"
+
+#: tfrmresumepointerscan.label9.caption
+msgctxt "TFRMRESUMEPOINTERSCAN.LABEL9.CAPTION"
+msgid "Nr of threads scanning: "
+msgstr "Потоков сканирования: "
+
+#: tfrmresumepointerscan.lblport.caption
+msgctxt "tfrmresumepointerscan.lblport.caption"
+msgid "Port:"
+msgstr "Порт:"
+
+#: tfrmresumepointerscan.listview1.columns[0].caption
+msgctxt "TFRMRESUMEPOINTERSCAN.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Filename"
+msgstr "Название файла"
+
+#: tfrmresumepointerscan.listview1.columns[1].caption
+msgctxt "TFRMRESUMEPOINTERSCAN.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmresumepointerscan.listview1.columns[2].caption
+msgid "Found"
+msgstr "Найдено"
+
+#: tfrmsavedisassembly.button1.caption
+msgctxt "TFRMSAVEDISASSEMBLY.BUTTON1.CAPTION"
+msgid "Save"
+msgstr "Сохранить"
+
+#: tfrmsavedisassembly.caption
+msgctxt "TFRMSAVEDISASSEMBLY.CAPTION"
+msgid "Save disassembled output"
+msgstr "Сохранить диапазон памяти"
+
+#: tfrmsavedisassembly.cbaddress.caption
+msgctxt "TFRMSAVEDISASSEMBLY.CBADDRESS.CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmsavedisassembly.cbbytes.caption
+msgctxt "tfrmsavedisassembly.cbbytes.caption"
+msgid "bytes"
+msgstr "байты"
+
+#: tfrmsavedisassembly.cbopcode.caption
+msgid "opcode"
+msgstr "инструкции"
+
+#: tfrmsavedisassembly.label1.caption
+msgctxt "TFRMSAVEDISASSEMBLY.LABEL1.CAPTION"
+msgid "From"
+msgstr "От"
+
+#: tfrmsavedisassembly.label2.caption
+msgctxt "TFRMSAVEDISASSEMBLY.LABEL2.CAPTION"
+msgid "To"
+msgstr "До"
+
+#: tfrmsavememoryregion.button1.caption
+msgctxt "TFRMSAVEMEMORYREGION.BUTTON1.CAPTION"
+msgid "Save"
+msgstr "Сохранить"
+
+#: tfrmsavememoryregion.button2.caption
+msgctxt "TFRMSAVEMEMORYREGION.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmsavememoryregion.button3.caption
+msgctxt "tfrmsavememoryregion.button3.caption"
+msgid "Add"
+msgstr "Добавить"
+
+#: tfrmsavememoryregion.caption
+msgid "Save memoryregion"
+msgstr "Сохранить регион памяти"
+
+#: tfrmsavememoryregion.dontinclude.caption
+msgid "Don't include Cheat Engine header in file"
+msgstr "Не включать заголовок Cheat Engine в файл"
+
+#: tfrmsavememoryregion.label1.caption
+msgid "Add the region(s) of memory you want to save"
+msgstr "Добавьте регион(ы) памяти для сохранения"
+
+#: tfrmsavememoryregion.label2.caption
+msgctxt "TFRMSAVEMEMORYREGION.LABEL2.CAPTION"
+msgid "From"
+msgstr "От"
+
+#: tfrmsavememoryregion.label3.caption
+msgctxt "TFRMSAVEMEMORYREGION.LABEL3.CAPTION"
+msgid "To"
+msgstr "До"
+
+#: tfrmsavememoryregion.miclearlist.caption
+msgctxt "tfrmsavememoryregion.miclearlist.caption"
+msgid "Clear list"
+msgstr "Очистить список"
+
+#: tfrmsavesnapshots.btncombinedselect.caption
+msgid "Combined select"
+msgstr "Комбинированный выбор"
+
+#: tfrmsavesnapshots.btndone.caption
+msgid "Done"
+msgstr "Готово"
+
+#: tfrmsavesnapshots.btnsave.caption
+msgid "Save selected snapshots"
+msgstr "Сохранить выбранные снимки"
+
+#: tfrmsavesnapshots.caption
+msgid "Save snapshots"
+msgstr "Сохранение снимков"
+
+#: tfrmsavesnapshots.label1.caption
+msgid "Select the snapshot(s) you wish to save"
+msgstr "Выберите снимки, которые вы хотите сохранить"
+
+#: tfrmsavesnapshots.lbldeselectall.caption
+msgid "Deselect all"
+msgstr "Убрать выбранное"
+
+#: tfrm
