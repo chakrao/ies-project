@@ -13628,4 +13628,121 @@ msgstr "Выберите снимки, которые вы хотите сохр
 msgid "Deselect all"
 msgstr "Убрать выбранное"
 
-#: tfrm
+#: tfrmsavesnapshots.lblselectall.caption
+msgctxt "TFRMSAVESNAPSHOTS.LBLSELECTALL.CAPTION"
+msgid "Select all"
+msgstr "Выбрать все"
+
+#: tfrmsavesnapshots.savedialog1.title
+msgid "Give a base path and filename"
+msgstr "Укажите базовый путь и имя файла"
+
+#: tfrmselectionlist.btnok.caption
+msgid "    OK    "
+msgstr "Подтвердить"
+
+#: tfrmselectionlist.caption
+msgid "title"
+msgstr "заглавие"
+
+#: tfrmselectionlist.label1.caption
+msgctxt "tfrmselectionlist.label1.caption"
+msgid "caption"
+msgstr "заголовок"
+
+#: tfrmsetcrosshair.btnapply.caption
+msgid "Apply crosshair"
+msgstr "Применить перекрестие"
+
+#: tfrmsetcrosshair.caption
+msgid "D3D: Set Crosshair"
+msgstr "D3D: Установка перекрестия"
+
+#: tfrmsetcrosshair.label1.caption
+msgid "Alphablend"
+msgstr "AlphaBlend"
+
+#: tfrmsetcrosshair.menuitem1.caption
+msgctxt "TFRMSETCROSSHAIR.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmsetcrosshair.menuitem2.caption
+msgid "Load image"
+msgstr "Загрузить изображение"
+
+#: tfrmsetuppsnnode.btncancel.caption
+msgctxt "TFRMSETUPPSNNODE.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmsetuppsnnode.btnok.caption
+msgctxt "TFRMSETUPPSNNODE.BTNOK.CAPTION"
+msgid "Launch"
+msgstr "Запуск"
+
+#: tfrmsetuppsnnode.button1.caption
+msgid "Setup trusted IP list"
+msgstr "Список доверяемых IP"
+
+#: tfrmsetuppsnnode.caption
+msgid "Setup pointerscan network node"
+msgstr "Настройка узла сетевого сканера указателей"
+
+#: tfrmsetuppsnnode.cballowchildren.caption
+msgid "Allow children to connect to me"
+msgstr "Разрешить потомку подключаться ко мне"
+
+#: tfrmsetuppsnnode.cballowparents.caption
+msgid "Allow parents to connect to me"
+msgstr "Разрешить родителям подключаться ко мне"
+
+#: tfrmsetuppsnnode.cballowtempfiles.caption
+msgid "Allow temp file usage"
+msgstr "Разрешить использование временных файлов"
+
+#: tfrmsetuppsnnode.cballowtempfiles.hint
+msgid "When checked it will save the scandata files it receives into temporary files on the harddisk"
+msgstr ""
+"Если галочка установлена, то будут сохранены файлы с данными сканирования, которые будут получены из временных файлов на жёстком диске.\n"
+"Если галочка снята, то эти файлы будут оставаться в оперативной памяти как в их оригинальном, так и в извлечённом формате.\n"
+" \n"
+"Это может быть полезно на системах без доступа к диску, но с большим объёмом оперативной памяти"
+
+#: tfrmsetuppsnnode.cbautotrustchildren.caption
+msgctxt "TFRMSETUPPSNNODE.CBAUTOTRUSTCHILDREN.CAPTION"
+msgid "Automatically trust stability of all new childnodes"
+msgstr "Доверять стабильности всех новых узлов-потомков"
+
+#: tfrmsetuppsnnode.cbautotrustchildren.hint
+msgctxt "TFRMSETUPPSNNODE.CBAUTOTRUSTCHILDREN.HINT"
+msgid "Normally when a worker terminates before the scan is done it will send all it's paths to it's connected node and then close, but if the system would crash it wouldn't be able to send it's queues to the node, causing in a loss of possible paths to examine"
+msgstr ""
+"Обычно, когда работник прекращает работу до окончания сканирования, он отправляет все найденные цепочки указателя узлу с которым он соединён, а затем закрывается, но если система аварийно завершит работу, то он не сможет сделать этого, что приведёт к утере возможных цепочек указателя для проверки.\n"
+"\n"
+"Если галочка снята, то контроллер/сканер будет отсылать поочерёдно по одной цепочке указателей и запоминать очерёдность до тех пор, пока работник не сообщит, что в очереди не осталось ни одной цепочки, что будет означать успешное завершение работы.\n"
+"Обратите внимание, что в случае не стабильности работника, узел не сможет принимать новые цепочки указателей и работник должен будет обработать все сгенерированные им цепочки самостоятельно.\n"
+"\n"
+"В экране узла вы сможете изменить состояние работника"
+
+#: tfrmsetuppsnnode.cbconnecttoothernode.caption
+msgid "Connect to other node as"
+msgstr "Подключиться к другому узлу как"
+
+#: tfrmsetuppsnnode.cbconnecttoothernode.hint
+msgctxt "TFRMSETUPPSNNODE.CBCONNECTTOOTHERNODE.HINT"
+msgid "Connect to another system as it's parent or child"
+msgstr "Подключиться к другой системе в качестве его родителя или потомка"
+
+#: tfrmsetuppsnnode.cbmaxfoundresults.caption
+msgctxt "TFRMSETUPPSNNODE.CBMAXFOUNDRESULTS.CAPTION"
+msgid "Stop scans after finding max amount of results"
+msgstr "Прервать сканирование при нахождении макс. кол-ва результатов"
+
+#: tfrmsetuppsnnode.cbmaxfoundresults.hint
+msgid "This will terminate all the children and disconnect from the parent after having found at least the given amount of results"
+msgstr ""
+"Завершит работу всех потомков и отключит от родителя после нахождения заданного результата\n"
+"Т.к. проверка делается примерно каждые 10 секунд, то конечный результат может оказаться неточным\n"
+"\n"
+"Примечание: Только если в очереди находится хотя бы один ро
