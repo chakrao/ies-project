@@ -13745,4 +13745,180 @@ msgstr ""
 "Завершит работу всех потомков и отключит от родителя после нахождения заданного результата\n"
 "Т.к. проверка делается примерно каждые 10 секунд, то конечный результат может оказаться неточным\n"
 "\n"
-"Примечание: Только если в очереди находится хотя бы один ро
+"Примечание: Только если в очереди находится хотя бы один родитель, в противном случае отключения не произойдёт"
+
+#: tfrmsetuppsnnode.cbmaxtimetoscan.caption
+msgctxt "TFRMSETUPPSNNODE.CBMAXTIMETOSCAN.CAPTION"
+msgid "Stop scans after specific time"
+msgstr "Прервать сканирование через определённое время"
+
+#: tfrmsetuppsnnode.cbmaxtimetoscan.hint
+msgid "This will terminate all the children and disconnect from the parent after scanning for the given amount of time."
+msgstr ""
+"Завершит работу всех потомков и отключит от родителя после окончания заданного времени\n"
+"Т.к. проверка делается примерно каждые 10 секунд, то конечный результат может быть неточным\n"
+"\n"
+"Примечание: Только если в очереди находится хотя бы один родитель, в противном случае отключения не произойдёт"
+
+#: tfrmsetuppsnnode.cbpriority.text
+msgctxt "tfrmsetuppsnnode.cbpriority.text"
+msgid "Lower"
+msgstr "Ниже обычного"
+
+#: tfrmsetuppsnnode.edtthreadcount.hint
+msgid "The number of threads to scan."
+msgstr ""
+"Число потоков сканирования.\n"
+"Подсказка: Может быть 0"
+
+#: tfrmsetuppsnnode.label3.caption
+msgid "Found pointer paths"
+msgstr "Найденных цепочек указателя"
+
+#: tfrmsetuppsnnode.label4.caption
+msgctxt "tfrmsetuppsnnode.label4.caption"
+msgid "Seconds"
+msgstr "Секунд(ы)"
+
+#: tfrmsetuppsnnode.lblip.caption
+msgctxt "tfrmsetuppsnnode.lblip.caption"
+msgid "IP"
+msgstr "IP-адрес"
+
+#: tfrmsetuppsnnode.lbllistenport.caption
+msgctxt "TFRMSETUPPSNNODE.LBLLISTENPORT.CAPTION"
+msgid "Listen port"
+msgstr "Слушающий порт"
+
+#: tfrmsetuppsnnode.lblpassword.caption
+msgctxt "TFRMSETUPPSNNODE.LBLPASSWORD.CAPTION"
+msgid "Password"
+msgstr "Пароль"
+
+#: tfrmsetuppsnnode.lblpasswordchild.caption
+msgctxt "TFRMSETUPPSNNODE.LBLPASSWORDCHILD.CAPTION"
+msgid "Password"
+msgstr "Пароль"
+
+#: tfrmsetuppsnnode.lblpasswordparent.caption
+msgctxt "tfrmsetuppsnnode.lblpasswordparent.caption"
+msgid "Password"
+msgstr "Пароль"
+
+#: tfrmsetuppsnnode.lblport.caption
+msgctxt "TFRMSETUPPSNNODE.LBLPORT.CAPTION"
+msgid "Port"
+msgstr "Порт"
+
+#: tfrmsetuppsnnode.lblpriority.caption
+msgctxt "TFRMSETUPPSNNODE.LBLPRIORITY.CAPTION"
+msgid "Priority"
+msgstr "Приоритет"
+
+#: tfrmsetuppsnnode.lblpublicname.caption
+msgid "Public name"
+msgstr "Общедоступное название"
+
+#: tfrmsetuppsnnode.lblthreadcount.caption
+msgid "Threadcount"
+msgstr "Число потоков"
+
+#: tfrmsetuppsnnode.rbconnectaschild.caption
+msgid "child"
+msgstr "потомок"
+
+#: tfrmsetuppsnnode.rbconnectasparent.caption
+msgid "parent"
+msgstr "родитель"
+
+#: tfrmsnapshothandler.btncompare.caption
+msgid "Compare"
+msgstr "Сравнить"
+
+#: tfrmsnapshothandler.caption
+msgctxt "tfrmsnapshothandler.caption"
+msgid "Snapshot handler"
+msgstr "Обработчик снимка"
+
+#: tfrmsnapshothandler.lblcompare.caption
+msgid "Compare selected snapshots"
+msgstr "Сравнить выбранные снимки"
+
+#: tfrmsnapshothandler.menuitem1.caption
+msgctxt "TFRMSNAPSHOTHANDLER.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmsnapshothandler.menuitem2.caption
+msgid "Config"
+msgstr "Конфигурация"
+
+#: tfrmsnapshothandler.menuitem4.caption
+msgid "Open snapshot(s)"
+msgstr "Открыть снимок"
+
+#: tfrmsnapshothandler.miconfig.caption
+msgid "Configure snapshot settings"
+msgstr "Настройка параметров снимка"
+
+#: tfrmsnapshothandler.rbcb.caption
+msgid "ConstantBuffer"
+msgstr "Буфер констант"
+
+#: tfrmsnapshothandler.rbstack.caption
+msgctxt "tfrmsnapshothandler.rbstack.caption"
+msgid "Stack"
+msgstr "Стек"
+
+#: tfrmsortpointerlist.button1.caption
+msgctxt "TFRMSORTPOINTERLIST.BUTTON1.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmsortpointerlist.caption
+msgid "Sorting"
+msgstr "Сортировка"
+
+#: tfrmsortpointerlist.label1.caption
+msgid "Sorting the pointerlist. Please wait...."
+msgstr "Сортировка списка указателей. Подождите..."
+
+#: tfrmsortpointerlist.lbltimeleft.caption
+msgctxt "TFRMSORTPOINTERLIST.LBLTIMELEFT.CAPTION"
+msgid "Estimated time left:"
+msgstr "Время до окончания:"
+
+#: tfrmstacktrace.caption
+msgctxt "tfrmstacktrace.caption"
+msgid "Stacktrace"
+msgstr "Трассировка стека"
+
+#: tfrmstacktrace.listview1.columns[0].caption
+msgid "PC"
+msgstr "Счётчик команд"
+
+#: tfrmstacktrace.listview1.columns[1].caption
+msgctxt "tfrmstacktrace.listview1.columns[1].caption"
+msgid "Stack"
+msgstr "Стек"
+
+#: tfrmstacktrace.listview1.columns[2].caption
+msgid "Frame"
+msgstr "Кадр"
+
+#: tfrmstacktrace.listview1.columns[3].caption
+msgid "Return"
+msgstr "Возврат"
+
+#: tfrmstacktrace.listview1.columns[4].caption
+msgctxt "tfrmstacktrace.listview1.columns[4].caption"
+msgid "Parameters"
+msgstr "Параметры"
+
+#: tfrmstacktrace.mimanualstackwalk.caption
+msgid "Manual input"
+msgstr "Ручной ввод"
+
+#: tfrmstacktrace.refresh1.caption
+msgctxt "tfrmstacktrace.refresh1.caption"
+msgid "
