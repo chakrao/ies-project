@@ -13921,4 +13921,170 @@ msgstr "Ручной ввод"
 
 #: tfrmstacktrace.refresh1.caption
 msgctxt "tfrmstacktrace.refresh1.caption"
-msgid "
+msgid "Refresh"
+msgstr "Обновить"
+
+#: tfrmstackview.caption
+msgid "Stack View"
+msgstr "Просмотр стека"
+
+#: tfrmstackview.lvstack.columns[0].caption
+msgctxt "TFRMSTACKVIEW.LVSTACK.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmstackview.lvstack.columns[1].caption
+msgctxt "TFRMSTACKVIEW.LVSTACK.COLUMNS[1].CAPTION"
+msgid "Value"
+msgstr "Значение"
+
+#: tfrmstackview.lvstack.columns[2].caption
+msgid "Secondary"
+msgstr "Вторичное"
+
+#: tfrmstackview.menuitem3.caption
+msgid "Lock and add this view to a structure dissect window"
+msgstr "Заблокировать и добавить это представление в «Анализ структур»"
+
+#: tfrmstackview.menuitem6.caption
+msgid "Copy Line"
+msgstr "Копировать строку"
+
+#: tfrmstackview.miaddref.caption
+msgctxt "tfrmstackview.miaddref.caption"
+msgid "(ref+*) Ref will be %x"
+msgstr "(ref+*) Ссылкой будет %x"
+
+#: tfrmstackview.micopyaddress.caption
+msgid "Copy Address"
+msgstr "Копировать адрес"
+
+#: tfrmstackview.micopysecondary.caption
+msgid "Copy Secondary"
+msgstr "Копировать вторичное"
+
+#: tfrmstackview.micopyvalue.caption
+msgid "Copy Value"
+msgstr "Копировать значение"
+
+#: tfrmstackview.mifind.caption
+msgctxt "TFRMSTACKVIEW.MIFIND.CAPTION"
+msgid "Find"
+msgstr "Найти"
+
+#: tfrmstackview.mifindnext.caption
+msgid "Find Next..."
+msgstr "Найти далее..."
+
+#: tfrmstackview.milockandtrace.caption
+msgid "Lock and do manual stacktrace"
+msgstr "Заблокировать и выполнить ручную трассировку стека"
+
+#: tfrmstackview.misetcolor.caption
+msgid "Set background color to address"
+msgstr "Выбрать цвет фона адреса"
+
+#: tfrmstringmap.btnfree.caption
+msgid "Free the current list"
+msgstr "Очистить текущий список"
+
+#: tfrmstringmap.btnscan.caption
+msgctxt "tfrmstringmap.btnscan.caption"
+msgid "Generate string map"
+msgstr "Создать карту строк"
+
+#: tfrmstringmap.btnshowlist.caption
+msgctxt "tfrmstringmap.btnshowlist.caption"
+msgid "<<Show list"
+msgstr "<<Показать список"
+
+#: tfrmstringmap.caption
+msgid "String map"
+msgstr "Карта строк"
+
+#: tfrmstringmap.cbcasesensitive.caption
+msgctxt "tfrmstringmap.cbcasesensitive.caption"
+msgid "Case sensitive"
+msgstr "С учётом регистра"
+
+#: tfrmstringmap.cbmustbestart.caption
+msgctxt "tfrmstringmap.cbmustbestart.caption"
+msgid "Must be start"
+msgstr "Должно начинаться с"
+
+#: tfrmstringmap.cbregexp.caption
+msgctxt "tfrmstringmap.cbregexp.caption"
+msgid "Strings must match reg exp"
+msgstr "Регулярное выражение"
+
+#: tfrmstringmap.cbsavetodisk.caption
+msgctxt "tfrmstringmap.cbsavetodisk.caption"
+msgid "Save to disk"
+msgstr "Сохранить на диск"
+
+#: tfrmstringmap.lblstringcount.caption
+msgid "Stringcount: 0"
+msgstr "Количество строк: 0"
+
+#: tfrmstringmap.listview1.columns[0].caption
+msgctxt "TFRMSTRINGMAP.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmstringmap.listview1.columns[1].caption
+msgctxt "TFRMSTRINGMAP.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "String"
+msgstr "Строка"
+
+#: tfrmstringmap.mifind.caption
+msgctxt "tfrmstringmap.mifind.caption"
+msgid "Find..."
+msgstr "Найти..."
+
+#: tfrmstringmap.minext.caption
+msgid "Next"
+msgstr "Далее"
+
+#: tfrmstringpointerscan.btnnewscan.caption
+msgctxt "tfrmstringpointerscan.btnnewscan.caption"
+msgid "New Scan"
+msgstr "Новое сканирование"
+
+#: tfrmstringpointerscan.btnscan.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.BTNSCAN.CAPTION"
+msgid "Scan"
+msgstr "Сканировать"
+
+#: tfrmstringpointerscan.caption
+msgctxt "tfrmstringpointerscan.caption"
+msgid "Structure spider"
+msgstr "Структурный паук"
+
+#: tfrmstringpointerscan.cbcasesensitive.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.CBCASESENSITIVE.CAPTION"
+msgid "Case sensitive"
+msgstr "С учётом регистра"
+
+#: tfrmstringpointerscan.cbhasshadow.caption
+msgctxt "tfrmstringpointerscan.cbhasshadow.caption"
+msgid "Has Shadow"
+msgstr "Есть скрытые данные"
+
+#: tfrmstringpointerscan.cbhasshadow.hint
+msgctxt "tfrmstringpointerscan.cbhasshadow.hint"
+msgid "Use this if you're spidering a previously saved memory region that currently resides in a different location."
+msgstr ""
+"Используйте это, если вы отслеживаете сохранённый ранее регион памяти, который, в настоящее время, расположен в другом месте.\n"
+"Наиболее часто используется при работе со стеком, где указатель стека указывает на его собственную структуру."
+
+#: tfrmstringpointerscan.cbhasshadow2.caption
+msgctxt "tfrmstringpointerscan.cbhasshadow2.caption"
+msgid "Has Shadow"
+msgstr "Есть скрытые данные"
+
+#: tfrmstringpointerscan.cbhasshadow2.hint
+msgctxt "tfrmstringpointerscan.cbhasshadow2.hint"
+msgid "Use this if you're spidering a previously saved memory region that currently resides in a different location."
+msgstr ""
+"Используйте это, если вы отслеживаете сохранённый ранее регион памяти, который, в настоящее время, расположен в другом месте.\n"
+"Наиболее часто используется при работе со ст
