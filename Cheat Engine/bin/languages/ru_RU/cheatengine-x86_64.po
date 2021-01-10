@@ -14415,4 +14415,153 @@ msgctxt "TFRMSTRUCTURELINKER.BTNCANCEL.CAPTION"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: tfrmstructurelinker.btnlink.cap
+#: tfrmstructurelinker.btnlink.caption
+msgid "Link"
+msgstr "Связь"
+
+#: tfrmstructurelinker.caption
+msgid "Structure linker"
+msgstr "Структурный редактор связей"
+
+#: tfrmstructurelinker.cbfilllocal.caption
+msgid "Fill in 'Local' structures"
+msgstr "Заполнять «Локальные» структуры"
+
+#: tfrmstructurelinker.cbnoexactmatches.caption
+msgid "Fill in pointers that point into a structure instead of the start"
+msgstr "Заполнять указатели, указывающие на структуру, вместо начала блока"
+
+#: tfrmstructurelinker.cboverridelocal.caption
+msgid "Override 'Local' structures when needed"
+msgstr "Перезаписывать «Локальные» структуры при необходимости"
+
+#: tfrmstructurelinker.label1.caption
+msgid "Fill in the known addresses of these structures (Can be blank if unknown or unrelated)"
+msgstr "Заполнение известных адресов этих структур (Могут быть пустыми, если неизвестны или не связаны)"
+
+#: tfrmstructurelinker.sgstructureaddress.columns[0].title.caption
+msgid "Structure"
+msgstr "Структура"
+
+#: tfrmstructurelinker.sgstructureaddress.columns[1].title.caption
+msgctxt "TFRMSTRUCTURELINKER.SGSTRUCTUREADDRESS.COLUMNS[1].TITLE.CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmstructures.caption
+msgctxt "TFRMSTRUCTURES.CAPTION"
+msgid "Memory dissect"
+msgstr "Анализ памяти"
+
+#: tfrmstructures2.addextraaddress1.caption
+msgctxt "TFRMSTRUCTURES2.ADDEXTRAADDRESS1.CAPTION"
+msgid "Add extra address"
+msgstr "Добавить дополнительный адрес"
+
+#: tfrmstructures2.caption
+msgctxt "TFRMSTRUCTURES2.CAPTION"
+msgid "Structure dissect"
+msgstr "Анализ структуры"
+
+#: tfrmstructures2.definenewstructure1.caption
+msgctxt "TFRMSTRUCTURES2.DEFINENEWSTRUCTURE1.CAPTION"
+msgid "Define new structure"
+msgstr "Определить новую структуру"
+
+#: tfrmstructures2.deletecurrentstructure1.caption
+msgctxt "TFRMSTRUCTURES2.DELETECURRENTSTRUCTURE1.CAPTION"
+msgid "Delete structure"
+msgstr "Удалить структуру"
+
+#: tfrmstructures2.file1.caption
+msgctxt "TFRMSTRUCTURES2.FILE1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmstructures2.headercontrol1.sections[0].text
+msgctxt "TFRMSTRUCTURES2.HEADERCONTROL1.SECTIONS[0].TEXT"
+msgid "Offset-description"
+msgstr "Смещение-описание"
+
+#: tfrmstructures2.menuitem3.caption
+msgctxt "TFRMSTRUCTURES2.MENUITEM3.CAPTION"
+msgid "Save values"
+msgstr "Сохранить значения"
+
+#: tfrmstructures2.menuitem5.caption
+msgid "Add new group"
+msgstr "Добавить новую группу"
+
+#: tfrmstructures2.menuitem8.caption
+msgid "Rearrange structurelist"
+msgstr "Упорядочить список структур"
+
+#: tfrmstructures2.miaddallinrowtoaddresslist.caption
+msgid "Add all in row to address list"
+msgstr "Добавить всё в строке в список адресов"
+
+#: tfrmstructures2.miaddchildelement.caption
+msgid "Add child element"
+msgstr "Добавить дочерний элемент"
+
+#: tfrmstructures2.miaddelement.caption
+msgid "Add element"
+msgstr "Добавить элемент"
+
+#: tfrmstructures2.miaddtoaddresslist.caption
+msgctxt "TFRMSTRUCTURES2.MIADDTOADDRESSLIST.CAPTION"
+msgid "Add to address list"
+msgstr "Добавить в таблицу"
+
+#: tfrmstructures2.miautocreate.caption
+msgctxt "TFRMSTRUCTURES2.MIAUTOCREATE.CAPTION"
+msgid "Autocreate local structures when expanding undefined pointer types"
+msgstr "Автосоздание локальных структур при развёртывании указателей неопределённого типа"
+
+#: tfrmstructures2.miautodestroylocal.caption
+msgctxt "TFRMSTRUCTURES2.MIAUTODESTROYLOCAL.CAPTION"
+msgid "Autodestroy local structures when closed"
+msgstr "Автоуничтожение локальных структур при закрытии"
+
+#: tfrmstructures2.miautofillgaps.caption
+msgctxt "TFRMSTRUCTURES2.MIAUTOFILLGAPS.CAPTION"
+msgid "Fill gaps automatically"
+msgstr "Автозаполнение промежутков"
+
+#: tfrmstructures2.miautoguess.caption
+msgid "Autoguess offset types"
+msgstr "Автоопределение типа указателя"
+
+#: tfrmstructures2.miautostructsize.caption
+msgctxt "TFRMSTRUCTURES2.MIAUTOSTRUCTSIZE.CAPTION"
+msgid "Autocreate structure size: 4096"
+msgstr "Размер автосозданной структуры: 4096"
+
+#: tfrmstructures2.miback.caption
+msgctxt "TFRMSTRUCTURES2.MIBACK.CAPTION"
+msgid "Back"
+msgstr "Назад"
+
+#: tfrmstructures2.mibrowseaddress.caption
+msgctxt "TFRMSTRUCTURES2.MIBROWSEADDRESS.CAPTION"
+msgid "Memory browse this address"
+msgstr "Перейти в память по этому адресу"
+
+#: tfrmstructures2.mibrowsepointer.caption
+msgctxt "TFRMSTRUCTURES2.MIBROWSEPOINTER.CAPTION"
+msgid "Memory browse pointer"
+msgstr "Перейти в память по указателю"
+
+#: tfrmstructures2.michangeallvaluesinrow.caption
+msgctxt "tfrmstructures2.michangeallvaluesinrow.caption"
+msgid "Change all values in row"
+msgstr "Изменить все значения в строке"
+
+#: tfrmstructures2.michangecolors.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGECOLORS.CAPTION"
+msgid "Settings"
+msgstr "Настройки"
+
+#: tfrmstructures2.michangeelement.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGEELEMENT.CAPTION"
+msgid "Chang
