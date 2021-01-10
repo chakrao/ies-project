@@ -14087,4 +14087,166 @@ msgctxt "tfrmstringpointerscan.cbhasshadow2.hint"
 msgid "Use this if you're spidering a previously saved memory region that currently resides in a different location."
 msgstr ""
 "Используйте это, если вы отслеживаете сохранённый ранее регион памяти, который, в настоящее время, расположен в другом месте.\n"
-"Наиболее часто используется при работе со ст
+"Наиболее часто используется при работе со стеком, где указатель стека указывает на его собственную структуру."
+
+#: tfrmstringpointerscan.cbmappointervalues.caption
+msgid "Store values during scan"
+msgstr "Хранить значения при сканировании"
+
+#: tfrmstringpointerscan.cbmappointervalues.hint
+msgid "During the scan the values of pointer will be stored in memory for quick lookup when the same address is encountered again"
+msgstr ""
+"Во время сканирования, значения указателя будут храниться в памяти для быстрого поиска, когда тот же адрес снова встретиться.\n"
+"Если список указателей состоит в основном из уникальных адресов, то это может привести к получению ошибок о нехватке памяти.\n"
+"\n"
+"Включено: Высокая скорость. Поедает память.\n"
+"Отключено: Медленнее. Не слишком большое поедание памяти"
+
+#: tfrmstringpointerscan.cbmustbestart.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.CBMUSTBESTART.CAPTION"
+msgid "Must be start"
+msgstr "Должно начинаться с"
+
+#: tfrmstringpointerscan.cbpointerinrange.caption
+msgid "Pointer must be in range"
+msgstr "Указатель должен быть в диапазоне"
+
+#: tfrmstringpointerscan.cbregexp.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.CBREGEXP.CAPTION"
+msgid "Strings must match reg exp"
+msgstr "Регулярное выражение"
+
+#: tfrmstringpointerscan.cbreusestringmap.caption
+msgid "Use existing stringmap"
+msgstr "Использовать существующую карту строк"
+
+#: tfrmstringpointerscan.combocomparetype.text
+msgctxt "TFRMSTRINGPOINTERSCAN.COMBOCOMPARETYPE.TEXT"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: tfrmstringpointerscan.combotype.text
+msgctxt "TFRMSTRINGPOINTERSCAN.COMBOTYPE.TEXT"
+msgid "String"
+msgstr "Строка"
+
+#: tfrmstringpointerscan.lblalign.caption
+msgctxt "tfrmstringpointerscan.lblalign.caption"
+msgid "Alignsize"
+msgstr "Размер выравнивания"
+
+#: tfrmstringpointerscan.lbland.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.LBLAND.CAPTION"
+msgid "and"
+msgstr "и"
+
+#: tfrmstringpointerscan.lblbaseregion.caption
+msgid "Base region"
+msgstr "Базовый регион"
+
+#: tfrmstringpointerscan.lblcompare.caption
+msgid "Compare type"
+msgstr "Тип сравнения"
+
+#: tfrmstringpointerscan.lblextra.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.LBLEXTRA.CAPTION"
+msgid "Compare against"
+msgstr "Сравнить с"
+
+#: tfrmstringpointerscan.lblinfo.caption
+msgctxt "tfrmstringpointerscan.lblinfo.caption"
+msgid "Info"
+msgstr "Информация"
+
+#: tfrmstringpointerscan.lblmaxlevel.caption
+msgctxt "tfrmstringpointerscan.lblmaxlevel.caption"
+msgid "Max Level"
+msgstr "Макс. уровень"
+
+#: tfrmstringpointerscan.lblsize.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.LBLSIZE.CAPTION"
+msgid "Size"
+msgstr "Размер"
+
+#: tfrmstringpointerscan.lblsize2.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.LBLSIZE2.CAPTION"
+msgid "Size"
+msgstr "Размер"
+
+#: tfrmstringpointerscan.lblstring.caption
+msgid "String:"
+msgstr "Строка:"
+
+#: tfrmstringpointerscan.lblstructsize.caption
+msgctxt "tfrmstringpointerscan.lblstructsize.caption"
+msgid "Structsize"
+msgstr "Размер структуры"
+
+#: tfrmstringpointerscan.lblvds.caption
+msgctxt "tfrmstringpointerscan.lblvds.caption"
+msgid "Variable display type"
+msgstr "Тип отображения"
+
+#: tfrmstringpointerscan.menuitem1.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmstringpointerscan.menuitem5.caption
+msgctxt "tfrmstringpointerscan.menuitem5.caption"
+msgid "Rescan"
+msgstr "Отсев"
+
+#: tfrmstringpointerscan.menuitem6.caption
+msgctxt "tfrmstringpointerscan.menuitem6.caption"
+msgid "Filter pointerlist"
+msgstr "Фильтр списка указателей"
+
+#: tfrmstringpointerscan.menuitem7.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MENUITEM7.CAPTION"
+msgid "New Window"
+msgstr "Новое окно"
+
+#: tfrmstringpointerscan.miclearcache.caption
+msgctxt "tfrmstringpointerscan.miclearcache.caption"
+msgid "Clear pointer cache"
+msgstr "Очистить кэш указателя"
+
+#: tfrmstringpointerscan.mifind.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MIFIND.CAPTION"
+msgid "Find..."
+msgstr "Найти..."
+
+#: tfrmstringpointerscan.mifindnext.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MIFINDNEXT.CAPTION"
+msgid "Find Next"
+msgstr "Найти далее"
+
+#: tfrmstringpointerscan.minewscan.caption
+msgctxt "tfrmstringpointerscan.minewscan.caption"
+msgid "New scan"
+msgstr "Новое сканирование"
+
+#: tfrmstringpointerscan.miopen.caption
+msgctxt "TFRMSTRINGPOINTERSCAN.MIOPEN.CAPTION"
+msgid "Open"
+msgstr "Открыть"
+
+#: tfrmstringpointerscan.rbdatascan.caption
+msgid "Data scan"
+msgstr "Сканирование данных"
+
+#: tfrmstringpointerscan.rbdiffdontcare.caption
+msgid "Don't care for difference"
+msgstr "Не заботиться о различии"
+
+#: tfrmstringpointerscan.rbmustbedifferent.caption
+msgid "Must be different"
+msgstr "Должно отличаться"
+
+#: tfrmstringpointerscan.rbmustbesame.caption
+msgid "Must be the same"
+msgstr "Должно совпадать"
+
+#: tfrmstringpointerscan.rbstringscan.caption
+msgid "S
