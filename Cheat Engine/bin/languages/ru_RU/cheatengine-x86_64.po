@@ -14249,4 +14249,170 @@ msgid "Must be the same"
 msgstr "Должно совпадать"
 
 #: tfrmstringpointerscan.rbstringscan.caption
-msgid "S
+msgid "String scan"
+msgstr "Сканирование строк"
+
+#: tfrmstructurecompare.btnaddaddresslf.caption
+msgctxt "tfrmstructurecompare.btnaddaddresslf.caption"
+msgid "Add Address"
+msgstr "Добавить адрес"
+
+#: tfrmstructurecompare.btnaddaddressnlf.caption
+msgctxt "TFRMSTRUCTURECOMPARE.BTNADDADDRESSNLF.CAPTION"
+msgid "Add Address"
+msgstr "Добавить адрес"
+
+#: tfrmstructurecompare.btnnewscan.caption
+msgctxt "TFRMSTRUCTURECOMPARE.BTNNEWSCAN.CAPTION"
+msgid "New Scan"
+msgstr "Новый поиск"
+
+#: tfrmstructurecompare.btnscan.caption
+msgctxt "TFRMSTRUCTURECOMPARE.BTNSCAN.CAPTION"
+msgid "Scan"
+msgstr "Поиск"
+
+#: tfrmstructurecompare.caption
+msgid "Structure Compare"
+msgstr "Структурное сравнение"
+
+#: tfrmstructurecompare.cbhexadecimal.caption
+msgctxt "TFRMSTRUCTURECOMPARE.CBHEXADECIMAL.CAPTION"
+msgid "Hexadecimal"
+msgstr "Шестнадцатиричный"
+
+#: tfrmstructurecompare.cbsameonly.caption
+msgid "Only find matching groups"
+msgstr "Искать только совпадения"
+
+#: tfrmstructurecompare.cbsameonly.hint
+msgid "With this enabled it will only return results when both group 1 has matching values and group 2 has matching values, and group2's value is not the same as group1"
+msgstr "Если эта опция включена, то она будет возвращать результаты только в том случае, если «Группа 1» имеет совпадающие значения и «Группа 2» имеет совпадающие значения, а значение в «Группа 2» не то же самое, что в «Группа 1»"
+
+#: tfrmstructurecompare.combotype.text
+msgctxt "TFRMSTRUCTURECOMPARE.COMBOTYPE.TEXT"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: tfrmstructurecompare.edtalignsize.hint
+msgid "1,2 or 4"
+msgstr "1,2 или 4"
+
+#: tfrmstructurecompare.gblf.caption
+msgctxt "TFRMSTRUCTURECOMPARE.GBLF.CAPTION"
+msgid "Group 1"
+msgstr "Группа 1"
+
+#: tfrmstructurecompare.gbnfl.caption
+msgid "Group 2"
+msgstr "Группа 2"
+
+#: tfrmstructurecompare.lblalign.caption
+msgctxt "TFRMSTRUCTURECOMPARE.LBLALIGN.CAPTION"
+msgid "element compare size"
+msgstr "размер элемента сравнения"
+
+#: tfrmstructurecompare.lblinfo.caption
+msgctxt "TFRMSTRUCTURECOMPARE.LBLINFO.CAPTION"
+msgid "Info"
+msgstr "Информация"
+
+#: tfrmstructurecompare.lblmaxlevel.caption
+msgctxt "TFRMSTRUCTURECOMPARE.LBLMAXLEVEL.CAPTION"
+msgid "Max Level"
+msgstr "Макс. уровень"
+
+#: tfrmstructurecompare.lblstructsize.caption
+msgctxt "TFRMSTRUCTURECOMPARE.LBLSTRUCTSIZE.CAPTION"
+msgid "Structsize"
+msgstr "Размер структуры"
+
+#: tfrmstructurecompare.lblvds.caption
+msgctxt "TFRMSTRUCTURECOMPARE.LBLVDS.CAPTION"
+msgid "Variable display type"
+msgstr "Тип отображения"
+
+#: tfrmstructurecompare.menuitem1.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmstructurecompare.menuitem5.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MENUITEM5.CAPTION"
+msgid "Rescan"
+msgstr "Отсев"
+
+#: tfrmstructurecompare.menuitem6.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MENUITEM6.CAPTION"
+msgid "Filter pointerlist"
+msgstr "Фильтр списка указателей"
+
+#: tfrmstructurecompare.menuitem7.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MENUITEM7.CAPTION"
+msgid "New Window"
+msgstr "Новое окно"
+
+#: tfrmstructurecompare.miclearcache.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MICLEARCACHE.CAPTION"
+msgid "Clear pointer cache"
+msgstr "Очистить кэш указателя"
+
+#: tfrmstructurecompare.micopy.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MICOPY.CAPTION"
+msgid "Copy"
+msgstr "Копировать"
+
+#: tfrmstructurecompare.micut.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MICUT.CAPTION"
+msgid "Cut"
+msgstr "Вырезать"
+
+#: tfrmstructurecompare.mideleteaddress.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MIDELETEADDRESS.CAPTION"
+msgid "Delete"
+msgstr "Удалить"
+
+#: tfrmstructurecompare.mifind.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MIFIND.CAPTION"
+msgid "Find..."
+msgstr "Найти..."
+
+#: tfrmstructurecompare.mifindnext.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MIFINDNEXT.CAPTION"
+msgid "Find Next"
+msgstr "Найти далее"
+
+#: tfrmstructurecompare.mimaxaddresses.caption
+msgid "Max addresses shown : 32"
+msgstr "Количество отображаемых адресов: 32"
+
+#: tfrmstructurecompare.mimaxaddresses.hint
+msgid "This lets you specify the maximum number of addresses to show per line"
+msgstr "Позволит вам указать максимальное количество адресов для отображения в каждой строке"
+
+#: tfrmstructurecompare.minewscan.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MINEWSCAN.CAPTION"
+msgid "New scan"
+msgstr "Новый поиск"
+
+#: tfrmstructurecompare.miopen.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MIOPEN.CAPTION"
+msgid "Open"
+msgstr "Открыть"
+
+#: tfrmstructurecompare.mipaste.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MIPASTE.CAPTION"
+msgid "Paste"
+msgstr "Вставить"
+
+#: tfrmstructurecompare.mishadow.caption
+msgctxt "TFRMSTRUCTURECOMPARE.MISHADOW.CAPTION"
+msgid "Lock"
+msgstr "Заблокировать"
+
+#: tfrmstructurelinker.btncancel.caption
+msgctxt "TFRMSTRUCTURELINKER.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmstructurelinker.btnlink.cap
