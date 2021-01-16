@@ -14564,4 +14564,170 @@ msgstr "Настройки"
 
 #: tfrmstructures2.michangeelement.caption
 msgctxt "TFRMSTRUCTURES2.MICHANGEELEMENT.CAPTION"
-msgid "Chang
+msgid "Change element"
+msgstr "Изменить элемент"
+
+#: tfrmstructures2.michangetype.caption
+msgid "Change Type"
+msgstr "Изменить тип"
+
+#: tfrmstructures2.michangetype2byte.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPE2BYTE.CAPTION"
+msgid "2 Byte"
+msgstr "2 Байта"
+
+#: tfrmstructures2.michangetype2bytehex.caption
+msgid "2 Byte (Hex)"
+msgstr "2 Байта (Шестнадцатеричное)"
+
+#: tfrmstructures2.michangetype4byte.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPE4BYTE.CAPTION"
+msgid "4 Byte"
+msgstr "4 Байта"
+
+#: tfrmstructures2.michangetype4bytehex.caption
+msgid "4 Byte (Hex)"
+msgstr "4 Байта (Шестнадцатеричное)"
+
+#: tfrmstructures2.michangetype8byte.caption
+msgctxt "tfrmstructures2.michangetype8byte.caption"
+msgid "8 Byte"
+msgstr "8 Байт"
+
+#: tfrmstructures2.michangetype8bytehex.caption
+msgid "8 Byte (Hex)"
+msgstr "8 Байт (Шестнадцатеричное)"
+
+#: tfrmstructures2.michangetypearrayofbyte.caption
+msgid "Array Of Byte"
+msgstr "Массив байт"
+
+#: tfrmstructures2.michangetypebyte.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEBYTE.CAPTION"
+msgid "Byte"
+msgstr "1 Байт"
+
+#: tfrmstructures2.michangetypebytehex.caption
+msgid "Byte (Hex)"
+msgstr "1 Байт (Шестнадцатеричное)"
+
+#: tfrmstructures2.michangetypedouble.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEDOUBLE.CAPTION"
+msgid "Double"
+msgstr "Double"
+
+#: tfrmstructures2.michangetypefloat.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEFLOAT.CAPTION"
+msgid "Float"
+msgstr "Float"
+
+#: tfrmstructures2.michangetypepointer.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEPOINTER.CAPTION"
+msgid "Pointer"
+msgstr "Указатель"
+
+#: tfrmstructures2.michangetypestring.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPESTRING.CAPTION"
+msgid "String"
+msgstr "Строка"
+
+#: tfrmstructures2.michangetypeunicode.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGETYPEUNICODE.CAPTION"
+msgid "Unicode"
+msgstr "Юникод"
+
+#: tfrmstructures2.michangevalue.caption
+msgctxt "TFRMSTRUCTURES2.MICHANGEVALUE.CAPTION"
+msgid "Change value"
+msgstr "Изменить значение"
+
+#: tfrmstructures2.miclear.caption
+msgid "Delete all structures"
+msgstr "Удалить все структуры"
+
+#: tfrmstructures2.micollapseall.caption
+msgctxt "tfrmstructures2.micollapseall.caption"
+msgid "Collapse all pointers"
+msgstr "Свернуть все указатели"
+
+#: tfrmstructures2.micommands.caption
+msgid "Structure Options"
+msgstr "Настройки структуры"
+
+#: tfrmstructures2.micommonalityscan.caption
+msgid "Scan for commonalities using the structure compare window"
+msgstr "Поиск совпадений с помощью окна сравнение структуры"
+
+#: tfrmstructures2.micopy.caption
+msgid "Copy element(s)"
+msgstr "Копировать элемент(ы)"
+
+#: tfrmstructures2.midefaulthexadecimal.caption
+msgid "New integer types default to hexadecimal"
+msgstr "Показывать целые числа в шестнадцатеричном виде"
+
+#: tfrmstructures2.midefinenewstructurefromdebugdata.caption
+msgid "Define new structure from debug data"
+msgstr "Определить новую структуру из отладочных данных"
+
+#: tfrmstructures2.mideleteelement.caption
+msgid "Delete element(s)"
+msgstr "Удалить элемент(ы)"
+
+#: tfrmstructures2.midonotsavelocal.caption
+msgid "Do not save autocreated local structures"
+msgstr "Не сохранять автосозданные локальные структуры"
+
+#: tfrmstructures2.mieverythinghex.caption
+msgid "View everything as hexadecimal"
+msgstr "Показать всё в шестнадцатеричном виде"
+
+#: tfrmstructures2.miexpandall.caption
+msgid "Expand all defined and undefined pointers"
+msgstr "Развернуть"
+
+#: tfrmstructures2.miexpandalldefined.caption
+msgid "Expand all defined pointers"
+msgstr "Развернуть все определённые указатели"
+
+#: tfrmstructures2.miexportall.caption
+msgid "Export all structures"
+msgstr "Экспорт всех структур"
+
+#: tfrmstructures2.mifillgaps.caption
+msgid "Fill gaps"
+msgstr "Заполнить промежутки"
+
+#: tfrmstructures2.mifindnext.caption
+msgctxt "tfrmstructures2.mifindnext.caption"
+msgid "Find Next"
+msgstr "Найти далее"
+
+#: tfrmstructures2.mifindprevious.caption
+msgid "Find Previous"
+msgstr "Найти предыдущее"
+
+#: tfrmstructures2.mifindrelations.caption
+msgid "Find relations"
+msgstr "Поиск связей"
+
+#: tfrmstructures2.mifindvalue.caption
+msgctxt "tfrmstructures2.mifindvalue.caption"
+msgid "Find value"
+msgstr "Найти значение"
+
+#: tfrmstructures2.mifullupgrade.caption
+msgid "Upgrade this child to full structure"
+msgstr "Обновить этот дочерний элемент до полной структуры"
+
+#: tfrmstructures2.migenerategroupscan.caption
+msgctxt "TFRMSTRUCTURES2.MIGENERATEGROUPSCAN.CAPTION"
+msgid "Generate groupscan command"
+msgstr "Генерация группового поиска"
+
+#: tfrmstructures2.migotooffset.caption
+msgid "Go to Offest"
+msgstr "Перейти к смещению"
+
+#: tfrmstructures2.minewwindow.caption
+msgctxt "TFRMSTRUCTURES2.MINEWWI
