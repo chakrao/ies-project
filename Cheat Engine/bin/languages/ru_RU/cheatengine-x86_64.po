@@ -14730,4 +14730,180 @@ msgid "Go to Offest"
 msgstr "Перейти к смещению"
 
 #: tfrmstructures2.minewwindow.caption
-msgctxt "TFRMSTRUCTURES2.MINEWWI
+msgctxt "TFRMSTRUCTURES2.MINEWWINDOW.CAPTION"
+msgid "New window"
+msgstr "Новое окно"
+
+#: tfrmstructures2.miopeninnewwindow.caption
+msgid "Open in new window"
+msgstr "Открыть в новом окне"
+
+#: tfrmstructures2.mipaste.caption
+msgid "Paste elements(s)"
+msgstr "Вставить элемент(ы)"
+
+#: tfrmstructures2.mirecalculateaddress.caption
+msgctxt "TFRMSTRUCTURES2.MIRECALCULATEADDRESS.CAPTION"
+msgid "Recalculate address"
+msgstr "Перерасчёт адреса"
+
+#: tfrmstructures2.mirlecompression.caption
+msgid "Enable RLE Compression"
+msgstr "Включить RLE сжатие"
+
+#: tfrmstructures2.mishowaddresses.caption
+msgid "Show addresses"
+msgstr "Показать адреса"
+
+#: tfrmstructures2.mishowtypeforentrieswithnodescription.caption
+msgid "Show type for entries with no description"
+msgstr "Показывать «тип» у записей без описания"
+
+#: tfrmstructures2.miupdateinterval.caption
+msgctxt "TFRMSTRUCTURES2.MIUPDATEINTERVAL.CAPTION"
+msgid "Update interval: 500"
+msgstr "Интервал обновления: 500"
+
+#: tfrmstructures2.miupdateoffsets.caption
+msgctxt "TFRMSTRUCTURES2.MIUPDATEOFFSETS.CAPTION"
+msgid "Update this and following offsets"
+msgstr "Корректировать это и последующие смещения"
+
+#: tfrmstructures2.miview.caption
+msgctxt "TFRMSTRUCTURES2.MIVIEW.CAPTION"
+msgid "View"
+msgstr "Вид"
+
+#: tfrmstructures2.open1.caption
+msgctxt "TFRMSTRUCTURES2.OPEN1.CAPTION"
+msgid "Import"
+msgstr "Импорт"
+
+#: tfrmstructures2.renamestructure1.caption
+msgctxt "TFRMSTRUCTURES2.RENAMESTRUCTURE1.CAPTION"
+msgid "Rename structure"
+msgstr "Переименовать структуру"
+
+#: tfrmstructures2.save1.caption
+msgid "Export current structure"
+msgstr "Экспорт текущей структуры"
+
+#: tfrmstructures2.structures1.caption
+msgctxt "TFRMSTRUCTURES2.STRUCTURES1.CAPTION"
+msgid "Structures"
+msgstr "Структуры"
+
+#: tfrmstructures2elementinfo.button1.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmstructures2elementinfo.button2.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmstructures2elementinfo.caption
+msgid "Structure Info"
+msgstr "Информация о структуре"
+
+#: tfrmstructures2elementinfo.cbexpandchangesaddress.caption
+msgid "Expanding this node will change the address"
+msgstr "Развёртывание этого узла изменит адрес"
+
+#: tfrmstructures2elementinfo.cbhexadecimal.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.CBHEXADECIMAL.CAPTION"
+msgid "Hexadecimal"
+msgstr "Шестнадцатеричное"
+
+#: tfrmstructures2elementinfo.cbsigned.caption
+msgctxt "tfrmstructures2elementinfo.cbsigned.caption"
+msgid "Signed"
+msgstr "Знаковое"
+
+#: tfrmstructures2elementinfo.cbstructtype.text
+msgid "Undefined"
+msgstr "Неопределенная"
+
+#: tfrmstructures2elementinfo.cbtype.text
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.CBTYPE.TEXT"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: tfrmstructures2elementinfo.label1.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.LABEL1.CAPTION"
+msgid "Description"
+msgstr "Описание"
+
+#: tfrmstructures2elementinfo.label2.caption
+msgctxt "tfrmstructures2elementinfo.label2.caption"
+msgid "Bytesize"
+msgstr "Размер в байтах"
+
+#: tfrmstructures2elementinfo.label3.caption
+msgctxt "tfrmstructures2elementinfo.label3.caption"
+msgid "Offset"
+msgstr "Смещение"
+
+#: tfrmstructures2elementinfo.label4.caption
+msgctxt "TFRMSTRUCTURES2ELEMENTINFO.LABEL4.CAPTION"
+msgid "Type"
+msgstr "Тип"
+
+#: tfrmstructures2elementinfo.label5.caption
+msgid "Structure pointed to"
+msgstr "Структура указывает на"
+
+#: tfrmstructures2elementinfo.label6.caption
+msgid "Background Color"
+msgstr "Цвет фона"
+
+#: tfrmstructures2elementinfo.lbloffsetinto.caption
+msgid "Offset into"
+msgstr "Смещение в"
+
+#: tfrmstructuresaddelement.button1.caption
+msgctxt "TFRMSTRUCTURESADDELEMENT.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmstructuresaddelement.button2.caption
+msgctxt "TFRMSTRUCTURESADDELEMENT.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmstructuresaddelement.caption
+msgid "Add Element"
+msgstr "Добавление элемента"
+
+#: tfrmstructuresaddelement.cbpointerto.caption
+msgid "pointer to:"
+msgstr "указатель на:"
+
+#: tfrmstructuresaddelement.edtdescription.text
+msgctxt "TFRMSTRUCTURESADDELEMENT.EDTDESCRIPTION.TEXT"
+msgid "undefined"
+msgstr "неопределенный"
+
+#: tfrmstructuresaddelement.label1.caption
+msgid "description"
+msgstr "описание"
+
+#: tfrmstructuresaddelement.label2.caption
+msgctxt "TFRMSTRUCTURESADDELEMENT.LABEL2.CAPTION"
+msgid "Bytesize"
+msgstr "Размер в байтах"
+
+#: tfrmstructuresaddelement.label3.caption
+msgctxt "TFRMSTRUCTURESADDELEMENT.LABEL3.CAPTION"
+msgid "Offset"
+msgstr "Смещение"
+
+#: tfrmstructuresconfig.button1.caption
+msgctxt "TFRMSTRUCTURESCONFIG.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmstructuresconfig.button2.caption
+msgctxt "TFRMSTRUCTURESCONFIG.BUTTON2.CAPTION"
+msgid "Ca
