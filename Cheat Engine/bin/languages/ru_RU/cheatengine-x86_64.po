@@ -14906,4 +14906,139 @@ msgstr "Подтвердить"
 
 #: tfrmstructuresconfig.button2.caption
 msgctxt "TFRMSTRUCTURESCONFIG.BUTTON2.CAPTION"
-msgid "Ca
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmstructuresconfig.caption
+msgid "Dissect Data Config"
+msgstr "Настройка анализа данных"
+
+#: tfrmstructuresconfig.cbautocreate.caption
+msgctxt "tfrmstructuresconfig.cbautocreate.caption"
+msgid "Autocreate local structures when expanding undefined pointer types"
+msgstr "Автосоздание локальных структур при развёртывании указателей неопределённого типа"
+
+#: tfrmstructuresconfig.cbautodestroylocal.caption
+msgctxt "tfrmstructuresconfig.cbautodestroylocal.caption"
+msgid "Autodestroy local structures when closed"
+msgstr "Автоуничтожение локальных структур при закрытии"
+
+#: tfrmstructuresconfig.cbautofillgaps.caption
+msgctxt "tfrmstructuresconfig.cbautofillgaps.caption"
+msgid "Fill gaps automatically"
+msgstr "Автозаполнение промежутков"
+
+#: tfrmstructuresconfig.cbautoguesscustomtypes.caption
+msgid "Autoguess custom types"
+msgstr "Автоопределение пользовательских типов"
+
+#: tfrmstructuresconfig.cbdefaulthex.caption
+msgid "Default to hexadecimal for new integer entries"
+msgstr "Показывать целые числа в шестнадцатеричном виде по умолчанию"
+
+#: tfrmstructuresconfig.cbdonotsavelocal.caption
+msgctxt "tfrmstructuresconfig.cbdonotsavelocal.caption"
+msgid "Do not save autocreated local structures"
+msgstr "Не сохранять автосозданные локальные структуры"
+
+#: tfrmstructuresconfig.cbpositionaddressesovercolumns.caption
+msgid "Position Addresses Over Columns"
+msgstr "Выровнять позицию адресов относительно колонок"
+
+#: tfrmstructuresconfig.combobackground.text
+msgctxt "TFRMSTRUCTURESCONFIG.COMBOBACKGROUND.TEXT"
+msgid "Normal"
+msgstr "Обычные"
+
+#: tfrmstructuresconfig.groupbox1.caption
+msgid "Colors"
+msgstr "Цвета"
+
+#: tfrmstructuresconfig.groupbox2.caption
+msgid "Default options for new structures"
+msgstr "Настройки по умолчанию для новых структур"
+
+#: tfrmstructuresconfig.groupbox3.caption
+msgid "Global options"
+msgstr "Общие настройки"
+
+#: tfrmstructuresconfig.label1.caption
+msgctxt "TFRMSTRUCTURESCONFIG.LABEL1.CAPTION"
+msgid "Default"
+msgstr "По умолчанию"
+
+#: tfrmstructuresconfig.label1.hint
+msgid "Color used when only one column"
+msgstr "Цвет используется только при работе с одним столбцом"
+
+#: tfrmstructuresconfig.label2.caption
+msgid "Different"
+msgstr "Разные"
+
+#: tfrmstructuresconfig.label2.hint
+msgid "Color used when only one group and not all columns have the same value, or when multiple groups but not every group has matching columns"
+msgstr "Цвет используется когда в столбцах одной или нескольких групп не все адреса по одному смещению имеют одинаковое значение"
+
+#: tfrmstructuresconfig.label3.caption
+msgid "Group Equal"
+msgstr "Равные в группах"
+
+#: tfrmstructuresconfig.label3.hint
+msgid "Color used when multiple groups and every member of every group has the same value, and that value matches that of each group"
+msgstr "Цвет используется когда все адреса по одному смещению имеют одинаковое значение во всех группах"
+
+#: tfrmstructuresconfig.label4.caption
+msgid "Autocreate structure size"
+msgstr "Размер автосоздаваемой структуры"
+
+#: tfrmstructuresconfig.label5.caption
+msgid "Max auto-expand level:"
+msgstr "Максимальный уровень авторазвёртывания:"
+
+#: tfrmstructuresconfig.label7.caption
+msgid "Equal"
+msgstr "Равные"
+
+#: tfrmstructuresconfig.label7.hint
+msgid "Color used when only one group and all columns have the same value"
+msgstr "Цвет используется когда во всех столбцах одной группы все адреса по одному смещению имеют одинаковое значение"
+
+#: tfrmstructuresconfig.label9.caption
+msgid "Group Different"
+msgstr "Разные в группах"
+
+#: tfrmstructuresconfig.label9.hint
+msgid "Color used when multiple groups and every member of every group has the same value, but not each group has the same value"
+msgstr "Цвет используется когда все адреса по одному смещению имеют одинаковое значение только в своей группе"
+
+#: tfrmstructuresnewstructure.btncancel.caption
+msgctxt "TFRMSTRUCTURESNEWSTRUCTURE.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmstructuresnewstructure.btnok.caption
+msgctxt "TFRMSTRUCTURESNEWSTRUCTURE.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmstructuresnewstructure.caption
+msgctxt "TFRMSTRUCTURESNEWSTRUCTURE.CAPTION"
+msgid "New Structure"
+msgstr "Новая структура"
+
+#: tfrmstructuresnewstructure.cbguessfieldtypes.caption
+msgctxt "TFRMSTRUCTURESNEWSTRUCTURE.CBGUESSFIELDTYPES.CAPTION"
+msgid "Guess Field Types"
+msgstr "Угадать типы полей"
+
+#: tfrmstructuresnewstructure.cbuseautotypes.caption
+msgctxt "TFRMSTRUCTURESNEWSTRUCTURE.CBUSEAUTOTYPES.CAPTION"
+msgid "Use Auto Types If Available"
+msgstr "Использовать автоматические типы если доступно"
+
+#: tfrmstructuresnewstructure.labelstructurename.caption
+msgid "Structure Name"
+msgstr "Название структуры"
+
+#: tfrmstructuresnewstructure.labelstructuresize.caption
+msg
