@@ -15041,4 +15041,187 @@ msgid "Structure Name"
 msgstr "Название структуры"
 
 #: tfrmstructuresnewstructure.labelstructuresize.caption
-msg
+msgctxt "TFRMSTRUCTURESNEWSTRUCTURE.LABELSTRUCTURESIZE.CAPTION"
+msgid "Size:"
+msgstr "Размер:"
+
+#: tfrmsymbolhandler.button1.caption
+msgid "Add symbol"
+msgstr "Добавить символ"
+
+#: tfrmsymbolhandler.caption
+msgid "Symbol config"
+msgstr "Символьная конфигурация"
+
+#: tfrmsymbolhandler.delete1.caption
+msgctxt "TFRMSYMBOLHANDLER.DELETE1.CAPTION"
+msgid "Delete"
+msgstr "Удалить"
+
+#: tfrmsymbolhandler.label1.caption
+msgid "Userdefined symbols:"
+msgstr "Определяемые пользователем символы:"
+
+#: tfrmsymbolhandler.label2.caption
+msgctxt "TFRMSYMBOLHANDLER.LABEL2.CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmsymbolhandler.label3.caption
+msgid "Unique symbolname"
+msgstr "Уникальное имя символа"
+
+#: tfrmsymbolhandler.listview1.columns[0].caption
+msgid "Symbolname"
+msgstr "Имя символа"
+
+#: tfrmsymbolhandler.listview1.columns[1].caption
+msgctxt "TFRMSYMBOLHANDLER.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmsymbolhandler.listview1.columns[2].caption
+msgid "AllocSize"
+msgstr "Размер"
+
+#: tfrmsymbolhandler.menuitem1.caption
+msgid "Delete all"
+msgstr "Удалить все"
+
+#: tfrmthreadlist.caption
+msgctxt "tfrmthreadlist.caption"
+msgid "Threadlist"
+msgstr "Список потоков"
+
+#: tfrmthreadlist.lbliswow64.caption
+msgid "Hold ctrl when expanding to see the 32-bit context of a thread"
+msgstr ""
+"Удерживайте Ctrl при развёртывании, чтобы увидеть\n"
+"32-битный контекст потока"
+
+#: tfrmthreadlist.menuitem1.caption
+msgid "Stackview"
+msgstr "Просмотр стека"
+
+#: tfrmthreadlist.mibreak.caption
+msgctxt "tfrmthreadlist.mibreak.caption"
+msgid "Break"
+msgstr "Прерваться"
+
+#: tfrmthreadlist.micleardebugregisters.caption
+msgid "Clear debug registers"
+msgstr "Очистить отладочные регистры"
+
+#: tfrmthreadlist.micopyvaluetoclipboard.caption
+msgctxt "tfrmthreadlist.micopyvaluetoclipboard.caption"
+msgid "Copy value to clipboard"
+msgstr "Копировать значение в буфер обмена"
+
+#: tfrmthreadlist.mifreezethread.caption
+msgid "Freeze thread"
+msgstr "Заморозить поток"
+
+#: tfrmthreadlist.miresumethread.caption
+msgid "Resume thread"
+msgstr "Возобновить поток"
+
+#: tfrmthreadlistex.button1.caption
+msgctxt "TFRMTHREADLISTEX.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmthreadlistex.caption
+msgid "ThreadInfo"
+msgstr "Информация о потоке"
+
+#: tfrmsymboleventtakinglong.button1.caption
+msgid "Cancel this symbol lookup"
+msgstr "Отмените этот поиск символа"
+
+#: tfrmsymboleventtakinglong.caption
+msgid "Symbol lookup taking long"
+msgstr "Поиск символов занимает много времени"
+
+#: tfrmsymboleventtakinglong.cbskipallsymbols.caption
+msgid "And skip all symbols until loaded"
+msgstr "И пропустить все символы, пока не загрузится"
+
+#: tfrmsymboleventtakinglong.cbskipthissymbol.caption
+msgid "And skip this symbol until loaded"
+msgstr "И пропустить этот символ, пока не загрузится"
+
+#: tfrmsymboleventtakinglong.label1.caption
+msgid "The symbolloader is still busy enumerating the symbols and the current symbol being looked up is taking a while (and taking away time to enumerate the symbols)"
+msgstr "Загрузчик символов всё ещё занят перечислением символов, а поиск текущего символа занимает некоторое время (и отнимает время для перечисления символов)"
+
+#: tfrmsymboleventtakinglong.label2.caption
+msgid "This window will autoclose once the symbol has been found"
+msgstr "После нахождения символа это окно закроется автоматически"
+
+#: tfrmsymboleventtakinglong.lbltype.caption
+msgid "Symbol:"
+msgstr "Символ:"
+
+#: tfrmtracer.btnstopsearch.caption
+msgid "Stop Search"
+msgstr "Остановить поиск"
+
+#: tfrmtracer.button1.caption
+msgctxt "TFRMTRACER.BUTTON1.CAPTION"
+msgid "Close"
+msgstr "Закрыть"
+
+#: tfrmtracer.caption
+msgid "Tracer"
+msgstr "Трассировщик"
+
+#: tfrmtracer.cbfpuxmm.caption
+msgid "Compare FPU/XMM"
+msgstr "Сравнение FPU/XMM"
+
+#: tfrmtracer.cbignorestackpointers.caption
+msgid "Ignore stackpointers"
+msgstr "Игнорировать указатели стека"
+
+#: tfrmtracer.lbladdressed.caption
+msgid "Accesses Address:"
+msgstr "Адрес обращения:"
+
+#: tfrmtracer.lblinstruction.caption
+msgctxt "TFRMTRACER.LBLINSTRUCTION.CAPTION"
+msgid "Instruction"
+msgstr "Инструкция"
+
+#: tfrmtracer.menuitem1.caption
+msgctxt "TFRMTRACER.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmtracer.menuitem2.caption
+msgctxt "TFRMTRACER.MENUITEM2.CAPTION"
+msgid "Search"
+msgstr "Поиск"
+
+#: tfrmtracer.menuitem4.caption
+msgctxt "tfrmtracer.menuitem4.caption"
+msgid "Find..."
+msgstr "Найти..."
+
+#: tfrmtracer.menuitem5.caption
+msgid "Expand all"
+msgstr "Развернуть все"
+
+#: tfrmtracer.menuitem6.caption
+msgid "Collapse all"
+msgstr "Свернуть все"
+
+#: tfrmtracer.miload.caption
+msgid "Open trace"
+msgstr "Открыть трассировку"
+
+#: tfrmtracer.minewtrace.caption
+msgid "New trace"
+msgstr "Новая трассировка"
+
+#: tfrmtracer.miopentraceforcompare.caption
+msgid "Open trace for comparison"
