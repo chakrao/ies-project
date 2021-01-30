@@ -15225,3 +15225,178 @@ msgstr "Новая трассировка"
 
 #: tfrmtracer.miopentraceforcompare.caption
 msgid "Open trace for comparison"
+msgstr "Открыть трассировку для сравнения"
+
+#: tfrmtracer.mirealigncompare.caption
+msgid "Reallign compare"
+msgstr "Перестроить сравнение"
+
+#: tfrmtracer.misave.caption
+msgid "Save trace"
+msgstr "Сохранить трассировку"
+
+#: tfrmtracer.misavetodisk.caption
+msgid "Save results to disk as textfile"
+msgstr "Сохранить результат в виде текстового файла"
+
+#: tfrmtracer.misearchnext.caption
+msgctxt "TFRMTRACER.MISEARCHNEXT.CAPTION"
+msgid "Find Next"
+msgstr "Найти далее"
+
+#: tfrmtracer.pnlregisters.hint
+msgctxt "tfrmtracer.pnlregisters.hint"
+msgid ""
+"Rightclick to copy to clipboard\n"
+"Middleclick to ignore it when comparing traces\n"
+msgstr ""
+"Клик правой кнопкой мыши - скопировать в буфер обмена\n"
+"Клик средней кнопкой мыши - игнорировать при сравнении трассировок\n"
+
+#: tfrmtracer.sbshowfloats.caption
+msgctxt "TFRMTRACER.SBSHOWFLOATS.CAPTION"
+msgid "Float"
+msgstr "Float"
+
+#: tfrmtracer.sbshowfloats.hint
+msgctxt "TFRMTRACER.SBSHOWFLOATS.HINT"
+msgid "Floating point registers"
+msgstr "Регистры с плавающей точкой"
+
+#: tfrmtracer.sbshowstack.caption
+msgctxt "TFRMTRACER.SBSHOWSTACK.CAPTION"
+msgid "Stack"
+msgstr "Стек"
+
+#: tfrmtracer.sbshowstack.hint
+msgctxt "TFRMTRACER.SBSHOWSTACK.HINT"
+msgid "Stack"
+msgstr "Стек"
+
+#: tfrmtracerconfig.btncancel.caption
+msgctxt "TFRMTRACERCONFIG.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmtracerconfig.btnok.caption
+msgctxt "TFRMTRACERCONFIG.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmtracerconfig.caption
+msgid "Break and Trace config"
+msgstr "Прерывание и трассировка"
+
+#: tfrmtracerconfig.cbdereferenceaddresses.caption
+msgid "Dereference Addresses (Slows down)"
+msgstr "Разыменовать адреса (Снижает скорость)"
+
+#: tfrmtracerconfig.cbsavestack.caption
+msgid "Save stack snapshots (Eats memory)"
+msgstr "Сохранить снимки стека (Ест память)"
+
+#: tfrmtracerconfig.cbskipsystemmodules.caption
+msgid "Skip system modules"
+msgstr "Пропускать системные модули"
+
+#: tfrmtracerconfig.cbstepover.caption
+msgid "Step over instead of single step"
+msgstr "«Шаг с обходом» вместо «Шаг»"
+
+#: tfrmtracerconfig.groupbox1.caption
+msgid "Breakpoint method"
+msgstr "Метод прерывания"
+
+#: tfrmtracerconfig.label1.caption
+msgid "Maximal trace count:"
+msgstr "Максимальное количество шагов:"
+
+#: tfrmtracerconfig.label2.caption
+msgid "Stop condition (Optional, LUA format)"
+msgstr "Условие остановки (формат LUA)"
+
+#: tfrmtracerconfig.label3.caption
+msgid "Start condition (Optional, LUA format)"
+msgstr "Условие старта (формат LUA)"
+
+#: tfrmtracerconfig.rbbpdbvm.caption
+msgctxt "tfrmtracerconfig.rbbpdbvm.caption"
+msgid "DBVM Breakpoint"
+msgstr "DBVM брейкпоинт"
+
+#: tfrmtracerconfig.rbbpexception.caption
+msgctxt "tfrmtracerconfig.rbbpexception.caption"
+msgid "Exception Breakpoint"
+msgstr "Исключение"
+
+#: tfrmtracerconfig.rbbphardware.caption
+msgctxt "tfrmtracerconfig.rbbphardware.caption"
+msgid "Hardware Breakpoint"
+msgstr "Аппаратные брейкпоинт"
+
+#: tfrmtracerconfig.rbbpsoftware.caption
+msgid "Software breakpoint"
+msgstr "Программный брейкпоинт"
+
+#: tfrmtracerconfig.rbbreakonaccess.caption
+msgctxt "tfrmtracerconfig.rbbreakonaccess.caption"
+msgid "Break on Access"
+msgstr "на Доступ"
+
+#: tfrmtracerconfig.rbbreakonwrite.caption
+msgctxt "tfrmtracerconfig.rbbreakonwrite.caption"
+msgid "Break on Write"
+msgstr "на Запись"
+
+#: tfrmtrainergenerator.btnaddhotkey.caption
+msgid "Add Hotkey"
+msgstr "Добавить горячую клавишу"
+
+#: tfrmtrainergenerator.btnaddsounds.caption
+msgid "Add sound(s)"
+msgstr "Добавить звук(и)"
+
+#: tfrmtrainergenerator.btndelete.caption
+msgid "Delete Hotkey"
+msgstr "Удалить горячую клавишу"
+
+#: tfrmtrainergenerator.btndesignform.caption
+msgctxt "TFRMTRAINERGENERATOR.BTNDESIGNFORM.CAPTION"
+msgid "Design userinterface manually"
+msgstr "Пользовательский дизайн"
+
+#: tfrmtrainergenerator.button1.caption
+msgid "Set Icon"
+msgstr "Иконка"
+
+#: tfrmtrainergenerator.button2.caption
+msgid "Set Side Image"
+msgstr "Фоновое изображение"
+
+#: tfrmtrainergenerator.button3.caption
+msgctxt "TFRMTRAINERGENERATOR.BUTTON3.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: tfrmtrainergenerator.button5.caption
+msgid "Generate trainer"
+msgstr "Сгенерировать"
+
+#: tfrmtrainergenerator.button5.hint
+msgid "Generates the trainer script and saves the current table as a .CETRAINER"
+msgstr "Генерирует трейнер/Сохраняет текущую таблицу как .CETRAINER"
+
+#: tfrmtrainergenerator.caption
+msgid "Trainer generator"
+msgstr "Генератор трейнера"
+
+#: tfrmtrainergenerator.cbactivatesound.text
+msgctxt "tfrmtrainergenerator.cbactivatesound.text"
+msgid "Activate"
+msgstr "Activate"
+
+#: tfrmtrainergenerator.cbbeeponaction.caption
+msgid "Beep on action"
+msgstr "Звуковой сигнал при действии"
+
+#: tfrmtrainerg
