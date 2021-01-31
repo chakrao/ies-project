@@ -15399,4 +15399,147 @@ msgstr "Activate"
 msgid "Beep on action"
 msgstr "Звуковой сигнал при действии"
 
-#: tfrmtrainerg
+#: tfrmtrainergenerator.cbcanresize.caption
+msgid "User can resize window"
+msgstr "Разрешить изменять размер окна"
+
+#: tfrmtrainergenerator.cbconfigd3dhook.caption
+msgid "Configure"
+msgstr "Настроить"
+
+#: tfrmtrainergenerator.cbdeactivatesound.text
+msgctxt "tfrmtrainergenerator.cbdeactivatesound.text"
+msgid "Deactivate"
+msgstr "Deactivate"
+
+#: tfrmtrainergenerator.cbplaysoundonaction.caption
+msgid "Play sound on activate/deactivate"
+msgstr "Звук при активации/деактивации"
+
+#: tfrmtrainergenerator.cbplayxm.caption
+msgid "Play mod music file"
+msgstr "Проигрывать модульную музыку"
+
+#: tfrmtrainergenerator.cbpopuponkeypress.caption
+msgid "Popup trainer on keypress"
+msgstr "Всплытие трейнера при нажатии клавиши"
+
+#: tfrmtrainergenerator.cbprotect.caption
+msgid "Protect trainer from editing/reading"
+msgstr "Защитить трейнер от редактирования/чтения"
+
+#: tfrmtrainergenerator.cbprotect.hint
+msgid ""
+"Will encrypt the generated cetrainer file and when Cheat Engine loads this file back it will destroy the main form preventing the user from doing anything with it.\n"
+"Does not affect the standalone trainer because that one is protected by default\n"
+msgstr "Эта опция зашифрует файл созданного трейнера. При его открытии в Cheat Engine, его основная форма будет уничтожена, что не позволит что-либо сделать с ним.\n"
+
+#: tfrmtrainergenerator.cbstopplaying.caption
+msgid "Stop playing when"
+msgstr "Остановить проигрывание, когда"
+
+#: tfrmtrainergenerator.cbsupportcheatengine.caption
+msgctxt "TFRMTRAINERGENERATOR.CBSUPPORTCHEATENGINE.CAPTION"
+msgid "Don't support Cheat Engine (or yourself)"
+msgstr "Не поддерживать Cheat Engine (или себя)"
+
+#: tfrmtrainergenerator.cbused3dhook.caption
+msgid "Use Direct3D Hook"
+msgstr "Использовать перехват Direct3D"
+
+#: tfrmtrainergenerator.cetrainersavedialog.title
+msgctxt "tfrmtrainergenerator.cetrainersavedialog.title"
+msgid "Save script as"
+msgstr "Сохранить скрипт как"
+
+#: tfrmtrainergenerator.ctsavedialog.title
+msgctxt "TFRMTRAINERGENERATOR.CTSAVEDIALOG.TITLE"
+msgid "Save script as"
+msgstr "Сохранить скрипт как"
+
+#: tfrmtrainergenerator.edtcaption.text
+msgid "My trainer"
+msgstr "Мой трейнер"
+
+#: tfrmtrainergenerator.exesavedialog.title
+msgctxt "tfrmtrainergenerator.exesavedialog.title"
+msgid "Save script as"
+msgstr "Сохранить скрипт как"
+
+#: tfrmtrainergenerator.groupbox2.caption
+msgid "Automated gui config options"
+msgstr "Автоматизированные настройки GUI"
+
+#: tfrmtrainergenerator.label1.caption
+msgid "Freeze interval (in milliseconds)"
+msgstr "Интервал заморозки (в миллисекундах)"
+
+#: tfrmtrainergenerator.label2.caption
+msgid "Processname"
+msgstr "Название процесса"
+
+#: tfrmtrainergenerator.label3.caption
+msgid "About text:"
+msgstr "Текст в «О трейнере»:"
+
+#: tfrmtrainergenerator.label4.caption
+msgid "Title"
+msgstr "Название"
+
+#: tfrmtrainergenerator.label5.caption
+msgctxt "TFRMTRAINERGENERATOR.LABEL5.CAPTION"
+msgid "Output"
+msgstr "Результат"
+
+#: tfrmtrainergenerator.label6.caption
+msgid "Tip: The trainer generator is a tool for beginners. It is recommended to learn lua and the formdesigner and save as .exe manually to experience the full power of a Cheat Engine trainer"
+msgstr "Совет: «Генератор трейнера» - инструмент для новичков. Освойте язык lua и «дизайнер форм», чтобы испытать всю мощь Cheat Engine трейнера"
+
+#: tfrmtrainergenerator.lblactivatesound.caption
+msgctxt "TFRMTRAINERGENERATOR.LBLACTIVATESOUND.CAPTION"
+msgid "Activate"
+msgstr "Активация"
+
+#: tfrmtrainergenerator.lbldeactivatesound.caption
+msgctxt "TFRMTRAINERGENERATOR.LBLDEACTIVATESOUND.CAPTION"
+msgid "Deactivate"
+msgstr "Деактивация"
+
+#: tfrmtrainergenerator.lvcheats.columns[0].caption
+msgctxt "TFRMTRAINERGENERATOR.LVCHEATS.COLUMNS[0].CAPTION"
+msgid "Hotkey"
+msgstr "Горячая клавиша"
+
+#: tfrmtrainergenerator.lvcheats.columns[1].caption
+msgctxt "TFRMTRAINERGENERATOR.LVCHEATS.COLUMNS[1].CAPTION"
+msgid "Description"
+msgstr "Описание"
+
+#: tfrmtrainergenerator.menuitem1.caption
+msgid "Rebuild Trainer Cheatlist"
+msgstr "Переделать список читов трейнера"
+
+#: tfrmtrainergenerator.menuitem2.caption
+msgid "Only generate the script"
+msgstr "Генерировать только скрипт"
+
+#: tfrmtrainergenerator.miedithotkey.caption
+msgctxt "TFRMTRAINERGENERATOR.MIEDITHOTKEY.CAPTION"
+msgid "Edit"
+msgstr "Редактировать"
+
+#: tfrmtrainergenerator.opendialog2.title
+msgid "Open icon file"
+msgstr "Открыть .ico файл"
+
+#: tfrmtrainergenerator.rbstopwhenattached.caption
+msgid "Game has been attached"
+msgstr "Трейнер присоединился к игре"
+
+#: tfrmtrainergenerator.rbstopwhenfocuslost.caption
+msgid "Trainer loses focus"
+msgstr "Трейнер теряет фокус"
+
+#: tfrmultimap.btnexecuted.caption
+msgctxt "tfrmultimap.btnexecuted.caption"
+msgi
