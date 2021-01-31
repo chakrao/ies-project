@@ -15542,4 +15542,141 @@ msgstr "Трейнер теряет фокус"
 
 #: tfrmultimap.btnexecuted.caption
 msgctxt "tfrmultimap.btnexecuted.caption"
-msgi
+msgid "Code has been executed"
+msgstr "Код был выполнен"
+
+#: tfrmultimap.btnfiltercallcount.caption
+msgctxt "tfrmultimap.btnfiltercallcount.caption"
+msgid "Filter out routine(s) where callcount is NOT"
+msgstr "Отфильтровать процедуры, с кол-вом вызовов НЕ ="
+
+#: tfrmultimap.btnfiltermodule.caption
+msgctxt "tfrmultimap.btnfiltermodule.caption"
+msgid "Filter out routines not in a specific module"
+msgstr "Отфильтровать процедуры не из этого модуля"
+
+#: tfrmultimap.btnnotcalled.caption
+msgid "Filter out routine(s) that where not CALL'ed"
+msgstr "Отфильтровать не вызванные процедуры"
+
+#: tfrmultimap.btnnotexecuted.caption
+msgctxt "tfrmultimap.btnnotexecuted.caption"
+msgid "Code did not get executed"
+msgstr "Код не был выполнен"
+
+#: tfrmultimap.btnpause.caption
+msgid "Pause/Resume"
+msgstr "Пауза/Возобновить"
+
+#: tfrmultimap.btnresetcount.caption
+msgctxt "tfrmultimap.btnresetcount.caption"
+msgid "Reset Count"
+msgstr "Сброс"
+
+#: tfrmultimap.btnret.caption
+msgid "Filter out return from RET's"
+msgstr "Отфильтровать возврат из RET'ов"
+
+#: tfrmultimap.btnstart.caption
+msgctxt "TFRMULTIMAP.BTNSTART.CAPTION"
+msgid "Start"
+msgstr "Запустить"
+
+#: tfrmultimap.btnstop.caption
+msgctxt "TFRMULTIMAP.BTNSTOP.CAPTION"
+msgid "Stop"
+msgstr "Остановить"
+
+#: tfrmultimap.button5.caption
+msgctxt "tfrmultimap.button5.caption"
+msgid "Show matching routines"
+msgstr "Показать соответствующие процедуры"
+
+#: tfrmultimap.button6.caption
+msgctxt "tfrmultimap.button6.caption"
+msgid "Reset"
+msgstr "Сбросить"
+
+#: tfrmultimap.button6.hint
+msgctxt "tfrmultimap.button6.hint"
+msgid "If you lost track of what happened, use this. It will set execution count back to 0 of all the branches it has found"
+msgstr "Если вы потеряли след того, что произошло, то воспользуйтесь данной кнопкой. Она вернёт счётчику выполнения всех найденных вызовов значение «0»"
+
+#: tfrmultimap.caption
+msgctxt "tfrmultimap.caption"
+msgid "Ultimap"
+msgstr "Ultimap"
+
+#: tfrmultimap.cbfilterfuturepaths.caption
+msgid "Filter future branches"
+msgstr "Фильтр последующих переходов"
+
+#: tfrmultimap.cbfilterfuturepaths.hint
+msgctxt "tfrmultimap.cbfilterfuturepaths.hint"
+msgid "When checked (default) will mark all subsequent paths after this as filtered out"
+msgstr "Если включено (по умолчанию), то все последующие пути будут отмечены, как отфильтрованные"
+
+#: tfrmultimap.cbfilteroutnewentries.caption
+msgid "Mark all new branches as filtered out"
+msgstr "Отметить все новые вызовы, как отфильтрованные"
+
+#: tfrmultimap.cbfilteroutnewentries.hint
+msgctxt "tfrmultimap.cbfilteroutnewentries.hint"
+msgid "When this checkbox is ticked all newly added code entry points will be marked as entries that do not match the filters"
+msgstr "Если установлена галочка, то все новые записи будут отмечены как не соответствующие фильтрам"
+
+#: tfrmultimap.cblogtofile.caption
+msgid "Log directly to file"
+msgstr "Сохранять лог в файл"
+
+#: tfrmultimap.cbparsedata.caption
+msgid "Parse data"
+msgstr "Анализировать данные"
+
+#: tfrmultimap.cbpreemptiveflush.caption
+msgid "Preemptive flushing"
+msgstr "Приоритетное сбрасывание"
+
+#: tfrmultimap.cbpreemptiveflush.hint
+msgid "When enabled Cheat Engine will flush the data for each cpu instead of only when the buffer is full"
+msgstr "Если буфер заполнится, то Cheat Engine сбросит содержимое буфера каждого ядра процессора"
+
+#: tfrmultimap.edtfilename.text
+msgid "c:\\log.dat"
+msgstr "c:\\log.dat"
+
+#: tfrmultimap.label1.caption
+msgid "Worker threads"
+msgstr "Рабочих потоков"
+
+#: tfrmultimap.label2.caption
+msgid "Event buffer size"
+msgstr "Размер буфера событий"
+
+#: tfrmultimap.label5.caption
+msgid "Banch targets:"
+msgstr "Цели:"
+
+#: tfrmultimap.label6.caption
+msgid "General tip: \"Pause/Resume\", \"Code did not get executed\" and \"Code has been executed\" can be rightclicked and assigned a hotkey for use inside games so you don't have to alt tab out"
+msgstr "Общий совет: Можно назначить горячие клавиши на «Пауза/Возобновить», «Код не был выполнен» и «Код был выполнен», кликнув по ним правой кнопкой мыши, чтобы использовать их не сворачивая игры"
+
+#: tfrmultimap.lbllastfilterresult.caption
+msgctxt "tfrmultimap.lbllastfilterresult.caption"
+msgid "Last filter results:"
+msgstr "Последние результаты фильтра:"
+
+#: tfrmultimap.listview1.columns[0].caption
+msgctxt "tfrmultimap.listview1.columns[0].caption"
+msgid "Address To"
+msgstr "Обращение к"
+
+#: tfrmultimap.listview1.columns[1].caption
+msgctxt "tfrmultimap.listview1.columns[1].caption"
+msgid "Last origin"
+msgstr "Последний источник"
+
+#: tfrmultimap.listview1.columns[2].caption
+msgctxt "TFRMULTIMAP.LISTVIEW1.COLUMNS[2].CAPTION"
+msgid "Count"
+msgstr "К
