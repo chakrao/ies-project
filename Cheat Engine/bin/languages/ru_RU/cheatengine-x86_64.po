@@ -15801,4 +15801,131 @@ msgstr "Если включено (по умолчанию), то все пос�
 msgid "Mark all new addresses as filtered out"
 msgstr "Отметить все новые адреса, как отфильтрованные"
 
-#: tfrmultimap2.cbfilte
+#: tfrmultimap2.cbfilteroutnewentries.hint
+msgctxt "tfrmultimap2.cbfilteroutnewentries.hint"
+msgid "When this checkbox is ticked all newly added code entry points will be marked as entries that do not match the filters"
+msgstr "Если установлена галочка, то все новые записи будут отмечены как не соответствующие фильтрам"
+
+#: tfrmultimap2.cbkernelmode.caption
+msgid "Kernelmode"
+msgstr "Режим ядра"
+
+#: tfrmultimap2.cbnointerrupts.caption
+msgid "Do not trigger interrupts when full"
+msgstr "Не вызывать прерывания если нет места"
+
+#: tfrmultimap2.cbnointerrupts.hint
+msgid ""
+"In Windows 10, when a PMI triggers, it will BSOD with \"PROFILER_CONFIGURATION_ILLEGAL\" if you use ranges and don't have a kernelmode debugger attached\n"
+"\n"
+"Tip: Use a huge buffer and autoprocess/flush the tracefiles\n"
+"Tip2: If DBVM is running it will hide the fact that regions are used from windows, and this you can just use interrupts like before\n"
+msgstr ""
+"Срабатывание PMI в Windows 10 приведёт к BSOD с «PROFILER_CONFIGURATION_ILLEGAL», если вы используете диапазоны, но не присоединили отладчик режима ядра\n"
+"\n"
+"Совет: Используйте огромный буфер и автообработку/сброс файлов трассировки\n"
+"Совет2: Если DBMV запущена, то это скроет факт использования регионов из Windows и позволит использовать прерывания как и прежде\n"
+
+#: tfrmultimap2.cbparsetotextfile.caption
+msgid "Parse trace to textfile"
+msgstr "Разбор трассировки в текстовый файл"
+
+#: tfrmultimap2.cbparsetotextfile.hint
+msgid ""
+"When enabled will write the sequence of events as they happen as plain text to a file called cpu#trace.txt.\n"
+"This file contains the disassemble and some event data that happens along the way.\n"
+"\n"
+"It is recommended to use a very small range, and a stop condition\n"
+msgstr ""
+"Если включено, то последовательность происходящих событий будет записываться как обычный текст в файл под названием cpu#trace.txt.\n"
+"Данный файл содержит разбор и некоторые данные событий, которые происходили по ходу.\n"
+"\n"
+"Рекомендуется использовать условие остановки и очень маленький диапазон\n"
+
+#: tfrmultimap2.cbpausetargetwhileprocessing.caption
+msgid "Pause target while processing"
+msgstr "Приостанавливать цель при обработке"
+
+#: tfrmultimap2.cbtraceallprocesses.caption
+msgid "Trace all processes"
+msgstr "Трассировать все процессы"
+
+#: tfrmultimap2.cbtraceinterval.caption
+msgctxt "TFRMULTIMAP2.CBTRACEINTERVAL.CAPTION"
+msgid "every "
+msgstr "каждые "
+
+#: tfrmultimap2.cbusermode.caption
+msgid "Usermode"
+msgstr "Пользовательский режим"
+
+#: tfrmultimap2.cbwhenfilesizeabove.caption
+msgctxt "TFRMULTIMAP2.CBWHENFILESIZEABOVE.CAPTION"
+msgid "when filesize above"
+msgstr "когда размер выше"
+
+#: tfrmultimap2.detargetfolder.hint
+msgid ""
+"The folder to store the processor trace files. \n"
+"These files can be quite big (a few seconds can already be over 200MB of space or more)\n"
+msgstr ""
+"Папка для хранения обработанных трассировочных файлов. \n"
+"Эти файлы могут быть довольно большими (спустя уже несколько секунд они могут занимать 200Мб или более)\n"
+
+#: tfrmultimap2.detargetfolder.text
+msgctxt "tfrmultimap2.detargetfolder.text"
+msgid "d:\\lotsofspace"
+msgstr "d:\\lotsofspace"
+
+#: tfrmultimap2.detextout.hint
+msgid ""
+"The folder to store the trace output to\n"
+"It is recommended to use a small region with a stop condition, else this disk will be full before you know it\n"
+msgstr ""
+"Папка для хранения результата трассировки.\n"
+"Рекомендуется использовать небольшую область с условием остановки, иначе указанный вам диск будет полон прежде, чем вы узнаете об этом\n"
+
+#: tfrmultimap2.detextout.text
+msgctxt "TFRMULTIMAP2.DETEXTOUT.TEXT"
+msgid "d:\\lotsofspace"
+msgstr "d:\\lotsofspace"
+
+#: tfrmultimap2.gbrange.caption
+msgid "Ranges: (Empty for all) (Max 0) "
+msgstr "Диапазоны: (Пусто для всех) (Макс. 0) "
+
+#: tfrmultimap2.label1.caption
+msgctxt "tfrmultimap2.label1.caption"
+msgid "Paused"
+msgstr "На паузе"
+
+#: tfrmultimap2.label2.caption
+msgid "MB"
+msgstr "Мбайт"
+
+#: tfrmultimap2.label4.caption
+msgctxt "TFRMULTIMAP2.LABEL4.CAPTION"
+msgid "Seconds"
+msgstr "Секунд"
+
+#: tfrmultimap2.lblbufferspercpu.caption
+msgid "Buffer per CPU"
+msgstr "Буфер для каждого ЦП"
+
+#: tfrmultimap2.lblipcount.caption
+msgctxt "tfrmultimap2.lblipcount.caption"
+msgid "Instruction Pointer List Size:"
+msgstr "Размер списка указателя инструкции:"
+
+#: tfrmultimap2.lblkb.caption
+msgctxt "TFRMULTIMAP2.LBLKB.CAPTION"
+msgid "KB"
+msgstr "Кбайт(а)"
+
+#: tfrmultimap2.lbllastfilterresult.caption
+msgctxt "tfrmultimap2.lbllastfilterresult.caption"
+msgid "Last filter results:"
+msgstr "Последние результаты фильтра:"
+
+#: tfrmultimap2.listview1.columns[0].caption
+msgctxt "TFRMULTIM
