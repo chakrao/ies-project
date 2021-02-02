@@ -15679,4 +15679,126 @@ msgstr "Последний источник"
 #: tfrmultimap.listview1.columns[2].caption
 msgctxt "TFRMULTIMAP.LISTVIEW1.COLUMNS[2].CAPTION"
 msgid "Count"
-msgstr "К
+msgstr "Кол-во"
+
+#: tfrmultimap.menuitem1.caption
+msgid "Add selection to code list"
+msgstr "Добавить выбранное в список кодов"
+
+#: tfrmultimap.menuitem2.caption
+msgid "Flush buffers"
+msgstr "Сброс буфера"
+
+#: tfrmultimap.miremovehotkey.caption
+msgid "Remove hotkey"
+msgstr "Убрать горячую клавишу"
+
+#: tfrmultimap.misethotkey.caption
+msgid "Set hotkey"
+msgstr "Назначить горячую клавишу"
+
+#: tfrmultimap2.btnaddrange.caption
+msgctxt "TFRMULTIMAP2.BTNADDRANGE.CAPTION"
+msgid "Add range"
+msgstr "Добавить диапазон"
+
+#: tfrmultimap2.btncancelfilter.caption
+msgid "Cancel filter operation"
+msgstr "Отменить действие фильтра"
+
+#: tfrmultimap2.btnexecuted.caption
+msgctxt "tfrmultimap2.btnexecuted.caption"
+msgid "Code has been executed"
+msgstr "Код был выполнен"
+
+#: tfrmultimap2.btnfiltercallcount.caption
+msgctxt "TFRMULTIMAP2.BTNFILTERCALLCOUNT.CAPTION"
+msgid "Filter out instructions where callcount is NOT"
+msgstr "Отфильтровать процедуры, с кол-вом вызовов НЕ ="
+
+#: tfrmultimap2.btnfiltermodule.caption
+msgctxt "TFRMULTIMAP2.BTNFILTERMODULE.CAPTION"
+msgid "Filter out instructions not in a specific range"
+msgstr "Отфильтровать инструкции вне диапазона"
+
+#: tfrmultimap2.btnnotcalled.caption
+msgid "Filter out everything except CALL"
+msgstr "Отфильтровать всё, за исключением вызова"
+
+#: tfrmultimap2.btnnotexecuted.caption
+msgctxt "tfrmultimap2.btnnotexecuted.caption"
+msgid "Code did not get executed"
+msgstr "Код не был выполнен"
+
+#: tfrmultimap2.btnrecordpause.caption
+msgid "Record / Pause"
+msgstr "Запись / Пауза"
+
+#: tfrmultimap2.btnreset.caption
+msgctxt "tfrmultimap2.btnreset.caption"
+msgid "Reset"
+msgstr "Сбросить"
+
+#: tfrmultimap2.btnreset.hint
+msgctxt "tfrmultimap2.btnreset.hint"
+msgid "If you lost track of what happened, use this. It will set execution count back to 0 of all the branches it has found"
+msgstr "Если вы потеряли след того, что произошло, то воспользуйтесь данной кнопкой. Она вернёт счётчику выполнения всех найденных вызовов значение «0»"
+
+#: tfrmultimap2.btnresetcount.caption
+msgctxt "tfrmultimap2.btnresetcount.caption"
+msgid "Reset Count"
+msgstr "Сброс"
+
+#: tfrmultimap2.button5.caption
+msgctxt "TFRMULTIMAP2.BUTTON5.CAPTION"
+msgid "Show the current valid instruction list"
+msgstr "Показать текущий список допустимых инструкций"
+
+#: tfrmultimap2.caption
+msgctxt "tfrmultimap2.caption"
+msgid "Ultimap 2"
+msgstr "Ultimap 2"
+
+#: tfrmultimap2.cbautoprocess.caption
+msgctxt "TFRMULTIMAP2.CBAUTOPROCESS.CAPTION"
+msgid "Autoprocess tracefiles"
+msgstr "Автообработка файлов трассировки"
+
+#: tfrmultimap2.cbautoprocess.hint
+msgid ""
+"When enabled this will check the filesize every few seconds, and will process the files when they have grown beyond the given size.\n"
+"\n"
+"Note: Due to the way the processing is done, trace data will still be written to disk during the processing. If you generate more data than can be processed at a time, the filesize will keep growing. You can combine this with the \"Pause target while processing\" option so that it shouldn't generate too much data\n"
+msgstr ""
+"Если включено, то каждые несколько секунд размер файла будет проверяться и обрабатываться при превышении указанного размера.\n"
+"\n"
+"Примечание: Из-за способа обработки данные трассировки всё равно будут записываться на диск при обработке. Если вы создаёте больше данных, чем можно обработать за один раз, размер файла продолжит расти. Вы можете совместить это с опцией «Приостанавливать цель при обработке», чтобы не создавать слишком много данных\n"
+
+#: tfrmultimap2.cbdontdeletetracefiles.caption
+msgid "Don't delete trace files"
+msgstr "Хранить файлы трассировки"
+
+#: tfrmultimap2.cbdontdeletetracefiles.hint
+msgid ""
+"Normally Cheat Engine will delete the trace files after they have been processed. But if you wish to save them for your own use, check this box\n"
+"\n"
+"These trace files can grow really big, so make sure you have enough diskspace\n"
+msgstr ""
+"Обычно Cheat Engine удаляет файлы трассировки после их обработки. Но если вы хотите сохранить их для собственного использования, то установите этот флажок.\n"
+"\n"
+"Эти файлы могут сильно увеличиваться в размере, поэтому убедитесь, что у вас достаточно места на диске\n"
+
+#: tfrmultimap2.cbfilterfuturepaths.caption
+msgid "Exclude new addresses"
+msgstr "Исключать новые адреса"
+
+#: tfrmultimap2.cbfilterfuturepaths.hint
+msgctxt "tfrmultimap2.cbfilterfuturepaths.hint"
+msgid "When checked (default) will mark all subsequent paths after this as filtered out"
+msgstr "Если включено (по умолчанию), то все последующие пути будут отмечены, как отфильтрованные"
+
+#: tfrmultimap2.cbfilteroutnewentries.caption
+msgid "Mark all new addresses as filtered out"
+msgstr "Отметить все новые адреса, как отфильтрованные"
+
+#: tfrmultimap2.cbfilte
