@@ -15928,4 +15928,178 @@ msgid "Last filter results:"
 msgstr "Последние результаты фильтра:"
 
 #: tfrmultimap2.listview1.columns[0].caption
-msgctxt "TFRMULTIM
+msgctxt "TFRMULTIMAP2.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tfrmultimap2.listview1.columns[1].caption
+msgctxt "TFRMULTIMAP2.LISTVIEW1.COLUMNS[1].CAPTION"
+msgid "Count"
+msgstr "Кол-во"
+
+#: tfrmultimap2.listview1.columns[2].caption
+msgid "Invalidated"
+msgstr "Недействителен"
+
+#: tfrmultimap2.menuitem1.caption
+msgctxt "TFRMULTIMAP2.MENUITEM1.CAPTION"
+msgid "Copy selection to clipboard"
+msgstr "Копировать выбранное в буфер обмена"
+
+#: tfrmultimap2.menuitem2.caption
+msgctxt "tfrmultimap2.menuitem2.caption"
+msgid "File"
+msgstr "Файл"
+
+#: tfrmultimap2.menuitem3.caption
+msgid "Open tracefile reader"
+msgstr "Открыть средство чтения файла трассировки"
+
+#: tfrmultimap2.menuitem4.caption
+msgctxt "tfrmultimap2.menuitem4.caption"
+msgid "Close"
+msgstr "Закрыть"
+
+#: tfrmultimap2.menuitem5.caption
+msgid "Debug: Process tracefile"
+msgstr "Отладка: обработка файла трассировки"
+
+#: tfrmultimap2.mirangedeleteall.caption
+msgid "Clear List"
+msgstr "Очистить список"
+
+#: tfrmultimap2.mirangedeleteall.caption
+msgctxt "tfrmultimap2.mirangedeleteall.caption"
+msgid "Clear List"
+msgstr "Очистить список"
+
+#: tfrmultimap2.mirangedeleteselected.caption
+msgctxt "TFRMULTIMAP2.MIRANGEDELETESELECTED.CAPTION"
+msgid "Delete Selected"
+msgstr "Удалить выбранное"
+
+#: tfrmultimap2.rblogtofolder.caption
+msgid "Process data later"
+msgstr "Обработывать данные позже"
+
+#: tfrmultimap2.rblogtofolder.hint
+msgid "CE will write the results to disk as quickly as possible but won't process it until the recording is stopped, or a filter function is being used."
+msgstr "Cheat Engine запишет результат на диск как можно быстрее, но не будет обрабатывать его до тех пор, пока запись не будет остановлена или не будет использована функция фильтра."
+
+#: tfrmultimap2.rbruntimeparsing.caption
+msgid "Process data while recording"
+msgstr "Обрабатывать данные во время записи"
+
+#: tfrmultimap2.rbruntimeparsing.hint
+msgid "Constantly process the data instead of waiting for the user's input"
+msgstr "Постоянная обработка данных, вместо ожидания действий от пользователя"
+
+#: tfrmwatchlist.caption
+msgid "Watch list"
+msgstr "Список наблюдения"
+
+#: tfrmwatchlist.lvwatchlist.columns[0].caption
+msgid "Address/Expression"
+msgstr "Адрес/Выражение"
+
+#: tfrmwatchlist.lvwatchlist.columns[1].caption
+msgctxt "TFRMWATCHLIST.LVWATCHLIST.COLUMNS[1].CAPTION"
+msgid "Value"
+msgstr "Значение"
+
+#: tfrmwatchlist.menuitem3.caption
+msgid "Refresh values"
+msgstr "Обновить значения"
+
+#: tfrmwatchlist.menuitem4.caption
+msgid "Browse memory region"
+msgstr "Просмотреть регион памяти"
+
+#: tfrmwatchlist.miadditem.caption
+msgctxt "TFRMWATCHLIST.MIADDITEM.CAPTION"
+msgid "Add Item"
+msgstr "Добавить элемент"
+
+#: tfrmwatchlist.micopytoclipboard.caption
+msgid "Copy expression(s) to clipboard"
+msgstr "Копировать выражение в буфер обмена"
+
+#: tfrmwatchlist.micopytoclipboardex.caption
+msgid "Copy expression(s) and value(s) to clipboard"
+msgstr "Копировать выражение и значение в буфер обмена"
+
+#: tfrmwatchlist.mideleteitems.caption
+msgid "Delete Item(s)"
+msgstr "Удалить элемент(ы)"
+
+#: tfrmwatchlist.miedititem.caption
+msgid "Edit Item"
+msgstr "Редактировать элемент"
+
+#: tfrmwatchlist.mipastefromclipboard.caption
+msgid "Paste expression(s) from clipboard"
+msgstr "Вставить выражение из буфера обмена"
+
+#: tfrmwatchlistaddentry.btncancel.caption
+msgctxt "TFRMWATCHLISTADDENTRY.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tfrmwatchlistaddentry.btnok.caption
+msgctxt "TFRMWATCHLISTADDENTRY.BTNOK.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tfrmwatchlistaddentry.caption
+msgid "Add watcher entry"
+msgstr "Добавление записи для наблюдения"
+
+#: tfrmwatchlistaddentry.edtexpression.texthint
+msgid "Expression"
+msgstr "Выражение"
+
+#: tfrmwatchlistaddentry.rgtype.caption
+msgctxt "TFRMWATCHLISTADDENTRY.RGTYPE.CAPTION"
+msgid "Type"
+msgstr "Тип"
+
+#: thotkeyform.bitbtn1.caption
+msgctxt "THOTKEYFORM.BITBTN1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: thotkeyform.btnapply.caption
+msgctxt "THOTKEYFORM.BTNAPPLY.CAPTION"
+msgid "Apply"
+msgstr "Применить"
+
+#: thotkeyform.btncancel.caption
+msgctxt "THOTKEYFORM.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: thotkeyform.btncreatehotkey.caption
+msgid "Create hotkey"
+msgstr "Создать горячую клавишу"
+
+#: thotkeyform.btnedithotkey.caption
+msgid "Edit Hotkey"
+msgstr "Редактировать горячую клавишу"
+
+#: thotkeyform.button2.caption
+msgctxt "THOTKEYFORM.BUTTON2.CAPTION"
+msgid "Clear"
+msgstr "Очистить"
+
+#: thotkeyform.caption
+msgid "Set/Change hotkey"
+msgstr "Назначить/Изменить горячую клавишу"
+
+#: thotkeyform.cbforceenglishactivate.caption
+msgctxt "thotkeyform.cbforceenglishactivate.caption"
+msgid "Force English"
+msgstr "Только английский"
+
+#: thotkeyform.cbforceenglishactivate.hint
+msgctxt "thotkeyform.cbforceenglishactivate.hint"
+msgid "Tries to set the language of the windows speech synthesizer
