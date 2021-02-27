@@ -16102,4 +16102,158 @@ msgstr "Только английский"
 
 #: thotkeyform.cbforceenglishactivate.hint
 msgctxt "thotkeyform.cbforceenglishactivate.hint"
-msgid "Tries to set the language of the windows speech synthesizer
+msgid "Tries to set the language of the windows speech synthesizer to English when speaking this. Won't speak if there is no English voice installed"
+msgstr "Пытается установить язык синтезатора речи Windows на английский. Текст не будет произнесён, если не установлен английский голос"
+
+#: thotkeyform.cbforceenglishdeactivate.caption
+msgctxt "THOTKEYFORM.CBFORCEENGLISHDEACTIVATE.CAPTION"
+msgid "Force English"
+msgstr "Только английский"
+
+#: thotkeyform.cbforceenglishdeactivate.hint
+msgctxt "THOTKEYFORM.CBFORCEENGLISHDEACTIVATE.HINT"
+msgid "Tries to set the language of the windows speech synthesizer to English when speaking this. Won't speak if there is no English voice installed"
+msgstr "Пытается установить язык синтезатора речи Windows на английский. Текст не будет произнесён, если не установлен английский голос"
+
+#: thotkeyform.cbfreezedirection.text
+msgctxt "thotkeyform.cbfreezedirection.text"
+msgid "Toggle freeze"
+msgstr "Заморозить/Разморозить"
+
+#: thotkeyform.edtactivatetext.text
+msgid "{MRDescription} Activated"
+msgstr "{MRDescription} Activated"
+
+#: thotkeyform.edtdeactivatetext.text
+msgid "{MRDescription} Deactivated"
+msgstr "{MRDescription} Deactivated"
+
+#: thotkeyform.edtdescription.hint
+msgid "When autogenerating a trainer this field will be used as description"
+msgstr "При автосоздании трейнера, введённый текст будет использован в качестве описания"
+
+#: thotkeyform.label1.caption
+msgid "Type the keys you want to set the hotkey to"
+msgstr "Горячая клавиша"
+
+#: thotkeyform.label2.caption
+msgid "Description (Optional)"
+msgstr "Описание (по усмотрению)"
+
+#: thotkeyform.lblactivatesound.caption
+msgctxt "THOTKEYFORM.LBLACTIVATESOUND.CAPTION"
+msgid "Activate sound"
+msgstr "Звук активации"
+
+#: thotkeyform.lbldeactivatesound.caption
+msgctxt "THOTKEYFORM.LBLDEACTIVATESOUND.CAPTION"
+msgid "Deactivate sound"
+msgstr "Звук деактивации"
+
+#: thotkeyform.listview1.columns[0].caption
+msgctxt "THOTKEYFORM.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Hotkey"
+msgstr "Горячая клавиша"
+
+#: thotkeyform.listview1.columns[1].caption
+msgid "On Hotkey"
+msgstr "Действие при нажатии"
+
+#: thotkeyform.listview1.columns[2].caption
+msgctxt "THOTKEYFORM.LISTVIEW1.COLUMNS[2].CAPTION"
+msgid "Value"
+msgstr "Значение"
+
+#: thotkeyform.listview1.columns[3].caption
+msgctxt "THOTKEYFORM.LISTVIEW1.COLUMNS[3].CAPTION"
+msgid "Description"
+msgstr "Описание"
+
+#: thotkeyform.miaddsound.caption
+msgid "Add sounds"
+msgstr "Добавить звуки"
+
+#: thotkeyform.midelete.caption
+msgctxt "THOTKEYFORM.MIDELETE.CAPTION"
+msgid "Delete"
+msgstr "Удалить"
+
+#: tinputboxtop.button1.caption
+msgctxt "TINPUTBOXTOP.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tinputboxtop.button2.caption
+msgctxt "TINPUTBOXTOP.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tlgunit.rsyouwin
+msgid "OMG, You must have cheated or don't have a life. (Although some people claim that thats the same)"
+msgstr "Боже мой! Должно быть вы читерили или у вас совсем нет жизни. (Хотя некоторые утверждают, что это одно и тоже)"
+
+#: tmainform.actopen.hint
+msgid "Open a cheat table or unprotected cetrainer"
+msgstr "Открытие таблицы или незащищённого Cheat Engine трейнера"
+
+#: tmainform.actsave.hint
+msgid "Save your current data. Save as .exe to create a standalone trainer"
+msgstr "Сохранение текущих данных. Для создания автономного трейнера сохраните как .exe"
+
+#: tmainform.address1.caption
+msgctxt "TMAINFORM.ADDRESS1.CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tmainform.advancedbutton.caption
+msgctxt "TMAINFORM.ADVANCEDBUTTON.CAPTION"
+msgid "Advanced Options"
+msgstr "Дополнительные возможности"
+
+#: tmainform.advancedbutton.hint
+msgid "Codelist and pause"
+msgstr "Список кодов и остановка процесса игры"
+
+#: tmainform.andlabel.caption
+msgctxt "TMAINFORM.ANDLABEL.CAPTION"
+msgid "and"
+msgstr "и"
+
+#: tmainform.browsethismemoryarrea1.caption
+msgctxt "TMAINFORM.BROWSETHISMEMORYARREA1.CAPTION"
+msgid "Browse this memory region"
+msgstr "Просмотреть этот регион памяти"
+
+#: tmainform.browsethismemoryregion1.caption
+msgctxt "TMAINFORM.BROWSETHISMEMORYREGION1.CAPTION"
+msgid "Browse this memory region"
+msgstr "Просмотреть этот регион памяти"
+
+#: tmainform.browsethismemoryregioninthedisassembler1.caption
+msgctxt "tmainform.browsethismemoryregioninthedisassembler1.caption"
+msgid "Disassemble this memory region"
+msgstr "Разобрать этот регион памяти"
+
+#: tmainform.btnaddaddressmanually.caption
+msgid "Add Address Manually"
+msgstr "Добавить адрес"
+
+#: tmainform.btnfirst.caption
+msgctxt "TMAINFORM.BTNFIRST.CAPTION"
+msgid "First Scan2"
+msgstr "Поиск2"
+
+#: tmainform.btnmemoryview.caption
+msgid "Memory View"
+msgstr "Редактор памяти"
+
+#: tmainform.btnnewscan.caption
+msgctxt "TMAINFORM.BTNNEWSCAN.CAPTION"
+msgid "First Scan"
+msgstr "Поиск"
+
+#: tmainform.btnnext.caption
+msgid "Next scan 2"
+msgstr "Отсев2"
+
+#: tmainform.bt
