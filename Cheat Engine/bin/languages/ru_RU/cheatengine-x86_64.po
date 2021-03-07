@@ -16256,4 +16256,174 @@ msgstr "Поиск"
 msgid "Next scan 2"
 msgstr "Отсев2"
 
-#: tmainform.bt
+#: tmainform.btnnextscan.caption
+msgctxt "TMAINFORM.BTNNEXTSCAN.CAPTION"
+msgid "Next Scan"
+msgstr "Отсев"
+
+#: tmainform.btnsetspeedhack2.caption
+msgctxt "TMAINFORM.BTNSETSPEEDHACK2.CAPTION"
+msgid "Apply"
+msgstr "Применить"
+
+#: tmainform.button1.caption
+msgid "Button1"
+msgstr "Кнопка1"
+
+#: tmainform.calculatenewvaluepart21.caption
+msgid "Recalculate new addresses"
+msgstr "Перерасчёт новых адресов"
+
+#: tmainform.cbcasesensitive.caption
+msgctxt "TMAINFORM.CBCASESENSITIVE.CAPTION"
+msgid "Case sensitive"
+msgstr "С учётом регистра"
+
+#: tmainform.cbcodepage.caption
+msgctxt "TMAINFORM.CBCODEPAGE.CAPTION"
+msgid "Codepage"
+msgstr "Кодовая страница"
+
+#: tmainform.cbcomparetosavedscan.caption
+msgctxt "tmainform.cbcomparetosavedscan.caption"
+msgid "Compare to first/saved scan"
+msgstr "Сравнение с первым/сохранённым результатом поиска"
+
+#: tmainform.cbcopyonwrite.caption
+msgid "CopyOnWrite"
+msgstr "Копируемая при записи"
+
+#: tmainform.cbcopyonwrite.hint
+msgid ""
+"Unchecked:\n"
+"Do not scan copy-on-write memory\n"
+"\n"
+"Checked:\n"
+"Only scan copy-on-write memory\n"
+"\n"
+"Gray:\n"
+"Don't care if it's copy-on-write or not"
+msgstr ""
+"Галочка не установлена:\n"
+"Не сканировать «копируемую при записи» память\n"
+"\n"
+"Галочка установлена:\n"
+"Сканировать только «копируемую при записи» память\n"
+"\n"
+"Неопределённое состояние:\n"
+"Не важно, «копируемая при записи» или нет"
+
+#: tmainform.cbexecutable.caption
+msgid "Executable"
+msgstr "Исполняемая"
+
+#: tmainform.cbexecutable.hint
+msgid ""
+"Unchecked:\n"
+"Do not scan executable memory\n"
+"\n"
+"Checked:\n"
+"Only scan executable memory\n"
+"\n"
+"Gray:\n"
+"Don't care if it's executable or not"
+msgstr ""
+"Галочка не установлена:\n"
+"Не сканировать «исполняемую» память\n"
+"\n"
+"Галочка установлена:\n"
+"Сканировать только «исполняемую» память\n"
+"\n"
+"Неопределённое состояние:\n"
+"Не важно, «исполняемая» или нет"
+
+#: tmainform.cbfastscan.caption
+msgid "Fast Scan"
+msgstr "Быстрый поиск"
+
+#: tmainform.cbfastscan.hint
+msgid "Speeds up the scan and decreases useless results by skipping unaligned memory, or only scans addresses ending with specific digits"
+msgstr "Ускоряет поиск и уменьшает количество бесполезных результатов, пропуская невыровненную память или сканируя только адреса, оканчивающиеся определёнными цифрами"
+
+#: tmainform.cbfloatsimple.caption
+msgid "Simple values only"
+msgstr "Простые значения"
+
+#: tmainform.cbhexadecimal.caption
+msgctxt "TMAINFORM.CBHEXADECIMAL.CAPTION"
+msgid "Hex"
+msgstr "Hex"
+
+#: tmainform.cbhexadecimal.hint
+msgid "When checked the value you type in is hexadecimal"
+msgstr "При установленной галочке значение будет в шестнадцатеричном виде"
+
+#: tmainform.cbluaformula.caption
+msgid "Lua formula"
+msgstr "Формула Lua"
+
+#: tmainform.cbluaformula.hint
+msgid ""
+"When checked the value will be interpreted as a Lua script. \n"
+"local variables available: \n"
+"value, previousvalue\n"
+"\n"
+"example:\n"
+"value>5 and value~=8\n"
+msgstr ""
+"Если флажок установлен, значение будет интерпретироваться как Lua скрипт.\n"
+"доступны локальные переменные:\n"
+"значение, предыдущее значение\n"
+"\n"
+"пример:\n"
+"значение>5 и значение~=8\n"
+
+#: tmainform.cbnewluastate.caption
+msgid "Separate Lua state"
+msgstr "Отдельные Lua состояния"
+
+#: tmainform.cbnewluastate.hint
+msgid ""
+"When checked, the Lua environment used will be limited to just some basic functions and you won't have access to userdefined functions.\n"
+"The positive side is that this allows multiple threads to scan at the same time, so will be a lot faster\n"
+msgstr ""
+"Если флажок установлен, используемая среда Lua будет ограничена только некоторыми базовыми функциями и у вас не будет доступа к пользовательским функциям.\n"
+"Положительным моментом является то, что это позволяет сканировать одновременно несколько потоков, поэтому будет намного быстрее\n"
+
+#: tmainform.cbnot.caption
+msgid "Not"
+msgstr "Исключить"
+
+#: tmainform.cbnot.hint
+msgid "When checked CE will find everything EXCEPT the value/range you've given"
+msgstr "Если эта опция включена, то Cheat Engine найдёт всё, за исключением указанного вами значения/диапазона"
+
+#: tmainform.cbpausewhilescanning.caption
+msgid "Pause the game while scanning"
+msgstr "Приостановить процесс игры при поиске"
+
+#: tmainform.cbpercentage.caption
+msgid "Percent"
+msgstr "Процент"
+
+#: tmainform.cbrepeatuntilstopped.caption
+msgid "Repeat"
+msgstr "Повторение"
+
+#: tmainform.cbrepeatuntilstopped.hint
+msgid "Repeats the unchanged value scan until it gets stopped"
+msgstr "Повторяет поиск неизмененного значения до тех пор, пока он не будет остановлено"
+
+#: tmainform.cbspeedhack.caption
+msgid "Enable Speedhack"
+msgstr "Включить спидхак"
+
+#: tmainform.cbspeedhack.hint
+msgid "Enable speedhack"
+msgstr "Включить спидхак"
+
+#: tmainform.cbunicode.caption
+msgctxt "tmainform.cbunicode.caption"
+msgid "UTF-16"
+msgstr "UTF-16"
+
