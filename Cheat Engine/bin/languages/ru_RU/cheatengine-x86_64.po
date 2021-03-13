@@ -16630,4 +16630,169 @@ msgstr "Открыть процесс"
 msgid "Generate generic trainer lua script from table"
 msgstr "Сгенерировать трейнер, используя текущую таблицу"
 
-#: tmain
+#: tmainform.mi3d.caption
+msgid "D3D"
+msgstr "D3D"
+
+#: tmainform.miabout.caption
+msgctxt "TMAINFORM.MIABOUT.CAPTION"
+msgid "About"
+msgstr "О Программе"
+
+#: tmainform.miaddaddress.caption
+msgid "Add selected addresses to the addresslist"
+msgstr "Добавить выбранные адреса в таблицу"
+
+#: tmainform.miaddfile.caption
+msgid "Add file"
+msgstr "Добавить файл(ы)"
+
+#: tmainform.miaddtab.caption
+msgid "Add scan tab"
+msgstr "Добавить поисковую вкладку"
+
+#: tmainform.miallowcollapse.caption
+msgid "Allow left and right arrow keys to collapse and expand"
+msgstr "Развёртывание/сворачивание записи нажатием клавиш «Left» и «Right»"
+
+#: tmainform.mialwayshidechildren.caption
+msgid "Always hide children"
+msgstr "Всегда скрывать дочерние записи"
+
+#: tmainform.miasyncscript.caption
+msgid "Execute asynchronous"
+msgstr "Выполнить асинхронно"
+
+#: tmainform.miautoassembleerrormessage.caption
+msgid "<Error message here>"
+msgstr "<Сообщение об ошибке здесь>"
+
+#: tmainform.mibindactivation.caption
+msgid "Activating this entry activates it's children"
+msgstr "Активация этой записи активирует и её дочерние записи"
+
+#: tmainform.mibinddeactivation.caption
+msgid "Deactivating this entry deactivates it's children"
+msgstr "Деактивация этой записи деактивирует и её дочерние записи"
+
+#: tmainform.michangecolor.caption
+msgid "Change Color"
+msgstr "Изменить цвет"
+
+#: tmainform.michangevalue.caption
+msgid "Change value of selected addresses"
+msgstr "Изменить значение выбранных адресов"
+
+#: tmainform.michangevalueback.caption
+msgid "Change value of selected addresses back to previous/saved value"
+msgstr "Изменить значение выбранных адресов на прежнее/сохранённое"
+
+#: tmainform.miclosetab.caption
+msgid "Close tab"
+msgstr "Закрыть вкладку"
+
+#: tmainform.micompression.caption
+msgid "Compression"
+msgstr "Сжатие"
+
+#: tmainform.micreateluaform.caption
+msgid "Create form"
+msgstr "Создать форму"
+
+#: tmainform.midbvmfindwhatwritesoraccesses.caption
+msgid "DBVM Find out what writes or accesses this address"
+msgstr "DBVM поиск инструкций, записывающие или получающие доступ к этому адресу"
+
+#: tmainform.midefinenewcustomtype.caption
+msgid "Define new custom type (Auto Assembler)"
+msgstr "Определить новый пользовательский тип (Автоассемблер)"
+
+#: tmainform.midefinenewcustomtypelua.caption
+msgid "Define new custom type (LUA)"
+msgstr "Определить новый пользовательский тип (LUA)"
+
+#: tmainform.mideletecustomtype.caption
+msgid "Delete selected custom type"
+msgstr "Удалить выбранный пользовательский тип"
+
+#: tmainform.midisassemble.caption
+msgctxt "tmainform.midisassemble.caption"
+msgid "Disassemble this memory region"
+msgstr "Разобрать этот регион памяти"
+
+#: tmainform.midisplay2byte.caption
+msgctxt "TMAINFORM.MIDISPLAY2BYTE.CAPTION"
+msgid "2 Bytes"
+msgstr "2 Байта"
+
+#: tmainform.midisplay4byte.caption
+msgctxt "TMAINFORM.MIDISPLAY4BYTE.CAPTION"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: tmainform.midisplay8byte.caption
+msgctxt "TMAINFORM.MIDISPLAY8BYTE.CAPTION"
+msgid "8 Bytes"
+msgstr "8 Байт"
+
+#: tmainform.midisplaybyte.caption
+msgctxt "TMAINFORM.MIDISPLAYBYTE.CAPTION"
+msgid "Byte"
+msgstr "1 Байт"
+
+#: tmainform.midisplaydefault.caption
+msgctxt "TMAINFORM.MIDISPLAYDEFAULT.CAPTION"
+msgid "Default"
+msgstr "По умолчанию"
+
+#: tmainform.midisplaydouble.caption
+msgctxt "TMAINFORM.MIDISPLAYDOUBLE.CAPTION"
+msgid "Double"
+msgstr "Double"
+
+#: tmainform.midisplayfloat.caption
+msgctxt "TMAINFORM.MIDISPLAYFLOAT.CAPTION"
+msgid "Float"
+msgstr "Float"
+
+#: tmainform.midisplayhex.caption
+msgctxt "TMAINFORM.MIDISPLAYHEX.CAPTION"
+msgid "Hexadecimal"
+msgstr "Шестнадцатеричное"
+
+#: tmainform.midotnet.caption
+msgid ".Net"
+msgstr ".Net"
+
+#: tmainform.mieditcustomtype.caption
+msgid "Edit selected custom type"
+msgstr "Редактировать выбранный пользовательский тип"
+
+#: tmainform.mienablelcldebug.caption
+msgid "Enable LCL Debug"
+msgstr "Включить LCL отладку"
+
+#: tmainform.miflfindwhataccesses.caption
+msgctxt "TMAINFORM.MIFLFINDWHATACCESSES.CAPTION"
+msgid "Find out what accesses this address"
+msgstr "Найти инструкции, обращающиеся к этому адресу"
+
+#: tmainform.miflfindwhatwrites.caption
+msgctxt "TMAINFORM.MIFLFINDWHATWRITES.CAPTION"
+msgid "Find out what writes to this address"
+msgstr "Найти инструкции, записывающие по этому адресу"
+
+#: tmainform.miforgotscan.caption
+msgid "Reload the previous value list (Forgot value scan)"
+msgstr "Перезагрузить предыдущий список значений (Искомое значение забыто)"
+
+#: tmainform.mifoundlistpreferences.caption
+msgctxt "tmainform.mifoundlistpreferences.caption"
+msgid "Preferences"
+msgstr "Настройки"
+
+#: tmainform.mifreezenegative.caption
+msgid "Freeze Negative"
+msgstr "Заморозить отрицательное"
+
+#: tmainform
