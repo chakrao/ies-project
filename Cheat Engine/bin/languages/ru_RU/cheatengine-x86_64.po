@@ -16427,3 +16427,207 @@ msgctxt "tmainform.cbunicode.caption"
 msgid "UTF-16"
 msgstr "UTF-16"
 
+#: tmainform.cbunrandomizer.caption
+msgctxt "TMAINFORM.CBUNRANDOMIZER.CAPTION"
+msgid "Unrandomizer"
+msgstr "Антирандомайзер"
+
+#: tmainform.cbwritable.caption
+msgid "Writable"
+msgstr "Перезаписываемая"
+
+#: tmainform.cbwritable.hint
+msgid ""
+"Unchecked:\n"
+"Do not scan writable memory\n"
+"\n"
+"Checked:\n"
+"Only scan writable memory\n"
+"\n"
+"Gray:\n"
+"Don't care if it's writable memory or not"
+msgstr ""
+"Галочка не установлена:\n"
+"Не сканировать «перезаписываемую» память\n"
+"\n"
+"Галочка установлена:\n"
+"Сканировать только «перезаписываемую» память\n"
+"\n"
+"Неопределённое состояние:\n"
+"Не важно, «перезаписываемая» или нет"
+
+#: tmainform.change1.caption
+msgid "Change record"
+msgstr "Изменить запись"
+
+#: tmainform.changescript1.caption
+msgctxt "TMAINFORM.CHANGESCRIPT1.CAPTION"
+msgid "Change script"
+msgstr "Изменить скрипт"
+
+#: tmainform.commentbutton.caption
+msgid "Table Extras"
+msgstr "Дополнение к таблице"
+
+#: tmainform.copy1.caption
+msgctxt "TMAINFORM.COPY1.CAPTION"
+msgid "Copy"
+msgstr "Копировать"
+
+#: tmainform.copy2.caption
+msgctxt "TMAINFORM.COPY2.CAPTION"
+msgid "Copy"
+msgstr "Копировать"
+
+#: tmainform.copyselectedaddresses1.caption
+msgid "Copy selected addresses"
+msgstr "Копировать выбранные адреса"
+
+#: tmainform.creategroup.caption
+msgid "Create Header"
+msgstr "Создать заголовок"
+
+#: tmainform.createprocess1.caption
+msgctxt "TMAINFORM.CREATEPROCESS1.CAPTION"
+msgid "Create Process"
+msgstr "Создать процесс"
+
+#: tmainform.cut1.caption
+msgctxt "TMAINFORM.CUT1.CAPTION"
+msgid "Cut"
+msgstr "Вырезать"
+
+#: tmainform.cut2.caption
+msgctxt "TMAINFORM.CUT2.CAPTION"
+msgid "Cut"
+msgstr "Вырезать"
+
+#: tmainform.deletethisrecord1.caption
+msgid "Delete this record"
+msgstr "Удалить эту запись"
+
+#: tmainform.description1.caption
+msgctxt "TMAINFORM.DESCRIPTION1.CAPTION"
+msgid "Description"
+msgstr "Описание"
+
+#: tmainform.edit3.caption
+msgid "&Edit"
+msgstr "&Изменить"
+
+#: tmainform.file1.caption
+msgid "&File"
+msgstr "&Файл"
+
+#: tmainform.findoutwhataccessesthisaddress1.caption
+msgctxt "tmainform.findoutwhataccessesthisaddress1.caption"
+msgid "Find out what accesses this address"
+msgstr "Найти инструкции, обращающиеся к этому адресу"
+
+#: tmainform.forcerechecksymbols1.caption
+msgctxt "TMAINFORM.FORCERECHECKSYMBOLS1.CAPTION"
+msgid "Force recheck symbols"
+msgstr "Принудительная перепроверка символов"
+
+#: tmainform.foundcountlabel.hint
+msgid "This shows the amount of addresses found"
+msgstr "Общее количество найденных адресов"
+
+#: tmainform.foundlist3.columns[0].caption
+msgctxt "TMAINFORM.FOUNDLIST3.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tmainform.foundlist3.columns[1].caption
+msgctxt "TMAINFORM.FOUNDLIST3.COLUMNS[1].CAPTION"
+msgid "Value"
+msgstr "Значение"
+
+#: tmainform.foundlist3.columns[2].caption
+msgctxt "TMAINFORM.FOUNDLIST3.COLUMNS[2].CAPTION"
+msgid "Previous"
+msgstr "Прежнее"
+
+#: tmainform.foundlist3.hint
+msgid "This list shows all the found addresses that matched your last scan"
+msgstr "В этом списке указаны все адреса, найденные при последнем поиске"
+
+#: tmainform.freezealladdresses2.caption
+msgid "Toggle Selected Records"
+msgstr "Переключить выбранные записи"
+
+#: tmainform.gbscanoptions.caption
+msgid "Memory Scan Options"
+msgstr "Параметры сканирования памяти"
+
+#: tmainform.helpindex1.caption
+msgid "Cheat Engine Help"
+msgstr "Справка"
+
+#: tmainform.label1.caption
+msgctxt "TMAINFORM.LABEL1.CAPTION"
+msgid "Start"
+msgstr "От"
+
+#: tmainform.label2.caption
+msgctxt "TMAINFORM.LABEL2.CAPTION"
+msgid "Stop"
+msgstr "До"
+
+#: tmainform.label54.caption
+msgctxt "TMAINFORM.LABEL54.CAPTION"
+msgid "Speed"
+msgstr "Скорость"
+
+#: tmainform.label6.caption
+msgctxt "tmainform.label6.caption"
+msgid "Found:"
+msgstr "Найдено:"
+
+#: tmainform.lblscantype.caption
+msgid "Scan Type"
+msgstr "Тип поиска"
+
+#: tmainform.lblsigned.caption
+msgid ""
+"This table has been signed by\n"
+"Someone\n"
+msgstr ""
+"Эта таблица была подписана\n"
+"Кем-то\n"
+
+#: tmainform.lblvaluetype.caption
+msgid "Value Type"
+msgstr "Тип значения"
+
+#: tmainform.load1.caption
+msgctxt "TMAINFORM.LOAD1.CAPTION"
+msgid "Load"
+msgstr "Загрузить"
+
+#: tmainform.menuitem1.caption
+msgid "Select All"
+msgstr "Выбрать все"
+
+#: tmainform.menuitem12.caption
+msgid "Cheat Engine Tutorial (64-Bit)"
+msgstr "Учебное руководство (64-битная версия)"
+
+#: tmainform.menuitem15.caption
+msgid "Cheat Engine Tutorial Games"
+msgstr "Игровое учебное руководство"
+
+#: tmainform.menuitem7.caption
+msgid "Quit"
+msgstr "Выйти"
+
+#: tmainform.menuitem8.caption
+msgctxt "TMAINFORM.MENUITEM8.CAPTION"
+msgid "Open Process"
+msgstr "Открыть процесс"
+
+#: tmainform.menuitem9.caption
+msgid "Generate generic trainer lua script from table"
+msgstr "Сгенерировать трейнер, используя текущую таблицу"
+
+#: tmain
