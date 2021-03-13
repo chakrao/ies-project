@@ -16795,4 +16795,189 @@ msgstr "Настройки"
 msgid "Freeze Negative"
 msgstr "Заморозить отрицательное"
 
-#: tmainform
+#: tmainform.mifreezepositive.caption
+msgid "Freeze Positive"
+msgstr "Заморозить положительное"
+
+#: tmainform.migeneratepointermap.caption
+msgctxt "tmainform.migeneratepointermap.caption"
+msgid "Generate pointermap"
+msgstr "Создать карту указателей"
+
+#: tmainform.migetdotnetobjectlist.caption
+msgid "Get object list"
+msgstr "Получить список объектов"
+
+#: tmainform.migroupconfig.caption
+msgid "Group config"
+msgstr "Настройка группы"
+
+#: tmainform.mihelp.caption
+msgid "&Help"
+msgstr "Справка"
+
+#: tmainform.mihidechildren.caption
+msgid "Hide children when deactivated"
+msgstr "Скрыть дочерние записи при деактивации"
+
+#: tmainform.mihookd3d.caption
+msgid "Hook Direct3D"
+msgstr "Перехват Direct3D"
+
+#: tmainform.milanguages.caption
+msgctxt "TMAINFORM.MILANGUAGES.CAPTION"
+msgid "Languages"
+msgstr "Язык"
+
+#: tmainform.miloadrecent.caption
+msgid "Load Recent"
+msgstr "Загрузить последние"
+
+#: tmainform.milockmouseingame.caption
+msgid "Lock mouse in game window"
+msgstr "Заблокировать курсор в пределах окна игры"
+
+#: tmainform.miluadocumentation.caption
+msgid "Lua documentation"
+msgstr "Документация по Lua"
+
+#: tmainform.mimanualexpandcollapse.caption
+msgid "Manual expand/collapse"
+msgstr "Ручное развёртывание/сворачивание"
+
+#: tmainform.minetwork.caption
+msgctxt "tmainform.minetwork.caption"
+msgid "Network"
+msgstr "Сеть"
+
+#: tmainform.miopenfile.caption
+msgid "Open File"
+msgstr "Открыть файл"
+
+#: tmainform.mipresetall.caption
+msgid "Preset: Scan all memory"
+msgstr "Предустановка: Сканировать всю память"
+
+#: tmainform.mipresetwritable.caption
+msgid "Preset: Scan writable memory"
+msgstr "Предустановка: Сканировать перезаписываемую память"
+
+#: tmainform.mirecursivesetvalue.caption
+msgid "Setting a value to this entry sets same value to children"
+msgstr "Установка значения для этой записи устанавливает то же значение дочерним записям"
+
+#: tmainform.mirenametab.caption
+msgctxt "TMAINFORM.MIRENAMETAB.CAPTION"
+msgid "Rename"
+msgstr "Переименовать"
+
+#: tmainform.miresetrange.caption
+msgid "Reset range"
+msgstr "Диапазон по умолчанию"
+
+#: tmainform.miresyncformswithlua.caption
+msgid "Resynchronize forms with Lua"
+msgstr "Синхронизировать формы с Lua"
+
+#: tmainform.misave.caption
+msgctxt "TMAINFORM.MISAVE.CAPTION"
+msgid "Save"
+msgstr "Сохранить"
+
+#: tmainform.misavescanresults.caption
+msgid "Save current scanresults"
+msgstr "Сохранить результат текущего поиска"
+
+#: tmainform.miscandirtyonly.caption
+msgid "Scan changed regions only"
+msgstr "Сканировать только изменённые регионы"
+
+#: tmainform.miscanpagedonly.caption
+msgid "Scan paged (physical) memory only"
+msgstr "Сканировать только страничную память"
+
+#: tmainform.misetcrosshair.caption
+msgid "Set custom crosshair"
+msgstr "Установка пользовательского перекрестия"
+
+#: tmainform.misetdropdownoptions.caption
+msgid "Set/Change dropdown selection options"
+msgstr "Управление выпадающим списком"
+
+#: tmainform.misetupsnapshotkeys.caption
+msgid "Start and configure snapshot recording"
+msgstr "Запуск и настройка записи снимка"
+
+#: tmainform.mishowasbinary.caption
+msgctxt "TMAINFORM.MISHOWASBINARY.CAPTION"
+msgid "Show as binary"
+msgstr "Показать как двоичное"
+
+#: tmainform.mishowassigned.caption
+msgid "Show as signed"
+msgstr "Показать как знаковое"
+
+#: tmainform.mishowcustomtypedebug.caption
+msgid "Show custom type debug info"
+msgstr "Показать пользовательский тип отладочной информации"
+
+#: tmainform.mishowluascript.caption
+msgid "Show Cheat Table Lua Script"
+msgstr "Показать Lua скрипт"
+
+#: tmainform.mishowpreviousvalue.caption
+msgid "Show previous value column"
+msgstr "Отображать прежнее значение адреса"
+
+#: tmainform.misigntable.caption
+msgid "Sign table"
+msgstr "Подпись таблицы"
+
+#: tmainform.misnapshothandler.caption
+msgid "Snapshot handler"
+msgstr "Обработчик снимка"
+
+#: tmainform.mitable.caption
+msgid "Table"
+msgstr "Таблица"
+
+#: tmainform.mitutorial.caption
+msgid "Cheat Engine Tutorial"
+msgstr "Учебное руководство"
+
+#: tmainform.miundovalue.caption
+msgctxt "tmainform.miundovalue.caption"
+msgid "Undo last edit"
+msgstr "Отменить последнее изменение"
+
+#: tmainform.miwireframe.caption
+msgid "Toggle wireframe mode"
+msgstr "Каркасный режим"
+
+#: tmainform.mizbuffer.caption
+msgid "Toggle disabled zbuffer"
+msgstr "Z-буферизация"
+
+#: tmainform.mizeroterminate.caption
+msgid "Zero-Terminate string"
+msgstr "Нуль-терминированная строка"
+
+#: tmainform.new1.caption
+msgctxt "TMAINFORM.NEW1.CAPTION"
+msgid "Clear list"
+msgstr "Очистить таблицу"
+
+#: tmainform.ools1.caption
+msgid "&Tools"
+msgstr "&Инструменты"
+
+#: tmainform.openprocess1.caption
+msgid "Open Process window"
+msgstr "Открыть окно процессов"
+
+#: tmainform.paste1.caption
+msgctxt "TMAINFORM.PASTE1.CAPTION"
+msgid "Paste"
+msgstr "Вставить"
+
+#: tmainfor
