@@ -16980,4 +16980,195 @@ msgctxt "TMAINFORM.PASTE1.CAPTION"
 msgid "Paste"
 msgstr "Вставить"
 
-#: tmainfor
+#: tmainform.paste2.caption
+msgctxt "TMAINFORM.PASTE2.CAPTION"
+msgid "Paste"
+msgstr "Вставить"
+
+#: tmainform.plugins1.caption
+msgctxt "TMAINFORM.PLUGINS1.CAPTION"
+msgid "Plugins"
+msgstr "Плагины"
+
+#: tmainform.plugins2.caption
+msgid "P&lugins"
+msgstr "&Плагины"
+
+#: tmainform.pointerscanforthisaddress1.caption
+msgid "Pointer scan for this address"
+msgstr "Найти указатель на этот адрес"
+
+#: tmainform.process1.caption
+msgid "&Process"
+msgstr "&Процесс"
+
+#: tmainform.processlabel.caption
+msgid "No Process Selected"
+msgstr "Процесс не выбран"
+
+#: tmainform.progressbar.hint
+msgid "This shows how far Cheat Engine is with searching"
+msgstr "Показывает сколько времени займёт поиск"
+
+#: tmainform.rbbit.caption
+msgid "Bits"
+msgstr "Биты"
+
+#: tmainform.rbdec.caption
+msgctxt "TMAINFORM.RBDEC.CAPTION"
+msgid "Decimal"
+msgstr "Десятичное"
+
+#: tmainform.rbfsmaligned.caption
+msgid "Alignment"
+msgstr "Выравнивание"
+
+#: tmainform.rbfsmaligned.hint
+msgid "When set and fastscan is enabled will scan the memory address if it is dividable by the given value"
+msgstr "Если «Быстрый поиск» включен вместе с этой опцией, то будут сканироваться только адреса, кратные указанному значению"
+
+#: tmainform.rbfsmlastdigts.caption
+msgid "Last Digits"
+msgstr "Последние цифры"
+
+#: tmainform.rbfsmlastdigts.hint
+msgid "When set and fastscan is enabled will only scan and return addresses that end with the given digits"
+msgstr "Если «Быстрый поиск» включен вместе с этой опцией, то будут сканироваться только адреса, оканчивающиеся указанной цифрой"
+
+#: tmainform.removeselectedaddresses1.caption
+msgctxt "TMAINFORM.REMOVESELECTEDADDRESSES1.CAPTION"
+msgid "Remove selected addresses"
+msgstr "Удалить выбранные адреса"
+
+#: tmainform.rt1.caption
+msgid "Rounded (default)"
+msgstr "Округленное"
+
+#: tmainform.rt2.caption
+msgid "Rounded (extreme)"
+msgstr "Округленное(макс.)"
+
+#: tmainform.rt3.caption
+msgid "Truncated"
+msgstr "Усечённое"
+
+#: tmainform.save1.caption
+msgctxt "TMAINFORM.SAVE1.CAPTION"
+msgid "Save As..."
+msgstr "Сохранить как..."
+
+#: tmainform.sbopenprocess.hint
+msgid "Select a process to open"
+msgstr "Выбор процесса для открытия"
+
+#: tmainform.scantext.caption
+msgctxt "tmainform.scantext.caption"
+msgid "Scan Value"
+msgstr "Значение"
+
+#: tmainform.scantext2.caption
+msgctxt "TMAINFORM.SCANTEXT2.CAPTION"
+msgid "Scan Value"
+msgstr "Значение"
+
+#: tmainform.scantype.text
+msgid "Exact value"
+msgstr "Точное значение"
+
+#: tmainform.selectallitems1.caption
+msgid "Select all items"
+msgstr "Выбрать все элементы"
+
+#: tmainform.setbreakpoint1.caption
+msgctxt "tmainform.setbreakpoint1.caption"
+msgid "Find out what writes to this address"
+msgstr "Найти инструкции, записывающие по этому адресу"
+
+#: tmainform.sethotkey1.caption
+msgid "Assign Hotkey"
+msgstr "Назначить горячую клавишу"
+
+#: tmainform.settings1.caption
+msgctxt "TMAINFORM.SETTINGS1.CAPTION"
+msgid "Settings"
+msgstr "Настройки"
+
+#: tmainform.settingsbutton.caption
+msgctxt "tmainform.settingsbutton.caption"
+msgid "Settings"
+msgstr "Настройки"
+
+#: tmainform.showashexadecimal1.caption
+msgctxt "TMAINFORM.SHOWASHEXADECIMAL1.CAPTION"
+msgid "Show as hexadecimal"
+msgstr "Показать как шестнадцатеричное"
+
+#: tmainform.smarteditaddresses1.caption
+msgid "Smart edit address(es)"
+msgstr "Умное редактирование адреса"
+
+#: tmainform.speedbutton2.hint
+msgid "Delete all addresses from the list"
+msgstr "Удалить все адреса из таблицы"
+
+#: tmainform.speedbutton3.hint
+msgid "Copy all selected items to the address list"
+msgstr "Копировать выбранные адреса в таблицу"
+
+#: tmainform.type1.caption
+msgctxt "TMAINFORM.TYPE1.CAPTION"
+msgid "Type"
+msgstr "Тип"
+
+#: tmainform.undoscan.caption
+msgid "Undo Scan"
+msgstr "Возврат"
+
+#: tmainform.value1.caption
+msgctxt "TMAINFORM.VALUE1.CAPTION"
+msgid "Value"
+msgstr "Значение"
+
+#: tmainform.vartype.text
+msgctxt "tmainform.vartype.text"
+msgid "Binary"
+msgstr "Двоичное"
+
+#: tmemorybrowser.addthisaddresstothelist1.caption
+msgid "Add this address to the list"
+msgstr "Добавить этот адрес в таблицу"
+
+#: tmemorybrowser.all1.caption
+msgid "Full stack"
+msgstr "Полноценный стек"
+
+#: tmemorybrowser.allocatenonpagedmemory1.caption
+msgid "Allocate nonpaged memory"
+msgstr "Выделение нестраничной памяти"
+
+#: tmemorybrowser.assemble1.caption
+msgid "Assemble"
+msgstr "Ассемблировать"
+
+#: tmemorybrowser.assemblycode1.caption
+msgid "Find assembly code"
+msgstr "Поиск инструкций"
+
+#: tmemorybrowser.autoinject1.caption
+msgid "Auto Assemble"
+msgstr "Автоассемблер"
+
+#: tmemorybrowser.back1.caption
+msgctxt "tmemorybrowser.back1.caption"
+msgid "Back"
+msgstr "Назад"
+
+#: tmemorybrowser.breakandtraceinstructions1.caption
+msgid "Break and trace instructions"
+msgstr "Прерваться и трассировать инструкции"
+
+#: tmemorybrowser.breakpointlist1.caption
+msgid "Breakpointlist"
+msgstr "Список брейкпоинтов"
+
+#: tmem
