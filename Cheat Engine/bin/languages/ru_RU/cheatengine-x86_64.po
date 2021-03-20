@@ -17687,4 +17687,181 @@ msgctxt "TMEMORYBROWSER.MIFINDWHATACCESSES.CAPTION"
 msgid "Find out what accesses this address"
 msgstr "Найти инструкции, обращающиеся к этому адресу"
 
-#: tmemorybrowser.mifindwhatwrites.ca
+#: tmemorybrowser.mifindwhatwrites.caption
+msgid "Find out what writes this address"
+msgstr "Найти инструкции, записывающие по этому адресу"
+
+#: tmemorybrowser.mifollowinhexview.caption
+msgid "Follow in hexview when stepping"
+msgstr "Следовать в Hex-редактор при степпинге"
+
+#: tmemorybrowser.mignuassembler.caption
+msgid "GNU Assembler"
+msgstr "GNU Ассемблер"
+
+#: tmemorybrowser.migotobookmark0.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK0.CAPTION"
+msgid "Bookmark 0"
+msgstr "Закладка 0"
+
+#: tmemorybrowser.migotobookmark1.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK1.CAPTION"
+msgid "Bookmark 1"
+msgstr "Закладка 1"
+
+#: tmemorybrowser.migotobookmark2.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK2.CAPTION"
+msgid "Bookmark 2"
+msgstr "Закладка 2"
+
+#: tmemorybrowser.migotobookmark3.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK3.CAPTION"
+msgid "Bookmark 3"
+msgstr "Закладка 3"
+
+#: tmemorybrowser.migotobookmark4.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK4.CAPTION"
+msgid "Bookmark 4"
+msgstr "Закладка 4"
+
+#: tmemorybrowser.migotobookmark5.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK5.CAPTION"
+msgid "Bookmark 5"
+msgstr "Закладка 5"
+
+#: tmemorybrowser.migotobookmark6.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK6.CAPTION"
+msgid "Bookmark 6"
+msgstr "Закладка 6"
+
+#: tmemorybrowser.migotobookmark7.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK7.CAPTION"
+msgid "Bookmark 7"
+msgstr "Закладка 7"
+
+#: tmemorybrowser.migotobookmark8.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK8.CAPTION"
+msgid "Bookmark 8"
+msgstr "Закладка 8"
+
+#: tmemorybrowser.migotobookmark9.caption
+msgctxt "TMEMORYBROWSER.MIGOTOBOOKMARK9.CAPTION"
+msgid "Bookmark 9"
+msgstr "Закладка 9"
+
+#: tmemorybrowser.mihidetoolbar.caption
+msgid "Hide toolbar"
+msgstr "Спрятать панель инструментов"
+
+#: tmemorybrowser.mihvback.caption
+msgctxt "TMEMORYBROWSER.MIHVBACK.CAPTION"
+msgid "Back"
+msgstr "Назад"
+
+#: tmemorybrowser.mihvfollow.caption
+msgctxt "TMEMORYBROWSER.MIHVFOLLOW.CAPTION"
+msgid "Follow"
+msgstr "Следовать"
+
+#: tmemorybrowser.mikernelmodesymbols.caption
+msgctxt "tmemorybrowser.mikernelmodesymbols.caption"
+msgid "Kernelmode symbols"
+msgstr "Символы режима ядра"
+
+#: tmemorybrowser.milock.caption
+msgctxt "TMEMORYBROWSER.MILOCK.CAPTION"
+msgid "Link with other hexview"
+msgstr "Связать с другим Hex-редактором"
+
+#: tmemorybrowser.milockrowsize.caption
+msgid "Lock current rowsize"
+msgstr "Заблокировать текущий размер строки"
+
+#: tmemorybrowser.miluaengine.caption
+msgctxt "TMEMORYBROWSER.MILUAENGINE.CAPTION"
+msgid "Lua Engine"
+msgstr "Lua Engine"
+
+#: tmemorybrowser.miopenindissectdata.caption
+msgid "Open in dissect data/structure"
+msgstr "Открыть анализ данных/структуры"
+
+#: tmemorybrowser.mipaging.caption
+msgid "Paging"
+msgstr "Страничная организация памяти"
+
+#: tmemorybrowser.mipointerspider.caption
+msgid "Structure spider"
+msgstr "Структурный паук"
+
+#: tmemorybrowser.mireferencedfunctions.caption
+msgid "Referenced functions"
+msgstr "Ссылки на функции"
+
+#: tmemorybrowser.mireplacewithnops.caption
+msgctxt "TMEMORYBROWSER.MIREPLACEWITHNOPS.CAPTION"
+msgid "Replace with code that does nothing"
+msgstr "Заменить ничего не делающим кодом (NOP)"
+
+#: tmemorybrowser.mirununhandled.caption
+msgid "Run Unhandled"
+msgstr "Запуск без обработки"
+
+#: tmemorybrowser.miseperators.caption
+msgid "Seperators"
+msgstr "Разделители"
+
+#: tmemorybrowser.misepevery2bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY2BYTES.CAPTION"
+msgid "2 Bytes"
+msgstr "2 Байта"
+
+#: tmemorybrowser.misepevery4bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY4BYTES.CAPTION"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: tmemorybrowser.misepevery8bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY8BYTES.CAPTION"
+msgid "8 Bytes"
+msgstr "8 Байт"
+
+#: tmemorybrowser.misetbookmark0.caption
+msgctxt "tmemorybrowser.misetbookmark0.caption"
+msgid "Bookmark 0"
+msgstr "Закладка 0"
+
+#: tmemorybrowser.misetbookmark1.caption
+msgctxt "tmemorybrowser.misetbookmark1.caption"
+msgid "Bookmark 1"
+msgstr "Закладка 1"
+
+#: tmemorybrowser.misetbookmark2.caption
+msgctxt "tmemorybrowser.misetbookmark2.caption"
+msgid "Bookmark 2"
+msgstr "Закладка 2"
+
+#: tmemorybrowser.misetbookmark3.caption
+msgctxt "tmemorybrowser.misetbookmark3.caption"
+msgid "Bookmark 3"
+msgstr "Закладка 3"
+
+#: tmemorybrowser.misetbookmark4.caption
+msgctxt "tmemorybrowser.misetbookmark4.caption"
+msgid "Bookmark 4"
+msgstr "Закладка 4"
+
+#: tmemorybrowser.misetbookmark5.caption
+msgctxt "tmemorybrowser.misetbookmark5.caption"
+msgid "Bookmark 5"
+msgstr "Закладка 5"
+
+#: tmemorybrowser.misetbookmark6.caption
+msgctxt "tmemorybrowser.misetbookmark6.caption"
+msgid "Bookmark 6"
+msgstr "Закладка 6"
+
+#: tmemorybrowser.misetbookmark7.caption
+msgctxt "tmemorybrowser.misetbookmark7.caption"
+msgid "Bookmark 7"
+msgstr "Закладка
