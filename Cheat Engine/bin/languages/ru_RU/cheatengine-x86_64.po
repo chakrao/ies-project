@@ -17864,4 +17864,169 @@ msgstr "Закладка 6"
 #: tmemorybrowser.misetbookmark7.caption
 msgctxt "tmemorybrowser.misetbookmark7.caption"
 msgid "Bookmark 7"
-msgstr "Закладка
+msgstr "Закладка 7"
+
+#: tmemorybrowser.misetbookmark8.caption
+msgctxt "tmemorybrowser.misetbookmark8.caption"
+msgid "Bookmark 8"
+msgstr "Закладка 8"
+
+#: tmemorybrowser.misetbookmark9.caption
+msgctxt "tmemorybrowser.misetbookmark9.caption"
+msgid "Bookmark 9"
+msgstr "Закладка 9"
+
+#: tmemorybrowser.misetbreakpointdbvmexec.caption
+msgid "DBVM Breakpoint (+1 instruction)"
+msgstr "DBVM брейкпоинт (+1 инструкция)"
+
+#: tmemorybrowser.misetbreakpointhw.caption
+msgctxt "tmemorybrowser.misetbreakpointhw.caption"
+msgid "Hardware Breakpoint"
+msgstr "Аппаратные брейкпоинт"
+
+#: tmemorybrowser.misetbreakpointpe.caption
+msgctxt "tmemorybrowser.misetbreakpointpe.caption"
+msgid "Exception Breakpoint (+1 instruction)"
+msgstr "Исключение (+1 инструкция)"
+
+#: tmemorybrowser.misetbreakpointsw.caption
+msgctxt "tmemorybrowser.misetbreakpointsw.caption"
+msgid "Software Breakpoint"
+msgstr "Программный брейкпоинт"
+
+#: tmemorybrowser.misetspecificbreakpoint.caption
+msgctxt "tmemorybrowser.misetspecificbreakpoint.caption"
+msgid "Set specific breakpoint type"
+msgstr "Установить определенный тип брейкпоинта"
+
+#: tmemorybrowser.mishowdifference.caption
+msgctxt "TMEMORYBROWSER.MISHOWDIFFERENCE.CAPTION"
+msgid "Show difference"
+msgstr "Показать различие"
+
+#: tmemorybrowser.mishowindisassembler.caption
+msgid "Show in disassembler"
+msgstr "Показать в дизассемблере"
+
+#: tmemorybrowser.mishowinhexview.caption
+msgid "Show in hexview"
+msgstr "Показать в Hex-редакторе"
+
+#: tmemorybrowser.mishowmoduleaddresses.caption
+msgctxt "tmemorybrowser.mishowmoduleaddresses.caption"
+msgid "Show module addresses"
+msgstr "Показать модульную адресацию"
+
+#: tmemorybrowser.mishowrelative.caption
+msgid "Show relative addresses"
+msgstr "Показывать относительные адреса"
+
+#: tmemorybrowser.mishowsectionaddresses.caption
+msgid "Show section addresses"
+msgstr "Показать адреса разделов"
+
+#: tmemorybrowser.mishowsymbols.caption
+msgctxt "tmemorybrowser.mishowsymbols.caption"
+msgid "Show symbols"
+msgstr "Показать символы"
+
+#: tmemorybrowser.misvcopy.caption
+msgctxt "TMEMORYBROWSER.MISVCOPY.CAPTION"
+msgid "Copy"
+msgstr "Копировать"
+
+#: tmemorybrowser.mitextencoding16.caption
+msgctxt "tmemorybrowser.mitextencoding16.caption"
+msgid "UTF-16"
+msgstr "UTF-16"
+
+#: tmemorybrowser.mitextencodingascii.caption
+msgid "Ascii"
+msgstr "ASCII"
+
+#: tmemorybrowser.mitextencodingcodepage.caption
+msgctxt "TMEMORYBROWSER.MITEXTENCODINGCODEPAGE.CAPTION"
+msgid "Codepage"
+msgstr "Кодовая страница"
+
+#: tmemorybrowser.mitextencodingutf8.caption
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: tmemorybrowser.mitextpreferences.caption
+msgctxt "tmemorybrowser.mitextpreferences.caption"
+msgid "Preferences"
+msgstr "Настройки"
+
+#: tmemorybrowser.mitogglebreakpoint.caption
+msgctxt "tmemorybrowser.mitogglebreakpoint.caption"
+msgid "Set breakpoint"
+msgstr "Установить брейкпоинт"
+
+#: tmemorybrowser.miultimap.caption
+msgid "Ultimap"
+msgstr "Ultimap"
+
+#: tmemorybrowser.miultimap2.caption
+msgctxt "tmemorybrowser.miultimap2.caption"
+msgid "Ultimap 2"
+msgstr "Ultimap 2"
+
+#: tmemorybrowser.miundolastedit.caption
+msgctxt "tmemorybrowser.miundolastedit.caption"
+msgid "Undo last edit"
+msgstr "Отменить последнее редактирование"
+
+#: tmemorybrowser.miunexpectedexceptionbreakalways.caption
+msgctxt "TMEMORYBROWSER.MIUNEXPECTEDEXCEPTIONBREAKALWAYS.CAPTION"
+msgid "Always"
+msgstr "Всегда"
+
+#: tmemorybrowser.miunexpectedexceptionbreakifinregion.caption
+msgctxt "TMEMORYBROWSER.MIUNEXPECTEDEXCEPTIONBREAKIFINREGION.CAPTION"
+msgid "Only in specified regions"
+msgstr "Только в указанных регионах"
+
+#: tmemorybrowser.miunexpectedexceptionbreaknever.caption
+msgctxt "TMEMORYBROWSER.MIUNEXPECTEDEXCEPTIONBREAKNEVER.CAPTION"
+msgid "Never"
+msgstr "Никогда"
+
+#: tmemorybrowser.miuserdefinedcomment.caption
+msgid "Set/Change comment"
+msgstr "Установить/Изменить комментарий"
+
+#: tmemorybrowser.miuserdefinedheader.caption
+msgid "Set/Change header"
+msgstr "Установить/Изменить заголовок"
+
+#: tmemorybrowser.miuserdefinedsymbols.caption
+msgctxt "tmemorybrowser.miuserdefinedsymbols.caption"
+msgid "Userdefined symbols"
+msgstr "Пользовательские символы"
+
+#: tmemorybrowser.miwatchaccess.caption
+msgctxt "tmemorybrowser.miwatchaccess.caption"
+msgid "Break on Access"
+msgstr "Прерваться на Доступе"
+
+#: tmemorybrowser.miwatchbpdbvm.caption
+msgctxt "tmemorybrowser.miwatchbpdbvm.caption"
+msgid "DBVM Breakpoint"
+msgstr "DBVM брейкпоинт"
+
+#: tmemorybrowser.miwatchbpexception.caption
+msgctxt "tmemorybrowser.miwatchbpexception.caption"
+msgid "Exception Breakpoint"
+msgstr "Исключение"
+
+#: tmemorybrowser.miwatchbphardware.caption
+msgctxt "tmemorybrowser.miwatchbphardware.caption"
+msgid "Hardware Breakpoint"
+msgstr "Аппаратные брейкпоинт"
+
+#: tmemorybrowser.miwatchwrite.caption
+msgctxt "tmemorybrowser.miwatchwrite.caption"
+msgid "Break on Write"
+msgstr "Прерв
