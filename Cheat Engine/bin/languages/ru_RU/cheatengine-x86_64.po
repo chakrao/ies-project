@@ -17171,4 +17171,190 @@ msgstr "Прерваться и трассировать инструкции"
 msgid "Breakpointlist"
 msgstr "Список брейкпоинтов"
 
-#: tmem
+#: tmemorybrowser.caption
+msgid "Memory Viewer"
+msgstr "Редактор памяти"
+
+#: tmemorybrowser.change1.caption
+msgctxt "TMEMORYBROWSER.CHANGE1.CAPTION"
+msgid "Edit"
+msgstr "Редактировать"
+
+#: tmemorybrowser.changestateofregisteratthislocation1.caption
+msgid "Change register at this location"
+msgstr "Изменить регистры"
+
+#: tmemorybrowser.continueanddetachdebugger1.caption
+msgid "Continue and  detach debugger"
+msgstr "Продолжить, отсоединив отладчик"
+
+#: tmemorybrowser.copybytes.caption
+msgctxt "TMEMORYBROWSER.COPYBYTES.CAPTION"
+msgid "Bytes"
+msgstr "Байты"
+
+#: tmemorybrowser.copybytesandopcodes.caption
+msgid "Bytes+Opcodes"
+msgstr "Байты+Инструкции"
+
+#: tmemorybrowser.copybytesandopcodesandcomments.caption
+msgid "Bytes+Opcodes+Comments"
+msgstr "Байты+Инструкции+Комментарии"
+
+#: tmemorybrowser.copyopcodes.caption
+msgid "Opcodes"
+msgstr "Инструкции"
+
+#: tmemorybrowser.copytoclipboard1.caption
+msgctxt "TMEMORYBROWSER.COPYTOCLIPBOARD1.CAPTION"
+msgid "Copy to clipboard"
+msgstr "Копировать в буфер обмена"
+
+#: tmemorybrowser.createthread1.caption
+msgid "Create Thread"
+msgstr "Создать поток"
+
+#: tmemorybrowser.cut1.caption
+msgctxt "tmemorybrowser.cut1.caption"
+msgid "Copy to clipboard"
+msgstr "Копировать в буфер обмена"
+
+#: tmemorybrowser.dbvmfindoutwhataddressesthisinstructionaccesses.caption
+msgid "DBVM Find out what addresses this instruction accesses"
+msgstr "DBVM поиск адресов, к которым обращается эта инструкция"
+
+#: tmemorybrowser.debug1.caption
+msgctxt "TMEMORYBROWSER.DEBUG1.CAPTION"
+msgid "Debug"
+msgstr "Отладка"
+
+#: tmemorybrowser.debugstrings1.caption
+msgctxt "TMEMORYBROWSER.DEBUGSTRINGS1.CAPTION"
+msgid "Debug strings"
+msgstr "Отладочные строки"
+
+#: tmemorybrowser.disectwindow1.caption
+msgid "Dissect window(s)"
+msgstr "Анализ окон"
+
+#: tmemorybrowser.dispbytes.caption
+msgid "Byte hex"
+msgstr "1 Байт (шестнадцатеричное)"
+
+#: tmemorybrowser.dispchar.caption
+msgid "Byte decimal"
+msgstr "1 Байт (десятичное)"
+
+#: tmemorybrowser.dispdouble.caption
+msgctxt "TMEMORYBROWSER.DISPDOUBLE.CAPTION"
+msgid "Double"
+msgstr "Double"
+
+#: tmemorybrowser.dispdwords.caption
+msgid "4 Byte hex"
+msgstr "4 Байта (шестнадцатеричное)"
+
+#: tmemorybrowser.dispfloat.caption
+msgctxt "TMEMORYBROWSER.DISPFLOAT.CAPTION"
+msgid "Float"
+msgstr "Float"
+
+#: tmemorybrowser.dispints.caption
+msgid "4 Byte decimal"
+msgstr "4 Байта (десятичное)"
+
+#: tmemorybrowser.displaytype1.caption
+msgid "Display Type"
+msgstr "Тип отображения"
+
+#: tmemorybrowser.displongs.caption
+msgid "8 Byte decimal"
+msgstr "8 Байт (десятичное)"
+
+#: tmemorybrowser.dispqwords.caption
+msgid "8 Byte hex"
+msgstr "8 Байт (шестнадцатеричное)"
+
+#: tmemorybrowser.dispshorts.caption
+msgid "2 Byte decimal"
+msgstr "2 Байта (десятичное)"
+
+#: tmemorybrowser.dispwords.caption
+msgid "2 Byte hex"
+msgstr "2 Байта (шестнадцатеричное)"
+
+#: tmemorybrowser.dissectcode1.caption
+msgid "Dissect code"
+msgstr "Анализ кода"
+
+#: tmemorybrowser.dissectdata1.caption
+msgctxt "TMEMORYBROWSER.DISSECTDATA1.CAPTION"
+msgid "Pointer scan"
+msgstr "Сканирование указателей"
+
+#: tmemorybrowser.dissectpeheaders1.caption
+msgid "Dissect PE headers"
+msgstr "Анализ заголовков PE"
+
+#: tmemorybrowser.driverlist1.caption
+msgctxt "TMEMORYBROWSER.DRIVERLIST1.CAPTION"
+msgid "Driver list"
+msgstr "Список драйверов"
+
+#: tmemorybrowser.enumeratedllsandsymbols1.caption
+msgid "Enumerate DLL's and Symbols"
+msgstr "Список загруженных dll и символов"
+
+#: tmemorybrowser.extra1.caption
+msgctxt "TMEMORYBROWSER.EXTRA1.CAPTION"
+msgid "Tools"
+msgstr "Инструменты"
+
+#: tmemorybrowser.file1.caption
+msgctxt "TMEMORYBROWSER.FILE1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tmemorybrowser.fillmemory1.caption
+msgid "Fill Memory"
+msgstr "Заполнить память"
+
+#: tmemorybrowser.findmemory1.caption
+msgid "Find memory"
+msgstr "Поиск в памяти"
+
+#: tmemorybrowser.findoutwhataddressesthisinstructionaccesses1.caption
+msgid "Find out what addresses this instruction accesses"
+msgstr "Найти адреса, к которым обращается эта инструкция"
+
+#: tmemorybrowser.findstaticpointers1.caption
+msgctxt "TMEMORYBROWSER.FINDSTATICPOINTERS1.CAPTION"
+msgid "Find static addresses"
+msgstr "Поиск статических адресов"
+
+#: tmemorybrowser.follow1.caption
+msgctxt "tmemorybrowser.follow1.caption"
+msgid "Follow"
+msgstr "Следовать"
+
+#: tmemorybrowser.gdtlist1.caption
+msgid "GDT list"
+msgstr "Таблица глобальных дескрипторов"
+
+#: tmemorybrowser.getaddress1.caption
+msgid "Get address"
+msgstr "Получить адрес"
+
+#: tmemorybrowser.goto1.caption
+msgid "Goto address"
+msgstr "Перейти по адресу"
+
+#: tmemorybrowser.gotoaddress1.caption
+msgid "Go to address"
+msgstr "Перейти по адресу"
+
+#: tmemorybrowser.heaps1.caption
+msgid "Heaplist"
+msgstr "Список куч"
+
+#: tmemorybro
