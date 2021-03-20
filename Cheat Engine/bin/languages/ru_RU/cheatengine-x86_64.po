@@ -17522,4 +17522,169 @@ msgid "Change fade timer"
 msgstr "Изменить интервал обновления"
 
 #: tmemorybrowser.miaddref.caption
-msgctxt "TMEMORYBROWSER.MIADDREF.
+msgctxt "TMEMORYBROWSER.MIADDREF.CAPTION"
+msgid "(ref+*) Ref will be %x"
+msgstr "(ref+*) Ссылкой будет %x"
+
+#: tmemorybrowser.miaddtothecodelist.caption
+msgid "Add to the code list"
+msgstr "Добавить в список кодов"
+
+#: tmemorybrowser.mibinutils.caption
+msgid "BinUtils"
+msgstr "BinUtils"
+
+#: tmemorybrowser.mibinutilsselect.caption
+msgctxt "TMEMORYBROWSER.MIBINUTILSSELECT.CAPTION"
+msgid "None"
+msgstr "Нет"
+
+#: tmemorybrowser.mibreakandtrace.caption
+msgctxt "tmemorybrowser.mibreakandtrace.caption"
+msgid "Break and trace"
+msgstr "Прерваться и трассировать"
+
+#: tmemorybrowser.mibreakonexceptions.caption
+msgid "Break on unexpected exceptions"
+msgstr "Прерываться на непредвиденных исключениях"
+
+#: tmemorybrowser.michangeprotectionr.caption
+msgctxt "TMEMORYBROWSER.MICHANGEPROTECTIONR.CAPTION"
+msgid "Read"
+msgstr "Чтение"
+
+#: tmemorybrowser.michangeprotectionre.caption
+msgid "Read Execute"
+msgstr "Чтение-Выполнение"
+
+#: tmemorybrowser.michangeprotectionrw.caption
+msgid "Read Write"
+msgstr "Чтение-Запись"
+
+#: tmemorybrowser.michangeprotectionrwe.caption
+msgid "Read Write Execute"
+msgstr "Чтение-Запись-Выполнение"
+
+#: tmemorybrowser.micodefilter.caption
+msgctxt "TMEMORYBROWSER.MICODEFILTER.CAPTION"
+msgid "Code Filter"
+msgstr "Фильтр кода"
+
+#: tmemorybrowser.miconditionalbreak.caption
+msgid "Set/Change break condition"
+msgstr "Задать/Изменить условие прерывания"
+
+#: tmemorybrowser.micopyaddressesonly.caption
+msgid "Addresses only"
+msgstr "Только адреса"
+
+#: tmemorybrowser.micopybytesonly.caption
+msgid "Bytes only (no address)"
+msgstr "Только байты (без адреса)"
+
+#: tmemorybrowser.micopyopcodesonly.caption
+msgid "Opcodes only (no address)"
+msgstr "Только инструкции (без адреса)"
+
+#: tmemorybrowser.midatabreakpointmenu.caption
+msgctxt "tmemorybrowser.midatabreakpointmenu.caption"
+msgid "Data Breakpoint"
+msgstr "Брейкпоинт по данным"
+
+#: tmemorybrowser.midbvmactivatecloak.caption
+msgid "DBVM Activate Cloak"
+msgstr "DBVM Активировать маскировку"
+
+#: tmemorybrowser.midbvmdisablecloak.caption
+msgid "DBVM Disable Cloak"
+msgstr "DBVM Деактивировать маскировку"
+
+#: tmemorybrowser.midebugbreak.caption
+msgctxt "TMEMORYBROWSER.MIDEBUGBREAK.CAPTION"
+msgid "Break"
+msgstr "Прерваться"
+
+#: tmemorybrowser.midebugevents.caption
+msgid "Debug events"
+msgstr "Отладочные события"
+
+#: tmemorybrowser.midebugexecutetillreturn.caption
+msgid "Step Out - Execute till return"
+msgstr "Шаг с выходом - Выполнить до возврата"
+
+#: tmemorybrowser.midebugrun.caption
+msgctxt "TMEMORYBROWSER.MIDEBUGRUN.CAPTION"
+msgid "Run"
+msgstr "Запустить"
+
+#: tmemorybrowser.midebugruntill.caption
+msgctxt "tmemorybrowser.midebugruntill.caption"
+msgid "Run till..."
+msgstr "Выполнить до..."
+
+#: tmemorybrowser.midebugsetaddress.caption
+msgid "Set Address"
+msgstr "Установить адрес"
+
+#: tmemorybrowser.midebugstep.caption
+msgctxt "tmemorybrowser.midebugstep.caption"
+msgid "Step Into"
+msgstr "Шаг с заходом"
+
+#: tmemorybrowser.midebugstepover.caption
+msgctxt "tmemorybrowser.midebugstepover.caption"
+msgid "Step Over"
+msgstr "Шаг с обходом"
+
+#: tmemorybrowser.midebugtogglebreakpoint.caption
+msgctxt "TMEMORYBROWSER.MIDEBUGTOGGLEBREAKPOINT.CAPTION"
+msgid "Toggle breakpoint"
+msgstr "Переключить брейкпоинт"
+
+#: tmemorybrowser.mideletebp.caption
+msgid "Delete Breakpoint"
+msgstr "Удалить брейкпоинт"
+
+#: tmemorybrowser.midisassemblertype.caption
+msgid "Disassembly output"
+msgstr "Дизассемблированный вывод"
+
+#: tmemorybrowser.midisassembly32.caption
+msgid "32-bit"
+msgstr "32-бита"
+
+#: tmemorybrowser.midisassembly64.caption
+msgid "64-bit"
+msgstr "64-бита"
+
+#: tmemorybrowser.midisassemblyautodetect.caption
+msgid "Autodetect"
+msgstr "Автоопределение"
+
+#: tmemorybrowser.midissectdata.caption
+msgid "Dissect data/structures old"
+msgstr "Анализ данных/структур (старый)"
+
+#: tmemorybrowser.midissectdata2.caption
+msgid "Dissect data/structures"
+msgstr "Анализ данных/структур"
+
+#: tmemorybrowser.miexceptionignorelist.caption
+msgid "Manage exception code filter"
+msgstr "Управление фильтром кода исключения"
+
+#: tmemorybrowser.miexceptionregionautoaddallocs.caption
+msgctxt "TMEMORYBROWSER.MIEXCEPTIONREGIONAUTOADDALLOCS.CAPTION"
+msgid "Automatically add allocated memory by CE as watched regions"
+msgstr "Автоматически добавлять выделенную Cheat Engine'ом память в качестве наблюдаемого региона"
+
+#: tmemorybrowser.miexceptionregionmanagelist.caption
+msgid "Manage exception region list"
+msgstr "Управление списком исключений в регионах"
+
+#: tmemorybrowser.mifindwhataccesses.caption
+msgctxt "TMEMORYBROWSER.MIFINDWHATACCESSES.CAPTION"
+msgid "Find out what accesses this address"
+msgstr "Найти инструкции, обращающиеся к этому адресу"
+
+#: tmemorybrowser.mifindwhatwrites.ca
