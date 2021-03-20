@@ -17357,4 +17357,169 @@ msgstr "Перейти по адресу"
 msgid "Heaplist"
 msgstr "Список куч"
 
-#: tmemorybro
+#: tmemorybrowser.idtlist1.caption
+msgid "IDT list"
+msgstr "Таблица дескрипторов прерываний"
+
+#: tmemorybrowser.injectdll1.caption
+msgid "Inject DLL"
+msgstr "Инъекция DLL"
+
+#: tmemorybrowser.jumplines1.caption
+msgctxt "tmemorybrowser.jumplines1.caption"
+msgid "Jumplines"
+msgstr "Линии переходов"
+
+#: tmemorybrowser.kerneltools1.caption
+msgid "Kernel tools"
+msgstr "Инструменты ядра"
+
+#: tmemorybrowser.label14.caption
+msgctxt "TMEMORYBROWSER.LABEL14.CAPTION"
+msgid "Registers:"
+msgstr "Регистры:"
+
+#: tmemorybrowser.label15.caption
+msgctxt "TMEMORYBROWSER.LABEL15.CAPTION"
+msgid "Flags"
+msgstr "Флаги"
+
+#: tmemorybrowser.label16.caption
+msgid "Segment Registers"
+msgstr "Сегментные регистры"
+
+#: tmemorybrowser.loadmemolryregion1.caption
+msgid "Load memory region"
+msgstr "Загрузить регион памяти"
+
+#: tmemorybrowser.loadsymbolfile1.caption
+msgid "Load symbol file"
+msgstr "Загрузить файл с символами"
+
+#: tmemorybrowser.lvstacktracedata.columns[0].caption
+msgctxt "TMEMORYBROWSER.LVSTACKTRACEDATA.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "Адрес"
+
+#: tmemorybrowser.lvstacktracedata.columns[1].caption
+msgid "DWORD"
+msgstr "DWORD"
+
+#: tmemorybrowser.lvstacktracedata.columns[2].caption
+msgctxt "TMEMORYBROWSER.LVSTACKTRACEDATA.COLUMNS[2].CAPTION"
+msgid "Value"
+msgstr "Значение"
+
+#: tmemorybrowser.lvstacktracedata.hint
+msgid ""
+"Shows the current stack.\n"
+"Tip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or not\n"
+msgstr ""
+"Показывает текущий стек.\n"
+"Совет: При двойном клике по значению и содержащему его адресу, вы можете удерживать клавишу «Shift» для его отображения в дизассемблере или «Ctrl» для отображения в редакторе памяти. Иначе Cheat Engine попытается предположить место его отображения за вас, в зависимости от того, исполняемая это память или нет\n"
+
+#: tmemorybrowser.makepagewritable1.caption
+msgid "Change page protection"
+msgstr "Изменить защиту страницы"
+
+#: tmemorybrowser.maxstacktracesize1.caption
+msgid "Max stack: 4096"
+msgstr "Максимальный стек: 4096"
+
+#: tmemorybrowser.memoryregions1.caption
+msgid "Memory Regions"
+msgstr "Регионы памяти"
+
+#: tmemorybrowser.menuitem10.caption
+msgid "All strings"
+msgstr "Все строки"
+
+#: tmemorybrowser.menuitem11.caption
+msgid "Search for accessible strings"
+msgstr "Поиск доступных строк"
+
+#: tmemorybrowser.menuitem12.caption
+msgid "Apply changes to file"
+msgstr "Применить изменения к файлу"
+
+#: tmemorybrowser.menuitem14.caption
+msgid "Use windows debug symbols"
+msgstr "Использовать символы отладки Windows"
+
+#: tmemorybrowser.menuitem15.caption
+msgid "Overlay with structure"
+msgstr "Наложение со структурой"
+
+#: tmemorybrowser.menuitem17.caption
+msgid "Generate structure from datastream and template"
+msgstr "Создать структуру из потока данных и шаблона"
+
+#: tmemorybrowser.menuitem18.caption
+msgid "Graphical memory view"
+msgstr "Графическое представление памяти"
+
+#: tmemorybrowser.menuitem2.caption
+msgid "Select current function"
+msgstr "Выбрать текущую функцию"
+
+#: tmemorybrowser.menuitem20.caption
+msgid "Load trace"
+msgstr "Загрузить трассировку"
+
+#: tmemorybrowser.menuitem21.caption
+msgid "Text Encoding"
+msgstr "Кодировка текста"
+
+#: tmemorybrowser.menuitem22.caption
+msgid "Watch memory page access"
+msgstr "Наблюдение за обращением к странице памяти"
+
+#: tmemorybrowser.menuitem23.caption
+msgid "Set/Unset bookmark"
+msgstr "Установить/Убрать закладку"
+
+#: tmemorybrowser.menuitem24.caption
+msgid "Goto bookmark"
+msgstr "Перейти к закладке"
+
+#: tmemorybrowser.menuitem25.caption
+msgid "User write history"
+msgstr "История пользовательских записей"
+
+#: tmemorybrowser.menuitem27.caption
+msgid "Watchlist"
+msgstr "Список наблюдения"
+
+#: tmemorybrowser.menuitem29.caption
+msgid "Compare data/structures"
+msgstr "Сравнение данных/структур"
+
+#: tmemorybrowser.menuitem4.caption
+msgid "Disable toolbar"
+msgstr "Отключить панель инструментов"
+
+#: tmemorybrowser.menuitem4.caption
+msgid "Data Breakpoint"
+msgstr "Брейкпоинт по данным"
+
+#: tmemorybrowser.menuitem5.caption
+msgctxt "TMEMORYBROWSER.MENUITEM5.CAPTION"
+msgid "Break on Access"
+msgstr "Прерваться на Доступе"
+
+#: tmemorybrowser.menuitem6.caption
+msgctxt "TMEMORYBROWSER.MENUITEM6.CAPTION"
+msgid "Break on Write"
+msgstr "Прерваться на Записи"
+
+#: tmemorybrowser.menuitem8.caption
+msgctxt "TMEMORYBROWSER.MENUITEM8.CAPTION"
+msgid "Break and trace"
+msgstr "Прерваться и трассировать"
+
+#: tmemorybrowser.menuitem9.caption
+msgid "Change fade timer"
+msgstr "Изменить интервал обновления"
+
+#: tmemorybrowser.miaddref.caption
+msgctxt "TMEMORYBROWSER.MIADDREF.
