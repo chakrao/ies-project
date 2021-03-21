@@ -18029,4 +18029,186 @@ msgstr "Аппаратные брейкпоинт"
 #: tmemorybrowser.miwatchwrite.caption
 msgctxt "tmemorybrowser.miwatchwrite.caption"
 msgid "Break on Write"
-msgstr "Прерв
+msgstr "Прерваться на Записи"
+
+#: tmemorybrowser.modulesonly1.caption
+msgid "Modules only"
+msgstr "Только модули"
+
+#: tmemorybrowser.newwindow1.caption
+msgctxt "TMEMORYBROWSER.NEWWINDOW1.CAPTION"
+msgid "New window"
+msgstr "Новое окно"
+
+#: tmemorybrowser.nonsystemmodulesonly1.caption
+msgid "Non system modules only"
+msgstr "Только не системные модули"
+
+#: tmemorybrowser.onlyshowjumplineswithinrange1.caption
+msgid "Only show jumplines within range"
+msgstr "Показывать линии переходов только в пределах досягаемости"
+
+#: tmemorybrowser.opendlldialog.title
+msgid "Select the module you want to inject"
+msgstr "Выберите модуль для инъекции"
+
+#: tmemorybrowser.pastefromclipboard1.caption
+msgid "Paste from clipboard"
+msgstr "Вставить из буфера обмена"
+
+#: tmemorybrowser.plugins1.caption
+msgctxt "TMEMORYBROWSER.PLUGINS1.CAPTION"
+msgid "Plugins"
+msgstr "Плагины"
+
+#: tmemorybrowser.referencedstrings1.caption
+msgid "Referenced strings"
+msgstr "Ссылки на строки"
+
+#: tmemorybrowser.reservememory1.caption
+msgid "Allocate Memory"
+msgstr "Выделить память"
+
+#: tmemorybrowser.savedisassemledoutput1.caption
+msgctxt "TMEMORYBROWSER.SAVEDISASSEMLEDOUTPUT1.CAPTION"
+msgid "Save disassembled output"
+msgstr "Сохранить диапазон памяти"
+
+#: tmemorybrowser.savememoryregion1.caption
+msgid "Save memory region"
+msgstr "Сохранить регион памяти"
+
+#: tmemorybrowser.scanforcodecaves1.caption
+msgid "Scan for code caves"
+msgstr "Поиск «code caves»"
+
+#: tmemorybrowser.search1.caption
+msgid "Search memory..."
+msgstr "Поиск в памяти..."
+
+#: tmemorybrowser.search2.caption
+msgctxt "TMEMORYBROWSER.SEARCH2.CAPTION"
+msgid "Search"
+msgstr "Поиск"
+
+#: tmemorybrowser.sericedescriptortable1.caption
+msgid "Service Descriptor Table"
+msgstr "Таблица дескрипторов системных служб"
+
+#: tmemorybrowser.setsymbolsearchpath1.caption
+msgid "Set symbol searchpath"
+msgstr "Задать путь поиска символа"
+
+#: tmemorybrowser.showdebugtoolbar1.caption
+msgid "Show debug toolbar"
+msgstr "Показать панель инструментов отладки"
+
+#: tmemorybrowser.showjumplines1.caption
+msgid "Show jumplines"
+msgstr "Показывать линии переходов"
+
+#: tmemorybrowser.showvaluesofstaticaddresses1.caption
+msgid "Show 'Comment' row"
+msgstr "Показывать столбец «Комментарий»"
+
+#: tmemorybrowser.stacktrace1.caption
+msgctxt "TMEMORYBROWSER.STACKTRACE1.CAPTION"
+msgid "Stacktrace"
+msgstr "Трассировка стека"
+
+#: tmemorybrowser.stacktrace2.caption
+msgctxt "TMEMORYBROWSER.STACKTRACE2.CAPTION"
+msgid "Stacktrace"
+msgstr "Трассировка стека"
+
+#: tmemorybrowser.tbrun.caption
+msgctxt "tmemorybrowser.tbrun.caption"
+msgid "Run"
+msgstr "Выполнить"
+
+#: tmemorybrowser.tbruntill.caption
+msgctxt "tmemorybrowser.tbruntill.caption"
+msgid "Run till..."
+msgstr "Выполнить до..."
+
+#: tmemorybrowser.tbstepinto.caption
+msgctxt "tmemorybrowser.tbstepinto.caption"
+msgid "Step Into"
+msgstr "Шаг с заходом"
+
+#: tmemorybrowser.tbstepout.caption
+msgid "Step Out"
+msgstr "Шаг с выходом"
+
+#: tmemorybrowser.tbstepover.caption
+msgctxt "tmemorybrowser.tbstepover.caption"
+msgid "Step Over"
+msgstr "Шаг с обходом"
+
+#: tmemorybrowser.tbtogglebreakpoint.caption
+msgid "Toggle Breakpoint"
+msgstr "Переключить брейкпоинт"
+
+#: tmemorybrowser.threadlist1.caption
+msgctxt "TMEMORYBROWSER.THREADLIST1.CAPTION"
+msgid "Threadlist"
+msgstr "Список потоков"
+
+#: tmemorybrowser.view1.caption
+msgctxt "TMEMORYBROWSER.VIEW1.CAPTION"
+msgid "View"
+msgstr "Просмотр"
+
+#: tmemorybrowser.watchmemoryallocations1.caption
+msgid "Watch memory allocations"
+msgstr "Наблюдение за распределением памяти"
+
+#: tprocesswindow.btnattachdebugger.caption
+msgctxt "tprocesswindow.btnattachdebugger.caption"
+msgid "Attach debugger to process"
+msgstr "Присоединить отладчик к процессу"
+
+#: tprocesswindow.btnnetwork.caption
+msgctxt "TPROCESSWINDOW.BTNNETWORK.CAPTION"
+msgid "Network"
+msgstr "Сеть"
+
+#: tprocesswindow.button4.caption
+msgid "Attach debugger to process"
+msgstr "Присоединить отладчик к процессу"
+
+#: tprocesswindow.cancelbutton.caption
+msgctxt "TPROCESSWINDOW.CANCELBUTTON.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tprocesswindow.caption
+msgctxt "TPROCESSWINDOW.CAPTION"
+msgid "Process List"
+msgstr "Список процессов"
+
+#: tprocesswindow.filter1.caption
+msgctxt "TPROCESSWINDOW.FILTER1.CAPTION"
+msgid "Filter"
+msgstr "Фильтр"
+
+#: tprocesswindow.inputpidmanually1.caption
+msgid "Input PID manually"
+msgstr "Ввести идентификатор процесса"
+
+#: tprocesswindow.menuitem1.caption
+msgctxt "TPROCESSWINDOW.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "Файл"
+
+#: tprocesswindow.menuitem3.caption
+msgid "Process watcher"
+msgstr "«Наблюдатель процесса»"
+
+#: tprocesswindow.menuitem4.caption
+msgctxt "TPROCESSWINDOW.MENUITEM4.CAPTION"
+msgid "View"
+msgstr "Вид"
+
+#: tprocesswindow.menuitem5.caption
+msgctxt "TPROCESSWINDOW.
