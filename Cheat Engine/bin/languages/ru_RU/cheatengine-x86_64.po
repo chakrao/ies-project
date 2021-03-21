@@ -18357,4 +18357,177 @@ msgstr "Этот lua скрипт имеет только половину бл�
 
 #: trainergenerator.rsnocheatpanel
 msgid "The current trainer form does not have a panel named 'CHEATPANEL' so can not be reused by the automated trainer generator.%sDo you want to start from scratch? (If you want to create a trainer from your current script you can just save your table as .EXE instead of using the automated trainer generator)"
-msgstr "У формы этого трейнера 
+msgstr "У формы этого трейнера отсутствует панель под названием CHEATPANEL, поэтому трейнер не может быть повторно использован «Генератором трейнера». %s Вы хотите начать с нуля? (Если вы хотите создать трейнер при помощи текущего скрипта, вы можете просто сохранить таблицу как .EXE вместо использования «Генератора трейнера»)"
+
+#: trainergenerator.rsonclosewarning
+msgid "This form had an onClose event. Good thing this was only a stub, else Cheat Engine would have terminated"
+msgstr "У этой формы произошло событие onClose. Хорошо, что это только заготовка, иначе Cheat Engine завершил бы работу"
+
+#: trainergenerator.rspleaseselecttypeinaprocessname
+msgid "Please select/type in a processname"
+msgstr "Пожалуйста, выберите/укажите название процесса"
+
+#: trainergenerator.rsselectthecheatentryyouwanttosetthehotkeyfor
+msgid "Select the cheat entry you want to set the hotkey for"
+msgstr "Выберите запись для присвоения ей горячей клавиши"
+
+#: trainergenerator.rsset
+msgid "Set"
+msgstr "Изменить значение"
+
+#: trainergenerator.rsthankyou
+msgid "Thank you! :)"
+msgstr "Благодарю! :)"
+
+#: trainergenerator.rstipyoudonthavetousethetrainergeneratorifyoudontwantto
+msgid "Tip: You don't have to use the trainer generator if you don't want to. You can just save your table as .EXE or CETRAINER"
+msgstr "Подсказка: Если не хотите, то можете не использовать «Генератор трейнера», а просто сохранить таблицу как .EXE или CETRAINER"
+
+#: trainergenerator.rsto
+msgid "to"
+msgstr "на"
+
+#: trainergenerator.rsunfreeze
+msgid "(Un)Freeze"
+msgstr "Заморозить/Разморозить"
+
+#: trainergenerator.rsyouneedacheattablewithcheatentries
+msgid "You need a cheat table with cheat entries"
+msgstr "В таблице отсутствуют какие-либо записи"
+
+#: tregisters.caption
+msgid "Registers"
+msgstr "Регистры"
+
+#: tregisters.label14.caption
+msgctxt "tregisters.label14.caption"
+msgid "Registers:"
+msgstr "Регистры:"
+
+#: tregisters.menuitem1.caption
+msgid "Copy registers to clipboard"
+msgstr "Копировать регистры в буфер обмена"
+
+#: tregisters.menuitem2.caption
+msgid "Copy full context block to clipboard"
+msgstr "Копировать весь контекстный блок в буфер обмена"
+
+#: tregisters.sbshowfloats.caption
+msgctxt "TREGISTERS.SBSHOWFLOATS.CAPTION"
+msgid "F"
+msgstr "F"
+
+#: tregisters.sbshowfloats.hint
+msgctxt "TREGISTERS.SBSHOWFLOATS.HINT"
+msgid "Floating point registers"
+msgstr "Регистры с плавающей точкой"
+
+#: tregisters.sbshowstack.caption
+msgctxt "TREGISTERS.SBSHOWSTACK.CAPTION"
+msgid "S"
+msgstr "С"
+
+#: tregisters.sbshowstack.hint
+msgctxt "TREGISTERS.SBSHOWSTACK.HINT"
+msgid "Stack view"
+msgstr "Просмотр стека"
+
+#: ttlg.caption
+msgid "TLG:The Lame Game"
+msgstr "TLG:The Lame Game"
+
+#: ttlg.label1.caption
+msgid "Score:"
+msgstr "Счёт:"
+
+#: ttypeform.buttoncancel.caption
+msgctxt "ttypeform.buttoncancel.caption"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: ttypeform.buttonok.caption
+msgctxt "ttypeform.buttonok.caption"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: ttypeform.caption
+msgctxt "TTYPEFORM.CAPTION"
+msgid "Type"
+msgstr "Тип"
+
+#: ttypeform.cbcodepage.caption
+msgctxt "TTYPEFORM.CBCODEPAGE.CAPTION"
+msgid "Codepage"
+msgstr "Кодовая страница"
+
+#: ttypeform.cbhex.caption
+msgctxt "ttypeform.cbhex.caption"
+msgid "Hexadecimal"
+msgstr "Шестнадцатеричное"
+
+#: ttypeform.cbsigned.caption
+msgctxt "ttypeform.cbsigned.caption"
+msgid "Signed"
+msgstr "Знаковое"
+
+#: ttypeform.cbunicode.caption
+msgctxt "ttypeform.cbunicode.caption"
+msgid "Unicode"
+msgstr "Юникод"
+
+#: ttypeform.label1.caption
+msgid "Select the new type:"
+msgstr "Выберите новый тип:"
+
+#: ttypeform.labelbit6.caption
+msgctxt "ttypeform.labelbit6.caption"
+msgid "Length"
+msgstr "Длина"
+
+#: ttypeform.labellength.caption
+msgctxt "ttypeform.labellength.caption"
+msgid "Length"
+msgstr "Длина"
+
+#: ttypeform.vartype.text
+msgctxt "ttypeform.vartype.text"
+msgid "Binary"
+msgstr "Двоичный"
+
+#: tvaluechangeform.button1.caption
+msgctxt "TVALUECHANGEFORM.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tvaluechangeform.button2.caption
+msgctxt "TVALUECHANGEFORM.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tvaluechangeform.caption
+msgid "Change Offset: ########"
+msgstr "Изменить смещение: ########"
+
+#: tvaluechangeform.cbunicode.caption
+msgctxt "TVALUECHANGEFORM.CBUNICODE.CAPTION"
+msgid "Unicode"
+msgstr "Юникод"
+
+#: tvaluechangeform.cbvartype.text
+msgid "1 Byte"
+msgstr "1 Байт"
+
+#: tvaluechangeform.valuetext.text
+msgid "ValueText"
+msgstr "Значение/Текст"
+
+#: typepopup.rsinvalidlength
+msgid "Invalid length"
+msgstr "Недопустимая длина"
+
+#: unrandomizer.rsthefollowingaddressesgotchanged
+msgid "The following addresses got changed"
+msgstr "Следующие адреса были изменены"
+
+#: unrandomizer.rstheunrandomizerwillcurrentlynotworkon64bitapplicat
+msgid "The unr
