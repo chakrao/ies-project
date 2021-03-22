@@ -18530,4 +18530,170 @@ msgid "The following addresses got changed"
 msgstr "Следующие адреса были изменены"
 
 #: unrandomizer.rstheunrandomizerwillcurrentlynotworkon64bitapplicat
-msgid "The unr
+msgid "The unrandomizer will currently not work on 64-bit applications"
+msgstr "На данный момент антирандомайзер не работает с 64-битными приложениями"
+
+#: valuechange.rschangeoffset
+msgid "Change offset %s"
+msgstr "Изменить смещение %s"
+
+#: valuechange.rspartofthestringisunreadable
+msgid "Part of the string is unreadable!"
+msgstr "Часть строки нечитабельна!"
+
+#: valuechange.rsunicode
+msgctxt "valuechange.rsunicode"
+msgid "Unicode"
+msgstr "Юникод"
+
+#: vartypestrings.rs_vtall
+msgctxt "vartypestrings.rs_vtall"
+msgid "All"
+msgstr "Все"
+
+#: vartypestrings.rs_vtautoassemblemsgctxt "vartypestrings.rs_vtautoassembler"
+msgid "Auto Assembler Script"
+msgstr "Скрипт автоассемблера"
+
+#: vartypestrings.rs_vtbinary
+msgctxt "vartypestrings.rs_vtbinary"
+msgid "Binary"
+msgstr "Двоичный"
+
+#: vartypestrings.rs_vtbyte
+msgctxt "vartypestrings.rs_vtbyte"
+msgid "Byte"
+msgstr "1 Байт"
+
+#: vartypestrings.rs_vtbytearray
+msgctxt "vartypestrings.rs_vtbytearray"
+msgid "Array of byte"
+msgstr "Массив байт"
+
+#: vartypestrings.rs_vtcodepagestring
+msgid "CodePage String"
+msgstr "Строка кодовой страницы"
+
+#: vartypestrings.rs_vtcustom
+msgid "Custom"
+msgstr "Пользовательский"
+
+#: vartypestrings.rs_vtdouble
+msgctxt "vartypestrings.rs_vtdouble"
+msgid "Double"
+msgstr "Double"
+
+#: vartypestrings.rs_vtdword
+msgctxt "vartypestrings.rs_vtdword"
+msgid "4 Bytes"
+msgstr "4 Байта"
+
+#: vartypestrings.rs_vtgrouped
+msgid "Grouped"
+msgstr "Групповой"
+
+#: vartypestrings.rs_vtpointer
+msgctxt "vartypestrings.rs_vtpointer"
+msgid "Pointer"
+msgstr "Указатель"
+
+#: vartypestrings.rs_vtqword
+msgctxt "vartypestrings.rs_vtqword"
+msgid "8 Bytes"
+msgstr "8 Байт"
+
+#: vartypestrings.rs_vtsingle
+msgctxt "vartypestrings.rs_vtsingle"
+msgid "Float"
+msgstr "Float"
+
+#: vartypestrings.rs_vtstring
+msgctxt "vartypestrings.rs_vtstring"
+msgid "String"
+msgstr "Строка"
+
+#: vartypestrings.rs_vtwidestring
+msgid "Widestring"
+msgstr "Widestring"
+
+#: vartypestrings.rs_vtunicodestring
+msgid "Unicode String"
+msgstr "Строка юникода"
+
+#: vartypestrings.rs_vtword
+msgctxt "vartypestrings.rs_vtword"
+msgid "2 Bytes"
+msgstr "2 Байта"
+
+#: vehdebugger.rscheatenginefailedtogetintotheconfig
+msgid "Cheat Engine failed to get into the config of the selected program. (Error=%s)"
+msgstr "Cheat Engine не смог получить конфигурацию выбранной программы. (Ошибка=%s)"
+
+#: vehdebugger.rserrorwhiletryingtocreatetheconfigurationstructure
+msgid "Error while trying to create the configuration structure! (Which effectively renders this whole feature useless) Errorcode=%s"
+msgstr "Ошибка при попытке создать конфигурационную структуру! Код ошибки = %s"
+
+#: vehdebugger.rsfailureduplicatingtheeventhandlestotheotherprocess
+msgid "Failure duplicating the event handles to the other process"
+msgstr "Не удалось продублировать обработчики событий к другому процессу"
+
+#: vehdebugger.rsfailureduplicatingthefilemapping
+msgid "Failure duplicating the filemapping"
+msgstr "Не удалось продублировать маппинг файла"
+
+#: vehdebugger.rsthevehdllseemstohavefailedtoload
+msgid "The VEH dll seems to have failed to load"
+msgstr "Кажется, не удалось загрузить VEH dll"
+
+#: vehdebugger.rsvehdebugerror
+msgid "VEH Debug error"
+msgstr "Ошибка VEH отладки"
+
+#: vehdebugger.rswrongvehdllversion
+msgid "The version of the VEH dll inside the target process (%x) does not match what was expected %x"
+msgstr "Версия VEH dll внутри процесса цели (%x) не соответствует ожидаемой %x"
+
+#: virtualmemory.rsnomemoryfoundinthespecifiedregion
+msgctxt "virtualmemory.rsnomemoryfoundinthespecifiedregion"
+msgid "No memory found in the specified region"
+msgstr "В указанном регионе память не найдена"
+
+#: virtualmemory.rsnotenoughmemoryfreetoscan
+msgctxt "virtualmemory.rsnotenoughmemoryfreetoscan"
+msgid "Not enough memory free to scan"
+msgstr "Недостаточно свободной памяти для сканирования"
+
+#: vmxfunctions.rsbigerror
+msgctxt "vmxfunctions.rsbigerror"
+msgid "Error"
+msgstr "Ошибка"
+
+#: vmxfunctions.rsinvalidinstruction
+msgid "Invalid instruction"
+msgstr "Недопустимая инструкция"
+
+#: vmxfunctions.rssmallerror
+msgctxt "vmxfunctions.rssmallerror"
+msgid "error"
+msgstr "ошибка"
+
+#: windowsdebugger.rserrorattachingthewindowsdebugger
+msgid "Error attaching the windows debugger: %s"
+msgstr "Ошибка присоединения отладчика Windows: %s"
+
+#: xmplayer_server.rsfailedcreatingtheaudiopipe
+msgid "Failed creating the audio pipe"
+msgstr "Не удалось создать аудио канал"
+
+#: xmplayer_server.rsxmplayerexeismissing
+msgid "xmplayer.exe is missing"
+msgstr "отсутствует xmplayer.exe"
+
+#: zstreamext.rsaseekwasdoneforanotherpurpose
+msgid "A seek was done for another purpose than getting the position"
+msgstr "Поиск проводился в иных целях, нежели получение позиции"
+
+msgid "Cheat Engine Scan Busy"
+msgstr "Сканирование занято"
+
+msgid "The previous scan is still being processed. Ple
