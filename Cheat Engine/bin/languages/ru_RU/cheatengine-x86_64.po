@@ -18696,4 +18696,18 @@ msgstr "Поиск проводился в иных целях, нежели п�
 msgid "Cheat Engine Scan Busy"
 msgstr "Сканирование занято"
 
-msgid "The previous scan is still being processed. Ple
+msgid "The previous scan is still being processed. Please wait"
+msgstr "Предыдущее сканирование всё ещё обрабатывается. Пожалуйста, подождите"
+
+#: tprocesswindow.cbskipsystemprocesses.caption
+msgid "Only show non-system processes"
+msgstr "Показывать только несистемные процессы"
+
+#: frmstructurecompareunit.rsunlock
+msgid "Unlock"
+msgstr "Разблокировать"
+
+#: frmstructurecompareunit.rslock
+msgctxt "frmstructurecompareunit.rslock"
+msgid "Lock"
+msgstr "Заблокировать"

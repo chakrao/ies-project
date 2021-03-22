@@ -1,0 +1,181 @@
+msgid ""
+msgstr ""
+"Last-Translator: Maxim Ganetsky <maxkill@mail.ru>\n"
+"Project-Id-Version: lazaruside\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2018-08-28 01:50+0300\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Language: ru\n"
+"X-Generator: Poedit 1.7.7\n"
+
+#: lclstrconsts.hhshelpbrowsernotexecutable
+msgid "Browser \"%s\" not executable."
+msgstr "Браузер \"%s\" не является исполнимым файлом."
+
+#: lclstrconsts.hhshelpbrowsernotfound
+msgid "Browser \"%s\" not found."
+msgstr "Браузер \"%s\" не найден."
+
+#: lclstrconsts.hhshelperrorwhileexecuting
+msgid "Error while executing \"%s\":%s%s"
+msgstr "Ошибка при исполнении \"%s\":%s%s"
+
+#: lclstrconsts.hhshelpnohtmlbrowserfound
+msgid "Unable to find a HTML browser."
+msgstr "Невозможно найти браузер HTML."
+
+#: lclstrconsts.hhshelpnohtmlbrowserfoundpleasedefineone
+msgid "No HTML Browser found.%sPlease define one in Tools -> Options -> Help -> Help Options"
+msgstr "Браузер HTML не найден.%sЗадайте его в меню Сервис -> Параметры -> Параметры справки"
+
+#: lclstrconsts.hhshelpthehelpdatabasewasunabletofindfile
+msgid "The help database \"%s\" was unable to find file \"%s\"."
+msgstr "База данных справки \"%s\" не смогла найти файл \"%s\"."
+
+#: lclstrconsts.hhshelpthemacrosinbrowserparamswillbereplacedbytheurl
+msgid "The macro %s in BrowserParams will be replaced by the URL."
+msgstr "Макрос %s в BrowserParams будет заменён на URL."
+
+#: lclstrconsts.ifsalt
+msgid "Alt"
+msgstr "Alt"
+
+#: lclstrconsts.ifsctrl
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: lclstrconsts.ifsvk_cmd
+msgid "Cmd"
+msgstr "Cmd"
+
+#: lclstrconsts.ifsvk_help
+msgctxt "lclstrconsts.ifsvk_help"
+msgid "Help"
+msgstr "Справка"
+
+#: lclstrconsts.ifsvk_meta
+msgid "Meta"
+msgstr "Meta"
+
+#: lclstrconsts.ifsvk_shift
+msgid "Shift"
+msgstr "Shift"
+
+#: lclstrconsts.ifsvk_super
+msgid "Super"
+msgstr "Super"
+
+#: lclstrconsts.ifsvk_unknown
+msgid "Unknown"
+msgstr "Неизвестная"
+
+#: lclstrconsts.lislclresourcesnotfound
+msgctxt "lclstrconsts.lislclresourcesnotfound"
+msgid "Resource %s not found"
+msgstr "Ресурс %s не найден"
+
+#: lclstrconsts.rs3ddkshadowcolorcaption
+msgid "3D Dark Shadow"
+msgstr "Затенённая часть объекта 3D"
+
+#: lclstrconsts.rs3dlightcolorcaption
+msgid "3D Light"
+msgstr "Освещённая часть объекта 3D"
+
+#: lclstrconsts.rsacontrolcannothaveitselfasparent
+msgid "A control can't have itself as a parent"
+msgstr "Элемент управления не может быть родителем сам себе"
+
+#: lclstrconsts.rsactivebordercolorcaption
+msgid "Active Border"
+msgstr "Граница активного окна"
+
+#: lclstrconsts.rsactivecaptioncolorcaption
+msgid "Active Caption"
+msgstr "Заголовок активного окна"
+
+#: lclstrconsts.rsallfiles
+msgid "All files (%s)|%s|%s"
+msgstr "Все файлы (%s)|%s|%s"
+
+#: lclstrconsts.rsappworkspacecolorcaption
+msgid "Application Workspace"
+msgstr "Рабочая область приложения"
+
+#: lclstrconsts.rsaquacolorcaption
+msgid "Aqua"
+msgstr "Морской волны"
+
+#: lclstrconsts.rsascannothaveasparent
+msgid "Class %s cannot have %s as parent."
+msgstr "Класс %s не может иметь %s в качестве родителя."
+
+#: lclstrconsts.rsbackgroundcolorcaption
+msgid "Desktop"
+msgstr "Рабочий стол"
+
+#: lclstrconsts.rsbackward
+msgid "Backward"
+msgstr "Назад"
+
+#: lclstrconsts.rsbitmaps
+msgid "Bitmaps"
+msgstr "Точечные рисунки"
+
+#: lclstrconsts.rsblackcolorcaption
+msgid "Black"
+msgstr "Чёрный"
+
+#: lclstrconsts.rsblank
+msgid "Blank"
+msgstr "Пустой"
+
+#: lclstrconsts.rsbluecolorcaption
+msgid "Blue"
+msgstr "Синий"
+
+#: lclstrconsts.rsbtnfacecolorcaption
+msgid "Button Face"
+msgstr "Лицевая часть кнопки"
+
+#: lclstrconsts.rsbtnhighlightcolorcaption
+msgid "Button Highlight"
+msgstr "Освещаемая сторона кнопки"
+
+#: lclstrconsts.rsbtnshadowcolorcaption
+msgid "Button Shadow"
+msgstr "Затенённая сторона кнопки"
+
+#: lclstrconsts.rsbtntextcolorcaption
+msgid "Button Text"
+msgstr "Текст кнопки"
+
+#: lclstrconsts.rscalculator
+msgid "Calculator"
+msgstr "Калькулятор"
+
+#: lclstrconsts.rscancelrecordhint
+msgctxt "lclstrconsts.rscancelrecordhint"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: lclstrconsts.rscannotfocus
+msgid "Can not focus"
+msgstr "Не могу принять фокус"
+
+#: lclstrconsts.rscanvasdoesnotallowdrawing
+msgid "Canvas does not allow drawing"
+msgstr "Канва не поддерживает рисования"
+
+#: lclstrconsts.rscaptiontextcolorcaption
+msgid "Caption Text"
+msgstr "Текст заголовка"
+
+#: lclstrconsts.rscasesensitive
+msgid "Case sensitive"
+msgstr "С учётом регистра"
+
+#
