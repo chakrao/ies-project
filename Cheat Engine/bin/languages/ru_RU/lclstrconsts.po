@@ -178,4 +178,188 @@ msgstr "Текст заголовка"
 msgid "Case sensitive"
 msgstr "С учётом регистра"
 
-#
+#: lclstrconsts.rscontrolclasscantcontainchildclass
+msgid "Control of class '%s' can't have control of class '%s' as a child"
+msgstr "Элемент управления класса '%s' не может иметь дочерний элемент управления класса '%s'"
+
+#: lclstrconsts.rscontrolhasnoparentformorframe
+msgid "Control '%s' has no parent form or frame"
+msgstr "Элемент управления '%s' не имеет родительской формы или фрейма"
+
+#: lclstrconsts.rscontrolhasnoparentwindow
+msgid "Control '%s' has no parent window"
+msgstr "Элемент управления '%s' не имеет родительского окна"
+
+#: lclstrconsts.rscontrolisnotaparent
+msgid "'%s' is not a parent of '%s'"
+msgstr "'%s' не является родителем '%s'"
+
+#: lclstrconsts.rscreamcolorcaption
+msgid "Cream"
+msgstr "Кремовый"
+
+#: lclstrconsts.rscursor
+msgid "Cursor"
+msgstr "Курсор"
+
+#: lclstrconsts.rscustomcolorcaption
+msgid "Custom ..."
+msgstr "Пользовательский ..."
+
+#: lclstrconsts.rsdefaultcolorcaption
+msgid "Default"
+msgstr "По умолчанию"
+
+#: lclstrconsts.rsdefaultfileinfovalue
+msgid "permissions user group size date time"
+msgstr "права пользователь группа размер дата время"
+
+#: lclstrconsts.rsdeleterecord
+msgid "Delete record?"
+msgstr "Удалить запись?"
+
+#: lclstrconsts.rsdeleterecordhint
+msgctxt "lclstrconsts.rsdeleterecordhint"
+msgid "Delete"
+msgstr "Удалить"
+
+#: lclstrconsts.rsdirection
+msgid "Direction"
+msgstr "Направление"
+
+#: lclstrconsts.rsdirectory
+msgid "&Directory"
+msgstr "&Каталог"
+
+#: lclstrconsts.rsdocopy
+msgid "Copy"
+msgstr "Копировать"
+
+#: lclstrconsts.rsdopaste
+msgid "Paste"
+msgstr "Вставить"
+
+#: lclstrconsts.rsduplicateiconformat
+msgid "Duplicate icon format."
+msgstr "Формат значков дублируется."
+
+#: lclstrconsts.rseditrecordhint
+msgid "Edit"
+msgstr "Редактировать"
+
+#: lclstrconsts.rsentirescope
+msgid "Search entire file"
+msgstr "Во всём файле"
+
+#: lclstrconsts.rserror
+msgctxt "lclstrconsts.rserror"
+msgid "Error"
+msgstr "Ошибка"
+
+#: lclstrconsts.rserrorcreatingdevicecontext
+msgid "Error creating device context for %s.%s"
+msgstr "Ошибка создания контекста устройства для %s.%s"
+
+#: lclstrconsts.rserroroccurredinataddressframe
+msgid "Error occurred in %s at %sAddress %s%s Frame %s"
+msgstr "Произошла ошибка в %s по %s адресу %s%s фрейм %s"
+
+#: lclstrconsts.rserrorwhilesavingbitmap
+msgid "Error while saving bitmap."
+msgstr "Ошибка при сохранении точечного рисунка (bitmap)."
+
+#: lclstrconsts.rsexception
+msgid "Exception"
+msgstr "Исключение"
+
+#: lclstrconsts.rsfddirectorymustexist
+msgid "Directory must exist"
+msgstr "Каталог должен существовать"
+
+#: lclstrconsts.rsfddirectorynotexist
+msgid "The directory \"%s\" does not exist."
+msgstr "Каталог \"%s\" не существует."
+
+#: lclstrconsts.rsfdfilealreadyexists
+msgid "The file \"%s\" already exists. Overwrite ?"
+msgstr "Файл \"%s\" уже существует. Перезаписать?"
+
+#: lclstrconsts.rsfdfilemustexist
+msgid "File must exist"
+msgstr "Файл должен существовать"
+
+#: lclstrconsts.rsfdfilenotexist
+msgid "The file \"%s\" does not exist."
+msgstr "Файл \"%s\" не существует"
+
+#: lclstrconsts.rsfdfilereadonly
+msgid "The file \"%s\" is not writable."
+msgstr "Файл \"%s\" не доступен для записи."
+
+#: lclstrconsts.rsfdfilereadonlytitle
+msgid "File is not writable"
+msgstr "Файл не доступен для записи"
+
+#: lclstrconsts.rsfdfilesaveas
+msgid "Save file as"
+msgstr "Сохранить файл как"
+
+#: lclstrconsts.rsfdopenfile
+msgid "Open existing file"
+msgstr "Открыть существующий файл"
+
+#: lclstrconsts.rsfdoverwritefile
+msgid "Overwrite file ?"
+msgstr "Перезаписать файл?"
+
+#: lclstrconsts.rsfdpathmustexist
+msgid "Path must exist"
+msgstr "Путь должен существовать"
+
+#: lclstrconsts.rsfdpathnoexist
+msgid "The path \"%s\" does not exist."
+msgstr "Путь \"%s\" не существует."
+
+#: lclstrconsts.rsfdselectdirectory
+msgid "Select Directory"
+msgstr "Выберите каталог"
+
+#: lclstrconsts.rsfileinfofilenotfound
+msgid "(file not found: \"%s\")"
+msgstr "(файл не найден: \"%s\")"
+
+#: lclstrconsts.rsfileinformation
+msgid "File information"
+msgstr "Сведения о файле"
+
+#: lclstrconsts.rsfilter
+msgctxt "lclstrconsts.rsfilter"
+msgid "(filter)"
+msgstr "(фильтр)"
+
+#: lclstrconsts.rsfind
+msgid "Find"
+msgstr "Найти"
+
+#: lclstrconsts.rsfindmore
+msgid "Find more"
+msgstr "Найти далее"
+
+#: lclstrconsts.rsfirstrecordhint
+msgid "First"
+msgstr "Первая"
+
+#: lclstrconsts.rsfixedcolstoobig
+msgid "FixedCols can't be > ColCount"
+msgstr "Значение FixedCols не может превышать ColCount"
+
+#: lclstrconsts.rsfixedrowstoobig
+msgid "FixedRows can't be > RowCount"
+msgstr "Значение FixedRows не может превышать RowCount"
+
+#: lclstrconsts.rsformcolorcaption
+msgid "Form"
+msgstr "Форма"
+
+#: lclstrconsts.rsformresourcesnotfoundforresourcelessformscreatenew
+msgid "Form resource %s not found. For resourceless forms CreateNew constructor must be used. See the global variable RequireDe
