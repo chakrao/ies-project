@@ -475,4 +475,132 @@ msgstr "--lcl-no-transient    Не устанавливать временный
 
 #: lclstrconsts.rsgtkoptionnoxshm
 msgid "--no-xshm             Disable use of the X Shared Memory Extension."
-msgstr "--
+msgstr "--no-xshm             Запрет использования расширений X по разделяемой памяти."
+
+#: lclstrconsts.rsgtkoptionsync
+msgid "--sync                Call XSynchronize (display, True) after the Xserver connection has been established. This makes debugging X protocol errors easier, because X request buffering will be disabled and X errors will be received immediately after the protocol request that generated the error has been processed by the X server."
+msgstr "--sync                Вызвать XSynchronize (display, True) после установления соединения с сервером X. Это облегчает отладку ошибок протокола X, так как запросы буферизации X будут отключены, и ошибки X будут получаться сразу после обработки сервером X запроса протокола, который вызвал ошибку."
+
+#: lclstrconsts.rshelp
+msgctxt "lclstrconsts.rshelp"
+msgid "Help"
+msgstr "Справка"
+
+#: lclstrconsts.rshelpalreadyregistered
+msgid "%s: Already registered"
+msgstr "%s: уже зарегистрирован"
+
+#: lclstrconsts.rshelpcontextnotfound
+msgid "A help database was found for this topic, but this topic was not found"
+msgstr "База данных справки была найдена для данной темы, но не содержит её"
+
+#: lclstrconsts.rshelpdatabasenotfound
+msgid "There is no help database installed for this topic"
+msgstr "База данных справки для данной темы не установлена"
+
+#: lclstrconsts.rshelperror
+msgid "Help Error"
+msgstr "Ошибка справки"
+
+#: lclstrconsts.rshelphelpcontextnotfound
+msgid "Help context %s not found."
+msgstr "Контекст справки %s не найден."
+
+#: lclstrconsts.rshelphelpcontextnotfoundindatabase
+msgid "Help context %s not found in Database \"%s\"."
+msgstr "Контекст справки %s не найден в базе данных \"%s\"."
+
+#: lclstrconsts.rshelphelpdatabasedidnotfoundaviewerforahelppageoftype
+msgid "Help Database \"%s\" did not find a viewer for a help page of type %s"
+msgstr "База данных справки \"%s\" не нашла программу просмотра для страницы справки типа %s"
+
+#: lclstrconsts.rshelphelpdatabasenotfound
+msgid "Help Database \"%s\" not found"
+msgstr "База данных справки \"%s\" не найдена"
+
+#: lclstrconsts.rshelphelpfordirectivenotfound
+msgid "Help for directive \"%s\" not found."
+msgstr "Справка для директивы \"%s\" не найдена."
+
+#: lclstrconsts.rshelphelpfordirectivenotfoundindatabase
+msgid "Help for directive \"%s\" not found in Database \"%s\"."
+msgstr "Справка для директивы \"%s\" в базе данных \"%s\" не найдена."
+
+#: lclstrconsts.rshelphelpkeywordnotfound
+msgid "Help keyword \"%s\" not found."
+msgstr "Ключевое слово справки \"%s\" не найдено."
+
+#: lclstrconsts.rshelphelpkeywordnotfoundindatabase
+msgid "Help keyword \"%s\" not found in Database \"%s\"."
+msgstr "Ключевое слово справки \"%s\" не найдено в базе данных \"%s\"."
+
+#: lclstrconsts.rshelphelpnodehasnohelpdatabase
+msgid "Help node \"%s\" has no Help Database"
+msgstr "Элемент справки \"%s\" не имеет соответствующей базы данных"
+
+#: lclstrconsts.rshelpnohelpfoundforsource
+msgid "No help found for line %d, column %d of %s."
+msgstr "Не найдено справки для строки %d, столбца %d из %s."
+
+#: lclstrconsts.rshelpnohelpnodesavailable
+msgid "No help entries available for this topic"
+msgstr "Доступные элементы справки для данной темы отсутствуют"
+
+#: lclstrconsts.rshelpnotfound
+msgid "No help found for this topic"
+msgstr "Справка для данной темы не найдена"
+
+#: lclstrconsts.rshelpnotregistered
+msgid "%s: Not registered"
+msgstr "%s: Не зарегистрирован"
+
+#: lclstrconsts.rshelpselectorerror
+msgid "Help Selector Error"
+msgstr "Ошибка переключателя справки"
+
+#: lclstrconsts.rshelpthereisnoviewerforhelptype
+msgid "There is no viewer for help type \"%s\""
+msgstr "Отсутствует программа просмотра для типа справки \"%s\""
+
+#: lclstrconsts.rshelpviewererror
+msgid "Help Viewer Error"
+msgstr "Ошибка программы просмотра справки"
+
+#: lclstrconsts.rshelpviewernotfound
+msgid "No viewer was found for this type of help content"
+msgstr "Программа просмотра справки для данного типа её содержимого не найдена"
+
+#: lclstrconsts.rshighlightcolorcaption
+msgid "Highlight"
+msgstr "Выделенное"
+
+#: lclstrconsts.rshighlighttextcolorcaption
+msgid "Highlight Text"
+msgstr "Текст выделенного"
+
+#: lclstrconsts.rshotlightcolorcaption
+msgid "Hot Light"
+msgstr "Выделение"
+
+#: lclstrconsts.rsicns
+msgid "Mac OS X Icon"
+msgstr "Значок Mac OS X"
+
+#: lclstrconsts.rsicon
+msgid "Icon"
+msgstr "Значок"
+
+#: lclstrconsts.rsiconimageempty
+msgid "Icon image cannot be empty"
+msgstr "Изображение значка не может быть пустым"
+
+#: lclstrconsts.rsiconimageformat
+msgid "Icon image must have the same format"
+msgstr "Изображение значка должно иметь тот же формат"
+
+#: lclstrconsts.rsiconimageformatchange
+msgid "Cannot change format of icon image"
+msgstr "Невозможно изменить формат изображения значка"
+
+#: lclstrconsts.rsiconimagesize
+msgid "Icon i
