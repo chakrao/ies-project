@@ -603,4 +603,226 @@ msgid "Cannot change format of icon image"
 msgstr "Невозможно изменить формат изображения значка"
 
 #: lclstrconsts.rsiconimagesize
-msgid "Icon i
+msgid "Icon image must have the same size"
+msgstr "Изображение значка должно иметь тот же размер"
+
+#: lclstrconsts.rsiconimagesizechange
+msgid "Cannot change size of icon image"
+msgstr "Невозможно изменить размер изображения значка"
+
+#: lclstrconsts.rsiconnocurrent
+msgid "Icon has no current image"
+msgstr "Значок не имеет текущего изображения"
+
+#: lclstrconsts.rsinactivebordercolorcaption
+msgid "Inactive Border"
+msgstr "Граница неактивного окна"
+
+#: lclstrconsts.rsinactivecaptioncolorcaption
+msgctxt "lclstrconsts.rsinactivecaptioncolorcaption"
+msgid "Inactive Caption"
+msgstr "Заголовок неактивного окна"
+
+#: lclstrconsts.rsinactivecaptiontext
+msgctxt "lclstrconsts.rsinactivecaptiontext"
+msgid "Inactive Caption"
+msgstr "Заголовок неактивного окна"
+
+#: lclstrconsts.rsindexoutofbounds
+msgid "%s Index %d out of bounds 0 .. %d"
+msgstr "%s Индекс %d вне диапазона 0 .. %d"
+
+#: lclstrconsts.rsindexoutofrange
+msgid "Index Out of range Cell[Col=%d Row=%d]"
+msgstr "Индекс вне диапазона Cell[Col=%d Row=%d]"
+
+#: lclstrconsts.rsinfobkcolorcaption
+msgid "Info Background"
+msgstr "Фон сообщения"
+
+#: lclstrconsts.rsinfotextcolorcaption
+msgid "Info Text"
+msgstr "Текст сообщения"
+
+#: lclstrconsts.rsinsertrecordhint
+msgctxt "lclstrconsts.rsinsertrecordhint"
+msgid "Insert"
+msgstr "Вставить"
+
+#: lclstrconsts.rsinvaliddate
+msgid "Invalid Date : %s"
+msgstr "Неверная дата: %s"
+
+#: lclstrconsts.rsinvaliddaterangehint
+msgid "Invalid Date: %s. Must be between %s and %s"
+msgstr "Неверная дата: %s. Должна быть между %s and %s"
+
+#: lclstrconsts.rsinvalidformobjectstream
+msgid "invalid Form object stream"
+msgstr "неправильный поток объекта формы"
+
+#: lclstrconsts.rsinvalidpropertyvalue
+msgid "Invalid property value"
+msgstr "Неправильное значение свойства"
+
+#: lclstrconsts.rsinvalidstreamformat
+msgid "Invalid stream format"
+msgstr "Неправильный формат потока"
+
+#: lclstrconsts.rsisalreadyassociatedwith
+msgid "%s is already associated with %s"
+msgstr "%s уже сопоставлено с %s"
+
+#: lclstrconsts.rsjpeg
+msgid "Joint Picture Expert Group"
+msgstr "Joint Picture Expert Group"
+
+#: lclstrconsts.rslastrecordhint
+msgid "Last"
+msgstr "Последняя"
+
+#: lclstrconsts.rslimecolorcaption
+msgid "Lime"
+msgstr "Зелёный"
+
+#: lclstrconsts.rslistindexexceedsbounds
+msgid "List index exceeds bounds (%d)"
+msgstr "Индекс списка вне диапазона (%d)"
+
+#: lclstrconsts.rsmarooncolorcaption
+msgid "Maroon"
+msgstr "Малиновый"
+
+#: lclstrconsts.rsmbabort
+msgid "Abort"
+msgstr "Прервать"
+
+#: lclstrconsts.rsmball
+msgid "&All"
+msgstr "&Все"
+
+#: lclstrconsts.rsmbcancel
+msgctxt "lclstrconsts.rsmbcancel"
+msgid "Cancel"
+msgstr "Отмена"
+
+#: lclstrconsts.rsmbclose
+msgid "&Close"
+msgstr "&Закрыть"
+
+#: lclstrconsts.rsmbhelp
+msgid "&Help"
+msgstr "&Справка"
+
+#: lclstrconsts.rsmbignore
+msgid "&Ignore"
+msgstr "&Пропустить"
+
+#: lclstrconsts.rsmbno
+msgid "&No"
+msgstr "&Нет"
+
+#: lclstrconsts.rsmbnotoall
+msgid "No to all"
+msgstr "Нет для всех"
+
+#: lclstrconsts.rsmbok
+msgid "&OK"
+msgstr "&Подтвердить"
+
+#: lclstrconsts.rsmbopen
+msgid "&Open"
+msgstr "&Открыть"
+
+#: lclstrconsts.rsmbretry
+msgid "&Retry"
+msgstr "&Повтор"
+
+#: lclstrconsts.rsmbsave
+msgid "&Save"
+msgstr "&Сохранить"
+
+#: lclstrconsts.rsmbunlock
+msgid "&Unlock"
+msgstr "&Разблокировать"
+
+#: lclstrconsts.rsmbyes
+msgid "&Yes"
+msgstr "&Да"
+
+#: lclstrconsts.rsmbyestoall
+msgid "Yes to &All"
+msgstr "Да для &всех"
+
+#: lclstrconsts.rsmedgraycolorcaption
+msgid "Medium Gray"
+msgstr "Серый"
+
+#: lclstrconsts.rsmenubarcolorcaption
+msgid "Menu Bar"
+msgstr "Панель меню"
+
+#: lclstrconsts.rsmenucolorcaption
+msgctxt "lclstrconsts.rsmenucolorcaption"
+msgid "Menu"
+msgstr "Меню"
+
+#: lclstrconsts.rsmenuhighlightcolorcaption
+msgid "Menu Highlight"
+msgstr "Выделенный пункт меню"
+
+#: lclstrconsts.rsmenutextcolorcaption
+msgid "Menu Text"
+msgstr "Текст меню"
+
+#: lclstrconsts.rsmodified
+msgid "  modified "
+msgstr "  изменён "
+
+#: lclstrconsts.rsmoneygreencolorcaption
+msgid "Money Green"
+msgstr "Светло-зелёный"
+
+#: lclstrconsts.rsmtauthentication
+msgid "Authentication"
+msgstr "Проверка подлинности"
+
+#: lclstrconsts.rsmtconfirmation
+msgid "Confirmation"
+msgstr "Подтверждение"
+
+#: lclstrconsts.rsmtcustom
+msgid "Custom"
+msgstr "Пользовательский"
+
+#: lclstrconsts.rsmterror
+msgctxt "lclstrconsts.rsmterror"
+msgid "Error"
+msgstr "Ошибка"
+
+#: lclstrconsts.rsmtinformation
+msgid "Information"
+msgstr "Сведения"
+
+#: lclstrconsts.rsmtwarning
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: lclstrconsts.rsnavycolorcaption
+msgid "Navy"
+msgstr "Тёмно-синий"
+
+#: lclstrconsts.rsnextrecordhint
+msgctxt "lclstrconsts.rsnextrecordhint"
+msgid "Next"
+msgstr "Следующая"
+
+#: lclstrconsts.rsnonecolorcaption
+msgid "None"
+msgstr "Нет"
+
+#: lclstrconsts.rsnotavalidgridfile
+msgid "Not a valid grid file"
+msgstr "Неверный файл Grid"
+
+#: lcl
