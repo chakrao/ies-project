@@ -1004,4 +1004,166 @@ msgid "Resource %s not found"
 msgstr "Ресурс %s не найден"
 
 #: lclstrconsts.rsscrollbarcolorcaption
-msgid "Scr
+msgid "ScrollBar"
+msgstr "Полоса прокрутки"
+
+#: lclstrconsts.rsscrollbaroutofrange
+msgid "ScrollBar property out of range"
+msgstr "свойство ScrollBar вне диапазона"
+
+#: lclstrconsts.rsselectcolortitle
+msgid "Select color"
+msgstr "Выбрать цвет"
+
+#: lclstrconsts.rsselectfonttitle
+msgid "Select a font"
+msgstr "Выбрать шрифт"
+
+#: lclstrconsts.rssilvercolorcaption
+msgid "Silver"
+msgstr "Серебристый"
+
+#: lclstrconsts.rssize
+msgid "  size "
+msgstr "  размер "
+
+#: lclstrconsts.rsskybluecolorcaption
+msgid "Sky Blue"
+msgstr "Голубой"
+
+#: lclstrconsts.rstcustomtabcontrolaccessibilitydescription
+msgid "A control with tabs"
+msgstr "Элемент управления со вкладками"
+
+#: lclstrconsts.rstealcolorcaption
+msgid "Teal"
+msgstr "Бирюзовый"
+
+#: lclstrconsts.rstext
+msgid "Text"
+msgstr "Текст"
+
+#: lclstrconsts.rsthebuiltinurlisreadonlychangethebaseurlinstead
+msgid "The built-in URL is read only. Change the BaseURL instead."
+msgstr "Встроенный URL доступен только для чтения. Вместо него следует изменять BaseURL."
+
+#: lclstrconsts.rstiff
+msgid "Tagged Image File Format"
+msgstr "Формат Tagged Image File"
+
+#: lclstrconsts.rstpanelaccessibilitydescription
+msgctxt "lclstrconsts.rstpanelaccessibilitydescription"
+msgid "Panel"
+msgstr "Панель"
+
+#: lclstrconsts.rstsplitteraccessibilitydescription
+msgctxt "lclstrconsts.rstsplitteraccessibilitydescription"
+msgid "A grip to control how much size to give two parts of an area"
+msgstr "Захват для управления соотношением размеров двух областей"
+
+#: lclstrconsts.rsttreeviewaccessibilitydescription
+msgctxt "lclstrconsts.rsttreeviewaccessibilitydescription"
+msgid "A tree of items"
+msgstr "Дерево элементов"
+
+#: lclstrconsts.rsunabletoloaddefaultfont
+msgid "Unable to load default font"
+msgstr "Невозможно загрузить шрифт по умолчанию"
+
+#: lclstrconsts.rsunknownerrorpleasereportthisbug
+msgid "Unknown Error, please report this bug"
+msgstr "Неизвестная ошибка, сообщите о ней разработчикам"
+
+#: lclstrconsts.rsunknownpictureextension
+msgid "Unknown picture extension"
+msgstr "Неизвестное расширение файла изображения"
+
+#: lclstrconsts.rsunknownpictureformat
+msgid "Unknown picture format"
+msgstr "Неизвестный формат изображения"
+
+#: lclstrconsts.rsunsupportedbitmapformat
+msgid "Unsupported bitmap format."
+msgstr "Неподдерживаемый тип точечного рисунка."
+
+#: lclstrconsts.rsunsupportedclipboardformat
+msgid "Unsupported clipboard format: %s"
+msgstr "Неподдерживаемый формат буфера обмена: %s"
+
+#: lclstrconsts.rswarningunreleaseddcsdump
+msgid " WARNING: There are %d unreleased DCs, a detailed dump follows:"
+msgstr " ВНИМАНИЕ: Найдено %d неосвобождённых контекстов устройств, список см. ниже:"
+
+#: lclstrconsts.rswarningunreleasedgdiobjectsdump
+msgid " WARNING: There are %d unreleased GDIObjects, a detailed dump follows:"
+msgstr " ВНИМАНИЕ: Найдено %d неосвобождённых GDIObject, список см. ниже:"
+
+#: lclstrconsts.rswarningunreleasedmessagesinqueue
+msgid " WARNING: There are %d messages left in the queue! I'll free them"
+msgstr " ВНИМАНИЕ: В очереди осталось %d сообщений! Они будут удалены"
+
+#: lclstrconsts.rswarningunreleasedtimerinfos
+msgid " WARNING: There are %d TimerInfo structures left, I'll free them"
+msgstr " ВНИМАНИЕ: Осталось %d структур TimerInfo, они будут освобождены"
+
+#: lclstrconsts.rswarningunremovedpaintmessages
+msgid " WARNING: There are %s unremoved LM_PAINT/LM_GtkPAINT message links left."
+msgstr " ВНИМАНИЕ: Найдено %s неудалённых ссылок на сообщение LM_PAINT/LM_GtkPAINT."
+
+#: lclstrconsts.rswhitecolorcaption
+msgid "White"
+msgstr "Белый"
+
+#: lclstrconsts.rswholewordsonly
+msgid "Whole words only"
+msgstr "Только целые слова"
+
+#: lclstrconsts.rswin32error
+msgid "Error:"
+msgstr "Ошибка:"
+
+#: lclstrconsts.rswin32warning
+msgid "Warning:"
+msgstr "Предупреждение:"
+
+#: lclstrconsts.rswindowcolorcaption
+msgid "Window"
+msgstr "Окно"
+
+#: lclstrconsts.rswindowframecolorcaption
+msgid "Window Frame"
+msgstr "Граница окна"
+
+#: lclstrconsts.rswindowtextcolorcaption
+msgid "Window Text"
+msgstr "Текст окна"
+
+#: lclstrconsts.rsyellowcolorcaption
+msgid "Yellow"
+msgstr "Жёлтый"
+
+#: lclstrconsts.scannotfocus
+msgid "Cannot focus a disabled or invisible window"
+msgstr "Невозможно перевести фокус в отключённое или невидимое окно"
+
+#: lclstrconsts.scannotsetdesigntimeppi
+msgid "Cannot set design time PPI."
+msgstr "Невозможно установить PPI времени разработки."
+
+#: lclstrconsts.sduplicatemenus
+msgid "Duplicate menus"
+msgstr "Дублирующиеся меню"
+
+#: lclstrconsts.sinvalidactioncreation
+msgid "Invalid action creation"
+msgstr "Неверное создание действия"
+
+#: lclstrconsts.sinvalidactionenumeration
+msgid "Invalid action enumeration"
+msgstr "Неверное перечисление действий"
+
+#: lclstrconsts.sinvalidactionregistration
+msgid "Invalid action registration"
+msgstr "Неверная регистрация действия"
+
+#: lclstrconsts.sinvalidactionunre
