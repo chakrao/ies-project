@@ -918,4 +918,90 @@ msgstr "-sync (только в X11), устанавливает синхронн
 msgid "-widgetcount, prints debug message at the end about number of widgets left undestroyed and maximum number of widgets existed at the same time."
 msgstr "-widgetcount, выводит отладочное сообщение в конце о количестве неуничтоженных, а также максимальном количестве существовавших в один момент времени виджетов."
 
-#: lclstrconsts.rsqtoptionx11bgcolo
+#: lclstrconsts.rsqtoptionx11bgcolor
+msgid "-bg or -background color, sets the default background color and an application palette (light and dark shades are calculated)."
+msgstr "-bg или -background color, устанавливает цвет фона по умолчанию и палитру приложения (вычисляются светлые и тёмные оттенки)."
+
+#: lclstrconsts.rsqtoptionx11btncolor
+msgid "-btn or -button color, sets the default button color."
+msgstr "-btn или -button color, устанавливает цвет кнопки по умолчанию."
+
+#: lclstrconsts.rsqtoptionx11cmap
+msgid "-cmap, causes the application to install a private color map on an 8-bit display."
+msgstr "-cmap, вызывает установку собственной цветовой карты приложением на 8-разрядном дисплее."
+
+#: lclstrconsts.rsqtoptionx11display
+msgid "-display display, sets the X display (default is $DISPLAY)."
+msgstr "-display display, устанавливает дисплей X (по умолчанию - $DISPLAY)."
+
+#: lclstrconsts.rsqtoptionx11fgcolor
+msgid "-fg or -foreground color, sets the default foreground color."
+msgstr "-fg или -foreground color, устанавливает цвет текста по умолчанию."
+
+#: lclstrconsts.rsqtoptionx11font
+msgid "-fn or -font font, defines the application font. The font should be specified using an X logical font description."
+msgstr "-fn или -font font, задаёт шрифт приложения. Он должен быть указан с использованием логического описания шрифтов X."
+
+#: lclstrconsts.rsqtoptionx11geometry
+msgid "-geometry geometry, sets the client geometry of the first window that is shown."
+msgstr "-geometry geometry, устанавливает клиентскую геометрию первого показанного окна."
+
+#: lclstrconsts.rsqtoptionx11im
+msgid "-im, sets the input method server (equivalent to setting the XMODIFIERS environment variable)."
+msgstr "-im, устанавливает сервер методов ввода (эквивалентно установке значения переменной окружения XMODIFIERS)."
+
+#: lclstrconsts.rsqtoptionx11inputstyle
+msgid "-inputstyle, defines how the input is inserted into the given widget, e.g. onTheSpot makes the input appear directly in the widget, while overTheSpot makes the input appear in a box floating over the widget and is not inserted until the editing is done."
+msgstr "-inputstyle, задаёт, как вводимая информация вносится в данный виджет. Например, onTheSpot приводит к прямому появлению вводимой информации в виджете, тогда как overTheSpot вызывает появление информации в поле, находящемся над виджетом, и не вставляется до окончания редактирования."
+
+#: lclstrconsts.rsqtoptionx11name
+msgid "-name name, sets the application name."
+msgstr "-name name, устанавливает имя приложения."
+
+#: lclstrconsts.rsqtoptionx11ncols
+msgid "-ncols count, limits the number of colors allocated in the color cube on an 8-bit display, if the application is using the QApplication::ManyColor color specification. If count is 216 then a 6x6x6 color cube is used (i.e. 6 levels of red, 6 of green, and 6 of blue); for other values, a cube approximately proportional to a 2x3x1 cube is used."
+msgstr "-ncols count, ограничивает число цветов в цветовом кубе 8-разрядного дисплея, если приложение использует перечень цветов QApplication::ManyColor. Если количество равно 216, используется цветовой куб 6x6x6 (то есть, 6 уровней красного, 6 зелёного и 6 синего); для других значений используется куб, примерно пропорциональный кубу 2x3x1."
+
+#: lclstrconsts.rsqtoptionx11title
+msgid "-title title, sets the application title."
+msgstr "-title title, устанавливает заголовок приложения."
+
+#: lclstrconsts.rsqtoptionx11visual
+msgid "-visual TrueColor, forces the application to use a TrueColor visual on an 8-bit display."
+msgstr "-visual TrueColor, вынуждает приложение использовать TrueColor на 8-разрядном дисплее."
+
+#: lclstrconsts.rsrasterimageendupdate
+msgid "Endupdate while no update in progress"
+msgstr "Команда Endupdate, хотя обновления не производилось"
+
+#: lclstrconsts.rsrasterimagesaveinupdate
+msgid "Cannot save image while update in progress"
+msgstr "Невозможно сохранить изображение во время обновления"
+
+#: lclstrconsts.rsrasterimageupdateall
+msgid "Cannot begin update all when canvas only update in progress"
+msgstr "Невозможно начать обновление всех во время обновления канвы"
+
+#: lclstrconsts.rsredcolorcaption
+msgid "Red"
+msgstr "Красный"
+
+#: lclstrconsts.rsrefreshrecordshint
+msgid "Refresh"
+msgstr "Обновить"
+
+#: lclstrconsts.rsreplace
+msgid "Replace"
+msgstr "Заменить"
+
+#: lclstrconsts.rsreplaceall
+msgid "Replace all"
+msgstr "Заменить всё"
+
+#: lclstrconsts.rsresourcenotfound
+msgctxt "lclstrconsts.rsresourcenotfound"
+msgid "Resource %s not found"
+msgstr "Ресурс %s не найден"
+
+#: lclstrconsts.rsscrollbarcolorcaption
+msgid "Scr
