@@ -199,4 +199,147 @@ msgstr "Патроны"
 
 #: tform5.label3.caption
 msgctxt "TFORM5.LABEL3.CAPTION"
-msgid "Heal
+msgid "Health:"
+msgstr "Здоровье:"
+
+#: tform5.label5.caption
+msgid "(float)"
+msgstr "(float)"
+
+#: tform5.label6.caption
+msgid "(double)"
+msgstr "(double)"
+
+#: tform5.speedbutton1.caption
+msgctxt "TFORM5.SPEEDBUTTON1.CAPTION"
+msgid "Skip"
+msgstr "Пропустить"
+
+#: tform6.button1.caption
+msgctxt "tform6.button1.caption"
+msgid "Change value"
+msgstr "Изменить значение"
+
+#: tform6.button2.caption
+msgctxt "TFORM6.BUTTON2.CAPTION"
+msgid "Next"
+msgstr "Дальше"
+
+#: tform6.caption
+msgid "Step 5"
+msgstr "Шаг 5"
+
+#: tform6.speedbutton1.caption
+msgctxt "TFORM6.SPEEDBUTTON1.CAPTION"
+msgid "Skip"
+msgstr "Пропустить"
+
+#: tform7.button1.caption
+msgctxt "TFORM7.BUTTON1.CAPTION"
+msgid "Change value"
+msgstr "Изменить значение"
+
+#: tform7.button2.caption
+msgctxt "TFORM7.BUTTON2.CAPTION"
+msgid "Next"
+msgstr "Дальше"
+
+#: tform7.button3.caption
+msgctxt "tform7.button3.caption"
+msgid "Change pointer"
+msgstr "Изменить указатель"
+
+#: tform7.caption
+msgid "Step 6"
+msgstr "Шаг 6"
+
+#: tform7.speedbutton1.caption
+msgctxt "TFORM7.SPEEDBUTTON1.CAPTION"
+msgid "Skip"
+msgstr "Пропустить"
+
+#: tform8.button1.caption
+msgctxt "TFORM8.BUTTON1.CAPTION"
+msgid "Hit me"
+msgstr "Удар"
+
+#: tform8.button2.caption
+msgctxt "TFORM8.BUTTON2.CAPTION"
+msgid "Next"
+msgstr "Дальше"
+
+#: tform8.caption
+msgid "Step 7"
+msgstr "Шаг 7"
+
+#: tform8.label1.caption
+msgctxt "TFORM8.LABEL1.CAPTION"
+msgid "Health: 100"
+msgstr "Здоровье: 100"
+
+#: tform8.speedbutton1.caption
+msgctxt "TFORM8.SPEEDBUTTON1.CAPTION"
+msgid "Skip"
+msgstr "Пропустить"
+
+#: tform9.button1.caption
+msgctxt "TFORM9.BUTTON1.CAPTION"
+msgid "Change value"
+msgstr "Изменить значение"
+
+#: tform9.button2.caption
+msgctxt "TFORM9.BUTTON2.CAPTION"
+msgid "Next"
+msgstr "Дальше"
+
+#: tform9.button3.caption
+msgctxt "TFORM9.BUTTON3.CAPTION"
+msgid "Change pointer"
+msgstr "Изменить указатель"
+
+#: tform9.caption
+msgid "Step 8"
+msgstr "Шаг 8"
+
+#: tform9.speedbutton1.caption
+msgctxt "TFORM9.SPEEDBUTTON1.CAPTION"
+msgid "Skip"
+msgstr "Пропустить"
+
+#: tfrmhelp.caption
+msgid "Help"
+msgstr "Помощь"
+
+#: tfrmhelp.image1.hint
+msgid "More information like videos for this step and written tutorials"
+msgstr "Дополнительная информация в виде видео или письменного руководства для этого шага."
+
+#: unit1.rsfirststeptoohardbettergiveupnow
+msgid "First step too hard? Go to forum.cheatengine.org, then click on \"Tutorials\" for helpful guides!"
+msgstr "Первый шаг слишком сложен? Зайдите на forum.cheatengine.org в раздел «Cheat Engine Tutorials», где вы можете найти много полезных руководств!"
+
+#: unit1.rstutorial1
+msgid ""
+"Welcome to the Cheat Engine Tutorial (v3.4)\n"
+"\n"
+"This tutorial will teach you the basics of cheating in video games. It will also show you foundational aspects of using Cheat Engine (or CE for short). Follow the steps below to get started.\n"
+"\n"
+"1: Open Cheat Engine if it currently isn't running.\n"
+"2: Click on the \"Open Process\" icon (it's the top-left icon with the computer on it, below \"File\".).\n"
+"3: With the Process List window now open, look for this tutorial's process in the list. It will look something like \"00001F98-Tutorial-x86_64.exe\" or \"0000047C-Tutorial-i386.exe\". (The first 8 numbers/letters will probably be different.)\n"
+"4: Once you've found the process, click on it to select it, then click the \"Open\" button. (Don't worry about all the other buttons right now. You can learn about them later if you're interested.)\n"
+"\n"
+"Congratulations! If you did everything correctly, the process window should be gone with Cheat Engine now attached to the tutorial (you will see the process name towards the top-center of CE).\n"
+"\n"
+"Click the \"Next\" button below to continue, or fill in the password and click the \"OK\" button to proceed to that step.)\n"
+"\n"
+"If you're having problems, simply head over to forum.cheatengine.org, then click on \"Tutorials\" to view beginner-friendly guides!\n"
+msgstr ""
+"Добро пожаловать в учебное руководство Cheat Engine (v3.4)\n"
+"\n"
+"Это учебное руководство научит вас основам читерства в видеоиграх. Оно также покажет вам основополагающие аспекты использования Cheat Engine. Выполните шаги ниже, чтобы начать обучение.\n"
+"\n"
+"1: Откройте Cheat Engine, если он не запущен в данный момент.\n"
+"2: Нажмите на иконку «Выбор процесса для открытия» (иконка с изображением компьютера в верхнем левом углу, расположенная под «Файл».).\n"
+"3: В окне «Список процессов» найдите и откройте процесс этого обучающего руководства. Он будет выглядеть как «00001F98-Tutorial-x86_64.exe» или «0000047C-Tutorial-i386.exe». (Первые 8 цифр/букв, скорее всего, будут отличаться.)\n"
+"4: Как только вы нашли процесс, нажмите на него, чтобы его вы
