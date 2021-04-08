@@ -1,0 +1,202 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: Tutorial v3.4 RU\n"
+"Language-Team: SER[G]ANT <rzn.dsa@gmail.com>\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru_RU\n"
+"X-Generator: Poedit 2.2\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"MIME-Version: 1.0\n"
+
+#: tform1.btnok.caption
+msgctxt "tform1.btnok.caption"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tform1.button1.caption
+msgctxt "tform1.button1.caption"
+msgid "Next"
+msgstr "Дальше"
+
+#: tform1.caption
+msgid "Cheat Engine Tutorial v3.4"
+msgstr "Учебное руководство v3.4"
+
+#: tform1.edtpassword.hint
+msgid "Use this to go imeadiatly to the step you want to try"
+msgstr "Введите пароль для немедленного перехода к нужному вам шагу"
+
+#: tform1.label1.caption
+msgid "Password"
+msgstr "Пароль"
+
+#: tform10.button3.caption
+msgid "Restart game"
+msgstr "Перезапуск игры"
+
+#: tform10.button4.caption
+msgctxt "tform10.button4.caption"
+msgid "Attack"
+msgstr "Атака"
+
+#: tform10.button5.caption
+msgctxt "TFORM10.BUTTON5.CAPTION"
+msgid "Attack"
+msgstr "Атака"
+
+#: tform10.button6.caption
+msgctxt "tform10.button6.caption"
+msgid "Restart game and autoplay"
+msgstr "Случайная игра"
+
+#: tform10.button7.caption
+msgctxt "TFORM10.BUTTON7.CAPTION"
+msgid "Attack"
+msgstr "Атака"
+
+#: tform10.button8.caption
+msgctxt "TFORM10.BUTTON8.CAPTION"
+msgid "Attack"
+msgstr "Атака"
+
+#: tform10.caption
+msgid "Step 9"
+msgstr "Шаг 9"
+
+#: tform10.label10.caption
+msgctxt "TFORM10.LABEL10.CAPTION"
+msgid "Health: 500"
+msgstr "Здоровье: 500"
+
+#: tform10.label2.caption
+msgctxt "tform10.label2.caption"
+msgid "Health:"
+msgstr "Здоровье:"
+
+#: tform10.label3.caption
+msgid "Player 1: Dave"
+msgstr "Игрок 1: Дейв"
+
+#: tform10.label4.caption
+msgctxt "tform10.label4.caption"
+msgid "Health: 100"
+msgstr "Здоровье: 100"
+
+#: tform10.label5.caption
+msgid "Player 2: Eric"
+msgstr "Игрок 2: Эрик"
+
+#: tform10.label6.caption
+msgctxt "TFORM10.LABEL6.CAPTION"
+msgid "Health: 100"
+msgstr "Здоровье: 100"
+
+#: tform10.label7.caption
+msgid "C. Player 3: HAL"
+msgstr "Враг 1: Хал"
+
+#: tform10.label8.caption
+msgctxt "tform10.label8.caption"
+msgid "Health: 500"
+msgstr "Здоровье: 500"
+
+#: tform10.label9.caption
+msgid "C. Player 4: KITT"
+msgstr "Враг 2: Китт"
+
+#: tform2.button1.caption
+msgctxt "TFORM2.BUTTON1.CAPTION"
+msgid "Next"
+msgstr "Дальше"
+
+#: tform2.button2.caption
+msgctxt "tform2.button2.caption"
+msgid "Hit me"
+msgstr "Удар"
+
+#: tform2.caption
+msgid "Step 2"
+msgstr "Шаг 2"
+
+#: tform2.label2.caption
+msgctxt "tform2.label2.caption"
+msgid "Health:"
+msgstr "Здоровье:"
+
+#: tform2.speedbutton1.caption
+msgctxt "tform2.speedbutton1.caption"
+msgid "Skip"
+msgstr "Пропустить"
+
+#: tform3.button1.caption
+msgctxt "TFORM3.BUTTON1.CAPTION"
+msgid "Next"
+msgstr "Дальше"
+
+#: tform3.button2.caption
+msgctxt "TFORM3.BUTTON2.CAPTION"
+msgid "Hit me"
+msgstr "Удар"
+
+#: tform3.caption
+msgid "Step 3"
+msgstr "Шаг 3"
+
+#: tform3.speedbutton1.caption
+msgctxt "TFORM3.SPEEDBUTTON1.CAPTION"
+msgid "Skip"
+msgstr "Пропустить"
+
+#: tform4.button1.caption
+msgctxt "TFORM4.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "Подтвердить"
+
+#: tform4.caption
+msgid "Tutorial End"
+msgstr "Конец обучения"
+
+#: tform4.label1.caption
+msgid "Well done, you've completed the tutorial of Cheat Engine."
+msgstr "Поздравляю, вы успешно завершили все этапы обучения."
+
+#: tform4.label2.caption
+msgid "Just play around with the tutorial and learn how the other scanmethods work."
+msgstr "Теперь можете пройти их по новой, применяя другие правила поиска."
+
+#: tform4.label3.caption
+msgid "And you can always check out the Cheat Engine Forum for useful information and ask for help"
+msgstr "И вы всегда можете найти полезную информацию или обратиться за помощью на форуме Cheat Engine"
+
+#: tform4.label4.caption
+msgid "Cheat Engine Forum"
+msgstr "Форум Cheat Engine"
+
+#: tform5.button1.caption
+msgid "Fire"
+msgstr "Выстрел"
+
+#: tform5.button2.caption
+msgctxt "TFORM5.BUTTON2.CAPTION"
+msgid "Next"
+msgstr "Дальше"
+
+#: tform5.button3.caption
+msgctxt "TFORM5.BUTTON3.CAPTION"
+msgid "Hit me"
+msgstr "Удар"
+
+#: tform5.caption
+msgid "Step 4"
+msgstr "Шаг 4"
+
+#: tform5.label2.caption
+msgid "Ammo"
+msgstr "Патроны"
+
+#: tform5.label3.caption
+msgctxt "TFORM5.LABEL3.CAPTION"
+msgid "Heal

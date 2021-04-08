@@ -61,3 +61,19 @@ msgstr "Адресс"
 #: patchscan-original
 msgid "Original"
 msgstr "Оригинал"
+
+#: patchscan-patched
+msgid "Patched"
+msgstr "Патч"
+
+#: patchscan-rwo
+msgid "Restore with original"
+msgstr "Восстановить оригиналом"
+
+#: patchscan-rp
+msgid "Reapply patch"
+msgstr "Пропатчить повторно"
+
+#: patchscan-sfp
+msgid "Scan for patches"
+msgstr "Поиск патчей"
