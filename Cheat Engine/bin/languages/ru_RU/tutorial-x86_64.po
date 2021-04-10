@@ -342,4 +342,76 @@ msgstr ""
 "1: Откройте Cheat Engine, если он не запущен в данный момент.\n"
 "2: Нажмите на иконку «Выбор процесса для открытия» (иконка с изображением компьютера в верхнем левом углу, расположенная под «Файл».).\n"
 "3: В окне «Список процессов» найдите и откройте процесс этого обучающего руководства. Он будет выглядеть как «00001F98-Tutorial-x86_64.exe» или «0000047C-Tutorial-i386.exe». (Первые 8 цифр/букв, скорее всего, будут отличаться.)\n"
-"4: Как только вы нашли процесс, нажмите на него, чтобы его вы
+"4: Как только вы нашли процесс, нажмите на него, чтобы его выделить, а затем нажмите на кнопку «Открыть». (Не обращайте сейчас внимания на другие кнопки. Вы можете узнать о них позднее, если вам будет интересно.)\n"
+"\n"
+"Поздравляю! Если вы всё сделали правильно, то окно с процессами, пропадёт, а Cheat Engine присоединиться к процессу обучающего руководства (вы увидите название процесса в верхней центральной части Cheat Engine).\n"
+"\n"
+"Нажмите на кнопку «Дальше» для продолжения или укажите пароль и нажмите «Подтвердить», чтобы приступить к определённому шагу.\n"
+"\n"
+"Если у вас возникли проблемы, просто зайдите на forum.cheatengine.org в раздел «Cheat Engine Tutorials», для просмотра руководств, ориентированных на новичков!\n"
+
+#: unit10.rsdead
+msgid "DEAD"
+msgstr "МЁРТВ"
+
+#: unit10.rsfailureyourteamdied
+msgid "Failure. Your team died"
+msgstr "Неудача. Ваша команда мертва"
+
+#: unit10.rshealth
+msgid "Health: %s"
+msgstr "Здоровье: %s"
+
+#: unit10.rsrestartgameandautoplay
+msgctxt "unit10.rsrestartgameandautoplay"
+msgid "Restart game and autoplay"
+msgstr "Случайная игра"
+
+#: unit10.rsstep9sharedcodepw
+msgid "Step 9: Shared code: (PW=%s)"
+msgstr "Шаг 9: Совместно используемый код: (пароль=%s)"
+
+#: unit10.rsstop
+msgid "Stop"
+msgstr "Стоп"
+
+#: unit10.rsthisplayerisalreadydeadrestartthegame
+msgid "This player is already dead. Restart the game"
+msgstr "Этот игрок уже мёртв. Перезапустите игру"
+
+#: unit10.rstryagain10
+msgid "Can't figure out how to do this? Don't worry. Try asking in the forum at cheatengine.org or perhaps someone already explained it better there. Are you sure you want to quit?"
+msgstr ""
+"Не можете разобраться? Не беспокойтесь, попробуйте спросить об этом на форуме cheatengine.org или, возможно, там уже кто-то это подробно объяснил.\n"
+"Вы уверены, что хотите выйти?"
+
+#: unit10.rstutorialstep9
+msgid ""
+"This step will explain how to deal with code that is used for other object of the same type\n"
+"\n"
+"Often when you've found health of a unit or your own player, you will find that if you remove the code, it affects enemies as well.\n"
+"In these cases you must find out how to distinguish between your and the enemies objects.\n"
+"Sometimes this is as easy as checking the first 4 bytes (Function pointer table) which often point to a unique location for the player, and sometimes it's a team number, or a pointer to a pointer to a pointer to a pointer to a pointer to a playername. It all depends on the "
+"complexity of the game, and your luck\n"
+"\n"
+"The easiest method is finding what addresses the code you found writes to and then use the dissect data feature to compare against two structures. (Your unit(s)/player and the enemies) And then see if you can find out a way to distinguish between them.\n"
+"When you have found out how to distinguish between you and the computer you can inject an assembler script that checks for the condition and then either do not execute the code or do something else. (One hit kills for example)\n"
+"Alternatively, you can also use this to build a so called \"Array of byte\" string which you can use to search which will result in a list of all your or the enemies players\n"
+"In this tutorial I have implemented the most amazing game you will ever play.\n"
+"It has 4 players. 2 Players belong to your team, and 2 Players belong to the computer. \n"
+"Your task is to find the code that writes the health and make it so you win the game WITHOUT freezing your health\n"
+"To continue, press \"Restart game and autoplay\" to test that your code is correct\n"
+"\n"
+"\n"
+"Tip: Health is a float\n"
+"Tip2: There are multiple solutions\n"
+msgstr ""
+"Этот шаг научит вас работать с инструкцией, которую используют несколько объектов одного и того же типа.\n"
+"\n"
+"Часто бывает так, что вы делаете что-либо с инструкцией, работающей со здоровьем вашего игрока и тоже самое происходит со здоровьем врагов.\n"
+"В таких случаях вам необходимо выяснить, как можно отличить вашего игрока от врагов.\n"
+"Иногда это так же просто, как проверка первых четырёх байт структуры (Таблица указателей на функции), которые часто указывают на уникальное расположение для игрока, а иногда это номер команды (id), в которой состоит игрок, или указатель на указатель на указатель на "
+"указатель на указатель на имя_игрока. Всё зависит от сложности игры и вашей удачи.\n"
+"\n"
+"Самый лёгкий метод - узнать в какие адреса записывает инструкция, определить начала структур (Вашего объекта/персонажа и вражеских) и попытаться найти различия между ними, воспользовавшись функцией «Анализ данных/структур».\n"
+"Когда вы узнали, как отличить вашего игрока от компьютера, вы можете выполнить инъекцию ассемблерного скрипта, в котором сначала сверяется условие (ваш ли это игрок/объект или вражеский), а затем либо прос
