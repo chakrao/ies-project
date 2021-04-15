@@ -650,4 +650,66 @@ msgid "Step 5: Code finder (PW=%s)"
 msgstr "Шаг 5: Нахождение и подмена кода (пароль=%s)"
 
 #: unit6.rstryagain6
-msgid "This may look difficult. but it's basicly. Find health, rigthclick health, find what writes, change health, click replace, change health, done.  But don't feel down if you don't get it. at least you know the 
+msgid "This may look difficult. but it's basicly. Find health, rigthclick health, find what writes, change health, click replace, change health, done.  But don't feel down if you don't get it. at least you know the basicas of memory scanning...  Are you sure you want to quit?"
+msgstr ""
+"Это может показаться трудным, но это основа всего. Найдите адрес со значением здоровья, нажмите «Найти инструкции, записывающие по этому адресу», измените значение здоровья, нажмите «Заменить NOP'ами», снова измените значение здоровья - готово. Не расстраивайтесь, если у "
+"вас не получится. Как минимум, вы знаете основы поиска в памяти...\n"
+"Вы уверены, что хотите выйти?"
+
+#: unit6.rstutorialstep5
+msgid ""
+"Sometimes the location of a value is stored at changes, when you restart the game, or even while you're playing.. In that case you can use 2 things to still make a table that works.\n"
+"In this step I'll try to describe how to use the Code Finder function.\n"
+"\n"
+"The value down here will be at a different location each time you start the tutorial, so a normal entry in the address list wouldn't work.\n"
+"First try to find the address. (you've got to this point so I assume you know how to)\n"
+"When you've found the address, right-click the address in Cheat Engine and choose \"Find out what writes to this address\". A window will pop up with an empty list.\n"
+"Then click on the Change value button in this tutorial, and go back to Cheat Engine. If everything went right, there should be an address with assembler code there now.\n"
+"Click it and choose the replace option to replace it with code that does nothing. That will also add the code address to the code list in the advanced options window. (Which gets saved if you save your table)\n"
+"\n"
+"Click on stop, so the game will start running normal again, and close to close the window.\n"
+"Now, click on Change value, and if everything went right the Next button should become enabled.\n"
+"\n"
+"Note: When you're freezing the address with a high enough speed it may happen that next becomes visible anyhow\n"
+msgstr ""
+"Иногда найденные вами адреса, с какими-либо значениями, меняются при перезапуске игры или даже во время самой игры. В таком случае, вы можете воспользоваться несколькими способами для создания рабочей таблицы.\n"
+"\n"
+"В этом шаге я расскажу об одном таком способе - нахождение и подмена кода.\n"
+"Адрес со значением, расположенным ниже, будет меняться при каждом перезапуске этой обучающей программы, поэтому просто нахождение адреса нам не поможет, т.к. в следующий раз он будет другим.\n"
+"\n"
+"Чтобы пройти этот шаг, нам нужно с помощью подмены кода сделать так, чтобы при нажатии на кнопку «Изменить значение» значение оставалось прежним.\n"
+"\n"
+"Для начала попробуйте найти адрес. (Думаю, к этому моменту, вы уже знаете как это сделать)\n"
+"После того как вы нашли нужный адрес и добавили его в таблицу, нажмите на него правой кнопкой мыши, выберите и нажмите «Найти инструкции, записывающие по этому адресу». Откроется окно «Следующие инструкции записывают в ххххх» с пустым списком.\n"
+"Теперь нажмите кнопку «Изменить значение» в этой обучающей программе, а затем снова вернитесь в Cheat Engine. Если всё сделано правильно, то в списке появится адрес с ассемблерной инструкцией.\n"
+"Выделите её и нажмите на кнопку «Заменить NOP'ами», которая заменит выбранную инструкцию на NOP (NOP -  инструкция процессора на языке ассемблера, которая предписывает ничего не делать), а также добавит адрес с этой инструкцией в список кодов, которые расположены в окне "
+"«Дополнительные возможности». Если вы сохраните таблицу, то и этот список будет сохранён вместе с ней.\n"
+"\n"
+"Нажмите на кнопку «Остановить» и закройте окно «Следующие инструкции записывают в ххххх».\n"
+"Теперь нажмите на кнопку «Изменить значение» и, если всё сделано правильно, кнопка «Дальше» станет доступна.\n"
+"\n"
+"Примечание: Если вы заморозите адрес с достаточно высоким интервалом заморозки, то может случится так, что кнопка «Дальше» также станет доступна\n"
+
+#: unit6.rswelldoneyouscrewedupthetutorial
+msgctxt "unit6.rswelldoneyouscrewedupthetutorial"
+msgid "Well done, you screwed up the tutorial!!!!"
+msgstr "Отлично! Вы справились с заданием!!!!"
+
+#: unit7.rsdontfuckingfreezethepointer
+msgid "I'm sorry, but freezing the pointer is not really a functional solution"
+msgstr "Простите, но заморозка указателя - это не совсем функциональное решение."
+
+#: unit7.rsloser
+msgctxt "unit7.rsloser"
+msgid "BOO"
+msgstr "БУ!"
+
+#: unit7.rsstep6pointerspw
+msgid "Step 6: Pointers: (PW=%s)"
+msgstr "Шаг 6: Указатели: (пароль=%s)"
+
+#: unit7.rstryagain7
+msgid "So, pointers are too difficult eh? Don't worry, try again later. For most beginners this is difficult to grasp. But I have to tell you it's a powerfull feature if you learn to use it. Are you sure you want to quit?"
+msgstr ""
+"Неужели указатели так сложны? Не волнуйтесь, попробуйте ещё раз позже. Большинству новичкам трудно понять это сразу. Однако, указатели откроют большие возможности, если вы научитесь ими пользоваться.\n"
+"Вы уверены, ч
