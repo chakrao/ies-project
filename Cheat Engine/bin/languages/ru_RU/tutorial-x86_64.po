@@ -553,4 +553,101 @@ msgstr ""
 "В предыдущем шаге мы точно знали начальное значение, поэтому мы могли произвести поиск «Точного значения», но сейчас у нас есть только полоска, без каких-либо чисел.\n"
 "Всё что нам известно, так это то, что значение находится в диапазоне от 0 до 500. И каждый раз, после нажатия на кнопку «Удар», теряется часть здоровья. Сколько именно - отображается над полоской.\n"
 "\n"
-"И тут есть несколько способов найти значение (например: выполняя отсев по правилу «Значение уменьшилось на...»), но я объясню вам самое простое. Будут использованы только два типа поиска - «Не
+"И тут есть несколько способов найти значение (например: выполняя отсев по правилу «Значение уменьшилось на...»), но я объясню вам самое простое. Будут использованы только два типа поиска - «Неизвестное значение» и «Значение уменьшилось».\n"
+"Т.к прямо сейчас значение нам не известно, то от поиска «Точного значения» не будет никакой пользы, поэтому выберите «Неизвестное значение», а тип, как и в прошлый раз, «4 Байта» (большинство приложений в Windows используют именно этот тип данных).\n"
+"Нажмите на кнопку «Поиск» и ждите его завершения.\n"
+"\n"
+"После завершения поиска нажмите на кнопку «Удар». Часть здоровья теряется (Потерянное количество будет отображаться над полоской в течении нескольких секунд, а затем исчезнет, но нам это значение и не нужно).\n"
+"Теперь возвращайтесь в Cheat Engine, выберите «Значение уменьшилось» и нажмите «Отсев».\n"
+"После завершения отсева снова нажмите на кнопку «Удар» и снова сделайте отсев по правилу «Значение уменьшилось». Повторяйте эти действия пока в списке не окажется один или чуть более адресов.\n"
+"\n"
+"Итак, нам известно, что значение находится в диапазоне от 0 до 500, поэтому, если в списке найденных адресов находится более одного адреса, то выберите более подходящий к данному диапазону и добавьте его в таблицу.\n"
+"Изменение значения этого адреса на 5000 позволит вам перейти к следующему шагу.\n"
+
+#: unit5.rsconfirmclose5
+msgid "Come on. This step is simple. For health do a float scan, and for ammo a double type. (don't forget to disable fastscan for double in this case) Just ignore the fact that it looks different because it has a \".\" in the value. You sure you want to quit?"
+msgstr ""
+"Да ладно, это же просто. Выполняйте поиск, используя тип данных «Float» для нахождения значения здоровья и «Double» для патрон. (Не забудьте отключить «Быстрый поиск» при поиске «Double» значения).\n"
+"Вы уверены, что хотите выйти?"
+
+#: unit5.rsdead
+msgid "I think you're dead!%sPress ok to become a brain eating zombie"
+msgstr "Я думаю, вы умерли!%s Нажмите «Подтвердить», чтобы стать зомби, пожирающим мозги"
+
+#: unit5.rsloser
+msgctxt "unit5.rsloser"
+msgid "BOO"
+msgstr "БУ!"
+
+#: unit5.rsoutofammo
+msgid "Out of ammo!%sPress ok to stock up on some ammo"
+msgstr "Патроны закончились!%s Нажмите «Подтвердить» для пополнения"
+
+#: unit5.rsstep4floatingpointspw
+msgid "Step 4: Floating points (PW="
+msgstr "Шаг 4: Числа с плавающей точкой (пароль="
+
+#: unit5.rstutorialstep4
+msgid ""
+"In the previous tutorial we used bytes to scan, but some games store information in so called 'floating point' notations. \n"
+"(probably to prevent simple memory scanners from finding it the easy way)\n"
+"a floating point is a value with some digits behind the point. (like 5.12 or 11321.1)\n"
+"\n"
+"Below you see your health and ammo. Both are stored as Floating point notations, but health is stored as a float and ammo is stored as a double.\n"
+"Click on hit me to lose some health, and on shoot to decrease your ammo with 0.5\n"
+" \n"
+"You have to set BOTH values to 5000 or higher to proceed.\n"
+"\n"
+"Exact value scan will work fine here, but you may want to experiment with other types too.\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"Hint: It is recommended to disable \"Fast Scan\" for type double\n"
+msgstr ""
+"В предыдущем шаге мы искали только целые числа, но некоторые игры хранят значения в виде так называемого «числа с плавающей точкой» (вероятно, чтобы усложнить поиск для простых сканеров памяти). Число с плавающей точкой - это значение с некими цифрами после точки (например: "
+"5.12 или 11321.1)\n"
+"\n"
+"В нижней части окна вы можете видеть количество вашего здоровья и патрон. Значения обоих из них хранятся в виде чисел с плавающей точкой, но значение здоровья хранится как Float, а патрон - как Double.\n"
+"При нажатии на кнопку «Удар» вы утратите часть здоровья, а при нажатии на кнопку «Выстрел» количество патрон уменьшится на 0.5\n"
+"\n"
+"Чтобы перейти к следующему шагу, вам нужно изменить значение обоих параметров на 5000 или больше.\n"
+"\n"
+"В этом случае, вам просто нужно искать и отсеивать «Точное значение», но, чисто для своего развития, вы можете поиграться и с другими типами поиска («Диапазон», «Значение уменьшилось на...», «Больше чем...» «Значение не изменилось» и т.д.)\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"Подсказка: Рекомендуется отключить «Быстрый поиск» при поиске значения с типом «Double»\n"
+
+#: unit6.rsloser
+msgctxt "unit6.rsloser"
+msgid "BOO"
+msgstr "БУ!"
+
+#: unit6.rsstep5codefinderpw
+msgid "Step 5: Code finder (PW=%s)"
+msgstr "Шаг 5: Нахождение и подмена кода (пароль=%s)"
+
+#: unit6.rstryagain6
+msgid "This may look difficult. but it's basicly. Find health, rigthclick health, find what writes, change health, click replace, change health, done.  But don't feel down if you don't get it. at least you know the 
