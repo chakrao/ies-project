@@ -1,0 +1,1679 @@
+
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"X-Generator: Poedit 2.2.3\n"
+
+msgid "Most commonly used for stacks where stack pointers point to it's own structureTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notDon't care if it's executable or notDon't care if it's executable or notDon't care if it's executable or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notDon't care if it's executable or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notDon't care if it's executable or notDon't care if it's executable or notDon't care if it's executable or notDownside: The game may become slightly slower when using these functions. (Of course, if it has been hammering the gui, it would already have been frozen)<WARNING: SLOW and recommended as last resort><WARNING: SLOW and recommended as last resort><WARNING: SLOW and recommended as last resort>Note: Due to the way the processing is done, trace data will still be written to disk during the processing. If you generate more data than can be processed at a time, the filesize will keep growing. You can combine this with the \"Pause target while processing\" option so that it shouldn't generate too much dataNote: Due to the way the processing is done, trace data will still be written to disk during the processing. If you generate more data than can be processed at a time, the filesize will keep growing. You can combine this with the \"Pause target while processing\" option so that it shouldn't generate too much dataTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notTip: When doubleclicking the value and it represents an address, then you can hold shift to make it show in the disassembler, and ctrl to make it show in the memory view. Else Cheat Engine will guess it for you based on if it's executable memory or notDon't care if it's executable or notDon't care if it's executable or notDon't care if it's executable or notDon't care if it's executable or notDon't care if it's executable or notDon't care if it's executable or not"
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: aboutunit.rsareyousureyouwanttolaunchdbvm
+msgid "Are you sure you want to launch DBVM? You seem to be running in 32-bit, so don't really need it that badly (Except for ultimap and cloaked operations)"
+msgstr "你确定要启动DBVM吗？你似乎运行在32位操作系统，所以真的不那么需要它（除了ultimap和cloaked）"
+
+#: aboutunit.rsdidyoureallythinkyoudfindaneastereggbydoingthiswel
+msgid "Did you really think you'd find an easter egg by doing this? Well, you know what? You where right!"
+msgstr "你真的认为这么做能找到彩蛋吗？好吧，你知道吗，你是对的！"
+
+#: aboutunit.rslaunchdbvmwasnotassigned
+msgid "launchdbvm was not assigned"
+msgstr "未分配要启动的DBVM"
+
+#: aboutunit.rsthismeansthatyourecurrentlynotrunningdbvm
+msgid "This means that you're currently not running dbvm, but that your system is capable of running it"
+msgstr "这意味着你当前没有运行DBVM，但你的系统有能力运行它"
+
+#: aboutunit.rsthismeansthatyoursystemisrunningdbvm
+msgid "This means that your system is running dbvm. This means ce will make use of some advanced tools that are otherwise unavailable"
+msgstr "这意味着你的系统在运行DBVM，CE可以使用一些高级工具"
+
+#: aboutunit.rsthismeansthatyouwillneedanewcpuinteltobeabletouset
+msgid "This means that you will need a new cpu (intel) to be able to use the advanced dbvm options"
+msgstr "这意味着你需要一个新的CPU（intel）才能使用DBVM高级选项"
+
+#: aboutunit.rsyoursystemdoesnotsupportdbvm
+msgid "Your system DOES NOT support DBVM"
+msgstr "你的系统不支持DBVM"
+
+#: aboutunit.rsyoursystemisrunningdbvmversion
+msgid "Your system is running DBVM version %s (%.0n bytes free (%d pages))"
+msgstr "你的系统在运行DBVM版本 %s （%.0n bytes free (%d pages)）"
+
+#: aboutunit.rsyoursystemsupportsdbvm
+msgid "Your system supports DBVM"
+msgstr "你的系统支持DBVM"
+
+#: accesscheck.rsbutyoudohavemodifyrights
+msgid "But you do have modify rights"
+msgstr "但你有修改的权限"
+
+#: accesscheck.rsnodeleterights
+msgid "No delete rights"
+msgstr "无删除权限"
+
+#: accesscheck.rsnofilecreationrightsornofileoverwriterights
+msgid "No file creation rights or no file overwrite rights"
+msgstr "无创建文件或覆盖文件的权限"
+
+#: accesscheck.rsnofiledeletionrights
+msgid "No file deletion rights"
+msgstr "无删除文件权限"
+
+#: accesscheck.rsnofilemodificationrights
+msgid "No file modification rights"
+msgstr "无修改文件权限"
+
+#: accessedmemory.rsamerror
+msgctxt "accessedmemory.rsamerror"
+msgid "Error"
+msgstr "错误"
+
+#: accessedmemory.rsamyoucantsaveanemptylist
+msgid "You can't save an empty list"
+msgstr "你不能保存一个空列表"
+
+#: addresslist.rsactive
+msgctxt "addresslist.rsactive"
+msgid "Active"
+msgstr "激活"
+
+#: addresslist.rsaddress
+msgctxt "addresslist.rsaddress"
+msgid "Address"
+msgstr "地址"
+
+#: addresslist.rsaladdaddress
+msgid "Add address"
+msgstr "添加地址"
+
+#: addresslist.rsalautoassemblescritp
+msgid "Auto Assemble script"
+msgstr "自动汇编脚本"
+
+#: addresslist.rsalnodescription
+msgctxt "addresslist.rsalnodescription"
+msgid "No description"
+msgstr "无描述"
+
+#: addresslist.rschangedescription
+msgid "Change Description"
+msgstr "更改描述"
+
+#: addresslist.rschangevalue
+msgctxt "addresslist.rschangevalue"
+msgid "Change Value"
+msgstr "改变数值"
+
+#: addresslist.rsdescription
+msgctxt "addresslist.rsdescription"
+msgid "Description"
+msgstr "描述"
+
+#: addresslist.rsdoyouwanttodeletetheselectedaddress
+msgid "Do you want to delete the selected address?"
+msgstr "你想要删除选中的地址吗？"
+
+#: addresslist.rsdoyouwanttodeletetheselectedaddresses
+msgid "Do you want to delete the selected addresses?"
+msgstr "你想要删除选中的地址吗？"
+
+#: addresslist.rsnotallvaluetypescouldhandlethevalue
+msgid "Not all value types could handle the value %s"
+msgstr "不是所有的数值类型都能处理数值 %s"
+
+#: addresslist.rsscript
+msgid "<script>"
+msgstr "<脚本>"
+
+#: addresslist.rsthevaluecouldnotbeparsed
+msgid "The value %s could not be parsed"
+msgstr "无法解析数值 %s"
+
+#: addresslist.rstype
+msgctxt "addresslist.rstype"
+msgid "Type"
+msgstr "类型"
+
+#: addresslist.rsvalue
+msgctxt "addresslist.rsvalue"
+msgid "Value"
+msgstr "数值"
+
+#: addresslist.rswhatvaluetochangethisto
+msgid "what value to change this to?"
+msgstr "为这个更改什么数值？"
+
+#: addresslist.rswhatwillbethenewdescription
+msgid "What will be the new description?"
+msgstr "新的描述是什么？"
+
+#: addressparser.rsapthisisnotavalidaddress
+msgid "This is not a valid address"
+msgstr "这不是一个有效的地址"
+
+#: advancedoptionsunit.rsaocheatenginefailedtogetintotheconfigofselectedprogram
+msgid "Cheat Engine failed to get into the config of the selected program."
+msgstr "Cheat Engine 未能进入所选程序的配置。"
+
+#: advancedoptionsunit.rsaoerrorwhiletryingtocreatethesharedkeystructureetc
+msgid "Error while trying to create the shared key structure! (Which efficiently renders this whole feature useless)"
+msgstr "尝试创建共享密钥结构出错！（有效地使整个功能失效）"
+
+#: advancedoptionsunit.rsaoyoucanonlyloadexefiles
+msgctxt "advancedoptionsunit.rsaoyoucanonlyloadexefiles"
+msgid "You can only load EXE files"
+msgstr "你只能加载EXE文件"
+
+#: advancedoptionsunit.rsareyousureyouwishtodeletetheseentries
+msgid "Are you sure you wish to delete these entries?"
+msgstr "你确定要删除这些条目吗？"
+
+#: advancedoptionsunit.rsdelete
+msgctxt "advancedoptionsunit.rsdelete"
+msgid "Delete"
+msgstr "删除"
+
+#: advancedoptionsunit.rsgivethenewnameofthisentry
+msgid "Give the new name of this entry"
+msgstr "给这个条目一个新名字"
+
+#: advancedoptionsunit.rsnewname
+msgid "New name"
+msgstr "新名字"
+
+#: advancedoptionsunit.rspaused
+msgid "paused"
+msgstr "已暂停"
+
+#: advancedoptionsunit.rspausethegame
+msgctxt "advancedoptionsunit.rspausethegame"
+msgid "Pause the game"
+msgstr "暂停游戏"
+
+#: advancedoptionsunit.rsresumethegame
+msgid "Resume the game"
+msgstr "继续游戏"
+
+#: advancedoptionsunit.rsthememoryatthisaddresscouldntbewritten
+msgctxt "advancedoptionsunit.rsthememoryatthisaddresscouldntbewritten"
+msgid "The memory at this address couldn't be written"
+msgstr "这个地址的内存无法写入"
+
+#: advancedoptionsunit.straddressalreadyinthelist
+msgctxt "advancedoptionsunit.straddressalreadyinthelist"
+msgid "This address is already in the list"
+msgstr "这个地址已经在列表里"
+
+#: advancedoptionsunit.stralreadyinthelist
+msgid "This byte is already part of another opcode already present in the list"
+msgstr "这个字节已经是现有列表中操作码的一部分"
+
+#: advancedoptionsunit.strcecode
+msgid "Code:"
+msgstr "代码："
+
+#: advancedoptionsunit.strchangeof
+msgid "Change of "
+msgstr "更改 "
+
+#: advancedoptionsunit.strcode
+msgid "Code :"
+msgstr "代码："
+
+#: advancedoptionsunit.strcouldntrestorecode
+msgid "Error when trying to restore this code!"
+msgstr "尝试还原这个代码时出错！"
+
+#: advancedoptionsunit.strcouldntwrite
+msgctxt "advancedoptionsunit.strcouldntwrite"
+msgid "The memory at this address couldn't be written"
+msgstr "这个地址的内存无法写入"
+
+#: advancedoptionsunit.strfindwhatcodeaccesses
+msgid "Find out what addresses this code accesses"
+msgstr "找出这个代码访问什么地址"
+
+#: advancedoptionsunit.strfindwhatcodereads
+msgid "Find out what addresses this code reads from"
+msgstr "找出这个代码从什么地址读取"
+
+#: advancedoptionsunit.strfindwhatcodewrites
+msgctxt "advancedoptionsunit.strfindwhatcodewrites"
+msgid "Find out what addresses this code writes to"
+msgstr "找出这个代码写入什么地址"
+
+#: advancedoptionsunit.strnamececode
+msgid "What name do you want to give this code?"
+msgstr "给这个代码什么名字？"
+
+#: advancedoptionsunit.strnotreadable
+msgid "This address is not readable"
+msgstr "这个地址不可读"
+
+#: advancedoptionsunit.strnotthesame
+msgid "The memory at this address isn't what it should be! Continue?"
+msgstr "这个地址的内存不应是这样！继续？"
+
+#: advancedoptionsunit.strnotwhatitshouldbe
+msgid "The memory at this address is'nt what it should be! Continue?"
+msgstr "这个地址的内存不应是这样！继续？"
+
+#: advancedoptionsunit.strpartofopcodeinthelist
+msgid "At least one of these bytes is already in the list"
+msgstr "这些字节里至少一个已在列表"
+
+#: advancedoptionsunit.strselectexefor3d
+msgid "Select the executable of the Direct-3D game"
+msgstr "选择可执行的Direct-3D游戏"
+
+#: assemblerarm.rscannotbeencoded
+msgid " can not be encoded using 8 bits and double rotate"
+msgstr "  不能用8位和双旋转编码"
+
+#: assemblerarm.rsdistanceistoobig
+msgid "Distance is too big"
+msgstr "间隔太大"
+
+#: assemblerarm.rsinvaliddestinationregister
+msgid "Invalid destination register"
+msgstr "无效的目标寄存器"
+
+#: assemblerarm.rsinvalidfirstoperandregister
+msgid "Invalid first operand register"
+msgstr "无效的第一个操作数寄存器"
+
+#: assemblerarm.rsinvalidopcode
+msgid "Invalid opcode"
+msgstr "无效的操作码"
+
+#: assemblerarm.rsinvalidparameter1
+msgid "Invalid parameter 1"
+msgstr "无效的参数 1"
+
+#: assemblerarm.rsinvalidparameter2
+msgid "Invalid parameter 2"
+msgstr "无效的参数 2"
+
+#: assemblerarm.rsinvalidparameter3
+msgid "Invalid parameter 3"
+msgstr "无效的参数 3"
+
+#: assemblerarm.rsinvalidparameter4
+msgid "Invalid parameter 4"
+msgstr "无效的参数 4"
+
+#: assemblerarm.rsinvalidparameters
+msgid "invalid parameters"
+msgstr "无效的参数"
+
+#: assemblerarm.rsinvalidregister
+msgctxt "assemblerarm.rsinvalidregister"
+msgid "Invalid register"
+msgstr "无效的寄存器"
+
+#: assemblerarm.rsinvalidregisterinregisterlist
+msgid "Invalid register in register list:"
+msgstr "列表中无效的寄存器："
+
+#: assemblerarm.rsinvalidregisterlist
+msgid "Invalid register list"
+msgstr "无效的寄存器列表"
+
+#: assemblerarm.rsinvalidshift
+msgid "Invalid shift"
+msgstr "无效的移位"
+
+#: assemblerarm.rsinvalidshiftparameters
+msgid "invalid shift parameters"
+msgstr "无效的移位参数"
+
+#: assemblerarm.rsinvalidshiftregister
+msgid "Invalid shift register"
+msgstr "无效的移位寄存器"
+
+#: assemblerarm.rsthedestinationaddressmustbedividableby4
+msgid "The destination address must be dividable by 4"
+msgstr "目标地址必须能被4整除"
+
+#: assemblerarm.rsthedistanceistoobig
+msgid "The distance is too big"
+msgstr "间隔太大"
+
+#: assemblerarm.rsthevalue
+msgid "The value "
+msgstr "数值 "
+
+#: assemblerarm.rsthisinstructionclassdoesnotallow
+msgid "This instruction class does not allow a register based shift"
+msgstr "这个指令类不允许基于移位的寄存器"
+
+#: assemblerarm.rstodochangethistoa12byteinstruction
+msgid "Todo: Change this to a 12 byte instruction: LDR/STR [PC,#16] - B PC - DD offset"
+msgstr "Todo: 更改这个为12字节指令: LDR/STR [PC,#16] - B PC - DD offset"
+
+#: assemblerunit.rsassemblererror
+msgid "Assembler error"
+msgstr "汇编程序错误"
+
+#: assemblerunit.rsidontunderstandwhatyoumeanwith
+msgid "I don't understand what you mean with "
+msgstr "我不明白你的意思 "
+
+#: assemblerunit.rsinvalid
+msgid "Invalid"
+msgstr "无效的"
+
+#: assemblerunit.rsinvalid64bitvaluefor32bitfield
+msgid ""
+"The value %.16x can not be encoded using a 32-bit signed value. But if you meant %.16x then that's ok and you should have provided it like that in the first place.  Is it ok to change it to this?\n"
+"(This is the only time asked and will be remembered until you restart CE)\n"
+msgstr ""
+"数值 %.16x 使用32位有符号值，不能被编码。但如果你是指 %.16x 那就没事，而且你应该首先提供它。是否把它改成这个？\n"
+"（只问一次并记住直到重启CE）\n"
+
+#: assemblerunit.rsinvalidaddress
+msgctxt "assemblerunit.rsinvalidaddress"
+msgid "Invalid address"
+msgstr "无效的地址"
+
+#: assemblerunit.rsinvalidmultiplier
+msgid "Invalid multiplier"
+msgstr "无效的乘法"
+
+#: assemblerunit.rsinvalidregister
+msgctxt "assemblerunit.rsinvalidregister"
+msgid "Invalid register"
+msgstr "无效的寄存器"
+
+#: assemblerunit.rsinvalidvaluefor32bit
+msgid "The value provided can not be encoded in a 32-bit field"
+msgstr "提供的数值不能被编码进32位字段"
+
+#: assemblerunit.rsnegativeregisterscannotbeencoded
+msgid "Negative registers can not be encoded"
+msgstr "负数寄存器不能被编码"
+
+#: assemblerunit.rsoffsettoobig
+msgid "offset too big"
+msgstr "偏移太大"
+
+#: assemblerunit.rstheassemblertriedtosetaregistevaluethatistoohigh
+msgid "The assembler tried to set a register value that is too high"
+msgstr "汇编程序尝试设置的寄存器数值太高"
+
+#: assemblerunit.rswtfisa
+msgid "WTF is a "
+msgstr ""
+
+#: autoassembler.rsaaerror
+msgid "Error: "
+msgstr "错误： "
+
+#: autoassembler.rsaaerrorinthestructuredefinitionof
+msgid "Error in the structure definition of %s at line %d"
+msgstr "第 %d 行的 %s 结构定义错误"
+
+#: autoassembler.rsaaerrorwhilesacnningforaobs
+msgid "Error while scanning for AOB's : "
+msgstr "扫描AOB时错误： "
+
+#: autoassembler.rsaaisareservedword
+msgid "%s is a reserved word"
+msgstr "%s 是一个保留字"
+
+#: autoassembler.rsaaluaerrorinthescriptatline
+msgid "Lua error in the script at line "
+msgstr "Lua错误在脚本这行 "
+
+#: autoassembler.rsaamodulenotfound
+msgid "module not found:"
+msgstr "模块未找到："
+
+#: autoassembler.rsaanoendfound
+msgid "No end found"
+msgstr "找不到 end"
+
+#: autoassembler.rsaanoideawhatxis
+msgid "No idea what %s is"
+msgstr "不知道 %s 是什么"
+
+#: autoassembler.rsaathearrayofbytenamed
+msgid "The array of byte named %s could not be found"
+msgstr "找不到名为 %s 的字节数组"
+
+#: autoassembler.rscouldnotbefound
+msgctxt "autoassembler.rscouldnotbefound"
+msgid "%s could not be found"
+msgstr "找不到 %s"
+
+#: autoassembler.rscouldnotbeinjected
+msgid "%s could not be injected"
+msgstr "无法注入 %s"
+
+#: autoassembler.rsdefinealreadydefined
+msgid "Define %s already defined"
+msgstr "%s 已定义"
+
+#: autoassembler.rserrorinline
+msgid "Error in line %s (%s) :%s"
+msgstr "出错的行 %s (%s) :%s"
+
+#: autoassembler.rsfailuretoallocatememory
+msgid "Failure to allocate memory"
+msgstr "未能分配内存"
+
+#: autoassembler.rsforwardjumpwithnolabeldefined
+msgid "Forward jump with no label defined"
+msgstr "要跳转的标签未定义"
+
+#: autoassembler.rsgoto
+msgid "Go to "
+msgstr "转到 "
+
+#: autoassembler.rsinvalidaddressforreadmem
+msgid "Invalid address for ReadMem"
+msgstr "ReadMem 的地址无效"
+
+#: autoassembler.rsinvalidsizeforreadmem
+msgid "Invalid size for ReadMem"
+msgstr "ReadMem 的大小无效"
+
+#: autoassembler.rsisbeingredeclared
+msgid "%s is being redeclared"
+msgstr "%s 正在重新声明"
+
+#: autoassembler.rsisnotavalidbytestring
+msgid "%s is not a valid bytestring"
+msgstr "%s 不是有效的字节串"
+
+#: autoassembler.rsisnotavalididentifier
+msgid "%s is not a valid identifier"
+msgstr "%s 不是有效的标识符"
+
+#: autoassembler.rsisnotavalidsize
+msgid "%s is not a valid size"
+msgstr "%s 不是有效的大小"
+
+#: autoassembler.rslabelisbeingdefinedmorethanonce
+msgid "label %s is being defined more than once"
+msgstr "标签 %s 被重复定义"
+
+#: autoassembler.rslabelisnotdefinedinthescript
+msgid "label %s is not defined in the script"
+msgstr "标签 %s 没在脚本中定义"
+
+#: autoassembler.rsmissingexcept
+msgid "The {$TRY} at line %d has no matching {$EXCEPT}"
+msgstr "第 %s 行的 {$TRY} 不匹配 {$EXCEPT}"
+
+#: autoassembler.rsneedtousekernelmodereadwriteprocessmemory
+msgid "You need to use kernelmode read/writeprocessmemory if you want to use KALLOC"
+msgstr "如果要用KALLOC，你需要用内核模式读写进程内存"
+
+#: autoassembler.rsnotallinstructionscouldbeinjected
+msgid "Not all instructions could be injected"
+msgstr "不是所有指令都能被注入"
+
+#: autoassembler.rssorrybutwithoutthedriverkallocwillnotfunction
+msgid "Sorry, but without the driver KALLOC will not function"
+msgstr "抱歉，没有驱动 KALLOC无法工作"
+
+#: autoassembler.rssyntaxerror
+msgid "Syntax error"
+msgstr "语法错误"
+
+#: autoassembler.rssyntaxerrorfullaccessaddresssize
+msgid "Syntax error. FullAccess(address,size)"
+msgstr "语法错误.FullAccess(address,size)"
+
+#: autoassembler.rstheaddressincreatethreadandwaitisnotvalid
+msgid "The address in createthreadandwait(%s) is not valid"
+msgstr "创建线程并等待（%s）中的地址无效"
+
+#: autoassembler.rstheaddressincreatethreadisnotvalid
+msgid "The address in createthread(%s) is not valid"
+msgstr "创建线程（%s）中的地址无效"
+
+#: autoassembler.rstheaddressinloadbinaryisnotvalid
+msgid "The address in loadbinary(%s,%s) is not valid"
+msgstr "加载二进制（%s,%s）中的地址无效"
+
+#: autoassembler.rsthearrayofbytecouldnotbefound
+msgid "The array of byte '%s' could not be found"
+msgstr "找不到字节数组 %s"
+
+#: autoassembler.rsthebytesatarenotwhatwasexpected
+msgid "The bytes at %s are not what was expected"
+msgstr "%s处的字节不是预期的字节"
+
+#: autoassembler.rsthecodeinjectionwassuccessfull
+msgid "The code injection was successfull"
+msgstr "代码注入成功"
+
+#: autoassembler.rsthefiledoesnotexist
+msgid "The file %s does not exist"
+msgstr "文件 %s 不存在"
+
+#: autoassembler.rsthefollowingkerneladdresseswhereallocated
+msgid "The following kernel addresses where allocated"
+msgstr "以下的内核地址已分配"
+
+#: autoassembler.rstheidentifierhasalreadybeendeclared
+msgid "The identifier %s has already been declared"
+msgstr "标识符 %s 已声明"
+
+#: autoassembler.rsthememoryatcannotberead
+msgid "The memory at +%s can not be read"
+msgstr "+%s处内存无法读取"
+
+#: autoassembler.rsthememoryatcouldnotbefullyread
+msgid "The memory at %s could not be fully read"
+msgstr "%s 处内存无法完全读取"
+
+#: autoassembler.rsthereiscodedefinedwithoutspecifyingtheaddressitbel
+msgid "There is code defined without specifying the address it belongs to"
+msgstr "有个代码定义时没指定所属地址"
+
+#: autoassembler.rsthisaddressspecifierisnotvalid
+msgid "This address specifier is not valid"
+msgstr "地址说明符无效"
+
+#: autoassembler.rsthiscodecanbeinjectedareyousure
+msgid "This code can be injected. Are you sure?"
+msgstr "代码可注入，确认？"
+
+#: autoassembler.rsthisinstructioncantbecompiled
+msgid "This instruction can't be compiled"
+msgstr "这个指令无法编译"
+
+#: autoassembler.rswassupposedtobeaddedtothesymbollistbutitisntdeclar
+msgid "%s was supposed to be added to the symbollist, but it isn't declared"
+msgstr "%s 可加入到符号表，但它没声明"
+
+#: autoassembler.rswrongsyntaxallocidentifiersizeinbytes
+msgid "Wrong syntax. ALLOC(identifier,sizeinbytes)"
+msgstr "语法错误. ALLOC(identifier,sizeinbytes)"
+
+#: autoassembler.rswrongsyntaxaobscanmodulename11223355
+msgid "Wrong syntax. AOBSCANMODULE(name, module, 11 22 33 ** 55)"
+msgstr "语法错误. AOBSCANMODULE(name, module, 11 22 33 ** 55)"
+
+#: autoassembler.rswrongsyntaxaobscanname11223355
+msgid "Wrong syntax. AOBSCAN(name,11 22 33 ** 55)"
+msgstr "语法错误. AOBSCAN(name,11 22 33 ** 55)"
+
+#: autoassembler.rswrongsyntaxaobscanregion
+msgid "Wrong syntax. AOBSCANREGION(name, startaddress, stopaddress, 11 22 33 ** 55)"
+msgstr "语法错误. AOBSCANREGION(name, startaddress, stopaddress, 11 22 33 ** 55)"
+
+#: autoassembler.rswrongsyntaxassertaddress1122335566
+msgid "Wrong syntax. ASSERT(address,11 22 33 ** 55 66)"
+msgstr "语法错误. ASSERT(address,11 22 33 ** 55 66)"
+
+#: autoassembler.rswrongsyntaxcreatethreadaddress
+msgid "Wrong syntax. CreateThread(address)"
+msgstr "语法错误. CreateThread(address)"
+
+#: autoassembler.rswrongsyntaxdefinenamewhatever
+msgid "Wrong syntax. DEFINE(name,whatever)"
+msgstr "语法错误. DEFINE(name,whatever)"
+
+#: autoassembler.rswrongsyntaxglobalallocnamesize
+msgid "Wrong syntax. GLOBALALLOC(name,size)"
+msgstr "语法错误. GLOBALALLOC(name,size)"
+
+#: autoassembler.rswrongsyntaxincludefilenamecea
+msgid "Wrong syntax. Include(filename.cea)"
+msgstr "语法错误. Include(filename.cea)"
+
+#: autoassembler.rswrongsyntaxkallocidentifiersizeinbytes
+msgid "Wrong syntax. kalloc(identifier,sizeinbytes)"
+msgstr "语法错误. kalloc(identifier,sizeinbytes)"
+
+#: autoassembler.rswrongsyntaxloadbinaryaddressfilename
+msgid "Wrong syntax. LoadBinary(address,filename)"
+msgstr "语法错误. LoadBinary(address,filename)"
+
+#: autoassembler.rswrongsyntaxloadlibraryfilename
+msgid "Wrong syntax. LoadLibrary(filename)"
+msgstr "语法错误. LoadLibrary(filename)"
+
+#: autoassembler.rswrongsyntaxluacall
+msgid "Wrong Syntax. LuaCall(luacommand)"
+msgstr "语法错误. LuaCall(luacommand)"
+
+#: autoassembler.rswrongsyntaxreadmemaddresssize
+msgid "Wrong syntax. ReadMem(address,size)"
+msgstr "语法错误. ReadMem(address,size)"
+
+#: autoassembler.rswrongsyntaxreassemble
+msgid "Wrong syntax. Reassemble(address)"
+msgstr "语法错误. Reassemble(address)"
+
+#: autoassembler.rswrongsyntaxsharedallocnamesize
+msgid "Wrong syntax. SHAREDALLOC(name,size)"
+msgstr "语法错误. SHAREDALLOC(name,size)"
+
+#: autoassembler.rsxcouldnotbefound
+msgctxt "autoassembler.rsxcouldnotbefound"
+msgid "%s could not be found"
+msgstr "找不到 %s"
+
+#: autoassembler.rsyoucanonlyhaveonedisablesection
+msgid "You can only have one disable section"
+msgstr "只能有一个 disable 段"
+
+#: autoassembler.rsyoucanonlyhaveoneenablesection
+msgid "You can only have one enable section"
+msgstr "只能有一个 enable 段"
+
+#: autoassembler.rsyouhavntspecifiedadisablesection
+msgid "You havn't specified a disable section"
+msgstr "你没指定 disable 段"
+
+#: autoassembler.rsyouhavntspecifiedaenablesection
+msgid "You havn't specified a enable section"
+msgstr "你没指定 enable 段"
+
+#: bigmemallochandler.rsallocerror
+msgid "VirtualAlloc failed. You probably don't have enough system memory free. Either install more RAM, or increase the maximum allowed paging size"
+msgstr "VirtualAlloc 失败。你可能没有足够的系统内存，安装更多内存或增加页面大小"
+
+#: bigmemallochandler.rsbmavirtualallocfailedyouprobablydonthaveenoughtvirtualmemoryfreeetc
+msgid "VirtualAlloc failed. You probably don't have enough virtual memory free. Use the 64-bit version instead"
+msgstr "VirtualAlloc 失败。你可能没有足够的虚拟内存，使用64位版本代替"
+
+#: bigmemallochandler.rscepointerscanmemorymanager
+msgid "CE Pointerscan memory manager"
+msgstr "CE 指针扫描内存管理器"
+
+#: byteinterpreter.rsbibyte
+msgid "(byte)"
+msgstr "（字节）"
+
+#: byteinterpreter.rsbidouble
+msgid "(double)"
+msgstr "（双浮点）"
+
+#: byteinterpreter.rsbidword
+msgid "(dword)"
+msgstr "（双字）"
+
+#: byteinterpreter.rsbifloat
+msgid "(float)"
+msgstr "（单浮点）"
+
+#: byteinterpreter.rsbiqword
+msgid "(qword)"
+msgstr "（四字）"
+
+#: byteinterpreter.rsbiword
+msgid "(word)"
+msgstr "（单字）"
+
+#: cedebugger.rscontinue
+msgid "Continue?"
+msgstr "继续？"
+
+#: cedebugger.rsdebugerror
+msgid "I couldn't attach the debugger to this process! You could try to open the process using the processpicker and try that! If that also doesn't work check if you have debugging rights."
+msgstr "调试器无法附加到这个进程！你可以尝试用进程选择器打开这个进程，如果不行请检查调试权限。"
+
+#: cedebugger.rsdonotclosece
+msgid "If you close Cheat Engine while the game is running, the game will close too. Are you sure you want to do this?"
+msgstr "如果你在游戏运行时关闭 Cheat Engine，游戏也会关闭，是否继续？"
+
+#: cedebugger.rspleasetargetanotherprocess
+msgid "Please target another process"
+msgstr "请选中其它进程"
+
+#: cedebugger.rsthiswillattachthedebuggerofcheatenginetothecurrent
+msgid "This will attach the debugger of Cheat Engine to the current process."
+msgstr "这会用 Cheat Engine 的调试器附加当前进程。"
+
+#: cedebugger.rsyoumustfirstopenaprocess
+msgid "You must first open a process"
+msgstr "你必须先打开一个进程"
+
+#: cefuncproc.rsalt
+msgctxt "cefuncproc.rsalt"
+msgid "Alt"
+msgstr ""
+
+#: cefuncproc.rsapplicationskey
+msgctxt "cefuncproc.rsapplicationskey"
+msgid "Applications key"
+msgstr ""
+
+#: cefuncproc.rsbackspace
+msgctxt "cefuncproc.rsbackspace"
+msgid "Backspace"
+msgstr ""
+
+#: cefuncproc.rsbreak
+msgctxt "cefuncproc.rsbreak"
+msgid "Break"
+msgstr ""
+
+#: cefuncproc.rscapslock
+msgctxt "cefuncproc.rscapslock"
+msgid "Caps Lock"
+msgstr ""
+
+#: cefuncproc.rscefpdllinjectionfailedsymbollookuperror
+msgid "Dll injection failed: symbol lookup error"
+msgstr "Dll注入失败：符号查找错误"
+
+#: cefuncproc.rscefpicantgettheprocesslistyouarepropablyuseinwindowsntetc
+msgctxt "cefuncproc.rscefpicantgettheprocesslistyouarepropablyuseinwindowsntetc"
+msgid "I can't get the process list. You are propably using windows NT. Use the window list instead!"
+msgstr "无法获取进程列表，你可能在用Windows NT，用窗口列表代替！"
+
+#: cefuncproc.rsclear
+msgctxt "cefuncproc.rsclear"
+msgid "Clear"
+msgstr ""
+
+#: cefuncproc.rsctrl
+msgctxt "cefuncproc.rsctrl"
+msgid "Ctrl"
+msgstr ""
+
+#: cefuncproc.rsdeletekey
+msgid "Delete "
+msgstr ""
+
+#: cefuncproc.rsdownarrow
+msgctxt "cefuncproc.rsdownarrow"
+msgid "Down Arrow"
+msgstr ""
+
+#: cefuncproc.rsend
+msgctxt "cefuncproc.rsend"
+msgid "End"
+msgstr ""
+
+#: cefuncproc.rsenter
+msgctxt "cefuncproc.rsenter"
+msgid "Enter"
+msgstr ""
+
+#: cefuncproc.rsesc
+msgctxt "cefuncproc.rsesc"
+msgid "Esc"
+msgstr ""
+
+#: cefuncproc.rsexecute
+msgctxt "cefuncproc.rsexecute"
+msgid "Execute"
+msgstr ""
+
+#: cefuncproc.rsfailedexecutingthefunctionofthedll
+msgid "Failed executing the function of the dll"
+msgstr "执行 dll 的函数失败"
+
+#: cefuncproc.rsfailedinjectingthedll
+msgid "Failed injecting the DLL"
+msgstr "注入 DLL 失败"
+
+#: cefuncproc.rsfailedtoallocatememory
+msgid "Failed to allocate memory"
+msgstr "未能分配内存"
+
+#: cefuncproc.rsfailedtoexecutethedllloader
+msgid "Failed to execute the dll loader"
+msgstr "未能执行 dll 加载器"
+
+#: cefuncproc.rsfailedtoinjectthedllloader
+msgid "Failed to inject the dll loader"
+msgstr "未能注入 dll 加载器"
+
+#: cefuncproc.rsgetprocaddressnotfound
+msgid "GetProcAddress not found"
+msgstr "找不到  GetProcAddress"
+
+#: cefuncproc.rshelp
+msgctxt "cefuncproc.rshelp"
+msgid "Help"
+msgstr ""
+
+#: cefuncproc.rshome
+msgctxt "cefuncproc.rshome"
+msgid "Home"
+msgstr ""
+
+#: cefuncproc.rsicantgettheprocesslistyouarepropablyusingwindowsnt
+msgctxt "cefuncproc.rsicantgettheprocesslistyouarepropablyusingwindowsnt"
+msgid "I can't get the process list. You are propably using windows NT. Use the window list instead!"
+msgstr "无法获取进程列表，你可能在用Windows NT，用窗口列表代替！"
+
+#: cefuncproc.rsinsert
+msgctxt "cefuncproc.rsinsert"
+msgid "Insert"
+msgstr ""
+
+#: cefuncproc.rsleftarrow
+msgctxt "cefuncproc.rsleftarrow"
+msgid "Left Arrow"
+msgstr ""
+
+#: cefuncproc.rsleftmb
+msgid "Left MB"
+msgstr ""
+
+#: cefuncproc.rsleftwindowskey
+msgctxt "cefuncproc.rsleftwindowskey"
+msgid "Left Windows key"
+msgstr ""
+
+#: cefuncproc.rsloadlibraryanotfound
+msgid "LoadLibraryA not found"
+msgstr "找不到 LoadLibraryA"
+
+#: cefuncproc.rsmiddlemb
+msgid "Middle MB"
+msgstr ""
+
+#: cefuncproc.rsnokernel32dllloaded
+msgid "No kernel32.dll loaded"
+msgstr "没加载 kernel32.dll"
+
+#: cefuncproc.rsnotconvertable
+msgid "Not convertable"
+msgstr "不可转换"
+
+#: cefuncproc.rsnotsupportedinthisversion
+msgid "not supported in this version"
+msgstr "不支持这个版本"
+
+#: cefuncproc.rsnumeric
+msgctxt "cefuncproc.rsnumeric"
+msgid "numeric"
+msgstr ""
+
+#: cefuncproc.rsnumlock
+msgctxt "cefuncproc.rsnumlock"
+msgid "Num Lock"
+msgstr ""
+
+#: cefuncproc.rspagedown
+msgctxt "cefuncproc.rspagedown"
+msgid "Page Down"
+msgstr ""
+
+#: cefuncproc.rspageup
+msgctxt "cefuncproc.rspageup"
+msgid "Page Up"
+msgstr ""
+
+#: cefuncproc.rspause
+msgctxt "cefuncproc.rspause"
+msgid "Pause"
+msgstr ""
+
+#: cefuncproc.rsposition
+msgid " Position"
+msgstr ""
+
+#: cefuncproc.rsprint
+msgctxt "cefuncproc.rsprint"
+msgid "Print"
+msgstr ""
+
+#: cefuncproc.rsprintscreen
+msgctxt "cefuncproc.rsprintscreen"
+msgid "Print Screen"
+msgstr ""
+
+#: cefuncproc.rsrightarrow
+msgctxt "cefuncproc.rsrightarrow"
+msgid "Right Arrow"
+msgstr ""
+
+#: cefuncproc.rsrightmb
+msgid "Right MB"
+msgstr ""
+
+#: cefuncproc.rsrightwindowskey
+msgctxt "cefuncproc.rsrightwindowskey"
+msgid "Right Windows key"
+msgstr ""
+
+#: cefuncproc.rsscrolllock
+msgctxt "cefuncproc.rsscrolllock"
+msgid "Scroll Lock"
+msgstr ""
+
+#: cefuncproc.rsselect
+msgctxt "cefuncproc.rsselect"
+msgid "Select"
+msgstr ""
+
+#: cefuncproc.rsseparator
+msgctxt "cefuncproc.rsseparator"
+msgid "Separator"
+msgstr ""
+
+#: cefuncproc.rsshift
+msgctxt "cefuncproc.rsshift"
+msgid "Shift"
+msgstr ""
+
+#: cefuncproc.rsspacebar
+msgctxt "cefuncproc.rsspacebar"
+msgid "Space bar"
+msgstr ""
+
+#: cefuncproc.rstab
+msgctxt "cefuncproc.rstab"
+msgid "Tab"
+msgstr ""
+
+#: cefuncproc.rstheinjectionthreadtooklongerthan10secondstoexecute
+msgid "The injection thread took longer than 10 seconds to execute. Injection routine not freed"
+msgstr "注入线程执行超过10秒, 注入例程未释放"
+
+#: cefuncproc.rsunknownerrorduringinjection
+msgid "Unknown error during injection"
+msgstr "注入时发生未知错误"
+
+#: cefuncproc.rsuparrow
+msgctxt "cefuncproc.rsuparrow"
+msgid "Up Arrow"
+msgstr ""
+
+#: ceguicomponents.rsinvalidformdata
+msgid "Invalid formdata"
+msgstr "无效的表单数据"
+
+#: celazysocket.rsdisconnectedwhilereceivingdata
+msgid "Disconnected while receiving data"
+msgstr "接收数据时断开连接"
+
+#: celazysocket.rsdisconnectedwhilesendingdata
+msgid "Disconnected while sending data"
+msgstr "发送数据时断开连接"
+
+#: celazysocket.rserrorwhilereceivingdata
+msgid "Error while receiving data: "
+msgstr "接收数据时出错： "
+
+#: celazysocket.rserrorwhilesendingdata
+msgid "Error while sending data: "
+msgstr "发送数据时出错： "
+
+#: celazysocket.rstimeoutwhilereceivingdata
+msgid "Timeout while receiving data"
+msgstr "接收数据超时"
+
+#: celazysocket.rstimeoutwhilesendingdata
+msgid "Timeout while sending data"
+msgstr "发送数据超时"
+
+#: celazysocket.rswhoopdeedoo
+msgid "Whoopdeedoo"
+msgstr ""
+
+#: changeoffsetunit.rsthisisnotanvalidvalue
+msgctxt "changeoffsetunit.rsthisisnotanvalidvalue"
+msgid "This is not an valid value"
+msgstr "这不是有效的数值"
+
+#: customtypehandler.rsacustomfunctiontypewithnamealreadyexists
+msgid "A custom function type with name %s already exists"
+msgstr "已存在名称为 %s 的自定义函数类型"
+
+#: customtypehandler.rsacustomtypewithnamealreadyexists
+msgid "A custom type with name %s already exists"
+msgstr "已存在名称为 %s 的自定义类型"
+
+#: customtypehandler.rsbytesizeis0
+msgid "bytesize is 0"
+msgstr "字节大小为0"
+
+#: customtypehandler.rscthinvalidnumberofparameters
+msgid "Invalid number of parameters"
+msgstr "无效的参数数目"
+
+#: customtypehandler.rscthparameter3isnotavalidfunction
+msgid "Parameter 3 is not a valid function"
+msgstr "参数 3 不是一个有效的函数"
+
+#: customtypehandler.rscthparameter4isnotavalidfunction
+msgid "Parameter 4 is not a valid function"
+msgstr "参数 4 不是一个有效的函数"
+
+#: customtypehandler.rsfailurecreatingluaobject
+msgid "Failure creating lua object"
+msgstr "创建 lua 对象失败"
+
+#: customtypehandler.rsinvalidfunctiontypename
+msgid "invalid functiontypename"
+msgstr "无效的函数类型名"
+
+#: customtypehandler.rsinvalidtypename
+msgid "invalid typename"
+msgstr "无效的类型名"
+
+#: customtypehandler.rsonlyreturntypenamebytecountandfunctiontypename
+msgid "Only return typename, bytecount and functiontypename"
+msgstr "只能返回类型名，字节数和函数类型名"
+
+#: customtypehandler.rsundefinederror
+msgctxt "customtypehandler.rsundefinederror"
+msgid "Undefined error"
+msgstr "未定义的错误"
+
+#: d3dhookunit.rsd3dhookfailuretomapthesharedmemoryobject
+msgid "D3DHook: Failure to map the shared memory object"
+msgstr "D3DHook: 未能映射共享内存对象"
+
+#: d3dhookunit.rsd3dhookfailuretoopenthesharedmemoryobject
+msgid "D3DHook: Failure to open the shared memory object"
+msgstr "D3DHook: 未能打开共享内存对象"
+
+#: d3dhookunit.rsthed3dhookobjecthasnotbeencreatedyet
+msgid "The d3dhook object has not been created yet"
+msgstr "D3DHook 对象未创建"
+
+#: dbk32functions.rsapcrules
+msgid "APC rules"
+msgstr "APC 规则"
+
+#: dbk32functions.rscouldnotlaunchdbvm
+msgid "Could not launch DBVM: The Intel-VT feature has been disabled in your BIOS"
+msgstr "无法启动 DBVM：你的 BIOS 禁用了 Intel-VT 功能"
+
+#: dbk32functions.rsdbk32error
+msgid "DBK32 error"
+msgstr "DBK32 错误"
+
+#: dbk32functions.rsdbkerror
+msgid "DBK Error"
+msgstr "DBK 错误"
+
+#: dbk32functions.rsdrivererror
+msgid "Driver error"
+msgstr "驱动错误"
+
+#: dbk32functions.rsfailuretoconfigurethedriver
+msgid "Failure to configure the driver"
+msgstr "未能配置驱动"
+
+#: dbk32functions.rsfailuretoconfiguretheultimapdriver
+msgid "Failure to configure the ultimap driver"
+msgstr "未能配置 ultimap 驱动"
+
+#: dbk32functions.rsinvalidmsraddress
+msgid "Invalid MSR address:"
+msgstr "无效的 MSR 地址："
+
+#: dbk32functions.rsmsrsareunavailable
+msgid "msrs are unavailable"
+msgstr "msrs 不可用"
+
+#: dbk32functions.rspleaserebootandpressf8duringboot
+msgid "The driver failed to load due to signing issues. If you have secure boot enabled in your BIOS, set it to \"Other OS\" or disable it. Alternatively, boot with driver signing policy disabled, or sign the driver yourself"
+msgstr "签名问题导致驱动未能加载。如果你的 BIOS 有安全启动，设置它为其它操作系统或者禁用。也可以禁用签名策略，或自己签名驱动"
+
+#: dbk32functions.rspleaserunthe64bitversionofce
+msgid "Please run the 64-bit version of Cheat Engine"
+msgstr "请运行 Cheat Engine 的64位版本"
+
+#: dbk32functions.rsthedrivercouldntbeopened
+msgid "The driver couldn't be opened! It's not loaded or not responding. Luckely you are running dbvm so it's not a total waste. Do you wish to force load the driver?"
+msgstr "驱动无法打开！它没加载或无响应。幸运的是你在运行 DBVM，想要强制加载驱动吗？"
+
+#: dbk32functions.rsthedrivercouldntbeopenedtryagain
+msgid "The driver couldn't be opened! It's not loaded or not responding. I recommend to reboot your system and try again"
+msgstr "驱动无法打开！它没加载或无响应。我建议你重启系统再试一次"
+
+#: dbk32functions.rsthedriverfailedtosuccessfullyinitialize
+msgid "The driver failed to successfully initialize. Some functions may not completely work"
+msgstr "驱动未能初始化，一些功能可能不会正常工作"
+
+#: dbk32functions.rsthedriverthatiscurrentlyloaded
+msgid "The driver that is currently loaded belongs to a different version of Cheat Engine. Please unload this driver or reboot."
+msgstr "当前加载的驱动属于不同版本的 Cheat Engine，请卸载驱动或重启系统."
+
+#: dbk32functions.rstheservicecouldntgetopened
+msgid "The service couldn't get opened and also couldn't get created. Check if you have the needed rights to create a service, or call your system admin (Who'll probably beat you up for even trying this). Until this is fixed you won't be able to make use of the enhancements the driver gives you"
+msgstr "服务不能打开也不能创建，检查你是否有创建服务需要的权限，或者联系系统管理员。在修复前你不能使用驱动提供的增强功能"
+
+#: dbk32functions.rstheservicecouldntgetopenedultimap
+msgid "The ultimap service couldn't get opened and also couldn't get created.  (No admin rights?)"
+msgstr "不能打开也不能创建ultimap 服务（没管理员权限？）"
+
+#: dbk32functions.rsyouaremissingthedriver
+msgid "You are missing the driver. Try reinstalling cheat engine, and try to disable your anti-virus before doing so."
+msgstr "你缺少驱动，试着重新安装 Cheat Engine，或者安装前禁用杀毒软件。"
+
+#: dbk64secondaryloader.rserrorwhiletryingtoloadthedriveratpart
+msgid "Error while trying to load the driver at part "
+msgstr "尝试加载驱动时出错 "
+
+#: dbk64secondaryloader.rsmoduleloaderdailedtomdbk64systomemoryap
+msgid "ModuleLoader failed to map dbk64.sys to memory"
+msgstr "模块加载器未能映射 dbk64.sys到内存"
+
+#: dbk64secondaryloader.rsseemslikedbvmisntloadedafterall
+msgid "seems like dbvm isn't loaded after all"
+msgstr "看起来DBVM最终没有加载"
+
+#: dbk64secondaryloader.rssuccessthedriverhasbeenloaded
+msgid "Success. The driver has been loaded thanks to dbvm"
+msgstr "成功，感谢DBVM加载驱动"
+
+#: dbk64secondaryloader.rsthedriverfailedtoinitialize
+msgid "The driver failed to initialize"
+msgstr "驱动未能初始化"
+
+#: dbvmloadmanual.rschecking
+msgid "<Checking>"
+msgstr "<检查中>"
+
+#: dbvmloadmanual.rscpu
+msgid "CPU "
+msgstr "CPU "
+
+#: dbvmloadmanual.rscpualreadyrunningdbvm
+msgid "This cpu is already running DBVM"
+msgstr "这个CPU已在运行DBVM"
+
+#: dbvmloadmanual.rsloaded
+msgid "Loaded:"
+msgstr "已加载："
+
+#: dbvmloadmanual.rsnotloaded
+msgid "Not loaded"
+msgstr "未加载"
+
+#: debugeventhandler.rsdebughandleaccessviolationdebugeventnow
+msgid "Debug HandleAccessViolationDebugEvent now"
+msgstr "现在调试 HandleAccessViolationDebugEvent"
+
+#: debugeventhandler.rsspecialcase
+msgid "Special case"
+msgstr "特殊情况"
+
+#: debuggertypedefinitions.rsbreak
+msgctxt "debuggertypedefinitions.rsbreak"
+msgid "Break"
+msgstr "中断"
+
+#: debuggertypedefinitions.rsbreakandtrace
+msgctxt "debuggertypedefinitions.rsbreakandtrace"
+msgid "Break and trace"
+msgstr "中断和追踪"
+
+#: debuggertypedefinitions.rschangereg
+msgid "Change reg"
+msgstr "更改注册"
+
+#: debuggertypedefinitions.rsdbvmbreakpoint
+msgctxt "debuggertypedefinitions.rsdbvmbreakpoint"
+msgid "DBVM Breakpoint"
+msgstr "DBVM 断点"
+
+#: debuggertypedefinitions.rsexceptionbreakpoint
+msgctxt "debuggertypedefinitions.rsexceptionbreakpoint"
+msgid "Exception Breakpoint"
+msgstr "异常断点"
+
+#: debuggertypedefinitions.rsfindcode
+msgid "Find code"
+msgstr "查找代码"
+
+#: debuggertypedefinitions.rsfindcodeaccess
+msgid "Find code access"
+msgstr "查找代码访问"
+
+#: debuggertypedefinitions.rshardwarebreakpoint
+msgctxt "debuggertypedefinitions.rshardwarebreakpoint"
+msgid "Hardware Breakpoint"
+msgstr "硬件断点"
+
+#: debuggertypedefinitions.rsonexecute
+msgid "On Execute"
+msgstr "执行时"
+
+#: debuggertypedefinitions.rsonreadwrite
+msgid "On Read/Write"
+msgstr "读写时"
+
+#: debuggertypedefinitions.rsonwrite
+msgid "On Write"
+msgstr "写时"
+
+#: debuggertypedefinitions.rssoftwarebreakpoint
+msgctxt "debuggertypedefinitions.rssoftwarebreakpoint"
+msgid "Software Breakpoint"
+msgstr "软件断点"
+
+#: debughelper.rsaddbreakpointaninvaliddebugregisterisused
+msgid "AddBreakpoint: An invalid debug register is used"
+msgstr "添加断点：使用了一个无效的调试寄存器"
+
+#: debughelper.rsall4debugregistersarecurrentlyusedupfreeoneandtrya
+msgid "All debug registers are currently used up. Free one and try again"
+msgstr "目前所有调试寄存器已被使用，释放一个后再试"
+
+#: debughelper.rsalldebugregistersareusedup
+msgid "All debug registers are used up"
+msgstr "所有调试寄存器已被使用"
+
+#: debughelper.rsalldebugregistersareusedupdoyouwanttouseasoftwarebp
+msgid "All debug registers are used up. Do you want to use a software breakpoint?"
+msgstr "所有调试寄存器已被使用，你想用软件断点吗？"
+
+#: debughelper.rsasktoenablenx
+msgid ""
+"For execute page exceptions the target process must support No-Execute page support. Currently this process doesn't have this enabled, but if you think the process itself does support it you can enable it.\n"
+"Do you wish to enable No-Execute support for this process?\n"
+msgstr ""
+"为执行页面异常，目标进程必须支持 No-Execute 页面支持，当前这个进程还没启用这个，但如果你认为进程本身支持，可以启用它。\n"
+"你想为这个进程启用 No-Execute 支持吗？\n"
+
+#: debughelper.rsbreakpointerror
+msgid "Breakpoint error:"
+msgstr "断点错误："
+
+#: debughelper.rscalledfromanunexpectedthread
+msgid "Called from an unexpected thread"
+msgstr "从意外线程调用"
+
+#: debughelper.rscalledfromdebuggerthread
+msgid "Called from debugger thread"
+msgstr "从调试器线程调用"
+
+#: debughelper.rscalledfrommainthread
+msgid "Called from main thread"
+msgstr "从主线程调用"
+
+#: debughelper.rscantenabledep
+msgid "Data execution prevention is not enabled in this process and can not be enabled"
+msgstr "这个进程没启用数据执行保护且不可启用"
+
+#: debughelper.rscreateprocessfailed
+msgid "CreateProcess failed:%s"
+msgstr "创建进程失败：%s"
+
+#: debughelper.rsdebuggerattachaborted
+msgid "Debugger attach aborted"
+msgstr "调试器附加中止"
+
+#: debughelper.rsdebuggerattachtimeout
+msgctxt "debughelper.rsdebuggerattachtimeout"
+msgid "Debugger attach timeout"
+msgstr "调试器附加超时"
+
+#: debughelper.rsdebuggercrash
+msgid "Debugger Crash"
+msgstr "调试器崩溃"
+
+#: debughelper.rsdebuggerfailedtoattach
+msgid "Debugger failed to attach"
+msgstr "调试器未能附加"
+
+#: debughelper.rsdebuggerinterfacedoesnotsupportdbvmbreakpoints
+msgid "Debugger interface %s does not support DBVM breakpoints"
+msgstr "调试器接口 %s 不支持 DBVM 断点"
+
+#: debughelper.rsdebuggerinterfacedoesnotsupportsoftwarebreakpoints
+msgid "Debugger interface %s does not support software breakpoints"
+msgstr "调试器接口 %s 不支持软件断点"
+
+#: debughelper.rsdebuggerthreadisatpoint
+msgid "debuggerthread is at point "
+msgstr "调试器线程在这点上 "
+
+#: debughelper.rsdepsettingtimeout
+msgid "Timeout while trying to set DEP policy. Continue with the breakpoint?"
+msgstr "尝试设置 DEP 策略超时，继续断点？"
+
+#: debughelper.rsfaileddep
+msgid "Failed enabling No Execute"
+msgstr "启用 No Execute 失败"
+
+#: debughelper.rsfaileddeppermanently
+msgid "Failed enabling No Execute AND blocked it from every changing. Fuck"
+msgstr "启用 No Execute 失败，并且阻止它进行任何改变，草"
+
+#: debughelper.rsfailuregettingdepinformation
+msgid "Failure getting DEP information for this process. No Execute Breakpoint support"
+msgstr "为这个进程获取 DEP 信息失败，支持 No Execute 断点"
+
+#: debughelper.rslastlocation
+msgid " (Last location:"
+msgstr " （最后位置："
+
+#: debughelper.rsno
+msgctxt "debughelper.rsno"
+msgid "No"
+msgstr "否"
+
+#: debughelper.rsnoexecutepageexceptionsforyou
+msgid "Execute page exception breakpoints are not possible on your system"
+msgstr "执行页面异常断点在你的系统不可用"
+
+#: debughelper.rsnoform
+msgid "No form"
+msgstr "无表单"
+
+#: debughelper.rsonlythedebuggerthreadisallowedtosetthecurrentthread
+msgid "Only the debugger thread is allowed to set the current thread"
+msgstr "只允许调试器线程设置当前线程"
+
+#: debughelper.rsoutofhwbreakpoints
+msgid "All debug registers are used up and this debugger interface does not support software Breakpoints. Remove some and try again"
+msgstr "所有调试寄存器已被使用，并且这个调试器接口不支持软件断点，删掉一些再试"
+
+#: debughelper.rsprocesssucksnodepsupport
+msgid "Ooops, looks like the process does not support No Execute"
+msgstr "看来这个进程不支持 No Execute"
+
+#: debughelper.rsthedebuggerattachhastimedout
+msgid ""
+"The debugger attach is taking a while. This is normal when there are many symbols or the system is slow so please be patient. But if you don't have the time to wait or the program has crashes to desktop, then you can cancel this wait. Beware though that you may have to restart the target process if you do wish to debug anyhow.\n"
+"Do you wish to wait longer?\n"
+msgstr ""
+"调试器附加过了一段时间，这很正常，当有很多符号或系统很慢时，请耐心等待。但如果你没时间等或程序崩溃到桌面，那你可以取消等待。注意如果你还想调试，可能要重启目标进程。\n"
+"你想继续等吗？\n"
+
+#: debughelper.rsthefollowingopcodesaccessed
+msgid "The following opcodes accessed %s"
+msgstr "以下操作码访问了 %s"
+
+#: debughelper.rsthefollowingopcodeswriteto
+msgid "The following opcodes write to %s"
+msgstr "以下操作码写入到 %s"
+
+#: debughelper.rsthisdebuggerinterfacedoesntsupportbreakonentryyet
+msgid "This debugger interface :'%s' doesn't support Break On Entry yet"
+msgstr "这个调试器接口：'%s'还不支持在入口断点"
+
+#: debughelper.rsunreadableaddress
+msgid "Unreadable address"
+msgstr "不可读地址"
+
+#: debughelper.rsunreadablememoryunabletosetsoftwarebreakpoint
+msgid "Unreadable memory. Unable to set software breakpoint"
+msgstr "不可读内存，无法设置软件断点"
+
+#: debughelper.rsyes
+msgctxt "debughelper.rsyes"
+msgid "Yes"
+msgstr "是"
+
+#: disassemblerviewlinesunit.rscall
+msgid "(Call)"
+msgstr "（调用）"
+
+#: disassemblerviewlinesunit.rscon
+msgid "(Conditional)"
+msgstr "（条件）"
+
+#: disassemblerviewlinesunit.rsinvaliddisassembly
+msgid "Invalid disassembly"
+msgstr "无效的反汇编"
+
+#: disassemblerviewlinesunit.rsmemory
+msgid "(Code/Data)"
+msgstr "（代码/数据）"
+
+#: disassemblerviewlinesunit.rsun
+msgid "(Unconditional)"
+msgstr "（无条件）"
+
+#: disassemblerviewunit.rsaddress
+msgctxt "disassemblerviewunit.rsaddress"
+msgid "Address"
+msgstr "地址"
+
+#: disassemblerviewunit.rsbytes
+msgctxt "disassemblerviewunit.rsbytes"
+msgid "Bytes"
+msgstr "字节"
+
+#: disassemblerviewunit.rscomment
+msgctxt "disassemblerviewunit.rscomment"
+msgid "Comment"
+msgstr "注释"
+
+#: disassemblerviewunit.rscopy
+msgctxt "disassemblerviewunit.rscopy"
+msgid "Copy"
+msgstr "复制"
+
+#: disassemblerviewunit.rsopcode
+msgid "Opcode"
+msgstr "操作码"
+
+#: disassemblerviewunit.rspleaseopenaprocessfirst
+msgid "Please open a process first"
+msgstr "请先打开一个进程"
+
+#: disassemblerviewunit.rssymbolsarebeingloaded
+msgid "Symbols are being loaded (%d %%)"
+msgstr "正在加载符号（%d %%）"
+
+#: dissectcodethread.rsinvaliddissectcodefile
+msgid "Invalid dissect code file"
+msgstr "无效的分析代码文件"
+
+#: dissectcodethread.rstdissectcodethreadgetcalllistcalledwithanonemptylist
+msgid "TDissectCodeThread.getCallList called with a non empty list"
+msgstr "TDissectCodeThread.getCallList 调用了一个非空列表"
+
+#: dissectcodeunit.rsdone
+msgctxt "dissectcodeunit.rsdone"
+msgid "done"
+msgstr "完成"
+
+#: dissectcodeunit.rspleaseselectsomethingtoscan
+msgid "Please select something to scan"
+msgstr "请选择要扫描的内容"
+
+#: dissectcodeunit.rsstart
+msgctxt "dissectcodeunit.rsstart"
+msgid "Start"
+msgstr "开始"
+
+#: dissectcodeunit.rsstop
+msgctxt "dissectcodeunit.rsstop"
+msgid "Stop"
+msgstr "停止"
+
+#: dotnettypes.rsdnt2byte
+msgctxt "dotnettypes.rsdnt2byte"
+msgid "2 Byte"
+msgstr "2 字节"
+
+#: dotnettypes.rsdnt2bytesigned
+msgid "2 Byte (Signed)"
+msgstr "2 字节（有符号）"
+
+#: dotnettypes.rsdnt4byte
+msgctxt "dotnettypes.rsdnt4byte"
+msgid "4 Byte"
+msgstr "4 字节"
+
+#: dotnettypes.rsdnt4bytesigned
+msgid "4 Byte (Signed)"
+msgstr "4 字节（有符号）"
+
+#: dotnettypes.rsdnt8byte
+msgid "8 Byte"
+msgstr "8 字节"
+
+#: dotnettypes.rsdnt8bytesigned
+msgid "8 Byte (Signed)"
+msgstr "8 字节（有符号）"
+
+#: dotnettypes.rsdntarray
+msgid "Array"
+msgstr "数组"
+
+#: dotnettypes.rsdntbool
+msgid "bool"
+msgstr "布尔型"
+
+#: dotnettypes.rsdntbyte
+msgctxt "dotnettypes.rsdntbyte"
+msgid "Byte"
+msgstr "字节"
+
+#: dotnettypes.rsdntbytesigned
+msgid "Byte (Signed)"
+msgstr "字节（有符号）"
+
+#: dotnettypes.rsdntchar
+msgid "char"
+msgstr "字符型"
+
+#: dotnettypes.rsdntclass
+msgid "Class"
+msgstr "类"
+
+#: dotnettypes.rsdntcmod_opt
+msgid "CMOD_OPT"
+msgstr ""
+
+#: dotnettypes.rsdntcmod_reqd
+msgid "CMOD_REQD"
+msgstr ""
+
+#: dotnettypes.rsdntdouble
+msgctxt "dotnettypes.rsdntdouble"
+msgid "Double"
+msgstr "双浮点"
+
+#: dotnettypes.rsdntend
+msgid "END"
+msgstr ""
+
+#: dotnettypes.rsdntfloat
+msgctxt "dotnettypes.rsdntfloat"
+msgid "Float"
+msgstr "单浮点"
+
+#: dotnettypes.rsdntfunctionpointer
+msgid "Function Pointer"
+msgstr "函数指针"
+
+#: dotnettypes.rsdntgenericinst
+msgid "GenericInst"
+msgstr ""
+
+#: dotnettypes.rsdntinternal
+msgid "Internal"
+msgstr "内部"
+
+#: dotnettypes.rsdntmax
+msgid "MAX"
+msgstr ""
+
+#: dotnettypes.rsdntmodifier
+msgid "Modifier"
+msgstr ""
+
+#: dotnettypes.rsdntmvar
+msgid "MVar"
+msgstr ""
+
+#: dotnettypes.rsdntobject
+msgid "Object"
+msgstr "对象"
+
+#: dotnettypes.rsdntpinned
+msgid "Pinned"
+msgstr "已固定"
+
+#: dotnettypes.rsdntpointer
+msgctxt "dotnettypes.rsdntpointer"
+msgid "Pointer"
+msgstr "指针"
+
+#: dotnettypes.rsdntreference
+msgid "Reference"
+msgstr "引用"
+
+#: dotnettypes.rsdntsentinel
+msgid "Sentinel"
+msgstr "哨兵"
+
+#: dotnettypes.rsdntsigned
+msgctxt "dotnettypes.rsdntsigned"
+msgid "Signed"
+msgstr "有符号"
+
+#: dotnettypes.rsdntstring
+msgctxt "dotnettypes.rsdntstring"
+msgid "String"
+msgstr "字符串"
+
+#: dotnettypes.rsdntszarray
+msgid "SZ Array"
+msgstr "SZ 数组"
+
+#: dotnettypes.rsdnttypedbyref
+msgid "Typed By Ref"
+msgstr ""
+
+#: dotnettypes.rsdntunsigned
+msgid "Unsigned"
+msgstr "无符号"
+
+#: dotnettypes.rsdntvaluetype
+msgid "ValueType"
+msgstr "数值类型"
+
+#: dotnettypes.rsdntvar
+msgid "Var"
+msgstr ""
+
+#: dotnettypes.rsdntvoid
+msgid "void"
+msgstr "空"
+
+#: driverlist.rsdlnothingfound
+msgctxt "driverlist.rsdlnothingfound"
+msgid "nothing found"
+msgstr "什么都没找到"
+
+#: extratrainercomponents.rsundefineddescription
+msgid "undefined description"
+msgstr "未定义描述"
+
+#: extratrainercomponents.rsundefinedhotkey
+msgid "undefined hotkey"
+msgstr "未定义热键"
+
+#: feces.rsbcryptcouldnotbeused
+msgid "bcrypt could not be used"
+msgstr "不能使用 bcrypt"
+
+#: feces.rscheatenginesignaturefiles
+msgid "Cheat engine signature files"
+msgstr "Cheat Engine 签名文件"
+
+#: feces.rscouldnotopenthealgorithmprovider
+msgid "Could not open the algorithm provider"
+msgstr "不能打开算法提供者"
+
+#: feces.rsfailedcreatinghasalgorithmprovider
+msgctxt "feces.rsfailedcreatinghasalgorithmprovider"
+msgid "Failed creating has algorithm provider"
+msgstr "创建算法提供者失败"
+
+#: feces.rsfailedcreatinghasalgorithmprovider2
+msgctxt "feces.rsfailedcreatinghasalgorithmprovider2"
