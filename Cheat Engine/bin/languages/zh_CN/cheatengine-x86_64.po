@@ -6438,3 +6438,4625 @@ msgid "Error loading %s. The dll is missing the CEPlugin_GetVersion function"
 msgstr "加载 %s 出错，DLL缺少 CEPlugin_GetVersion function"
 
 #: plugin.rserrorloadingthegetversionfunctionreturnedfalse
+msgid "Error loading %s. The GetVersion function returned FALSE"
+msgstr "加载 %s 出错，GetVersion 函数返回 FALSE"
+
+#: plugin.rserrorloadingthisdllrequiresanewerversionofcetofunc
+msgid "Error loading %s. This dll requires a newer version of ce to function properly"
+msgstr "加载 %s 出错，DLL需要新版CE以正确工作"
+
+#: plugin.rsismissingtheceplugin_disablepluginexport
+msgid "%s is missing the CEPlugin_DisablePlugin export"
+msgstr "%s 缺少 CEPlugin_DisablePlugin export"
+
+#: plugin.rsismissingtheceplugin_initializepluginexport
+msgid "%s is missing the CEPlugin_InitializePlugin export"
+msgstr "%s 缺少 CEPlugin_InitializePlugin export"
+
+#: plugin.rsplugtheplugindllcouldnotbeloaded
+msgid "The plugin dll could not be loaded:"
+msgstr "DLL插件无法加载："
+
+#: pluginexports.rsloadmodulefailed
+msgid "LoadModule failed"
+msgstr "加载模块失败"
+
+#: pluginexports.rspluginaddress
+msgctxt "pluginexports.rspluginaddress"
+msgid "Plugin Address"
+msgstr "插件地址"
+
+#: pointeraddresslist.rspalinvalidscandatafile
+msgctxt "pointeraddresslist.rspalinvalidscandatafile"
+msgid "Invalid scandata file"
+msgstr "无效的扫描数据文件"
+
+#: pointeraddresslist.rspalinvalidscandataversion
+msgctxt "pointeraddresslist.rspalinvalidscandataversion"
+msgid "Invalid scandata version"
+msgstr "无效的扫描数据版本"
+
+#: pointerscanconnector.rscouldnotberesolved
+msgctxt "pointerscanconnector.rscouldnotberesolved"
+msgid " could not be resolved"
+msgstr " 无法解析"
+
+#: pointerscanconnector.rserrorwhileconnecting
+msgid "Error while connecting: "
+msgstr "连接时出错： "
+
+#: pointerscanconnector.rsfailurecreatingsocket
+msgctxt "pointerscanconnector.rsfailurecreatingsocket"
+msgid "Failure creating socket"
+msgstr "创建 socket 失败"
+
+#: pointerscanconnector.rshost
+msgctxt "pointerscanconnector.rshost"
+msgid "host:"
+msgstr "主机："
+
+#: pointerscanconnector.rsinvalidresponsefrom
+msgid "invalid response from "
+msgstr "无效的回应来自 "
+
+#: pointerscanconnector.rssomeoneforgottogivethisconnector
+msgid "Someone forgot to give this connector an OnConnected event..."
+msgstr "有人忘记给这个连接器一个 OnConnected 事件……"
+
+#: pointerscancontroller.rsallpathsreceived
+msgid "All paths received"
+msgstr "所有路径已接收"
+
+#: pointerscancontroller.rsfailurecopyingtargetprocessmemory
+msgid "Failure copying target process memory"
+msgstr "复制目标进程内存失败"
+
+#: pointerscancontroller.rsinvaliddata
+msgid "invalid data:"
+msgstr "无效的数据："
+
+#: pointerscancontroller.rsnoupdatefromtheclientforover120sec
+msgid "No update from the client for over 120 seconds"
+msgstr "客户端无更新超过120秒"
+
+#: pointerscancontroller.rspscachildtriedtoconnect
+msgid "A child tried to connect"
+msgstr "一个 child 尝试连接"
+
+#: pointerscancontroller.rspscalreadystillconnectedtothischild
+msgid "Already/still connected to this child"
+msgstr "已经/仍在连接到这个 child"
+
+#: pointerscancontroller.rspscaparenttriedtoconnect
+msgid "A parent tried to connect"
+msgstr "一个 parent 尝试连接"
+
+#: pointerscancontroller.rspscchildisntidlewhilepreviouslyitwas
+msgid "child isn't idle while previously it was..."
+msgstr "child 没有闲置……"
+
+#: pointerscancontroller.rspscduringscanfinishing
+msgid "During scan finishing: "
+msgstr "在扫描结束期间： "
+
+#: pointerscancontroller.rspscerror
+msgid " (Error: "
+msgstr " （错误: "
+
+#: pointerscancontroller.rspscfailurecreatingsocket
+msgctxt "pointerscancontroller.rspscfailurecreatingsocket"
+msgid "Failure creating socket"
+msgstr "创建 socket 失败"
+
+#: pointerscancontroller.rspscfailuretobindport
+msgid "Failure to bind port "
+msgstr "未能绑定端口 "
+
+#: pointerscancontroller.rspscfailuretolisten
+msgid "Failure to listen"
+msgstr "未能监听"
+
+#: pointerscancontroller.rspscforsomeunknownreasontheuntrustedchildisntidleanymore
+msgid "For some unknown reason the untrusted child isn't idle anymore"
+msgstr "因某些未知原因，不可信 child 不再闲置"
+
+#: pointerscancontroller.rspschelloafterinitializtion
+msgid "HELLO after initializtion"
+msgstr "初始化之后 HELLO"
+
+#: pointerscancontroller.rspscimpossibleerroruseloadedpointermapwasfalseetc
+msgid "Impossible error: UseLoadedPointermap was false when a child message got handled"
+msgstr ""
+
+#: pointerscancontroller.rspscinvalidchildpassword
+msgid "Invalid child password"
+msgstr "无效的子密码"
+
+#: pointerscancontroller.rspscinvalidcommandwhilewaitingforhello
+msgid "Invalid command while waiting for hello"
+msgstr "等待 hello 时无效的命令"
+
+#: pointerscancontroller.rspscinvalidhandshakesignature
+msgid "Invalid handshake signature"
+msgstr "无效的握手签名"
+
+#: pointerscancontroller.rspscinvalidmessage
+msgid "Invalid message"
+msgstr "无效的信息"
+
+#: pointerscancontroller.rspscinvalidmessagereceived
+msgid "Invalid message received"
+msgstr "收到的信息无效"
+
+#: pointerscancontroller.rspscinvalidparentpassword
+msgid "Invalid parent password"
+msgstr "无效的父密码"
+
+#: pointerscancontroller.rspscinvalidqueuefile
+msgid "Invalid queue file"
+msgstr "无效的队列文件"
+
+#: pointerscancontroller.rspscinvalidreplyforpsupdatereplycmdcurrentscanhasended
+msgid "Invalid reply for PSUPDATEREPLYCMD_CURRENTSCANHASENDED"
+msgstr "无效的回复 for PSUPDATEREPLYCMD_CURRENTSCANHASENDED"
+
+#: pointerscancontroller.rspscinvalidresultreceivedafteruploadingthescanresults
+msgid "Invalid result received after uploading the scanresults"
+msgstr "上传扫描结果后收到无效的结果"
+
+#: pointerscancontroller.rspscinvalidresultreceivedfrompsupdatereplycmdherearesomepaths
+msgid "Invalid result received from PSUPDATEREPLYCMD_HEREARESOMEPATHS"
+msgstr "从 PSUPDATEREPLYCMD_HEREARESOMEPATHS 收到无效的结果"
+
+#: pointerscancontroller.rspscinvalidscandatareceivedfilecount
+msgid "Invalid scandata received. filecount=0"
+msgstr "收到无效的扫描数据，文件数=0"
+
+#: pointerscancontroller.rspscinvalidupdatestatusreplyreceived
+msgid "Invalid UpdateStatus reply received"
+msgstr "收到无效的更新状态回复"
+
+#: pointerscancontroller.rspscnewscanstartedwhilenotdone
+msgid "New scan started while not done"
+msgstr "未完成时开始了新的扫描"
+
+#: pointerscancontroller.rspscnoresumeptrfilereaderpresent
+msgid "no resume ptr file reader present"
+msgstr ""
+
+#: pointerscancontroller.rspscparentdidntrespondproperlytopscmdprepareformytermination
+msgid "Parent didn't respond properly to PSCMD_PREPAREFORMYTERMINATION"
+msgstr "Parent 没有正确回应 PSCMD_PREPAREFORMYTERMINATION"
+
+#: pointerscancontroller.rspscsleeping
+msgid ":Sleeping"
+msgstr ":休眠中"
+
+#: pointerscancontroller.rspscsuccesfullysentscandatatochild
+msgid "Succesfully sent scandata to child"
+msgstr "成功地发送扫描数据给 child"
+
+#: pointerscancontroller.rspscterminated
+msgid ":Terminated"
+msgstr ":已终止"
+
+#: pointerscancontroller.rspscthechilddidntrespondtopsupdatereplycmdeverythingokasexpected
+msgid "The child didn't respond to PSUPDATEREPLYCMD_EVERYTHINGOK as expected"
+msgstr "The child 没有按期回应 PSUPDATEREPLYCMD_EVERYTHINGOK"
+
+#: pointerscancontroller.rspscthechildissendingmeresultsofadifferentscan
+msgid "The child is sending me results of a different scan"
+msgstr "The child 给我发送不同扫描的结果"
+
+#: pointerscancontroller.rspscthechildtriedtosendanegativeamount
+msgid "The child tried to send a negative amount"
+msgstr "The child 试图发送一个负数"
+
+#: pointerscancontroller.rspscthechildtriedtosendmeresultswhileiwasstillbusy
+msgid "The child tried to send me results while I was still busy"
+msgstr "The child 试图在我忙碌时发送结果"
+
+#: pointerscancontroller.rspscthechildtriedtosendmorepathsatoncethanallowed
+msgid "The child tried to send more paths at once than allowed"
+msgstr "The child 试图一次发送超出允许的路径"
+
+#: pointerscancontroller.rspscthechildtriedtosendmorepathsthanallowedafterarequest
+msgid "The child tried to send more paths than allowed after a request"
+msgstr "The child 试图在请求后发送超出允许的路径"
+
+#: pointerscancontroller.rspsctheparenttriedtosendmeanegativeammountofpaths
+msgid "The parent tried to send me a negative ammount of paths"
+msgstr "The parent 试图给我发送负的路径数"
+
+#: pointerscancontroller.rspsctheparenttriedtosendmemorepathsthanallowedaafterupdate
+msgid "The parent tried to send me more paths than allowed (after update)"
+msgstr "The parent 试图给我发送超出允许的路径（更新后）"
+
+#: pointerscancontroller.rspscthepointerlisthandlerwasdestroyedwithoutagoodreason
+msgid "The pointerlisthandler was destroyed without a good reason"
+msgstr "没有一个好理由 pointerlisthandler 已摧毁"
+
+#: pointerscancontroller.rspscthescanwasterminated
+msgid "The scan was terminated"
+msgstr "扫描已终止"
+
+#: pointerscancontroller.rspsctheuploadwasterminated
+msgid "The upload was terminated"
+msgstr "上传已终止"
+
+#: pointerscancontroller.rspscworking
+msgid ":Working"
+msgstr ":工作中"
+
+#: pointerscancontroller.rspscwritingtodisk
+msgid ":Writing to disk"
+msgstr ":正在写入磁盘"
+
+#: pointerscancontroller.rssavingpointermap
+msgid "Saving pointermap"
+msgstr "正在保存指针映射"
+
+#: pointerscannerfrm.rsactive
+msgctxt "pointerscannerfrm.rsactive"
+msgid "Active"
+msgstr "激活"
+
+#: pointerscannerfrm.rsaddressspecifiersfoundinthewholeprocess
+msgid "Address specifiers found in the whole process"
+msgstr "在整个进程中发现地址说明符"
+
+#: pointerscannerfrm.rsareyousureyouwishyouforceadisconnect
+msgid "Are you sure you wish you force a disconnect. The current paths will be lost"
+msgstr "你确定要强制断开连接吗？当前路径会丢失"
+
+#: pointerscannerfrm.rsbaseaddress
+msgid "Base Address"
+msgstr "基址"
+
+#: pointerscannerfrm.rsceinjectedpointerscan
+msgid "CE Injected Pointerscan"
+msgstr "CE已注入指针扫描"
+
+#: pointerscannerfrm.rscurrentlevel
+msgid "Current Level"
+msgstr "当前级别"
+
+#: pointerscannerfrm.rserrorduringscan
+msgid "Error during scan"
+msgstr "扫描时出错"
+
+#: pointerscannerfrm.rsevaluated
+msgid "Evaluated"
+msgstr "预计"
+
+#: pointerscannerfrm.rsgeneratingpointermap
+msgid "Generating pointermap..."
+msgstr "正在生成指针映射……"
+
+#: pointerscannerfrm.rsisnotavalid4bytevalue
+msgid "%s is not a valid 4 byte value"
+msgstr "%s 不是有效的4字节数值"
+
+#: pointerscannerfrm.rsisnotavaliddoublevalue
+msgid "%s is not a valid double value"
+msgstr "%s 不是有效的双浮点值"
+
+#: pointerscannerfrm.rsisnotavalidfloatingpointvalue
+msgid "%s is not a valid floating point value"
+msgstr "%s 不是有效的单浮点值"
+
+#: pointerscannerfrm.rslookingfor
+msgid "Looking for"
+msgstr "寻找"
+
+#: pointerscannerfrm.rsoffset
+msgctxt "pointerscannerfrm.rsoffset"
+msgid "Offset"
+msgstr "偏移"
+
+#: pointerscannerfrm.rsonlythefirst1000000entrieswillbedisplayed
+msgid "Only the first 1000000 entries will be displayed. Rescan will still work with all results.  (This is normal for a pointerscan, you MUST do a few rescans)"
+msgstr "只有前面一百万条目会显示，重新扫描仍将处理所有结果（对于指针扫描来说很正常，你必须重新扫描几次）"
+
+#: pointerscannerfrm.rsoutofdiskspacecleanupthediskorstop
+msgid "OUT OF DISKSPACE! Clean up the disk or stop"
+msgstr "磁盘空间不足！清理磁盘或停止"
+
+#: pointerscannerfrm.rspointercount
+msgid "Pointer paths"
+msgstr "指针路径"
+
+#: pointerscannerfrm.rspointerpathsfound
+msgid "Pointer paths found"
+msgstr "找到指针路径"
+
+#: pointerscannerfrm.rspointerscan
+msgctxt "pointerscannerfrm.rspointerscan"
+msgid "Pointer scan"
+msgstr "指针扫描"
+
+#: pointerscannerfrm.rspointerscanresult
+msgid "pointerscan result"
+msgstr "指针扫描结果"
+
+#: pointerscannerfrm.rspointsto
+msgid "Points to"
+msgstr "指向"
+
+#: pointerscannerfrm.rspsactive
+msgid " (Active)"
+msgstr " （激活）"
+
+#: pointerscannerfrm.rspschildren
+msgid "Children:"
+msgstr ""
+
+#: pointerscannerfrm.rspsconnectingto
+msgid "Connecting to:"
+msgstr "连接到："
+
+#: pointerscannerfrm.rspsdisconnected
+msgid " (Disconnected)"
+msgstr " （已断开）"
+
+#: pointerscannerfrm.rspsdownloadingandhandlingresults
+msgid " (Downloading and handling results)"
+msgstr " （正在下载并处理结果）"
+
+#: pointerscannerfrm.rspsdownloadingscandata
+msgid "Downloading scandata: %.1f%% (%dKB/%dKB : %d KB/sec)"
+msgstr "正在下载扫描数据：%.1f%% (%dKB/%dKB : %d KB/秒)"
+
+#: pointerscannerfrm.rspsdoyouwishtoresumethecurrentpointerscanatalatertime
+msgid "Do you wish to resume the current pointerscan at a later time?"
+msgstr "你想以后继续当前指针扫描吗？"
+
+#: pointerscannerfrm.rspsdynamicqueusize
+msgid " Dynamic queue size:"
+msgstr " 动态队列大小："
+
+#: pointerscannerfrm.rspsexportaborted
+msgid "Export aborted"
+msgstr "导出已中止"
+
+#: pointerscannerfrm.rspsexporting
+msgid "Exporting..."
+msgstr "正在导出……"
+
+#: pointerscannerfrm.rspsexporttodatabase
+msgid "Export to database"
+msgstr "导出到数据库"
+
+#: pointerscannerfrm.rspsexporttodatabasebiggersizeornot
+msgid "Do you want \"result\" table with indexes and keys? It will take up additional disk space."
+msgstr ""
+
+#: pointerscannerfrm.rspsexporttodatabasebiggersizeornot_resultid
+msgid "Do you want resultid column filled? It will take up additional disk space."
+msgstr ""
+
+#: pointerscannerfrm.rspsfindbyaddresspart1
+msgid "Find by address requires an address. \""
+msgstr "以地址查找需要一个地址\""
+
+#: pointerscannerfrm.rspsfindbyaddresspart2
+msgid "\" is not a valid address"
+msgstr "\" 不是有效的地址"
+
+#: pointerscannerfrm.rspsgeneratingpointermap
+msgctxt "pointerscannerfrm.rspsgeneratingpointermap"
+msgid "Generating pointermap"
+msgstr "正在生成指针映射"
+
+#: pointerscannerfrm.rspsgiveanamefortheseresults
+msgid "Give a name for these results"
+msgstr "给这些结果一个名字"
+
+#: pointerscannerfrm.rspsidle
+msgid " (Idle)"
+msgstr " （闲置）"
+
+#: pointerscannerfrm.rspsimporting
+msgid "Importing..."
+msgstr "正在导入……"
+
+#: pointerscannerfrm.rspsimporting_sortornot
+msgid "Do you wish to sort pointerlist by level, then module, then offsets?"
+msgstr ""
+
+#: pointerscannerfrm.rspsinvaliddatabase
+msgid "Invalid database"
+msgstr "无效的数据库"
+
+#: pointerscannerfrm.rspslastupdate
+msgid "Last update: "
+msgstr "最后的更新： "
+
+#: pointerscannerfrm.rspslowestknownpath
+msgid "Lowest known path:"
+msgstr "最低已知路径："
+
+#: pointerscannerfrm.rspsnetwork
+msgctxt "pointerscannerfrm.rspsnetwork"
+msgid "Network"
+msgstr "网络"
+
+#: pointerscannerfrm.rspsparent
+msgid "Parent: "
+msgstr ""
+
+#: pointerscannerfrm.rspsparentdisconnectedwaitingforreconnect
+msgid "Parent: <disconnected> (Waiting for reconnect)"
+msgstr "Parent：<已断开>（等待重连）"
+
+#: pointerscannerfrm.rspsparentnone
+msgid "Parent: <none>"
+msgstr "Parent: <无>"
+
+#: pointerscannerfrm.rspspathsevaluated
+msgid "Paths evaluated: "
+msgstr "预计路径： "
+
+#: pointerscannerfrm.rspspathsseconds
+msgid "Paths / seconds: (%.0n / s)"
+msgstr "路径/秒：(%.0n / s)"
+
+#: pointerscannerfrm.rspspscanguiupdatetimererror
+msgid "pscangui update timer error: "
+msgstr "pscangui 更新计时器出错: "
+
+#: pointerscannerfrm.rspsqueued
+msgid " (Queued: "
+msgstr " （已排队： "
+
+#: pointerscannerfrm.rspsqueuesize
+msgid "Queuesize: "
+msgstr "队列大小： "
+
+#: pointerscannerfrm.rspsrescanning
+msgid "Rescanning"
+msgstr "重新扫描中"
+
+#: pointerscannerfrm.rspsresultsfound
+msgid "Results found: "
+msgstr "找到结果： "
+
+#: pointerscannerfrm.rspsscanduration
+msgid "Scan duration: "
+msgstr "扫描耗时： "
+
+#: pointerscannerfrm.rspssecondsago
+msgid " seconds ago"
+msgstr " 秒之前"
+
+#: pointerscannerfrm.rspsstaticqueuesize
+msgid "Static queue size: "
+msgstr "静态队列大小： "
+
+#: pointerscannerfrm.rspsstatistics
+msgid "Statistics"
+msgstr "统计"
+
+#: pointerscannerfrm.rspsthereisalreadyapointerfilewiththsinamepresentinthisdatabase
+msgid "There is already a pointerfile with this name present in this database. Replace it's content with this one ?"
+msgstr "数据库中已有同名的指针文件，要覆盖它吗？"
+
+#: pointerscannerfrm.rspsthisdatabasedoesntcontainanypointerfiles
+msgid "This database does not contain any pointer files"
+msgstr "这个数据库没有包含任何指针文件"
+
+#: pointerscannerfrm.rspsthreadcount
+msgid "Threadcount: "
+msgstr "线程数： "
+
+#: pointerscannerfrm.rspsthreads
+msgctxt "pointerscannerfrm.rspsthreads"
+msgid "Threads"
+msgstr "线程"
+
+#: pointerscannerfrm.rspstimespentwriting
+msgid "Time spent writing: "
+msgstr "写入耗时： "
+
+#: pointerscannerfrm.rspstotalpathsevaluater
+msgid "Total paths evaluated: "
+msgstr "预计总路径： "
+
+#: pointerscannerfrm.rspstotalpathsseconds
+msgid "Total paths / seconds: (%.0n / s)"
+msgstr "总路径/秒：(%.0n / s)"
+
+#: pointerscannerfrm.rspstotalqueuesize
+msgid "Total Queuesize: "
+msgstr "总队列大小： "
+
+#: pointerscannerfrm.rspstrusted
+msgid " (Trusted)"
+msgstr " (可信任)"
+
+#: pointerscannerfrm.rspstrusted2
+msgid "Trusted: "
+msgstr "可信任： "
+
+#: pointerscannerfrm.rspsuniquepointervaluesintarget
+msgid "Unique pointervalues in target:"
+msgstr "目标中唯一的指针值："
+
+#: pointerscannerfrm.rspsuploadingscandata
+msgid " (Uploading scandata: %.1f%% (%dKB/%dKB : %d KB/sec)"
+msgstr " （上传扫描数据：%.1f%% (%dKB/%dKB : %d KB/秒)"
+
+#: pointerscannerfrm.rssavingandterminating
+msgctxt "pointerscannerfrm.rssavingandterminating"
+msgid "Saving..."
+msgstr "保存中……"
+
+#: pointerscannerfrm.rssleeping
+msgid "Sleeping"
+msgstr "休眠中"
+
+#: pointerscannerfrm.rsstop
+msgctxt "pointerscannerfrm.rsstop"
+msgid "Stop"
+msgstr "停止"
+
+#: pointerscannerfrm.rsterminating
+msgid "Terminating"
+msgstr "正在终止"
+
+#: pointerscannerfrm.rsthread
+msgid "Thread"
+msgstr "线程"
+
+#: pointerscannerfrm.rsthreads
+msgctxt "pointerscannerfrm.rsthreads"
+msgid "Threads"
+msgstr "线程"
+
+#: pointerscannerfrm.rstime
+msgid "Time"
+msgstr "时间"
+
+#: pointerscannerfrm.rswritingtodisk
+msgid "Writing to disk"
+msgstr "正在写入磁盘"
+
+#: pointerscannersettingsfrm.rsadd
+msgctxt "pointerscannersettingsfrm.rsadd"
+msgid "Add"
+msgstr "添加"
+
+#: pointerscannersettingsfrm.rsaddress
+msgctxt "pointerscannersettingsfrm.rsaddress"
+msgid "Address"
+msgstr "地址"
+
+#: pointerscannersettingsfrm.rscouldnotberesolvedtoanipaddress
+msgid "could not be resolved to an IP address"
+msgstr "无法解析IP地址"
+
+#: pointerscannersettingsfrm.rsfilename
+msgctxt "pointerscannersettingsfrm.rsfilename"
+msgid "Filename"
+msgstr "文件名"
+
+#: pointerscannersettingsfrm.rsfrom
+msgctxt "pointerscannersettingsfrm.rsfrom"
+msgid "From"
+msgstr "从"
+
+#: pointerscannersettingsfrm.rshasaninvalidport
+msgid "%s has an invalid port (%s)"
+msgstr "%s 有一个无效的端口(%s)"
+
+#: pointerscannersettingsfrm.rshasnotbeengivenavalidaddress
+msgid "%s has not been given a valid address"
+msgstr "%s 没有给出有效的地址"
+
+#: pointerscannersettingsfrm.rshigher
+msgctxt "pointerscannersettingsfrm.rshigher"
+msgid "Higher"
+msgstr "较高"
+
+#: pointerscannersettingsfrm.rshighest
+msgctxt "pointerscannersettingsfrm.rshighest"
+msgid "Highest"
+msgstr "最高"
+
+#: pointerscannersettingsfrm.rsidle
+msgctxt "pointerscannersettingsfrm.rsidle"
+msgid "Idle"
+msgstr "闲置"
+
+#: pointerscannersettingsfrm.rsinvalidaddress
+msgctxt "pointerscannersettingsfrm.rsinvalidaddress"
+msgid "Invalid address"
+msgstr "无效的地址"
+
+#: pointerscannersettingsfrm.rslastoffset
+msgctxt "pointerscannersettingsfrm.rslastoffset"
+msgid "Last offset"
+msgstr "最后一个偏移"
+
+#: pointerscannersettingsfrm.rslimitscantospecifiedregionfile
+msgctxt "pointerscannersettingsfrm.rslimitscantospecifiedregionfile"
+msgid "Limit scan to specified region file"
+msgstr "限制扫描到指定的区域文件"
+
+#: pointerscannersettingsfrm.rslower
+msgctxt "pointerscannersettingsfrm.rslower"
+msgid "Lower"
+msgstr "较低"
+
+#: pointerscannersettingsfrm.rslowest
+msgctxt "pointerscannersettingsfrm.rslowest"
+msgid "Lowest"
+msgstr "最低"
+
+#: pointerscannersettingsfrm.rsnocomparefiles
+msgid "If you do not use the compare results with other saved pointermap option you will get billions of useless results and giga/terrabytes of wasted diskspace and rescans will take hours if not days. Are you sure ?"
+msgstr "如果你不用比较已保存指针映射选项，你会得到无数没用的结果并浪费磁盘空间，重新扫描会花很多时间，你确定吗？"
+
+#: pointerscannersettingsfrm.rsnormal
+msgctxt "pointerscannersettingsfrm.rsnormal"
+msgid "Normal"
+msgstr "标准"
+
+#: pointerscannersettingsfrm.rspleasefillinanaddresstolookfor
+msgid "Please fill in an address to look for"
+msgstr "请输入要寻找的地址"
+
+#: pointerscannersettingsfrm.rsremove
+msgctxt "pointerscannersettingsfrm.rsremove"
+msgid "Remove"
+msgstr "移除"
+
+#: pointerscannersettingsfrm.rsreusedthesamefile
+msgid "This file is already in the list of scandata files to be used"
+msgstr "这个文件已在扫描数据列表中被使用"
+
+#: pointerscannersettingsfrm.rsscandatafilter
+msgid "All files (*.*)|*.*|Scan Data (*.scandata)|*.scandata"
+msgstr ""
+
+#: pointerscannersettingsfrm.rsselectafile
+msgid "<Select a file>"
+msgstr "<选择文件>"
+
+#: pointerscannersettingsfrm.rstimecritical
+msgctxt "pointerscannersettingsfrm.rstimecritical"
+msgid "TimeCritical"
+msgstr "临界时间"
+
+#: pointerscannersettingsfrm.rsto
+msgctxt "pointerscannersettingsfrm.rsto"
+msgid "To"
+msgstr "到"
+
+#: pointerscannersettingsfrm.rsuseloadedpointermap
+msgctxt "pointerscannersettingsfrm.rsuseloadedpointermap"
+msgid "Use saved pointermap"
+msgstr "使用保存的指针映射"
+
+#: pointerscannersettingsfrm.strmaxoffsetsisstupid
+msgid "Sorry, but the max offsets should be 1 or higher, or else disable the checkbox"
+msgstr "抱歉，偏移应大于等于1，或者禁用复选框"
+
+#: pointerscanresultreader.rsbuggedlist
+msgid "BuggedList"
+msgstr ""
+
+#: pointerscanresultreader.rspsrcorruptedpointerscanfile
+msgid "Corrupted pointerscan file"
+msgstr "指针扫描文件已损坏"
+
+#: pointerscanresultreader.rspsrinvalidpointerscanfileversion
+msgid "Invalid pointerscan file version"
+msgstr "无效的指针扫描文件版本"
+
+#: pointerscansettingsipconnectionlist.rspssicladd
+msgctxt "pointerscansettingsipconnectionlist.rspssicladd"
+msgid "Add"
+msgstr "添加"
+
+#: pointerscansettingsipconnectionlist.rspssiclhost
+msgctxt "pointerscansettingsipconnectionlist.rspssiclhost"
+msgid "Host"
+msgstr "主机"
+
+#: pointerscansettingsipconnectionlist.rspssiclpassword
+msgctxt "pointerscansettingsipconnectionlist.rspssiclpassword"
+msgid "Password"
+msgstr "密码"
+
+#: pointerscansettingsipconnectionlist.rspssiclport
+msgctxt "pointerscansettingsipconnectionlist.rspssiclport"
+msgid "Port"
+msgstr "端口"
+
+#: pointerscansettingsipconnectionlist.rspssiclremove
+msgctxt "pointerscansettingsipconnectionlist.rspssiclremove"
+msgid "Remove"
+msgstr "移除"
+
+#: pointerscansettingsipconnectionlist.rspssiclstable
+msgid "Stable"
+msgstr "稳定"
+
+#: pointervaluelist.rsallocatingbytestobuffer
+msgid "Allocating %s bytes to 'buffer'"
+msgstr "正在分配 %s 字节到'缓冲区'"
+
+#: pointervaluelist.rsnomemoryfoundinthespecifiedregion
+msgctxt "pointervaluelist.rsnomemoryfoundinthespecifiedregion"
+msgid "No memory found in the specified region"
+msgstr "指定区域中没有找到内存"
+
+#: pointervaluelist.rspointervaluesetuperror
+msgid "Pointer value setup error"
+msgstr "指针值设置错误"
+
+#: pointervaluelist.rspvinvalidscandatafile
+msgctxt "pointervaluelist.rspvinvalidscandatafile"
+msgid "Invalid scandata file"
+msgstr "无效的扫描数据文件"
+
+#: pointervaluelist.rspvinvalidscandataversion
+msgctxt "pointervaluelist.rspvinvalidscandataversion"
+msgid "Invalid scandata version"
+msgstr "无效的扫描数据版本"
+
+#: pointervaluelist.rspvnotenoughmemoryfreetoscan
+msgctxt "pointervaluelist.rspvnotenoughmemoryfreetoscan"
+msgid "Not enough memory free to scan"
+msgstr "内存不足，无法扫描"
+
+#: processlist.rsicantgettheprocesslistyouarepropablyusingwindowsnt
+msgctxt "processlist.rsicantgettheprocesslistyouarepropablyusingwindowsnt"
+msgid "I can't get the process list. You are propably using windows NT. Use the window list instead!"
+msgstr "无法获取进程列表, 你可能在用windows NT, 用窗口列表代替！"
+
+#: processwindowunit.rsapplications
+msgid "Applications"
+msgstr "应用程序"
+
+#: processwindowunit.rsattachdebuggerornot
+msgid "Are you sure you want to attach the debugger and not just open this process? (You can later on always attach the debugger)"
+msgstr "你确定要附加调试器到这个进程，而不是打开？（你可以稍后附加调试器）"
+
+#: processwindowunit.rscreateprocess
+msgctxt "processwindowunit.rscreateprocess"
+msgid "Create Process"
+msgstr "创建进程"
+
+#: processwindowunit.rsentertheprocessid
+msgid "Enter the ProcessID"
+msgstr "输入进程ID"
+
+#: processwindowunit.rsfilter
+msgctxt "processwindowunit.rsfilter"
+msgid "Filter"
+msgstr "过滤"
+
+#: processwindowunit.rsfirstselectaprocess
+msgctxt "processwindowunit.rsfirstselectaprocess"
+msgid "First select a process!"
+msgstr "先选择一个进程！"
+
+#: processwindowunit.rsisntavalidprocessid
+msgctxt "processwindowunit.rsisntavalidprocessid"
+msgid "%s isn't a valid processID"
+msgstr "%s 不是有效的进程ID"
+
+#: processwindowunit.rsmanualpid
+msgid "Manual PID"
+msgstr "手动输入进程ID"
+
+#: processwindowunit.rsoptionallaunchparameters
+msgid "Optional launch parameters"
+msgstr "可选启动参数"
+
+#: processwindowunit.rsphysicalmemory
+msgctxt "processwindowunit.rsphysicalmemory"
+msgid "Physical Memory"
+msgstr "物理内存"
+
+#: processwindowunit.rspleaseselectanotherprocess
+msgid "Please select another process"
+msgstr "请选择其它进程"
+
+#: processwindowunit.rsprocesses
+msgid "Processes"
+msgstr "进程"
+
+#: processwindowunit.rsprocesslist
+msgctxt "processwindowunit.rsprocesslist"
+msgid "Process List"
+msgstr "进程列表"
+
+#: processwindowunit.rsprocesslistlong
+msgid "Process List(long)"
+msgstr "进程列表（长）"
+
+#: processwindowunit.rsscanningclicktostop
+msgid "Scanning (Click to stop)"
+msgstr "正在扫描（点击停止）"
+
+#: processwindowunit.rswhatareyoulookingfor
+msgid "What are you looking for?"
+msgstr "你在找什么？"
+
+#: processwindowunit.rswindows
+msgid "Windows"
+msgstr "窗口"
+
+#: processwindowunit.rsyoucanonlyloadexefiles
+msgctxt "processwindowunit.rsyoucanonlyloadexefiles"
+msgid "You can only load EXE files"
+msgstr "你只能加载EXE文件"
+
+#: savedisassemblyfrm.rscopy
+msgctxt "savedisassemblyfrm.rscopy"
+msgid "Copy"
+msgstr "复制"
+
+#: savedisassemblyfrm.rscopydisassembledoutput
+msgid "Copy disassembled output"
+msgstr "复制反汇编输出"
+
+#: savedisassemblyfrm.rssave
+msgctxt "savedisassemblyfrm.rssave"
+msgid "Save"
+msgstr "保存"
+
+#: savedisassemblyfrm.rssavedisassembledoutput
+msgctxt "savedisassemblyfrm.rssavedisassembledoutput"
+msgid "Save disassembled output"
+msgstr "保存反汇编输出"
+
+#: savedisassemblyfrm.rsstopcopying
+msgid "Stop copying"
+msgstr "正在停止复制"
+
+#: savedisassemblyfrm.rsstopsaving
+msgid "Stop saving"
+msgstr "正在停止保存"
+
+#: savedscanhandler.rsfailureinfindinginthefirstscanresults
+msgid "Failure in finding %s in the first scan results"
+msgstr "在首次扫描结果中查找 %s 失败"
+
+#: savedscanhandler.rsfailureinfindinginthepreviousscanresults
+msgid "Failure in finding %s in the previous scan results"
+msgstr "在上次扫描结果中查找 %s 失败"
+
+#: savedscanhandler.rsinvalidorderofcallinggetpointertoaddress
+msgid "Invalid order of calling getpointertoaddress"
+msgstr "无效的调用 getpointertoaddress 顺序"
+
+#: savedscanhandler.rsmaxaddresslistcountis0meanstheaddresslistisbad
+msgid "maxaddresslistcount is 0 (Means: the addresslist is bad)"
+msgstr "最大地址列表数为0（说明地址列表是坏的）"
+
+#: savedscanhandler.rsnofirstscandatafilesfound
+msgid "No first scan data files found"
+msgstr "未找到首次扫描数据文件"
+
+#: speedhack2.rsfailureconfiguringspeedhackpart
+msgid "Failure configuring speedhack part"
+msgstr "配置变速部分失败"
+
+#: speedhack2.rsfailureenablingspeedhackdllinjectionfailed
+msgid "Failure enabling speedhack. (DLL injection failed)"
+msgstr "启用变速失败（DLL注入失败）"
+
+#: speedhack2.rsfailuresettingspeed
+msgid "Failure setting speed"
+msgstr "设置速度失败"
+
+#: structuresaddelementfrm.rssae2bytes
+msgctxt "structuresaddelementfrm.rssae2bytes"
+msgid "2 Bytes"
+msgstr "2 字节"
+
+#: structuresaddelementfrm.rssae4bytes
+msgctxt "structuresaddelementfrm.rssae4bytes"
+msgid "4 Bytes"
+msgstr "4 字节"
+
+#: structuresfrm.rsareyousureyouwanttodelete
+msgctxt "structuresfrm.rsareyousureyouwanttodelete"
+msgid "Are you sure you want to delete %s?"
+msgstr "你确定要删除 %s？"
+
+#: structuresfrm.rsareyousureyouwanttoremoveallstructures
+msgctxt "structuresfrm.rsareyousureyouwanttoremoveallstructures"
+msgid "Are you sure you want to remove all structures?"
+msgstr "你确定要移除所有结构？"
+
+#: structuresfrm.rsautogeneratedfor
+msgctxt "structuresfrm.rsautogeneratedfor"
+msgid "Autogenerated for %s"
+msgstr "为 %s 自动生成"
+
+#: structuresfrm.rschangegroup
+msgctxt "structuresfrm.rschangegroup"
+msgid "Change group"
+msgstr "更改群组"
+
+#: structuresfrm.rsdissectdata
+msgctxt "structuresfrm.rsdissectdata"
+msgid "Dissect Data"
+msgstr "分析数据"
+
+#: structuresfrm.rsdoyouwantcheatenginetotryandfillinthemostbasictype
+msgctxt "structuresfrm.rsdoyouwantcheatenginetotryandfillinthemostbasictype"
+msgid "Do you want Cheat Engine to try and fill in the most basic types of the struct using the current address?"
+msgstr "你想要Cheat Engine尝试使用当前地址来填入最基本的结构类型吗？"
+
+#: structuresfrm.rsfirstselectastructureyouwanttomodifyordefine
+msgctxt "structuresfrm.rsfirstselectastructureyouwanttomodifyordefine"
+msgid "First select a structure you want to modify or define one first"
+msgstr "先选择一个你要修改的结构，或先定义一个"
+
+#: structuresfrm.rsgivetheaddressofthiselement
+msgctxt "structuresfrm.rsgivetheaddressofthiselement"
+msgid "Give the address of this element"
+msgstr "给出这个元素的地址"
+
+#: structuresfrm.rsgivethenameforthisstructure
+msgctxt "structuresfrm.rsgivethenameforthisstructure"
+msgid "Give the name for this structure"
+msgstr "给这个结构命名"
+
+#: structuresfrm.rsgivethenewnameofthisstructure
+msgctxt "structuresfrm.rsgivethenewnameofthisstructure"
+msgid "Give the new name of this structure"
+msgstr "给这个结构新的名字"
+
+#: structuresfrm.rshowmanybytesdoyouwanttoshiftthisandfollowingoffset
+msgid "How many bytes do you want to shift this and following offsets?"
+msgstr "你要转移这个和以下偏移多少字节？"
+
+#: structuresfrm.rsihavenoideawhatmeans
+msgctxt "structuresfrm.rsihavenoideawhatmeans"
+msgid "I have no idea what %s means"
+msgstr "我不知道 %s 表达什么"
+
+#: structuresfrm.rslockmemory
+msgctxt "structuresfrm.rslockmemory"
+msgid "Lock memory"
+msgstr "锁定内存"
+
+#: structuresfrm.rsmemorydissect
+msgctxt "structuresfrm.rsmemorydissect"
+msgid "Memory dissect"
+msgstr "内存分析"
+
+#: structuresfrm.rsnewinterval
+msgctxt "structuresfrm.rsnewinterval"
+msgid "New interval"
+msgstr "新的间隔"
+
+#: structuresfrm.rspleasegiveastartingoffsettoevaluate
+msgctxt "structuresfrm.rspleasegiveastartingoffsettoevaluate"
+msgid "Please give a starting offset to evaluate"
+msgstr "请给出初始偏移用来估计"
+
+#: structuresfrm.rspleasegiveastartingsizeofthestructyoucanchangethis
+msgctxt "structuresfrm.rspleasegiveastartingsizeofthestructyoucanchangethis"
+msgid "Please give a starting size of the struct (You can change this later if needed)"
+msgstr "请给出结构的初始大小（如果需要可以以后更改）"
+
+#: structuresfrm.rspleasegivethesizeoftheblocktoevaluate
+msgctxt "structuresfrm.rspleasegivethesizeoftheblocktoevaluate"
+msgid "Please give the size of the block to evaluate"
+msgstr "请给出区块的大小用来估计"
+
+#: structuresfrm.rspointerto
+msgctxt "structuresfrm.rspointerto"
+msgid "Pointer"
+msgstr "指针"
+
+#: structuresfrm.rsrecalculatebaseofstructure
+msgctxt "structuresfrm.rsrecalculatebaseofstructure"
+msgid "Recalculate base of structure"
+msgstr "重新计算结构基址"
+
+#: structuresfrm.rsrenamestructure
+msgctxt "structuresfrm.rsrenamestructure"
+msgid "Rename structure"
+msgstr "重命名结构"
+
+#: structuresfrm.rsstructuredefine
+msgctxt "structuresfrm.rsstructuredefine"
+msgid "Structure define"
+msgstr "结构定义"
+
+#: structuresfrm.rsstructuredefiner
+msgctxt "structuresfrm.rsstructuredefiner"
+msgid "Structure definer"
+msgstr "结构定义器"
+
+#: structuresfrm.rsstructureviewlock
+msgctxt "structuresfrm.rsstructureviewlock"
+msgid "Structure view lock"
+msgstr "结构视图锁定"
+
+#: structuresfrm.rsthisisnotavalidstructurefile
+msgctxt "structuresfrm.rsthisisnotavalidstructurefile"
+msgid "This is not a valid structure file"
+msgstr "这不是有效的结构文件"
+
+#: structuresfrm.rsthisisquiteabigstructurehowmanybytesdoyouwanttosav
+msgctxt "structuresfrm.rsthisisquiteabigstructurehowmanybytesdoyouwanttosav"
+msgid "This is quite a big structure. How many bytes do you want to save?"
+msgstr "这是相当大的结构，你要保存多少字节？"
+
+#: structuresfrm.rsunkownfileextension
+msgctxt "structuresfrm.rsunkownfileextension"
+msgid "Unknown file extension"
+msgstr "未知的文件扩展名"
+
+#: structuresfrm.rsunlockmemory
+msgctxt "structuresfrm.rsunlockmemory"
+msgid "Unlock memory"
+msgstr "解锁内存"
+
+#: structuresfrm.rsunnamedstructure
+msgctxt "structuresfrm.rsunnamedstructure"
+msgid "unnamed structure"
+msgstr "未命名结构"
+
+#: structuresfrm.rsupdateinterval
+msgctxt "structuresfrm.rsupdateinterval"
+msgid "Update interval"
+msgstr "更新间隔"
+
+#: structuresfrm.rswhichgroupdoyouwanttosetthisaddressto
+msgctxt "structuresfrm.rswhichgroupdoyouwanttosetthisaddressto"
+msgid "Which group do you want to set this address to?"
+msgstr "你要设置这个地址到哪个群组？"
+
+#: structuresfrm.rswrongversion
+msgctxt "structuresfrm.rswrongversion"
+msgid "This structure file was generated with a newer version of Cheat Engine. (That means there's more than likely a new version so please update....)"
+msgstr "这个结构文件由更新版本的CE生成（请更新你的CE）"
+
+#: structuresfrm2.rs2bytewithvalue2
+msgid "2 Byte: %s"
+msgstr "2 字节：%s"
+
+#: structuresfrm2.rsaddressvalue
+msgid "Address: Value"
+msgstr "地址：数值"
+
+#: structuresfrm2.rsareyousureyouwanttodelete
+msgctxt "structuresfrm2.rsareyousureyouwanttodelete"
+msgid "Are you sure you want to delete %s?"
+msgstr "你确定要删除 %s？"
+
+#: structuresfrm2.rsareyousureyouwanttoremoveallstructures
+msgctxt "structuresfrm2.rsareyousureyouwanttoremoveallstructures"
+msgid "Are you sure you want to remove all structures?"
+msgstr "你确定要移除所有结构？"
+
+#: structuresfrm2.rsarrayofbyte
+msgid "Array of Byte"
+msgstr "字节数组"
+
+#: structuresfrm2.rsautogeneratedfor
+msgctxt "structuresfrm2.rsautogeneratedfor"
+msgid "Autogenerated for %s"
+msgstr "为 %s 自动生成"
+
+#: structuresfrm2.rsbytewithvalue
+msgid "Byte: %s"
+msgstr "字节：%s"
+
+#: structuresfrm2.rschangegroup
+msgctxt "structuresfrm2.rschangegroup"
+msgid "Change group"
+msgstr "更改群组"
+
+#: structuresfrm2.rschangegroup2
+msgid "Change Group"
+msgstr "更改群组"
+
+#: structuresfrm2.rscopy
+msgctxt "structuresfrm2.rscopy"
+msgid "Copy"
+msgstr "复制"
+
+#: structuresfrm2.rscut
+msgctxt "structuresfrm2.rscut"
+msgid "Cut"
+msgstr "剪切"
+
+#: structuresfrm2.rsdefinepointer
+msgid "Define pointer"
+msgstr "定义指针"
+
+#: structuresfrm2.rsdeleteaddress
+msgid "Delete address"
+msgstr "删除地址"
+
+#: structuresfrm2.rsdissectdata
+msgctxt "structuresfrm2.rsdissectdata"
+msgid "Dissect Data"
+msgstr "分析数据"
+
+#: structuresfrm2.rsdoyouwantcheatenginetotryandfillinthemostbasictype
+msgctxt "structuresfrm2.rsdoyouwantcheatenginetotryandfillinthemostbasictype"
+msgid "Do you want Cheat Engine to try and fill in the most basic types of the struct using the current address?"
+msgstr "你想要Cheat Engine 尝试用当前地址来填入最基本的结构类型吗？"
+
+#: structuresfrm2.rsfirstselectastructureyouwanttomodifyordefine
+msgctxt "structuresfrm2.rsfirstselectastructureyouwanttomodifyordefine"
+msgid "First select a structure you want to modify or define one first"
+msgstr "先选择一个你要修改的结构，或先定义一个"
+
+#: structuresfrm2.rsfs2structuredefine
+msgctxt "structuresfrm2.rsfs2structuredefine"
+msgid "Structure define"
+msgstr "结构定义"
+
+#: structuresfrm2.rsgivetheaddressofthiselement
+msgctxt "structuresfrm2.rsgivetheaddressofthiselement"
+msgid "Give the address of this element"
+msgstr "给出这个元素的地址"
+
+#: structuresfrm2.rsgivethenameforthisstructure
+msgctxt "structuresfrm2.rsgivethenameforthisstructure"
+msgid "Give the name for this structure"
+msgstr "给这个结构命名"
+
+#: structuresfrm2.rsgivethenewnameofthisstructure
+msgctxt "structuresfrm2.rsgivethenewnameofthisstructure"
+msgid "Give the new name of this structure"
+msgstr "给这个结构新的名字"
+
+#: structuresfrm2.rshex
+msgid "(Hex)"
+msgstr "（十六进制）"
+
+#: structuresfrm2.rshexadecimal
+msgctxt "structuresfrm2.rshexadecimal"
+msgid "Hexadecimal"
+msgstr "十六进制"
+
+#: structuresfrm2.rshowmanybytesdoyouwanttoshiftthisandfollowingoffset
+msgid "How many bytes do you want to shift this and following offsets? (Decimal)"
+msgstr "你要转移这个和以下偏移多少字节？（十进制）"
+
+#: structuresfrm2.rsihavenoideawhatmeans
+msgctxt "structuresfrm2.rsihavenoideawhatmeans"
+msgid "I have no idea what %s means"
+msgstr "我不知道 %s 表达什么"
+
+#: structuresfrm2.rslock
+msgctxt "structuresfrm2.rslock"
+msgid "Lock"
+msgstr "锁定"
+
+#: structuresfrm2.rslockmemory
+msgctxt "structuresfrm2.rslockmemory"
+msgid "Lock memory"
+msgstr "锁定内存"
+
+#: structuresfrm2.rsmemorydissect
+msgctxt "structuresfrm2.rsmemorydissect"
+msgid "Memory dissect"
+msgstr "内存分析"
+
+#: structuresfrm2.rsnewinterval
+msgctxt "structuresfrm2.rsnewinterval"
+msgid "New interval"
+msgstr "新的间隔"
+
+#: structuresfrm2.rsp
+msgctxt "structuresfrm2.rsp"
+msgid "P->"
+msgstr ""
+
+#: structuresfrm2.rspaste
+msgctxt "structuresfrm2.rspaste"
+msgid "Paste"
+msgstr "粘贴"
+
+#: structuresfrm2.rspleasegiveastartingoffsettoevaluate
+msgctxt "structuresfrm2.rspleasegiveastartingoffsettoevaluate"
+msgid "Please give a starting offset to evaluate"
+msgstr "请给出初始偏移用来估计"
+
+#: structuresfrm2.rspleasegiveastartingsizeofthestructyoucanchangethis
+msgctxt "structuresfrm2.rspleasegiveastartingsizeofthestructyoucanchangethis"
+msgid "Please give a starting size of the struct (You can change this later if needed)"
+msgstr "请给出结构的初始大小（如果需要可以以后更改）"
+
+#: structuresfrm2.rspleasegivethesizeoftheblocktoevaluate
+msgctxt "structuresfrm2.rspleasegivethesizeoftheblocktoevaluate"
+msgid "Please give the size of the block to evaluate"
+msgstr "请给出区块的大小用来估计"
+
+#: structuresfrm2.rspointer
+msgctxt "structuresfrm2.rspointer"
+msgid "Pointer"
+msgstr "指针"
+
+#: structuresfrm2.rspointerto
+msgctxt "structuresfrm2.rspointerto"
+msgid "Pointer"
+msgstr "指针"
+
+#: structuresfrm2.rsrecalculatebaseofstructure
+msgctxt "structuresfrm2.rsrecalculatebaseofstructure"
+msgid "Recalculate base of structure"
+msgstr "重新计算结构的基址"
+
+#: structuresfrm2.rsrenamestructure
+msgctxt "structuresfrm2.rsrenamestructure"
+msgid "Rename structure"
+msgstr "重命名结构"
+
+#: structuresfrm2.rssf2areyousureyouwanttodeleteallthedefinedstructures
+msgid "Are you sure you want to delete all the defined structures ?"
+msgstr "你确定要删除所有已定义的结构？"
+
+#: structuresfrm2.rssf2areyousureyouwanttodeletethestructurenamed
+msgid "Are you sure you want to delete the structure named :"
+msgstr "你确定要删除结构名为："
+
+#: structuresfrm2.rssf2autocreatedfrom
+msgid "Autocreated from "
+msgstr "自动创建从 "
+
+#: structuresfrm2.rssf2autocreatestructure
+msgid "Autocreate structure"
+msgstr "自动创建结构"
+
+#: structuresfrm2.rssf2autocreatestructuresize
+msgid "Autocreate structure size: "
+msgstr "自动创建结构大小 "
+
+#: structuresfrm2.rssf2changevalue
+msgctxt "structuresfrm2.rssf2changevalue"
+msgid "Change Value"
+msgstr "更改数值"
+
+#: structuresfrm2.rssf2defaultsize
+msgid "Default size:"
+msgstr "默认大小："
+
+#: structuresfrm2.rssf2deletegroup
+msgid "Delete group"
+msgstr "删除群组"
+
+#: structuresfrm2.rssf2givethenewname
+msgid "Give the new name"
+msgstr "给出新名字"
+
+#: structuresfrm2.rssf2givethenewnameforthegroup
+msgid "Give the new name for the group"
+msgstr "给群组新名字"
+
+#: structuresfrm2.rssf2givethenewnameforthisstructure
+msgid "Give the new name for this structure"
+msgstr "给这个结构新名字"
+
+#: structuresfrm2.rssf2group
+msgctxt "structuresfrm2.rssf2group"
+msgid "Group "
+msgstr "群组 "
+
+#: structuresfrm2.rssf2group1
+msgctxt "structuresfrm2.rssf2group1"
+msgid "Group 1"
+msgstr "群组 1"
+
+#: structuresfrm2.rssf2group2
+msgctxt "structuresfrm2.rssf2group2"
+msgid "Group "
+msgstr "群组 "
+
+#: structuresfrm2.rssf2grouppicker
+msgid "Group picker"
+msgstr "群组选择器"
+
+#: structuresfrm2.rssf2hex
+msgid " (Hex)"
+msgstr " （十六进制）"
+
+#: structuresfrm2.rssf2nameforthisgroup
+msgid "Name for this group"
+msgstr "给这个群组的名字"
+
+#: structuresfrm2.rssf2newcolumnname
+msgid "New column name"
+msgstr "新的列名字"
+
+#: structuresfrm2.rssf2newgroup
+msgid "<New group>"
+msgstr "<新的群组>"
+
+#: structuresfrm2.rssf2newgroup2
+msgid "New group"
+msgstr "新的群组"
+
+#: structuresfrm2.rssf2newvalueforthisaddress
+msgid "New value for this address:"
+msgstr "这个地址的新值："
+
+#: structuresfrm2.rssf2rename
+msgctxt "structuresfrm2.rssf2rename"
+msgid "Rename"
+msgstr "重命名"
+
+#: structuresfrm2.rssf2renamegroup
+msgid "Rename group"
+msgstr "重命名群组"
+
+#: structuresfrm2.rssf2secletthegroupthiscolumnshouldbecomepartof
+msgid "Select the group this column should become part of"
+msgstr "选择这列应成为哪个群组的一部分"
+
+#: structuresfrm2.rssf2setnamerename
+msgid "Set name/Rename"
+msgstr "设置名字/重命名"
+
+#: structuresfrm2.rssf2shadowcopyat
+msgid "Lock ( Shadowcopy at %s )"
+msgstr "锁定 ( Shadowcopy at %s )"
+
+#: structuresfrm2.rssf2signed
+msgid " (Signed)"
+msgstr " （有符号）"
+
+#: structuresfrm2.rssf2structurerename
+msgid "Structure rename"
+msgstr "结构重命名"
+
+#: structuresfrm2.rssf2thegapbetweenoffset
+msgid "The gap between offset %x and %x is %d bytes long. Autofill this?"
+msgstr "偏移 %x 和 %x 之间的间隔是 %d 字节长度，自动填充吗？"
+
+#: structuresfrm2.rssf2thegroupscancommandhasbeencopiedtotheclipboard
+msgid "The groupscan command has been copied to the clipboard"
+msgstr "群组扫描命令已复制到剪贴板"
+
+#: structuresfrm2.rssf2to
+msgid " to "
+msgstr " 到 "
+
+#: structuresfrm2.rssf2tstructcolumncreateerror
+msgid "TStructColumn.create Error"
+msgstr "TStructColumn.create 错误"
+
+#: structuresfrm2.rssf2unknowncustomtype
+msgid "Unknown custom type"
+msgstr "未知自定义类型"
+
+#: structuresfrm2.rssf2whatnameshouldthiscolumnhave
+msgid "What name should this column have?"
+msgstr "这列叫什么名字？"
+
+#: structuresfrm2.rssignedinteger
+msgid "Signed Integer"
+msgstr "带符号整数"
+
+#: structuresfrm2.rsspider
+msgid "Spider"
+msgstr ""
+
+#: structuresfrm2.rsstructalreadyexists
+msgid "The structure named %s already exists. Are you sure you want to make another structure with this name ?"
+msgstr "已存在名为 %s 的结构. 你确定要用该名称制作其它结构？"
+
+#: structuresfrm2.rsstructuredefine
+msgctxt "structuresfrm2.rsstructuredefine"
+msgid "Structure define"
+msgstr "结构定义"
+
+#: structuresfrm2.rsstructuredefiner
+msgctxt "structuresfrm2.rsstructuredefiner"
+msgid "Structure definer"
+msgstr "结构定义器"
+
+#: structuresfrm2.rsstructuredissect
+msgctxt "structuresfrm2.rsstructuredissect"
+msgid "Structure dissect"
+msgstr "结构分析"
+
+#: structuresfrm2.rsstructureviewlock
+msgctxt "structuresfrm2.rsstructureviewlock"
+msgid "Structure view lock"
+msgstr "结构视图锁定"
+
+#: structuresfrm2.rsthisisnotavalidstructurefile
+msgctxt "structuresfrm2.rsthisisnotavalidstructurefile"
+msgid "This is not a valid structure file"
+msgstr "这不是有效的结构文件"
+
+#: structuresfrm2.rsthisisquiteabigstructurehowmanybytesdoyouwanttosav
+msgctxt "structuresfrm2.rsthisisquiteabigstructurehowmanybytesdoyouwanttosav"
+msgid "This is quite a big structure. How many bytes do you want to save?"
+msgstr "这是相当大的结构，你要保存多少字节？"
+
+#: structuresfrm2.rsundefined
+msgctxt "structuresfrm2.rsundefined"
+msgid "undefined"
+msgstr "未定义"
+
+#: structuresfrm2.rsunicodestring
+msgctxt "structuresfrm2.rsunicodestring"
+msgid "Unicode"
+msgstr ""
+
+#: structuresfrm2.rsunkownfileextension
+msgctxt "structuresfrm2.rsunkownfileextension"
+msgid "Unknown file extension"
+msgstr "未知文件扩展名"
+
+#: structuresfrm2.rsunlockmemory
+msgctxt "structuresfrm2.rsunlockmemory"
+msgid "Unlock memory"
+msgstr "解锁内存"
+
+#: structuresfrm2.rsunnamedstructure
+msgctxt "structuresfrm2.rsunnamedstructure"
+msgid "unnamed structure"
+msgstr "未命名结构"
+
+#: structuresfrm2.rsunsignedinteger
+msgid "Unsigned Integer"
+msgstr "无符号整数"
+
+#: structuresfrm2.rsupdateinterval
+msgctxt "structuresfrm2.rsupdateinterval"
+msgid "Update interval"
+msgstr "更新间隔"
+
+#: structuresfrm2.rsupgradepointer
+msgid "Upgrade child structure to full structure"
+msgstr "升级子结构到完整结构"
+
+#: structuresfrm2.rswarnaboutlessthan2addresses
+msgid "It's not recommended to run the structure compare with just one address in a group"
+msgstr "在群组中只有一个地址时，不建议运行结构比较"
+
+#: structuresfrm2.rswhichgroupdoyouwanttosetthisaddressto
+msgctxt "structuresfrm2.rswhichgroupdoyouwanttosetthisaddressto"
+msgid "Which group do you want to set this address to?"
+msgstr "你要设置这个地址到哪个群组？"
+
+#: structuresfrm2.rswrongversion
+msgctxt "structuresfrm2.rswrongversion"
+msgid "This structure file was generated with a newer version of Cheat Engine. (That means there's more than likely a new version so please update....)"
+msgstr "这个结构文件由更新版本的CE生成（请更新你的CE）"
+
+#: symbolconfigunit.rsareyousureyouwanttoremoveallsymbolsfromthelist
+msgid "Are you sure you want to remove all symbols from the list?"
+msgstr "你确定要从列表中移除所有符号？"
+
+#: symbolconfigunit.rsareyousureyouwanttoremovethissymbolfromthelist
+msgid "Are you sure you want to remove this symbol from the list?"
+msgstr "你确定要从列表中移除这个符号？"
+
+#: symbolhandler.rsalreadyexists
+msgid "already exists"
+msgstr "已存在"
+
+#: symbolhandler.rserrorallocatingmemory
+msgid "Error allocating memory"
+msgstr "分配内存时出错"
+
+#: symbolhandler.rsfailuredeterminingwhatmeans
+msgid "Failure determining what %s means"
+msgstr "无法确定 %s 表达什么"
+
+#: symbolhandler.rspleaseprovideabiggersize
+msgid "Please provide a bigger size"
+msgstr "请提供更大的大小"
+
+#: symbolhandler.rssymbolloaderthreadhascrashed
+msgid "Symbolloaderthread has crashed"
+msgstr "Symbolloaderthread 已崩溃"
+
+#: symbolhandler.rsthesymbolnamedwaspreviouslydeclared
+msgid "The symbol named %s was previously declared with a size of %s instead of %s. all scripts that use this memory must give the same size. Adjust the size, or delete the old alloc from the userdefined symbol list"
+msgstr "名为 %s 的符号是先前声明为 %s 大小而不是 %s. 使用这个内存的所有脚本必须设为同样大小. 调整大小或从用户定义符号列表中删除旧分配"
+
+#: symbolhandler.rsyoucantaddasymbolwithaddress0
+msgid "You can't add a symbol with address 0"
+msgstr "你不能添加地址为0的符号"
+
+#: symbolhandler.rsyoucantchangethissettingatthemoment
+msgid "You can't change this setting at the moment"
+msgstr "你不能在这时改变设置"
+
+#: tableconverter.rstoooldtable
+msgid "This table is too old to be used. Get Cheat engine 5.6 and open/resave this table"
+msgstr "这个表单太旧，用Cheat Engine 5.6或以上打开/重新保存这个表单"
+
+#: tabout.button1.caption
+msgctxt "tabout.button1.caption"
+msgid "OK"
+msgstr "确定"
+
+#: tabout.button2.caption
+msgid "Donate"
+msgstr "捐赠"
+
+#: tabout.button2.hint
+msgid "If you like Cheat Engine and want to contribute something to the development, just send a donation using Paypal."
+msgstr "如果你喜欢 Cheat Engine 并愿意为它的发展作出贡献，请使用贝宝捐赠。"
+
+#: tabout.caption
+msgid "About Cheat Engine"
+msgstr "关于 Cheat Engine"
+
+#: tabout.groupbox1.caption
+msgctxt "tabout.groupbox1.caption"
+msgid "Cheat Engine"
+msgstr ""
+
+#: tabout.label1.caption
+msgid "Made by: Dark Byte"
+msgstr "作者：Dark Byte"
+
+#: tabout.label10.caption
+msgid "Script engine powered by Lua"
+msgstr "脚本引擎 powered by Lua"
+
+#: tabout.label2.caption
+msgid "Special thanks to:"
+msgstr "特别感谢："
+
+#: tabout.label21.caption
+msgid "Metael"
+msgstr ""
+
+#: tabout.label22.caption
+msgid "wh1t3y"
+msgstr ""
+
+#: tabout.label23.caption
+msgid "A. Wiseman"
+msgstr ""
+
+#: tabout.label24.caption
+msgid "SWAT-Squad"
+msgstr ""
+
+#: tabout.label25.caption
+msgid "Psy"
+msgstr ""
+
+#: tabout.label26.caption
+msgid "Kickclock"
+msgstr ""
+
+#: tabout.label27.caption
+msgid "Recifense"
+msgstr ""
+
+#: tabout.label28.caption
+msgid "Geri"
+msgstr ""
+
+#: tabout.label29.caption
+msgid "Emperor"
+msgstr ""
+
+#: tabout.label3.caption
+msgid "supMarco"
+msgstr ""
+
+#: tabout.label30.caption
+msgid "Jgoemat"
+msgstr ""
+
+#: tabout.label31.caption
+msgid "mgr.inz.Player"
+msgstr ""
+
+#: tabout.label32.caption
+msgid "justa_dude"
+msgstr ""
+
+#: tabout.label33.caption
+msgid "SER[G]ANT"
+msgstr ""
+
+#: tabout.label34.caption
+msgid "Atom0s"
+msgstr ""
+
+#: tabout.label4.caption
+msgid "Patreon"
+msgstr ""
+
+#: tabout.label5.caption
+msgid "And all the other people that helped me out"
+msgstr "以及所有帮助过我的人"
+
+#: tabout.label8.caption
+msgid "Website"
+msgstr "网站"
+
+#: tabout.label9.caption
+msgid "Message Board"
+msgstr "留言板"
+
+#: tabout.lbldbvm.caption
+msgid "your system may or may not support dbvm"
+msgstr "你的系统可能不支持DBVM"
+
+#: tadvancedoptions.button1.caption
+msgctxt "TADVANCEDOPTIONS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tadvancedoptions.caption
+msgctxt "tadvancedoptions.caption"
+msgid "Code list/Pause"
+msgstr "代码列表/暂停"
+
+#: tadvancedoptions.codelist2.columns[0].caption
+msgctxt "tadvancedoptions.codelist2.columns[0].caption"
+msgid "Address"
+msgstr "地址"
+
+#: tadvancedoptions.codelist2.columns[1].caption
+msgctxt "tadvancedoptions.codelist2.columns[1].caption"
+msgid "Name"
+msgstr "名字"
+
+#: tadvancedoptions.findoutwhatthiscodechanges1.caption
+msgctxt "tadvancedoptions.findoutwhatthiscodechanges1.caption"
+msgid "Find out what addresses this code writes to"
+msgstr "找出这个代码写入什么地址"
+
+#: tadvancedoptions.label1.caption
+msgid "Code list:"
+msgstr "代码列表："
+
+#: tadvancedoptions.midbvmfindwhatcodeaccesses.caption
+msgid "DBVM Find...."
+msgstr "DBVM 查找…"
+
+#: tadvancedoptions.mireplacewithnops.caption
+msgctxt "tadvancedoptions.mireplacewithnops.caption"
+msgid "Replace with code that does nothing"
+msgstr "使用空指令替换"
+
+#: tadvancedoptions.mirestorewithoriginal.caption
+msgctxt "tadvancedoptions.mirestorewithoriginal.caption"
+msgid "Restore with original code"
+msgstr "还原代码"
+
+#: tadvancedoptions.opendialog1.title
+msgid "Select the file you want to search"
+msgstr "选择你要搜索的文件"
+
+#: tadvancedoptions.openthedisassemblerhere1.caption
+msgid "Open the disassembler at this location"
+msgstr "在这位置打开反汇编程序"
+
+#: tadvancedoptions.pausebutton.hint
+msgctxt "tadvancedoptions.pausebutton.hint"
+msgid "Pause the game"
+msgstr "暂停游戏"
+
+#: tadvancedoptions.remove1.caption
+msgid "Remove from list"
+msgstr "从列表移除"
+
+#: tadvancedoptions.rename1.caption
+msgctxt "tadvancedoptions.rename1.caption"
+msgid "Rename"
+msgstr "重命名"
+
+#: tadvancedoptions.replaceall1.caption
+msgid "Replace all"
+msgstr "全部替换"
+
+#: tcalloralldialog.button1.caption
+msgctxt "tcalloralldialog.button1.caption"
+msgid "All"
+msgstr "全部"
+
+#: tcalloralldialog.button2.caption
+msgid "Call's only"
+msgstr "只有调用"
+
+#: tcalloralldialog.button3.caption
+msgctxt "TCALLORALLDIALOG.BUTTON3.CAPTION"
+msgid "Cancel"
+msgstr "取消"
+
+#: tcalloralldialog.caption
+msgctxt "tcalloralldialog.caption"
+msgid "Code Filter"
+msgstr "代码过滤"
+
+#: tcalloralldialog.label1.caption
+msgid "Load all instructions into the list or just the CALL's ?"
+msgstr "加载所有指令进入列表或只是调用？"
+
+#: tchangeoffset.cancel.caption
+msgctxt "TCHANGEOFFSET.CANCEL.CAPTION"
+msgid "Cancel"
+msgstr "取消"
+
+#: tchangeoffset.caption
+msgid "Recalculate addres"
+msgstr "重新计算地址"
+
+#: tchangeoffset.cbhexadecimal.caption
+msgctxt "tchangeoffset.cbhexadecimal.caption"
+msgid "Hexadecimal"
+msgstr "十六进制"
+
+#: tchangeoffset.change.caption
+msgid "Change"
+msgstr "更改"
+
+#: tcomments.button1.caption
+msgctxt "tcomments.button1.caption"
+msgid "Close"
+msgstr "关闭"
+
+#: tcomments.caption
+msgctxt "tcomments.caption"
+msgid "Comments"
+msgstr "注释"
+
+#: tcomments.tscomment.caption
+msgctxt "TCOMMENTS.TSCOMMENT.CAPTION"
+msgid "Comments"
+msgstr "注释"
+
+#: tfindwindow.btncancel.caption
+msgctxt "TFINDWINDOW.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "取消"
+
+#: tfindwindow.btnok.caption
+msgctxt "TFINDWINDOW.BTNOK.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tfindwindow.caption
+msgctxt "TFINDWINDOW.CAPTION"
+msgid "Find"
+msgstr "查找"
+
+#: tfindwindow.cbunicode.caption
+msgctxt "tfindwindow.cbunicode.caption"
+msgid "Unicode"
+msgstr ""
+
+#: tfindwindow.editstart.text
+msgctxt "tfindwindow.editstart.text"
+msgid "00400000"
+msgstr ""
+
+#: tfindwindow.editstop.text
+msgctxt "tfindwindow.editstop.text"
+msgid "7FFFFFFF"
+msgstr ""
+
+#: tfindwindow.label2.caption
+msgctxt "TFINDWINDOW.LABEL2.CAPTION"
+msgid "From"
+msgstr "从"
+
+#: tfindwindow.label3.caption
+msgctxt "TFINDWINDOW.LABEL3.CAPTION"
+msgid "To"
+msgstr "到"
+
+#: tfindwindow.labelarray.caption
+msgid "Array to scan"
+msgstr "要扫描的数组"
+
+#: tfindwindow.labeltype.caption
+msgid "Type:"
+msgstr "类型："
+
+#: tfindwindow.rbarbyte.caption
+msgid "(Array of) byte"
+msgstr "字节（数组）"
+
+#: tfindwindow.rbtext.caption
+msgctxt "TFINDWINDOW.RBTEXT.CAPTION"
+msgid "Text"
+msgstr "文本"
+
+#: tformaddresschange.btncancel.caption
+msgctxt "TFORMADDRESSCHANGE.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "取消"
+
+#: tformaddresschange.btnok.caption
+msgctxt "TFORMADDRESSCHANGE.BTNOK.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tformaddresschange.caption
+msgid "Change address"
+msgstr "更改地址"
+
+#: tformaddresschange.cbcodepage.caption
+msgctxt "tformaddresschange.cbcodepage.caption"
+msgid "Codepage"
+msgstr "代码页"
+
+#: tformaddresschange.cbpointer.caption
+msgctxt "tformaddresschange.cbpointer.caption"
+msgid "Pointer"
+msgstr "指针"
+
+#: tformaddresschange.cbunicode.caption
+msgctxt "TFORMADDRESSCHANGE.CBUNICODE.CAPTION"
+msgid "Unicode"
+msgstr ""
+
+#: tformaddresschange.cbvartype.text
+msgctxt "tformaddresschange.cbvartype.text"
+msgid "4 Bytes"
+msgstr "4 字节"
+
+#: tformaddresschange.edtsize.text
+msgctxt "tformaddresschange.edtsize.text"
+msgid "10"
+msgstr ""
+
+#: tformaddresschange.label1.caption
+msgctxt "tformaddresschange.label1.caption"
+msgid "Address:"
+msgstr "地址："
+
+#: tformaddresschange.label10.caption
+msgctxt "tformaddresschange.label10.caption"
+msgid "6"
+msgstr ""
+
+#: tformaddresschange.label11.caption
+msgctxt "tformaddresschange.label11.caption"
+msgid "7"
+msgstr ""
+
+#: tformaddresschange.label12.caption
+msgctxt "tformaddresschange.label12.caption"
+msgid "Type"
+msgstr "类型"
+
+#: tformaddresschange.label2.caption
+msgid "Startbit:"
+msgstr "起始位:"
+
+#: tformaddresschange.label3.caption
+msgctxt "tformaddresschange.label3.caption"
+msgid "Description"
+msgstr "描述"
+
+#: tformaddresschange.label4.caption
+msgctxt "TFORMADDRESSCHANGE.LABEL4.CAPTION"
+msgid "0"
+msgstr ""
+
+#: tformaddresschange.label5.caption
+msgctxt "tformaddresschange.label5.caption"
+msgid "1"
+msgstr ""
+
+#: tformaddresschange.label6.caption
+msgctxt "tformaddresschange.label6.caption"
+msgid "2"
+msgstr ""
+
+#: tformaddresschange.label7.caption
+msgctxt "tformaddresschange.label7.caption"
+msgid "3"
+msgstr ""
+
+#: tformaddresschange.label8.caption
+msgctxt "tformaddresschange.label8.caption"
+msgid "4"
+msgstr ""
+
+#: tformaddresschange.label9.caption
+msgctxt "tformaddresschange.label9.caption"
+msgid "5"
+msgstr ""
+
+#: tformaddresschange.lblvalue.caption
+msgid "=Value"
+msgstr "=数值"
+
+#: tformaddresschange.lengthlabel.caption
+msgctxt "tformaddresschange.lengthlabel.caption"
+msgid "Length"
+msgstr "长度"
+
+#: tformaddresschange.miaddaddresstolist.caption
+msgctxt "tformaddresschange.miaddaddresstolist.caption"
+msgid "Add this address to the list"
+msgstr "添加这个地址到列表"
+
+#: tformaddresschange.micopy.caption
+msgctxt "tformaddresschange.micopy.caption"
+msgid "Copy"
+msgstr "复制"
+
+#: tformaddresschange.micut.caption
+msgctxt "tformaddresschange.micut.caption"
+msgid "Cut"
+msgstr "剪切"
+
+#: tformaddresschange.mipaste.caption
+msgctxt "tformaddresschange.mipaste.caption"
+msgid "Paste"
+msgstr "粘贴"
+
+#: tformaddresschange.miupdateafterinterval.caption
+msgid "Only update the offset after a specific amount of time"
+msgstr "仅在特定时间后更新偏移"
+
+#: tformaddresschange.miupdateonreinterpretonly.caption
+msgid "Only update the offset when the memory record gets reinterpreted"
+msgstr "仅在内存记录被重新解释后更新偏移"
+
+#: tformdebugstrings.button1.caption
+msgctxt "TFORMDEBUGSTRINGS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tformdebugstrings.caption
+msgctxt "tformdebugstrings.caption"
+msgid "Debug strings"
+msgstr "调试字符串"
+
+#: tformdesigner.calendar.caption
+msgctxt "TFORMDESIGNER.CALENDAR.CAPTION"
+msgid "Calendar"
+msgstr ""
+
+#: tformdesigner.calendar.hint
+msgctxt "tformdesigner.calendar.hint"
+msgid "Calendar"
+msgstr ""
+
+#: tformdesigner.caption
+msgctxt "tformdesigner.caption"
+msgid "Form Designer"
+msgstr "表单设计器"
+
+#: tformdesigner.cebutton.caption
+msgid "CEButton"
+msgstr ""
+
+#: tformdesigner.cebutton.hint
+msgid "Button"
+msgstr ""
+
+#: tformdesigner.cecheckbox.caption
+msgid "CECheckbox"
+msgstr ""
+
+#: tformdesigner.cecheckbox.hint
+msgid "CheckBox"
+msgstr ""
+
+#: tformdesigner.cecombobox.caption
+msgid "CEComboBox"
+msgstr ""
+
+#: tformdesigner.cecombobox.hint
+msgid "ComboBox"
+msgstr ""
+
+#: tformdesigner.ceedit.caption
+msgid "CEEdit"
+msgstr ""
+
+#: tformdesigner.ceedit.hint
+msgctxt "tformdesigner.ceedit.hint"
+msgid "Edit"
+msgstr ""
+
+#: tformdesigner.cegroupbox.caption
+msgid "CEGroupBox"
+msgstr ""
+
+#: tformdesigner.cegroupbox.hint
+msgid "GroupBox"
+msgstr ""
+
+#: tformdesigner.ceimage.caption
+msgid "CEImage"
+msgstr ""
+
+#: tformdesigner.ceimage.hint
+msgctxt "tformdesigner.ceimage.hint"
+msgid "Image"
+msgstr ""
+
+#: tformdesigner.celabel.caption
+msgid "CELabel"
+msgstr ""
+
+#: tformdesigner.celabel.hint
+msgid "Label"
+msgstr ""
+
+#: tformdesigner.celistbox.caption
+msgid "CEListBox"
+msgstr ""
+
+#: tformdesigner.celistbox.hint
+msgid "Listbox"
+msgstr ""
+
+#: tformdesigner.celistview.caption
+msgid "CEListView"
+msgstr ""
+
+#: tformdesigner.celistview.hint
+msgid "ListView"
+msgstr ""
+
+#: tformdesigner.cememo.caption
+msgid "CEMemo"
+msgstr ""
+
+#: tformdesigner.cememo.hint
+msgid "Memo"
+msgstr ""
+
+#: tformdesigner.ceopendialog.caption
+msgid "CEOpenDialog"
+msgstr ""
+
+#: tformdesigner.ceopendialog.hint
+msgid "Opendialog"
+msgstr ""
+
+#: tformdesigner.cepagecontrol.caption
+msgid "CEPageControl"
+msgstr ""
+
+#: tformdesigner.cepagecontrol.hint
+msgid "PageControl"
+msgstr ""
+
+#: tformdesigner.cepanel.caption
+msgid "CEPanel"
+msgstr ""
+
+#: tformdesigner.cepanel.hint
+msgid "Panel"
+msgstr ""
+
+#: tformdesigner.ceprogressbar.caption
+msgid "CEProgressbar"
+msgstr ""
+
+#: tformdesigner.ceprogressbar.hint
+msgid "ProgressBar"
+msgstr ""
+
+#: tformdesigner.ceradiogroup.caption
+msgid "CERadioGroup"
+msgstr ""
+
+#: tformdesigner.ceradiogroup.hint
+msgid "RadioGroup"
+msgstr ""
+
+#: tformdesigner.cesavedialog.caption
+msgid "CESavedialog"
+msgstr ""
+
+#: tformdesigner.cesavedialog.hint
+msgid "Savedialog"
+msgstr ""
+
+#: tformdesigner.cesplitter.caption
+msgid "CESplitter"
+msgstr ""
+
+#: tformdesigner.cesplitter.hint
+msgid "Splitter"
+msgstr ""
+
+#: tformdesigner.cetimer.caption
+msgid "CETimer"
+msgstr ""
+
+#: tformdesigner.cetimer.hint
+msgid "Timer"
+msgstr ""
+
+#: tformdesigner.cetogglebox.caption
+msgid "CEToggleBox"
+msgstr ""
+
+#: tformdesigner.cetogglebox.hint
+msgid "Togglebox"
+msgstr ""
+
+#: tformdesigner.cetrackbar.caption
+msgid "CETrackBar"
+msgstr ""
+
+#: tformdesigner.cetrackbar.hint
+msgid "TrackBar"
+msgstr ""
+
+#: tformdesigner.cetreeview.caption
+msgid "CETreeview"
+msgstr ""
+
+#: tformdesigner.cetreeview.hint
+msgid "Treeview"
+msgstr ""
+
+#: tformdesigner.checklistbox.caption
+msgctxt "tformdesigner.checklistbox.caption"
+msgid "CheckListBox"
+msgstr ""
+
+#: tformdesigner.checklistbox.hint
+msgctxt "tformdesigner.checklistbox.hint"
+msgid "CheckListBox"
+msgstr ""
+
+#: tformdesigner.finddialog.caption
+msgctxt "TFORMDESIGNER.FINDDIALOG.CAPTION"
+msgid "FindDialog"
+msgstr ""
+
+#: tformdesigner.finddialog.hint
+msgctxt "tformdesigner.finddialog.hint"
+msgid "FindDialog"
+msgstr ""
+
+#: tformdesigner.mainmenu.caption
+msgctxt "TFORMDESIGNER.MAINMENU.CAPTION"
+msgid "MainMenu"
+msgstr ""
+
+#: tformdesigner.mainmenu.hint
+msgctxt "tformdesigner.mainmenu.hint"
+msgid "MainMenu"
+msgstr ""
+
+#: tformdesigner.menuitem1.caption
+msgctxt "TFORMDESIGNER.MENUITEM1.CAPTION"
+msgid "File"
+msgstr ""
+
+#: tformdesigner.menuitem2.caption
+msgid "Add unlisted object"
+msgstr ""
+
+#: tformdesigner.miadditems.caption
+msgid "Add Items"
+msgstr ""
+
+#: tformdesigner.miaddsubmenu.caption
+msgid "Add sub menu items"
+msgstr ""
+
+#: tformdesigner.miaddtab.caption
+msgid "Add Tab"
+msgstr ""
+
+#: tformdesigner.mianchoreditor.caption
+msgctxt "tformdesigner.mianchoreditor.caption"
+msgid "Anchor Editor"
+msgstr ""
+
+#: tformdesigner.mianchoreditor2.caption
+msgctxt "tformdesigner.mianchoreditor2.caption"
+msgid "Anchor Editor"
+msgstr ""
+
+#: tformdesigner.mibringtofront.caption
+msgid "Bring to front"
+msgstr ""
+
+#: tformdesigner.midelete.caption
+msgctxt "TFORMDESIGNER.MIDELETE.CAPTION"
+msgid "Delete"
+msgstr ""
+
+#: tformdesigner.miload.caption
+msgctxt "tformdesigner.miload.caption"
+msgid "Load"
+msgstr ""
+
+#: tformdesigner.miloadlfm.caption
+msgid "Load LFM"
+msgstr ""
+
+#: tformdesigner.mimenumovedown.caption
+msgid "Move down"
+msgstr ""
+
+#: tformdesigner.mimenumoveup.caption
+msgid "Move up"
+msgstr ""
+
+#: tformdesigner.misave.caption
+msgctxt "tformdesigner.misave.caption"
+msgid "Save"
+msgstr ""
+
+#: tformdesigner.misavelfm.caption
+msgid "Save LFM"
+msgstr ""
+
+#: tformdesigner.misendtoback.caption
+msgid "Send to back"
+msgstr ""
+
+#: tformdesigner.misetupmainmenu.caption
+msgid "Add menu items"
+msgstr ""
+
+#: tformdesigner.noselection.caption
+msgid "NoSelection"
+msgstr ""
+
+#: tformdesigner.paintbox.caption
+msgid "CEPaintBox"
+msgstr ""
+
+#: tformdesigner.paintbox.hint
+msgid "PaintBox"
+msgstr ""
+
+#: tformdesigner.popupmenu.caption
+msgctxt "TFORMDESIGNER.POPUPMENU.CAPTION"
+msgid "PopupMenu"
+msgstr ""
+
+#: tformdesigner.popupmenu.hint
+msgctxt "tformdesigner.popupmenu.hint"
+msgid "PopupMenu"
+msgstr ""
+
+#: tformdesigner.radiobutton.caption
+msgctxt "TFORMDESIGNER.RADIOBUTTON.CAPTION"
+msgid "RadioButton"
+msgstr ""
+
+#: tformdesigner.radiobutton.hint
+msgctxt "tformdesigner.radiobutton.hint"
+msgid "RadioButton"
+msgstr ""
+
+#: tformdesigner.scrollbox.caption
+msgctxt "TFORMDESIGNER.SCROLLBOX.CAPTION"
+msgid "ScrollBox"
+msgstr ""
+
+#: tformdesigner.scrollbox.hint
+msgctxt "tformdesigner.scrollbox.hint"
+msgid "ScrollBox"
+msgstr ""
+
+#: tformdesigner.selectdirectorydialog.caption
+msgctxt "TFORMDESIGNER.SELECTDIRECTORYDIALOG.CAPTION"
+msgid "SelectDirectoryDialog"
+msgstr ""
+
+#: tformdesigner.selectdirectorydialog.hint
+msgctxt "tformdesigner.selectdirectorydialog.hint"
+msgid "SelectDirectoryDialog"
+msgstr ""
+
+#: tformdesigner.toolbar1.caption
+msgid "ToolBar1"
+msgstr ""
+
+#: tformdesigner.toolbutton1.caption
+msgctxt "tformdesigner.toolbutton1.caption"
+msgid "ToolButton1"
+msgstr ""
+
+#: tformdesigner.toolbutton6.caption
+msgid "ToolButton6"
+msgstr ""
+
+#: tformdifferentbitsize.button1.caption
+msgctxt "TFORMDIFFERENTBITSIZE.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tformdifferentbitsize.caption
+msgid "Different sized row of bits"
+msgstr "不同大小的位行"
+
+#: tformdifferentbitsize.edit1.text
+msgid "Edit1"
+msgstr ""
+
+#: tformdifferentbitsize.label1.caption
+msgid "The last time you scanned the number of bits was 90 and now it is 12. Please tell me how and how much i must change the bit offset to successfully scan. (Left arrow+right arrow move the bits)"
+msgstr "你最后一次扫描的位数是90，而现在它是12，请告诉我怎样更改位偏移以成功扫描（左右箭头移动位）"
+
+#: tformdifferentbitsize.labelnew.caption
+msgid "LabelNew"
+msgstr ""
+
+#: tformdifferentbitsize.labelold.caption
+msgid "LabelOld"
+msgstr ""
+
+#: tformdifferentbitsize.ohnoyoufoundme1.caption
+msgid "Oh no! You found me!!!"
+msgstr "哦不! 你找到我了!!!"
+
+#: tformfoundcodelistextra.button1.caption
+msgctxt "TFORMFOUNDCODELISTEXTRA.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tformfoundcodelistextra.caption
+msgid "Extra info"
+msgstr "额外信息"
+
+#: tformfoundcodelistextra.copyaddresstoclipboard1.caption
+msgid "Copy info to clipboard"
+msgstr "复制信息到剪贴板"
+
+#: tformfoundcodelistextra.copyguesstoclipboard1.caption
+msgid "Copy easy guess to clipboard"
+msgstr "复制简单猜测到剪贴板"
+
+#: tformfoundcodelistextra.label1.caption
+msgctxt "tformfoundcodelistextra.label1.caption"
+msgid "Label1"
+msgstr ""
+
+#: tformfoundcodelistextra.label10.caption
+msgid ">>"
+msgstr ""
+
+#: tformfoundcodelistextra.label17.caption
+msgid "yyy123"
+msgstr ""
+
+#: tformfoundcodelistextra.label18.caption
+msgid "The registers shown here are AFTER the instruction has been executed"
+msgstr "指令被执行后的寄存器显示在这里"
+
+#: tformfoundcodelistextra.label2.caption
+msgid "Label2"
+msgstr ""
+
+#: tformfoundcodelistextra.label3.caption
+msgctxt "tformfoundcodelistextra.label3.caption"
+msgid "Label3"
+msgstr ""
+
+#: tformfoundcodelistextra.label4.caption
+msgctxt "tformfoundcodelistextra.label4.caption"
+msgid "Label4"
+msgstr ""
+
+#: tformfoundcodelistextra.label5.caption
+msgid "Label5"
+msgstr ""
+
+#: tformfoundcodelistextra.label6.caption
+msgid "xxx123"
+msgstr ""
+
+#: tformfoundcodelistextra.lblcr3.caption
+msgid "CR3=XXXXXXXX"
+msgstr ""
+
+#: tformfoundcodelistextra.lblfsbase.caption
+msgid "FSBase=XXXXXXXX"
+msgstr ""
+
+#: tformfoundcodelistextra.lblgsbase.caption
+msgid "GSBase=XXXXXXXX"
+msgstr ""
+
+#: tformfoundcodelistextra.lblphysicaladdress.caption
+msgid "Physical Address=XXXXXXXX"
+msgstr "物理地址=XXXXXXXX"
+
+#: tformfoundcodelistextra.lblrax.caption
+msgid "EAX=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblrbp.caption
+msgid "EBP=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblrbx.caption
+msgid "EBX=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblrcx.caption
+msgid "ECX=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblrdi.caption
+msgid "EDI=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblrdx.caption
+msgid "EDX=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblrip.caption
+msgid "EIP=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblrsi.caption
+msgid "ESI=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblrsp.caption
+msgid "ESP=DDDDDDDD"
+msgstr ""
+
+#: tformfoundcodelistextra.lblvirtualaddress.caption
+msgid "Virtual Address=XXXXXXXX"
+msgstr "虚拟地址"
+
+#: tformfoundcodelistextra.sbshowfloats.caption
+msgctxt "tformfoundcodelistextra.sbshowfloats.caption"
+msgid "F"
+msgstr ""
+
+#: tformfoundcodelistextra.sbshowfloats.hint
+msgctxt "tformfoundcodelistextra.sbshowfloats.hint"
+msgid "Floating point registers"
+msgstr "浮点寄存器"
+
+#: tformfoundcodelistextra.sbshowstack.caption
+msgctxt "tformfoundcodelistextra.sbshowstack.caption"
+msgid "S"
+msgstr ""
+
+#: tformfoundcodelistextra.sbshowstack.hint
+msgctxt "tformfoundcodelistextra.sbshowstack.hint"
+msgid "Stack view"
+msgstr "栈视图"
+
+#: tformhotkey.button1.caption
+msgctxt "TFORMHOTKEY.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tformhotkey.button2.caption
+msgctxt "TFORMHOTKEY.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "取消"
+
+#: tformhotkey.caption
+msgid "Change hotkey"
+msgstr "更改热键"
+
+#: tformhotkey.label1.caption
+msgid "Press the new hotkey combination in below:"
+msgstr "在下面按下新的热键组合："
+
+#: tformmemoryregions.button1.caption
+msgctxt "TFORMMEMORYREGIONS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tformmemoryregions.caption
+msgctxt "tformmemoryregions.caption"
+msgid "Memory regions"
+msgstr "内存区域"
+
+#: tformmemoryregions.listview1.columns[0].caption
+msgctxt "TFORMMEMORYREGIONS.LISTVIEW1.COLUMNS[0].CAPTION"
+msgid "Address"
+msgstr "地址"
+
+#: tformmemoryregions.listview1.columns[1].caption
+msgid "Allocation Protect"
+msgstr "分配保护"
+
+#: tformmemoryregions.listview1.columns[2].caption
+msgid "State"
+msgstr "状态"
+
+#: tformmemoryregions.listview1.columns[3].caption
+msgctxt "tformmemoryregions.listview1.columns[3].caption"
+msgid "Protect"
+msgstr "保护"
+
+#: tformmemoryregions.listview1.columns[4].caption
+msgctxt "TFORMMEMORYREGIONS.LISTVIEW1.COLUMNS[4].CAPTION"
+msgid "Type"
+msgstr "类型"
+
+#: tformmemoryregions.listview1.columns[5].caption
+msgctxt "tformmemoryregions.listview1.columns[5].caption"
+msgid "Size"
+msgstr "大小"
+
+#: tformmemoryregions.listview1.columns[6].caption
+msgctxt "tformmemoryregions.listview1.columns[6].caption"
+msgid "Extra"
+msgstr "额外"
+
+#: tformmemoryregions.savedialog1.title
+msgid "Give the basename of the regions to be saved. (Can be a CT file)"
+msgstr "给出用来保存的区域的基本名（可成为CT文件）"
+
+#: tformmemoryregions.saveselectedregions1.caption
+msgid "Save selected regions"
+msgstr "保存选中区域"
+
+#: tformmemoryregions.selectallreadablememory1.caption
+msgid "Select all readable memory"
+msgstr "选择所有可读内存"
+
+#: tformmemoryregions.setselectedregionstobewritable1.caption
+msgid "Set selected regions to be writable"
+msgstr "设置选中区域为可写"
+
+#: tformmemoryregions.statusbar1.panels[0].text
+msgid "Hold ctrl when opening this window to also see kernelmode regions"
+msgstr "按住 ctrl 时打开这个窗口可以看到内核模式区域"
+
+#: tformsettings.aboutlabel.caption
+msgid "About CE"
+msgstr "关于CE"
+
+#: tformsettings.askforreplacewithnops.caption
+msgid "Ask for replace with nop"
+msgstr "询问用空指令替换"
+
+#: tformsettings.assembler.caption
+msgctxt "tformsettings.assembler.caption"
+msgid "Debugger Options"
+msgstr "调试器选项"
+
+#: tformsettings.btncancel.caption
+msgctxt "TFORMSETTINGS.BTNCANCEL.CAPTION"
+msgid "Cancel"
+msgstr "取消"
+
+#: tformsettings.btnexcludeprocesses.caption
+msgid "More..."
+msgstr "更多…"
+
+#: tformsettings.btnmakekerneldebugpossible.caption
+msgid "Make possible"
+msgstr "使其可用"
+
+#: tformsettings.btnok.caption
+msgctxt "TFORMSETTINGS.BTNOK.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tformsettings.btnrestorekernelprotection.caption
+msgid "Restore Protection"
+msgstr "还原保护"
+
+#: tformsettings.btnselectlanguage.caption
+msgid "Select Language"
+msgstr "选择语言"
+
+#: tformsettings.btnsetfont.caption
+msgctxt "tformsettings.btnsetfont.caption"
+msgid "Set Font"
+msgstr "设置字体"
+
+#: tformsettings.btnsettoolshortcut.caption
+msgid "Set shortcut"
+msgstr "设置快捷键"
+
+#: tformsettings.btntooldelete.caption
+msgctxt "TFORMSETTINGS.BTNTOOLDELETE.CAPTION"
+msgid "Delete"
+msgstr "删除"
+
+#: tformsettings.btntoolnew.caption
+msgctxt "tformsettings.btntoolnew.caption"
+msgid "New"
+msgstr "新建"
+
+#: tformsettings.button4.caption
+msgid "Add new"
+msgstr "添加"
+
+#: tformsettings.button5.caption
+msgctxt "TFORMSETTINGS.BUTTON5.CAPTION"
+msgid "Delete"
+msgstr "删除"
+
+#: tformsettings.caption
+msgid "Cheat Engine settings"
+msgstr "Cheat Engine 设置"
+
+#: tformsettings.cballocsaddtowatchedregions.caption
+msgctxt "tformsettings.cballocsaddtowatchedregions.caption"
+msgid "Automatically add allocated memory by CE as watched regions"
+msgstr "自动添加由CE分配的内存作为监视区域"
+
+#: tformsettings.cbalwaysaskforpassword.caption
+msgid "Always ask for password when signing"
+msgstr "签名时总是询问密码"
+
+#: tformsettings.cbalwaysautoattach.caption
+msgid "Even autoattach when another process has already been selected"
+msgstr "自动附加即使已选中其它进程"
+
+#: tformsettings.cbalwaysforceload.caption
+msgid "Always force load modules"
+msgstr "总是强制加载模块"
+
+#: tformsettings.cbalwaysforceload.hint
+msgid ""
+"When enabled CE's internal injectDLL routine will not use loadlibrary in the target at all and always use manual mapping to load the dll\n"
+"(When disabled CE will still use manual mapping when normal dll injection fails)\n"
+msgstr ""
+"当启用CE内部 injectDLL 例程时，不会在目标内使用 loadlibrary，并总是使用手动映射来加载DLL\n"
+"（禁用且标准 dll 注入失败时，CE仍会使用手动映射）\n"
+
+#: tformsettings.cbalwayssigntable.caption
+msgid "Always sign Cheat Tables when saving"
+msgstr "总是在保存时签名CT表"
+
+#: tformsettings.cbcanstepkernelcode.caption
+msgid "Ability to step through kernel code"
+msgstr "单步调试内核代码的能力"
+
+#: tformsettings.cbcenteronpopup.caption
+msgid "Center Cheat Engine when bringing to front"
+msgstr "置顶时居中Cheat Engine"
+
+#: tformsettings.cbdontopenhandle.caption
+msgid "Do not try to obtain handles"
+msgstr "不要尝试获取句柄"
+
+#: tformsettings.cbdontusetempdir.caption
+msgid "Don't store the temporary scanfiles in the windows tempdir"
+msgstr "不要保存临时扫描文件在Windows临时目录中"
+
+#: tformsettings.cbdpiaware.caption
+msgid "DPI Aware (Requires a restart)"
+msgstr "DPI Aware (需要重启)"
+
+#: tformsettings.cbfastscan.caption
+msgid "Fast scan on by default"
+msgstr "默认开启快速扫描"
+
+#: tformsettings.cbglobaldebug.caption
+msgid "Use Global Debug routines"
+msgstr "使用全局调试例程"
+
+#: tformsettings.cbhandlebreakpoints.caption
+msgid "Handle beakpoints not caused by CE"
+msgstr "处理非CE引起的断点"
+
+#: tformsettings.cbhideallwindows.caption
+msgid "Hide some/all windows instead of trying to bring cheat engine to front"
+msgstr "隐藏部分/全部窗口来代替置顶Cheat Engine"
+
+#: tformsettings.cbincremental.caption
+msgid "Incremental value"
+msgstr "递增数值"
+
+#: tformsettings.cbinjectdllwithapc.caption
+msgid "Use APC to inject dll's"
+msgstr "使用APC注入DLL"
+
+#: tformsettings.cbkdebug.caption
+msgid "Use kernelmode debugger"
+msgstr "使用内核模式调试器"
+
+#: tformsettings.cbkernelopenprocess.caption
+msgctxt "tformsettings.cbkernelopenprocess.caption"
+msgid "Open Process"
+msgstr "打开进程"
+
+#: tformsettings.cbkernelquerymemoryregion.caption
+msgid "Query memory region routines"
+msgstr "查询内存区域例程"
+
+#: tformsettings.cbkernelreadwriteprocessmemory.caption
+msgid "Read/Write Process Memory  (Will cause slower scans)"
+msgstr "读/写进程内存（会导致扫描变慢）"
+
+#: tformsettings.cbluagarbagecollectall.caption
+msgid "Collect all garbage every few seconds"
+msgstr "每隔几秒收集所有垃圾"
+
+#: tformsettings.cbluaonlycollectwhenlarger.caption
+msgid "Only when the size is bigger than:"
+msgstr "只有当大小大于："
+
+#: tformsettings.cbluapassivegarbagecollection.caption
+msgid "Passive garbage collection"
+msgstr "被动垃圾收集"
+
+#: tformsettings.cbluapassivegarbagecollection.hint
+msgid "Constantly runs a few steps of the garbage collector sequence. (Will take a while till all garbage is cleaned if there is a lot)"
+msgstr "不断运行垃圾收集器序列的少量步骤（当垃圾很多时需要一些时间来清理）"
+
+#: tformsettings.cbmemimage.caption
+msgid "MEM_IMAGE:Memory that is mapped into the view of an image section"
+msgstr "MEM_IMAGE：映射到镜像节视图的内存"
+
+#: tformsettings.cbmemmapped.caption
+msgid "MEM_MAPPED:Memory that is mapped into the view of a section. (E.g:File mapping, emulator memory, slow)"
+msgstr "MEM_MAPPED：映射到节视图的内存（如：文件映射，模拟器内存，慢）"
+
+#: tformsettings.cbmemprivate.caption
+msgid "MEM_PRIVATE:Memory that is private."
+msgstr "MEM_PRIVATE：私有内存。"
+
+#: tformsettings.cbneverchangeprotection.caption
+msgid "Never change memory protection when editing"
+msgstr "在编辑时从不更改内存保护"
+
+#: tformsettings.cbneverchangeprotection.hint
+msgid "When enabled CE will never call \"VirtualProtectEx\" before it changes memory. This means that read-only memory can not be changed then.  (code is usually read only)"
+msgstr "当启用时，CE绝不会在它更改内存前调用\"VirtualProtectEx\"，这意味着不能更改只读内存（代码通常是只读）"
+
+#: tformsettings.cboldpointeraddmethod.caption
+msgid "Pointer adding: Append pointerline instead of insert"
+msgstr "添加指针：追加pointerline代替插入"
+
+#: tformsettings.cboverridedefaultfont.caption
+msgid "Override the default font (Requires a restart)"
+msgstr "覆盖默认字体（需要重启）"
+
+#: tformsettings.cboverrideexistingbps.caption
+msgid "Override existing breakpoints when setting breakpoints"
+msgstr "当设置断点时覆盖已存在的断点"
+
+#: tformsettings.cbpausewhenscanningonbydefault.caption
+msgid "Pause while scanning on by default"
+msgstr "默认开启扫描时暂停"
+
+#: tformsettings.cbprocessicons.caption
+msgid "Get process icons for processlist"
+msgstr "在进程列表中显示图标"
+
+#: tformsettings.cbprocessiconsonly.caption
+msgid "Only show processes with an icon"
+msgstr "只显示有图标的进程"
+
+#: tformsettings.cbprocesswatcher.caption
+msgid "Enable use of the Process Watcher"
+msgstr "启用进程监视器"
+
+#: tformsettings.cbprocesswatcheropenshandles.caption
+msgid "Open handle to processes on creation"
+msgstr "创建时打开进程句柄"
+
+#: tformsettings.cbsavewindowpos.caption
+msgid "Save window positions"
+msgstr "保存窗口位置"
+
+#: tformsettings.cbshowallwindows.caption
+msgid "Show all windows in the taskbar"
+msgstr "显示在任务栏中的所有窗口"
+
+#: tformsettings.cbshowassigned.caption
+msgid "Show values as if they are signed"
+msgstr "显示带符号的值"
+
+#: tformsettings.cbshowlanguagemenuitem.caption
+msgid "Show language selection menu item at the main screen"
+msgstr "在主窗口显示语言选择菜单项"
+
+#: tformsettings.cbshowmainmenu.caption
+msgid "Show main menu"
+msgstr "显示主菜单"
+
+#: tformsettings.cbshowprocesslist.caption
+msgid "Show process list in main menu"
+msgstr "在主菜单显示进程列表"
+
+#: tformsettings.cbshowtools.caption
+msgid "Show 'tools' menu item"
+msgstr "显示“工具”菜单项"
+
+#: tformsettings.cbshowundo.caption
+msgid "Show undo button"
+msgstr "显示撤销按钮"
+
+#: tformsettings.cbsimplecopypaste.caption
+msgid "Simple paste"
+msgstr "简单粘贴"
+
+#: tformsettings.cbskip_page_nocache.caption
+msgid "Don't scan memory that is protected with the No Cache option"
+msgstr "不要扫描无缓存选项的受保护内存"
+
+#: tformsettings.cbskip_page_nocache.hint
+msgid "Some systems crash when trying to read memory with this protection. If that happens check this option."
+msgstr "某些系统尝试读取受保护内存时会崩溃，如发生勾选本项。"
+
+#: tformsettings.cbskip_page_writecombine.caption
+msgid "Don't scan memory that is protected with the Write Combine option"
+msgstr "不扫描带 Write Combine 选项的受保护内存"
+
+#: tformsettings.cbupdatefoundlist.caption
+msgid "Update the list of found addresses even after scanning"
+msgstr "更新已找到地址的列表即使在扫描后"
+
+#: tformsettings.cbusethreadforfreeze.caption
+msgid "Use thread for freeze"
+msgstr "使用线程来冻结"
+
+#: tformsettings.cbusevehdebugger.caption
+msgid "Use VEH Debugger"
+msgstr "使用 VEH 调试器"
+
+#: tformsettings.cbusewindowsdebugger.caption
+msgid "Use windows debugger"
+msgstr "使用 Windows 调试器"
+
+#: tformsettings.cbvehrealcontextonthreadcreation.caption
+msgid "Get/Set thread context on creation"
+msgstr "创建时获取/设置线程上下文"
+
+#: tformsettings.cbwaitafterguiupdate.caption
+msgid "Wait after gui updates"
+msgstr "GUI更新后等待"
+
+#: tformsettings.cbwaitafterguiupdate.hint
+msgid ""
+"Sometimes when using one of the \"find out what...\" functions they get hit so often that the gui has no time to update, resulting in anoying behaviour like certain windows not closing or unresponsive buttons.\n"
+"With this option enabled the debugger will give the gui some time to handle the messages before it sends it a new update.\n"
+"Downside: The game may become slightly slower when using these functions. (Of course, if it has been hammering the gui, it would already have been frozen)\n"
+msgstr ""
+"有时当使用“找出什么……”功能时，GUI没时间更新，就会导致烦人的行为，如某些窗口没关闭或按钮无响应。\n"
+"启用此项时调试器会在发送一次更新前，给GUI一些时间来处理消息\n"
+"缺点：使用这些功能时，游戏可能稍微变慢\n"
+
+#: tformsettings.cbwriteloggingon.caption
+msgid "Enable write logging by default"
+msgstr "默认启用写入日志"
+
+#: tformsettings.cbwriteloggingon.hint
+msgid "When enabled CE will record writes done by the user and allows the user to undo those changes"
+msgstr "启用时CE会记录由用户完成的写入，并允许用户撤销这些更改"
+
+#: tformsettings.cgalltypes.caption
+msgid "The all type includes"
+msgstr "所有类型包括"
+
+#: tformsettings.checkbox1.caption
+msgid "Try to prevent detection of the debugger"
+msgstr "尝试阻止调试器的检测"
+
+#: tformsettings.checkbox4.caption
+msgid "Use APC to create new threads"
+msgstr "使用APC创建新线程"
+
+#: tformsettings.codefinder.caption
+msgid "CodeFinder"
+msgstr "代码查找器"
+
+#: tformsettings.combothreadpriority.text
+msgctxt "tformsettings.combothreadpriority.text"
+msgid "Higher"
+msgstr "较高"
+
+#: tformsettings.default1.caption
+msgctxt "tformsettings.default1.caption"
+msgid "Default"
+msgstr "默认"
+
+#: tformsettings.editautoattach.hint
+msgid "Type the name of the process you want to automatically open. Note: Only works when NO process has been opened yet"
+msgstr "输入你要自动打开的进程名，注意：只在没打开进程时工作"
+
+#: tformsettings.editbufsize.text
+msgid "1024"
+msgstr ""
+
+#: tformsettings.editfreezeinterval.hint
+msgid "The number of milliseconds that Cheat Engine will wait before resetting the frozen addresses to their original value."
+msgstr "Cheat Engine 等待冻结地址重设到它们的原始数值前的毫秒数。"
+
+#: tformsettings.editfreezeinterval.text
+msgctxt "tformsettings.editfreezeinterval.text"
+msgid "100"
+msgstr ""
+
+#: tformsettings.editupdatefoundinterval.hint
+msgid "The number of milliseconds that Cheat Engine will wait before refreshing the list of found addresses"
+msgstr "Cheat Engine 等待已找到地址列表刷新前的毫秒数"
+
+#: tformsettings.editupdatefoundinterval.text
+msgctxt "tformsettings.editupdatefoundinterval.text"
+msgid "1000"
+msgstr ""
+
+#: tformsettings.editupdateinterval.hint
+msgid "The number of milliseconds that Cheat Engine will wait before refreshing the list of addresses"
+msgstr "Cheat Engine 等待地址列表刷新前的毫秒数"
+
+#: tformsettings.editupdateinterval.text
+msgctxt "tformsettings.editupdateinterval.text"
+msgid "500"
+msgstr ""
+
+#: tformsettings.edtdefault.text
+msgctxt "TFORMSETTINGS.EDTDEFAULT.TEXT"
+msgid "0"
+msgstr ""
+
+#: tformsettings.edtluacollecttimer.text
+msgctxt "tformsettings.edtluacollecttimer.text"
+msgid "60"
+msgstr ""
+
+#: tformsettings.edtluamincollectsize.text
+msgid "200"
+msgstr ""
+
+#: tformsettings.edtrepeatdelay.hint
+msgid ""
+"The delay in milliseconds to wait before starting a next scan when the 'repeat' checkbox is ticked\n"
+"\n"
+"0=no wait\n"
+msgstr ""
+"勾选“重复”时在开始下一次扫描前等待的延迟（毫秒）\n"
+"\n"
+"0=不等待\n"
+
+#: tformsettings.edtrepeatdelay.text
+msgctxt "tformsettings.edtrepeatdelay.text"
+msgid "0"
+msgstr ""
+
+#: tformsettings.edtstacksize.text
+msgctxt "tformsettings.edtstacksize.text"
+msgid "4096"
+msgstr ""
+
+#: tformsettings.edtwritelogsize.text
+msgctxt "tformsettings.edtwritelogsize.text"
+msgid "250"
+msgstr ""
+
+#: tformsettings.extra.caption
+msgctxt "TFORMSETTINGS.EXTRA.CAPTION"
+msgid "Extra"
+msgstr "额外"
+
+#: tformsettings.gbunexpectedexceptionhandling.caption
+msgid "When CE starts default behaviour for unexpected breakpoints"
+msgstr "当CE启动意外断点的默认行为时"
+
+#: tformsettings.generalsettings.caption
+msgctxt "tformsettings.generalsettings.caption"
+msgid "General Settings"
+msgstr "常规设置"
+
+#: tformsettings.groupbox1.caption
+msgid "Address list specific"
+msgstr "地址列表特性"
+
+#: tformsettings.groupbox2.caption
+msgid "Debugger interface config"
+msgstr "调试器接口配置"
+
+#: tformsettings.groupbox3.caption
+msgid "Use the following CE Kernel routines instead of the original windows version"
+msgstr "使用以下CE内核例程代替Windows原版"
+
+#: tformsettings.groupbox4.caption
+msgid "Prefered breakpoint method"
+msgstr "首选断点方法"
+
+#: tformsettings.groupbox5.caption
+msgid "Table: Lua scripts"
+msgstr "表单：Lua脚本"
+
+#: tformsettings.label1.caption
+msgid "Size of scanbuffer (KB) :"
+msgstr "扫描缓冲大小（KB）："
+
+#: tformsettings.label10.caption
+msgid "Current Language:"
+msgstr "当前语言："
+
+#: tformsettings.label11.caption
+msgctxt "tformsettings.label11.caption"
+msgid "ms"
+msgstr "毫秒"
+
+#: tformsettings.label12.caption
+msgctxt "TFORMSETTINGS.LABEL12.CAPTION"
+msgid "ms"
+msgstr "毫秒"
+
+#: tformsettings.label13.caption
+msgctxt "tformsettings.label13.caption"
+msgid "Update interval"
+msgstr "更新间隔"
+
+#: tformsettings.label14.caption
+msgid "Freeze interval"
+msgstr "冻结间隔"
+
+#: tformsettings.label15.caption
+msgid "(Can affect scan speed a lot)"
+msgstr "（会影响扫描速度）"
+
+#: tformsettings.label16.caption
+msgid "When a table has a lua script, execute it:"
+msgstr "当一个表单含有Lua脚本时，执行它："
+
+#: tformsettings.label17.caption
+msgctxt "tformsettings.label17.caption"
+msgid "Seconds"
+msgstr "秒"
+
+#: tformsettings.label18.caption
+msgid "Found address list update interval"
+msgstr "已找到地址列表更新间隔"
+
+#: tformsettings.label19.caption
+msgctxt "TFORMSETTINGS.LABEL19.CAPTION"
+msgid "ms"
+msgstr "毫秒"
+
+#: tformsettings.label2.caption
+msgid "Store the temporary scanfiles here instead:"
+msgstr "存储临时扫描文件在这里："
+
+#: tformsettings.label20.caption
+msgid "Megabyte"
+msgstr "Mb"
+
+#: tformsettings.label21.caption
+msgid "Scan the following memory region types:"
+msgstr "扫描以下内存区域类型："
+
+#: tformsettings.label22.caption
+msgid "The following plugins are available:"
+msgstr "以下插件可用："
+
+#: tformsettings.label23.caption
+msgid "Automatically attach to processes named"
+msgstr "自动附加到进程名为"
+
+#: tformsettings.label24.caption
+msgid "(Seperate entries with ; )"
+msgstr "（用;分隔条目）"
+
+#: tformsettings.label25.caption
+msgctxt "tformsettings.label25.caption"
+msgid "ms"
+msgstr "毫秒"
+
+#: tformsettings.label3.caption
+msgid "Thread priority"
+msgstr "线程优先级"
+
+#: tformsettings.label4.caption
+msgid "Single line assembler:"
+msgstr "单行汇编程序："
+
+#: tformsettings.label5.caption
+msgid "Default return value"
+msgstr "默认返回值"
+
+#: tformsettings.label6.caption
+msgid "Size of stack to record on \"Find what... routines\""
+msgstr "记录“找出什么……例程”的栈大小"
+
+#: tformsettings.label7.caption
+msgctxt "tformsettings.label7.caption"
+msgid "Bytes"
+msgstr "字节"
+
+#: tformsettings.label8.caption
+msgid "Max log size (nr of entries)"
+msgstr "最大日志大小（条目数）"
+
+#: tformsettings.label9.caption
+msgid "The folowing languages are available:"
+msgstr "以下语言可用："
+
+#: tformsettings.languages.caption
+msgctxt "tformsettings.languages.caption"
+msgid "Languages"
+msgstr "语言"
+
+#: tformsettings.lblapplicationtool.caption
+msgid "Application/Command"
+msgstr "应用/命令"
+
+#: tformsettings.lblcurrentlanguage.caption
+msgid "English"
+msgstr "英语"
+
+#: tformsettings.lblrepeatdelay.caption
+msgid "Repeat scan delay"
+msgstr "重复扫描延迟"
+
+#: tformsettings.lblshortcut.caption
+msgid "Shortcut:"
+msgstr "快捷键："
+
+#: tformsettings.lblshortcuttext.caption
+msgid "xxxxxxxx"
+msgstr ""
+
+#: tformsettings.lblthreadfollowing.caption
+msgid "Thread following:"
+msgstr "以下线程："
+
+#: tformsettings.lbltoolsname.caption
+msgctxt "TFORMSETTINGS.LBLTOOLSNAME.CAPTION"
+msgid "Name"
+msgstr "名字"
+
+#: tformsettings.lvtools.columns[0].caption
+msgctxt "TFORMSETTINGS.LVTOOLS.COLUMNS[0].CAPTION"
+msgid "Name"
+msgstr "名字"
+
+#: tformsettings.lvtools.columns[1].caption
+msgid "Application"
+msgstr "应用"
+
+#: tformsettings.lvtools.columns[2].caption
+msgid "Shortcut"
+msgstr "快捷键"
+
+#: tformsettings.menuitem1.caption
+msgctxt "tformsettings.menuitem1.caption"
+msgid "Refresh"
+msgstr "刷新"
+
+#: tformsettings.miluaexecalways.caption
+msgctxt "tformsettings.miluaexecalways.caption"
+msgid "Always"
+msgstr "总是"
+
+#: tformsettings.miluaexecask.caption
+msgid "Always ask"
+msgstr "总是询问"
+
+#: tformsettings.miluaexecnever.caption
+msgctxt "tformsettings.miluaexecnever.caption"
+msgid "Never"
+msgstr "从不"
+
+#: tformsettings.miluaexecsignedonly.caption
+msgid "Only when signed, else ask"
+msgstr "只在已签名时，否则询问"
+
+#: tformsettings.miunexpectedbreakpointsbreak.caption
+msgctxt "tformsettings.miunexpectedbreakpointsbreak.caption"
+msgid "Break"
+msgstr "中断"
+
+#: tformsettings.miunexpectedbreakpointsbreakwheninsideregion.caption
+msgid "Break when inside specific regions"
+msgstr "在特定区域内时中断"
+
+#: tformsettings.miunexpectedbreakpointsignore.caption
+msgid "Ignore"
+msgstr "忽略"
+
+#: tformsettings.panel11.caption
+msgid "Panel11"
+msgstr ""
+
+#: tformsettings.plugins.caption
+msgctxt "tformsettings.plugins.caption"
+msgid "Plugins"
+msgstr "插件"
+
+#: tformsettings.rbdebugasbreakpoint.caption
+msgid "Hardware Breakpoints (Max 4)"
+msgstr "硬件断点（最大4个）"
+
+#: tformsettings.rbgdebuggerinterface.caption
+msgid "Debugger method"
+msgstr "调试器方法"
+
+#: tformsettings.rbint3asbreakpoint.caption
+msgid "Int3 instructions (Execute BP only, falls back to hardware bp) (Unlimited)"
+msgstr "Int3 指令（只执行断点，后退到硬件断点）（无限）"
+
+#: tformsettings.rbpageexceptions.caption
+msgid "Page exceptions (Extremely slow to unplayable, buggy, best used if nothing else works. Does not use debug registers)"
+msgstr "页面异常（极慢，bug多，其他方法没用才用这个，不使用调试寄存器）"
+
+#: tformsettings.rbvehhookthreadcreation.caption
+msgid "Hook thread-create and destroy api's"
+msgstr "Hook 创建和销毁线程的API"
+
+#: tformsettings.rbvehpollthread.caption
+msgid "Poll for threads"
+msgstr "线程轮询"
+
+#: tformsettings.rbvehuseprocesswatcher.caption
+msgid "Use processwatcher"
+msgstr "使用进程监视器"
+
+#: tformsettings.replacewithnops.caption
+msgid "Replace incomplete opcodes with nops"
+msgstr "使用空指令替换不完整的操作码"
+
+#: tformsettings.replacewithnops.hint
+msgid "If you type in a opcode and it is smaller than the opcode you replaced, it will fill the missing bytes with NOP instructions. If the opcode is longer it will replace the opcode(s) that have been overwritten with NOP's"
+msgstr "如果你输入的操作码比要替换的小，它会用空指令填补缺少的字节。反之，它会替换被空指令覆写的操作码"
+
+#: tformsettings.scansettings.caption
+msgctxt "tformsettings.scansettings.caption"
+msgid "Scan Settings"
+msgstr "扫描设置"
+
+#: tformsettings.tauntoldosuser.caption
+msgid "I really recommend upgrading to Windows 2000 or later mister Flintstone"
+msgstr "建议升级操作系统"
+
+#: tformsettings.tshotkeys.caption
+msgctxt "tformsettings.tshotkeys.caption"
+msgid "Hotkeys"
+msgstr "热键"
+
+#: tformsettings.tskerneldebugconfig.caption
+msgid "Kernel Debug"
+msgstr "内核调试"
+
+#: tformsettings.tslua.caption
+msgctxt "tformsettings.tslua.caption"
+msgid "Lua"
+msgstr ""
+
+#: tformsettings.tssigning.caption
+msgid "tsSigning"
+msgstr ""
+
+#: tformsettings.tstools.caption
+msgid "tsTools"
+msgstr ""
+
+#: tformsettings.tsvehdebugconfig.caption
+msgctxt "tformsettings.tsvehdebugconfig.caption"
+msgid "VEH Debugger"
+msgstr "VEH 调试器"
+
+#: tformsettings.tswindowsdebuggerconfig.caption
+msgid "Windows Debugger"
+msgstr "Windows 调试器"
+
+#: tformsettings.unrandomizer.caption
+msgctxt "tformsettings.unrandomizer.caption"
+msgid "Unrandomizer"
+msgstr ""
+
+#: tfoundcodedialog.addtothecodelist1.caption
+msgctxt "tfoundcodedialog.addtothecodelist1.caption"
+msgid "Add to the codelist"
+msgstr "添加到代码列表"
+
+#: tfoundcodedialog.btnaddtocodelist.caption
+msgctxt "tfoundcodedialog.btnaddtocodelist.caption"
+msgid "Add to the codelist"
+msgstr "添加到代码列表"
+
+#: tfoundcodedialog.btnaddtocodelist.hint
+msgid "The selected addresses will be added to the code list in the advanced options window."
+msgstr "选中的地址会被添加到高级选项窗口中的代码列表。"
+
+#: tfoundcodedialog.btnextrainfo.caption
+msgid "More information"
+msgstr "更多信息"
+
+#: tfoundcodedialog.btnextrainfo.hint
+msgid "Shows more information about the state of the system when that instruction got executed"
+msgstr "当指令执行后显示更多关于系统状态的信息"
+
+#: tfoundcodedialog.btnok.caption
+msgctxt "tfoundcodedialog.btnok.caption"
+msgid "OK"
+msgstr "确定"
+
+#: tfoundcodedialog.btnopendisassembler.caption
+msgid "Show disassembler"
+msgstr "显示反汇编程序"
+
+#: tfoundcodedialog.btnopendisassembler.hint
+msgid "This will open the memoryview and bring the disassemblerview to the selected address"
+msgstr "打开内存视图并在反汇编程序视图显示选中地址"
+
+#: tfoundcodedialog.btnreplacewithnops.caption
+msgctxt "tfoundcodedialog.btnreplacewithnops.caption"
+msgid "Replace"
+msgstr "替换"
+
+#: tfoundcodedialog.btnreplacewithnops.hint
+msgid "This will replace the selected addresses with code that does nothing. (Nops)"
+msgstr "用空指令替换选中地址"
+
+#: tfoundcodedialog.caption
+msgctxt "tfoundcodedialog.caption"
+msgid "The following opcodes changed the selected address"
+msgstr "以下操作码更改了选中地址"
+
+#: tfoundcodedialog.copyselectiontoclipboard1.caption
+msgctxt "tfoundcodedialog.copyselectiontoclipboard1.caption"
+msgid "Copy selection to clipboard"
+msgstr "复制选中内容到剪贴板"
+
+#: tfoundcodedialog.foundcodelist.columns[0].caption
+msgctxt "tfoundcodedialog.foundcodelist.columns[0].caption"
+msgid "Count"
+msgstr "计数"
+
+#: tfoundcodedialog.foundcodelist.columns[1].caption
+msgctxt "tfoundcodedialog.foundcodelist.columns[1].caption"
+msgid "Instruction"
+msgstr "指令"
+
+#: tfoundcodedialog.menuitem1.caption
+msgid "Select all"
+msgstr "全选"
+
+#: tfoundcodedialog.mifindwhataccesses.caption
+msgid "Check if found opcodes also access other addresses (max 8)"
+msgstr "检查如果已找到操作码也访问其它地址（最大8个）"
+
+#: tfoundcodedialog.misavetofile.caption
+msgid "Save selection to file"
+msgstr "保存选中内容到文件"
+
+#: tfoundcodedialog.moreinfo1.caption
+msgid "More Info"
+msgstr "更多信息"
+
+#: tfoundcodedialog.replacewithcodethatdoesnothingnop1.caption
+msgid "Replace with code that does nothing (NOP)"
+msgstr "用空指令替换"
+
+#: tfoundcodedialog.showthisaddressinthedisassembler1.caption
+msgid "Show this address in the disassembler"
+msgstr "在反汇编程序中显示这个地址"
+
+#: tframehotkeyconfig.button3.caption
+msgctxt "TFRAMEHOTKEYCONFIG.BUTTON3.CAPTION"
+msgid "Clear"
+msgstr "清除"
+
+#: tframehotkeyconfig.cbstoponrelease.caption
+msgid "Stop on release"
+msgstr "释放时停止"
+
+#: tframehotkeyconfig.edit4.text
+msgctxt "TFRAMEHOTKEYCONFIG.EDIT4.TEXT"
+msgid "1"
+msgstr ""
+
+#: tframehotkeyconfig.edthotkeydelay.hint
+msgid "Lets you specify how quickly a hotkey is repeated"
+msgstr "让你指定热键重复的速度"
+
+#: tframehotkeyconfig.edthotkeydelay.text
+msgctxt "TFRAMEHOTKEYCONFIG.EDTHOTKEYDELAY.TEXT"
+msgid "100"
+msgstr ""
+
+#: tframehotkeyconfig.edtkeypollinterval.hint
+msgid "Determines how quickly a hotkey keypress is detected"
+msgstr "决定检测按下热键有多快"
+
+#: tframehotkeyconfig.edtkeypollinterval.text
+msgctxt "TFRAMEHOTKEYCONFIG.EDTKEYPOLLINTERVAL.TEXT"
+msgid "100"
+msgstr ""
+
+#: tframehotkeyconfig.edtshspeed.text
+msgctxt "TFRAMEHOTKEYCONFIG.EDTSHSPEED.TEXT"
+msgid "2"
+msgstr ""
+
+#: tframehotkeyconfig.label1.caption
+msgid "Functions"
+msgstr "功能"
+
+#: tframehotkeyconfig.label2.caption
+msgctxt "tframehotkeyconfig.label2.caption"
+msgid "Hotkey"
+msgstr "热键"
+
+#: tframehotkeyconfig.label3.caption
+msgid "Speed delta"
+msgstr "速度增量"
+
+#: tframehotkeyconfig.label4.caption
+msgid "Keypoll interval (milliseconds)"
+msgstr "按键轮询间隔（毫秒）"
+
+#: tframehotkeyconfig.label5.caption
+msgid "Delay between reactivating hotkeys"
+msgstr "重新激活热键之间的延迟"
+
+#: tframehotkeyconfig.label52.caption
+msgid "Speed        "
+msgstr "速度        "
+
+#: tframehotkeyconfig.menuitem1.caption
+msgctxt "tframehotkeyconfig.menuitem1.caption"
+msgid "Clear list"
+msgstr "清除列表"
+
+#: tfrmaaeditprefs.btnfont.caption
+msgid "font"
+msgstr "字体"
+
+#: tfrmaaeditprefs.button1.caption
+msgctxt "TFRMAAEDITPREFS.BUTTON1.CAPTION"
+msgid "OK"
+msgstr "确定"
+
+#: tfrmaaeditprefs.button2.caption
+msgctxt "TFRMAAEDITPREFS.BUTTON2.CAPTION"
+msgid "Cancel"
+msgstr "取消"
+
+#: tfrmaaeditprefs.caption
+msgid "Editor preferences"
+msgstr "编辑器首选项"
+
+#: tfrmaaeditprefs.cbfontquality.hint
+msgctxt "tfrmaaeditprefs.cbfontquality.hint"
+msgid "The font quality can impact speed"
+msgstr "字体质量能影响速度"
+
+#: tfrmaaeditprefs.cbshowgutter.caption
+msgid "Show bar on left"
+msgstr "左侧显示栏"
+
+#: tfrmaaeditprefs.cbshowlinenumbers.caption
+msgid "Show line numbers"
+msgstr "显示行号"
+
+#: tfrmaaeditprefs.cbsmarttab.caption
+msgid "Smart tab"
+msgstr "智能 tab"
+
+#: tfrmaaeditprefs.cbtabstospace.caption
+msgid "Tabs to space"
+msgstr ""
+
+#: tfrmaaeditprefs.edttabwidth.text
+msgctxt "TFRMAAEDITPREFS.EDTTABWIDTH.TEXT"
+msgid "4"
+msgstr ""
+
+#: tfrmaaeditprefs.label1.caption
+msgid "Tab Width"
+msgstr "Tab 宽度"
+
+#: tfrmaaeditprefs.label2.caption
+msgctxt "tfrmaaeditprefs.label2.caption"
+msgid "Font quality"
+msgstr "字体质量"
+
+#: tfrmaccessedmemory.btnclearsmallsnapshot.caption
+msgctxt "tfrmaccessedmemory.btnclearsmallsnapshot.caption"
+msgid "Clear"
+msgstr "清除"
+
+#: tfrmaccessedmemory.btnclearsmallsnapshot1.caption
+msgctxt "tfrmaccessedmemory.btnclearsmallsnapshot1.caption"
+msgid "Clear"
+msgstr "清除"
+
+#: tfrmaccessedmemory.button1.caption
+msgctxt "tfrmaccessedmemory.button1.caption"
+msgid "Set hotkeys"
+msgstr "设置热键"
+
+#: tfrmaccessedmemory.button2.caption
+msgctxt "tfrmaccessedmemory.button2.caption"
+msgid "Start"
+msgstr "开始"
+
+#: tfrmaccessedmemory.button3.caption
+msgctxt "tfrmaccessedmemory.button3.caption"
+msgid "Stop"
+msgstr "停止"
+
+#: tfrmaccessedmemory.caption
+msgid "Find accessed memory regions"
+msgstr "查找访问了内存区域"
+
+#: tfrmaccessedmemory.label1.caption
+msgid "Hotkey to (re)start monitoring"
+msgstr "热键以（重新）开始监视"
+
+#: tfrmaccessedmemory.label2.caption
+msgid ""
+"This function will try to find out all accessed memory regions over a period of time and store it's results into an .mregion file which you can use with other functions that can make use of it (e.g pointerscan)\n"
+"\n"
+"Note: This will enable the dbk kernel module and if your windows version isn't supported this could potentially BSOD you. (So save your data)\n"
+msgstr ""
+"这个功能会试着找出在一段时间内所有访问了内存区域，并保存结果到 .mregion 文件，你可以和其它功能使用它（如指针扫描）\n"
+"\n"
+"注意：这会启用 dbk 内核模块，如果你的 windows 版本不支持，可能会蓝屏（所以保存你的数据）\n"
+
+#: tfrmaccessedmemory.label3.caption
+msgid "Hotkey to stop monitoring"
+msgstr "热键以停止监视"
+
+#: tfrmaccessedmemory.listview1.columns[0].caption
+msgctxt "tfrmaccessedmemory.listview1.columns[0].caption"
+msgid "From"
+msgstr "从"
+
+#: tfrmaccessedmemory.listview1.columns[1].caption
+msgctxt "tfrmaccessedmemory.listview1.columns[1].caption"
+msgid "To"
+msgstr "到"
+
+#: tfrmaccessedmemory.menuitem1.caption
+msgctxt "tfrmaccessedmemory.menuitem1.caption"
+msgid "File"
+msgstr "文件"
+
+#: tfrmaccessedmemory.menuitem2.caption
+msgid "Open region file"
+msgstr "打开区域文件"
+
+#: tfrmaccessedmemory.menuitem3.caption
+msgid "Save region file"
+msgstr "保存区域文件"
+
+#: tfrmaccessedmemory.menuitem4.caption
+msgctxt "tfrmaccessedmemory.menuitem4.caption"
+msgid "Clear"
+msgstr "清除"
+
+#: tfrmassemblyscan.btnok.caption
+msgctxt "tfrmassemblyscan.btnok.caption"
+msgid "Scan"
+msgstr "扫描"
+
+#: tfrmassemblyscan.caption
+msgctxt "tfrmassemblyscan.caption"
+msgid "Assembly scan"
+msgstr "汇编扫描"
+
+#: tfrmassemblyscan.lblfrom.caption
+msgctxt "tfrmassemblyscan.lblfrom.caption"
+msgid "From"
+msgstr "从"
+
+#: tfrmassemblyscan.lblinputassemblycode.caption
+msgctxt "tfrmassemblyscan.lblinputassemblycode.caption"
+msgid "Input the assembly code to find. Wildcards( * ) supported."
+msgstr "输入汇编代码来查找，支持通配符（*）"
+
+#: tfrmassemblyscan.lblto.caption
+msgctxt "tfrmassemblyscan.lblto.caption"
+msgid "To"
+msgstr "到"
+
+#: tfrmautoinject.aapref1.caption
+msgctxt "tfrmautoinject.aapref1.caption"
+msgid "Preferences"
+msgstr "首选项"
+
+#: tfrmautoinject.apihook1.caption
+msgid "API Hook"
+msgstr ""
+
+#: tfrmautoinject.assigntocurrentcheattable1.caption
+msgid "Assign to current cheat table"
+msgstr "分配到当前CT表"
+
+#: tfrmautoinject.button1.caption
+msgctxt "tfrmautoinject.button1.caption"
+msgid "Execute"
+msgstr "执行"
+
+#: tfrmautoinject.caption
+msgid "Auto assemble"
+msgstr "自动汇编"
+
+#: tfrmautoinject.cheattablecompliantcodee1.caption
+msgid "Cheat Table framework code"
+msgstr "CT表框架代码"
+
+#: tfrmautoinject.close1.caption
+msgctxt "TFRMAUTOINJECT.CLOSE1.CAPTION"
+msgid "Close"
+msgstr "关闭"
+
+#: tfrmautoinject.codeinjection1.caption
+msgid "Code injection"
+msgstr "代码注入"
+
+#: tfrmautoinject.coderelocation1.caption
+msgid "Code relocation"
+msgstr "代码重定位"
+
+#: tfrmautoinject.emplate1.caption
+msgid "Template"
+msgstr "模板"
+
+#: tfrmautoinject.exit1.caption
+msgid "Exit"
+msgstr "退出"
+
+#: tfrmautoinject.file1.caption
+msgctxt "TFRMAUTOINJECT.FILE1.CAPTION"
+msgid "File"
+msgstr "文件"
+
+#: tfrmautoinject.find1.caption
+msgid "&Find..."
+msgstr "查找(&F)..."
+
+#: tfrmautoinject.inject1.caption
+msgid "Inject"
+msgstr "注入"
+
+#: tfrmautoinject.injectincurrentprocess1.caption
+msgid "Inject into current process"
+msgstr "注入到当前进程"
+
+#: tfrmautoinject.injectintocurrentprocessandexecute1.caption
+msgid "Inject into current process and execute"
+msgstr "注入到当前进程并执行"
+
+#: tfrmautoinject.load1.caption
+msgctxt "tfrmautoinject.load1.caption"
+msgid "Open"
+msgstr "打开"
+
+#: tfrmautoinject.menuaobinjection.caption
+msgid "AOB Injection"
+msgstr "AOB 注入"
+
+#: tfrmautoinject.menufullinjection.caption
+msgid "Full Injection"
+msgstr "完整注入"
+
+#: tfrmautoinject.menuitem1.caption
+msgctxt "TFRMAUTOINJECT.MENUITEM1.CAPTION"
+msgid "Replace"
+msgstr "替换"
+
+#: tfrmautoinject.menuitem2.caption
+msgctxt "tfrmautoinject.menuitem2.caption"
+msgid "Lua syntax highlighting preferences"
+msgstr "Lua 语法高亮首选项"
+
+#: tfrmautoinject.menuitem3.caption
+msgid "Auto assembler syntax highlighting preferences"
+msgstr "自动汇编程序语法高亮首选项"
+
+#: tfrmautoinject.micalllua.caption
+msgid "Call CE lua function"
+msgstr "调用CE Lua函数"
+
+#: tfrmautoinject.micopy.caption
+msgctxt "tfrmautoinject.micopy.caption"
+msgid "&Copy"
+msgstr "复制(&C)"
+
+#: tfrmautoinject.micut.caption
+msgctxt "tfrmautoinject.micut.caption"
+msgid "Cu&t"
+msgstr "剪切(&T)"
+
+#: tfrmautoinject.mifindnext.caption
+msgctxt "tfrmautoinject.mifindnext.caption"
+msgid "Find Next"
+msgstr "查找下一个"
+
+#: tfrmautoinject.minewwindow.caption
+msgctxt "tfrmautoinject.minewwindow.caption"
+msgid "New Window"
+msgstr "新建窗口"
+
+#: tfrmautoinject.mipaste.caption
+msgctxt "tfrmautoinject.mipaste.caption"
+msgid "&Paste"
+msgstr "粘贴(&P)"
+
+#: tfrmautoinject.miredo.caption
+msgctxt "tfrmautoinject.miredo.caption"
+msgid "Redo"
+msgstr "重做"
+
+#: tfrmautoinject.miundo.caption
+msgctxt "tfrmautoinject.miundo.caption"
+msgid "&Undo"
+msgstr "撤销(&U)"
+
+#: tfrmautoinject.new1.caption
+msgid "New Tab"
+msgstr "新标签页"
+
+#: tfrmautoinject.opendialog1.title
+msgctxt "tfrmautoinject.opendialog1.title"
+msgid "Open CE assembly file"
+msgstr "打开CE汇编文件"
+
+#: tfrmautoinject.save1.caption
+msgctxt "TFRMAUTOINJECT.SAVE1.CAPTION"
+msgid "Save"
+msgstr "保存"
+
+#: tfrmautoinject.saveas1.caption
+msgctxt "tfrmautoinject.saveas1.caption"
+msgid "Save As..."
+msgstr "另存为……"
+
+#: tfrmautoinject.savedialog1.title
+msgctxt "TFRMAUTOINJECT.SAVEDIALOG1.TITLE"
+msgid "Open CE assembly file"
+msgstr "打开CE汇编文件"
+
+#: tfrmautoinject.syntaxhighlighting1.caption
+msgid "Syntax highlighting"
+msgstr "语法高亮"
+
+#: tfrmautoinject.view1.caption
+msgctxt "tfrmautoinject.view1.caption"
+msgid "View"
+msgstr "查看"
+
+#: tfrmchangedaddresses.browsethismemoryregion1.caption
+msgctxt "tfrmchangedaddresses.browsethismemoryregion1.caption"
+msgid "Browse this memory region"
+msgstr "浏览这个内存区域"
+
+#: tfrmchangedaddresses.caption
+msgid "Changed Addresses"
+msgstr "更改地址"
+
+#: tfrmchangedaddresses.cbdisplaytype.text
+msgctxt "tfrmchangedaddresses.cbdisplaytype.text"
+msgid "4 Bytes"
+msgstr "4 字节"
+
+#: tfrmchangedaddresses.changedlist.columns[0].caption
+msgctxt "tfrmchangedaddresses.changedlist.columns[0].caption"
+msgid "Address"
+msgstr "地址"
+
+#: tfrmchangedaddresses.changedlist.columns[1].caption
+msgctxt "tfrmchangedaddresses.changedlist.columns[1].caption"
+msgid "Value"
+msgstr "数值"
+
+#: tfrmchangedaddresses.changedlist.columns[2].caption
+msgctxt "tfrmchangedaddresses.changedlist.columns[2].caption"
+msgid "Count"
+msgstr "计数"
+
+#: tfrmchangedaddresses.lblinfo.caption
+msgid "The following addresses have been accessed by the code you selected"
+msgstr "以下地址被你选中的代码访问"
+
+#: tfrmchangedaddresses.menuitem1.caption
+msgid "Copy address to clipboard"
+msgstr "复制地址到剪贴板"
+
+#: tfrmchangedaddresses.menuitem3.caption
+msgctxt "tfrmchangedaddresses.menuitem3.caption"
+msgid "Change value"
+msgstr "更改数值"
+
+#: tfrmchangedaddresses.micbshowashexadecimal.caption
+msgctxt "tfrmchangedaddresses.micbshowashexadecimal.caption"
+msgid "Show as hexadecimal"
+msgstr "显示为十六进制"
+
+#: tfrmchangedaddresses.micommonalitiessubgroup.caption
+msgid "Find commonalities between addresses"
+msgstr "查找地址之间的共同特征"
+
+#: tfrmchangedaddresses.micopytoaddresslist.caption
+msgid "Copy selected addresses to addresslist"
+msgstr "复制选中地址到地址列表"
+
+#: tfrmchangedaddresses.mideleteselectedentries.caption
+msgid "Delete selected entries"
+msgstr "删除选中条目"
+
+#: tfrmchangedaddresses.midissect.caption
+msgid "Open dissect data with selected addresses"
+msgstr "打开分析数据并分析选中地址"
+
+#: tfrmchangedaddresses.migroupclear.caption
+msgid "Clear Selection"
+msgstr "清除选择"
+
+#: tfrmchangedaddresses.mimarkasgroup1.caption
+msgid "Mark selection as group 1"
+msgstr "标记选中为群组 1"
+
+#: tfrmchangedaddresses.mimarkasgroup2.caption
+msgid "Mark selection as group 2 (Nothing means everything else)"
+msgstr "标记选中为群组 2"
+
+#: tfrmchangedaddresses.miresetcount.caption
+msgid "Reset count"
+msgstr "重置计数"
+
+#: tfrmchangedaddresses.miscanforcommonalities.caption
+msgid "Scan for commonalities"
+msgstr "扫描共同特征"
+
+#: tfrmchangedaddresses.okbutton.caption
+msgctxt "tfrmchangedaddresses.okbutton.caption"
+msgid "Stop"
+msgstr "停止"
+
+#: tfrmchangedaddresses.showregisterstates1.caption
+msgid "Show register states"
+msgstr "显示寄存器状态"
+
+#: tfrmcodefilter.btncancel.caption
+msgctxt "tfrmcodefilter.btncancel.caption"
+msgid "Cancel"
+msgstr "取消"
+
+#: tfrmcodefilter.btncancel.hint
+msgid "Cancels the current operation"
+msgstr "取消当前操作"
+
+#: tfrmcodefilter.btnfilteroutexecutedaddresses.caption
+msgid "Has not been executed"
+msgstr "没被执行"
+
+#: tfrmcodefilter.btnfilteroutexecutedaddresses.hint
+msgid "Removes all addresses from the list that have been executed, and resets the breakpoints on the remaining addresses if the filter is active"
+msgstr "从列表中移除所有被执行的地址，如果过滤还在激活，重置在剩余地址上的断点"
+
+#: tfrmcodefilter.btnfilteroutnonexecutedaddresses.caption
+msgid "Has been executed"
+msgstr "已被执行"
+
+#: tfrmcodefilter.btnfilteroutnonexecutedaddresses.hint
+msgid "Removes all addresses from the list that have not been executed, and resets the breakpoints on the remaining addresses if the filter is active"
+msgstr "从列表中移除所有没执行的地址，如果过滤还在激活，重置在剩余地址上的断点"
+
+#: tfrmcodefilter.btnloadaddressesbydisassembling.caption
+msgid "From disassembler"
+msgstr "从反汇编程序"
+
+#: tfrmcodefilter.btnloadaddressesbydisassembling.hint
+msgid "Disassembles the code and marks calls.  This can be inaccurate and might end up writing 0xcc's at random/wrong locations"
+msgstr "反汇编代码并标记调用，这会不准确，可能在随机/错误的位置写入 0xcc 结尾"
+
+#: tfrmcodefilter.btnloadaddressesfromfile.caption
+msgid "From File"
+msgstr "从文件"
+
+#: tfrmcodefilter.btnloadaddressesfromfile.hint
+msgid "Loads a file containing a list of addresses (e.g from a previous filter session or from the branch mapper)"
+msgstr "加载包含地址列表的文件（如：从之前的过滤会话或分支映射）"
+
+#: tfrmcodefilter.btnloadaddressesfromtrace.caption
+msgid "From Trace"
+msgstr "从追踪"
+
+#: tfrmcodefilter.btnloadaddressesfromtrace.hint
+msgid "Load a previous trace and filters out the CALL's from there"
+msgstr "加载之前的追踪并滤出从那里的调用"
+
+#: tfrmcodefilter.btnshowlist.caption
+msgctxt "tfrmcodefilter.btnshowlist.caption"
+msgid "Refresh list"
+msgstr "刷新列表"
+
+#: tfrmcodefilter.btnstart.caption
+msgctxt "tfrmcodefilter.btnstart.caption"
+msgid "Start"
+msgstr "开始"
+
+#: tfrmcodefilter.btnstop.caption
+msgctxt "tfrmcodefilter.btnstop.caption"
+msgid "Stop"
+msgstr "停止"
+
+#: tfrmcodefilter.button1.caption
+msgid "From address dissection"
+msgstr "从地址解剖"
+
+#: tfrmcodefilter.caption
+msgctxt "tfrmcodefilter.caption"
+msgid "Code Filter"
+msgstr "代码过滤"
+
+#: tfrmcodefilter.frmlaunchbranchmapper.caption
+msgid "Launch branch mapper"
+msgstr "启动分支映射器"
+
+#: tfrmcodefilter.frmlaunchbranchmapper.hint
+msgid ""
+"Starts a single stepping (branch only) trace and records all unique IP's encountered.  You can use the results from this with the \"From File\" address list\n"
+"Make sure that the code you're interested in is executed at least once\n"
+"\n"
+"<WARNING: SLOW and recommended as last resort>\n"
+msgstr ""
+
+#: tfrmcodefilter.groupbox1.caption
+msgid "Load address list"
+msgstr "加载地址列表"
+
+#: tfrmcodefilter.label1.caption
+msgid ""
+"This will place software breakpoints(0xcc) on many locations of interest (Usually CALLs) and then track which ones get executed and which ones do not.\n"
+"By specifying that some code has been executed and some not you can filter down the list till it's only ones you're interested in\n"
+msgstr ""
+"这会放置软件断点（0xcc）在许多感兴趣（通常是调用）的位置上，然后追踪哪个被执行哪个没有。\n"
+"由指定某些被执行或没执行的代码，你可以过滤掉列表直到它只剩你感兴趣的\n"
+
+#: tfrmcodefilter.label3.caption
+msgid "Addresses executed since last filter operation:"
+msgstr "自从上次过滤操作后执行了的地址："
+
+#: tfrmcodefilter.lbladdresslist.caption
+msgid "Address List"
+msgstr "地址列表"
+
+#: tfrmcodefilter.lblexecutecount.caption
+msgctxt "tfrmcodefilter.lblexecutecount.caption"
+msgid "0"
+msgstr ""
+
+#: tfrmcodefilter.lblstatus.caption
+msgid "Doing something"
+msgstr "在做某事"
+
+#: tfrmcodefilter.lvresults.columns[0].caption
+msgctxt "tfrmcodefilter.lvresults.columns[0].caption"
+msgid "Address"
+msgstr "地址"
+
+#: tfrmcodefilter.lvresults.columns[1].caption
+msgid "Executed"
+msgstr "已执行"
+
+#: tfrmcodefilter.miclearlist.caption
+msgctxt "tfrmcodefilter.miclearlist.caption"
+msgid "Clear list"
+msgstr "清除列表"
+
+#: tfrmcodefilter.mideleteselecteditems.caption
+msgid "Delete selected addresses"
+msgstr "删除选中地址"
+
+#: tfrmcodefilter.misaveaddresslist.caption
+msgid "Save addresslist"
+msgstr "保存地址列表"
+
+#: tfrmcodefilter.panel1.caption
+msgid "Panel1"
+msgstr ""
+
+#: tfrmd3dtrainergeneratoroptions.btnclear.caption
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.BTNCLEAR.CAPTION"
+msgid "Clear"
+msgstr "清除"
+
+#: tfrmd3dtrainergeneratoroptions.button2.caption
+msgid "Set background picture"
+msgstr "设置背景图片"
+
+#: tfrmd3dtrainergeneratoroptions.button3.caption
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.BUTTON3.CAPTION"
+msgid "Set Font"
+msgstr "设置字体"
+
+#: tfrmd3dtrainergeneratoroptions.button4.caption
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.BUTTON4.CAPTION"
+msgid "Close"
+msgstr "关闭"
+
+#: tfrmd3dtrainergeneratoroptions.caption
+msgid "Direct3D Hook Options"
+msgstr "Direct3D Hook 选项"
+
+#: tfrmd3dtrainergeneratoroptions.cballowdrag.caption
+msgid "Allow user to drag trainer around"
+msgstr "允许用户到处拖放修改器"
+
+#: tfrmd3dtrainergeneratoroptions.cbhascheckbox.caption
+msgid "Cheats have checkboxes"
+msgstr "作弊有复选框"
+
+#: tfrmd3dtrainergeneratoroptions.cbshowhotkeys.caption
+msgid "Show hotkeys"
+msgstr "显示热键"
+
+#: tfrmd3dtrainergeneratoroptions.cbstretch.caption
+msgid "Scale the background image"
+msgstr "缩放背景图像"
+
+#: tfrmd3dtrainergeneratoroptions.cbstretch.hint
+msgid ""
+"If selected the background image will get resized so that cheat entries will fit inside it\n"
+"This is useful if you pick a 1x1 pixel size bitmap that you wish to stretch\n"
+msgstr ""
+"如果选中，背景图片会调整大小，这样作弊条目会适应里面\n"
+"如果你选了1x1像素大小的位图想要拉伸，这会很有用\n"
+
+#: tfrmd3dtrainergeneratoroptions.cbused3dkeys.caption
+msgid "Use button to hide/show trainer"
+msgstr "使用按钮隐藏/显示修改器"
+
+#: tfrmd3dtrainergeneratoroptions.edtdistancebetweenlines.text
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.EDTDISTANCEBETWEENLINES.TEXT"
+msgid "4"
+msgstr ""
+
+#: tfrmd3dtrainergeneratoroptions.edtdistancefromborder.text
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.EDTDISTANCEFROMBORDER.TEXT"
+msgid "8"
+msgstr ""
+
+#: tfrmd3dtrainergeneratoroptions.edtdistancefromtop.text
+msgctxt "tfrmd3dtrainergeneratoroptions.edtdistancefromtop.text"
+msgid "8"
+msgstr ""
+
+#: tfrmd3dtrainergeneratoroptions.label1.caption
+msgid "Transparency"
+msgstr "透明度"
+
+#: tfrmd3dtrainergeneratoroptions.label2.caption
+msgctxt "TFRMD3DTRAINERGENERATOROPTIONS.LABEL2.CAPTION"
+msgid "Position"
+msgstr "位置"
+
+#: tfrmd3dtrainergeneratoroptions.label3.caption
+msgid "Background picture:"
+msgstr "背景图片："
+
+#: tfrmd3dtrainergeneratoroptions.label4.caption
+msgid "Distance between lines in pixels"
+msgstr "行间距（像素）"
+
+#: tfrmd3dtrainergeneratoroptions.label5.caption
+msgid "Text distance from top"
+msgstr "文本到顶部距离"
+
+#: tfrmd3dtrainergeneratoroptions.label6.caption
+msgid "Text distance from border"
+msgstr "文本到边界距离"
+
+#: tfrmd3dtrainergeneratoroptions.lbltextcolor.caption
+msgid "Font text"
+msgstr "字体文本"
+
+#: tfrmd3dtrainergeneratoroptions.rbbottomleft.caption
+msgid "Bottom left"
+msgstr "左下"
+
+#: tfrmd3dtrainergeneratoroptions.rbbottomright.caption
+msgid "Bottom right"
+msgstr "右下"
+
+#: tfrmd3dtrainergeneratoroptions.rbcenter.caption
+msgid "Center"
+msgstr "居中"
+
+#: tfrmd3dtrainergeneratoroptions.rbtopleft.caption
+msgid "Top left"
+msgstr "左上"
+
+#: tfrmd3dtrainergeneratoroptions.rbtopright.caption
+msgid "Top right"
+msgstr "右上"
+
+#: tfrmdbvmwatchconfig.btnok.caption
+msgid "Start watch"
+msgstr "开始监视"
+
+#: tfrmdbvmwatchconfig.button2.caption
+msgctxt "tfrmdbvmwatchconfig.button2.caption"
+msgid "Cancel"
+msgstr "取消"
+
+#: tfrmdbvmwatchconfig.caption
+msgid "DBVM Watch Config"
+msgstr "DBVM 监视配置"
+
+#: tfrmdbvmwatchconfig.cblockpage.caption
+msgid "Lock page"
+msgstr "锁定页面"
+
+#: tfrmdbvmwatchconfig.cblockpage.hint
+msgid "This prevents the given page to get swapped out and later replaced by another physical address.  (Make sure you unlock before the game quits)"
+msgstr "阻止给定页面被交换出去和被其它物理地址替换（在游戏退出前确认解锁它）"
+
+#: tfrmdbvmwatchconfig.cbmultiplerip.caption
+msgid "Same instruction multiple times (different registers)"
+msgstr "相同指令多次（不同寄存器）"
+
+#: tfrmdbvmwatchconfig.cbsavefpu.caption
+msgid "Log FPU data"
+msgstr "记录 FPU 数据"
+
+#: tfrmdbvmwatchconfig.cbsavestack.caption
+msgid "Log stack"
+msgstr "记录栈"
+
+#: tfrmdbvmwatchconfig.cbsavestack.hint
+msgid "Saves a stacksnapshot of 4KB for each logged entry"
+msgstr "为每个记录条目保存 4Kb 的栈快照"
+
+#: tfrmdbvmwatchconfig.cbwholepage.caption
+msgid "Log whole page instead of address range"
+msgstr "记录整个页面而不是地址范围"
+
+#: tfrmdbvmwatchconfig.edtmaxentries.text
+msgid "32"
+msgstr ""
+
+#: tfrmdbvmwatchconfig.edtphysicaladdress.texthint
+msgctxt "tfrmdbvmwatchconfig.edtphysicaladdress.texthint"
+msgid "Physical Address"
+msgstr "物理地址"
+
+#: tfrmdbvmwatchconfig.gbaccesstype.caption
+msgid "Access Type"
+msgstr "访问类型"
+
+#: tfrmdbvmwatchconfig.label3.caption
+msgid "Max buffersize (entries)"
+msgstr "最大缓冲大小（条目）"
+
+#: tfrmdbvmwatchconfig.lblphysicaladdress.caption
+msgid "Physical Address:"
+msgstr "物理地址："
+
+#: tfrmdbvmwatchconfig.lblvirtualaddress.caption
+msgid "Virtual Address: "
+msgstr "虚拟地址： "
+
+#: tfrmdbvmwatchconfig.rbexecuteaccess.caption
+msgid "Execute Access"
+msgstr "执行访问"
+
+#: tfrmdbvmwatchconfig.rbreadaccess.caption
+msgid "Read/Write Access"
+msgstr "读/写访问"
+
+#: tfrmdbvmwatchconfig.rbwriteaccess.caption
+msgid "Write Access "
+msgstr "写入访问 "
+
+#: tfrmdebuggerattachtimeout.button1.caption
+msgid "Cancel wait"
+msgstr "取消等待"
+
+#: tfrmdebuggerattachtimeout.caption
+msgctxt "tfrmdebuggerattachtimeout.caption"
+msgid "Debugger attach timeout"
+msgstr "调试器附加超时"
+
+#: tfrmdebuggerattachtimeout.label1.caption
+msgid ""
+"The debugger attach is taking a while. This is normal when there are many symbols or the system is slow so please be patient. But if you don't have the time to wait or the program has crashed to desktop, then you can cancel this wait. \n"
+"\n"
+"Beware though that this will not stop the attaching process currently going on in the target process so you may have to restart the target process if you do wish to debug anyhow (and it may still freeze a few moments while symbols are being waited for)\n"
+"\n"
+"(This window will disappear automatically when attaching has finished. Closing it manually is the same as pressing cancel)\n"
+msgstr ""
+"调试器附加过了一段时间，这很正常，当有很多符号或系统很慢时，请耐心等待。但如果你没时间等或程序崩溃到桌面，你可以取消等待\n"
+"\n"
+"注意这不会停止在目标进程里运行的附加进程，所以如果你还想附加的话，需要重启目标进程\n"
+"（这个窗口会在附加结束后自动关闭，手动关闭相当于按下取消等待）\n"
+
+#: tfrmdisassemblyscan.btncancel.caption
+msgctxt "tfrmdisassemblyscan.btncancel.caption"
+msgid "Cancel"
+msgstr "取消"
+
+#: tfrmdisassemblyscan.caption
+msgid "Assemblyscan"
+msgstr "汇编扫描"
+
+#: tfrmdisassemblyscan.label1.caption
+msgid "                      "
+msgstr ""
+
+#: tfrmdisassemblyscan.menuitem1.caption
+msgid "Go to this address"
+msgstr "跳转到这个地址"
+
+#: tfrmdisassemblyscan.menuitem2.caption
+msgctxt "tfrmdisassemblyscan.menuitem2.caption"
+msgid "Copy selection to clipboard"
+msgstr "复制选中内容到剪贴板"
+
+#: tfrmenumeratedlls.button1.caption
+msgctxt "tfrmenumeratedlls.button1.caption"
+msgid "Close"
+msgstr "关闭"
+
+#: tfrmenumeratedlls.button2.caption
+msgid "Cancel Enum"
+msgstr "取消列举"
+
+#: tfrmenumeratedlls.caption
+msgid "Enumerate DLL's"
+msgstr "列举DLL"
+
+#: tfrmenumeratedlls.copysymbolname.caption
+msgid "Copy Symbol Name"
+msgstr "复制符号名"
+
+#: tfrmenumeratedlls.find.caption
+msgctxt "tfrmenumeratedlls.find.caption"
+msgid "Find"
+msgstr "查找"
+
+#: tfrmenumeratedlls.label2.caption
+msgid "Symbols"
+msgstr "符号"
+
+#: tfrmexceptionignorelist.btnadd.caption
+msgctxt "tfrmexceptionignorelist.btnadd.caption"
+msgid "Add Exception "
+msgstr "添加异常 "
+
+#: tfrmexceptionignorelist.caption
+msgid "Exception ignore list"
+msgstr "异常忽略列表"
+
+#: tfrmexceptionignorelist.label1.caption
+msgid "The following exceptions will be ignored"
+msgstr "以下异常会被忽略"
+
+#: tfrmexceptionignorelist.label2.caption
+msgid "Exception code"
+msgstr "异常代码"
+
+#: tfrmexceptionignorelist.midelete.caption
+msgctxt "tfrmexceptionignorelist.midelete.caption"
+msgid "Delete"
+msgstr "删除"
+
+#: tfrmexetrainergenerator.btnaddfile.caption
+msgid "Add file(s)"
+msgstr "添加文件"
+
+#: tfrmexetrainergenerator.btngeneratetrainer.caption
+msgctxt "tfrmexetrainergenerator.btngeneratetrainer.caption"
+msgid "Generate"
+msgstr "生成"
+
+#: tfrmexetrainergenerator.btnremovefile.caption
+msgid "Remove file"
+msgstr "移除文件"
+
+#: tfrmexetrainergenerator.button1.caption
+msgid "Change EXE Icon"
+msgstr "更改EXE图标"
+
+#: tfrmexetrainergenerator.button3.caption
+msgid "Add folder"
+msgstr "添加文件夹"
+
+#: tfrmexetrainergenerator.caption
+msgid "Exe Trainer Generator"
+msgstr "EXE修改器生成器"
+
+#: tfrmexetrainergenerator.cbd3dhook.caption
+msgid "D3DHook"
+msgstr ""
+
+#: tfrmexetrainergenerator.cbdotnet.caption
+msgid ".NET"
+msgstr ""
+
+#: tfrmexetrainergenerator.cbgigantic.caption
+msgid "Gigantic"
+msgstr "巨大的"
+
+#: tfrmexetrainergenerator.cbgigantic.hint
+msgid "Puts the Cheat Engine executable, dll's and other requirements into the trainer"
+msgstr "把Cheat Engine的DLL、可执行文件和其它必要文件放进修改器"
+
+#: tfrmexetrainergenerator.cbkerneldebug.caption
+msgid "Kernel Tools"
+msgstr "内核工具"
+
+#: tfrmexetrainergenerator.cbmodplayer.caption
+msgid "Module Player"
+msgstr "模块播放器"
+
+#: tfrmexetrainergenerator.cbspeedhack.caption
+msgid "Speedhack"
+msgstr "变速"
+
+#: tfrmexetrainergenerator.cbtiny.caption
+msgid "Tiny"
+msgstr "微小的"
+
+#: tfrmexetrainergenerator.cbtiny.hint
+msgid "Only put the trainer data in the trainer. The user must have Cheat Engine installed to run this trainer"
+msgstr "只把修改器数据放进修改器，使用者必须安装Cheat Engine来运行修改器"
+
+#: tfrmexetrainergenerator.cbvehdebug.caption
+msgctxt "tfrmexetrainergenerator.cbvehdebug.caption"
+msgid "VEH Debugger"
+msgstr "VEH 调试器"
+
+#: tfrmexetrainergenerator.combocompression.text
+msgctxt "tfrmexetrainergenerator.combocompression.text"
+msgid "Max"
+msgstr "最大"
+
+#: tfrmexetrainergenerator.groupbox1.caption
+msgid "Process"
+msgstr "进程"
+
+#: tfrmexetrainergenerator.groupbox2.caption
+msgid "Features used"
+msgstr "已使用功能"
+
+#: tfrmexetrainergenerator.groupbox3.caption
+msgid "Extra files"
+msgstr "额外文件"
+
+#: tfrmexetrainergenerator.groupbox4.caption
+msgid "Trainer size"
+msgstr "修改器大小"
+
+#: tfrmexetrainergenerator.label1.caption
+msgctxt "tfrmexetrainergenerator.label1.caption"
+msgid "Compression"
+msgstr "压缩"
+
+#: tfrmexetrainergenerator.listview1.columns[0].caption
+msgctxt "tfrmexetrainergenerator.listview1.columns[0].caption"
+msgid "File"
+msgstr "文件"
+
+#: tfrmexetrainergenerator.listview1.columns[1].caption
+msgid "Relative folder"
+msgstr "相关文件夹"
+
+#: tfrmexetrainergenerator.mieditfolder.caption
+msgid "Edit folder"
+msgstr "编辑文件夹"
+
+#: tfrmexetrainergenerator.rb32.caption
+msgid "Target process is 32-bit"
+msgstr "目标进程是32位"
+
+#: tfrmexetrainergenerator.rb64.caption
+msgid "Target process is 64-bit"
+msgstr "目标进程是64位"
+
+#: tfrmfindstatics.button1.caption
+msgctxt "tfrmfindstatics.button1.caption"
+msgid "Stopping..."
+msgstr "停止中……"
+
+#: tfrmfindstatics.caption
+msgctxt "tfrmfindstatics.caption"
+msgid "Find static addresses"
+msgstr "查找静态地址"
+
+#: tfrmfindstatics.checkbox1.caption
+msgid "Only disassemble and check executable code"
+msgstr "只反汇编并检查可执行代码"
+
+#: tfrmfindstatics.edit1.text
+msgid "00401000"
+msgstr ""
+
+#: tfrmfindstatics.edit2.text
+msgid "00700000"
+msgstr ""
+
+#: tfrmfindstatics.edit3.text
+msgctxt "tfrmfindstatics.edit3.text"
+msgid "00400000"
+msgstr ""
+
+#: tfrmfindstatics.edit4.text
+msgctxt "tfrmfindstatics.edit4.text"
+msgid "7FFFFFFF"
+msgstr ""
+
+#: tfrmfindstatics.label1.caption
+msgctxt "tfrmfindstatics.label1.caption"
+msgid "From"
+msgstr "从"
+
+#: tfrmfindstatics.label2.caption
+msgctxt "tfrmfindstatics.label2.caption"
+msgid "To:"
+msgstr "到："
+
+#: tfrmfindstatics.label4.caption
+msgid "Filter addresses"
+msgstr "过滤地址"
+
+#: tfrmfindstatics.label5.caption
+msgctxt "tfrmfindstatics.label5.caption"
+msgid "From"
+msgstr "从"
+
+#: tfrmfindstatics.label6.caption
+msgctxt "tfrmfindstatics.label6.caption"
+msgid "To:"
+msgstr "到："
+
+#: tfrmfindstatics.listview1.columns[0].caption
+msgctxt "tfrmfindstatics.listview1.columns[0].caption"
+msgid "Address"
+msgstr "地址"
+
+#: tfrmfindstatics.listview1.columns[1].caption
+msgid "Pointer?"
+msgstr "指针？"
+
+#: tfrmfindstatics.listview1.columns[2].caption
+msgid "Reference count"
+msgstr "引用数"
+
+#: tfrmfoundlistpreferences.btncancel.caption
+msgctxt "tfrmfoundlistpreferences.btncancel.caption"
+msgid "Cancel"
+msgstr "取消"
+
+#: tfrmfoundlistpreferences.btnfont.caption
+msgid "Font"
+msgstr "字体"
+
+#: tfrmfoundlistpreferences.btnok.caption
+msgctxt "tfrmfoundlistpreferences.btnok.caption"
+msgid "OK"
+msgstr "确定"
+
+#: tfrmfoundlistpreferences.caption
+msgid "Foundlist Customizer"
+msgstr "已找到列表自定义"
+
+#: tfrmfoundlistpreferences.label1.caption
+msgid "Static"
+msgstr "静态"
+
+#: tfrmfoundlistpreferences.label2.caption
+msgctxt "tfrmfoundlistpreferences.label2.caption"
+msgid "Example"
+msgstr "示例"
+
+#: tfrmfoundlistpreferences.label3.caption
+msgid "Dynamic"
+msgstr "动态"
+
+#: tfrmfoundlistpreferences.label4.caption
+msgid "Normal value"
+msgstr "普通数值"
+
+#: tfrmfoundlistpreferences.label5.caption
+msgctxt "tfrmfoundlistpreferences.label5.caption"
+msgid "Changed value"
+msgstr "变动的数值"
+
+#: tfrmfoundlistpreferences.label6.caption
+msgctxt "tfrmfoundlistpreferences.label6.caption"
+msgid "Background color"
+msgstr "背景颜色"
+
+#: tfrmfoundlistpreferences.listview1.columns[0].caption
+msgctxt "tfrmfoundlistpreferences.listview1.columns[0].caption"
+msgid "Address"
+msgstr "地址"
+
+#: tfrmfoundlistpreferences.listview1.columns[1].caption
+msgctxt "tfrmfoundlistpreferences.listview1.columns[1].caption"
+msgid "Value"
+msgstr "数值"
+
+#: tfrmfoundlistpreferences.pnlexample.caption
+msgid "pnlExample"
+msgstr ""
+
+#: tfrmhighlightereditor.button1.caption
+msgctxt "tfrmhighlightereditor.button1.caption"
+msgid "OK"
+msgstr "确定"
+
+#: tfrmhighlightereditor.button2.caption
+msgctxt "tfrmhighlightereditor.button2.caption"
+msgid "Cancel"
+msgstr "取消"
+
+#: tfrmhighlightereditor.caption
+msgid "Highlighter configurator"
+msgstr "高亮配置器"
+
+#: tfrmhighlightereditor.cbbold.caption
+msgid "Bold"
+msgstr "加粗"
+
+#: tfrmhighlightereditor.cbitalic.caption
+msgid "Italic"
+msgstr "斜体"
+
+#: tfrmhighlightereditor.cbstrikeout.caption
+msgid "Strikeout"
+msgstr "删除线"
+
+#: tfrmhighlightereditor.cbunderline.caption
+msgid "Underline"
+msgstr "下划线"
+
+#: tfrmhighlightereditor.label2.caption
+msgctxt "tfrmhighlightereditor.label2.caption"
+msgid "Background Color"
+msgstr "背景颜色"
+
+#: tfrmhighlightereditor.label3.caption
+msgid "Foreground Color"
+msgstr "前景颜色"
+
+#: tfrmhighlightereditor.label4.caption
+msgid "Style"
+msgstr "样式"
+
+#: tfrmluaengine.btnexecute.caption
+msgctxt "TFRMLUAENGINE.BTNEXECUTE.CAPTION"
+msgid "Execute"
+msgstr "执行"
+
+#: tfrmluaengine.caption
+msgctxt "tfrmluaengine.caption"
+msgid "Lua Engine"
+msgstr "Lua 引擎"
+
+#: tfrmluaengine.cbshowonprint.caption
+msgid "Show on \"print\""
+msgstr "显示在“打印”"
+
+#: tfrmluaengine.groupbox1.caption
+msgctxt "tfrmluaengine.groupbox1.caption"
+msgid "Output"
+msgstr "输出"
+
+#: tfrmluaengine.menuitem1.caption
+msgctxt "TFRMLUAENGINE.MENUITEM1.CAPTION"
+msgid "File"
+msgstr "文件"
+
+#: tfrmluaengine.menuitem10.caption
+msgctxt "tfrmluaengine.menuitem10.caption"
+msgid "Undo"
+msgstr "撤销"
+
+#: tfrmluaengine.menuitem11.caption
+msgctxt "tfrmluaengine.menuitem11.caption"
+msgid "New window"
+msgstr "新建窗口"
+
+#: tfrmluaengine.menuitem12.caption
+msgctxt "tfrmluaengine.menuitem12.caption"
