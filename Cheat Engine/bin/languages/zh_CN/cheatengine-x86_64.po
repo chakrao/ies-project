@@ -15731,3 +15731,996 @@ msgstr "返回"
 
 #: tmemorybrowser.mihvfollow.caption
 msgctxt "tmemorybrowser.mihvfollow.caption"
+msgid "Follow"
+msgstr "跟随"
+
+#: tmemorybrowser.milock.caption
+msgctxt "TMEMORYBROWSER.MILOCK.CAPTION"
+msgid "Link with other hexview"
+msgstr "与其它的十六进制视图链接"
+
+#: tmemorybrowser.milockrowsize.caption
+msgid "Lock current rowsize"
+msgstr "锁定当前行的大小"
+
+#: tmemorybrowser.miluaengine.caption
+msgctxt "TMEMORYBROWSER.MILUAENGINE.CAPTION"
+msgid "Lua Engine"
+msgstr "Lua 引擎"
+
+#: tmemorybrowser.mipaging.caption
+msgctxt "TMEMORYBROWSER.MIPAGING.CAPTION"
+msgid "Paging"
+msgstr "分页"
+
+#: tmemorybrowser.mipointerspider.caption
+msgctxt "TMEMORYBROWSER.MIPOINTERSPIDER.CAPTION"
+msgid "Structure spider"
+msgstr "结构 spider"
+
+#: tmemorybrowser.mireferencedfunctions.caption
+msgctxt "TMEMORYBROWSER.MIREFERENCEDFUNCTIONS.CAPTION"
+msgid "Referenced functions"
+msgstr "引用的函数"
+
+#: tmemorybrowser.mireplacewithnops.caption
+msgctxt "TMEMORYBROWSER.MIREPLACEWITHNOPS.CAPTION"
+msgid "Replace with code that does nothing"
+msgstr "用空指令替换"
+
+#: tmemorybrowser.mirununhandled.caption
+msgid "Run Unhandled"
+msgstr "运行未处理的"
+
+#: tmemorybrowser.miseperators.caption
+msgid "Seperators"
+msgstr "分隔符"
+
+#: tmemorybrowser.misepevery2bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY2BYTES.CAPTION"
+msgid "2 Bytes"
+msgstr "2 字节"
+
+#: tmemorybrowser.misepevery4bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY4BYTES.CAPTION"
+msgid "4 Bytes"
+msgstr "4 字节"
+
+#: tmemorybrowser.misepevery8bytes.caption
+msgctxt "TMEMORYBROWSER.MISEPEVERY8BYTES.CAPTION"
+msgid "8 Bytes"
+msgstr "8 字节"
+
+#: tmemorybrowser.misetbookmark0.caption
+msgctxt "tmemorybrowser.misetbookmark0.caption"
+msgid "Bookmark 0"
+msgstr "书签 0"
+
+#: tmemorybrowser.misetbookmark1.caption
+msgctxt "tmemorybrowser.misetbookmark1.caption"
+msgid "Bookmark 1"
+msgstr "书签 1"
+
+#: tmemorybrowser.misetbookmark2.caption
+msgctxt "tmemorybrowser.misetbookmark2.caption"
+msgid "Bookmark 2"
+msgstr "书签 2"
+
+#: tmemorybrowser.misetbookmark3.caption
+msgctxt "tmemorybrowser.misetbookmark3.caption"
+msgid "Bookmark 3"
+msgstr "书签 3"
+
+#: tmemorybrowser.misetbookmark4.caption
+msgctxt "tmemorybrowser.misetbookmark4.caption"
+msgid "Bookmark 4"
+msgstr "书签 4"
+
+#: tmemorybrowser.misetbookmark5.caption
+msgctxt "tmemorybrowser.misetbookmark5.caption"
+msgid "Bookmark 5"
+msgstr "书签 5"
+
+#: tmemorybrowser.misetbookmark6.caption
+msgctxt "tmemorybrowser.misetbookmark6.caption"
+msgid "Bookmark 6"
+msgstr "书签 6"
+
+#: tmemorybrowser.misetbookmark7.caption
+msgctxt "tmemorybrowser.misetbookmark7.caption"
+msgid "Bookmark 7"
+msgstr "书签 7"
+
+#: tmemorybrowser.misetbookmark8.caption
+msgctxt "tmemorybrowser.misetbookmark8.caption"
+msgid "Bookmark 8"
+msgstr "书签 8"
+
+#: tmemorybrowser.misetbookmark9.caption
+msgctxt "tmemorybrowser.misetbookmark9.caption"
+msgid "Bookmark 9"
+msgstr "书签 9"
+
+#: tmemorybrowser.misetbreakpointdbvmexec.caption
+msgid "DBVM Breakpoint (+1 instruction)"
+msgstr "DBVM 断点（+1指令）"
+
+#: tmemorybrowser.misetbreakpointhw.caption
+msgctxt "tmemorybrowser.misetbreakpointhw.caption"
+msgid "Hardware Breakpoint"
+msgstr "硬件断点"
+
+#: tmemorybrowser.misetbreakpointpe.caption
+msgctxt "tmemorybrowser.misetbreakpointpe.caption"
+msgid "Exception Breakpoint (+1 instruction)"
+msgstr "异常断点（+1指令）"
+
+#: tmemorybrowser.misetbreakpointsw.caption
+msgctxt "tmemorybrowser.misetbreakpointsw.caption"
+msgid "Software Breakpoint"
+msgstr "软件断点"
+
+#: tmemorybrowser.misetspecificbreakpoint.caption
+msgctxt "tmemorybrowser.misetspecificbreakpoint.caption"
+msgid "Set specific breakpoint type"
+msgstr "设置指定断点类型"
+
+#: tmemorybrowser.mishowdifference.caption
+msgctxt "TMEMORYBROWSER.MISHOWDIFFERENCE.CAPTION"
+msgid "Show difference"
+msgstr "显示差异"
+
+#: tmemorybrowser.mishowindisassembler.caption
+msgid "Show in disassembler"
+msgstr "在反汇编程序显示"
+
+#: tmemorybrowser.mishowinhexview.caption
+msgid "Show in hexview"
+msgstr "在十六进制视图显示"
+
+#: tmemorybrowser.mishowrelative.caption
+msgid "Show relative addresses"
+msgstr "显示关联地址"
+
+#: tmemorybrowser.misvcopy.caption
+msgctxt "TMEMORYBROWSER.MISVCOPY.CAPTION"
+msgid "Copy"
+msgstr "复制"
+
+#: tmemorybrowser.mitextencoding16.caption
+msgctxt "tmemorybrowser.mitextencoding16.caption"
+msgid "UTF-16"
+msgstr ""
+
+#: tmemorybrowser.mitextencodingascii.caption
+msgid "Ascii"
+msgstr ""
+
+#: tmemorybrowser.mitextencodingcodepage.caption
+msgctxt "TMEMORYBROWSER.MITEXTENCODINGCODEPAGE.CAPTION"
+msgid "Codepage"
+msgstr "代码页"
+
+#: tmemorybrowser.mitextencodingutf8.caption
+msgid "UTF-8"
+msgstr ""
+
+#: tmemorybrowser.mitextpreferences.caption
+msgctxt "TMEMORYBROWSER.MITEXTPREFERENCES.CAPTION"
+msgid "Preferences"
+msgstr "首选项"
+
+#: tmemorybrowser.mitogglebreakpoint.caption
+msgctxt "tmemorybrowser.mitogglebreakpoint.caption"
+msgid "Set breakpoint"
+msgstr "设置断点"
+
+#: tmemorybrowser.miultimap.caption
+msgctxt "TMEMORYBROWSER.MIULTIMAP.CAPTION"
+msgid "Ultimap"
+msgstr ""
+
+#: tmemorybrowser.miultimap2.caption
+msgctxt "tmemorybrowser.miultimap2.caption"
+msgid "Ultimap 2"
+msgstr ""
+
+#: tmemorybrowser.miunexpectedexceptionbreakalways.caption
+msgctxt "TMEMORYBROWSER.MIUNEXPECTEDEXCEPTIONBREAKALWAYS.CAPTION"
+msgid "Always"
+msgstr "总是"
+
+#: tmemorybrowser.miunexpectedexceptionbreakifinregion.caption
+msgid "Only in specified regions"
+msgstr "仅在特定区域"
+
+#: tmemorybrowser.miunexpectedexceptionbreaknever.caption
+msgctxt "TMEMORYBROWSER.MIUNEXPECTEDEXCEPTIONBREAKNEVER.CAPTION"
+msgid "Never"
+msgstr "从不"
+
+#: tmemorybrowser.miuserdefinedcomment.caption
+msgid "Set/Change comment"
+msgstr "设置/更改注释"
+
+#: tmemorybrowser.miuserdefinedheader.caption
+msgid "Set/Change header"
+msgstr "设置/更改 header"
+
+#: tmemorybrowser.miwatchaccess.caption
+msgctxt "tmemorybrowser.miwatchaccess.caption"
+msgid "Break on Access"
+msgstr "访问时中断"
+
+#: tmemorybrowser.miwatchbpdbvm.caption
+msgctxt "tmemorybrowser.miwatchbpdbvm.caption"
+msgid "DBVM Breakpoint"
+msgstr "DBVM 断点"
+
+#: tmemorybrowser.miwatchbpexception.caption
+msgctxt "tmemorybrowser.miwatchbpexception.caption"
+msgid "Exception Breakpoint"
+msgstr "异常断点"
+
+#: tmemorybrowser.miwatchbphardware.caption
+msgctxt "tmemorybrowser.miwatchbphardware.caption"
+msgid "Hardware Breakpoint"
+msgstr "硬件断点"
+
+#: tmemorybrowser.miwatchwrite.caption
+msgctxt "tmemorybrowser.miwatchwrite.caption"
+msgid "Break on Write"
+msgstr "写入时中断"
+
+#: tmemorybrowser.modulesonly1.caption
+msgid "Modules only"
+msgstr "仅模块"
+
+#: tmemorybrowser.newwindow1.caption
+msgctxt "TMEMORYBROWSER.NEWWINDOW1.CAPTION"
+msgid "New window"
+msgstr "新建窗口"
+
+#: tmemorybrowser.nonsystemmodulesonly1.caption
+msgid "Non system modules only"
+msgstr "仅非系统模块"
+
+#: tmemorybrowser.oflabel.caption
+msgctxt "tmemorybrowser.oflabel.caption"
+msgid "OF 0"
+msgstr ""
+
+#: tmemorybrowser.onlyshowjumplineswithinrange1.caption
+msgid "Only show jumplines within range"
+msgstr "只显示范围内的跳转行"
+
+#: tmemorybrowser.opendlldialog.title
+msgid "Select the module you want to inject"
+msgstr "选择你要注入的模块"
+
+#: tmemorybrowser.pastefromclipboard1.caption
+msgid "Paste from clipboard"
+msgstr "从剪贴板粘贴"
+
+#: tmemorybrowser.pflabel.caption
+msgctxt "tmemorybrowser.pflabel.caption"
+msgid "PF 0"
+msgstr ""
+
+#: tmemorybrowser.plugins1.caption
+msgctxt "TMEMORYBROWSER.PLUGINS1.CAPTION"
+msgid "Plugins"
+msgstr "插件"
+
+#: tmemorybrowser.referencedstrings1.caption
+msgid "Referenced strings"
+msgstr "引用的字符串"
+
+#: tmemorybrowser.reservememory1.caption
+msgid "Allocate Memory"
+msgstr "分配内存"
+
+#: tmemorybrowser.savedisassemledoutput1.caption
+msgctxt "TMEMORYBROWSER.SAVEDISASSEMLEDOUTPUT1.CAPTION"
+msgid "Save disassembled output"
+msgstr "保存反编译输出"
+
+#: tmemorybrowser.savememoryregion1.caption
+msgid "Save memory region"
+msgstr "保存内存区域"
+
+#: tmemorybrowser.sbshowfloats.caption
+msgid ">"
+msgstr ""
+
+#: tmemorybrowser.scanforcodecaves1.caption
+msgid "Scan for code caves"
+msgstr "扫描 code caves"
+
+#: tmemorybrowser.search1.caption
+msgid "Search memory..."
+msgstr "搜索内存……"
+
+#: tmemorybrowser.search2.caption
+msgctxt "TMEMORYBROWSER.SEARCH2.CAPTION"
+msgid "Search"
+msgstr "搜索"
+
+#: tmemorybrowser.sericedescriptortable1.caption
+msgid "Service Descriptor Table"
+msgstr "服务描述符表"
+
+#: tmemorybrowser.setsymbolsearchpath1.caption
+msgid "Set symbol searchpath"
+msgstr "设置符号搜索路径"
+
+#: tmemorybrowser.sflabel.caption
+msgctxt "tmemorybrowser.sflabel.caption"
+msgid "SF 0"
+msgstr ""
+
+#: tmemorybrowser.showdebugtoolbar1.caption
+msgid "Show debug toolbar"
+msgstr "显示调试工具栏"
+
+#: tmemorybrowser.showjumplines1.caption
+msgid "Show jumplines"
+msgstr "显示跳转行"
+
+#: tmemorybrowser.showmoduleaddresses1.caption
+msgid "Show module addresses"
+msgstr "显示模块地址"
+
+#: tmemorybrowser.showsymbols1.caption
+msgid "Show symbols"
+msgstr "显示符号"
+
+#: tmemorybrowser.showvaluesofstaticaddresses1.caption
+msgid "Show 'Comment' row"
+msgstr "显示'注释'行"
+
+#: tmemorybrowser.sslabel.caption
+msgctxt "tmemorybrowser.sslabel.caption"
+msgid "SS 0000"
+msgstr ""
+
+#: tmemorybrowser.stacktrace1.caption
+msgctxt "TMEMORYBROWSER.STACKTRACE1.CAPTION"
+msgid "Stacktrace"
+msgstr "栈追踪"
+
+#: tmemorybrowser.stacktrace2.caption
+msgctxt "TMEMORYBROWSER.STACKTRACE2.CAPTION"
+msgid "Stacktrace"
+msgstr "栈追踪"
+
+#: tmemorybrowser.symbolhandler1.caption
+msgid "Userdefined symbols"
+msgstr "用户定义符号"
+
+#: tmemorybrowser.tbdebug.caption
+msgctxt "tmemorybrowser.tbdebug.caption"
+msgid "tbDebug"
+msgstr ""
+
+#: tmemorybrowser.tbrun.caption
+msgctxt "tmemorybrowser.tbrun.caption"
+msgid "Run"
+msgstr "运行"
+
+#: tmemorybrowser.tbseparator1.caption
+msgid "tbSeparator1"
+msgstr ""
+
+#: tmemorybrowser.tbseparator2.caption
+msgid "tbSeparator2"
+msgstr ""
+
+#: tmemorybrowser.tbstepinto.caption
+msgid "Step Into"
+msgstr ""
+
+#: tmemorybrowser.tbstepout.caption
+msgid "Step Out"
+msgstr ""
+
+#: tmemorybrowser.tbstepover.caption
+msgctxt "tmemorybrowser.tbstepover.caption"
+msgid "Step Over"
+msgstr ""
+
+#: tmemorybrowser.tbtogglebreakpoint.caption
+msgid "Toggle Breakpoint"
+msgstr "切换断点"
+
+#: tmemorybrowser.threadlist1.caption
+msgctxt "TMEMORYBROWSER.THREADLIST1.CAPTION"
+msgid "Threadlist"
+msgstr "线程列表"
+
+#: tmemorybrowser.view1.caption
+msgctxt "TMEMORYBROWSER.VIEW1.CAPTION"
+msgid "View"
+msgstr "查看"
+
+#: tmemorybrowser.watchmemoryallocations1.caption
+msgid "Watch memory allocations"
+msgstr "监视内存分配"
+
+#: tmemorybrowser.zflabel.caption
+msgctxt "tmemorybrowser.zflabel.caption"
+msgid "ZF 0"
+msgstr ""
+
+#: tprocesswindow.btnattachdebugger.caption
+msgctxt "tprocesswindow.btnattachdebugger.caption"
+msgid "Attach debugger to process"
+msgstr "附加调试器到进程"
+
+#: tprocesswindow.btnnetwork.caption
+msgctxt "tprocesswindow.btnnetwork.caption"
+msgid "Network"
+msgstr "网络"
+
+#: tprocesswindow.cancelbutton.caption
+msgctxt "tprocesswindow.cancelbutton.caption"
+msgid "Cancel"
+msgstr "取消"
+
+#: tprocesswindow.caption
+msgctxt "tprocesswindow.caption"
+msgid "Process List"
+msgstr "进程列表"
+
+#: tprocesswindow.filter1.caption
+msgctxt "tprocesswindow.filter1.caption"
+msgid "Filter"
+msgstr "过滤"
+
+#: tprocesswindow.inputpidmanually1.caption
+msgid "Input PID manually"
+msgstr "手动输入进程ID"
+
+#: tprocesswindow.menuitem1.caption
+msgctxt "tprocesswindow.menuitem1.caption"
+msgid "File"
+msgstr "文件"
+
+#: tprocesswindow.menuitem3.caption
+msgid "Process watcher"
+msgstr "进程监视器"
+
+#: tprocesswindow.menuitem4.caption
+msgctxt "tprocesswindow.menuitem4.caption"
+msgid "View"
+msgstr "查看"
+
+#: tprocesswindow.menuitem5.caption
+msgctxt "tprocesswindow.menuitem5.caption"
+msgid "Preferences"
+msgstr "首选项"
+
+#: tprocesswindow.michangefont.caption
+msgid "Change font"
+msgstr "更改字体"
+
+#: tprocesswindow.miconvertpidtodecimal.caption
+msgid "Convert PID to decimal"
+msgstr ""
+
+#: tprocesswindow.micreateprocess.caption
+msgctxt "tprocesswindow.micreateprocess.caption"
+msgid "Create Process"
+msgstr "创建进程"
+
+#: tprocesswindow.miopenfile.caption
+msgctxt "tprocesswindow.miopenfile.caption"
+msgid "Open File"
+msgstr "打开文件"
+
+#: tprocesswindow.miownprocessesonly.caption
+msgid "Only show processes of the current user"
+msgstr "只显示当前用户的进程"
+
+#: tprocesswindow.miprocesslistlong.caption
+msgid "Process List (Long)"
+msgstr "进程列表（长）"
+
+#: tprocesswindow.mirefresh.caption
+msgctxt "tprocesswindow.mirefresh.caption"
+msgid "Refresh"
+msgstr "刷新"
+
+#: tprocesswindow.mishowinvisibleitems.caption
+msgid "Show invisible windows"
+msgstr "显示不可见窗口"
+
+#: tprocesswindow.miskipsystemprocesses.caption
+msgid "Only show non-system processes"
+msgstr "只显示非系统进程"
+
+#: tprocesswindow.okbutton.caption
+msgctxt "tprocesswindow.okbutton.caption"
+msgid "Open"
+msgstr "打开"
+
+#: trainergenerator.rsaaaaw
+msgid "aaaaw :("
+msgstr ""
+
+#: trainergenerator.rsabout
+msgctxt "trainergenerator.rsabout"
+msgid "About"
+msgstr "关于"
+
+#: trainergenerator.rsalreadyatrainerformdefined
+msgid "There is already a trainer form defined. Continuing will erase the current trainerscript and cheats in the trainer and replace them with the current hotkeys defined in your current cheat table (Layout and images will remain unchanged). Continue ?"
+msgstr "已经定义了一个修改器表单，继续会擦除当前修改器中的脚本和作弊，并且会用你当前CT表中定义的热键替换（布局和图片会保留），继续？"
+
+#: trainergenerator.rsareyousure
+msgid "Are you sure?"
+msgstr "你确定吗？"
+
+#: trainergenerator.rsautogenwarningpart1
+msgid "This is autogenerated code. Changing code in this block will"
+msgstr "这是自动生成的代码，更改这个区块的代码会"
+
+#: trainergenerator.rsautogenwarningpart2
+msgid "get erased and rewritten if you regenerate the trainer code"
+msgstr "被擦除和覆盖，如果你重新生成修改器代码"
+
+#: trainergenerator.rsbutallowdecrease
+msgid "but allow decrease"
+msgstr "但允许减少"
+
+#: trainergenerator.rsbutallowincrease
+msgid "but allow increase"
+msgstr "但允许增加"
+
+#: trainergenerator.rsby
+msgid "by"
+msgstr "由"
+
+#: trainergenerator.rscheatentries
+msgid "Cheat Entries"
+msgstr "作弊条目"
+
+#: trainergenerator.rsclose
+msgctxt "trainergenerator.rsclose"
+msgid "Close"
+msgstr "关闭"
+
+#: trainergenerator.rsdeactive
+msgid "(De)active"
+msgstr "（取消）激活"
+
+#: trainergenerator.rsdecrease
+msgid "Decrease"
+msgstr "减少"
+
+#: trainergenerator.rsdesignuserinterfacemanually
+msgctxt "trainergenerator.rsdesignuserinterfacemanually"
+msgid "Design userinterface manually"
+msgstr "手动设计用户界面"
+
+#: trainergenerator.rsdontsupportcheatengineoryourself
+msgctxt "trainergenerator.rsdontsupportcheatengineoryourself"
+msgid "Don't support Cheat Engine (or yourself)"
+msgstr "不支持Cheat Engine（或你自己）"
+
+#: trainergenerator.rsdosomethingwith
+msgid "Do something with"
+msgstr "做一些与"
+
+#: trainergenerator.rseffect
+msgid "Effect"
+msgstr "效果"
+
+#: trainergenerator.rsgobacktogenerateddesigner
+msgid "Go back to generated designer"
+msgstr "回到生成的设计器"
+
+#: trainergenerator.rshotkey
+msgctxt "trainergenerator.rshotkey"
+msgid "Hotkey"
+msgstr "热键"
+
+#: trainergenerator.rsincrease
+msgid "Increase"
+msgstr "增加"
+
+#: trainergenerator.rsinvalidtrainerscript
+msgid "The current lua script only has a half TRAINERGENERATORSTART/TRAINERGENERATORSTOP block. Please fix this first (Removing is the easiest option)"
+msgstr "当前Lua脚本只有一半 TRAINERGENERATORSTART/TRAINERGENERATORSTOP 区块，请先修复它（移除是最简单的办法）"
+
+#: trainergenerator.rsnocheatpanel
+msgid "The current trainer form does not have a panel named 'CHEATPANEL' so can not be reused by the automated trainer generator.%sDo you want to start from scratch? (If you want to create a trainer from your current script you can just save your table as .EXE instead of using the automated trainer generator)"
+msgstr "当前修改器表单没有名为'CHEATPANEL'的面板，所以不能被自动修改器生成器重新使用，%s 你要从 scratch 开始吗？（如果你要从当前脚本创建一个修改器，只要保存表单为EXE，而不是用自动修改器生成器）"
+
+#: trainergenerator.rsonclosewarning
+msgid "This form had an onClose event. Good thing this was only a stub, else Cheat Engine would have terminated"
+msgstr "这个表单有一个 onClose 事件，好在这只是一个存根，否则Cheat Engine就会终止"
+
+#: trainergenerator.rspleaseselecttypeinaprocessname
+msgid "Please select/type in a processname"
+msgstr "请选择/输入一个进程名"
+
+#: trainergenerator.rsselectthecheatentryyouwanttosetthehotkeyfor
+msgid "Select the cheat entry you want to set the hotkey for"
+msgstr "选择你要设置热键的作弊条目"
+
+#: trainergenerator.rsset
+msgid "Set"
+msgstr "设置"
+
+#: trainergenerator.rsthankyou
+msgid "Thank you! :)"
+msgstr "感谢你！^_^"
+
+#: trainergenerator.rstipyoudonthavetousethetrainergeneratorifyoudontwantto
+msgid "Tip: You don't have to use the trainer generator if you don't want to. You can just save your table as .EXE or CETRAINER"
+msgstr "提示：如果你不想用修改器生成器可以不用，只要保存表单为EXE或CE修改器"
+
+#: trainergenerator.rsto
+msgid "to"
+msgstr "到"
+
+#: trainergenerator.rsunfreeze
+msgid "(Un)Freeze"
+msgstr "（取消）冻结"
+
+#: trainergenerator.rsyouneedacheattablewithcheatentries
+msgid "You need a cheat table with cheat entries"
+msgstr "你需要一个有作弊条目的CT表"
+
+#: tregisters.caption
+msgid "Registers"
+msgstr "寄存器"
+
+#: tregisters.eaxlabel.caption
+msgid "EAX 00000000FFFFFFFF"
+msgstr ""
+
+#: tregisters.ebplabel.caption
+msgctxt "tregisters.ebplabel.caption"
+msgid "EBP 00000000"
+msgstr ""
+
+#: tregisters.ebxlabel.caption
+msgctxt "tregisters.ebxlabel.caption"
+msgid "EBX 00000000"
+msgstr ""
+
+#: tregisters.ecxlabel.caption
+msgctxt "tregisters.ecxlabel.caption"
+msgid "ECX 00000000"
+msgstr ""
+
+#: tregisters.edilabel.caption
+msgctxt "tregisters.edilabel.caption"
+msgid "EDI 00000000"
+msgstr ""
+
+#: tregisters.edxlabel.caption
+msgctxt "tregisters.edxlabel.caption"
+msgid "EDX 00000000"
+msgstr ""
+
+#: tregisters.eiplabel.caption
+msgctxt "tregisters.eiplabel.caption"
+msgid "EIP 00000000"
+msgstr ""
+
+#: tregisters.esilabel.caption
+msgctxt "tregisters.esilabel.caption"
+msgid "ESI 00000000"
+msgstr ""
+
+#: tregisters.esplabel.caption
+msgctxt "tregisters.esplabel.caption"
+msgid "ESP 00000000"
+msgstr ""
+
+#: tregisters.label14.caption
+msgctxt "tregisters.label14.caption"
+msgid "Registers:"
+msgstr "寄存器："
+
+#: tregisters.menuitem1.caption
+msgid "Copy registers to clipboard"
+msgstr "复制寄存器到剪贴板"
+
+#: tregisters.menuitem2.caption
+msgid "Copy full context block to clipboard"
+msgstr "复制完整上下文区块到剪贴板"
+
+#: tregisters.sbshowfloats.caption
+msgctxt "tregisters.sbshowfloats.caption"
+msgid "F"
+msgstr ""
+
+#: tregisters.sbshowfloats.hint
+msgctxt "tregisters.sbshowfloats.hint"
+msgid "Floating point registers"
+msgstr "单浮点寄存器"
+
+#: tregisters.sbshowstack.caption
+msgctxt "tregisters.sbshowstack.caption"
+msgid "S"
+msgstr ""
+
+#: tregisters.sbshowstack.hint
+msgctxt "tregisters.sbshowstack.hint"
+msgid "Stack view"
+msgstr "栈视图"
+
+#: ttypeform.button1.caption
+msgctxt "ttypeform.button1.caption"
+msgid "OK"
+msgstr "确定"
+
+#: ttypeform.button2.caption
+msgctxt "ttypeform.button2.caption"
+msgid "Cancel"
+msgstr "取消"
+
+#: ttypeform.caption
+msgctxt "ttypeform.caption"
+msgid "Type"
+msgstr "类型"
+
+#: ttypeform.cbcodepage.caption
+msgctxt "ttypeform.cbcodepage.caption"
+msgid "Codepage"
+msgstr "代码页"
+
+#: ttypeform.cbunicode.caption
+msgctxt "ttypeform.cbunicode.caption"
+msgid "Unicode"
+msgstr ""
+
+#: ttypeform.edit1.text
+msgctxt "ttypeform.edit1.text"
+msgid "10"
+msgstr ""
+
+#: ttypeform.edit2.text
+msgctxt "ttypeform.edit2.text"
+msgid "1"
+msgstr ""
+
+#: ttypeform.label1.caption
+msgid "Select the new type:"
+msgstr "选择新的类型："
+
+#: ttypeform.label10.caption
+msgctxt "ttypeform.label10.caption"
+msgid "6"
+msgstr ""
+
+#: ttypeform.label11.caption
+msgctxt "ttypeform.label11.caption"
+msgid "7"
+msgstr ""
+
+#: ttypeform.label2.caption
+msgctxt "ttypeform.label2.caption"
+msgid "Length"
+msgstr "长度"
+
+#: ttypeform.label4.caption
+msgctxt "ttypeform.label4.caption"
+msgid "0"
+msgstr ""
+
+#: ttypeform.label5.caption
+msgctxt "ttypeform.label5.caption"
+msgid "1"
+msgstr ""
+
+#: ttypeform.label6.caption
+msgctxt "ttypeform.label6.caption"
+msgid "2"
+msgstr ""
+
+#: ttypeform.label7.caption
+msgctxt "ttypeform.label7.caption"
+msgid "3"
+msgstr ""
+
+#: ttypeform.label8.caption
+msgctxt "ttypeform.label8.caption"
+msgid "4"
+msgstr ""
+
+#: ttypeform.label9.caption
+msgctxt "ttypeform.label9.caption"
+msgid "5"
+msgstr ""
+
+#: ttypeform.lengthlabel.caption
+msgctxt "ttypeform.lengthlabel.caption"
+msgid "Length"
+msgstr "长度"
+
+#: tvaluechangeform.button1.caption
+msgctxt "tvaluechangeform.button1.caption"
+msgid "OK"
+msgstr "确定"
+
+#: tvaluechangeform.button2.caption
+msgctxt "tvaluechangeform.button2.caption"
+msgid "Cancel"
+msgstr "取消"
+
+#: tvaluechangeform.caption
+msgid "Change Offset: ########"
+msgstr "更改偏移：########"
+
+#: tvaluechangeform.cbunicode.caption
+msgctxt "tvaluechangeform.cbunicode.caption"
+msgid "Unicode"
+msgstr ""
+
+#: tvaluechangeform.cbvartype.text
+msgid "1 Byte"
+msgstr "1 字节"
+
+#: typepopup.rsinvalidlength
+msgid "Invalid length"
+msgstr "无效的长度"
+
+#: unrandomizer.rsthefollowingaddressesgotchanged
+msgid "The following addresses got changed"
+msgstr "以下地址被更改"
+
+#: unrandomizer.rstheunrandomizerwillcurrentlynotworkon64bitapplicat
+msgid "The unrandomizer will currently not work on 64-bit applications"
+msgstr "The unrandomizer 当前不能在64位应用上工作"
+
+#: valuechange.rschangeoffset
+msgid "Change offset %s"
+msgstr "更改偏移 %s"
+
+#: valuechange.rspartofthestringisunreadable
+msgid "Part of the string is unreadable!"
+msgstr "字符串部分是不可读的！"
+
+#: vartypestrings.rs_vtall
+msgctxt "vartypestrings.rs_vtall"
+msgid "All"
+msgstr "所有"
+
+#: vartypestrings.rs_vtautoassembler
+msgid "Auto Assembler Script"
+msgstr "自动汇编程序脚本"
+
+#: vartypestrings.rs_vtbinary
+msgctxt "vartypestrings.rs_vtbinary"
+msgid "Binary"
+msgstr "二进制"
+
+#: vartypestrings.rs_vtbyte
+msgctxt "vartypestrings.rs_vtbyte"
+msgid "Byte"
+msgstr "字节"
+
+#: vartypestrings.rs_vtbytearray
+msgctxt "vartypestrings.rs_vtbytearray"
+msgid "Array of byte"
+msgstr "字节数组"
+
+#: vartypestrings.rs_vtcodepagestring
+msgid "CodePage String"
+msgstr "代码页字符串"
+
+#: vartypestrings.rs_vtcustom
+msgid "Custom"
+msgstr "自定义"
+
+#: vartypestrings.rs_vtdouble
+msgctxt "vartypestrings.rs_vtdouble"
+msgid "Double"
+msgstr "双浮点"
+
+#: vartypestrings.rs_vtdword
+msgctxt "vartypestrings.rs_vtdword"
+msgid "4 Bytes"
+msgstr "4 字节"
+
+#: vartypestrings.rs_vtgrouped
+msgid "Grouped"
+msgstr "群组"
+
+#: vartypestrings.rs_vtpointer
+msgctxt "vartypestrings.rs_vtpointer"
+msgid "Pointer"
+msgstr "指针"
+
+#: vartypestrings.rs_vtqword
+msgctxt "vartypestrings.rs_vtqword"
+msgid "8 Bytes"
+msgstr "8 字节"
+
+#: vartypestrings.rs_vtsingle
+msgctxt "vartypestrings.rs_vtsingle"
+msgid "Float"
+msgstr "单浮点"
+
+#: vartypestrings.rs_vtstring
+msgctxt "vartypestrings.rs_vtstring"
+msgid "String"
+msgstr "字符串"
+
+#: vartypestrings.rs_vtunicodestring
+msgid "Unicode String"
+msgstr "Unicode 字符串"
+
+#: vartypestrings.rs_vtwidestring
+msgid "Widestring"
+msgstr "宽字符串"
+
+#: vartypestrings.rs_vtword
+msgctxt "vartypestrings.rs_vtword"
+msgid "2 Bytes"
+msgstr "2 字节"
+
+#: vehdebugger.rscheatenginefailedtogetintotheconfig
+msgid "Cheat Engine failed to get into the config of the selected program. (Error=%s)"
+msgstr "Cheat Engine 未能进入所选程序的配置（错误=%s）"
+
+#: vehdebugger.rserrorwhiletryingtocreatetheconfigurationstructure
+msgid "Error while trying to create the configuration structure! (Which effectively renders this whole feature useless) Errorcode=%s"
+msgstr "尝试创建配置结构时出错！（会使整个功能无用）错误码=%s"
+
+#: vehdebugger.rsfailureduplicatingtheeventhandlestotheotherprocess
+msgid "Failure duplicating the event handles to the other process"
+msgstr "复制事件句柄到其它进程失败"
+
+#: vehdebugger.rsfailureduplicatingthefilemapping
+msgid "Failure duplicating the filemapping"
+msgstr "复制文件映射失败"
+
+#: vehdebugger.rsthevehdllseemstohavefailedtoload
+msgid "The VEH dll seems to have failed to load"
+msgstr "似乎未能加载VEH dll"
+
+#: vehdebugger.rsvehdebugerror
+msgid "VEH Debug error"
+msgstr "VEH 调试出错"
+
+#: vehdebugger.rswrongvehdllversion
+msgid "The version of the VEH dll inside the target process (%x) does not match what was expected %x"
+msgstr "目标进程（%x）里面的VEH dll版本跟期待的 %x 不匹配"
+
+#: virtualmemory.rsnomemoryfoundinthespecifiedregion
+msgctxt "virtualmemory.rsnomemoryfoundinthespecifiedregion"
+msgid "No memory found in the specified region"
+msgstr "在指定区域找不到内存"
+
+#: virtualmemory.rsnotenoughmemoryfreetoscan
+msgctxt "virtualmemory.rsnotenoughmemoryfreetoscan"
+msgid "Not enough memory free to scan"
+msgstr "内存不足，无法扫描"
+
+#: vmxfunctions.rsbigerror
+msgctxt "vmxfunctions.rsbigerror"
+msgid "Error"
+msgstr "错误"
+
+#: vmxfunctions.rsinvalidinstruction
+msgid "Invalid instruction"
+msgstr "无效的指令"
+
+#: vmxfunctions.rssmallerror
+msgctxt "vmxfunctions.rssmallerror"
+msgid "error"
+msgstr "错误"
+
+#: windowsdebugger.rserrorattachingthewindowsdebugger
+msgid "Error attaching the windows debugger: %s"
+msgstr "附加 Windows 调试器出错：%s"
+
+#: zstreamext.rsaseekwasdoneforanotherpurpose
+msgid "A seek was done for another purpose than getting the position"
+msgstr "为另一个意图而非获取位置完成了一次寻找"
