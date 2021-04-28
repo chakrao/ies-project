@@ -186,4 +186,114 @@ msgstr " (标记="
 msgid "Not a valid classfile"
 msgstr "不是有效的类文件"
 
-#: javaclasseditor-IC
+#: javaclasseditor-ICNI
+msgid " is currently not implemented"
+msgstr " 当前未实现"
+
+#: javaclasseditor-WCNBUW
+msgid "wide can not be used with "
+msgstr "宽不能用在和 "
+
+#: javaclasseditor-IAOPPF
+msgid "Invalid amount of parameters provided for "
+msgstr "无效的参数数量提供给 "
+
+#: javaclasseditor-TL
+msgid "The label "
+msgstr "标签 "
+
+#: javaclasseditor-INYD
+msgid "is not yet defined"
+msgstr "尚未定义"
+
+#: javaclasseditor-TIICNI
+msgid "This instruction is currently not implemented"
+msgstr "此指令当前未实现"
+
+#: javaclasseditor-UI
+msgid "unknown instruction:"
+msgstr "未知指令："
+
+#: javaclasseditor-YCORI
+msgid "You can only replace instructions on an instruction boundary"
+msgstr "你只能替换指令边界上的指令"
+
+#: javaclasseditor-StartIndex
+msgid "si="
+msgstr "si="
+
+#: javaclasseditor-Offset
+msgid " offset="
+msgstr " 偏移="
+
+#: javaclasseditor-IL
+msgid "Insert line"
+msgstr "插入行"
+
+#: javaclasseditor-ITJAC
+msgid "Input the java assembly code you wish to insert at line "
+msgstr "输入要在行中插入的 java 汇编代码 "
+
+#: javaclasseditor-EL
+msgid "Edit line"
+msgstr "编辑行"
+
+#: javaclasseditor-DNL
+msgid "Define new label"
+msgstr "定义新标签"
+
+#: javaclasseditor-GALFL
+msgid "Give a labelname for line "
+msgstr "给这行一个新标签名 "
+
+#: javaclasseditor-TIAALWTN
+msgid "There is already a label with this name"
+msgstr "已经有这个名字的标签"
+
+#: javaclasseditor-OBSNBS
+msgid "old bsize=%d new bsize=%d"
+msgstr "old bsize=%d new bsize=%d"
+
+#: javaclasseditor-OSNS
+msgid "old size=%d new size=%d"
+msgstr "old size=%d new size=%d"
+
+#: javaclasseditor-Method
+msgid "Method: "
+msgstr "方法："
+
+#: javaclasseditor-MS
+msgid "Max Stack"
+msgstr "最大堆栈"
+
+#: javaclasseditor-ML
+msgid "Max Locals"
+msgstr "最大局部变量"
+
+#: javaclasseditor-SC
+msgid "Save changes"
+msgstr "保存更改"
+
+#: javaclasseditor-Index
+msgid "Index"
+msgstr "索引"
+
+#: javaclasseditor-BI
+msgid "ByteIndex"
+msgstr "字节索引"
+
+#: javaclasseditor-Label
+msgid "Label"
+msgstr "标签"
+
+#: javaclasseditor-Exception
+msgid "Exception"
+msgstr "异常"
+
+#: javaclasseditor-Instruction
+msgid "Instruction"
+msgstr "指令"
+
+#: javaclasseditor-DL
+msgid "Define label"
+msgstr "定义标签"
