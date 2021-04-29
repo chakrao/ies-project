@@ -1,0 +1,93 @@
+#| XHXIAIEIN
+#| 271028354@qq.com
+#| 2021.03.10
+
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: unit1.rsfirststeptoohardbettergiveupnow
+msgid "First step too hard? Go to forum.cheatengine.org, then click on \"Tutorials\" for helpful guides!"
+msgstr "第一关就太难了？不会吧？\n！"
+
+#: unit1.rstutorial1
+msgid ""
+"Welcome to the Cheat Engine Tutorial (v3.4)\n"
+"\n"
+"This tutorial will teach you the basics of cheating in video games. It will also show you foundational aspects of using Cheat Engine (or CE for short). Follow the steps below to get started.\n"
+"\n"
+"1: Open Cheat Engine if it currently isn't running.\n"
+"2: Click on the \"Open Process\" icon (it's the top-left icon with the computer on it, below \"File\".).\n"
+"3: With the Process List window now open, look for this tutorial's process in the list. It will look something like \"00001F98-Tutorial-x86_64.exe\" or \"0000047C-Tutorial-i386.exe\". (The first 8 numbers/letters will probably be different.)\n"
+"4: Once you've found the process, click on it to select it, then click the \"Open\" button. (Don't worry about all the other buttons right now. You can learn about them later if you're interested.)\n"
+"\n"
+"Congratulations! If you did everything correctly, the process window should be gone with Cheat Engine now attached to the tutorial (you will see the process name towards the top-center of CE).\n"
+"\n"
+"Click the \"Next\" button below to continue, or fill in the password and click the \"OK\" button to proceed to that step.)\n"
+"\n"
+"If you're having problems, simply head over to forum.cheatengine.org, then click on \"Tutorials\" to view beginner-friendly guides!\n"
+msgstr ""
+"------------------------------------------------------------------\n"
+" ( •̀ ω •́ )✧ 欢迎来到 Cheat Engine 新手教程 (v3.4)\n"
+"------------------------------------------------------------------\n\n"
+"本教程会教你「如何在游戏中作弊」的基本知识。\n"
+"既然是个新手菜鸟，先从基本操作开始动手吧。\n"
+"\n"
+"#1 启动 Cheat Engine 主程序\n"
+"如果你还没运行，先将它启动。\n"
+"\n"
+"\n"
+"#2 点击「打开进程」图标\n"
+" ▪ 它是工具栏第一个图标，像一个电脑+放大镜。\n"
+" ▪ 它位于菜单栏-文件的下方。\n"
+" ▪ 如果你是首次启动，可能还能看到它还有个不断闪烁的边框。\n"
+"\n"
+"\n"
+"#3 找到「Tutorial」进程\n"
+" ▪ 在进程列表窗口中，将列表拉到底部，找到本教程的进程。\n"
+" ▪ 它标题类似 “00001234-Tutorial-x86_64.exe” (前面的八个数字可能会不一样)\n"
+"\n"
+"\n"
+"如果你已经看到了这个进程，选中它，然后点击「打开」按钮。\n（先别管其它按钮，如果你感兴趣，你会在后面接触到它们的）\n"
+"\n---\n\n"
+"先提前恭喜你！\n如果你全都做对了，进程列表窗口会自动关闭，并且在 Cheat Engine 页面中间顶部的位置看到该进程的名字。\n"
+"\n\n"
+"现在，你可以点击 “下一步” 按钮来继续学习教程了。如果你知道某个跳关密码，也可以输入它跳转到相应的教学关卡\n"
+"\n\n"
+"如果你遇到了任何问题，可以到交流论坛 forum.cheatengine.org 教程板块反馈，你还能在论坛中找到更多针对初学者的内容。\n"
+
+#: unit2.rsawyouredeathletmereviveyou
+msgctxt "unit2.rsawyouredeathletmereviveyou"
+msgid "Aw, you're dead! Let me revive you"
+msgstr "嘣，你已经死了！没事，让我复活你"
+
+#: unit2.rsloser
+msgctxt "unit2.rsloser"
+msgid "BOO"
+msgstr "_(:з」∠)_"
+
+#: unit2.rsquittingonstep2thisistheeasieststepthereisfindheal
+msgid "Quitting on step2? This is the easiest step there is. Find health, change health, done.... Sure you want to quit?"
+msgstr "什么？你要退出第2关？\n嘿！听着，后面没有比这更简单的一关了！你只要搜索数值，打我，再搜索数值，肯定能找到生命值的地址……\n确定要退出吗？"
+
+#: unit2.rsstep2exactvaluescanningpw
+msgid "Step 2: Exact Value scanning (PW="
+msgstr ""
+"------------------------------------------------------------------\n"
+"第2关：扫描精确值 (跳关密码="
+
+#: unit2.rstutorialstep2
+msgid ""
+"Now that you have opened the tutorial with Cheat Engine let's get on with the next step.\n"
+"\n"
+"You can see at the bottom of this window is the text Health: xxx\n"
+"Each time you click 'Hit me'  your health gets decreased.\n"
+"\n"
+"To get to the next step you have to find this value and change it to 1000\n"
+"\n"
+"To find the value there are different ways, but I'll tell you about the easiest, 'Exact Value':\n"
+"First make sure value type is set to at least 2-bytes or 4-bytes. 1-byte will also work, but you'll run into an easy to fix problem when you've found the address and want to change it. The 8-byte may perhaps works if the bytes after the address are 0, but I wouldn't take the bet.\n"
+"Single, double, and the other scans just don't work, because they store the value in a different way.\n"
+"\n"
+"When the value type is set correctly, make sure the scantype is set to 'Exact Value'\n"
+"Then fill in the number your health is in the value box. And click 'First Scan'\n"
+"After a while (if you have a extremely slow pc) the scan is

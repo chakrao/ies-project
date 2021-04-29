@@ -59,4 +59,22 @@ msgstr "补丁列表"
 msgid "Address"
 msgstr "地址"
 
-#: 
+#: patchscan-original
+msgid "Original"
+msgstr "原始"
+
+#: patchscan-patched
+msgid "Patched"
+msgstr "已打补丁"
+
+#: patchscan-rwo
+msgid "Restore with original"
+msgstr "还原"
+
+#: patchscan-rp
+msgid "Reapply patch"
+msgstr "重新应用补丁"
+
+#: patchscan-sfp
+msgid "Scan for patches"
+msgstr "扫描补丁"
