@@ -781,4 +781,253 @@ msgstr ""
 "------------------------------------------------------------------\n"
 "\n"
 "\n"
-"通关办法有非常多种，太多了。如果你想到了什么，先去尝试一下，不
+"通关办法有非常多种，太多了。如果你想到了什么，先去尝试一下，不行再来看提示。\n"
+"\n"
+"\n"
+"通常，在游戏中你找到一个单位的生命值，或是你自己角色的生命值。如果注入代码去修改它，你会发现如果把生命值相关代码移除的同时也会影响到敌人生命值。\n"
+"\n"
+"在这种情况下，你必须想办法区分你和敌人的对象。有时候很简单, 你只要检查最前面的4个字节(函数指针表), 它通常指向一个独一无二的地址来代表着玩家角色的属性，也有的时候它是一个队伍编号, 或者是一个指向指针的指针的指针的指针最后指向一个玩家的名字。总之完全取决于游戏的复杂度, 以及你的运气:)\n"
+"\n"
+"\n"
+"教你一个非常简单的方法，找到被代码改写了的哪个地址，然后使用「分析数据」功能来比较两个对象（你的角色和敌人），也许你能找到一个方法去区分它们\n"
+"\n"
+"当你找出怎么区分你和电脑后，就可以「注入汇编脚本」来检查判断条件，让他不执行某个部分的代码，或者让它去做别的事情（比如...一击必杀！）\n"
+"\n"
+"\n"
+"另外，你还可以用这个方法去创建一个叫「字节数组」的字符串，它能搜索并列出所有你的角色和敌人\n"
+"\n"
+"\n"
+"------------------------------------------------------------------\n"
+"\n"
+"\n"
+"你怎么还在看提示，还不知道怎么做吗？\n"
+"\n"
+"嗯？什么？找不到生命值的地址？不是吧！教程都快结束了，前面基本操作忘光了？\n"
+"\n"
+"\n"
+"提示：生命值是单浮点数\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"------------------------------------------------------------------\n"
+"\n"
+"如果这关实在不知道如何操作，可以访问 wiki 页面查看图文教程：\n"
+"https://wiki.cheatengine.org/index.php?title=Tutorials:Cheat_Engine_Tutorial_Guide_x32#Step_9\n"
+"\n"
+
+#: unit10.rshealth
+msgid "Health: %s"
+msgstr "生命值: %s"
+
+#: unit10.rsdead
+msgid "DEAD"
+msgstr "死亡      "
+
+#: unit10.rsstop
+msgid "Stop"
+msgstr "停止战斗"
+
+#: unit10.rsrestartgameandautoplay
+msgctxt "unit10.rsrestartgameandautoplay"
+msgid "Restart game and autoplay"
+msgstr "重启游戏并再次战斗"
+
+#: unit10.rsthisplayerisalreadydeadrestartthegame
+msgid "This player is already dead. Restart the game"
+msgstr "这个玩家已经死亡，请重启游戏。"
+
+#: unit10.rsfailureyourteamdied
+msgid "Failure. Your team died"
+msgstr "战斗失败，你被团灭了"
+
+#: unit10.rsu10thiswasthelasttutorial
+msgid "This was the last tutorial and you skipped it. You lose"
+msgstr "这是最后一个教程，你跳过的话就会失败"
+
+#: tform10.button3.caption
+msgid "Restart game"
+msgstr "重启游戏"
+
+#: tform10.button4.caption
+msgctxt "tform10.button4.caption"
+msgid "Attack"
+msgstr "打他"
+
+#: tform10.button5.caption
+msgctxt "tform10.button5.caption"
+msgid "Attack"
+msgstr "打他"
+
+#: tform10.button6.caption
+msgctxt "tform10.button6.caption"
+msgid "Restart game and autoplay"
+msgstr "重启游戏并自动战斗"
+
+#: tform10.button7.caption
+msgctxt "tform10.button7.caption"
+msgid "Attack"
+msgstr "打他"
+
+#: tform10.button8.caption
+msgctxt "tform10.button8.caption"
+msgid "Attack"
+msgstr "打他"
+
+#: tform10.caption
+msgid "Step 9"
+msgstr "第 9 关"
+
+#: tform10.label1.caption
+msgctxt "tform10.label1.caption"
+msgid "100"
+msgstr "100"
+
+#: tform10.label2.caption
+msgctxt "tform10.label2.caption"
+msgid "Health:"
+msgstr "生命值:"
+
+#: tform10.label3.caption
+msgid "Player 1: Dave"
+msgstr "戴夫"
+
+#: tform10.label4.caption
+msgctxt "tform10.label4.caption"
+msgid "Health: 100"
+msgstr "生命值: 100"
+
+#: tform10.label5.caption
+msgid "Player 2: Eric"
+msgstr "艾里克"
+
+#: tform10.label6.caption
+msgctxt "tform10.label6.caption"
+msgid "Health: 100"
+msgstr "生命值: 100"
+
+#: tform10.label7.caption
+msgid "C. Player 3: HAL"
+msgstr "哈尔（电脑）"
+
+#: tform10.label8.caption
+msgctxt "tform10.label8.caption"
+msgid "Health: 500"
+msgstr "生命值: 500"
+
+#: tform10.label9.caption
+msgid "C. Player 4: KITT"
+msgstr "凯特（电脑）"
+
+#: tform10.label10.caption
+msgctxt "tform10.label10.caption"
+msgid "Health: 500"
+msgstr "生命值: 500"
+
+#: tform1.caption
+msgid "Cheat Engine Tutorial v3.4"
+msgstr "Cheat Engine 教程 v3.4"
+
+#: tform1.btnok.caption
+msgid "OK"
+msgstr "确定"
+
+#: tform1.button1.caption
+msgctxt "tform1.button1.caption"
+msgid "Next"
+msgstr "下一步"
+
+#: tform1.edtpassword.hint
+msgid "Use this to go imeadiatly to the step you want to try"
+msgstr "使用这个密码立即跳转到你想尝试的关卡"
+
+#: tform1.edtpassword.text
+msgid "090453"
+msgstr "090453"
+
+#: tform1.label1.caption
+msgid "Password"
+msgstr "跳关密码"
+
+#: tform2.button1.caption
+msgctxt "tform2.button1.caption"
+msgid "Next"
+msgstr "下一步"
+
+#: tform2.button2.caption
+msgctxt "tform2.button2.caption"
+msgid "Hit me"
+msgstr "打我"
+
+#: tform2.caption
+msgid "Step 2"
+msgstr "第 2 关"
+
+#: tform2.label1.caption
+msgctxt "tform2.label1.caption"
+msgid "100"
+msgstr "100"
+
+#: tform2.label2.caption
+msgctxt "tform2.label2.caption"
+msgid "Health:"
+msgstr "生命值:"
+
+#: tform2.speedbutton1.caption
+msgctxt "tform2.speedbutton1.caption"
+msgid "Skip"
+msgstr "跳过"
+
+#: tform3.button1.caption
+msgctxt "tform3.button1.caption"
+msgid "Next"
+msgstr "下一步"
+
+#: tform3.button2.caption
+msgctxt "tform3.button2.caption"
+msgid "Hit me"
+msgstr "打我"
+
+#: tform3.caption
+msgid "Step 3"
+msgstr "第 3 关"
+
+#: tform3.label1.caption
+msgid " "
+msgstr " "
+
+#: tform3.speedbutton1.caption
+msgctxt "tform3.speedbutton1.caption"
+msgid "Skip"
+msgstr "跳过"
+
+#: tform5.button1.caption
+msgid "Fire"
+msgstr "开火"
+
+#: tform5.button2.caption
+msgctxt "tform5.button2.caption"
+msgid "Next"
+msgstr "下一步"
+
+#: tform5.button3.caption
+msgctxt "tform5.button3.caption"
+msgid "Hit me"
+msgstr "打我"
+
+#: tform5.caption
+msgid "Step 4"
+msgstr "第 4 关"
+
+#: tform5.label1.caption
+msgctxt "tform5.label1.caption"
+msgid "100"
+msgstr "100"
+
+#: tform5.label2.caption
+msgid "Ammo"
+msgstr "子弹"
+
+#: tform5.label3.c
