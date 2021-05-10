@@ -129,4 +129,169 @@ msgid "Found:"
 msgstr "已找到："
 
 #: java-FWATV
-msgid "Find what accesses this valu
+msgid "Find what accesses this value"
+msgstr "找出是誰在存取此數值"
+
+#: java-Search
+msgid "Search"
+msgstr "搜尋"
+
+#: java-FC
+msgid "Find Class"
+msgstr "尋找類別"
+
+#: java-Finddotdotdot
+msgid "Find..."
+msgstr "尋找..."
+
+#: java-EM
+msgid "Edit method"
+msgstr "編輯方法"
+
+#: java-AJF
+msgid "Activate java features"
+msgstr "啟用 Java 功能"
+
+#: java-DJC
+msgid "Dissect java classes"
+msgstr "剖析 Java 類別"
+
+#: java-JVScan
+msgid "Java variable scan"
+msgstr "Java 變數掃描"
+
+#: java-DCP
+msgid "Debug child processes"
+msgstr "除錯子程序"
+
+#: java-JHDTI
+msgid "The java handler failed to initialize"
+msgstr "Java 處理常式初始化失敗"
+
+#: java-SJMIEITTP
+msgid "Show java menu item even if the target process hasn't loaded jvm.dll (Used for the local setEnvironment option)"
+msgstr ""
+
+#: javaclass-ICPTE
+msgid "Invalid constant pool tag encountered: "
+msgstr ""
+
+#: javaclass-Tag
+msgid " (tag="
+msgstr ""
+
+#: javaclass-NAVC
+msgid "Not a valid classfile"
+msgstr "不是有效的類別檔"
+
+#: javaclasseditor-ICNI
+msgid " is currently not implemented"
+msgstr " 尚未實作"
+
+#: javaclasseditor-WCNBUW
+msgid "wide can not be used with "
+msgstr ""
+
+#: javaclasseditor-IAOPPF
+msgid "Invalid amount of parameters provided for "
+msgstr ""
+
+#: javaclasseditor-TL
+msgid "The label "
+msgstr "標籤 "
+
+#: javaclasseditor-INYD
+msgid "is not yet defined"
+msgstr "尚未定義"
+
+#: javaclasseditor-TIICNI
+msgid "This instruction is currently not implemented"
+msgstr "此指令尚未實作"
+
+#: javaclasseditor-UI
+msgid "unknown instruction:"
+msgstr "未知的指令："
+
+#: javaclasseditor-YCORI
+msgid "You can only replace instructions on an instruction boundary"
+msgstr ""
+
+#: javaclasseditor-StartIndex
+msgid "si="
+msgstr "si="
+
+#: javaclasseditor-Offset
+msgid " offset="
+msgstr " 偏移="
+
+#: javaclasseditor-IL
+msgid "Insert line"
+msgstr "插入行"
+
+#: javaclasseditor-ITJAC
+msgid "Input the java assembly code you wish to insert at line "
+msgstr "輸入您想要插入於行...的 Java 組合語言程式碼 "
+
+#: javaclasseditor-EL
+msgid "Edit line"
+msgstr "編輯行"
+
+#: javaclasseditor-DNL
+msgid "Define new label"
+msgstr "定義新標籤"
+
+#: javaclasseditor-GALFL
+msgid "Give a labelname for line "
+msgstr ""
+
+#: javaclasseditor-TIAALWTN
+msgid "There is already a label with this name"
+msgstr "已存在相同名稱的標籤"
+
+#: javaclasseditor-OBSNBS
+msgid "old bsize=%d new bsize=%d"
+msgstr "舊 bsize=%d 新 bsize=%d"
+
+#: javaclasseditor-OSNS
+msgid "old size=%d new size=%d"
+msgstr "舊大小=%d 新大小=%d"
+
+#: javaclasseditor-Method
+msgid "Method: "
+msgstr "方法： "
+
+#: javaclasseditor-MS
+msgid "Max Stack"
+msgstr "最大堆疊"
+
+#: javaclasseditor-ML
+msgid "Max Locals"
+msgstr ""
+
+#: javaclasseditor-SC
+msgid "Save changes"
+msgstr "儲存變更"
+
+#: javaclasseditor-Index
+msgid "Index"
+msgstr "索引"
+
+#: javaclasseditor-BI
+msgid "ByteIndex"
+msgstr "位元索引"
+
+#: javaclasseditor-Label
+msgid "Label"
+msgstr "標籤"
+
+#: javaclasseditor-Exception
+msgid "Exception"
+msgstr "例外"
+
+#: javaclasseditor-Instruction
+msgid "Instruction"
+msgstr "指令"
+
+#: javaclasseditor-DL
+msgid "Define label"
+msgstr "定義標籤"
