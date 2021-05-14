@@ -184,4 +184,229 @@ ssize_t sendstring16(int s, char *str, int flags)
 
 int sendinteger(int s, int val, int flags)
 {
-  return sendall(s, &va
+  return sendall(s, &val,sizeof(val),flags);
+}
+
+
+char* receivestring16(int s)
+/* Receives a string that is preceded by a 16 bit length identifier (Allocates a string. Clean it up yourself)
+ * returns NULL if the length is 0 bytes
+ */
+
+{
+  char *str;
+  uint16_t l;
+  recvall(s, &l, sizeof(l),0);
+
+  if (l)
+  {
+    str=malloc(l+1);
+    recvall(s, str, l,0);
+    str[l]=0;
+    return str;
+  }
+  else
+    return NULL;
+}
+
+
+int DispatchCommand(int currentsocket, unsigned char command)
+{
+  int r;
+
+  switch (command)
+  {
+    case CMD_GETVERSION:
+    {
+      PCeVersion v;
+      //debug_log("version request");
+      fflush(stdout);
+      int versionsize=strlen(versionstring);
+#ifdef SHARED_LIBRARY
+      versionsize+=3;
+#endif
+      v=(PCeVersion)malloc(sizeof(CeVersion)+versionsize);
+      v->stringsize=versionsize;
+      v->version=CESERVERVERSION;
+
+#ifdef SHARED_LIBRARY
+      memcpy((char *)v+sizeof(CeVersion),"lib",3);//tell ce it's the lib version
+      memcpy((char *)v+sizeof(CeVersion)+3, versionstring, versionsize);
+
+#else
+      memcpy((char *)v+sizeof(CeVersion), versionstring, versionsize);
+#endif
+
+      //version request
+      sendall(currentsocket, v, sizeof(CeVersion)+versionsize, 0);
+
+      free(v);
+
+      break;
+    }
+
+    case CMD_SET_CONNECTION_NAME:
+    {
+      debug_log("CMD_SET_CONNECTION_NAME\n");
+      uint32_t namelength;
+
+
+      if (recvall(currentsocket, &namelength, sizeof(namelength), MSG_WAITALL)>0)
+      {
+        char name[namelength+1];
+
+        recvall(currentsocket, name, namelength, MSG_WAITALL);
+        name[namelength]=0;
+
+        if (threadname)
+        {
+          free(threadname);
+          threadname=NULL;
+        }
+        threadname=strdup(name);
+
+        debug_log("This thread is called %s\n", name);
+      }
+
+      fflush(stdout);
+
+      break;
+    }
+
+    case CMD_GETABI:
+    {
+#ifdef WINDOWS
+      unsigned char abi=0;
+#else
+      unsigned char abi=1;
+#endif
+      sendall(currentsocket, &abi, sizeof(abi), 0);
+      break;
+    }
+
+    case CMD_GETARCHITECTURE:
+    {
+      unsigned char arch;
+      HANDLE h;
+      //ce 7.4.1+ : Added the processhandle
+
+      debug_log("CMD_GETARCHITECTURE\n");
+
+      if (recvall(currentsocket, &h, sizeof(h), MSG_WAITALL)>0)
+      {
+        //intel i386=0
+        //intel x86_64=1
+        //arm 32 = 2
+        //arm 64 = 3
+        debug_log("(%d)",h);
+        arch=getArchitecture(h);
+      }
+
+      if(SPECIFIED_ARCH != 9)
+      {
+        arch = SPECIFIED_ARCH;
+      }
+      debug_log("=%d\n", arch);
+      sendall(currentsocket, &arch, sizeof(arch), 0);
+      break;
+    }
+
+    case CMD_CLOSECONNECTION:
+    {
+      debug_log("Connection %d closed properly\n", currentsocket);
+      fflush(stdout);
+      close(currentsocket);
+
+      return 0;
+    }
+
+    case CMD_TERMINATESERVER:
+    {
+      debug_log("Command to terminate the server received\n");
+      fflush(stdout);
+      close(currentsocket);
+      exit(0);
+    }
+
+    case CMD_STARTDEBUG:
+    {
+      HANDLE h;
+      if (recvall(currentsocket, &h, sizeof(h), MSG_WAITALL)>0)
+      {
+        int r;
+        debug_log("Calling StartDebug(%d)\n", h);
+        r=StartDebug(h);
+        sendall(currentsocket, &r, sizeof(r), 0);
+
+        if (r)
+        {
+          isDebuggerThread=h;
+          debugfd=GetDebugPort(h);
+        }
+      }
+      break;
+    }
+
+    case CMD_WAITFORDEBUGEVENT:
+    {
+      struct
+      {
+        HANDLE pHandle;
+        int timeout;
+      } wfd;
+
+      if (recvall(currentsocket, &wfd, sizeof(wfd), MSG_WAITALL)>0)
+      {
+        int r;
+        DebugEvent event;
+        memset(&event, 0, sizeof(event));
+
+        r=WaitForDebugEvent(wfd.pHandle, &event, wfd.timeout);
+        sendall(currentsocket, &r, sizeof(r), r?MSG_MORE:0);
+
+        if (r)
+        {
+          if (event.debugevent==SIGTRAP)
+          {
+            debug_log("!!!SIGTRAP!!!\n");
+            debug_log("event.address=%llx\n", event.address);
+          }
+
+          sendall(currentsocket, &event, sizeof(event),0);
+        }
+      }
+      break;
+    }
+
+    case CMD_CONTINUEFROMDEBUGEVENT:
+    {
+      struct
+      {
+        HANDLE pHandle;
+        int tid;
+        int ignore;
+      } cfd;
+
+      if (recvall(currentsocket, &cfd, sizeof(cfd), MSG_WAITALL)>0)
+      {
+        int r;
+        // Calling ContinueFromDebugEvent
+        r=ContinueFromDebugEvent(cfd.pHandle, cfd.tid, cfd.ignore);
+        // Returned from ContinueFromDebugEvent
+        sendall(currentsocket, &r, sizeof(r), 0);
+      }
+      break;
+    }
+
+    case CMD_SETBREAKPOINT:
+    {
+      CeSetBreapointInput sb;
+
+      debug_log("CMD_SETBREAKPOINT. sizeof(sb)=%d\n", sizeof(sb));
+
+      if (recvall(currentsocket, &sb, sizeof(sb), MSG_WAITALL)>0)
+      {
+        int r;
+
+        debug_log("Calling SetBreakpoint\n");
+        r=SetBreakpoint(sb.hProcess, sb.t
