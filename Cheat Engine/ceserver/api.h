@@ -270,4 +270,48 @@ int GetDebugPort(HANDLE hProcess);
 int getArchitecture(HANDLE hProcess);
 
 
-int SetBreakpoint(HANDLE hP
+int SetBreakpoint(HANDLE hProcess, int tid, int debugreg, void *address, int bptype, int bpsize);
+int RemoveBreakpoint(HANDLE hProcess, int tid, int debugreg, int wasWatchpoint);
+
+int SuspendThread(HANDLE hProcess, int tid);
+int ResumeThread(HANDLE hProcess, int tid);
+
+BOOL GetThreadContext(HANDLE hProcess, int tid, PCONTEXT Context);
+BOOL SetThreadContext(HANDLE hProcess, int tid, PCONTEXT Context);
+
+PDebugEvent FindThreadDebugEventInQueue(PProcessData p, int tid);
+void AddDebugEventToQueue(PProcessData p, PDebugEvent devent);
+int RemoveThreadDebugEventFromQueue(PProcessData p, int tid);
+
+int ptrace_attach_andwait(int pid);
+
+int WakeDebuggerThread();
+int windowsProtectionToLinux(uint32_t windowsprotection);
+uint32_t linuxProtectionToWindows(int prot);
+
+HANDLE OpenPipe(char *pipename, int timeout);
+int ReadPipe(HANDLE ph, void* destination, int size, int timeout);
+int WritePipe(HANDLE ph, void* source, int size, int timeout);
+void CloseAllPipes();
+
+uint64_t getTickCount();
+
+
+
+void initAPI();
+
+extern pthread_mutex_t debugsocketmutex;
+
+#ifdef __ANDROID__
+  #define LOG_TAG "CESERVER"
+  #define LOGD(fmt, args...) __android_log_vprint(ANDROID_LOG_DEBUG, LOG_TAG, fmt, ##args)
+#endif
+
+int debug_log(const char * format , ...); 
+uintptr_t safe_ptrace(int request, pid_t pid, void * addr, void * data);
+extern int ATTACH_TO_ACCESS_MEMORY;
+extern int ATTACH_TO_WRITE_MEMORY;
+extern int MEMORY_SEARCH_OPTION;
+extern int ATTACH_PID;
+extern unsigned char SPECIFIED_ARCH;
+#endif /* API_H_ */
