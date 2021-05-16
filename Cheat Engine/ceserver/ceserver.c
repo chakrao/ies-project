@@ -409,4 +409,187 @@ int DispatchCommand(int currentsocket, unsigned char command)
         int r;
 
         debug_log("Calling SetBreakpoint\n");
-        r=SetBreakpoint(sb.hProcess, sb.t
+        r=SetBreakpoint(sb.hProcess, sb.tid, sb.debugreg, (void *)sb.Address, sb.bptype, sb.bpsize);
+        debug_log("SetBreakpoint returned %d\n",r);
+        sendall(currentsocket, &r, sizeof(r), 0);
+      }
+      break;
+    }
+
+    case CMD_REMOVEBREAKPOINT:
+    {
+      CeRemoveBreapointInput rb;
+
+      if (recvall(currentsocket, &rb, sizeof(rb), MSG_WAITALL)>0)
+      {
+        int r;
+
+
+
+        debug_log("%s: Calling RemoveBreakpoint\n", threadname);
+        r=RemoveBreakpoint(rb.hProcess, rb.tid, rb.debugreg, rb.wasWatchpoint);
+        debug_log("RemoveBreakpoint returned: %d\n", r);
+        sendall(currentsocket, &r, sizeof(r), 0);
+      }
+      break;
+    }
+
+    case CMD_GETTHREADCONTEXT:
+    {
+#pragma pack(1)
+      struct
+      {
+        HANDLE hProcess;
+        uint32_t tid;
+      } gtc;
+#pragma pack()
+
+      CONTEXT Context;
+      uint32_t result;
+
+      debug_log("CMD_GETTHREADCONTEXT:\n");
+
+      recvall(currentsocket, &gtc, sizeof(gtc), MSG_WAITALL);
+
+      debug_log("Going to call GetThreadContext(%d, %d, %p)\n", gtc.hProcess, gtc.tid, &Context);
+      memset(&Context, 0, sizeof(Context));
+
+      result=GetThreadContext(gtc.hProcess, gtc.tid, &Context);
+
+      debug_log("result=%d\n", result);
+
+      if (result)
+      {
+        debug_log("Context.structsize=%d\n", Context.structsize);
+        uint32_t structsize=Context.structsize;
+        sendall(currentsocket, &result, sizeof(result), MSG_MORE);
+        sendall(currentsocket, &structsize, sizeof(structsize), MSG_MORE);
+        sendall(currentsocket, &Context, structsize, 0); //and context
+      }
+      else
+        sendall(currentsocket, &result, sizeof(result), 0);
+
+      break;
+
+    }
+
+case CMD_SETTHREADCONTEXT:
+    {
+#pragma pack(1)
+      struct
+      {
+        HANDLE hProcess;
+        uint32_t tid;
+        uint32_t structsize;
+      } stc;
+#pragma pack()
+
+      uint32_t result;
+
+      PCONTEXT c;
+
+      debug_log("CMD_SETTHREADCONTEXT:\n");
+
+      recvall(currentsocket, &stc, sizeof(stc), MSG_WAITALL);
+      debug_log("hProcess=%d tid=%d structsize=%d\n", stc.hProcess, stc.tid, stc.structsize);
+
+      c=(PCONTEXT)malloc(stc.structsize);
+      recvall(currentsocket, c, stc.structsize, MSG_WAITALL);
+
+      debug_log("received a context with data: structsize=%d type=%d\n", c->structsize, c->type);
+
+      debug_log("Going to call SetThreadContext(%d, %d, %p)\n", stc.hProcess, stc.tid, c);
+
+      result=SetThreadContext(stc.hProcess, stc.tid, c);
+      free(c);
+
+      debug_log("result=%d\n", result);
+
+      sendall(currentsocket, &result, sizeof(result), 0);
+
+
+      break;
+
+    }
+
+    case CMD_SUSPENDTHREAD:
+    {
+      CeSuspendThreadInput st;
+
+      if (recvall(currentsocket, &st, sizeof(st), MSG_WAITALL)>0)
+      {
+        int r;
+
+        debug_log("Calling SuspendThread\n");
+        r=SuspendThread(st.hProcess, st.tid);
+        debug_log("SuspendThread returned\n");
+        sendall(currentsocket, &r, sizeof(r), 0);
+      }
+      break;
+    }
+
+    case CMD_RESUMETHREAD:
+    {
+      CeResumeThreadInput rt;
+
+      if (recvall(currentsocket, &rt, sizeof(rt), MSG_WAITALL)>0)
+      {
+        int r;
+
+        debug_log("Calling ResumeThread\n");
+        r=ResumeThread(rt.hProcess, rt.tid);
+        debug_log("ResumeThread returned\n");
+        sendall(currentsocket, &r, sizeof(r), 0);
+      }
+      break;
+    }
+
+    case CMD_CLOSEHANDLE:
+    {
+      HANDLE h;
+
+      if (recvall(currentsocket, &h, sizeof(h), MSG_WAITALL)>0)
+      {
+        CloseHandle(h);
+        int r=1;
+        sendall(currentsocket, &r, sizeof(r), 0); //stupid naggle
+
+      }
+      else
+      {
+        debug_log("Error during read for CMD_CLOSEHANDLE\n");
+        close(currentsocket);
+        fflush(stdout);
+        return 0;
+      }
+      break;
+    }
+
+
+    case CMD_CREATETOOLHELP32SNAPSHOTEX:
+    {
+      CeCreateToolhelp32Snapshot params;
+      //debug_log("CMD_CREATETOOLHELP32SNAPSHOTEX\n");
+
+      if (recvall(currentsocket, &params, sizeof(CeCreateToolhelp32Snapshot), MSG_WAITALL) > 0)
+      {
+        HANDLE r=CreateToolhelp32Snapshot(params.dwFlags, params.th32ProcessID);
+
+        if ((params.dwFlags & TH32CS_SNAPTHREAD)==TH32CS_SNAPTHREAD)
+        {
+          //send the list of threadid's
+
+          if (r)
+          {
+            PThreadList tl=(PThreadList)GetPointerFromHandle(r);
+            sendall(currentsocket, &tl->threadCount, sizeof(int), MSG_MORE);
+            sendall(currentsocket, &tl->threadList[0], tl->threadCount*sizeof(int),0);
+
+            CloseHandle(r);
+          }
+          else
+          {
+            int n=0;
+            sendall(currentsocket, &n, sizeof(int), 0);
+          }
+ 
