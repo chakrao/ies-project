@@ -763,4 +763,154 @@ case CMD_SETTHREADCONTEXT:
     case CMD_PROCESS32NEXT:
     {
       HANDLE toolhelpsnapshot;
-      if (recvall(currentsocket, &t
+      if (recvall(currentsocket, &toolhelpsnapshot, sizeof(toolhelpsnapshot), MSG_WAITALL) >0)
+      {
+        ProcessListEntry pe;
+        BOOL result;
+        CeProcessEntry *r;
+        int size;
+
+        if (command==CMD_PROCESS32FIRST)
+          result=Process32First(toolhelpsnapshot, &pe);
+        else
+          result=Process32Next(toolhelpsnapshot, &pe);
+
+        //  debug_log("result=%d\n", result);
+
+        if (result)
+        {
+          size=sizeof(CeProcessEntry)+ strlen(pe.ProcessName);
+          r=(PCeProcessEntry)malloc(size);
+          r->processnamesize=strlen(pe.ProcessName);
+          r->pid=pe.PID;
+          memcpy((char *)r+sizeof(CeProcessEntry), pe.ProcessName, r->processnamesize);
+        }
+        else
+        {
+          size=sizeof(CeProcessEntry);
+          r=(PCeProcessEntry)malloc(size);
+          r->processnamesize=0;
+          r->pid=0;
+        }
+
+        r->result=result;
+
+        sendall(currentsocket, r, size, 0);
+
+        free(r);
+
+      }
+      break;
+    }
+
+    case CMD_READPROCESSMEMORY:
+    {
+      CeReadProcessMemoryInput c;
+
+      r=recvall(currentsocket, &c, sizeof(c), MSG_WAITALL);
+      if (r>0)
+      {
+        PCeReadProcessMemoryOutput o=NULL;
+        o=(PCeReadProcessMemoryOutput)malloc(sizeof(CeReadProcessMemoryOutput)+c.size);
+
+        o->read=ReadProcessMemory(c.handle, (void *)(uintptr_t)c.address, &o[1], c.size);
+
+        if (c.compress)
+        {
+          //compress the output
+#define COMPRESS_BLOCKSIZE (64*1024)
+          int i;
+          unsigned char *uncompressed=(unsigned char *)&o[1];
+          uint32_t uncompressedSize=o->read;
+          uint32_t compressedSize=0;
+          int maxBlocks=1+(c.size / COMPRESS_BLOCKSIZE);
+
+          unsigned char **compressedBlocks=malloc(maxBlocks*sizeof(unsigned char *) ); //send in blocks of 64kb and reallocate the pointerblock if there's not enough space
+          int currentBlock=0;
+
+          z_stream strm;
+          strm.zalloc = Z_NULL;
+          strm.zfree = Z_NULL;
+          strm.opaque = Z_NULL;
+          deflateInit(&strm, c.compress);
+
+          compressedBlocks[currentBlock]=malloc(COMPRESS_BLOCKSIZE);
+          strm.avail_out=COMPRESS_BLOCKSIZE;
+          strm.next_out=compressedBlocks[currentBlock];
+
+          strm.next_in=uncompressed;
+          strm.avail_in=uncompressedSize;
+
+          while (strm.avail_in)
+          {
+            r=deflate(&strm, Z_NO_FLUSH);
+            if (r!=Z_OK)
+            {
+              if (r==Z_STREAM_END)
+                break;
+              else
+              {
+                debug_log("Error while compressing\n");
+                break;
+              }
+            }
+
+            if (strm.avail_out==0)
+            {
+              //new output block
+              currentBlock++;
+              if (currentBlock>=maxBlocks)
+              {
+                //list was too short, reallocate
+                debug_log("Need to realloc the pointerlist (p1)\n");
+
+                maxBlocks*=2;
+                compressedBlocks=realloc(compressedBlocks, maxBlocks*sizeof(unsigned char*));
+              }
+              compressedBlocks[currentBlock]=malloc(COMPRESS_BLOCKSIZE);
+              strm.avail_out=COMPRESS_BLOCKSIZE;
+              strm.next_out=compressedBlocks[currentBlock];
+            }
+          }
+          // finishing compressiong
+          while (1)
+          {
+
+            r=deflate(&strm, Z_FINISH);
+
+            if (r==Z_STREAM_END)
+              break; //done
+
+            if (r!=Z_OK)
+            {
+              debug_log("Failure while finishing compression:%d\n", r);
+              break;
+            }
+
+            if (strm.avail_out==0)
+            {
+              //new output block
+              currentBlock++;
+              if (currentBlock>=maxBlocks)
+              {
+                //list was too short, reallocate
+                debug_log("Need to realloc the pointerlist (p2)\n");
+                maxBlocks*=2;
+                compressedBlocks=realloc(compressedBlocks, maxBlocks*sizeof(unsigned char*));
+              }
+              compressedBlocks[currentBlock]=malloc(COMPRESS_BLOCKSIZE);
+              strm.avail_out=COMPRESS_BLOCKSIZE;
+              strm.next_out=compressedBlocks[currentBlock];
+            }
+          }
+          deflateEnd(&strm);
+
+          compressedSize=strm.total_out;
+          // Sending compressed data
+          sendall(currentsocket, &uncompressedSize, sizeof(uncompressedSize), MSG_MORE); //followed by the compressed size
+          sendall(currentsocket, &compressedSize, sizeof(compressedSize), MSG_MORE); //the compressed data follows
+          for (i=0; i<=currentBlock; i++)
+          {
+            if (i!=currentBlock)
+              sendall(currentsocket, compressedBlocks[i], COMPRESS_BLOCKSIZE, MSG_MORE);
+    
