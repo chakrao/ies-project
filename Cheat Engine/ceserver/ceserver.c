@@ -1269,4 +1269,217 @@ case CMD_SETTHREADCONTEXT:
       debug_log("CESERVER: CMD_SPEEDHACK_SETSPEED\n");
       if (recvall(currentsocket, &c, sizeof(c),0)>0)
       {
-        uint32_
+        uint32_t r;
+        r=ext_speedhack_setSpeed(c.hProcess, c.speed);
+
+        sendall(currentsocket, &r, sizeof(r),0);
+      }
+
+      break;
+    }
+
+    case CMD_CHANGEMEMORYPROTECTION:
+    {
+      CeChangeMemoryProtection c;
+      debug_log("CESERVER: CMD_CHANGEMEMORYPROTECTION \n");
+      if (recvall(currentsocket, &c, sizeof(c),0)>0)
+      {
+        RegionInfo ri;
+        uint32_t r;
+        uint32_t oldprotection;
+        uint32_t newprotection;
+
+        if (VirtualQueryEx(c.hProcess, (void*)c.address, &ri, NULL))
+        {
+          oldprotection=ri.protection;
+
+
+          //convert the given protection to a linux protection
+          newprotection=windowsProtectionToLinux(c.windowsprotection);
+
+
+          r=ext_changememoryprotection(c.hProcess, c.address, c.size, newprotection);
+        }
+        else
+          debug_log("Failure getting the old protection");
+
+        sendall(currentsocket, &r, sizeof(r),MSG_MORE);
+        sendall(currentsocket, &oldprotection, sizeof(oldprotection),0);
+      }
+
+      break;
+    }
+
+    case CMD_GETOPTIONS:
+    {
+      handleGetOptions(currentsocket);
+      break;
+    }
+
+    case CMD_GETOPTIONVALUE:
+    {
+      handleGetOption(currentsocket);
+      break;
+    }
+
+    case CMD_SETOPTIONVALUE:
+    {
+      handleSetOption(currentsocket);
+      break;
+    }
+
+    case CMD_OPENNAMEDPIPE:
+    {
+      HANDLE pipehandle=0;
+      uint32_t timeout;
+      debug_log("CMD_OPENNAMEDPIPE\n");
+      char *pipename=receivestring16(currentsocket);
+      recvall(currentsocket, &timeout, sizeof(timeout),0);
+      if (pipename)
+      {
+        debug_log("pipename=%s\n", pipename);
+        pipehandle=OpenPipe(pipename, timeout);
+        free(pipename);
+      }
+
+      debug_log("sending pipehandle %d to caller\n",pipehandle);
+
+      sendall(currentsocket, &pipehandle, sizeof(HANDLE),0 );
+      break;
+    }
+
+    case CMD_PIPEREAD:
+    {
+      CeReadPipe c;
+      int32_t count=0;
+      recvall(currentsocket, &c, sizeof(c),0);
+
+     // debug_log("CMD_PIPEREAD: %d bytes\n",c.size);
+      if (c.size)
+      {
+        void *buf=malloc(c.size);
+        count=ReadPipe(c.hPipe, buf, c.size, c.timeout);
+
+        sendall(currentsocket, &count, sizeof(count), count>0?MSG_MORE:0); //can be negative
+        if (count>0)
+          sendall(currentsocket, buf, count,0);
+      }
+      else
+        sendall(currentsocket, &count, sizeof(count), 0);
+
+
+      break;
+    }
+
+    case CMD_PIPEWRITE:
+    {
+      CeWritePipe c;
+      uint32_t count=0;
+      recvall(currentsocket, &c, sizeof(c),0);
+
+   //  debug_log("CMD_PIPEWRITE:hPipe=%d count=%d  timeout:%d\n",c.hPipe, c.size, c.timeout);
+
+      if (c.size)
+      {
+        void *buf=malloc(c.size);
+        if (buf)
+        {
+          count=recvall(currentsocket, buf, c.size,0);
+          if (count>0)
+            count=WritePipe(c.hPipe,buf, count, c.timeout);
+
+          free(buf);
+        }
+        else
+          debug_log("CMD_PIPEWRITE: failed to allocate %d bytes\n", c.size);
+      }
+
+      sendall(currentsocket, &count, sizeof(count), 0);
+      break;
+    }
+
+    case CMD_GETCESERVERPATH:
+    {
+      sendstring16(currentsocket, CESERVERPATH, 0);
+      break;
+    }
+
+    case CMD_ISANDROID:
+    {
+      unsigned char r;
+#ifdef __ANDROID__
+      r=1;
+#else
+      r=0;
+#endif
+      sendall(currentsocket, &r,sizeof(r),0);
+
+      break;
+    }
+
+    case CMD_SETCURRENTPATH:
+    {
+      char *path=receivestring16(currentsocket);
+      char r=chdir(path)==0;
+      sendall(currentsocket, &r,1,0);
+
+      free(path);
+      break;
+    }
+
+    case CMD_GETCURRENTPATH:
+    {
+      char *path=(char*)malloc(PATH_MAX);
+      char *p=getcwd(path, PATH_MAX-1);
+      sendstring16(currentsocket, p,0);
+      free(path);
+      break;
+    }
+
+    case CMD_ENUMFILES:
+    {
+      char *path=receivestring16(currentsocket);
+      DIR *d=opendir(path);
+      if (d)
+      {
+        struct dirent* dc;
+
+        while (dc=readdir(d))
+        {
+          if ((dc->d_name) && (strlen(dc->d_name)))
+          {
+            sendstring16(currentsocket, dc->d_name, MSG_MORE);
+            sendall(currentsocket, &dc->d_type,1,MSG_MORE);
+          }
+        }
+
+        closedir(d);
+      }
+      sendstring16(currentsocket, NULL,0);
+
+      free(path);
+
+
+      break;
+    }
+
+    case CMD_GETFILEPERMISSIONS:
+    {
+      char r;
+      char *path=receivestring16(currentsocket);
+      struct stat s;
+      if (lstat(path, &s)==0)
+      {
+        uint32_t mode=s.st_mode & 0xfff;
+        r=1;
+        sendall(currentsocket, &r,1,MSG_MORE);
+        sendall(currentsocket, &mode, sizeof(uint32_t),0);
+
+      }
+      else
+      {
+        r=0;
+        sendall(currentsocket, &r,1,0);
+      }
+
+      fr
