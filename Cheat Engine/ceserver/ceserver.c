@@ -1092,4 +1092,181 @@ case CMD_SETTHREADCONTEXT:
         {
           unsigned char *output=NULL;
 
-          //debug_l
+          //debug_log("symbolpath=%s\n", symbolpath);
+
+          if (memcmp("/dev/", symbolpath, 5)!=0) //don't even bother if it's a /dev/ file
+            GetSymbolListFromFile(symbolpath, &output);
+
+          if (output)
+          {
+            //debug_log("output is not NULL (%p)\n", output);
+
+            fflush(stdout);
+
+            //debug_log("Sending %d bytes\n", *(uint32_t *)&output[4]);
+            sendall(currentsocket, output, *(uint32_t *)&output[4], 0); //the output buffer contains the size itself
+            free(output);
+          }
+          else
+          {
+           // debug_log("Sending 8 bytes (fail)\n");
+            uint64_t fail=0;
+            sendall(currentsocket, &fail, sizeof(fail), 0); //just write 0
+          }
+        }
+        else
+        {
+          //debug_log("Failure getting symbol path\n");
+          close(currentsocket);
+        }
+        free(symbolpath);
+      }
+      break;
+    }
+
+    case CMD_LOADEXTENSION:
+    {
+      //Load the extension if it isn't loaded yet
+      //LOADEXTENSION(handle)
+      uint32_t handle;
+      if (recvall(currentsocket, &handle, sizeof(handle),0)>0)
+      {
+        int result=loadCEServerExtension(handle);
+
+        sendall(currentsocket, &result, sizeof(result),0);
+      }
+
+      break;
+    }
+
+    case CMD_ALLOC:
+    {
+      //ALLOC(processhandle, preferedbase, size)
+      CeAllocInput c;
+      debug_log("CESERVER: CMD_ALLOC\n");
+      if (recvall(currentsocket, &c, sizeof(c),0)>0)
+      {
+        uint64_t address;
+        debug_log("c.hProcess=%d\n", c.hProcess);
+        debug_log("c.preferedBase=%llx\n", c.preferedBase);
+        debug_log("c.size=%d\n", c.size);
+        debug_log("c.windowsprotection=%x\n", c.windowsprotection);
+
+        if (ALLOC_WITHOUT_EXTENSION)
+        {
+          debug_log("ALLOC_WITHOUT_EXTENSION==1\n");
+          fflush(stdout);
+          address=allocWithoutExtension(c.hProcess, (void*)c.preferedBase, c.size, windowsProtectionToLinux(c.windowsprotection));
+        }
+        else
+        {
+          debug_log("ALLOC_WITHOUT_EXTENSION==0\n");
+          fflush(stdout);
+
+          address=ext_alloc(c.hProcess, c.preferedBase, c.size, windowsProtectionToLinux(c.windowsprotection));
+        }
+
+        sendall(currentsocket, &address, sizeof(address),0);
+      }
+
+      break;
+    }
+
+    case CMD_FREE:
+    {
+      CeFreeInput c;
+      debug_log("CESERVER: CMD_FREE\n");
+      if (recvall(currentsocket, &c, sizeof(c),0)>0)
+      {
+        uint32_t r;
+        r=ext_free(c.hProcess, c.address, c.size);
+
+        sendall(currentsocket, &r, sizeof(r),0);
+      }
+
+      break;
+    }
+
+    case CMD_CREATETHREAD:
+    {
+      CeCreateThreadInput c;
+      debug_log("CESERVER: CMD_CREATETHREAD\n");
+      if (recvall(currentsocket, &c, sizeof(c),0)>0)
+      {
+        uint64_t th;
+        HANDLE h;
+        th=ext_createThread(c.hProcess, c.startaddress, c.startaddress);
+
+        debug_log("returned from ext_createthread\n");
+
+        if (th) //create a handle for this object
+        {
+          uint64_t *threadobject=(uint64_t *)malloc(sizeof(uint64_t));
+
+          *threadobject=th;
+          h=CreateHandleFromPointer(threadobject, htNativeThreadHandle);
+        }
+        else
+          h=0;
+
+        sendall(currentsocket, &h, sizeof(h),0);
+      }
+      break;
+    }
+
+    case CMD_LOADMODULEEX:
+    {
+      CeLoadModuleInputEx c;
+
+      debug_log("CESERVER: CMD_LOADMODULEEX\n");
+      if (recvall(currentsocket, &c, sizeof(c),0)>0)
+      {
+        char modulepath[c.modulepathlength+1];
+
+        if (recvall(currentsocket, &modulepath, c.modulepathlength,0)>0)
+        {
+          uint64_t result;
+          modulepath[c.modulepathlength]=0;
+
+          result=ext_loadModuleEx(c.hProcess, c.dlopenaddress, modulepath);
+
+
+
+          sendall(currentsocket, &result, sizeof(result),0);
+        }
+      }
+      break;
+    }
+
+    case CMD_LOADMODULE:
+    {
+      CeLoadModuleInput c;
+
+      debug_log("CESERVER: CMD_LOADMODULE\n");
+      if (recvall(currentsocket, &c, sizeof(c),0)>0)
+      {
+        char modulepath[c.modulepathlength+1];
+
+        if (recvall(currentsocket, &modulepath, c.modulepathlength,0)>0)
+        {
+          uint64_t result;
+          modulepath[c.modulepathlength]=0;
+
+          result=ext_loadModule(c.hProcess, modulepath);
+
+
+          debug_log("ext_loadModule returned %llx\n", result);
+
+          sendall(currentsocket, &result, sizeof(result),0);
+        }
+      }
+      break;
+    }
+
+    case CMD_SPEEDHACK_SETSPEED:
+    {
+      CeSpeedhackSetSpeedInput c;
+      debug_log("CESERVER: CMD_SPEEDHACK_SETSPEED\n");
+      if (recvall(currentsocket, &c, sizeof(c),0)>0)
+      {
+        uint32_
