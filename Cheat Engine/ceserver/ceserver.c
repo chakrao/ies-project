@@ -913,4 +913,183 @@ case CMD_SETTHREADCONTEXT:
           {
             if (i!=currentBlock)
               sendall(currentsocket, compressedBlocks[i], COMPRESS_BLOCKSIZE, MSG_MORE);
-    
+            else
+              sendall(currentsocket, compressedBlocks[i], COMPRESS_BLOCKSIZE-strm.avail_out, 0); //last one, flush
+
+            free(compressedBlocks[i]);
+          }
+          free(compressedBlocks);
+        }
+        else
+          sendall(currentsocket, o, sizeof(CeReadProcessMemoryOutput)+o->read, 0);
+
+        if (o)
+          free(o);
+      }
+      break;
+    }
+
+    case CMD_WRITEPROCESSMEMORY:
+    {
+      CeWriteProcessMemoryInput c;
+
+      debug_log("CMD_WRITEPROCESSMEMORY:\n");
+
+      r=recvall(currentsocket, &c, sizeof(c), MSG_WAITALL);
+      if (r>0)
+      {
+        CeWriteProcessMemoryOutput o;
+        unsigned char *buf;
+
+        debug_log("recv returned %d bytes\n", r);
+        debug_log("c.size=%d\n", c.size);
+
+        if (c.size)
+        {
+          buf=(unsigned char *)malloc(c.size);
+
+          r=recvall(currentsocket, buf, c.size, MSG_WAITALL);
+          if (r>0)
+          {
+            debug_log("received %d bytes for the buffer. Wanted %d\n", r, c.size);
+            o.written=WriteProcessMemory(c.handle, (void *)(uintptr_t)c.address, buf, c.size);
+
+            r=sendall(currentsocket, &o, sizeof(CeWriteProcessMemoryOutput), 0);
+            debug_log("wpm: returned %d bytes to caller\n", r);
+
+          }
+          else
+            debug_log("wpm recv error while reading the data\n");
+
+          free(buf);
+        }
+        else
+        {
+          debug_log("wpm with a size of 0 bytes");
+          o.written=0;
+          r=sendall(currentsocket, &o, sizeof(CeWriteProcessMemoryOutput), 0);
+          debug_log("wpm: returned %d bytes to caller\n", r);
+        }
+      }
+      else
+      {
+        debug_log("RPM: recv failed\n");
+      }
+      break;
+    }
+
+    case CMD_VIRTUALQUERYEXFULL:
+    {
+      CeVirtualQueryExFullInput c;
+
+      r=recvall(currentsocket, &c, sizeof(c), MSG_WAITALL);
+      if (r>0)
+      {
+        RegionInfo *rinfo=NULL;
+        uint32_t count=0;
+        if (VirtualQueryExFull(c.handle, c.flags, &rinfo, &count))
+        {
+          int i;
+
+          sendall(currentsocket, &count, sizeof(count),0);
+
+          for (i=0; i<count; i++)
+            sendall(currentsocket, &rinfo[i], sizeof(RegionInfo),0);
+
+          if (rinfo)
+            free(rinfo);
+        }
+      }
+      break;
+    }
+    case CMD_GETREGIONINFO:
+    case CMD_VIRTUALQUERYEX:
+    {
+      CeVirtualQueryExInput c;
+      r=recvall(currentsocket, &c, sizeof(c), MSG_WAITALL);
+      if (r>0)
+      {
+        RegionInfo rinfo;
+        CeVirtualQueryExOutput o;
+
+        if (sizeof(uintptr_t)==4)
+        {
+          if (c.baseaddress>0xFFFFFFFF)
+          {
+            o.result=0;
+            sendall(currentsocket, &o, sizeof(o), 0);
+            break;
+          }
+        }
+
+        char mapsline[200];
+
+        if (command==CMD_VIRTUALQUERYEX)
+          o.result=VirtualQueryEx(c.handle, (void *)(uintptr_t)c.baseaddress, &rinfo, NULL);
+        else
+        if (command==CMD_GETREGIONINFO)
+          o.result=VirtualQueryEx(c.handle, (void *)(uintptr_t)c.baseaddress, &rinfo, mapsline);
+
+        o.protection=rinfo.protection;
+        o.baseaddress=rinfo.baseaddress;
+        o.type=rinfo.type;
+        o.size=rinfo.size;
+
+        if (command==CMD_VIRTUALQUERYEX)
+          sendall(currentsocket, &o, sizeof(o), 0);
+        else
+        if (command==CMD_GETREGIONINFO)
+        {
+          sendall(currentsocket, &o, sizeof(o), MSG_MORE);
+          {
+            uint8_t size=strlen(mapsline);
+            sendall(currentsocket, &size, sizeof(size), MSG_MORE);
+            sendall(currentsocket, mapsline, size, 0);
+          }
+        }
+      }
+      break;
+    }
+    case CMD_OPENPROCESS:
+    {
+      int pid=0;
+
+      r=recvall(currentsocket, &pid, sizeof(int), MSG_WAITALL);
+      if (r>0)
+      {
+        int processhandle;
+
+        debug_log("OpenProcess(%d)\n", pid);
+        processhandle=OpenProcess(pid);
+
+        debug_log("processhandle=%d\n", processhandle);
+        sendall(currentsocket, &processhandle, sizeof(int), 0);
+      }
+      else
+      {
+        debug_log("Error\n");
+        fflush(stdout);
+        close(currentsocket);
+        return 0;
+      }
+      break;
+    }
+
+    case CMD_GETSYMBOLLISTFROMFILE:
+    {
+      //get the list and send it to the client
+      //zip it first
+      uint32_t symbolpathsize;
+
+      //debug_log("CMD_GETSYMBOLLISTFROMFILE\n");
+
+      if (recvall(currentsocket, &symbolpathsize, sizeof(symbolpathsize), MSG_WAITALL)>0)
+      {
+        char *symbolpath=(char *)malloc(symbolpathsize+1);
+        symbolpath[symbolpathsize]='\0';
+
+        if (recvall(currentsocket, symbolpath, symbolpathsize, MSG_WAITALL)>0)
+        {
+          unsigned char *output=NULL;
+
+          //debug_l
