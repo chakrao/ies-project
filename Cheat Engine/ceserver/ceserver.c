@@ -1938,4 +1938,189 @@ int main(int argc, char *argv[])
   PORT=52736;
 
 //        process_vm_readv(p->pid, NULL, 0,NULL,0,0);
-  //(pid_t __pid, con
+  //(pid_t __pid, const struct iovec* __local_iov, unsigned long __local_iov_count, const struct iovec* __remote_iov, unsigned long __remote_iov_count, unsigned long __flags)
+
+  #ifndef SHARED_LIBRARY
+  int TEST_MODE = 0;
+  int TEST_PID = 0;
+  int opt;
+
+  opterr = 0;
+
+  int argv_attach_pid;
+  int argv_search_option;
+  int argv_port;
+  int argv_arch;
+  int argv_pid;
+  while((opt = getopt(argc, argv, "a:m:p:s:t:")) != -1) 
+  {
+    switch(opt)
+    {
+      case 'a':
+          errno = 0;
+          argv_attach_pid = strtol(optarg,NULL,10);
+          if(errno != ERANGE && errno != EINVAL)
+            ATTACH_PID = argv_attach_pid;
+          break;
+      case 'm':
+          errno = 0;
+          argv_search_option = strtol(optarg,NULL,10);
+          if(errno != ERANGE && errno != EINVAL)
+            MEMORY_SEARCH_OPTION = argv_search_option;
+          break;
+      case 'p':
+          errno = 0;
+          argv_port = strtol(optarg,NULL,10);
+          if(errno != ERANGE && errno != EINVAL && argv_port != 0)
+            PORT = argv_port;
+          break;
+      case 's':
+          errno = 0;
+          argv_arch = strtol(optarg,NULL,10);
+          if(errno != ERANGE && errno != EINVAL)
+             SPECIFIED_ARCH = argv_arch;
+          break;
+      case 't':
+          errno = 0;
+          TEST_MODE = 1;
+          argv_pid = strtol(optarg,NULL,10);
+          if(errno != ERANGE && errno != EINVAL)
+            TEST_PID = argv_pid;
+          break;
+
+
+      default:
+          debug_log("Usage: %s [-a <attach_pid>] [-m <search_option>] [-p <port>] [-t <pid>] arg1 ...\n", argv[0]);
+          break;
+    }
+  }
+  #endif
+
+  debug_log("listening on port %d\n",PORT);
+  debug_log("---\n");
+
+  done=0;
+
+  debug_log("&s=%p\n", &s);
+  #ifdef SHARED_LIBRARY
+    debug_log("ceserver=%p\n",ceserver);
+  #else
+    debug_log("main=%p\n", main);
+  #endif
+
+
+  debug_log("sizeof(off_t)=%d\n",sizeof(off_t));
+  debug_log("sizeof(off64_t)=%d\n",sizeof(off64_t));
+  debug_log("sizeof(uintptr_t)=%d\n",sizeof(uintptr_t));
+  debug_log("sizeof(long)=%d\n",sizeof(long));
+
+  debug_log("---\n");
+  initCESERVERPATH();
+  debug_log("CESERVERPATH=%s\n", CESERVERPATH);
+
+  fflush(stdout);
+  debug_log("MEMORY_SEARCH_OPTION=%d\n", MEMORY_SEARCH_OPTION);
+  fflush(stdout);
+  debug_log("ATTACH_TO_ACCESS_MEMORY=%d\n", ATTACH_TO_ACCESS_MEMORY);
+  fflush(stdout);
+  debug_log("ATTACH_TO_WRITE_MEMORY=%d\n", ATTACH_TO_WRITE_MEMORY);
+  fflush(stdout);
+
+
+  if ((MEMORY_SEARCH_OPTION == 2) && (process_vm_readv==NULL)) //user explicitly wants to use process_vm_readv but it's not available
+  {
+    debug_log("process_vm_readv==NULL, so MEMORY_SEARCH_OPTION can not be 2. Setting it to 0\n");
+    MEMORY_SEARCH_OPTION=0; //fallback to 0
+  }
+
+  debug_log("MEMORY_SEARCH_OPTION=%d\n", MEMORY_SEARCH_OPTION);
+
+
+  debug_log("CEServer. Waiting for client connection\n");
+
+  //if (broadcast)
+  pthread_create(&identifierthread, NULL, IdentifierThread, NULL);
+
+  s=socket(AF_INET, SOCK_STREAM, 0);
+  debug_log("socket=%d\n", s);
+
+  memset(&addr, 0, sizeof(addr));
+  addr.sin_family=AF_INET;
+  addr.sin_port=htons(PORT);
+  addr.sin_addr.s_addr=INADDR_ANY;
+
+  int optval = 1;
+  setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof (optval));
+
+  b=bind(s, (struct sockaddr *)&addr, sizeof(addr));
+  if (b==0)
+    debug_log("successfully bound socket\n");
+  else
+    debug_log("bind=%d (error)\n", b);
+
+  if (b!=-1)
+  {
+    l=listen(s, 32);
+
+    if (l==0)
+      debug_log("Listening success\n");
+    else
+      debug_log("listen=%d (error)\n", l);
+
+    clisize=sizeof(addr_client);
+    memset(&addr_client, 0, sizeof(addr_client));
+
+    #ifndef SHARED_LIBRARY
+    sigaction(SIGPIPE, &(struct sigaction){SIG_IGN}, NULL);
+
+
+    if (TEST_MODE == 1)
+    {
+      debug_log("TESTMODE\n");
+      pthread_create(&pth, NULL, (void *)CESERVERTEST, (void*)(size_t)TEST_PID);
+    }
+#ifdef traptest
+
+    {
+      //struct sigcontext x;
+      void **p;
+      p=&traphandler.__sigaction_handler;
+
+      *p=mytraphandler;
+
+      //traphandler.__sigaction_handler=(void *
+      traphandler.sa_flags=SA_SIGINFO;
+      sigemptyset(&traphandler.sa_mask);
+
+      sigaction(SIGTRAP, &traphandler, &oldtraphandler);
+
+
+
+
+      asm __volatile__ (".byte 0xcc");
+
+      printf("after the trap");
+      return 1000;
+    }
+#endif
+    #endif
+
+    fflush(stdout);
+
+    while (done==0)
+    {
+      int b=1;
+      a=accept(s, (struct sockaddr *)&addr_client, &clisize);
+
+      debug_log("accept=%d\n", a);
+
+      fflush(stdout);
+
+
+
+      if (a != -1)
+      {
+        int sor=setsockopt(a, IPPROTO_TCP, TCP_NODELAY, &b, sizeof(b));
+        if (sor)
+          debug_log("setsockopt TCP_NODELAY = 1 returned %d (%d)\n", sor, errno);
+        pthread_create(&pth, NULL, (void *)newconnection, (void *)(uintptr
