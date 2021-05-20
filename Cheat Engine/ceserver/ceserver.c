@@ -1720,3 +1720,222 @@ void *newconnection(void *arg)
     if (isDebuggerThread && (debugfd!=-1))
     {
       //wait for s and debugfd
+      fd_set readfds;
+      int maxfd=s;
+      int sret;
+
+      FD_ZERO(&readfds);
+      FD_SET(s, &readfds);
+      FD_SET(debugfd, &readfds);
+
+      if (debugfd>maxfd)
+        maxfd=debugfd;
+      //  Waiting for multiple sockets
+      sret=select(maxfd+1, &readfds, NULL, NULL,NULL );
+      //  Wait done
+      if (sret==-1)
+      {
+        if (errno==EINTR)
+        {
+          debug_log("Interrupted by signal. Checking again\n");
+          continue;
+        }
+        else
+        {
+          debug_log("WTF?: %d\n", errno);
+          while (1) sleep(60);
+        }
+      }
+
+      if (FD_ISSET(debugfd, &readfds) && FD_ISSET(s, &readfds))
+      {
+        //alternate between s and debugfd if both are constantly readable
+        if (currentsocket==debugfd)
+          currentsocket=s;
+        else
+          currentsocket=debugfd;
+      }
+      else //not both readable
+      if (FD_ISSET(debugfd, &readfds))
+        currentsocket=debugfd;
+      else
+      if (FD_ISSET(s, &readfds))
+        currentsocket=s;
+      else //none readable (shouldn't really happen, but whatever...), wait again
+        continue;
+    }
+    else
+      currentsocket=s;
+
+    r=recvall(currentsocket, &command, 1, MSG_WAITALL);
+
+    if (r>0)
+    {
+      DispatchCommand(currentsocket, command);
+    }
+    else
+    if (r==-1)
+    {
+      debug_log("read error on socket %d (%d)\n", s, errno);
+      fflush(stdout);
+
+      threadClosedEvent(currentsocket);
+      close(currentsocket);
+
+      return NULL;
+    }
+    else
+    if (r==0)
+    {
+      if (threadname)
+      {
+        debug_log("%s has disconnected\n", threadname);
+
+        if (isDebuggerThread)
+        {
+          debug_log("This was a debugger thread\n");
+          StopDebug(isDebuggerThread);
+          //find the process that this debugger belongs to
+
+        }
+        //
+
+        //if p->debuggerThreadID
+      }
+      else
+        debug_log("Peer has disconnected\n");
+      fflush(stdout);
+
+      threadClosedEvent(currentsocket);
+      close(currentsocket);
+      return NULL;
+    }
+  }
+
+  threadClosedEvent(s);
+  close(s);
+
+  return NULL;
+}
+
+void *IdentifierThread(void *arg)
+{
+  int i;
+  int s;
+  int v=1;
+#pragma pack(1)
+  struct
+  {
+    uint32_t checksum;
+    uint16_t port;
+  } packet;
+#pragma pack()
+
+  socklen_t clisize;
+  struct sockaddr_in addr, addr_client;
+
+  debug_log("IdentifierThread active\n");
+
+  fflush(stdout);
+
+  s=socket(PF_INET, SOCK_DGRAM, 0);
+  v=1;
+  i=setsockopt(s, SOL_SOCKET, SO_BROADCAST, &v, sizeof(v));
+
+  debug_log("IdentifierThread: setting SO_BROADCAST returned %d\n", i);
+
+  memset(&addr, 0, sizeof(addr));
+
+  addr.sin_family=PF_INET;
+  addr.sin_addr.s_addr=INADDR_ANY;
+  addr.sin_port=htons(3296);
+  i=bind(s, (struct sockaddr *)&addr, sizeof(addr));
+
+  if (i>=0)
+  {
+    while (1)
+    {
+      memset(&addr_client, 0, sizeof(addr_client));
+      addr_client.sin_family=PF_INET;
+      addr_client.sin_addr.s_addr=INADDR_BROADCAST;
+      addr_client.sin_port=htons(3296);
+
+      clisize=sizeof(addr_client);
+
+      debug_log("IdentifierThread: Calling recvfrom size %d\n",sizeof(packet));
+      fflush(stdout);
+      i=recvfrom(s, &packet, sizeof(packet), 0, (struct sockaddr *)&addr_client, &clisize);
+
+      debug_log("IdentifierThread: recvfrom returned %d\n", i);
+      fflush(stdout);
+
+      //i=recv(s, &v, sizeof(v), 0);
+      if (i>=0)
+      {
+
+        debug_log("Identifier thread received a message :%d\n",v);
+        debug_log("sizeof(packet)=%ld\n", sizeof(packet));
+
+        debug_log("packet.checksum=%x\n", packet.checksum);
+        packet.checksum*=0xce;
+        packet.port=PORT;
+        debug_log("packet.checksum=%x\n", packet.checksum);
+
+        // packet.checksum=00AE98E7 - y=8C7F09E2
+
+        fflush(stdout);
+
+        i=sendto(s, &packet, sizeof(packet), 0, (struct sockaddr *)&addr_client, clisize);
+        debug_log("sendto returned %d\n",i);
+      }
+      else
+        debug_log("recvfrom failed\n");
+
+      fflush(stdout);
+    }
+  }
+  else
+    debug_log("bind failed\n");
+
+  debug_log("IdentifierThread exit\n");
+
+  return 0;
+}
+
+#ifdef traptest
+//test succes. This can be used as a vehdebug interface if ceserver is functioning as a injected .so
+struct sigaction traphandler, oldtraphandler;
+
+
+void mytraphandler(int signr, siginfo_t *info, struct ucontext_t *uap)
+{
+  //uap->uc_mcontext.gregs[REG_RIP]=0;
+  printf("hello\n");
+
+ // uap->uc_mcontext.gregs[16]=0;
+
+}
+#endif
+
+#ifdef SHARED_LIBRARY
+int ceserver()
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int s;
+  int b;
+  int l;
+  int a;
+
+  pthread_mutex_init(&connectionsCS, NULL);
+
+  initAPI();
+
+  socklen_t clisize;
+  struct sockaddr_in addr, addr_client;
+
+  PORT=52736;
+
+//        process_vm_readv(p->pid, NULL, 0,NULL,0,0);
+  //(pid_t __pid, con
