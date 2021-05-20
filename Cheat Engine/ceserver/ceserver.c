@@ -1482,4 +1482,241 @@ case CMD_SETTHREADCONTEXT:
         sendall(currentsocket, &r,1,0);
       }
 
-      fr
+      free(path);
+      break;
+    }
+
+    case CMD_SETFILEPERMISSIONS:
+    {
+      char *path=receivestring16(currentsocket);
+      uint32_t mode;
+      char r;
+      recvall(currentsocket, &mode, sizeof(mode),0);
+
+      r=chmod(path, mode)==0;
+
+
+      sendall(currentsocket, &r, 1,0);
+      free(path);
+      break;
+    }
+
+    case CMD_GETFILE:
+    {
+      char *path=receivestring16(currentsocket);
+      int f=open(path,O_RDONLY);
+
+      if (f!=-1)
+      {
+        uint32_t filesize=lseek(f,0, SEEK_END);
+
+        lseek(f,0, SEEK_SET);
+
+        if (filesize)
+        {
+          char *contents=malloc(filesize);
+          filesize=read(f, contents, filesize);
+
+          if (filesize!=0xffffffff)
+          {
+            sendall(currentsocket, &filesize, sizeof(filesize),MSG_MORE);
+            sendall(currentsocket, contents, filesize,0);
+          }
+          else
+            sendall(currentsocket, &filesize, sizeof(filesize),0); //read error
+
+          free(contents);
+        }
+        else
+          sendall(currentsocket, &filesize, sizeof(filesize),0); //filesize of 0
+      }
+      else
+      {
+        uint32_t invalid=0xffffffff;
+        sendall(currentsocket, &invalid,sizeof(uint32_t),0); //open file error
+      }
+
+      free(path);
+      break;
+    }
+
+    case CMD_PUTFILE:
+    {
+      char *path=receivestring16(currentsocket);
+      uint32_t filesize;
+      char *contents;
+      int f,r;
+      r=0;
+      recvall(currentsocket, &filesize,sizeof(filesize),0);
+
+      contents=malloc(filesize);
+      recvall(currentsocket, contents, filesize,0);
+
+      f=creat(path,0777);
+      if (f!=-1)
+      {
+        if (write(f,contents, filesize)!=-1)
+          r=1; //success
+      }
+
+
+      sendall(currentsocket, &r,1,0);
+
+      free(path);
+      free(contents);
+      break;
+    }
+
+    case CMD_CREATEDIR:
+    {
+      debug_log("CMD_CREATEDIR\n");
+      char *path=receivestring16(currentsocket);
+
+      debug_log("Creating %s\n", path);
+      int r=mkdir(path,0777)==0;
+
+      if (!r)
+      {
+        debug_log("mkdir error: %s\n", strerror(errno));
+      }
+      else
+        debug_log("success\n");
+
+
+      sendall(currentsocket, &r,1,0);
+
+      free(path);
+      break;
+    }
+
+    case CMD_DELETEFILE:
+    {
+      char *path=receivestring16(currentsocket);
+      int r=unlink(path)==0;
+
+      if (!r)
+      {
+        if (errno==EISDIR)
+        {
+          r=rmdir(path)==0;
+        }
+      }
+
+
+      sendall(currentsocket, &r,1,0);
+
+      free(path);
+      break;
+    }
+
+	case CMD_AOBSCAN:
+	{
+		CeAobScanInput c;
+		debug_log("CESERVER: CMD_AOBSCAN\n");
+		if (recvall(currentsocket, &c, sizeof(c), 0) > 0)
+		{
+	
+			int n = c.scansize;
+			char* data = (char*)malloc(n*2);
+			uint64_t* match_addr = (uint64_t*)malloc(sizeof(uint64_t) * MAX_HIT_COUNT);
+
+			if (recvall(currentsocket, data, n*2, 0)>0)
+			{
+				char* pattern = (char*)malloc(n);
+				char* mask = (char*)malloc(n);
+
+				memcpy(pattern, data, n);
+				memcpy(mask, &data[n], n);
+				int ret = AOBScan(c.hProcess, pattern, mask, c.start, c.end, c.inc,c.protection, match_addr);
+				debug_log("HIT_COUNT:%d\n", ret);
+				free(pattern);
+				free(mask);
+				sendall(currentsocket, &ret, 4, 0);
+				sendall(currentsocket, match_addr, sizeof(uint64_t)* ret, 0);
+			}
+			free(data);
+			free(match_addr);
+		}
+
+		break;
+	}
+
+	debug_log("Unknown command received\n");
+  fflush(stdout);
+  close(currentsocket);
+
+  return 0;
+
+
+  }
+
+  return 10000; //got to here
+}
+
+int CheckForAndDispatchCommand(int currentsocket)
+{
+  int r;
+  unsigned char command;
+
+  r=recv(currentsocket, &command, 1, MSG_DONTWAIT);
+  if (r==1)
+  {
+    DispatchCommand(currentsocket, command);
+    return 1;
+  }
+
+  return 0;
+}
+
+
+
+void threadStartedEvent(int socket)
+{
+  pthread_mutex_lock(&connectionsCS); //so there's no ptrace_attach busy when attaching after opening and reading memory
+  connections++;
+  pthread_mutex_unlock(&connectionsCS);
+}
+
+void threadClosedEvent(int socket)
+{
+  pthread_mutex_lock(&connectionsCS);
+  connections--;
+
+  if (connections==0)
+  {
+    debug_log("All connections gone. Closing all pipes (if any)\n");
+    CloseAllPipes();
+  }
+
+  if (connections<0)
+  {
+    debug_log("Connection counter is fucked!\n");
+    CloseAllPipes();
+
+    connections=0;
+  }
+  pthread_mutex_unlock(&connectionsCS);
+
+}
+
+
+void *newconnection(void *arg)
+{
+  int s=(uintptr_t)arg;
+  unsigned char command;
+
+  int currentsocket=s;
+
+  threadStartedEvent(currentsocket);
+
+  threadname=NULL;
+  isDebuggerThread=0;
+  debugfd=-1;
+  //printf("new connection. Using socket %d\n", s);
+  while (done==0)
+  {
+    int r;
+    //check if this is a debugger thread
+    if (isDebuggerThread && (debugfd!=-1))
+    {
+      //wait for s and debugfd
