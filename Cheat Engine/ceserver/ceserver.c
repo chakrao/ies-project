@@ -2123,4 +2123,36 @@ int main(int argc, char *argv[])
         int sor=setsockopt(a, IPPROTO_TCP, TCP_NODELAY, &b, sizeof(b));
         if (sor)
           debug_log("setsockopt TCP_NODELAY = 1 returned %d (%d)\n", sor, errno);
-        pthread_create(&pth, NULL, (void *)newconnection, (void *)(uintptr
+        pthread_create(&pth, NULL, (void *)newconnection, (void *)(uintptr_t)a);
+      }
+    }
+  }
+
+  debug_log("Terminate server\n");
+
+  close(s);
+
+  return 0;
+}
+
+#ifdef SHARED_LIBRARY
+__attribute__((constructor))
+int fork_process()
+{
+    debug_log("main process pid: %d\n", getpid());
+
+    prctl(PR_SET_DUMPABLE, 1, 0, 0, 0);
+
+    pid_t pid = fork();
+    if (pid < 0) 
+    {
+        debug_log("fork");
+    } 
+    else if (pid == 0) 
+    {
+        debug_log("child process pid: %d\n", getpid());
+        ceserver();
+    }
+
+}
+#endif
