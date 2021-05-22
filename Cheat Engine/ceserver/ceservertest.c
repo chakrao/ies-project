@@ -228,4 +228,246 @@ int cenet_continueFromDebugEvent(int fd, int pHandle, int tid, int ignore)
 
   cfd.command=CMD_CONTINUEFROMDEBUGEVENT;
   cfd.pHandle=pHandle;
-  
+  cfd.tid=tid;
+  cfd.ignore=ignore;
+
+  sendall(fd, &cfd, sizeof(cfd), 0);
+  recv(fd, &result, sizeof(result), MSG_WAITALL);
+
+  return result;
+}
+
+int cenet_readProcessMemory(int fd, int pHandle, unsigned long long address, void *dest, int size)
+{
+#pragma pack(1)
+  struct
+  {
+    char command;
+    uint32_t pHandle;
+    uint64_t address;
+    uint32_t size;
+    uint8_t compress;
+
+  } rpm;
+#pragma pack()
+
+  int result;
+
+ // printf("cenet_readProcessMemory\n");
+
+
+ // debug_log("cenet_readProcessMemory(%d, %d, %llx, %p, %d)", fd, pHandle, address, dest, size);
+ // fflush(stdout);
+
+
+  rpm.command=CMD_READPROCESSMEMORY;
+  rpm.pHandle=pHandle;
+  rpm.address=address;
+  rpm.size=size;
+  rpm.compress=0;
+
+  sendall(fd, &rpm, sizeof(rpm), 0);
+  recv(fd, &result, sizeof(result), MSG_WAITALL);
+
+ // debug_log("result=%d\n", result);
+  recv(fd, dest, result, MSG_WAITALL);
+
+
+  return result;
+
+}
+
+int cenet_setBreakpoint(int fd, int pHandle, int tid, void *Address, int bptype, int bpsize, int debugreg)
+{
+#pragma pack(1)
+    struct
+    {
+      char command;
+      HANDLE hProcess;
+      int tid;
+      int debugreg;
+      uint64_t Address;
+      int bptype;
+      int bpsize;
+    } sb;
+#pragma pack()
+    int result;
+
+  debug_log("cenet_setBreakpoint sizeof(sb)=%d\n", sizeof(sb));
+  sb.command=CMD_SETBREAKPOINT;
+  sb.hProcess=pHandle;
+  sb.tid=tid;
+  sb.debugreg=debugreg;
+  sb.Address=(uintptr_t)Address;
+  sb.bptype=bptype;
+  sb.bpsize=bpsize;
+
+  sendall(fd, &sb, sizeof(sb), 0);
+
+
+  recv(fd, &result, sizeof(result), MSG_WAITALL);
+
+  return result;
+}
+
+int cenet_removeBreakpoint(int fd, int pHandle, int tid, int debugreg, int waswatchpoint)
+{
+#pragma pack(1)
+    struct
+    {
+      char command;
+      HANDLE hProcess;
+      uint32_t tid;
+      uint32_t debugreg;
+      uint32_t waswatchpoint;
+    } rb;
+#pragma pack()
+    int result;
+
+  debug_log("cenet_removeBreakpoint\n");
+  rb.command=CMD_REMOVEBREAKPOINT;
+  rb.hProcess=pHandle;
+  rb.tid=tid;
+  rb.debugreg=debugreg;
+  rb.waswatchpoint=waswatchpoint;
+
+  sendall(fd, &rb, sizeof(rb), 0);
+  recv(fd, &result, sizeof(result), MSG_WAITALL);
+
+  return result;
+}
+
+int cenet_loadExtension(int fd, int pHandle)
+{
+#pragma pack(1)
+    struct
+    {
+      char command;
+      HANDLE hProcess;
+    } le;
+#pragma pack()
+  int result;
+
+  le.command=CMD_LOADEXTENSION;
+  le.hProcess=pHandle;
+  sendall(fd, &le, sizeof(le), 0);
+
+  recv(fd, &result, sizeof(result),MSG_WAITALL);
+  return result;
+}
+
+
+#define ARM_DBG_READ(N, M, OP2, VAL) do {\
+         asm volatile("mrc p14, 0, %0, " #N "," #M ", " #OP2 : "=r" (VAL));\
+} while (0)
+
+
+uint64_t cenet_VirtualAllocEx(int fd, int pHandle, void *addr, size_t length, int windowsprotection)
+{
+#pragma pack(1)
+    struct
+    {
+      char command;
+      HANDLE hProcess;
+      uint64_t preferedBase;
+      uint32_t size;
+      uint32_t windowsprotection;
+    } vae;
+#pragma pack()
+    uint64_t result;
+    vae.command=CMD_ALLOC;
+    vae.hProcess=pHandle;
+    vae.preferedBase=(uint64_t)addr;
+    vae.size=length;
+    vae.windowsprotection=windowsprotection;
+
+    sendall(fd, &vae, sizeof(vae),0);
+
+    recvall(fd, &result, sizeof(result),0);
+
+    return result;
+}
+
+int cenet_VirtualQueryExFull(int fd, int pHandle, DWORD flags)
+{
+#pragma pack(1)
+    struct
+    {
+      char command;
+      HANDLE hProcess;
+      uint8_t flags;
+    } vqef;
+#pragma pack()
+
+    vqef.command=CMD_VIRTUALQUERYEXFULL;
+    vqef.hProcess=pHandle;
+    vqef.flags=flags;
+
+    sendall(fd, &vqef, sizeof(vqef),0);
+}
+
+uint64_t cenet_loadModule(int fd, int pHandle, char *path)
+{
+#pragma pack(1)
+    struct
+    {
+      char command;
+      HANDLE hProcess;
+      uint32_t modulepathlength;
+    } lm;
+#pragma pack()
+    uint64_t result;
+
+
+    lm.command=CMD_LOADMODULE;
+    lm.hProcess=pHandle;
+    lm.modulepathlength=strlen(path);
+    sendall(fd, &lm, sizeof(lm), MSG_MORE);
+    sendall(fd,path,strlen(path),0);
+
+    recvall(fd,&result,sizeof(result),0);
+
+    return result;
+}
+
+uint64_t cenet_openNamedPipe(int fd, char *pipename, int timeout)
+{
+  HANDLE h;
+  debug_log("cenet_openNamedPipe(%d, \"%s\", %d)\n",fd,pipename, timeout);
+  char command=CMD_OPENNAMEDPIPE;
+  sendall(fd, &command, 1,MSG_MORE);
+  sendstring16(fd,pipename,MSG_MORE);
+  sendall(fd, &timeout, sizeof(timeout),0);
+
+  recvall(fd, &h, sizeof(h),0);
+
+  return h;
+}
+
+void *CESERVERTEST_DEBUGGERTHREAD(void *arg)
+{
+  int count=0;
+  int fd=cenet_connect();
+
+  int dscr=0;
+#ifdef __arm__
+  ARM_DBG_READ(c0, c1, 0, dscr);
+  debug_log("after: %x\n", dscr);
+#endif
+
+
+
+
+  debug_log("calling cenet_startDebugger\n");
+
+  if (cenet_startDebugger(fd, pHandle))
+  {
+    int i;
+    DebugEvent devent;
+
+    debug_log("cenet_startDebugger=true\n");
+
+    while (1)
+    {
+      count++;
+      debug_log("count
