@@ -470,4 +470,196 @@ void *CESERVERTEST_DEBUGGERTHREAD(void *arg)
     while (1)
     {
       count++;
-      debug_log("count
+      debug_log("count=%d\n", count);
+
+      if (count==4)
+      {
+        debug_log("going to set breakpoint\n");
+
+        i=cenet_setBreakpoint(fd, pHandle, -1, 0x00ce0000, 3, 4,0);
+        //cenet_setBreakpoint(fd, pHandle, -1, 0x85e4, 0, 1,2);
+        //cenet_setBreakpoint(fd, pHandle, -1, 0x85e4, 0, 1,3);
+       // cenet_setBreakpoint(fd, pHandle, -1, 0x85e4, 0, 1,4);
+
+        //cenet_setBreakpoint(fd, pHandle, -1, 0xa000, 3, 4, 0);
+
+
+        debug_log("cenet_setBreakpoint returned %d\n",i);
+      }
+
+      i=cenet_waitForDebugEvent(fd, pHandle, &devent, 2000);
+      if (i)
+      {
+        CONTEXT c;
+        debug_log("stopped with devent.debugevent %d\n", devent.debugevent);
+
+        cenet_getThreadContext(fd, pHandle, devent.threadid, &c);
+
+
+        if (devent.debugevent==5)
+        {
+          debug_log("TRAP (thread %d)\n", devent.threadid);
+
+
+
+          debug_log("Going to remove breakpoint\n");
+          cenet_removeBreakpoint(fd, pHandle, devent.threadid,0,1);
+          debug_log("After removeBreakpoint\n");
+
+          cenet_continueFromDebugEvent(fd, pHandle, devent.threadid, 2); //single step
+
+          i=cenet_waitForDebugEvent(fd, pHandle, &devent, 2000);
+          debug_log("after single step. i=%d\n",i);
+
+          cenet_getThreadContext(fd, pHandle, devent.threadid, &c);
+
+
+          debug_log("devent.debugevent=%d (thread %d)\n", devent.debugevent, devent.threadid);
+
+        //  cenet_setBreakpoint(fd, pHandle, devent.threadid,0xce0000, 3,4,0);
+
+
+         // cenet_setBreakpoint(fd, pHandle, -1, 0xa000, 3, 4);
+
+         // debug_log("cenet_removeBreakpoint returned\n");
+          cenet_continueFromDebugEvent(fd, pHandle, devent.threadid, 1); //continue unhandled/single step
+        }
+        else
+          cenet_continueFromDebugEvent(fd, pHandle, devent.threadid, 0);
+      }
+    }
+
+  }
+  else
+  {
+    debug_log("Failed to start the debugger\n");
+  }
+
+  return NULL;
+
+}
+
+void *CESERVERTEST_RPMTHREAD(void *arg)
+{
+  int fd=cenet_connect();
+  int i;
+int hp;
+
+  while (1)
+  {
+    //cenet_readProcessMemory(fd, 0x601048, &hp, 4)
+#ifdef __arm__
+    i=cenet_readProcessMemory(fd, pHandle, 0xa000, &hp, 4);
+#else
+    i=cenet_readProcessMemory(fd, pHandle, 0x601068, &hp, 4);
+#endif
+    debug_log("CESERVERTEST_RPMTHREAD:");
+
+    debug_log("i=%d\n", i);
+    debug_log("hp=%d\n", hp);
+    sleep(1);
+  }
+}
+
+void *CESERVERTEST(int pid )
+{
+  CONTEXT c;
+  int fd;
+  int arch;
+  int dest;
+  int i;
+  uint64_t a;
+
+  pthread_t pth;
+  debug_log("CESERVERTEST: running (v2)\n");
+
+  //sleep(2);
+  debug_log("connecting...\n");
+
+  fd=cenet_connect();
+  debug_log("fd=%d\n", fd);
+  debug_log("pid=%d\n", pid);
+
+  pHandle=cenet_OpenProcess(fd, pid);
+
+  char modulepath[256];
+  strcpy(modulepath, CESERVERPATH);
+  strcat(modulepath, "libMonoDataCollector-linux-x86_64.so");
+
+  uint64_t r=cenet_loadModule(fd, pHandle, modulepath);
+
+  debug_log("r=%p\n", (void*)r);
+
+  if (r)
+  {
+    char monopipename[255];
+    HANDLE pipehandle;
+
+    sprintf(monopipename, "cemonodc_pid%d",pid);
+    debug_log("monopipename=%s\n",monopipename);
+
+    pipehandle=cenet_openNamedPipe(fd,monopipename, 5000);
+
+    if (pipehandle)
+    {
+      debug_log("Success: Opened pipehandle\n");
+
+      //issue some mdc commands
+      {
+        char command=47; //MONOCMD_GETMONODATACOLLECTORVERSION;
+        DWORD mdcversion;
+        WritePipe(pipehandle, &command,1, 5000);
+
+        ReadPipe(pipehandle, &mdcversion,4, 5000);
+
+        debug_log("This is mdc version %d\n", mdcversion);
+
+      }
+
+      CloseHandle(pipehandle);
+    }
+  }
+
+
+
+
+
+  return 0;
+
+ // debug_log("going to read memory\n");
+
+ // while (1)
+ //   i=cenet_readProcessMemory(fd, pHandle, 0xffff0000, &dest,4);
+
+ // printf("i=%d",i);
+//  arch=cenet_getArchitecture(fd, pHandle);
+
+//  printf("arch=%d\n", arch);
+
+ // fflush(stdout);
+ // return NULL;
+
+
+  //cenet_VirtualQueryExFull(fd, pHandle,  VQE_DIRTYONLY | VQE_PAGEDONLY);
+
+ // CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid);
+
+
+  //launch the debuggerthread
+ // pthread_create(&pth, NULL, CESERVERTEST_DEBUGGERTHREAD, NULL);
+
+  debug_log("calling CESERVERTEST_DEBUGGERTHREAD\n");
+  CESERVERTEST_DEBUGGERTHREAD(NULL);
+
+  //launch the rpmthread
+ // sleep(1);
+  //pthread_create(&pth, NULL, CESERVERTEST_RPMTHREAD, NULL);
+
+ // while (1);
+
+  debug_log("End of test\n");
+  fflush(stdout);
+
+  return NULL;
+
+}
