@@ -208,4 +208,188 @@ ssize_t sendall (int s, void *buf, size_t size, int flags)
     }
 
     totalsent+=i;
-    sizeleft-=i
+    sizeleft-=i;
+  }
+
+  return totalsent;
+}
+
+int DispatchCommand(int currentsocket, unsigned char command)
+{
+  //printf("Handling command %d\n", command);
+
+  switch (command)
+  {
+    case EXTCMD_ALLOC:
+    {
+#pragma pack(1)
+      struct {
+        uint64_t preferedAddress;
+        uint32_t size;
+        uint32_t prot;
+      } params;
+#pragma pack()
+      //printf("EXTCMD_ALLOC. Receiving params:\n");
+
+      if (recvall(currentsocket, &params, sizeof(params), 0)>0)
+      {
+
+       // debug_log("params.preferedAddress=%lx\n", params.preferedAddress);
+        //printf("params.size=%d\n", params.size);
+        if (params.prot==0)
+          params.prot=PROT_READ | PROT_WRITE | PROT_EXEC;
+
+        uint64_t address=(uint64_t)mmap((void *)params.preferedAddress, params.size, params.prot, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+        //printf("Actually allocated at %lx\n", address);
+        if (address)
+          allocListAdd(address, params.size);
+
+        sendall(currentsocket, &address, sizeof(address), 0);
+
+
+      }
+
+
+      break;
+    }
+
+    case EXTCMD_FREE:
+    {
+#pragma pack(1)
+      struct {
+        uint64_t address;
+        uint32_t size;
+      } params;
+#pragma pack()
+
+      uint32_t result;
+
+      if (recvall(currentsocket, &params, sizeof(params), 0)>0)
+      {
+        //printf("EXTCMD_FREE\n");
+        //printf("params.address=%lx\n", params.address);
+        //printf("1: params.size=%d\n", params.size);
+
+        if (params.size==0)
+          params.size=allocListFind(params.address);
+
+
+
+        //printf("2: params.size=%d\n", params.size);
+
+        if (params.size)
+        {
+          //printf("Calling munmap\n");
+          result=munmap((void *)params.address, params.size);
+          if (result==-1)
+            result=0;
+          else
+            result=1;
+        }
+        else
+          result=0;
+
+        //printf("Removing alloc from list\n");
+        allocListRemove(params.address);
+
+        //printf("Returning result\n");
+        sendall(currentsocket, &result, sizeof(result), 0);
+
+
+      }
+      break;
+    }
+
+    case EXTCMD_CREATETHREAD:
+    {
+#pragma pack(1)
+      struct {
+        uint64_t startaddress;
+        uint64_t parameter;
+      } params;
+#pragma pack()
+
+      if (recvall(currentsocket, &params, sizeof(params), 0)>0)
+      {
+        //printf("EXTCMD_CREATETHREAD\n");
+        //printf("params.startaddress=%lx\n", params.startaddress);
+        //printf("params.parameter=%ld\n", params.parameter);
+
+        uint64_t threadhandle=0;
+
+        pthread_create((pthread_t *)&threadhandle, NULL, (void *)params.startaddress, (void *)params.parameter);
+
+        sendall(currentsocket, &threadhandle, sizeof(threadhandle), 0);
+      }
+
+
+      break;
+    }
+
+    case EXTCMD_LOADMODULEEX:
+    {
+      debug_log("EXTCMD_LOADMODULEEX\n");
+#pragma pack(1)
+      struct {
+        uint64_t dlopenaddress;
+        uint32_t modulepathlength;
+      } params;
+#pragma pack()
+
+      if (recvall(currentsocket, &params, sizeof(params),0)>0)
+      {
+        char *modulepath[params.modulepathlength+1];
+        if (recvall(currentsocket, modulepath, params.modulepathlength, 0)>0)
+        {
+          typedef void* (*_dlopen)(const char *filename, int flags);
+          _dlopen __dlopen=(_dlopen)params.dlopenaddress;
+          uint64_t result;
+          result=(uint64_t)__dlopen(modulepath,RTLD_NOW);
+          sendall(currentsocket, &result, sizeof(result), 0);
+        }
+      }
+
+      break;
+    }
+
+    case EXTCMD_LOADMODULE:
+    {
+      uint32_t modulepathlength;
+      debug_log("EXTCMD_LOADMODULE\n");
+      debug_log("receiving modulepath:\n");
+
+      if (recvall(currentsocket, &modulepathlength, sizeof(modulepathlength), 0)>0)
+      {
+        debug_log("pathlength is %d bytes long\n", modulepathlength);
+
+        char *modulepath[modulepathlength+4];
+        if (recvall(currentsocket, modulepath, modulepathlength, 0)>0)
+        {
+          modulepath[modulepathlength]=0;
+          modulepath[modulepathlength+1]=0;
+          modulepath[modulepathlength+2]=0;
+          modulepath[modulepathlength+3]=0;
+
+          debug_log("EXTCMD_LOADMODULE: modulepath=%s\n",modulepath);
+          uint64_t result;
+          result=(uint64_t)(dlopen((const char *)modulepath, RTLD_NOW));
+
+          debug_log("EXTCMD_LOADMODULE: dlopen returned %p\n",(void*)result);
+
+          if (result==0)
+          {
+            debug_log("EXTCMD_LOADMODULE: %s\n",dlerror());
+          }
+
+          sendall(currentsocket, &result, sizeof(result), 0);
+        }
+      }
+      break;
+    }
+
+    case EXTCMD_SPEEDHACK_SETSPEED:
+    {
+#pragma pack(1)
+      struct {
+  
