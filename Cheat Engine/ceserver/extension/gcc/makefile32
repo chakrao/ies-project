@@ -1,0 +1,9 @@
+COMPILER  = gcc
+CFLAGS    = -m32 -fPIC -g -MMD -MP -Wall -Wextra -Winit-self -Wno-missing-field-initializers -Doff64_t=__off64_t 
+ifeq "$(shell getconf LONG_BIT)" "64"
+  LDFLAGS = -l:libz.so.1 -ldl -pthread -lm -shared
+else
+  LDFLAGS = -l:libz.so.1 -ldl -pthread -lm -shared
+endif
+LIBS      =
+INCLUDE   = -I..
