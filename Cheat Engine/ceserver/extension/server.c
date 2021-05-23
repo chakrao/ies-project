@@ -392,4 +392,192 @@ int DispatchCommand(int currentsocket, unsigned char command)
     {
 #pragma pack(1)
       struct {
-  
+        float speed;
+      } params;
+
+
+      uint32_t result;
+
+      if (recvall(currentsocket, &params, sizeof(params), 0)>0)
+      {
+        //printf("EXTCMD_SPEEDHACK_SETSPEED(%d)\n", params.speed);
+
+        result=speedhack_initializeSpeed(params.speed);
+        sendall(currentsocket, &result, sizeof(result), 0);
+      }
+      break;
+    }
+
+    case EXTCMD_CHANGEMEMORYPROTECTION:
+    {
+#pragma pack(1)
+      struct {
+        uint64_t address;
+        int size;
+        int newprotection;
+      } params;
+#pragma pack()
+
+      printf("EXTCMD_CHANGEMEMORYPROTECTION\n");
+
+      if (recvall(currentsocket, &params, sizeof(params), 0)>0)
+      {
+        uint32_t result;
+        result=mprotect((void*)params.address, params.size, params.newprotection);
+        sendall(currentsocket, &result, sizeof(result), 0);
+      }
+
+      break;
+    }
+
+  }
+  return 1;
+
+}
+
+void *newconnection(void *arg)
+{
+  int sockethandle=(uintptr_t)arg;
+  unsigned char command;
+  int r;
+  //printf("Hello!\n");
+
+  //wait for a command and dispatch it
+
+  r=1;
+  while (r>=0)
+  {
+    r=recvall(sockethandle, &command, 1, MSG_WAITALL);
+    if (r==1)
+      DispatchCommand(sockethandle, command);
+    else
+    {
+      //printf("Peer has disconnected");
+      //if (r==-1)
+      //  debug_log(" due to an error");
+
+      //printf("\n");
+
+      //fflush(stdout);
+      close(sockethandle);
+    }
+  }
+
+  debug_log("Bye\n");
+  return NULL;
+}
+
+void *ServerThread(void *arg)
+{
+  int s=(uintptr_t)arg;
+
+  while (!done)
+  {
+    struct sockaddr_un addr_client;
+    socklen_t clisize;
+    int a;
+    debug_log("extension:calling accept\n");
+    a=accept(s, (struct sockaddr *)&addr_client, &clisize);
+    debug_log("accept returned\n");
+
+    //printf("accept returned %d\n", a);
+    if (a==-1)
+    {
+      debug_log("accept failed: %d\n", a);
+      break;
+    }
+    else
+    {
+      pthread_t pth;
+      pthread_create(&pth, NULL, (void *)newconnection, (void *)(uintptr_t)a);
+    }
+
+
+  }
+
+  return NULL;
+}
+
+__attribute__((destructor)) void term(void)
+{
+  //printf("X_X\n");
+  done=1;
+
+}
+
+__attribute__((constructor)) void moduleinit(void)
+{
+  char name[256];
+  int s;
+
+  int i;
+  //printf("\nServerthread active\n");
+
+  speedhack_initializeSpeed(1.0f);
+
+  void *X;
+  void *module=NULL;
+
+/*
+  __android_log_print(ANDROID_LOG_DEBUG, "CHEATENGING", "Hello \n");
+
+  __android_log_print(ANDROID_LOG_DEBUG, "CHEATENGING", "module1=%p\n", module);
+
+  module=dlopen("libdvm.so", module);
+  __android_log_print(ANDROID_LOG_DEBUG, "CHEATENGING", "module=%p\n", module);
+
+
+  X=dlsym(module, "dvmJitStats");
+  __android_log_print(ANDROID_LOG_DEBUG, "CHEATENGING", "After dlsym\n");
+
+  __android_log_print(ANDROID_LOG_DEBUG, "CHEATENGING", "X=%p\n", X);
+
+ // dvmJitStats();
+
+  //if (dvmJitStats)
+ // {
+ //   debug_log("Calling dvmJitStats\n");
+    //dvmJitStats();
+ // }
+*/
+  s=socket(AF_UNIX, SOCK_STREAM, 0);
+
+  sprintf(name, " ceserver_extension%d", getpid());
+
+  //printf("s=%d\n", s);
+
+
+  struct sockaddr_un address;
+  address.sun_family=AF_UNIX;
+  strcpy(address.sun_path,name);
+
+  int al=SUN_LEN(&address);
+
+  address.sun_path[0]=0;
+
+
+  int optval = 1;
+  setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &optval, optval);
+
+  i=bind(s, (struct sockaddr *)&address, al);
+  //printf("bind returned %d\n", i);
+  if (i==0)
+  {
+
+    int l;
+    l=listen(s, 32);
+    debug_log("listen=%d\n",l);
+
+
+    if (l==0)
+    {
+      //listen successful, launch the serverthread
+      pthread_t pth;
+      pthread_create(&pth, NULL, (void *)ServerThread, (void *)(uintptr_t)s);
+    }
+    else debug_log("listen failed: %d\n", errno);
+  }
+  else
+    debug_log("bind failed: %d\n", errno);
+}
+
