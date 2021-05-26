@@ -576,4 +576,202 @@ int loadExtension(PProcessData p, char *path)
         debug_log("64-bit target\n");
 
         debug_log("orig pc=%llx\n", origregs.pc);
-   
+        debug_log("orig sp=%llx\n", origregs.sp);
+        debug_log("orig lr=%llx\n", origregs.regs[30]);
+        debug_log("orig x0=%llx\n", origregs.regs[0]);
+        debug_log("orig x1=%llx\n", origregs.regs[1]);
+
+
+
+        //allocate space in the stack
+
+        newregs.sp-=16+16*((pathlen+3)/16);
+        str=newregs.sp;
+        writeString(pid, str, path);
+
+        debug_log("injecting in aarch64\n");
+
+        newregs.regs[30]=returnaddress;  //30=LR
+        newregs.pc=p->dlopen;
+        newregs.regs[0]=str;
+        newregs.regs[1]=RTLD_NOW;
+        newregs.regs[2]=p->dlopencaller; //needed by android: loader_dlopen
+
+      }
+#endif
+
+#ifdef __x86_64__
+      //allocate stackspace
+      newregs.rsp=newregs.rsp-0x28-(8*((pathlen+7) / 8));
+
+      //check that the first 4 bits of rsp are 1000 (8) (aligned with the function return push)
+      if ((newregs.rsp & 0xf)!=8)
+      {
+        debug_log("Aligning stack.  Was %llx", newregs.rsp);
+        newregs.rsp-=8;
+        newregs.rsp&=~(0xf); //clear the first 4 bits
+
+        newregs.rsp=newregs.rsp | 8; //set to 8
+
+        debug_log(" is now %llx\n", newregs.rsp);
+      }
+      //set the return address
+
+      debug_log("Writing 0x0ce0 to %lx\n", newregs.rsp);
+
+
+      if (ptrace(PTRACE_POKEDATA, pid, newregs.rsp, returnaddress)!=0)
+      {
+        debug_log("Failed to write return address\n");
+        resumeProcess(p, pid);
+        return FALSE;
+      }
+
+      if (ptrace(PTRACE_POKEDATA, pid, newregs.rsp-8, returnaddress)!=0)
+      {
+        debug_log("Fuck\n");
+        resumeProcess(p, pid);
+        return FALSE;
+      }
+
+      if (ptrace(PTRACE_POKEDATA, pid, newregs.rsp+8, returnaddress)!=0)
+      {
+        debug_log("Fuck\n");
+        resumeProcess(p, pid);
+        return FALSE;
+      }
+
+
+     //write the path at rsp+10
+
+     str=newregs.rsp+0x18;
+     writeString(pid, str, path);
+
+     debug_log("str=%p\n", (void *)str);
+
+
+
+     returnaddress=ptrace(PTRACE_PEEKDATA, pid, newregs.rsp, 0);
+     debug_log("[%lx]=%lx", newregs.rsp, returnaddress);
+
+
+      newregs.rip=p->dlopen;
+      newregs.rax=0;
+      newregs.rdi=str;
+      newregs.rsi=RTLD_NOW;
+      newregs.rdx=p->dlopencaller;
+      newregs.orig_rax=0;
+
+      debug_log("\nnew rip=%lx\n", newregs.rip);
+      debug_log("new rdi=%lx\n", newregs.rdi);
+      debug_log("new rsi=%lx\n", newregs.rsi);
+      debug_log("new rdx=%lx\n", newregs.rdx);
+      debug_log("new rsp=%lx\n", newregs.rsp);
+#endif
+
+#ifdef __i386__
+    debug_log("eax=%lx\n", origregs.eax);
+    debug_log("ebp=%lx\n", origregs.ebp);
+    debug_log("esp=%lx\n", origregs.esp);
+    debug_log("orig_eax=%lx\n", origregs.orig_eax);
+    debug_log("eip=%lx\n", origregs.eip);
+
+    //allocate stackspace
+    newregs.esp=newregs.esp-0x28-(8*((pathlen+7) / 8));
+    if ((newregs.esp & 0xf)!=8)
+    {
+      debug_log("Aligning stack.  Was %llx", newregs.esp);
+      newregs.esp-=8;
+      newregs.esp&=~(0xf); //clear the first 4 bits
+
+      newregs.esp=newregs.esp | 8; //set to 8
+
+      debug_log(" is now %llx\n", newregs.esp);
+    }
+
+    //in 32-bit the stack will have to look like:
+    //0-3: Return address  (0x0ce0)
+    //4-7: Address to path
+    //8-11:RTLD_NOW
+    //12-...: Path
+
+    //
+
+
+    if (ptrace(PTRACE_POKEDATA, pid, newregs.esp+0, returnaddress)!=0)
+    {
+      debug_log("Fuck\n");
+      safe_ptrace(PTRACE_DETACH, pid,0,0);
+
+      return FALSE;
+    }
+
+    if (ptrace(PTRACE_POKEDATA, pid, newregs.esp+4, newregs.esp+12)!=0)
+    {
+      debug_log("Fuck2\n");
+      safe_ptrace(PTRACE_DETACH, pid,0,0);
+
+      return FALSE;
+    }
+
+    if (ptrace(PTRACE_POKEDATA, pid, newregs.esp+8, RTLD_NOW)!=0)
+    {
+      debug_log("Fuck3\n");
+      safe_ptrace(PTRACE_DETACH, pid,0,0);
+
+      return FALSE;
+    }
+
+    writeString(pid, newregs.esp+12, path);
+
+    newregs.eip=p->dlopen;
+    newregs.orig_eax=0;
+#endif
+
+#ifdef __aarch64__
+    if (p->is64bit)
+      status=setProcessState(pid, &newregs);
+    else
+      status=setProcessState32(pid,&newregs32);
+    if (status)
+#else
+    if (setProcessState(pid, &newregs))
+#endif
+    {
+      debug_log("PTRACE_SETREGS FAILED\n");
+      safe_ptrace(PTRACE_DETACH, pid,0,0);
+
+      return FALSE;
+    }
+
+    debug_log("\n\nContinuing thread\n");
+
+
+    int ptr;
+    ptr=ptrace(PTRACE_CONT,pid,(void *)0,(void *)SIGCONT);
+
+    debug_log("PRACE_CONT=%d\n", ptr);
+    if (ptr!=0)
+    {
+      debug_log("PTRACE_CONT FAILED\n");
+      return 1;
+    }
+
+    //wait for this thread to crash
+    int pid2;
+
+    pid2=-1;
+    while (pid2==-1)
+    {
+      pid2=waitpid(-1, &status,  WUNTRACED| __WALL);
+
+      if (WIFSTOPPED(status))
+      {
+        debug_log("Stopped with signal %d\n", WSTOPSIG(status));
+
+        if (pid2!=pid)
+        {
+          debug_log("It's a different thread\n");
+          if (!p->isDebugged)
+          {
+            debug_log("No debugger present. Conti
