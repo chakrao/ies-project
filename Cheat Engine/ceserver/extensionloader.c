@@ -774,4 +774,209 @@ int loadExtension(PProcessData p, char *path)
           debug_log("It's a different thread\n");
           if (!p->isDebugged)
           {
-            debug_log("No debugger present. Conti
+            debug_log("No debugger present. Continuing it unhandled\n");
+
+            if (WSTOPSIG(status)!=SIGSTOP)
+              ptrace(PTRACE_CONT,pid2,(void *)0,(void *)(uintptr_t)WSTOPSIG(status));
+            else
+              ptrace(PTRACE_CONT,pid2,(void *)0,0);
+          }
+          else
+          {
+            //add it to the debug events
+            DebugEvent de;
+            de.threadid=pid2;
+            de.debugevent=WSTOPSIG(status);
+            AddDebugEventToQueue(p, &de);
+
+            debug_log("Debugger present. Added to the queue\n");
+          }
+          pid2=-1;
+          continue;
+        }
+
+      }
+      else
+        debug_log("Unexpected status: %x\n", status);
+
+
+      if ((pid2==-1) && (errno!=EINTR))
+      {
+        debug_log("LoadExtension wait fail. :%d\n", errno);
+
+        return FALSE;
+      }
+
+      if (pid2==0)
+        pid2=-1;
+
+
+
+      debug_log(".");
+    }
+
+    debug_log("\nafter wait: pid=%d (status=%x)\n", pid, status);
+
+    siginfo_t si;
+    if (ptrace(PTRACE_GETSIGINFO, pid, NULL, &si)!=0)
+    {
+      debug_log("GETSIGINFO FAILED\n");
+      safe_ptrace(PTRACE_DETACH, pid,0,0);
+      return FALSE;
+    }
+
+    debug_log("si.si_signo=%d\n", si.si_signo);
+
+#ifdef __x86_64__
+    process_state rregs;
+    status=getProcessState(pid, &rregs);
+    debug_log("returned: RIP=%lx RAX=%lx (orig=%lx)\n", rregs.rip, rregs.rax, rregs.orig_rax);
+
+    if (rregs.rax==0)
+    {
+      debug_log("Looks like it failed. Trying dlerror\n");
+      newregs.rip=p->dlerror;
+      setProcessState(pid, &newregs);
+    }
+
+    ptr=ptrace(PTRACE_CONT,pid,(void *)0,(void *)SIGCONT);
+
+    debug_log("PRACE_CONT=%d\n", ptr);
+    if (ptr!=0)
+    {
+      debug_log("PTRACE_CONT FAILED\n");
+      return 1;
+    }
+
+    //wait for this thread to crash
+
+    pid2=-1;
+    while (pid2==-1)
+    {
+      pid2=waitpid(-1, &status,  WUNTRACED| __WALL);
+
+      if (WIFSTOPPED(status))
+      {
+        debug_log("Stopped with signal %d\n", WSTOPSIG(status));
+
+        if (pid2!=pid)
+        {
+          debug_log("It's a different thread\n");
+          if (!p->isDebugged)
+          {
+            debug_log("No debugger present. Continuing it unhandled\n");
+
+            if (WSTOPSIG(status)!=SIGSTOP)
+              ptrace(PTRACE_CONT,pid2,(void *)0,(void *)(uintptr_t)WSTOPSIG(status));
+            else
+              ptrace(PTRACE_CONT,pid2,(void *)0,0);
+          }
+          else
+          {
+            //add it to the debug events
+            DebugEvent de;
+            de.threadid=pid2;
+            de.debugevent=WSTOPSIG(status);
+            AddDebugEventToQueue(p, &de);
+
+            debug_log("Debugger present. Added to the queue\n");
+          }
+          pid2=-1;
+          continue;
+        }
+
+      }
+      else
+        debug_log("Unexpected status: %x\n", status);
+
+
+      if ((pid2==-1) && (errno!=EINTR))
+      {
+        debug_log("LoadExtension wait fail. :%d\n", errno);
+
+        return FALSE;
+      }
+
+      if (pid2==0)
+        pid2=-1;
+
+
+
+      debug_log(".");
+    }
+
+    debug_log("\nafter wait: pid=%d (status=%x)\n", pid, status);
+
+    status=getProcessState(pid, &rregs);
+    debug_log("returned2: RIP=%lx RAX=%lx (orig=%lx)\n", rregs.rip, rregs.rax, rregs.orig_rax);
+
+#endif
+
+//    if (si.si_signo==SIGSEGV)
+      //debug_log("si._sifields._sigfault._addr=%x\n", si._sifields._sigfault._addr);
+
+
+#ifdef __aarch64__
+     if (p->is64bit)
+       status=setProcessState(pid, &origregs);
+     else
+       status=setProcessState32(pid, &origregs32);
+
+     if (status)
+#else
+     if (setProcessState(pid, &origregs))
+#endif
+     {
+       debug_log("PTRACE_SETREGS FAILED (2)\n");
+     }
+
+     if (!p->isDebugged)
+     {
+       debug_log("Detaching\n");
+       if (ptrace(PTRACE_DETACH, pid,0,0)!=0)
+         debug_log("PTRACE_DETACH FAILED\n");
+     }
+     else
+     {
+       if (ptrace(PTRACE_CONT,pid,(void *)0,(void *)SIGCONT)!=0)
+         debug_log("PTRACE_CONT failed\n");
+     }
+
+
+     debug_log("End...\n");
+
+     return 1;
+
+}
+
+void finddlerrorcallback(uintptr_t address, char *symbolname, PProcessData context)
+{
+  debug_log("found dlerror at %llx\n", address);
+  context->dlerror=address;
+}
+
+void finddlopencallback(uintptr_t address, char *symbolname, PProcessData context)
+{
+  debug_log("found dlopen at %llx\n", address);
+  context->dlopen=address;
+}
+
+void findmmapcallback(uintptr_t address, char *symbolname, PProcessData context)
+{
+  debug_log("found mmap at %llx\n", address);
+  context->mmap=address;
+}
+
+
+uint64_t allocWithoutExtension(HANDLE hProcess, void *addr, size_t length, int prot)
+{
+  int returnaddress=0xce0;
+  debug_log("allocWithoutExtension\n");
+  if (GetHandleType(hProcess) == htProcesHandle )
+  {
+    PProcessData p=(PProcessData)GetPointerFromHandle(hProcess);
+
+
+    if (p->isDebugged)
+    {
+      debug_log
