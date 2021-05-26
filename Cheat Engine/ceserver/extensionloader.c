@@ -182,4 +182,215 @@ int pauseProcess(PProcessData p)
   else
   {
     int pid;
-   
+    int status;
+    if (p->debuggedThreadEvent.threadid)
+    {
+      debug_log("Debugging active on a broken thread. Can't pause the process for code execution at this time\n");
+      return -1;
+    }
+
+    debug_log("Killing pid %d\n", p->pid);
+    kill(p->pid, SIGSTOP);
+    pid=WaitForPid(&status);
+
+    if (WIFSTOPPED(status))
+      debug_log("Stopped with signal %d\n", WSTOPSIG(status));
+    else
+      debug_log("Unexpected status: %x\n", status);
+
+    return pid;
+  }
+
+}
+
+int showRegisters(int pid)
+{
+
+    return 0;
+}
+
+uintptr_t finddlopen(int pid, uintptr_t *_dlerror)  //todo: use the elf parsing routines (they work better now)
+{
+    void *libdl;
+    void *realdlopen;
+    void *realdlerror;
+    libdl=dlopen("libdl.so", RTLD_NOW);
+
+    debug_log("libdl=%p\n", libdl);
+
+    realdlopen=dlsym(libdl,"dlopen");
+    realdlerror=dlsym(libdl,"dlerror");
+    debug_log("dlopen=%p\n", dlopen);
+    debug_log("realdlopen=%p\n", realdlopen);
+
+    debug_log("dlerror=%p\n", dlerror);
+    debug_log("realdlerror=%p\n", realdlerror);
+#ifndef __arm__
+    if (dlopen==realdlopen)
+      debug_log("Please tell db what you did to get this to function (excluding manually editing this if statement)\n");
+#endif
+
+
+    //open /proc/self/maps and look up the region that holds realdlopen
+
+    FILE *maps=fopen("/proc/self/maps", "r");
+
+    char x[200];
+    char currentmodule[256];
+    char modulepath[256];
+
+    unsigned long long currentmodulestart;
+
+    currentmodule[0]=0;
+
+
+    while (fgets(x, 200, maps))
+    {
+      unsigned long long start;
+      unsigned long long stop;
+      debug_log("%s", x);
+
+      sscanf(x, "%llx-%llx %*s %*s %*s %*s %s\n", &start, &stop, modulepath);
+
+      if (strcmp(modulepath, currentmodule)!=0)
+      {
+         strcpy(currentmodule, modulepath);
+         currentmodulestart=start;
+      }
+
+      if (
+           (((uintptr_t)realdlopen)>=start) &&
+           (((uintptr_t)realdlopen)<stop)
+         )
+      {
+        unsigned int offset=(uintptr_t)realdlopen-currentmodulestart;
+        unsigned int offset2=(uintptr_t)realdlerror-currentmodulestart;
+        char mapsfilename[255];
+        debug_log("found it. Module: %s Offset=%x\n", currentmodule, offset);
+
+        //find this module in the target process and apply this offset to get the address of dlopen
+        sprintf(mapsfilename, "/proc/%d/maps", pid);
+        FILE *maps2=fopen(mapsfilename, "r");
+        if (maps2)
+        {
+          char y[200];
+          while (fgets(y, 200, maps2))
+          {
+             if (y[strlen(y)-1]!='\n')
+             {
+               //need to go to the end of line first
+
+               char discard[100];
+
+               do
+               {
+                 discard[99]=0;
+                 fgets(discard, 99, maps);
+               } while (discard[99]!=0);
+             }
+
+
+             debug_log("%s", y);
+
+             modulepath[0]='\0';
+             sscanf(y, "%llx-%llx %*s %*s %*s %*s %s\n", &start, &stop, modulepath);
+
+             debug_log("Check if '%s' == '%s'\n", modulepath, currentmodule);
+             if (strcmp(modulepath, currentmodule)==0)
+             {
+                debug_log("found the module in the target process\n");
+                fclose(maps);
+                fclose(maps2);
+                *_dlerror=start+offset2;
+                return start+offset;
+             }
+          }
+          fclose(maps2);
+
+        }
+        else
+        {
+           debug_log("Failure to open %s\n", mapsfilename);
+        }
+
+
+        fclose(maps);
+        return 0;
+      }
+      else debug_log("Nope\n");
+
+    }
+
+    fclose(maps);
+
+    return 1;
+}
+
+void writeString(int pid, uintptr_t address, char *string)
+{
+  int l=strlen(string)+1;
+  long *p;
+  long v;
+  int i;
+  int bs;
+  i=0;
+
+  debug_log("l=%d\n", l);
+
+
+  while (i<l)
+  {
+    p=(long *)&string[i];
+    if ((l-i)<sizeof(long))
+    {
+      bs=sizeof(long);
+      v=*p;
+    }
+    else
+    {
+      v=string[i];
+      bs=1;
+    }
+
+    safe_ptrace(PTRACE_POKEDATA, pid, (void*)(address+i), (void*)v);
+    i+=bs;
+  }
+}
+
+int openExtension(int pid, int *openedSocket)
+{
+  char name[256];
+  sprintf(name, "ceserver_extension%d", pid);
+  HANDLE h=OpenPipe(name,0);
+  if (h)
+  {
+    PPipeData pd=GetPointerFromHandle(h);
+    *openedSocket=pd->socket;
+    if (pd->pipename)
+      free(pd->pipename);
+
+    free(pd);
+    RemoveHandle(h); //not needed anymore, but do keep the socket open
+
+    return 1;
+  }
+  else
+    return 0;
+}
+
+int isExtensionLoaded(int pid)
+{
+  int s;
+  int result=openExtension(pid, &s);
+
+  if (result)
+    close(s);
+
+  return result;
+}
+
+int loadExtension(PProcessData p, char *path)
+{
+
+    int pid;
+    ui
