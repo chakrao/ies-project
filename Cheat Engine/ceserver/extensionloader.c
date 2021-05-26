@@ -393,4 +393,187 @@ int loadExtension(PProcessData p, char *path)
 {
 
     int pid;
-    ui
+    uintptr_t dlerror;
+    uintptr_t str;
+    int status;
+    int pathlen=strlen(path)+1; //0-terminater
+
+    debug_log("loadExtension()\n");
+
+
+
+
+    debug_log("Phase 0: Check if it's already open\n");
+    if (isExtensionLoaded(p->pid))
+    {
+      debug_log("Already loaded\n");
+      return TRUE;
+    }
+    else
+      debug_log("Not yet loaded\n");
+
+    if (access(path, X_OK))
+    {
+      debug_log("FAILURE: %s is not executable or does not even exist! (%s)\n",path, strerror(errno));
+      return 0;
+    }
+    else
+      debug_log("Execute check passed\n");
+
+
+
+
+
+    if (p->dlopen==0) //fallback to the old method
+    {
+      debug_log("Phase 1: Find dlopen in target (old wonky method)\n");
+      p->dlopen=finddlopen(p->pid, &dlerror);
+    }
+
+    if (p->dlopen==0)
+    {
+      debug_log("dlopen==NULL Abort!\n");
+      return 0;
+    }
+
+    debug_log("dlopen=%p\n", (void *)p->dlopen);
+    //debug_log("dlerror=%p\n", (void *)dlerror);
+
+
+    pid=pauseProcess(p);
+    if (pid==-1)
+      return FALSE;
+
+    debug_log("After pauseProcess: PID=%d\n", pid);
+
+    //save the current state and set the state to what I need it to be
+  process_state origregs;
+  process_state newregs;
+
+#ifdef __aarch64__
+  process_state32 origregs32;
+  process_state32 newregs32;
+#endif
+
+
+
+#ifdef __aarch64__
+  struct iovec iov;
+#endif
+
+#ifdef __aarch64__
+
+      if (p->is64bit)
+        status=getProcessState(pid, &origregs);
+      else
+        status=getProcessState32(pid, &origregs32);
+
+      if (status)
+#else
+      if (getProcessState(pid, &origregs))
+#endif
+      {
+        debug_log("getProcessState failed\n");
+        safe_ptrace(PTRACE_DETACH, pid,0,0);
+
+        return FALSE;
+      }
+
+      newregs=origregs;
+#ifdef __aarch64__
+      newregs32=origregs32;
+#endif
+
+      uintptr_t returnaddress=0x0ce0;
+
+
+#ifdef __arm__
+      //allocate space in the stack
+
+      newregs.ARM_sp-=8+4*((pathlen+3)/ 4);
+
+      //not sur eif [sp] is written to with a push or if it's [sp-4] and then sp decreased, so start at sp+4 instead
+      str=newregs.ARM_sp+4;
+      writeString(pid, str, path);
+
+      newregs.ARM_lr=returnaddress;
+      newregs.ARM_pc=p->dlopen;
+      newregs.ARM_r0=str;
+      newregs.ARM_r1=RTLD_NOW;
+      newregs.ARM_r2=p->dlopencaller; //needed by android: loader_dlopen
+
+
+      if (newregs.ARM_pc & 1)
+      {
+         //THUMB Address link
+         debug_log("THUMB destination\n");
+         newregs.ARM_cpsr=newregs.ARM_cpsr | (1 << 5);
+
+         //not sure how to set the J bit (thumbee uses it...)
+         //for now disable it until a bug happens
+         newregs.ARM_cpsr=newregs.ARM_cpsr & (~(1<<25)); //unset J
+      }
+      else
+      {
+        debug_log("ARM destination\n");
+        debug_log("newregs.ARM_cpsr was %x\n", newregs.ARM_cpsr);
+        newregs.ARM_cpsr=newregs.ARM_cpsr & (~(1<<5)); //unset T
+        newregs.ARM_cpsr=newregs.ARM_cpsr & (~(1<<25)); //unset J
+        debug_log("newregs.ARM_cpsr is %x\n", newregs.ARM_cpsr);
+      }
+#endif
+
+#ifdef __aarch64__
+      if (p->is64bit==0)
+      {
+        debug_log("orig pc=%lx\n", origregs32.ARM_pc);
+        debug_log("orig sp=%lx\n", origregs32.ARM_sp);
+        debug_log("orig cpsr=%lx\n", origregs32.ARM_cpsr);
+
+        newregs32.ARM_sp-=8+4*((pathlen+3)/ 4);
+
+        //not sure if [sp] is written to with a push or if it's [sp-4] and then sp decreased, so start at sp+4 instead
+        str=newregs32.ARM_sp+4;
+        writeString(pid, str, path);
+
+        newregs32.ARM_lr=returnaddress;
+        newregs32.ARM_pc=p->dlopen;
+        newregs32.ARM_r0=str;
+        newregs32.ARM_r1=RTLD_NOW;
+        newregs32.ARM_r2=p->dlopencaller; //needed by android: loader_dlopen
+
+
+
+        if (newregs32.ARM_pc & 1)
+        {
+           //THUMB Address link
+           debug_log("THUMB destination\n");
+           newregs32.ARM_cpsr=newregs32.ARM_cpsr | (1 << 5);
+
+           //not sure how to set the J bit (thumbee uses it...)
+           //for now disable it until a bug happens
+           newregs32.ARM_cpsr=newregs32.ARM_cpsr & (~(1<<25)); //unset J
+
+
+        }
+        else
+        {
+          debug_log("ARM destination\n");
+          debug_log("newregs32.ARM_cpsr was %x\n", newregs32.ARM_cpsr);
+          newregs32.ARM_cpsr=newregs32.ARM_cpsr & (~(1<<5)); //unset T
+          newregs32.ARM_cpsr=newregs32.ARM_cpsr & (~(1<<25)); //unset J
+          debug_log("newregs32.ARM_cpsr is %x\n", newregs32.ARM_cpsr);
+        }
+
+        debug_log("new pc=%lx\n", newregs32.ARM_pc);
+        debug_log("new sp=%lx\n", newregs32.ARM_sp);
+        debug_log("new cpsr=%lx\n", newregs32.ARM_cpsr);
+
+
+      }
+      else
+      {
+        debug_log("64-bit target\n");
+
+        debug_log("orig pc=%llx\n", origregs.pc);
+   
