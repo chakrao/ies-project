@@ -979,4 +979,185 @@ uint64_t allocWithoutExtension(HANDLE hProcess, void *addr, size_t length, int p
 
     if (p->isDebugged)
     {
-      debug_log
+      debug_log("this process is being debugged\n");
+      //make sure this is executed by the debugger thread
+      if (p->debuggerThreadID!=pthread_self())
+      {
+        debug_log("Not the debugger thread. Switching...\n");
+        //tell the debugger thread to do this
+        uint64_t result=0;
+        #pragma pack(1)
+        struct
+        {
+          uint8_t command;
+          uint32_t pHandle;
+          uint64_t addr;
+          uint64_t length;
+          uint32_t protection;
+        } lx;
+        #pragma pack()
+
+        lx.command=CMD_PTRACE_MMAP;
+        lx.pHandle=hProcess;
+        lx.addr=(uint64_t)addr;
+        lx.length=length;
+        lx.protection=linuxProtectionToWindows(prot);
+        if (pthread_mutex_lock(&debugsocketmutex) == 0)
+        {
+          sendall(p->debuggerClient, &lx, sizeof(lx), 0);
+          WakeDebuggerThread();
+
+          recvall(p->debuggerClient, &result, sizeof(result), MSG_WAITALL);
+          debug_log("Returned from debugger thread. Result:%d\n", result);
+
+          pthread_mutex_unlock(&debugsocketmutex);
+        }
+
+        return result;
+      }
+      else
+        debug_log("This is the debugger thread\n");
+    }
+    //the rest
+
+    if (p->mmap==0)
+      FindSymbol(hProcess, "mmap", (symcallback)findmmapcallback,p);
+
+    if (p->mmap==0)
+    {
+      debug_log("Failure finding mmap address\n");
+      return 0;
+    }
+
+    //stop for editing state
+    int pid=pauseProcess(p);
+    if (pid==-1)
+    {
+      debug_log("pid==-1 Giving up allocation\n");
+      return 0;
+    }
+
+
+    //get state
+    process_state originalstate, newstate;
+#ifdef __aarch64__
+    process_state32 originalstate32, newstate32;
+    if (p->is64bit==0)
+    {
+      if (getProcessState32(pid, &originalstate32))
+        return 0;
+
+      newstate32=originalstate32;
+    }
+    else
+#endif
+    {
+      if (getProcessState(pid,&originalstate))
+        return 0;
+
+      newstate=originalstate;
+    }
+
+    //edit state
+#ifdef __arm__
+    newstate.ARM_sp-=8;
+    newstate.ARM_lr=returnaddress;
+    newstate.ARM_pc=p->mmap;
+    newstate.ARM_r0=addr;
+    newstate.ARM_r1=length;
+    newstate.ARM_r2=prot;
+    newstate.ARM_r3=MAP_PRIVATE | MAP_ANONYMOUS;
+    ptrace(PTRACE_POKEDATA, pid, newstate.ARM_sp,0);
+    ptrace(PTRACE_POKEDATA, pid, newstate.ARM_sp+4,0);
+#endif
+
+#ifdef __aarch64__
+    if (p->is64bit)
+    {
+      newstate.regs[30]=returnaddress; //LR
+      newstate.pc=p->mmap;
+      newstate.regs[0]=(uint64_t)addr;
+      newstate.regs[1]=length;
+      newstate.regs[2]=prot;
+      newstate.regs[3]=MAP_PRIVATE | MAP_ANONYMOUS;
+      newstate.regs[4]=0;
+      newstate.regs[5]=0;
+    }
+    else
+    {
+      newstate32.ARM_sp-=8;
+      newstate32.ARM_lr=returnaddress;
+      newstate32.ARM_pc=p->mmap;
+      newstate32.ARM_r0=(uint64_t)addr;
+      newstate32.ARM_r1=length;
+      newstate32.ARM_r2=prot;
+      newstate32.ARM_r3=MAP_PRIVATE | MAP_ANONYMOUS;
+      ptrace(PTRACE_POKEDATA, pid, newstate32.ARM_sp,0);
+      ptrace(PTRACE_POKEDATA, pid, newstate32.ARM_sp+4,0);
+    }
+#endif
+
+#ifdef __i386__
+    newstate.esp-=4+4*6;
+    if ((ptrace(PTRACE_POKEDATA, pid, newstate.esp+0, returnaddress)!=0) ||
+       (ptrace(PTRACE_POKEDATA, pid, newstate.esp+4, addr)!=0) ||
+       (ptrace(PTRACE_POKEDATA, pid, newstate.esp+8, length)!=0) ||
+       (ptrace(PTRACE_POKEDATA, pid, newstate.esp+12, prot)!=0) ||
+       (ptrace(PTRACE_POKEDATA, pid, newstate.esp+16, MAP_PRIVATE | MAP_ANONYMOUS)!=0) ||
+       (ptrace(PTRACE_POKEDATA, pid, newstate.esp+20, 0)!=0) ||
+       (ptrace(PTRACE_POKEDATA, pid, newstate.esp+24, 0)!=0))
+    {
+      debug_log("Failed to write all parameters\n");
+      resumeProcess(p, pid);
+      return 0;
+    }
+
+    newstate.eip=p->mmap;
+#endif
+
+#ifdef __x86_64__
+    newstate.rsp-=0x40;
+    newstate.rsp&=~(0xf);
+    newstate.rsp=newstate.rsp | 8; //emulate the push of the return on the stack
+
+    if (ptrace(PTRACE_POKEDATA, pid, newstate.rsp, returnaddress)!=0)
+    {
+      debug_log("Failed to write return address\n");
+      resumeProcess(p,pid);
+      return 0;
+    }
+
+    newstate.rip=p->mmap;
+    newstate.rax=0;
+    newstate.rdi=(uint64_t)addr;
+    newstate.rsi=length;
+    newstate.rdx=prot;
+    newstate.rcx=MAP_PRIVATE | MAP_ANONYMOUS;
+    newstate.r8=0;
+    newstate.r9=0;
+#endif
+
+    //apply state
+#ifdef __aarch64__
+    if (p->is64bit==0)
+    {
+      if (setProcessState32(pid,&newstate32))
+      {
+        debug_log("Failed to set 32-bit context\n");
+        resumeProcess(p, pid);
+        return 0;
+      }
+    }
+    else
+#endif
+    {
+      if (setProcessState(pid, &newstate))
+      {
+        debug_log("PTRACE_SETREGS FAILED\n");
+        resumeProcess(p, pid);
+        return 0;
+      }
+    }
+
+    //run edited state
+    debug_log("\n\nContinuing thread 
