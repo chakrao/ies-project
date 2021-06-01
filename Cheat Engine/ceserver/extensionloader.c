@@ -1376,4 +1376,184 @@ int loadCEServerExtension(HANDLE hProcess)
       char *mp;
 
 
-      l=readlink("/proc/
+      l=readlink("/proc/self/exe", modulepath2, 256);
+
+      if (l!=-1)
+      {
+        modulepath2[l]=0;
+        debug_log("modulepath2=%s\n", modulepath2);
+        sscanf(modulepath2,"%s", modulepath); //sometimes it has a (deleted) text after it
+
+        debug_log("modulepath=%s\n", modulepath);
+        mp=dirname(modulepath);
+
+        debug_log("after basename: %s\n", mp);
+        strcpy(modulepath, mp);
+        strcat(modulepath, "/libceserver-extension");
+
+#ifdef __i386__
+        strcat(modulepath, "_x86");
+#endif
+
+#ifdef __x86_64__
+        if (p->is64bit)
+          strcat(modulepath, "_x86_64");
+        else
+          strcat(modulepath, "_x86");
+#endif
+
+#ifdef __aarch64__
+        if (p->is64bit)
+          strcat(modulepath, "_arm64");
+        else
+          strcat(modulepath, "_arm");
+#endif
+
+#ifdef __arm__
+        strcat(modulepath, "_arm");
+#endif
+        strcat(modulepath,".so");
+
+
+
+      }
+      else
+      {
+        strcpy(modulepath, "libceserver-extension");
+
+#ifdef __i386__
+        strcat(modulepath, "_x86");
+#endif
+
+#ifdef __x86_64__
+        if (p->is64bit)
+          strcat(modulepath, "_x86_64");
+        else
+          strcat(modulepath, "_x86");
+#endif
+
+#ifdef __aarch64__
+        if (p->is64bit)
+          strcat(modulepath, "_arm64");
+        else
+          strcat(modulepath, "_arm");
+#endif
+
+#ifdef __arm__
+        strcat(modulepath, "_arm");
+#endif
+        strcat(modulepath,".so");
+      }
+
+      debug_log("modulepath = %s\n", modulepath);
+
+
+
+
+      if (p->isDebugged)
+      {
+        debug_log("This process is being debugged. Checking if it's already loaded\n");
+
+        pthread_mutex_lock(&p->extensionMutex);
+        p->hasLoadedExtension=openExtension(p->pid, &p->extensionFD);
+        pthread_mutex_unlock(&p->extensionMutex);
+      }
+     // else
+
+      if (p->hasLoadedExtension)
+        debug_log("The extension is already loaded\n");
+
+      debug_log("Scanning for dlopen\n");
+
+#ifdef __ANDROID__
+      debug_log("Trying to find __loader_dlopen\n");
+      FindSymbol(hProcess,"__loader_dlopen", (symcallback)finddlopencallback, p);
+
+      FindSymbol(hProcess,"__loader_dlerror", (symcallback)finddlerrorcallback, p);
+
+      if (p->dlopen)
+        debug_log("__loader_dlopen at %p\n", p->dlopen);
+      else
+        debug_log("__loader_dlopen not found\n");
+
+      if (p->dlerror)
+        debug_log("__loader_dlerror at %p\n", p->dlerror);
+      else
+        debug_log("__loader_dlerror not found\n");
+
+      if (p->dlopencaller==0)
+      {
+        //find the first system module base address
+        debug_log("trying to find a suitable caller origin\n");
+        HANDLE ths;
+        ModuleListEntry me;
+        ths=CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,p->pid);
+
+        if (Module32First(ths, &me)) do
+        {
+          if (strncmp(me.moduleName,"/system/bin/",12)==0)
+          {
+            debug_log("found: ");
+            debug_log(me.moduleName);
+            debug_log("\n");
+            p->dlopencaller=me.baseAddress+0x1000;
+            break;
+          }
+        } while (Module32Next(ths,&me));
+
+        if ((p->dlopencaller==0) && (Module32First(ths, &me))) do
+        {
+          debug_log("no /system/bin, trying system\n");
+          if (strncmp(me.moduleName,"/system/bin/",12)==0)
+          {
+            debug_log("found: ");
+            debug_log(me.moduleName);
+            debug_log("\n");
+            p->dlopencaller=me.baseAddress+0x1000;
+            break;
+          }
+        } while (Module32Next(ths,&me));
+
+        if ((p->dlopencaller==0) && (Module32First(ths, &me)))
+        {
+          debug_log("no /system. fuck it! picking the first module I see: \n");
+          debug_log("found: ");
+          debug_log(me.moduleName);
+          debug_log("\n");
+          p->dlopencaller=me.baseAddress+0x1000;
+        }
+
+        CloseHandle(ths);
+
+      }
+#endif
+
+      if (p->dlopen==0)
+      {
+        debug_log("Trying to find dlopen\n");
+        FindSymbol(hProcess,"dlopen", (symcallback)finddlopencallback, p);
+
+        if (p->dlopen)
+          debug_log("dlopen at %p\n", p->dlopen);
+        else
+        {
+          debug_log("dlopen not found, trying __libc_dlopen_mode\n");
+          FindSymbol(hProcess,"__libc_dlopen_mode",(symcallback)finddlopencallback, p);
+          if (p->dlopen)
+          {
+            HANDLE ths;
+            ModuleListEntry me;
+            ths=CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,p->pid);
+
+            p->dlopenalt=1;
+
+            if (Module32First(ths, &me))
+              p->dlopencaller=me.baseAddress+0x800;
+
+            CloseHandle(ths);
+          }
+        }
+      }
+
+      if (p->dlopen==0)
+        debug_log("failure finding dlopen or any variant of it\
