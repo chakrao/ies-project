@@ -1160,4 +1160,220 @@ uint64_t allocWithoutExtension(HANDLE hProcess, void *addr, size_t length, int p
     }
 
     //run edited state
-    debug_log("\n\nContinuing thread 
+    debug_log("\n\nContinuing thread with edited state\n");
+
+    int ptr;
+    ptr=ptrace(PTRACE_CONT,pid,(void *)0,(void *)SIGCONT);
+
+    debug_log("PRACE_CONT=%d\n", ptr);
+    if (ptr!=0)
+    {
+      debug_log("PTRACE_CONT FAILED\n");
+      return 0;
+    }
+
+
+    //wait for this thread to crash
+    int pid2;
+    int status;
+
+    pid2=-1;
+    while (pid2==-1)
+    {
+      pid2=waitpid(-1, &status,  WUNTRACED| __WALL);
+
+      if (WIFSTOPPED(status))
+      {
+        debug_log("Stopped with signal %d\n", WSTOPSIG(status));
+
+        if (pid2!=pid)
+        {
+          debug_log("It's a different thread\n");
+          if (!p->isDebugged)
+          {
+            debug_log("No debugger present. Continuing it unhandled\n");
+
+            if (WSTOPSIG(status)!=SIGSTOP)
+              ptrace(PTRACE_CONT,pid2,(void *)0,(void *)(uintptr_t)WSTOPSIG(status));
+            else
+              ptrace(PTRACE_CONT,pid2,(void *)0,0);
+          }
+          else
+          {
+            //add it to the debug events
+            DebugEvent de;
+            de.threadid=pid2;
+            de.debugevent=WSTOPSIG(status);
+            AddDebugEventToQueue(p, &de);
+
+            debug_log("Debugger present. Added to the queue\n");
+          }
+          pid2=-1;
+          continue;
+        }
+
+      }
+      else
+        debug_log("Unexpected status: %x\n", status);
+
+
+      if ((pid2==-1) && (errno!=EINTR))
+      {
+        debug_log("LoadExtension wait fail. :%d\n", errno);
+
+        return FALSE;
+      }
+
+      if (pid2==0)
+        pid2=-1;
+
+      debug_log(".");
+    }
+
+    debug_log("\nafter wait: pid=%d (status=%x)\n", pid, status);
+
+
+    siginfo_t si;
+    if (ptrace(PTRACE_GETSIGINFO, pid, NULL, &si)!=0)
+    {
+      debug_log("GETSIGINFO FAILED\n");
+      resumeProcess(p,pid);
+      return 0;
+    }
+
+#ifdef __aarch64__
+    if (p->is64bit==0)
+    {
+      if (getProcessState32(pid, &newstate32))
+      {
+        debug_log("Failed receiving 32-bit state of thread after running code\n");
+        resumeProcess(p,pid);
+        return 0;
+      }
+    }
+    else
+#endif
+    {
+      if (getProcessState(pid, &newstate))
+      {
+        debug_log("Failed receiving state of thread after running code\n");
+        resumeProcess(p,pid);
+        return 0;
+      }
+    }
+
+    //read out result
+    uint64_t result=0;
+
+#ifdef __arm__
+    result=newstate.ARM_r0;
+#endif
+
+#ifdef __aarch64__
+    if (p->is64bit==0)
+      result=newstate32.ARM_r0;
+    else
+      result=newstate.regs[0];
+#endif
+
+
+#ifdef __i386__
+    result=newstate.eax;
+#endif
+
+#ifdef __x86_64__
+    debug_log("rax=%llx\n", newstate.rax);
+    debug_log("orig_rax=%llx\n", newstate.orig_rax);
+    result=newstate.rax;
+#endif
+
+
+    //restore state
+#ifdef __aarch64__
+    if (p->is64bit==0)
+    {
+      if (setProcessState32(pid,&originalstate32))
+        debug_log("Failed to set original 32-bit context back\n");
+    }
+    else
+#endif
+    {
+      if (setProcessState(pid, &originalstate))
+        debug_log("Failed to set original context back\n");
+    }
+
+    resumeProcess(p, pid);
+
+
+    return result;
+
+  }
+  else
+    return 0;
+}
+
+int loadCEServerExtension(HANDLE hProcess)
+{
+  debug_log("loadCEServerExtension\n");
+  if (GetHandleType(hProcess) == htProcesHandle )
+  {
+    PProcessData p=(PProcessData)GetPointerFromHandle(hProcess);
+
+
+    if (p->isDebugged)
+    {
+      debug_log("this process is being debugged\n");
+
+      //make sure this is executed by the debugger thread
+      if (p->debuggerThreadID!=pthread_self())
+      {
+        debug_log("Not the debugger thread. Switching...\n");
+        //tell the debugger thread to do this
+        int result=0;
+#pragma pack(1)
+        struct
+        {
+          uint8_t command;
+          uint32_t pHandle;
+        } lx;
+#pragma pack()
+
+        lx.command=CMD_LOADEXTENSION;
+        lx.pHandle=hProcess;
+        if (pthread_mutex_lock(&debugsocketmutex) == 0)
+        {
+          sendall(p->debuggerClient, &lx, sizeof(lx), 0);
+          WakeDebuggerThread();
+
+          recvall(p->debuggerClient, &result, sizeof(result), MSG_WAITALL);
+          debug_log("Returned from debugger thread. Result:%d\n", result);
+
+          pthread_mutex_unlock(&debugsocketmutex);
+        }
+
+        return result;
+      }
+      else
+        debug_log("This is the debugger thread\n");
+
+      if (p->debuggedThreadEvent.threadid)
+      {
+        debug_log("Currently frozen on a thread. Can not proceed with injection");
+        return 0;
+      }
+    }
+
+
+
+    if (p->hasLoadedExtension==0)
+    {
+      char modulepath[256], modulepath2[256];
+      int l;
+
+      memset(modulepath, 0, 256);
+      memset(modulepath2, 0, 256);
+
+      char *mp;
+
+
+      l=readlink("/proc/
