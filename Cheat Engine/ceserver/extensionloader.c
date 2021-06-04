@@ -1556,4 +1556,40 @@ int loadCEServerExtension(HANDLE hProcess)
       }
 
       if (p->dlopen==0)
-        debug_log("failure finding dlopen or any variant of it\
+        debug_log("failure finding dlopen or any variant of it\n");
+
+      {
+        pthread_mutex_lock(&p->extensionMutex);
+        if (p->hasLoadedExtension==0) //still 0
+        {
+
+          if (p->neverForceLoadExtension==0)
+          {
+            debug_log("Calling loadExtension\n");
+            p->hasLoadedExtension=loadExtension(p, modulepath);
+
+          }
+
+          if (p->hasLoadedExtension)
+            p->hasLoadedExtension=openExtension(p->pid, &p->extensionFD);
+
+
+          debug_log("p->hasLoadedExtension=%d\n", p->hasLoadedExtension);
+        }
+
+        pthread_mutex_unlock(&p->extensionMutex);
+      }
+
+
+    }
+    else
+      debug_log("Already loaded\n");
+
+    return p->hasLoadedExtension;
+  }
+  else
+  {
+    debug_log("Invalid handle type");
+    return 0;
+  }
+}
