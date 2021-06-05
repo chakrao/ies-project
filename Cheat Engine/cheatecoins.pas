@@ -74,4 +74,191 @@ begin
     context.dr1:=ptruint(@_GetCount);
     context.dr2:=ptruint(@antidebug1);
     context.dr3:=ptruint(@antidebug2);
-    context.dr7:=$fd
+    context.dr7:=$fd0055; //dr0: write - dr1: readwrite, dr2=execute dr3=execute
+
+    SetThreadContext(mainthreadhandle,context^);
+  end;
+end;
+
+procedure clearDRContext;
+begin
+  context^.ContextFlags:=CONTEXT_DEBUG_REGISTERS;
+  if GetThreadContext(mainthreadhandle,context^) then
+  begin
+    context.dr7:=0; //dr0: write - dr1: readwrite
+    SetThreadContext(mainthreadhandle,context^);
+  end;
+end;
+
+function CECExceptionHandler(ExceptionInfo: windows.PEXCEPTION_POINTERS): LONG; stdcall;
+var
+  v,v2: dword;
+  c: PContext;
+  s: string;
+  i: integer;
+
+  newv: pinteger;
+begin
+  result:=EXCEPTION_CONTINUE_SEARCH;
+
+  //MEssageBoxA(0,'e 1','exeption',0);
+
+  asm
+    push dword $202 //just to piss of a newbie stepper (set a software bp after)
+    {$ifdef cpu64}
+    popfq
+    {$else}
+    popfd
+    {$endif}
+  end;
+  setupContext; //clears breakpoints  (software bp's help, I won't do integrity checks yet)
+
+  //MEssageBoxA(0,'e 2','exeption',0);
+
+  c:=PContext(ExceptionInfo^.ContextRecord);
+
+ // MessageBoxA(0,pchar('Exception', 'exceptionHandler',0);
+
+  case ExceptionInfo^.ExceptionRecord.ExceptionCode of
+    EXCEPTION_SINGLE_STEP, STATUS_WX86_SINGLE_STEP:
+    begin
+      //MessageBoxA(0,pchar(format('CECExceptionHandler 2 %.8x',[c^.dr6])),'CECExceptionHandler 2',0);
+      //MEssageBoxA(0,'e 3','exeption',0);
+
+      if (c^.Dr6 and 1=1) then  //decrease coin
+      begin
+        //MessageBoxA(0,'DR0','CECExceptionHandler 2',0);
+
+
+
+        if (c3<>nil) and (c3^=actualcount^) then //frozen value or continued editing (two times 0)
+        begin
+          //MessageBoxA(0,'BYE','CECExceptionHandler 2',0);
+
+          exitProcess(1);
+          asm
+            {$ifdef cpu64}
+            mov rsp,0
+            mov rbp,0
+            {$else}
+            mov esp,0
+            mov ebp,0
+            {$endif}
+          end;
+          exit;
+        end;
+
+        getmem(newv,4+random(64));
+        if c3<>nil then
+          freemem(c3);
+
+        c3:=newv;
+        c3^:=actualcount^;
+
+        v:=(dword(actualcount^) xor dword(antidebug1)) shr dword(13);
+
+
+        asm
+          push dword $202 //just to piss of a newbie stepper (set a software bp after)
+          {$ifdef cpu64}
+          popfq
+          {$else}
+          popfd
+          {$endif}
+        end;
+        v2:=dword(c2^ xor (antidebug2($deadf023)));
+
+
+
+
+        asm
+          push dword $202 //just to piss of a newbie stepper (set a software bp after)
+          {$ifdef cpu64}
+          popfq
+          {$else}
+          popfd
+          {$endif}
+        end;
+
+        if v2<>v then   //someone tried to tamper
+        begin
+          //MessageBoxA(0,pchar(format('Coin tamper detected %d <> %d (actualcount=%x)',[v2, v, actualcount])),'CECExceptionHandler 2',0);
+
+          v:=0 //goodbye coins
+        end
+        else
+          dec(v);
+
+        freemem(c2);
+        getmem(c2,4+random(64));
+
+        c2^:=integer(dword(v) xor antidebug2($deadf023)); //just to keep people of track
+
+        freemem(actualcount);
+        getmem(actualcount,4+random(64));
+
+        actualcount^:=integer(dword((dword(v) shl 13) xor antidebug1));
+
+        //      c^.dr6:=0;  MEssageBoxA(0,'test done','exeption',0); exit(EXCEPTION_CONTINUE_EXECUTION);
+
+
+        v2:=dword(v) xor dword($deadf123);
+        if dword(v2)<>dword(c2^) then
+        begin
+         // MessageBoxA(0,pchar(format('antidebug tamper detected %x<>%x',[v2,c2])),'CECExceptionHandler 2',0);
+
+          ExitProcess(2);
+          asm
+            {$ifdef cpu64}
+            mov rsp,0
+            mov rbp,0
+            {$else}
+            mov esp,0
+            mov ebp,0
+            {$endif}
+          end;
+          exit;
+        end;
+
+
+
+        c^.dr6:=0;
+
+
+       // MEssageBoxA(0,'e 4','exeption',0);
+
+        exit(EXCEPTION_CONTINUE_EXECUTION);
+      end;
+
+      if (ExceptionInfo^.ContextRecord^.Dr6 and 2=2) then
+      begin
+        //MessageBoxA(0,'DR1','CECExceptionHandler 2',0);
+
+        c^.{$ifdef cpu64}Rax{$else}eax{$endif}:=qword(dword(c2^) xor antidebug2($deadf023));
+        c^.dr6:=0;
+
+        //MessageBoxA(0,'CECExceptionHandler 2.2','CECExceptionHandler 2.2',0);
+
+        exit(EXCEPTION_CONTINUE_EXECUTION);
+      end;
+
+      if (ExceptionInfo^.ContextRecord^.Dr6 and 4=4) then
+      begin
+        //MessageBoxa(0,'dr2','cec',0);
+
+
+        {$ifdef cpu64}
+        c^.rax:=$cececece;
+        c^.rip:=pqword(c^.Rsp)^; //change rip back to the caller
+        c^.rsp:=c^.rsp+8; //pop the return of the stack
+        {$else}
+        c^.eax:=$cececece;
+        c^.eip:=pdword(c^.esp)^; //change rip back to the caller
+        c^.esp:=c^.esp+4; //pop the return address of the stack
+
+        {$endif}
+        c^.dr6:=0;
+        exit(EXCEPTION_CONTINUE_EXECUTION);
+      end;
+
+      if (ExceptionInfo^.ContextRecord^.
