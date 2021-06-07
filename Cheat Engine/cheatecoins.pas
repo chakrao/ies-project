@@ -261,4 +261,200 @@ begin
         exit(EXCEPTION_CONTINUE_EXECUTION);
       end;
 
-      if (ExceptionInfo^.ContextRecord^.
+      if (ExceptionInfo^.ContextRecord^.Dr6 and 8=8) then
+      begin
+        //MessageBoxa(0,'dr3','cec',0);
+        c^.{$ifdef cpu64}rip{$else}eip{$endif}:=ptruint(@antidebug3);
+        c^.dr6:=0;
+        exit(EXCEPTION_CONTINUE_EXECUTION);
+      end;
+
+    end;
+
+    EXCEPTION_ACCESS_VIOLATION:
+    begin
+      //s:=format('Address = %.8x rip=%.8x rax=%.8x r8=%.8x', [ptruint(ExceptionInfo^.ExceptionRecord.ExceptionAddress), c^.rip, c^.rax, c^.r8]);
+
+
+      for i:=0 to ExceptionInfo^.ExceptionRecord.NumberParameters do
+      begin
+        s:=s+' '+inttostr(i)+':'+inttohex(ExceptionInfo^.ExceptionRecord^.ExceptionInformation[i],1);
+      end;
+
+      //MessageBoxA(0,pchar(s),'CECExceptionHandler 3',0);
+
+      if ExceptionInfo^.ExceptionRecord.ExceptionInformation[1]=$101 then
+      begin
+        //MessageBoxA(0,'bla2','bla2',0);
+        {$ifdef cpu64}
+        c^.rip:=c^.r8;
+        {$else}
+        c^.eip:=c^.ecx;
+        {$endif}
+        exit(EXCEPTION_CONTINUE_EXECUTION);
+      end;
+    end;
+  end;
+
+end;
+
+function Control: integer; assembler;
+label oka;
+asm
+  {$ifdef cpu64}
+
+  mov rax,$101
+  push r8
+  lea r8,oka
+  mov dword [rax],12
+oka:
+  pop r8
+  nop
+  {$else}
+  mov eax,$101
+  push ecx
+  lea ecx,oka
+  mov dword [eax],12
+oka:
+  pop ecx
+  nop
+  {$endif}
+end;
+
+
+procedure decreaseCheatECoinCount; stdcall;
+begin
+  asm
+    {$ifdef cpu64}
+    lea r8,[rip+_DecreaseCount]
+    xor dword [r8],$deadbeef
+    {$else}
+    add [_DecreaseCount],2
+    {$endif}
+  end;
+
+  control;
+end;
+
+function getCheatECoinCount: integer; assembler; nostackframe;
+asm
+  {$ifdef cpu64}
+  lea r8,[rip+_GetCount]
+  mov eax,[r8]
+  {$else}
+  lea eax,[_GetCount]
+  mov eax,[eax]
+  {$endif}
+  ret
+end;
+
+function checkCoinStatus: integer;
+var
+  c: integer;
+  d: dword;
+begin
+  c:=getCheatECoinCount;
+
+  try
+    control;
+  except
+    //MessageBoxA(0,'BYE2', 'ccs',0);
+    ExitProcess(1);
+    asm
+      {$ifdef cpu64}
+      mov rsp,0
+      mov rbp,0
+      {$else}
+      mov esp,0
+      mov ebp,0
+      {$endif}
+    end;
+  end;
+
+  d:=integer((antidebug1 xor dword($cececece))+antidebug2($ce));
+
+  if (c>20) or (d<>$1ce) then
+  begin
+    //MessageBoxA(0,pchar(format('Bye3 c=%d d=%d',[c,d])),'ccs',0);
+    ExitProcess(1);
+    asm
+      {$ifdef cpu64}
+      mov rsp,0
+      mov rbp,0
+      {$else}
+      mov esp,0
+      mov ebp,0
+      {$endif}
+    end;
+  end;
+  result:=c;
+end;
+
+procedure saveCoins;
+begin
+  if mainthreadhandle<>0 then //most stupid way to save the coins:
+    cereg.writeInteger('Used Coins',20-getCheatECoinCount);
+end;
+
+procedure EnableCheatECoinSystem;   //simple solution to all this shittery, remove this function
+var
+  AddVectoredExceptionHandler: function (FirstHandler: Cardinal; VectoredHandler: PVECTORED_EXCEPTION_HANDLER): pointer; stdcall;
+  k: HModule;
+
+  th: THandle;
+
+  v: integer;
+
+  used: integer;
+
+begin
+  //MEssageBoxA(0,'0','0',0);
+
+
+  ShowMessage('New!!! Cheat-e-coins! Now you can buy Cheat-e-coins to be able to use '+strCheatEngine+'. It''s just like a game!!! Yay!');
+
+  k:=GetModuleHandle('kernel32.dll');
+  AddVectoredExceptionHandler:=GetProcAddress(k,'AddVectoredExceptionHandler');
+
+  AddVectoredExceptionHandler(1, PVECTORED_EXCEPTION_HANDLER(CECExceptionHandler));
+
+  mainthreadhandle:=OpenThread(THREAD_SET_CONTEXT or THREAD_GET_CONTEXT,false, GetCurrentThreadId);
+
+  getmem(contextmem,sizeof(TCONTEXT)+4096);
+  zeromemory(contextmem,sizeof(TCONTEXT)+4096);
+
+  context:=Align(contextmem,16);
+
+  getmem(actualcount, 4+random(64));
+  actualcount^:=integer(dword((20 shl 13) xor $cececece));
+
+  getmem(c2,4+random(64));
+  c2^:=integer(dword(20 xor $deadf123));
+
+  used:=cereg.readInteger('Used Coins',0);
+
+  //MEssageBoxA(0,'1','1',0);
+
+
+  setupcontext;
+
+  while used>0 do
+  begin
+    decreaseCheatECoinCount;
+    dec(used);
+  end;
+
+ // MEssageBoxA(0,'2','2',0);
+
+
+  frmMicroTransactions:=TfrmMicroTransactions.Create(application);
+  frmMicroTransactions.show;
+end;
+
+finalization
+  saveCoins;
+{$ENDIF}
+
+
+end.
+
