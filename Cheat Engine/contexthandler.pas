@@ -758,3 +758,186 @@ begin
   e.entrytype:=0;
   e.size:=16;
   e.displayType:=0;
+
+
+  for i:=0 to 7 do
+  begin
+    e.name:='XMM'+inttostr(i);
+    e.ContextOffset:=integer(@PCONTEXT32(nil)^.Ext.XmmRegisters[i]);
+  end;
+
+  ContextInfo_X86_32.setFloatingPointRegisters(@X86_32Context_fpu);
+
+  e.entrytype:=0;
+  e.size:=10;
+  e.displayType:=0;
+  setlength(X86_32Context_fpu2,8);
+
+  for i:=0 to 7 do
+  begin
+    e.name:='FP('+inttostr(i)+')';
+    e.ContextOffset:=integer(@PCONTEXT32(nil)^.FloatSave.RegisterArea[i*10]);
+    X86_32Context_fpu2[i]:=e;
+  end;
+  ContextInfo_X86_32.setSecondaryFloatingPointRegisters(@X86_32Context_fpu2);
+  ContextInfo_X86_32.secondaryfpuname:='FPU';
+
+
+  ContextInfo_X86_32.fInstructionPointerRegister:=ContextInfo_X86_32.getRegister('EIP');
+  ContextInfo_X86_32.fStackPointerRegister:=ContextInfo_X86_32.getRegister('ESP');
+  ContextInfo_X86_32.fContextFlagsField:=@X86_32Context_controlreg;
+
+  {$endif}
+
+  {$ifdef cpu64}
+  //windows32 on windows64
+  ContextInfo_X86_32:=TContextInfo.Create;
+  ContextInfo_X86_32.Name:='ContextInfo_X86_32';
+  ContextInfo_X86_32.fContextSize:=sizeof(CONTEXT);
+  ContextInfo_X86_32.setGeneralPurposeRegisters(@X86_32Context);
+  ContextInfo_X86_32.setGeneralPurposeFlags(@X86_32Context_flags);
+  ContextInfo_X86_32.setSpecializedRegisters(@X86_32Context_specialized);
+  ContextInfo_X86_32.setAltnameRegisters(@X86_32Context_altnames);
+
+
+  setlength(X86_32Context_fpu, 8);
+
+  e.entrytype:=0;
+  e.size:=16;
+  e.displayType:=0;
+
+  for i:=0 to 7 do
+  begin
+    e.name:='XMM'+inttostr(i);
+    e.ContextOffset:=integer(@PCONTEXT(nil)^.FltSave.XmmRegisters[i]);
+    X86_32Context_fpu[i]:=e;
+  end;
+  ContextInfo_X86_32.setFloatingPointRegisters(@X86_32Context_fpu);
+  ContextInfo_X86_32.mainfpuname:='XMM';
+
+
+
+  setlength(X86_32Context_fpu2, 8);
+
+  e.entrytype:=0;
+  e.size:=10;
+  e.displayType:=0;
+
+  for i:=0 to 7 do
+  begin
+    e.name:='FP('+inttostr(i)+')';
+    e.ContextOffset:=integer(@PCONTEXT(nil)^.FltSave.FloatRegisters[0]);
+    X86_32Context_fpu2[i]:=e;
+    ContextInfo_X86_32.nameToEntryLookup.Add(e.name,@X86_32Context_fpu2[i]);
+  end;
+  ContextInfo_X86_32.setSecondaryFloatingPointRegisters(@X86_32Context_fpu2);
+  ContextInfo_X86_32.secondaryfpuname:='FPU';
+  ContextInfo_X86_32.fInstructionPointerRegister:=ContextInfo_X86_32.getRegister('EIP');
+  ContextInfo_X86_32.fStackPointerRegister:=ContextInfo_X86_32.getRegister('ESP');
+  ContextInfo_X86_32.fContextFlagsField:=@X86_32Context_controlreg;
+
+  //----normal----
+  ContextInfo_X86_64:=TContextInfo.Create;
+  ContextInfo_X86_64.Name:='ContextInfo_X86_64';
+  ContextInfo_X86_64.fContextSize:=sizeof(CONTEXT);
+  ContextInfo_X86_64.setGeneralPurposeRegisters(@X86_64Context);
+  ContextInfo_X86_64.setGeneralPurposeFlags(@X86_64Context_flags);
+  ContextInfo_X86_64.setSpecializedRegisters(@X86_64Context_specialized);
+  ContextInfo_X86_64.setAltnameRegisters(@X86_64Context_altnames);
+
+  setlength(X86_64Context_fpu, 16);
+
+  e.entrytype:=0;
+  e.size:=16;
+  e.displayType:=0;
+
+
+  for i:=0 to 15 do
+  begin
+    e.name:='XMM'+inttostr(i);
+    e.ContextOffset:=integer(@PCONTEXT(nil)^.FltSave.XmmRegisters[i]);
+    X86_64Context_fpu[i]:=e;
+
+    ContextInfo_X86_64.nameToEntryLookup.Add('YMM'+inttostr(i),@X86_64Context_fpu[i]); //I currently don't support YMM, but lookups can still use the basic part
+  end;
+
+  ContextInfo_X86_64.setFloatingPointRegisters(@X86_64Context_fpu);
+
+  ContextInfo_X86_64.setSecondaryFloatingPointRegisters(@X86_32Context_fpu2);  //not a bug, X86_32Context_fpu2 is t he same for ContextInfo_X86_64
+  ContextInfo_X86_64.secondaryfpuname:='FPU';
+  ContextInfo_X86_64.fInstructionPointerRegister:=ContextInfo_X86_64.getRegister('RIP');
+  ContextInfo_X86_64.fStackPointerRegister:=ContextInfo_X86_64.getRegister('RSP');
+  ContextInfo_X86_64.fContextFlagsField:=@X86_64Context_controlreg;
+  {$endif}
+
+
+  //ARM32
+  ContextInfo_ARM_32:=TContextInfo.create;
+  ContextInfo_ARM_32.Name:='ContextInfo_ARM_32';
+  ContextInfo_ARM_32.fContextSize:=sizeof(TARMCONTEXT);
+  ContextInfo_ARM_32.setGeneralPurposeRegisters(@ARM_32Context);
+  ContextInfo_ARM_32.setGeneralPurposeFlags(@ARM_32Context_flags);
+  setlength(ARM_32Context_fpu, 32);
+
+  e.entrytype:=0;
+  e.size:=8;
+  e.displayType:=0;
+  for i:=0 to 31 do
+  begin
+    e.name:='VFP-D32'+inttostr(i);
+    e.ContextOffset:=integer(@PARMCONTEXT(nil)^.fpu[i]);
+    ARM_32Context_fpu[i]:=e;
+  end;
+  ContextInfo_ARM_32.setFloatingPointRegisters(@ARM_32Context_fpu);
+  ContextInfo_ARM_32.fInstructionPointerRegister:=ContextInfo_ARM_32.getRegister('PC');
+  ContextInfo_ARM_32.fStackPointerRegister:=ContextInfo_ARM_32.getRegister('SP');
+
+  //ARM64
+  ContextInfo_ARM_64:=TContextInfo.create;
+  ContextInfo_ARM_64.Name:='ContextInfo_ARM_64';
+  ContextInfo_ARM_64.fcontextsize:=sizeof(TARM64CONTEXT);
+
+  setlength(ARM_64Context,33);
+  ZeroMemory(@e, sizeof(e));
+  e.entrytype:=0;
+  e.size:=8;
+  e.displayType:=0;
+  for i:=0 to 30 do
+  begin
+    e.name:='X'+inttostr(i);
+    e.ContextOffset:=integer(@PARM64CONTEXT(nil)^.regs.X[i]);
+    ARM_64Context[i]:=e;
+  end;
+
+  e.name:='SP';
+  e.ContextOffset:=integer(@PARM64CONTEXT(nil)^.SP);
+  ARM_64Context[31]:=e;
+
+  e.name:='PC';
+  e.ContextOffset:=integer(@PARM64CONTEXT(nil)^.PC);
+  ARM_64Context[32]:=e;
+
+  ContextInfo_ARM_64.setGeneralPurposeRegisters(@ARM_64Context);
+  ContextInfo_ARM_64.setGeneralPurposeFlags(@ARM_64Context_flags);
+
+  setlength(ARM_64Context_fpu,32);
+  e.size:=16;
+  for i:=0 to 30 do
+  begin
+    e.name:='V'+inttostr(i);
+    e.ContextOffset:=integer(@PARM64CONTEXT(nil)^.fp.vregs[i]);
+    ARM_64Context_fpu[i]:=e;
+  end;
+  ContextInfo_ARM_64.setFloatingPointRegisters(@ARM_64Context_fpu);
+  ContextInfo_ARM_64.fInstructionPointerRegister:=ContextInfo_ARM_64.getRegister('PC');
+  ContextInfo_ARM_64.fStackPointerRegister:=ContextInfo_ARM_64.getRegister('SP');
+  {$ifdef darwin}
+  ContextInfo_ARM_64.fContextFlagsField:=@ARM_64Context_controlreg;
+  {$endif}
+end;
+
+
+initialization
+  InitContextInfos;
+
+end.
