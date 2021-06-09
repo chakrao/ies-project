@@ -210,4 +210,32 @@ const
     (mnemonic:'ORR'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100001100000000),
     (mnemonic:'MUL'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100001101000000),
     (mnemonic:'BIC'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_rreg3_same; offset:0));mask: %1111111111000000; value: %0100001110000000),
-    (mnemonic:'MVN'; additions:[opa_ITCond_
+    (mnemonic:'MVN'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100001111000000)
+  );
+
+  ThumbInstructionsSpecialDataInstructionsAndBranchAndExchange16:array of TOpcode=(
+    //010001**********;
+    (mnemonic:'ADD';  additions:[];  params:((ptype:pt_rreg3_1; offset:0; maxval:15; extra:7), (ptype:pt_rreg4; offset:3));     mask: %1111111100000000; value: %0100010000000000),
+    (mnemonic:'CMP';  additions:[];  params:((ptype:pt_rreg3_1; offset:0; maxval:15; extra:7), (ptype:pt_rreg4; offset:3));     mask: %1111111100000000; value: %0100010100000000),
+    (mnemonic:'MOV';  additions:[];  params:((ptype:pt_rreg3_1; offset:0; maxval:15; extra:7), (ptype:pt_rreg4; offset:3));     mask: %1111111100000000; value: %0100011000000000),
+    (mnemonic:'BX';   additions:[];  params:((ptype:pt_rreg4; offset:3));                                                       mask: %1111111110000111; value: %0100011100000000),
+    (mnemonic:'BLX';  additions:[];  params:((ptype:pt_rreg4; offset:3));                                                       mask: %1111111110000111; value: %0100011110000000)
+  );
+
+  ThumbInstructionsLoadStoreSingleDataItem:array of TOpcode=(
+    //0101************
+    (mnemonic:'STR';  additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_rreg3; offset:6; maxval:7; extra:0; optional:false; defvalue:0; index: ind_stop));   mask: %1111111000000000; value: %0101000000000000),
+    (mnemonic:'STRH'; additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_rreg3; offset:6; maxval:7; extra:0; optional:false; defvalue:0; index: ind_stop));   mask: %1111111000000000; value: %0101001000000000),
+    (mnemonic:'STRB'; additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_rreg3; offset:6; maxval:7; extra:0; optional:false; defvalue:0; index: ind_stop));   mask: %1111111000000000; value: %0101010000000000),
+    (mnemonic:'LDRSB';additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_rreg3; offset:6; maxval:7; extra:0; optional:false; defvalue:0; index: ind_stop));   mask: %1111111000000000; value: %0101011000000000),
+    (mnemonic:'LDR';  additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_rreg3; offset:6; maxval:7; extra:0; optional:false; defvalue:0; index: ind_stop));   mask: %1111111000000000; value: %0101100000000000),
+    (mnemonic:'LDRH'; additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_rreg3; offset:6; maxval:7; extra:0; optional:false; defvalue:0; index: ind_stop));   mask: %1111111000000000; value: %0101101000000000),
+    (mnemonic:'LDRB'; additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_rreg3; offset:6; maxval:7; extra:0; optional:false; defvalue:0; index: ind_stop));   mask: %1111111000000000; value: %0101110000000000),
+    (mnemonic:'LDRSH';additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_rreg3; offset:6; maxval:7; extra:0; optional:false; defvalue:0; index: ind_stop));   mask: %1111111000000000; value: %0101111000000000),
+
+    //011*************
+    (mnemonic:'STR';  additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_imm_shl2;offset:6; maxval:$1f; extra:0; optional:true; defvalue:0; index: ind_stop));mask: %1111100000000000; value: %0110000000000000),
+    (mnemonic:'LDR';  additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_imm_shl2;offset:6; maxval:$1f; extra:0; optional:true; defvalue:0; index: ind_stop));mask: %1111100000000000; value: %0110100000000000),
+
+    (mnemonic:'STRB'; additions:[];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3; maxval:7; extra:0; optional:false; defvalue:0; index: ind_index), (ptype:pt_imm_shl2;offset:6; maxval:$1f; extra:0; optional:true; defvalue:0; index: ind_stop));mask: %1111100000000000; value: %0111000000000000),
+    (mnemonic:'LDRB'; additions
