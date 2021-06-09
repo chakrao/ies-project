@@ -183,4 +183,31 @@ const
     (mnemonic:'LSL';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_imm; offset:5; maxval: 63));  mask: %1111100000000000; value: %0000000000000000),
     (mnemonic:'LSR';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_imm; offset:5; maxval: 63));  mask: %1111100000000000; value: %0000100000000000),
     (mnemonic:'ASR';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_imm; offset:5; maxval: 63));  mask: %1111100000000000; value: %0001000000000000),
-    (mnemonic:'ADD';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset
+    (mnemonic:'ADD';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_rreg3; offset:6));            mask: %1111111000000000; value: %0001100000000000),
+    (mnemonic:'SUB';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_rreg3; offset:6));            mask: %1111111000000000; value: %0001111000000000),
+    (mnemonic:'MOV';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:8), (ptype:pt_imm; offset:0; maxval: 255));                             mask: %1111100000000000; value: %0010000000000000),
+    (mnemonic:'CMP';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:8), (ptype:pt_imm; offset:0; maxval: 255));                             mask: %1111100000000000; value: %0010100000000000),
+    (mnemonic:'ADD';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_imm; offset:6; maxval: 7));   mask: %1111111000000000; value: %0001110000000000),
+    (mnemonic:'ADD';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:8), (ptype:pt_imm; offset:6; maxval: 255));                             mask: %1111100000000000; value: %0011000000000000),
+    (mnemonic:'SUB';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_imm; offset:6; maxval: 7));   mask: %1111111000000000; value: %0001111000000000),
+    (mnemonic:'SUB';  additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:8), (ptype:pt_imm; offset:6; maxval: 255));                             mask: %1111100000000000; value: %0011100000000000)
+  );
+
+  ThumbInstructionsDataProcessing16:array of TOpcode=(
+    //010000**********
+    (mnemonic:'AND'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100000000000000),
+    (mnemonic:'EOR'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100000001000000),
+    (mnemonic:'LSL'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100000010000000),
+    (mnemonic:'LSR'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100000011000000),
+    (mnemonic:'ASR'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100000100000000),
+    (mnemonic:'ADC'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100000101000000),
+    (mnemonic:'SBC'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100000110000000),
+    (mnemonic:'ROR'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100000111000000),
+    (mnemonic:'TST'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100001000000000),
+    (mnemonic:'RSB'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_imm_val0));            mask: %1111111111000000; value: %0100001001000000),
+    (mnemonic:'CMP'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100001010000000),
+    (mnemonic:'CMN'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100001011000000),
+    (mnemonic:'ORR'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100001100000000),
+    (mnemonic:'MUL'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3));                                 mask: %1111111111000000; value: %0100001101000000),
+    (mnemonic:'BIC'; additions:[opa_ITCond_S];  params:((ptype:pt_rreg3; offset:0), (ptype:pt_rreg3; offset:3), (ptype:pt_rreg3_same; offset:0));mask: %1111111111000000; value: %0100001110000000),
+    (mnemonic:'MVN'; additions:[opa_ITCond_
