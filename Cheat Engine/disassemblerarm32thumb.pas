@@ -302,4 +302,75 @@ const
     (mnemonic:'BFI'; additions:[]; params:((ptype:pt_rreg4; offset:8), (ptype:pt_rreg4; offset:16),(ptype:pt_immx; offset:$00000c06; maxval:$00000302),  (ptype:pt_imm; offset:0; maxval:$1f));  mask: %11111111111100001000000000100000; value: %11110011011000000000000000000000), //14
 
     (mnemonic:'USAT16';additions:[];params:((ptype:pt_rreg4; offset:8), (ptype:pt_imm; offset:0; maxval:$f), (ptype:pt_rreg4; offset:16));                                                       mask: %11111111111100001111000011110000; value: %11110011101000000000000000000000),
-    (mnemonic:'USAT'; additions:[]; params:((ptype:pt_rreg4; offset:8), (ptype:pt_imm; offset:0; maxval:$1f), (ptype:pt_rreg4; offset:16), (ptype:pt_shift5_thumb; offset:4));                   mask: %11111111110100001000000000100000; value: %1111001110000000000000000000000
+    (mnemonic:'USAT'; additions:[]; params:((ptype:pt_rreg4; offset:8), (ptype:pt_imm; offset:0; maxval:$1f), (ptype:pt_rreg4; offset:16), (ptype:pt_shift5_thumb; offset:4));                   mask: %11111111110100001000000000100000; value: %11110011100000000000000000000000),
+
+    (mnemonic:'UBFX'; additions:[]; params:((ptype:pt_rreg4; offset:8), (ptype:pt_rreg4; offset:16),(ptype:pt_immx; offset:$00000c06; maxval:$00000302),  (ptype:pt_imm; offset:0; maxval:$1f)); mask: %11111111111100001000000000100000; value: %11110011110000000000000000000000) //14
+
+
+  );
+
+  ThumbInstructionsBranchesAndMiscellaneousControl:array of TOpcode=(    );
+
+
+
+  ThumbInstructionsLoadStoreMultiple32: array of TOpcode=(    );
+  ThumbInstructionsLoadStoreDualLoadStoreExclusiveTableBranch32: array of TOpcode=(    );
+  ThumbInstructionsDataProcessingShiftedRegister: array of TOpcode=(    );
+
+
+  ThumbInstructionsStoreSingleDataItem: array of TOpcode=(    );
+  ThumbInstructionsLoadByteMemoryHints: array of TOpcode=(    );
+  ThumbInstructionsLoadHalfWordMemoryHints: array of TOpcode=(    );
+  ThumbInstructionsLoadWord:   array of TOpcode=(    );
+  ThumbInstructionsMultiplyMultiplyAccumulateAndAbsoleDifference:array of TOpcode=(    );
+  ThumbInstructionsLongMultiplyLongMultiplyAccumulateAndDivide:array of TOpcode=(    );
+
+  ThumbInstructionsChangeProcessorState:array of TOpcode=(    );
+  ThumbInstructionsMiscellaneousControlInstructions:array of TOpcode=(    );
+
+
+
+//--------------------------- instruction groups----------------------------//
+
+
+ //
+
+
+  ThumbGroupBase16: array of TInstructionGroup=(
+    (mask:%1111110000000000; value: %0100000000000000; list: @ThumbInstructionsDataProcessing16; listType: igpInstructions; name: 'ThumbInstructionsDataProcessing'),
+    (mask:%1111110000000000; value: %0100010000000000; list: @ThumbInstructionsSpecialDataInstructionsAndBranchAndExchange16; listType: igpInstructions; name: 'ThumbGroupSpecialDataInstructionsAndBranchAndExchange'),
+    (mask:%1111100000000000; value: %0100100000000000; list: @ThumbInstructionsBase16; listType: igpInstructions; name: 'ThumbInstructionsBase16'), //LDR
+    (mask:%1111100000000000; value: %1010000000000000; list: @ThumbInstructionsBase16; listType: igpInstructions; name: 'ThumbInstructionsBase16'), //ADR
+    (mask:%1111100000000000; value: %1010100000000000; list: @ThumbInstructionsBase16; listType: igpInstructions; name: 'ThumbInstructionsBase16'), //ADD
+    (mask:%1111100000000000; value: %1100000000000000; list: @ThumbInstructionsBase16; listType: igpInstructions; name: 'ThumbInstructionsBase16'), //STM
+    (mask:%1111100000000000; value: %1100100000000000; list: @ThumbInstructionsBase16; listType: igpInstructions; name: 'ThumbInstructionsBase16'), //LDM
+    (mask:%1111100000000000; value: %1110000000000000; list: @ThumbInstructionsBase16; listType: igpInstructions; name: 'ThumbInstructionsBase16'), //B
+
+
+    (mask:%1111000000000000; value: %1011000000000000; list: @ThumbInstructionsMiscellaneous16BitInstructions; listType: igpInstructions; name: 'ThumbInstructionsMiscellaneous16BitInstructions'),
+
+
+    (mask:%1111000000000000; value: %1101000000000000; list: @ThumbInstructionsConditionalBranchAndSupervisorCall16; listType: igpInstructions; name: 'ThumbGroupConditionalBranchAndSupervisorCall'),
+
+
+    (mask:%1111000000000000; value: %0101000000000000; list: @ThumbInstructionsLoadStoreSingleDataItem; listType: igpInstructions; name: 'ThumbInstructionsLoadStoreSingleDataItem'),
+    (mask:%1110000000000000; value: %0110000000000000; list: @ThumbInstructionsLoadStoreSingleDataItem; listType: igpInstructions; name: 'ThumbInstructionsLoadStoreSingleDataItem'),
+    (mask:%1110000000000000; value: %1000000000000000; list: @ThumbInstructionsLoadStoreSingleDataItem; listType: igpInstructions; name: 'ThumbInstructionsLoadStoreSingleDataItem'),
+
+
+    (mask:%1100000000000000; value: %0000000000000000; list: @ThumbInstructionsShiftAddSubtractMoveAndCompare16; listType: igpInstructions; name: 'ThumbInstructionsShiftAddSubtractMoveAndCompare')
+  );
+
+
+
+  //32
+  ThumbGroupCoprocessorAdvancedSIMDAndFloatingPointInstructions: array of TInstructionGroup=();
+
+  ThumbGroupBranchesAndMiscellaneousControl: array of TInstructionGroup=(
+         //11110***********1***************          11110***********1***************
+    (mask:%11111111111100001101000000000000; value: %11110011101000001000000000000000; list: @ThumbInstructionsChangeProcessorState; listType: igpInstructions; name: 'ThumbInstructionsChangeProcessorState'),
+    (mask:%11111111111100001101000000000000; value: %11110011101100001000000000000000; list: @ThumbInstructionsMiscellaneousControlInstructions; listType: igpInstructions; name: 'ThumbInstructionsMiscellaneousControlInstructions'),
+    (mask:%00000000000000000000000000000000; value: %00000000000000000000000000000000; list: @ThumbInstructionsBranchesAndMiscellaneousControl; listType: igpInstructions; name: 'ThumbInstructionsBranchesAndMiscellaneousControl')
+  );
+
+  ThumbGroupAdvancedSIMDElementOr
