@@ -373,4 +373,69 @@ const
     (mask:%00000000000000000000000000000000; value: %00000000000000000000000000000000; list: @ThumbInstructionsBranchesAndMiscellaneousControl; listType: igpInstructions; name: 'ThumbInstructionsBranchesAndMiscellaneousControl')
   );
 
-  ThumbGroupAdvancedSIMDElementOr
+  ThumbGroupAdvancedSIMDElementOrStructureLoadStoreInstructions: array of TInstructionGroup=();
+  ThumbGroupDataProcessingRegister: array of TInstructionGroup=();
+
+
+  ThumbGroupBase32: array of TInstructionGroup=(
+    //note: the words are swapped
+    //111*****************************
+
+    (mask:%11111110010000000000000000000000; value: %11101000000000000000000000000000; list: @ThumbInstructionsLoadStoreMultiple32; listType: igpInstructions; name: 'ThumbInstructionsLoadStoreMultiple32'),
+    (mask:%11111110010000000000000000000000; value: %11101000010000000000000000000000; list: @ThumbInstructionsLoadStoreDualLoadStoreExclusiveTableBranch32; listType: igpInstructions; name: 'ThumbInstructionsLoadStoreDualLoadStoreExclusiveTableBranch32'),
+    (mask:%11111110000000000000000000000000; value: %11101010000000000000000000000000; list: @ThumbInstructionsDataProcessingShiftedRegister; listType: igpInstructions; name: 'ThumbInstructionsDataProcessingShiftedRegister'),
+    (mask:%11111100000000000000000000000000; value: %11101100000000000000000000000000; list: @ThumbGroupCoprocessorAdvancedSIMDAndFloatingPointInstructions; listType: igpGroup; name: 'ThumbGroupCoprocessorAdvancedSUMDAndFloatingPointInstructions'),
+
+    (mask:%11111010000000001000000000000000; value: %11110000000000000000000000000000; list: @ThumbInstructionsDataProcessingModifiedImmediate; listType: igpInstructions; name: 'ThumbInstructionsDataProcessingModifiedImmediate'),
+    (mask:%11111010000000001000000000000000; value: %11110010000000000000000000000000; list: @ThumbInstructionsDataProcessingPlainBinaryImmediate; listType: igpInstructions; name: 'ThumbInstructionsDataProcessingPlainBinaryImmediate'),
+    (mask:%11111000000000001000000000000000; value: %11110000000000001000000000000000; list: @ThumbGroupBranchesAndMiscellaneousControl; listType: igpGroup; name: 'ThumbGroupBranchesAndMiscellaneousControl'),
+
+    (mask:%11111111000100000000000000000000; value: %11111000000000000000000000000000; list: @ThumbInstructionsStoreSingleDataItem; listType: igpInstructions; name: 'ThumbInstructionsStoreSingleDataItem'),
+    (mask:%11111110011100000000000000000000; value: %11111000000100000000000000000000; list: @ThumbInstructionsLoadByteMemoryHints; listType: igpInstructions; name: 'ThumbInstructionsLoadByteMemoryHints'),
+    (mask:%11111110011100000000000000000000; value: %11111000001100000000000000000000; list: @ThumbInstructionsLoadHalfWordMemoryHints; listType: igpInstructions; name: 'ThumbInstructionsLoadHalfWordMemoryHints'),
+    (mask:%11111110011100000000000000000000; value: %11111000010100000000000000000000; list: @ThumbInstructionsLoadWord; listType: igpInstructions; name: 'ThumbInstructionsLoadWord'),
+
+    (mask:%11111110011100000000000000000000; value: %11111000011100000000000000000000; list: @ThumbInstructionsUndefined; listType: igpInstructions; name: 'ThumbInstructionsUndefined'),
+
+    (mask:%11111111000100000000000000000000; value: %11111001000000000000000000000000; list: @ThumbGroupAdvancedSIMDElementOrStructureLoadStoreInstructions; listType: igpGroup; name: 'ThumbGroupAdvancedSIMDElementOrStructureLoadStoreInstructions'),
+    (mask:%11111111000000000000000000000000; value: %11111010000000000000000000000000; list: @ThumbGroupDataProcessingRegister; listType: igpGroup; name: 'ThumbGroupDataProcessingRegister'),
+
+    (mask:%11111111100000000000000000000000; value: %11111011000000000000000000000000; list: @ThumbInstructionsMultiplyMultiplyAccumulateAndAbsoleDifference; listType: igpInstructions; name: 'ThumbInstructionsMultiplyMultiplyAccumulateAndAbsoleDifference'),
+    (mask:%11111111100000000000000000000000; value: %11111011100000000000000000000000; list: @ThumbInstructionsLongMultiplyLongMultiplyAccumulateAndDivide; listType: igpInstructions; name: 'ThumbInstructionsLongMultiplyLongMultiplyAccumulateAndDivide'),
+
+    (mask:%11111100000000000000000000000000; value: %11111100000000000000000000000000; list: @ThumbGroupCoprocessorAdvancedSIMDAndFloatingPointInstructions;  listType: igpGroup; name: 'ThumbGroupCoprocessorAdvancedSIMDAndFloatingPointInstructions')
+
+  );
+
+
+var
+  ThumbInstructionsAssemblerList: TStringHashList;
+
+  tlbilist: TStringHashList;
+
+
+{$ifdef armdev}
+procedure DebugOutputOpcode(opcode: POpcode);
+var
+  s: string;
+  i: integer;
+  ti: PTypeInfo;
+  tn: string;
+
+  insideIndex: boolean;
+begin
+  s:='';
+  insideIndex:=false;
+  for i:=0 to length(opcode^.params)-1 do
+  begin
+    tn:='';
+    if (insideIndex=false) and (opcode^.params[i].index<>ind_no) then
+    begin
+      insideindex:=true;
+      tn:=tn+'[';
+    end;
+
+    ti:=TypeInfo(TThumbParameterType);
+    tn:=tn+GetEnumName(ti, integer(opcode^.params[i].ptype));
+    {
+    if (insideInd
