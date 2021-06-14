@@ -907,4 +907,184 @@ begin
         for j:=0 to 7 do
         begin
           if ((opcode shr plist[i].offset) and (1 shl j))<>0 then
-         
+          begin
+            if not first then
+              p:=p+', '
+            else
+              first:=false;
+
+            p:=p+ArmRegisters[j];
+          end;
+        end;
+
+        if plist[i].ptype=pt_reglist8_withExtra then
+        begin
+          if ((opcode shr (pbyte(@plist[i].extra)[1])) and 1)=1 then
+          begin
+            j:=pbyte(@plist[i].extra)[0];
+            p:=p+', '+ArmRegisters[j];
+          end;
+        end;
+        p:=p+'}';
+      end;
+
+      pt_reglist8_exclude_rreg3:
+      begin
+        p:='{';
+        first:=true;
+        v:=opcode shr plist[i].extra and 7;
+
+        for j:=0 to 7 do
+        begin
+          if ((opcode shr plist[i].offset) and (1 shl j))<>0 then
+          begin
+            if j=v then exit(false); //invalid bit set
+
+            if not first then
+              p:=p+', '
+            else
+              first:=false;
+
+            p:=p+ArmRegisters[j];
+          end;
+        end;
+        p:=p+'}';
+      end;
+
+      pt_reglist13:
+      begin
+        p:='{';
+        first:=true;
+        for j:=0 to 12 do
+        begin
+          if ((opcode shr plist[i].offset) and (1 shl j))<>0 then
+          begin
+            if not first then
+              p:=p+', '
+            else
+              first:=false;
+
+            p:=p+ArmRegisters[j];
+          end;
+        end;
+        p:=p+'}';
+      end;
+
+      pt_cond:
+      begin
+        v:=(opcode shr plist[i].offset) and $f;
+        p:=ArmConditions[v];
+      end;
+
+      pt_const_thumb, pt_const_thumb_noenc, pt_const_thumb_noenc16:
+      begin
+        v:=opcode and $ff;
+
+        v2:=(opcode shr 12) and 7;
+        v2:=v2 or (((opcode shr 26) and 1) shl 3);
+        v:=(v2 shl 8) or v;
+
+        if plist[i].ptype=pt_const_thumb then
+          v:=thumbExpandImm(v);
+
+        if plist[i].ptype=pt_const_thumb_noenc16 then
+          v:=v or (((opcode shr 16) and $f) shl 12);
+
+        p:='#'+v.ToHexString(1);
+      end;
+
+      pt_const_thumb_poslabel:
+      begin
+        v:=opcode and $ff;
+
+        v2:=(opcode shr 12) and 7;
+        v2:=v2 or (((opcode shr 26) and 1) shl 3);
+        v:=(v2 shl 8) or v;
+
+        v:=address+v+4;
+
+        p:=v.ToHexString(1);
+      end;
+
+      pt_const_thumb_neglabel:
+      begin
+        v:=opcode and $ff;
+
+        v2:=(opcode shr 12) and 7;
+        v2:=v2 or (((opcode shr 26) and 1) shl 3);
+        v:=(v2 shl 8) or v;
+
+        v:=address-v+4;
+
+        p:=v.ToHexString(1);
+      end;
+
+      pt_shift5_thumb: //shift is stored in imm3:imm2 stored at offset 6 and 12 . Type is stored in the 2 bits pointed at by offset (usually offset 4, but can be different)
+      begin
+        v:=(opcode shr 6) and 3;
+        v:=v or ((opcode shr 12) and 7);
+        v2:=(opcode shr plist[i].offset) and 3;
+
+        case v2 of //type
+          0: if v=0 then continue else p:='LSL #'+inttohex(v,1);
+          1: if v=0 then p:='LSR #20' else p:='LSR #'+inttohex(v,1);
+          2: if v=0 then p:='ASR #20' else p:='ASR #'+inttohex(v,1);
+          3: if v=0 then p:='RRX' else p:='ROR #'+inttohex(v,1);
+        end;
+      end;
+
+
+    end;
+
+
+    if i>0 then
+      LastDisassembleData.parameters:=LastDisassembleData.parameters+', ';
+
+
+    if (not insideIndex) and (plist[i].index in [ind_index, ind_single, ind_singleexp]) then
+    begin
+      LastDisassembleData.parameters:=LastDisassembleData.parameters+'[';
+      insideindex:=true;
+    end;
+
+    LastDisassembleData.parameters:=LastDisassembleData.parameters+p;
+
+
+    if insideindex and (plist[i].index in [ind_single, ind_singleexp, ind_stop, ind_stopexp, ind_index]) then
+    begin
+
+      if (plist[i].index<>ind_index) or (i=length(plist)-1) then
+      begin
+        LastDisassembleData.parameters:=LastDisassembleData.parameters+']';
+        if plist[i].index in [ind_singleexp, ind_stopexp] then
+          LastDisassembleData.parameters:=LastDisassembleData.parameters+'!';
+
+        insideindex:=false;
+      end;
+    end;
+  end;
+
+end;
+
+function TThumbInstructionset.ScanOpcodeList(const list: topcodearray): boolean;
+var i: integer;
+begin
+  result:=false;
+  for i:=0 to length(list)-1 do
+  begin
+    if ((opcode and list[i].mask)=list[i].value) and (list[i].use in [iuBoth, iuDisassembler]) then
+    begin
+      if list[i].alt<>nil then
+      begin
+        result:=ScanOpcodeList(list[i].alt^);
+        if result then exit;
+      end;
+
+      {$ifdef armdev}
+      DebugOutputOpcode(@list[i]);
+      {$endif}
+
+      LastDisassembleData.opcode:=list[i].mnemonic;
+
+      if (opa_s20 in list[i].additions) and ((list[i].mask and $100000) = 0) and ((opcode and $100000)=$100000) then
+        LastDisassembleData.opcode:=LastDisassembleDa
