@@ -438,4 +438,262 @@ begin
     ti:=TypeInfo(TThumbParameterType);
     tn:=tn+GetEnumName(ti, integer(opcode^.params[i].ptype));
     {
-    if (insideInd
+    if (insideIndex) and (opcode^.params[i].index in [ind_no, ind_stop, ind_stopexp, ind_single, ind_singleexp]) then
+    begin
+      insideindex:=false;
+      tn:=tn+']';
+
+      if opcode^.params[i].index in [ind_stopexp, ind_singleexp] then
+        tn:=tn+'!';
+    end; }
+
+    if i>0 then s:=s+', ';
+    s:=s+tn;
+  end;
+
+
+  if insideindex then
+    s:=s+']';
+
+  outputdebugstring(pchar(opcode^.mnemonic+'('+s+')'));
+end;
+{$endif}
+
+
+function SignExtend(value: qword; mostSignificantBit: integer): qword; inline;
+{
+Signextends a given offset. mostSignificant bit defines what bit determines if it should be sign extended or not
+}
+begin
+  if (value and (1 shl mostSignificantBit))<>0 then //needs to be sign extended
+      value:=value or ((qword($ffffffffffffffff) shl mostSignificantBit));
+
+  result:=value;
+end;
+
+function highestbit(v: dword): integer;
+var i: integer;
+begin
+  case v of
+        $ff: exit(8);
+       $1ff: exit(9);
+      $3fff: exit(14);
+      $7fff: exit(15);
+      $ffff: exit(16);
+     $1ffff: exit(17);
+     $3ffff: exit(18);
+     $7ffff: exit(19);
+    $ffffff: exit(23);
+
+    $7ffffff: exit(26);
+    else
+    begin
+      result:=0;
+      for i:=31 downto 0 do
+        if (v and (1 shl i))<>0 then exit(i);
+    end;
+  end;
+end;
+
+function ones(len: integer): qword;
+begin
+  result:=qword(qword(1) shl len)-1;
+end;
+
+function zeroextend(v: qword; bitlen: integer): qword;
+begin
+  result:=v and ones(bitlen);
+end;
+
+function ror(v: qword; esize: integer; r: integer): qword;
+var a,b: qword;
+begin
+  a:=v shl (esize-r) and ones(esize);
+  b:=v shr r and ones(esize);
+
+  result:=(a or b) and ones(esize);
+
+end;
+
+function replicate(v: qword; sourceSize: integer; destinationSize: integer): qword;
+var
+  repval: qword;
+  times: integer;
+  i: integer;
+  r: qword;
+begin
+  if sourcesize=0 then exit;
+
+  repval:=v and zeroextend(v, sourcesize);
+
+  times:=destinationsize div sourcesize;
+  result:=0;
+  for i:=1 to times do
+    result:=(result shl sourcesize) or repval;
+
+  result:=result or repval;
+end;
+
+function armbitmask(v: qword; datasize: integer): qword;
+var
+  d: bitpacked record
+    imms: 0..$3f;
+    immr: 0..$3f;
+    immN: 0..1;
+  end absolute v;
+
+  len,len2: integer;
+  levels,level2: integer;
+
+  s: integer;
+  r: integer;
+  diff: integer;
+  esize: integer;
+  welem: qword;
+  telem: qword;
+
+  _d: integer;
+
+  scratch: bitpacked record
+    v: 0..$3f;
+    tmask_and, wmask_and: 0..$3f;
+    tmask_or, wmask_or: 0..$3f;
+    levels: 0..$3f;
+  end;
+
+  tmask: qword;
+  wmask: qword;
+begin
+  result:=0;
+  scratch.v:=d.imms;
+  scratch.v:=not scratch.v;
+
+
+  len:=highestbit((d.immn shl 6) or (scratch.v));
+  if len<1 then exit(0);
+
+  scratch.v:=ones(len);
+  levels:=scratch.v;
+
+  s:=d.imms and levels;
+  r:=d.immr and levels;
+  diff:=s-r;
+
+  esize:=1 shl len;
+
+  _d:=diff and (ones(len-1));
+
+  welem:=zeroextend(ones(s+1), esize);
+  telem:=zeroextend(ones(_d+1), esize);
+
+  wmask:=replicate(ror(welem, esize, r), esize, datasize);
+  tmask:=replicate(telem, esize, datasize);
+
+  exit(wmask);
+end;
+
+function bhsd(encoding2: integer): string;
+begin
+  case encoding2 and 3 of
+    %00: exit('B');
+    %01: exit('H');
+    %10: exit('S');
+    %11: exit('D');
+  end;
+end;
+
+function bhsd2(encoding2: integer): string;
+begin
+  case encoding2 and 3 of
+    %01: exit('B');
+    %10: exit('H');
+    %11: exit('S');
+  end;
+end;
+
+
+function floatToFP8(f: single): byte;
+var
+  fi: single;
+  fib: bitpacked record
+    frac: 0..$3FFFFF;
+    exp: 0..255;
+    sign: 0..1;
+  end absolute fi;
+
+  rb: byte;
+  r: bitpacked record
+    frac: 0..$f;
+    exp: 0..7;
+    sign: 0..1;
+  end absolute rb;
+
+begin
+  fi:=f;
+
+  rb:=0;
+  r.sign:=fib.sign;
+  r.exp:=fib.Exp;
+  r.frac:=fib.frac shr 18;
+
+  result:=rb;
+
+end;
+
+function fp8tofloat(v: byte): single;
+var
+  n: integer;
+  e: integer;
+  f: integer;
+  sign: integer;
+  exp: integer;
+  frac: integer;
+
+  r: single;
+  fr: bitpacked record
+    sign: 1..1;
+    exp: 0..255;
+    frac: 0..$3FFFFF;
+  end absolute r;
+
+begin
+  r:=0;
+  n:=32;
+  e:=8;
+  f:=n-e-1;
+
+  fr.sign:=(v shr 7) and 1;
+  fr.exp:=(not((v shr 6) and 1) shr 7) or (replicate((v shr 6) and 1, 1,e-3) shl 2) or ((v shr 4) and 3);
+  fr.frac:=(v and $f) shl 18;
+
+  result:=r;
+
+end;
+
+function shiftTypeToInteger(s: string): integer;
+begin
+  if s='LSL' then exit(0);
+  if s='LSR' then exit(1);
+  if s='ASR' then exit(2);
+  if s='ROR' then exit(3);
+  result:=-1;
+end;
+
+function getShiftTypeString(t: integer): string;
+begin
+  case t and $3 of
+    0: exit('LSL');
+    1: exit('LSR');
+    2: exit('ASR');
+    3: exit('ROR');
+  end;
+end;
+
+function ARMRegisterStringToInteger(s: string):integer;
+begin
+  result:=-1;
+  if length(s)<2 then exit;
+  s:=uppercase(s);
+
+  try
+    if s[1]='R' then exit(strtoint
