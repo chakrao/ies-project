@@ -696,4 +696,215 @@ begin
   s:=uppercase(s);
 
   try
-    if s[1]='R' then exit(strtoint
+    if s[1]='R' then exit(strtoint(s.Substring(1)));
+  except
+    exit;
+  end;
+
+  if s='FP' then exit(11);
+  if s='IP' then exit(12);
+  if s='SP' then exit(13);
+  if s='LR' then exit(14);
+  if s='PC' then exit(15);
+end;
+
+function thumbEncodeImm(v: dword): dword;
+var
+  i: integer;
+  ba: PByte;
+begin
+  //try pattern method
+
+  ba:=@v;
+
+  if (ba[1]=0) and (ba[2]=0) and (ba[3]=0) then exit(v);
+  if (ba[1]=0) and (ba[2]=ba[0]) and (ba[3]=0) then exit((1 shl 8) or ba[0]);
+  if (ba[0]=0) and (ba[1]=ba[3]) and (ba[2]=0) then exit((2 shl 8) or ba[1]);
+  if (ba[0]=ba[1]) and (ba[1]=ba[2]) and (ba[2]=ba[3]) then exit((3 shl 8) or ba[1]);
+
+
+  //still here
+  //cut down the value
+  i:=0;
+  while v and (1 shl 31)=0 do
+  begin
+    v:=v shl 1;
+    inc(i);
+  end;
+  v:=v shl 1; //one extra because the last bit is assumed a 1
+  if (v and $007fffff)<>0 then raise exception.create('Value can not be encoded');
+
+  v:=v shr 25;
+  v:=v or ((i+8) shl 7);
+  exit(v);
+
+end;
+
+function thumbExpandImm(v: dword): dword;
+var v2: dword;
+  rot: integer;
+begin
+  if (v shr 10)=0 then
+  begin
+    v2:=v and $ff;
+    case v shr 8 and 3 of
+      0: result:=v2;
+      1: result:=(v2 shl 16) or v2;
+      2: result:=(v2 shl 24) or (v2 shl 8);
+      3: result:=(v2 shl 24) or (v2 shl 16) or (v2 shl 8) or v2;
+    end;
+  end
+  else
+  begin
+    v2:=v and $7f;
+    v2:=v2 or (1 shl 7);
+
+    rot:=v shr 7;
+    result:=RorDWord(v2, rot);
+  end;
+end;
+
+function getimmx(value: dword; offsets, bitcounts: PByte; arraylength: integer): dword;
+var
+  i: integer;
+  bitlen: integer;
+  mask: dword;
+  t: dword;
+begin
+  result:=0;
+  bitlen:=0;
+  for i:=0 to arraylength-1 do
+  begin
+    if bitcounts[i]=0 then break; //end reached
+    mask:=(1 shl bitcounts[i])-1;
+
+    t:=((value shr offsets[i]) and mask) shl bitlen;
+    result:=result or t;
+    inc(bitlen, bitcounts[i]);
+  end;
+end;
+
+procedure setimmx(var value: dword; valueToSet: dword; offsets, bitcounts: PByte; arraylength: integer);
+var
+  i: integer;
+  bitpos: integer;
+  mask: dword;
+
+  t: dword;
+begin
+  bitpos:=0;
+  for i:=0 to arraylength-1 do
+  begin
+    mask:=(1 shl bitcounts[i])-1;
+    value:=value and ((not mask) shl offsets[i]); //erase the old value (should be 0, but lets be sure)
+
+    t:=((valueToSet shr bitpos) and mask) shl offsets[i];
+    value:=value or t;
+
+    inc(bitpos, bitcounts[i]);
+  end;
+end;
+
+function TThumbInstructionset.ParseParametersForDisassembler(plist: TAParametersList): boolean;
+var
+  i,j: integer;
+  v,v2,v3: dword;
+  qv,qv2: qword;
+
+  p,s: string;
+
+  insideIndex: boolean;
+  first: boolean;
+
+  pb,pb2: pbyte;
+begin
+  result:=true;
+  insideIndex:=false;
+
+
+
+  for i:=0 to length(plist)-1 do
+  begin
+
+    p:='';
+    case plist[i].ptype of
+      pt_rreg3, pt_rreg3_exp:
+      begin
+        v:=(opcode shr plist[i].offset) and 7;
+        p:=ArmRegisters[v];
+
+        if plist[i].ptype=pt_rreg3_exp then p:=p+'!';
+      end;
+
+      pt_rreg3_1:
+      begin
+        v:=(opcode shr plist[i].offset) and 7;
+        v:=v or (((opcode shr plist[i].extra) and 1) shl 3);
+        p:=ArmRegisters[v];
+      end;
+
+      pt_rreg4:
+      begin
+        v:=(opcode shr plist[i].offset) and $f;
+        p:=ArmRegisters[v];
+      end;
+
+      pt_spreg: p:='SP';
+      pt_imm_val0: p:='#0';
+
+      pt_imm:
+      begin
+        v:=(opcode shr plist[i].offset) and plist[i].maxval;
+        p:='#'+v.ToHexString(1);
+      end;
+
+      pt_simm_shl1_label:
+      begin
+        v:=(opcode shr plist[i].offset) and plist[i].maxval;
+        v:=SignExtend(v,7);
+        v:=v shl 1;
+
+        v:=address+v+2*size;
+        p:=v.ToHexString(1);
+      end;
+
+      pt_imm5_1_shl1_label:
+      begin
+        v:=(opcode shr plist[i].offset) and $1f;
+        v:=v or (((opcode shr plist[i].extra) and 1) shl 5);
+        v:=v shl 1;
+
+        v:=address+v+2*size;
+        p:=v.ToHexString(1);
+      end;
+
+      pt_imm_shl2_poslabel:
+      begin
+        v:=(opcode shr plist[i].offset) and plist[i].maxval;
+        v:=v shl 2;
+        v:=(address and $fffffffc)+v+2*size;
+        p:=v.ToHexString(1);
+      end;
+
+      pt_imm_shl2:
+      begin
+        v:=(opcode shr plist[i].offset) and plist[i].maxval;
+        v:=v shl 2;
+        p:='#'+v.ToHexString(1);
+      end;
+
+      pt_immx:
+      begin
+        v:=getimmx(opcode, @plist[i].offset, @plist[i].maxval,4);
+        p:='#'+v.ToHexString(1);
+      end;
+
+      pt_reglist8,
+      pt_reglist8_withExtra:
+      begin
+        p:='{';
+        first:=true;
+        for j:=0 to 7 do
+        begin
+          if ((opcode shr plist[i].offset) and (1 shl j))<>0 then
+         
