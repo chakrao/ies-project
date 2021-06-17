@@ -1087,4 +1087,200 @@ begin
       LastDisassembleData.opcode:=list[i].mnemonic;
 
       if (opa_s20 in list[i].additions) and ((list[i].mask and $100000) = 0) and ((opcode and $100000)=$100000) then
-        LastDisassembleData.opcode:=LastDisassembleDa
+        LastDisassembleData.opcode:=LastDisassembleData.opcode+LastDisassembleData.opcode+'S';
+
+      if (opa_tcond8 in list[i].additions) then
+        LastDisassembleData.opcode:=LastDisassembleData.opcode+ArmConditions[(opcode shr 8) and $f];
+
+
+
+      //parse the parameters
+      if ParseParametersForDisassembler(list[i].params) then
+        exit(true);
+    end;
+  end;
+end;
+
+function TThumbInstructionset.ScanGroupList(const list: TInstructionGroupArray):boolean;
+var i: integer;
+begin
+  result:=false;
+  for i:=0 to length(list)-1 do
+  begin
+    if (opcode and list[i].mask)=list[i].value then
+    begin
+      if list[i].listType=igpGroup then
+        result:=ScanGroupList(PInstructionGroupArray(list[i].list)^)
+      else
+        result:=ScanOpcodeList(POpcodeArray(list[i].list)^);
+
+      if result then //unlike arm64, Thumb is a chaotic pile of doodoo with many overlaps
+        exit;
+    end;
+  end;
+end;
+
+
+
+function TThumbInstructionset.disassemble(var DisassembleAddress: ptruint{$ifdef armdev}; _opcode: dword{$endif}): string;
+var
+  x: ptruint;
+  i: integer;
+
+  t: dword;
+begin
+  InitThumbSupport;
+
+  address:=DisassembleAddress;
+  x:=0;
+  setlength(LastDisassembleData.Bytes,4);
+
+  {$ifdef armdev}
+  PDWORD(@LastDisassembleData.Bytes[0])^:=_opcode;
+  opcode:=_opcode;
+  x:=4;
+  {$else}
+  readprocessmemory(processhandle, pointer(address), @LastDisassembleData.Bytes[0], 4, x);
+  opcode:=pdword(@LastDisassembleData.Bytes[0])^;
+  {$endif}
+
+  LastDisassembleData.opcode:='UNDEFINED';
+  Lastdisassembledata.parameters:='';
+  LastDisassembleData.address:=address;
+  LastDisassembleData.SeperatorCount:=0;
+  LastDisassembleData.prefix:='';
+  LastDisassembleData.PrefixSize:=0;
+  LastDisassembleData.opcode:='';
+  LastDisassembleData.parameters:='';
+  lastdisassembledata.isjump:=false;
+  lastdisassembledata.iscall:=false;
+  lastdisassembledata.isret:=false;
+  lastdisassembledata.isconditionaljump:=false;
+  lastdisassembledata.modrmValueType:=dvtNone;
+  lastdisassembledata.parameterValueType:=dvtNone;
+  lastdisassembledata.Disassembler:=dcArm;
+
+  case (opcode and %1111100000000000) shr 11 of
+    %11101,
+    %11110,
+    %11111:
+    begin
+      size:=4;
+
+      //swap the words
+      t:=opcode;
+
+      opcode:=t shr 16;
+      opcode:=opcode or (t shl 16);
+      ScanGroupList(ThumbGroupBase32);
+    end
+    else
+    begin
+      setlength(LastDisassembleData.Bytes,2);
+      size:=2;
+      opcode:=opcode and $ffff;
+      ScanGroupList(ThumbGroupBase16);
+    end;
+  end;
+
+  result:=inttohex(LastDisassembleData.address,8);
+  result:=result+' - ';
+  if x>0 then
+  begin
+    for i:=0 to length(LastDisassembleData.bytes)-1 do
+      result:=result+inttohex(LastDisassembleData.Bytes[i],2)+' ';
+  end
+  else
+  begin
+    for i:=0 to length(LastDisassembleData.bytes)-1 do
+      result:=result+'?? ';
+  end;
+
+  result:=result+' - ';
+  result:=result+LastDisassembleData.opcode;
+  result:=result+' ';
+  result:=result+LastDisassembleData.parameters;
+
+  inc(DisassembleAddress,4);
+end;
+
+
+
+
+function TThumbInstructionset.GuessTypes(param: string): TThumbParameterTypes;
+var
+  li: longint;
+  i64: int64;
+  i: integer;
+  s: string;
+  f: single;
+  v: dword;
+  isforcedSigned: boolean;
+  hasExp: boolean;
+
+  notlabel: boolean;
+begin
+  //pt_creg?
+  result:=[];
+  param:=trim(param);
+  if length(param)=0 then exit;
+
+
+  i:=ARMRegisterStringToInteger(param);
+  if i<>-1 then
+  begin
+    if i<=7 then
+      result:=result+[pt_rreg3, pt_rreg3_same, pt_rreg4,pt_rreg3_1]
+    else
+      result:=result+[pt_rreg4, pt_rreg3_1];
+
+    if i=13 then
+      result:=result+[pt_spreg];
+  end;
+
+
+  if (param[1]='#') then
+  begin
+    param:=param.Substring(1);
+    notlabel:=true;   //not a label when # is used
+  end
+  else
+    notlabel:=false;
+
+
+  if (param[1]='-') then
+  begin
+    if TryStrToUInt('-$'+param.Substring(1),v) then
+      result:=result+[pt_imm_shl2, pt_imm];
+  end
+  else
+  begin
+    if TryStrToUInt('$'+param,v) then
+    begin
+      result:=result+[pt_imm_shl2, pt_imm, pt_immx, pt_const_thumb, pt_const_thumb_noenc, pt_const_thumb_noenc16];
+
+      if v=0 then
+        result:=result+[pt_imm_val0];
+
+
+      if notlabel=false then
+        result:=result+[pt_imm_shl2_poslabel, pt_simm_shl1_label, pt_imm5_1_shl1_label, pt_const_thumb_poslabel, pt_const_thumb_neglabel];
+    end;
+  end;
+
+  case param[1] of
+    '{':
+    begin
+      if param.EndsWith('}') then
+        result:=result+[pt_reglist13, pt_reglist8_exclude_rreg3, pt_reglist8, pt_reglist8_withExtra];
+    end;
+
+    'R':
+    begin
+      if (param.Substring(0,3)='ROR') or (param.Substring(0,3)='RRX') then
+        result:=result+[pt_shift5_thumb];
+    end;
+
+    'L':
+    begin
+      if (param.Substring(0,3)='LSL') or (p
