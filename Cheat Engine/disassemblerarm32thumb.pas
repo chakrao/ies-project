@@ -1283,4 +1283,214 @@ begin
 
     'L':
     begin
-      if (param.Substring(0,3)='LSL') or (p
+      if (param.Substring(0,3)='LSL') or (param.Substring(0,3)='LSR') then
+        result:=result+[pt_shift5_thumb];
+    end;
+
+    'A': //ASR/APSR
+    begin
+      if (param.Substring(0,3)='ASR') then
+        result:=result+[pt_shift5_thumb];
+    end;
+  end;
+
+  for i:=0 to 15 do
+  begin
+    if param=ArmConditions[i] then
+    begin
+      result:=result+[pt_cond];
+      break;
+    end;
+  end;
+
+end;
+
+function TThumbInstructionset.ParseParameterForAssembler(param:TAParameters; paramstr: string): boolean;
+var
+  s,s2,s3: string;
+  qv,qv2: qword;
+  v,v2,v3: dword;
+  sv: integer;
+
+  i,j,k: integer;
+  b: boolean;
+
+  reglist: array of string;
+
+begin
+  result:=false;
+  if paramstr='' then exit;
+
+  case param.ptype of
+    pt_rreg3, pt_rreg3_exp:
+    begin
+      if param.ptype=pt_rreg3_exp then
+      begin
+        if paramstr.EndsWith('!') then
+        begin
+          paramstr:=paramstr.Substring(0,length(paramstr)-2);
+        end
+        else
+          exit;
+      end;
+
+
+      j:=ARMRegisterStringToInteger(paramstr);
+      if j=-1 then exit;
+      if j>7 then exit;
+
+      opcode:=opcode or (j shl param.offset);
+    end;
+
+    pt_rreg3_same:
+    begin
+      j:=ARMRegisterStringToInteger(paramstr);
+      if (opcode shr param.offset) and $7<>j then exit;
+    end;
+
+    pt_rreg3_1:
+    begin
+      j:=ARMRegisterStringToInteger(paramstr);
+      if j=-1 then exit;
+      if j>15 then exit;
+      opcode:=opcode or ((j shl param.offset) and 7);
+      opcode:=opcode or ((j shr 3) shl param.extra);
+
+    end;
+
+    pt_rreg4:
+    begin
+      j:=ARMRegisterStringToInteger(paramstr);
+      if j=-1 then exit;
+      if j>15 then exit;
+      opcode:=opcode or (j shl param.offset);
+    end;
+
+
+
+
+
+    pt_spreg: if paramstr<>'SP' then exit;
+
+    pt_imm_val0:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+      if v<>0 then exit;
+    end;
+
+
+    pt_imm:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+      opcode:=opcode or ((v and param.maxval) shl param.offset);
+    end;
+
+    pt_immx:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+      setimmx(opcode, v,@param.offset, @param.maxval,4);
+    end;
+
+    pt_simm_shl1_label:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+      v:=v-(address+4);
+      if (v and 1)<>0 then exit;
+      v:=v shr 1;
+
+
+      opcode:=opcode or ((v and param.maxval) shl param.offset);
+    end;
+
+    pt_imm5_1_shl1_label:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+      v:=v-(address+2*size);
+      if (v and 1)<>0 then exit;
+      v:=v shr 1;
+
+
+      opcode:=opcode or ((v and $1f) shl param.offset);
+      opcode:=opcode or (((v shr 5) and 1) shl param.extra);
+
+    end;
+
+    pt_imm_shl2_poslabel:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+      v:=v-(address+2*size);
+      if (v and 3)<>0 then exit;
+      v:=v shr 2;
+      opcode:=opcode or ((v and param.maxval) shl param.offset);
+    end;
+
+    pt_imm_shl2:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      opcode:=opcode or (1 shl param.extra);
+
+      v:=StrToInt('$'+paramstr);
+
+      opcode:=opcode or ((v and param.maxval) shl param.offset);
+    end;
+
+    pt_reglist8,
+    pt_reglist8_withExtra:
+    begin
+      paramstr:=trim(paramstr);
+      if paramstr.StartsWith('{')=false then exit;
+
+      paramstr:=copy(paramstr,2,length(paramstr)-2);
+      reglist:=paramstr.Split(',');
+
+      for i:=0 to length(reglist)-1 do
+      begin
+        reglist[i]:=trim(reglist[i]);
+        if reglist[i].StartsWith('R') then
+        begin
+          j:=reglist[i].Substring(1).ToInteger;
+          if (j>=0) and (j<=7) then
+            opcode:=(opcode or (1 shl j)) shl param.offset
+          else
+            exit;
+        end
+        else
+        begin
+          if (param.ptype=pt_reglist8_withExtra) then
+          begin
+            if reglist[i]<>ArmRegisters[pbyte(param.extra)[0]] then exit(false);
+            opcode:=opcode or (1 shl pbyte(param.extra)[1]);
+          end
+          else
+            exit;
+        end;
+      end;
+    end;
+
+    pt_reglist8_exclude_rreg3:
+    begin
+      paramstr:=trim(paramstr);
+      if paramstr.StartsWith('{')=false then exit;
+
+      paramstr:=copy(paramstr,2,length(paramstr)-2);
+      reglist:=paramstr.Split(',');
