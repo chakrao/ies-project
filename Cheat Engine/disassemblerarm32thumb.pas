@@ -1494,3 +1494,196 @@ begin
 
       paramstr:=copy(paramstr,2,length(paramstr)-2);
       reglist:=paramstr.Split(',');
+
+      k:=(opcode shr param.extra) and 7;
+
+
+      for i:=0 to length(reglist)-1 do
+      begin
+        reglist[i]:=trim(reglist[i]);
+        if reglist[i].StartsWith('R') then
+        begin
+          j:=reglist[i].Substring(1).ToInteger;
+
+          //the previous param field is already set, check it
+
+          if j=k then exit; //not allowed for this encoding
+
+          if (j>=0) and (j<=7) then
+            opcode:=(opcode or (1 shl j)) shl param.offset
+          else
+            exit;
+        end;
+      end;
+    end;
+
+
+    pt_reglist13:
+    begin
+      paramstr:=trim(paramstr);
+      if paramstr.StartsWith('{')=false then exit;
+
+      paramstr:=copy(paramstr,2,length(paramstr)-2);
+      reglist:=paramstr.Split(',');
+
+      if param.extra<>0 then
+      begin
+        if length(reglist)<param.extra then exit; //not allowed, needs more registers
+      end;
+
+      for i:=0 to length(reglist)-1 do
+      begin
+        reglist[i]:=trim(reglist[i]);
+        if reglist[i].StartsWith('R') then
+        begin
+          j:=reglist[i].Substring(1).ToInteger;
+          if (j>=0) and (j<=15) then
+            opcode:=(opcode or (1 shl j)) shl param.offset
+          else
+            exit;
+        end
+        else
+        begin
+          if reglist[i]='FP' then
+            opcode:=(opcode or (1 shl 11)) shl param.offset
+          else
+          if reglist[i]='IP' then
+            opcode:=(opcode or (1 shl 12)) shl param.offset;
+        end;
+      end;
+    end;
+
+    pt_cond:
+    begin
+      b:=false;
+      for i:=0 to length(ArmConditions)-1 do
+      begin
+        if paramstr=ArmConditions[i] then
+        begin
+          opcode:=opcode or (i shl param.offset);
+          b:=true;
+        end;
+      end;
+      if not b then exit;
+    end;
+
+    pt_const_thumb, pt_const_thumb_noenc, pt_const_thumb_noenc16:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+
+      if param.ptype=pt_const_thumb then
+        v:=thumbEncodeImm(v);
+
+      opcode:=opcode or (v and $ff);
+      opcode:=opcode or (((v shr 8) and 7) shl 12);
+      opcode:=opcode or (((v shr 11) and 1) shl 26);
+
+      if param.ptype=pt_const_thumb_noenc16 then
+        opcode:=opcode or (((v shr 12) and $f) shl 16);
+    end;
+
+    pt_const_thumb_poslabel:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+      v:=v-(address+2*size);
+
+      if v>4096 then exit;
+
+      opcode:=opcode or (v and $ff);
+      opcode:=opcode or (((v shr 8) and 7) shl 12);
+      opcode:=opcode or (((v shr 11) and 1) shl 26);
+    end;
+
+    pt_const_thumb_neglabel:
+    begin
+      if trim(paramstr).StartsWith('#') then
+        paramstr:=trim(paramstr).Substring(1);
+
+      v:=StrToInt('$'+paramstr);
+      v:=(address+2*size)-v;
+
+      if v>4096 then exit;
+
+      opcode:=opcode or (v and $ff);
+      opcode:=opcode or (((v shr 8) and 7) shl 12);
+      opcode:=opcode or (((v shr 11) and 1) shl 26);
+    end;
+
+    pt_shift5_thumb:
+    begin
+      if paramstr.Substring(0,3)='RRX' then opcode:=opcode or (3 shl param.offset) else
+      begin
+        i:=paramstr.IndexOf('#');
+        if i=-1 then exit;
+
+        s:=trim(paramstr.Substring(0,i-1));
+        s2:=paramstr.Substring(i+1);
+
+        case s of
+          'LSL': ;
+          'LSR': opcode:=opcode or (1 shl (param.offset));
+          'ASR': opcode:=opcode or (2 shl (param.offset));
+          'ROR': opcode:=opcode or (3 shl (param.offset));
+          else exit; //invalid
+        end;
+
+        i:=strtoint('$'+s2);
+        i:=i and 63;
+
+        opcode:=opcode or ((i and 3) shl 6);
+        opcode:=opcode or (((i shr 2) and 7) shl 12);
+      end;
+    end;
+
+
+
+  end;
+  exit(true);
+end;
+
+
+function TThumbInstructionset.assemble(_address: ptruint; instruction: string): dword;
+//raises EInvalidInstruction if it can't be assembled
+var
+  opcodestring,parameterstring: string;
+  opcodeend: string;
+  parameterstringsplit: array of string;
+  i: integer;
+  listindex: integer;
+  selectedopcode: POpcode;
+  parameters: array of record
+    str: string;
+    possibletypes: TThumbParameterTypes;
+    index: integer;
+  end;
+  inindex: boolean;
+
+  preindexed: boolean;
+
+  match: boolean;
+  condition: integer;
+begin
+  InitThumbSupport;
+
+  result:=0;
+  parameters:=[];
+
+  i:=pos(' ', instruction);
+  if i>0 then
+  begin
+    opcodestring:=copy(instruction,1,i-1);
+    parameterstring:=trim(copy(instruction,i+1));
+  end
+  else
+  begin
+    opcodestring:=instruction;
+    parameterstring:='';
+  end;
+
+  opcodeend:=uppercase(copy(opcodestring, length(opcodestring)
