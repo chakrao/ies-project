@@ -1686,4 +1686,178 @@ begin
     parameterstring:='';
   end;
 
-  opcodeend:=uppercase(copy(opcodestring, length(opcodestring)
+  opcodeend:=uppercase(copy(opcodestring, length(opcodestring)-1,2));
+  condition:=14; //no condition
+
+  if ThumbInstructionsAssemblerList.Find(opcodestring)=-1 then
+  begin
+    for i:=0 to 13 do
+      if opcodeend=ArmConditions[i] then
+      begin
+        opcodestring:=copy(opcodestring,1,length(opcodestring)-2);
+        condition:=i;
+        break;
+      end;
+  end;
+
+
+
+
+  if pos(',',parameterstring)>0 then
+  begin
+    parameterstringsplit:=parameterstring.Split([','],'{','}');
+    setlength(parameters, length(parameterstringsplit));
+  end
+  else
+  begin
+    if parameterstring='' then
+    begin
+      setlength(parameters,0);
+      parameterstringsplit:=[];
+    end
+    else
+    begin
+      setlength(parameters,1);
+      parameterstringsplit:=[parameterstring];
+    end;
+  end;
+
+  preindexed:=false;
+  inindex:=false;
+
+  self.address:=_address;
+
+
+
+  for i:=0 to length(parameterstringsplit)-1 do
+  begin
+    if inindex then
+      parameters[i].index:=1
+    else
+      parameters[i].index:=0;
+
+    parameters[i].possibletypes:=[];
+    parameters[i].str:=trim(parameterstringsplit[i]);
+
+    if parameters[i].str[1]='[' then
+    begin
+      parameters[i].index:=1;
+      parameters[i].str:=trim(copy(parameters[i].str,2));
+      inindex:=true;
+    end;
+
+    if parameters[i].str.EndsWith(']!') then
+    begin
+      parameters[i].str:=copy(parameters[i].str,1,length(parameters[i].str)-2);
+      inindex:=false;
+      preindexed:=true;
+    end;
+
+    if parameters[i].str.EndsWith(']') then
+    begin
+      parameters[i].str:=copy(parameters[i].str,1,length(parameters[i].str)-1);
+      inindex:=false;
+    end;
+
+    parameters[i].possibletypes:=GuessTypes(parameters[i].str);
+  end;
+
+
+
+  listindex:=ThumbInstructionsAssemblerList.Find(opcodestring);
+  if listindex=-1 then
+  begin
+    if opcodestring.EndsWith('S') then
+    begin
+      //flag adjusting
+      opcodestring:=copy(opcodestring,1,length(opcodestring)-1);
+      listindex:=ThumbInstructionsAssemblerList.Find(opcodestring);
+    end;
+
+    if listindex=-1 then //invalid
+      exit;
+  end;
+
+
+  while (listindex>0) and (uppercase(ThumbInstructionsAssemblerList.List[listindex-1]^.Key)=uppercase(opcodestring)) do
+    dec(listindex); //find the actual start of the list
+
+  while (listindex<ThumbInstructionsAssemblerList.Count) and (uppercase(ThumbInstructionsAssemblerList.List[listindex]^.Key)=uppercase(opcodestring)) do
+  begin
+    //check if this entry matches the parameters given
+    selectedopcode:=POpcode(ThumbInstructionsAssemblerList.List[listindex]^.Data);
+
+    {$ifdef armdev}
+    DebugOutputOpcode(selectedopcode);
+    {$endif}
+
+    if length(parameters)>length(selectedopcode^.params) then
+    begin
+      inc(listindex);
+      continue; //don't bother.  (the other way is possible though if optional parameters are present)
+    end;
+
+    if (selectedopcode^.mask shr 16)=0 then
+      size:=2
+    else
+      size:=4;
+
+    match:=true;
+    //first a quick check to see if the parameters match type and count
+    for i:=0 to length(selectedopcode^.params)-1 do
+    begin
+      if i<length(parameters) then
+      begin
+        if (not (selectedopcode^.params[i].ptype in parameters[i].possibletypes))  or
+           ((parameters[i].index<>0) and (selectedopcode^.params[i].index=ind_no)) or
+           ((parameters[i].index=0) and (selectedopcode^.params[i].index<>ind_no)) or
+           ((selectedopcode^.params[i].index in [ind_singleexp,ind_stopexp]) and (not preindexed) ) or
+           ((selectedopcode^.params[i].index in [ind_single,ind_stop]) and (preindexed))
+        then
+        begin
+          match:=false;
+          break;
+        end;
+      end
+      else if (not selectedopcode^.params[i].optional) then
+      begin //there is supposed to be another non-optional parameter
+        match:=false;
+        break;
+      end;
+    end;
+
+    if match then
+    begin
+      //all good, try to assemble it
+      opcode:=selectedopcode^.value;
+
+      if (opa_tcond8 in selectedopcode^.additions) then //conditional field is modifiable, apply the condition value
+        opcode:=opcode or (condition shl 8);
+
+      //try to apply the parameters
+      for i:=0 to length(parameters)-1 do
+      begin
+        try
+          if ParseParameterForAssembler(selectedopcode^.params[i], parameters[i].str)=false then
+          begin
+            //the given parameter could not be parsed using the given type after all.
+            match:=false;
+            break;
+          end;
+        except
+          match:=false;
+          break;
+        end;
+      end;
+
+      //check for extra rules?
+    end;
+
+    if match then
+    begin
+      if selectedopcode^.value>65535 then
+      begin
+        //32-bit opcode
+        result:=0;
+        result:=opcode shl 16;
+   
