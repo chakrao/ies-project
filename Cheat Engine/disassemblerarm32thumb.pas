@@ -1860,4 +1860,88 @@ begin
         //32-bit opcode
         result:=0;
         result:=opcode shl 16;
-   
+        result:=result or (opcode shr 16);
+        exit;
+      end;
+
+      result:=opcode;
+      exit; //still a match, so use this
+    end;
+    opcode:=0;
+    inc(listindex);
+  end;
+
+  raise EInvalidInstruction.create('Invalid instruction');
+end;
+
+{$ifdef armdev}
+procedure GetThumbInstructionsAssemblerListDebug(r: tstrings);
+var i,j: integer;
+  x: string;
+
+
+  d: TThumbInstructionset;
+begin
+  d.InitThumbSupport;
+
+  for i:=0 to ThumbInstructionsAssemblerList.Count-1 do
+  begin
+    x:='';
+    for j:=0 to length(popcode(ThumbInstructionsAssemblerList.List[i]^.Data)^.params)-1 do
+    begin
+      if popcode(ThumbInstructionsAssemblerList.List[i]^.Data)^.params[j].optional then
+        x:='(has optional field)';
+    end;
+    r.add(inttostr(i)+'='+ThumbInstructionsAssemblerList.List[i]^.Key+' - '+inttohex(ptruint(ThumbInstructionsAssemblerList.List[i]^.Data),8)+'  '+x);
+  end;
+
+end;
+{$endif}
+
+
+//todo maybe: first sort each table by mask popcnt
+procedure FillThumbInstructionsAssemblerListWithOpcodeArray(const list: TOpcodeArray);
+var i: integer;
+begin
+  for i:=length(list)-1 downto 0 do
+  begin
+    if list[i].use=iuDisassembler then continue;
+
+
+    ThumbInstructionsAssemblerList.Add(list[i].mnemonic,@list[i]);
+  end;
+end;
+
+procedure FillThumbInstructionsAssemblerListWithInstructionGroupArray(const list: TInstructionGroupArray);
+var i: integer;
+begin
+  for i:=0 to length(list)-1 do
+  begin
+    if list[i].listType=igpGroup then
+      FillThumbInstructionsAssemblerListWithInstructionGroupArray(PInstructionGroupArray(list[i].list)^)
+    else
+      FillThumbInstructionsAssemblerListWithOpcodeArray(POpcodeArray(list[i].list)^);
+  end;
+
+end;
+
+procedure InitializeThumbInstructionsAssemblerList;
+begin
+  ThumbInstructionsAssemblerList:=TStringHashList.Create(false);
+  FillThumbInstructionsAssemblerListWithInstructionGroupArray(ThumbGroupBase16);
+  FillThumbInstructionsAssemblerListWithInstructionGroupArray(ThumbGroupBase32);
+end;
+
+
+procedure TThumbInstructionset.InitThumbSupport;
+const initialized: boolean=false;
+begin
+  if not initialized then
+  begin
+    InitializeThumbInstructionsAssemblerList;
+    initialized:=true;
+  end;
+end;
+
+end.
+
