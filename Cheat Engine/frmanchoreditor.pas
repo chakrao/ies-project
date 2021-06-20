@@ -219,3 +219,206 @@ end;
 
 procedure TAnchorEditor.OnObjectPropertyChanged(Sender: TObject);
 var
+  pe: TPropertyEditor;
+  i: integer;
+begin
+  if updatecount>0 then exit;
+
+  if Sender is TPropertyEditor then
+  begin
+    pe:=TPropertyEditor(sender);
+    for i:=0 to pe.PropCount-1 do
+      if pe.GetComponent(i)=currentSelection then
+      begin
+        updateControlStatus;
+        exit;
+      end;
+  end;
+end;
+
+procedure TAnchorEditor.FormCreate(Sender: TObject);
+begin
+  dpihelper.AdjustSpeedButtonSize(sbTopTop);
+  dpihelper.AdjustSpeedButtonSize(sbTopCenter);
+  dpihelper.AdjustSpeedButtonSize(sbTopBottom);
+
+  dpihelper.AdjustSpeedButtonSize(sbLeftLeft);
+  dpihelper.AdjustSpeedButtonSize(sbLeftCenter);
+  dpihelper.AdjustSpeedButtonSize(sbLeftRight);
+
+  dpihelper.AdjustSpeedButtonSize(sbBottomTop);
+  dpihelper.AdjustSpeedButtonSize(sbBottomCenter);
+  dpihelper.AdjustSpeedButtonSize(sbBottomBottom);
+
+  dpihelper.AdjustSpeedButtonSize(sbRightLeft);
+  dpihelper.AdjustSpeedButtonSize(sbRightCenter);
+  dpihelper.AdjustSpeedButtonSize(sbRightRight);
+
+  setAnchorEditorState(false);
+end;
+
+procedure TAnchorEditor.sbAnchorSideClick(Sender: TObject);
+var
+  ak: TAnchorKind;
+  sideref: TAnchorSideReference;
+begin
+  if updatecount=0 then
+  begin
+    if (currentSelection<>nil) and (sender is TControl) then
+    begin
+      case tcontrol(sender).parent.Tag of
+        0: ak:=akleft;
+        1: ak:=aktop;
+        2: ak:=akRight;
+        3: ak:=akBottom;
+      end;
+
+      case tcontrol(sender).tag of
+        0: sideref:=asrTop;
+        1: sideref:=asrCenter;
+        2: sideref:=asrBottom;
+      end;
+      currentSelection.AnchorSide[ak].Side:=sideref;;
+    end;
+
+    GlobalDesignHook.Modified(currentSelection,'AnchorSide');
+  end;
+end;
+
+procedure TAnchorEditor.cbAnchorEnabledChange(Sender: TObject);
+begin
+  if updatecount=0 then
+  begin
+    if (currentSelection<>nil) and (sender is TControl) then
+    begin
+      case tcontrol(sender).tag of
+        0: if cbLeftAnchorEnabled.checked then currentSelection.Anchors:=currentSelection.Anchors+[akLeft] else currentSelection.Anchors:=currentSelection.Anchors-[akLeft];
+        1: if cbTopAnchorEnabled.checked then currentSelection.Anchors:=currentSelection.Anchors+[akTop] else currentSelection.Anchors:=currentSelection.Anchors-[akTop];
+        2: if cbRightAnchorEnabled.checked then currentSelection.Anchors:=currentSelection.Anchors+[akRight] else currentSelection.Anchors:=currentSelection.Anchors-[akRight];
+        3: if cbBottomAnchorEnabled.checked then currentSelection.Anchors:=currentSelection.Anchors+[akBottom] else currentSelection.Anchors:=currentSelection.Anchors-[akBottom];
+      end;
+    end;
+    GlobalDesignHook.Modified(currentSelection,'Anchors');
+  end;
+end;
+
+
+procedure TAnchorEditor.seBorderspaceChange(Sender: TObject);
+begin
+  if updatecount=0 then
+  begin
+    if (currentSelection<>nil) and (sender is TControl) then
+    begin
+      case tcontrol(sender).tag of
+        0: currentSelection.BorderSpacing.Left:=tspinedit(sender).Value;
+        1: currentSelection.BorderSpacing.Top:=tspinedit(sender).Value;
+        2: currentSelection.BorderSpacing.Right:=tspinedit(sender).Value;
+        3: currentSelection.BorderSpacing.Bottom:=tspinedit(sender).Value;
+        4: currentSelection.BorderSpacing.Around:=tspinedit(sender).Value;
+      end;
+    end;
+    GlobalDesignHook.Modified(currentSelection,'BorderSpacing');
+  end;
+end;
+
+
+procedure TAnchorEditor.cbControlSelect(Sender: TObject);
+var c: TComboBox;
+  control: tcontrol;
+  ak: TAnchorKind;
+begin
+  if updatecount=0 then
+  begin
+    if (currentSelection<>nil) and (sender is TComboBox) then
+    begin
+      c:=tcombobox(sender);
+      if c.ItemIndex<>-1 then
+      begin
+        control:=tcontrol(c.Items.Objects[c.itemindex]);
+
+        case c.Tag of
+          0: ak:=akleft;
+          1: ak:=aktop;
+          2: ak:=akRight;
+          3: ak:=akBottom;
+        end;
+
+        currentSelection.AnchorSide[ak].Control:=control;
+
+        if control=nil then
+        begin
+          c.OnSelect:=nil;
+          c.Text:='';
+          c.OnSelect:=@cbControlSelect;
+        end;
+      end;
+    end;
+    GlobalDesignHook.Modified(currentSelection,'AnchorSide');
+
+  end;
+end;
+
+
+procedure TAnchorEditor.FormConstrainedResize(Sender: TObject; var MinWidth,
+  MinHeight, MaxWidth, MaxHeight: TConstraintSize);
+var w: integer;
+begin
+  w:=(clientwidth-gbBorderSpace.width-16) div 2;
+
+  gbLeft.width:=w;
+  gbRight.width:=w;
+  gbTop.width:=w;
+  gbBottom.width:=w;
+end;
+
+
+procedure TAnchorEditor.FormShow(Sender: TObject);
+var a,b,c,d: TConstraintSize;
+  i: integer;
+begin
+  autosize:=false;
+
+  i:=canvas.TextWidth('XXXXXX');
+  seLeftBorderspace.Width:=i;
+  seTopBorderspace.Width:=i;
+  seRightBorderspace.Width:=i;
+  seBottomBorderspace.Width:=i;
+  seBorderspace.Width:=i;
+
+
+  gbleft.autosize:=false;
+  gbRight.autosize:=false;
+  gbtop.autosize:=false;
+  gbBottom.autosize:=false;
+  cbLeftSideControl.Anchors:=cbTopSideControl.Anchors+[akRight];
+  cbTopSideControl.Anchors:=cbTopSideControl.Anchors+[akRight];
+  cbRightSideControl.Anchors:=cbTopSideControl.Anchors+[akRight];
+  cbBottomSideControl.Anchors:=cbTopSideControl.Anchors+[akRight];
+
+  if gbleft.width<gbBorderSpace.width then
+    gbleft.width:=gbBorderSpace.width;
+
+  if gbtop.width<gbBorderSpace.width then
+    gbtop.width:=gbBorderSpace.width;
+
+  if gbright.width<gbBorderSpace.width then
+    gbright.width:=gbBorderSpace.width;
+
+  if gbBottom.width<gbBorderSpace.width then
+    gbBottom.width:=gbBorderSpace.width;
+
+
+  FormConstrainedResize(nil, a,b,c,d);
+  Constraints.MinWidth:=gbRight.left+gbright.Width+8;
+  Constraints.MinHeight:=height+2;
+
+  OnConstrainedResize:=@FormConstrainedResize;
+
+end;
+
+
+
+initialization
+  {$I frmAnchorEditor.lrs}
+
+end.
