@@ -273,4 +273,154 @@ begin
   if loadedposition=false then
   begin
     width:=(Screen.PixelsPerInch div 96)*800;
-    height:=(Screen
+    height:=(Screen.PixelsPerInch div 96)*600;
+  end;
+end;
+
+procedure TfrmSourceDisplay.itInfoTimer(Sender: TObject);
+var
+  p,p2,p3: tpoint;
+  token: string;
+  varinfo: TLocalVariableInfo;
+  address,ptr: ptruint;
+
+  ln: integer;
+  i: integer;
+
+  l1,l2: integer;
+
+  str: string;
+  offsettext: string;
+  value: string;
+
+  br: ptruint;
+
+  r: trect;
+
+begin
+  //get the token under the mouse cursor and look it up
+  itInfo.Enabled:=false;
+  itInfo.AutoEnabled:=false;
+
+  if hintwindow<>nil then
+    hintwindow.hide;
+
+  //if not Active then exit;
+
+
+  str:='';
+  p:=mouse.cursorpos;
+
+  p2:=seSource.ScreenToClient(p);
+
+  if (p2.x<0) or (p2.x>sesource.ClientWidth) or
+     (p2.y<0) or (p2.y>sesource.ClientWidth) then exit;
+
+  if p2.x<seSource.Gutter.Width then exit; //gutter stuff
+
+  p3:=seSource.PixelsToLogicalPos(p2);
+
+  token:=sesource.GetWordAtRowCol(p3);
+  if trim(token)='' then exit;
+
+  if SourceCodeInfo<>nil then
+  begin
+    ln:=p3.y-1;
+
+    if (debuggerthread<>nil) and (debuggerthread.CurrentThread<>nil) then
+    begin
+      address:=debuggerthread.CurrentThread.context^.{$ifdef cpu64}Rip{$else}eip{$endif};
+      if SourceCodeInfo.getVariableInfo(token, address, varinfo) then
+      begin
+
+
+        address:=debuggerthread.CurrentThread.context^.{$ifdef cpu64}Rbp{$else}ebp{$endif}+varinfo.offset;
+        str:=varinfo.name+' at '+inttohex(address,8);
+        if varinfo.ispointer then
+        begin
+          ptr:=0;
+          if ReadProcessMemory(processhandle, pointer(address), @ptr,processhandler.pointersize,br) then
+          begin
+            address:=ptr;
+            str:=str+'->'+inttohex(address,8);
+          end
+          else
+          begin
+            address:=0;
+            str:=str+'->???';
+          end;
+        end;
+
+        if address<>0 then
+        begin
+
+          value:='';
+
+          case varinfo.vartype of
+            1: value:=readAndParseAddress(address, vtDword,nil,false,true); //integer
+            2: value:=readAndParseAddress(address,vtByte, nil,false,true); //char
+            {$ifdef windows}
+            3: value:=readAndParseAddress(address,vtDword, nil,false,true); //long.  4 byte on PE, 8 byte on elf when in 64-bit.
+            {$else}
+            3:
+              if processhandler.is64Bit then
+                value:=readAndParseAddress(address, vtQword, nil,false,true)
+              else
+                value:=readAndParseAddress(address, vtDword, nil,false,true);
+            {$endif}
+            4: value:=readAndParseAddress(address, vtDword,nil,false,false); //unsigned integer
+            {$ifdef windows}
+            5: value:=readAndParseAddress(address,vtDword, nil,false,false); //long unsigned
+            {$else}
+            5:
+              if processhandler.is64Bit then
+                value:=readAndParseAddress(address, vtQword, nil,false,false)
+              else
+                value:=readAndParseAddress(address, vtDword, nil,false,false);
+            {$endif}
+            6,8: value:=readAndParseAddress(address,vtQword, nil,false,true); //int64
+            7,9: value:=readAndParseAddress(address,vtQword, nil,false,false); //uint64
+            10: value:=readAndParseAddress(address,vtWord, nil,false,true); //signed word
+            11: value:=readAndParseAddress(address,vtWord, nil,false,false); //unsigned word
+            12: value:=readAndParseAddress(address,vtByte, nil,false,true); //signed byte
+            13: value:=readAndParseAddress(address,vtByte, nil,false,false); //unsigned byte
+            14,17: value:=readAndParseAddress(address,vtSingle, nil,false,false); //float
+            15,18: value:=readAndParseAddress(address,vtDouble, nil,false,false); //double
+            16: value:=readAndParseAddress(address,vtDouble, nil,false,false); //meh
+
+            25: value:=readAndParseAddress(address,vtByte, nil,false,false); //unsigned char
+            26: value:=readAndParseAddress(address,vtByte, nil,false,false); //bool
+            27: value:='<void>';
+          end;
+
+          if value<>'' then
+            str:=str+' value='+value;
+        end;
+      end
+      else exit;
+    end
+    else
+    begin
+      address:=ptruint(seSource.Lines.Objects[ln]); //get basic info like the offset and type
+
+      if address=0 then //look around
+      begin
+        i:=1;
+        while i<25 do
+        begin
+          l1:=ln-i;
+          l2:=ln+i;
+
+          if (l1>0) and (l1<sesource.lines.count-1) and (ptruint(seSource.Lines.Objects[l1])<>0) then
+          begin
+            address:=ptruint(seSource.Lines.Objects[l1]);
+            break;
+          end;
+
+          if (l2>0) and (l2<sesource.lines.count-1) and (ptruint(seSource.Lines.Objects[l2])<>0) then
+          begin
+            address:=ptruint(seSource.Lines.Objects[l2]);
+            break;
+          end;
+
+        
