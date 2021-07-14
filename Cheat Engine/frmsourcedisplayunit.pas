@@ -423,4 +423,211 @@ begin
             break;
           end;
 
-        
+          inc(i);
+        end;
+      end;
+
+      if address=0 then exit;
+
+      if SourceCodeInfo.getVariableInfo(token, address, varinfo) then
+      begin
+        //show basic info
+        if varinfo.offset<0 then
+          offsettext:='-'+IntToHex(-varinfo.offset,2)
+        else
+          offsettext:='+'+IntToHex(varinfo.offset,2);
+
+        if processhandler.is64Bit then
+          offsettext:='RBP'+offsettext
+        else
+          offsettext:='EBP'+offsettext;
+
+        str:=varinfo.name+' at '+offsettext;
+      end else exit;
+    end;
+
+    if str<>'' then
+    begin
+      if hintwindow=nil then
+        hintwindow:=THintWindow.Create(self);
+
+      r:=hintwindow.CalcHintRect(sesource.width, str, nil);
+
+
+      r.Top:=r.top+p.y;
+      r.Left:=r.left+p.x;
+      r.Right:=r.right+p.x;
+      r.Bottom:=r.Bottom+p.y;
+
+      hintwindow.ActivateHint(r, str);
+    end;
+
+  end;
+
+
+
+end;
+
+procedure TfrmSourceDisplay.MenuItem1Click(Sender: TObject);
+begin
+  MemoryBrowser.disassemblerview.SelectedAddress:=ptruint(seSource.Lines.Objects[seSource.CaretY-1]);  ;
+  MemoryBrowser.show;
+end;
+
+procedure TfrmSourceDisplay.seSourceGutterClick(Sender: TObject; X, Y,
+  Line: integer; mark: TSynEditMark);
+var
+  address: ptruint;
+  bp: PBreakpoint;
+  seml: TSynEditMarkLine;
+  i: integer;
+begin
+  address:=ptruint(seSource.Lines.Objects[line-1]);
+  if address=0 then exit;
+
+
+  seml:=seSource.Marks.Line[line];
+  for i:=0 to seml.count-1 do
+  begin
+    if seml[i].IsBookmark then continue;
+    mark:=seml[i];
+  end;
+
+
+  if (mark<>nil) then
+  begin
+    if mark.ImageIndex in [0,1] then
+    begin
+      //set breakpoint
+      try
+        if startdebuggerifneeded(true) then
+        begin
+          DebuggerThread.SetOnExecuteBreakpoint(address);
+          MemoryBrowser.disassemblerview.Update;
+          updateMarks;
+        end;
+      except
+        on e:exception do MessageDlg(e.message,mtError,[mbok],0);
+      end;
+
+    end
+    else
+    begin
+      //remove breakpoint
+      if DebuggerThread<>nil then
+      begin
+        debuggerthread.lockbplist;
+        bp:=DebuggerThread.isBreakpoint(address);
+        if bp<>nil then
+          debuggerthread.RemoveBreakpoint(bp);
+        DebuggerThread.unlockbplist;
+      end;
+
+      updateMarks;
+    end;
+  end;
+end;
+
+procedure TfrmSourceDisplay.seSourceMouseEnter(Sender: TObject);
+begin
+  itInfo.enabled:=false;
+  itInfo.AutoEnabled:=true;
+end;
+
+procedure TfrmSourceDisplay.seSourceMouseLeave(Sender: TObject);
+begin
+  itInfo.enabled:=false;
+  itInfo.AutoEnabled:=false;
+end;
+
+procedure TfrmSourceDisplay.seSourceMouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  itInfo.Enabled:=false;
+  itInfo.AutoEnabled:=true;
+
+  if hintwindow<>nil then
+    hintwindow.hide;
+end;
+
+procedure TfrmSourceDisplay.tbRunClick(Sender: TObject);
+begin
+  MemoryBrowser.miDebugRun.Click;
+end;
+
+procedure TfrmSourceDisplay.tbRunTillClick(Sender: TObject);
+var address: ptruint;
+begin
+  address:=ptruint(seSource.Lines.Objects[seSource.CaretY-1]);
+
+  if address=0 then
+  begin
+    errorbeep;
+    exit;
+  end;
+
+  if debuggerthread<>nil then
+  begin
+    debuggerthread.ContinueDebugging(co_runtill, address);
+    MemoryBrowser.OnMemoryViewerRunning;
+  end;
+end;
+
+function TfrmSourceDisplay.StepIntoHandler(sender: TDebugThreadHandler; bp: PBreakpoint): boolean;
+var a: ptruint;
+  sci: TSourceCodeInfo;
+begin
+  if stepintocountdown>0 then
+  begin
+    if bp<>nil then //nil when single stepping
+    begin
+      //a normal bp got hit, stop the stepping
+      sender.OnHandleBreakAsync:=nil;
+      stepIntoThread:=nil;
+      stepIntoCountdown:=0;
+      exit(false);
+    end;
+
+    //check if this is a call or ret, if so, set the stepintocountdown to 1 and set stepFinished:=true;
+    if d=nil then
+      d:=TDisassembler.Create; //even though this is async, it's still only 1 single thread, so this is safe
+
+
+    a:=sender.context^.{$ifdef cpu64}rip{$else}eip{$endif};
+    sci:=SourceCodeInfoCollection.getSourceCodeInfo(a);
+
+    if (sci<>nil) and (sci.getLineInfo(a)<>nil) then
+    begin
+      //found a sourcecode line
+      sender.OnHandleBreakAsync:=nil;
+      stepIntoThread:=nil;
+      stepIntoCountdown:=0;
+      exit(false); //do an actual break
+    end;
+
+
+
+    d.disassemble(a);
+    if d.LastDisassembleData.iscall or d.LastDisassembleData.isret then
+    begin
+      sender.OnHandleBreakAsync:=nil;
+      stepIntoThread:=nil;
+      stepIntoCountdown:=0;
+      //followed by a single step
+    end;
+
+    dec(stepIntoCountdown);
+    sender.continueDebugging(co_stepinto);
+    exit(true);// handled
+  end
+  else
+  begin
+    sender.OnHandleBreakAsync:=nil;
+    stepIntoThread:=nil;
+    stepIntoCountdown:=0;
+    sender.continueDebugging(co_run); //screw this , abandoning this stepping session
+    exit(true);
+  end;
+end;
+
+procedure TfrmSourceDisplay.tb
