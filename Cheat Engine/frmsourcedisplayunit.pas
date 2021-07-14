@@ -630,4 +630,85 @@ begin
   end;
 end;
 
-procedure TfrmSourceDisplay.tb
+procedure TfrmSourceDisplay.tbStepIntoClick(Sender: TObject);
+begin
+
+  stepIntoCountdown:=15;
+  stepIntoThread:=debuggerthread.CurrentThread;
+
+  debuggerthread.CurrentThread.OnHandleBreakAsync:=@StepIntoHandler;
+
+
+  debuggerthread.ContinueDebugging(co_stepinto);
+  memorybrowser.OnMemoryViewerRunning;
+end;
+
+procedure TfrmSourceDisplay.tbStepOutClick(Sender: TObject);
+begin
+  memorybrowser.miDebugExecuteTillReturn.Click;
+end;
+
+procedure TfrmSourceDisplay.tbStepOverClick(Sender: TObject);
+var
+  i,linestart: integer;
+  currentaddress,nextaddress: ptruint;
+  sci: TSourceCodeInfo;
+  lni, lni2: PLineNumberInfo;
+
+begin
+  if (debuggerthread<>nil) and (debuggerthread.CurrentThread<>nil) then
+  begin
+    currentaddress:=debuggerthread.CurrentThread.context^.{$ifdef CPU64}rip{$else}eip{$endif};
+    sci:=SourceCodeInfoCollection.getSourceCodeInfo(currentaddress);
+
+    if sci<>nil then
+    begin
+      lni:=sci.getLineInfo(currentaddress);
+      if lni<>nil then
+      begin
+        linestart:=lni^.sourcefile.IndexOfObject(tobject(currentaddress));
+        if linestart=-1 then exit; //never
+
+        nextaddress:=0;
+        for i:=linestart+1 to lni^.sourcefile.Count-1 do
+        begin
+          nextaddress:=ptruint(sesource.lines.Objects[i]);
+          if nextaddress<>0 then
+          begin
+            lni2:=sci.getLineInfo(nextaddress);
+            if lni2<>nil then //never
+            begin
+              if lni^.functionaddress<>lni2^.functionaddress then break; //different function.  So return
+
+              debuggerthread.ContinueDebugging(co_runtill, nextaddress);
+              memorybrowser.OnMemoryViewerRunning;
+              exit;
+            end;
+
+            //still here, so not possible to do a step over
+            break;
+          end;
+
+        end;
+      end;
+
+      //still here, so no next address, do a step
+      tbStepIntoClick(tbStepInto);
+
+    end;
+  end;
+end;
+
+procedure TfrmSourceDisplay.tbToggleBreakpointClick(Sender: TObject);
+begin
+  seSourceGutterClick(seSource,0,0,seSource.CaretY,nil);
+end;
+
+
+
+
+initialization
+  {$I frmsourcedisplayunit.lrs}
+
+end.
+
