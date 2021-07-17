@@ -161,4 +161,96 @@ LUALIB_API void (luaL_pushresult) (luaL_Buffer *B);
 LUALIB_API void (luaL_pushresultsize) (luaL_Buffer *B, size_t sz);
 LUALIB_API char *(luaL_buffinitsize) (lua_State *L, luaL_Buffer *B, size_t sz);
 
-#define luaL_prepbuffer(B)	luaL_prepbuffsize(B,
+#define luaL_prepbuffer(B)	luaL_prepbuffsize(B, LUAL_BUFFERSIZE)
+
+/* }====================================================== */
+
+
+
+/*
+** {======================================================
+** File handles for IO library
+** =======================================================
+*/
+
+/*
+** A file handle is a userdata with metatable 'LUA_FILEHANDLE' and
+** initial structure 'luaL_Stream' (it may contain other fields
+** after that initial structure).
+*/
+
+#define LUA_FILEHANDLE          "FILE*"
+
+
+typedef struct luaL_Stream {
+  FILE *f;  /* stream (NULL for incompletely created streams) */
+  lua_CFunction closef;  /* to close stream (NULL for closed streams) */
+} luaL_Stream;
+
+/* }====================================================== */
+
+
+
+/* compatibility with old module system */
+#if defined(LUA_COMPAT_MODULE)
+
+LUALIB_API void (luaL_pushmodule) (lua_State *L, const char *modname,
+                                   int sizehint);
+LUALIB_API void (luaL_openlib) (lua_State *L, const char *libname,
+                                const luaL_Reg *l, int nup);
+
+#define luaL_register(L,n,l)	(luaL_openlib(L,(n),(l),0))
+
+#endif
+
+
+/*
+** {==================================================================
+** "Abstraction Layer" for basic report of messages and errors
+** ===================================================================
+*/
+
+/* print a string */
+#if !defined(lua_writestring)
+#define lua_writestring(s,l)   fwrite((s), sizeof(char), (l), stdout)
+#endif
+
+/* print a newline and flush the output */
+#if !defined(lua_writeline)
+#define lua_writeline()        (lua_writestring("\n", 1), fflush(stdout))
+#endif
+
+/* print an error message */
+#if !defined(lua_writestringerror)
+#define lua_writestringerror(s,p) \
+        (fprintf(stderr, (s), (p)), fflush(stderr))
+#endif
+
+/* }================================================================== */
+
+
+/*
+** {============================================================
+** Compatibility with deprecated conversions
+** =============================================================
+*/
+#if defined(LUA_COMPAT_APIINTCASTS)
+
+#define luaL_checkunsigned(L,a)	((lua_Unsigned)luaL_checkinteger(L,a))
+#define luaL_optunsigned(L,a,d)	\
+	((lua_Unsigned)luaL_optinteger(L,a,(lua_Integer)(d)))
+
+#define luaL_checkint(L,n)	((int)luaL_checkinteger(L, (n)))
+#define luaL_optint(L,n,d)	((int)luaL_optinteger(L, (n), (d)))
+
+#define luaL_checklong(L,n)	((long)luaL_checkinteger(L, (n)))
+#define luaL_optlong(L,n,d)	((long)luaL_optinteger(L, (n), (d)))
+
+#endif
+/* }============================================================ */
+
+
+
+#endif
+
+
