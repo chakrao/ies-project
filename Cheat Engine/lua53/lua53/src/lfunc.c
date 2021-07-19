@@ -143,4 +143,9 @@ const char *luaF_getlocalname (const Proto *f, int local_number, int pc) {
     if (pc < f->locvars[i].endpc) {  /* is variable active? */
       local_number--;
       if (local_number == 0)
-        return getstr(f->
+        return getstr(f->locvars[i].varname);
+    }
+  }
+  return NULL;  /* not found */
+}
+
