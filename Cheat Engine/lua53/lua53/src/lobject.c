@@ -122,3 +122,149 @@ void luaO_arith (lua_State *L, int op, const TValue *p1, const TValue *p2,
       lua_Integer i1; lua_Integer i2;
       if (tointeger(p1, &i1) && tointeger(p2, &i2)) {
         setivalue(res, intarith(L, op, i1, i2));
+        return;
+      }
+      else break;  /* go to the end */
+    }
+    case LUA_OPDIV: case LUA_OPPOW: {  /* operate only on floats */
+      lua_Number n1; lua_Number n2;
+      if (tonumber(p1, &n1) && tonumber(p2, &n2)) {
+        setfltvalue(res, numarith(L, op, n1, n2));
+        return;
+      }
+      else break;  /* go to the end */
+    }
+    default: {  /* other operations */
+      lua_Number n1; lua_Number n2;
+      if (ttisinteger(p1) && ttisinteger(p2)) {
+        setivalue(res, intarith(L, op, ivalue(p1), ivalue(p2)));
+        return;
+      }
+      else if (tonumber(p1, &n1) && tonumber(p2, &n2)) {
+        setfltvalue(res, numarith(L, op, n1, n2));
+        return;
+      }
+      else break;  /* go to the end */
+    }
+  }
+  /* could not perform raw operation; try metamethod */
+  lua_assert(L != NULL);  /* should not fail when folding (compile time) */
+  luaT_trybinTM(L, p1, p2, res, cast(TMS, op - LUA_OPADD + TM_ADD));
+}
+
+
+int luaO_hexavalue (int c) {
+  if (lisdigit(c)) return c - '0';
+  else return ltolower(c) - 'a' + 10;
+}
+
+
+static int isneg (const char **s) {
+  if (**s == '-') { (*s)++; return 1; }
+  else if (**s == '+') (*s)++;
+  return 0;
+}
+
+
+
+/*
+** {==================================================================
+** Lua's implementation for 'lua_strx2number'
+** ===================================================================
+*/
+#if !defined(lua_strx2number)
+
+#include <math.h>
+
+/* maximum number of significant digits to read (to avoid overflows
+   even with single floats) */
+#define MAXSIGDIG	30
+
+/*
+** convert an hexadecimal numeric string to a number, following
+** C99 specification for 'strtod'
+*/
+static lua_Number lua_strx2number (const char *s, char **endptr) {
+  lua_Number r = 0.0;  /* result (accumulator) */
+  int sigdig = 0;  /* number of significant digits */
+  int nosigdig = 0;  /* number of non-significant digits */
+  int e = 0;  /* exponent correction */
+  int neg;  /* 1 if number is negative */
+  int dot = 0;  /* true after seen a dot */
+  *endptr = cast(char *, s);  /* nothing is valid yet */
+  while (lisspace(cast_uchar(*s))) s++;  /* skip initial spaces */
+  neg = isneg(&s);  /* check signal */
+  if (!(*s == '0' && (*(s + 1) == 'x' || *(s + 1) == 'X')))  /* check '0x' */
+    return 0.0;  /* invalid format (no '0x') */
+  for (s += 2; ; s++) {  /* skip '0x' and read numeral */
+    if (*s == '.') {
+      if (dot) break;  /* second dot? stop loop */
+      else dot = 1;
+    }
+    else if (lisxdigit(cast_uchar(*s))) {
+      if (sigdig == 0 && *s == '0')  /* non-significant digit (zero)? */
+        nosigdig++;
+      else if (++sigdig <= MAXSIGDIG)  /* can read it without overflow? */
+          r = (r * cast_num(16.0)) + luaO_hexavalue(*s);
+      else e++; /* too many digits; ignore, but still count for exponent */
+      if (dot) e--;  /* decimal digit? correct exponent */
+    }
+    else break;  /* neither a dot nor a digit */
+  }
+  if (nosigdig + sigdig == 0)  /* no digits? */
+    return 0.0;  /* invalid format */
+  *endptr = cast(char *, s);  /* valid up to here */
+  e *= 4;  /* each digit multiplies/divides value by 2^4 */
+  if (*s == 'p' || *s == 'P') {  /* exponent part? */
+    int exp1 = 0;  /* exponent value */
+    int neg1;  /* exponent signal */
+    s++;  /* skip 'p' */
+    neg1 = isneg(&s);  /* signal */
+    if (!lisdigit(cast_uchar(*s)))
+      return 0.0;  /* invalid; must have at least one digit */
+    while (lisdigit(cast_uchar(*s)))  /* read exponent */
+      exp1 = exp1 * 10 + *(s++) - '0';
+    if (neg1) exp1 = -exp1;
+    e += exp1;
+    *endptr = cast(char *, s);  /* valid up to here */
+  }
+  if (neg) r = -r;
+  return l_mathop(ldexp)(r, e);
+}
+
+#endif
+/* }====================================================== */
+
+
+static const char *l_str2d (const char *s, lua_Number *result) {
+  char *endptr;
+  if (strpbrk(s, "nN"))  /* reject 'inf' and 'nan' */
+    return NULL;
+  else if (strpbrk(s, "xX"))  /* hex? */
+    *result = lua_strx2number(s, &endptr);
+  else
+    *result = lua_str2number(s, &endptr);
+  if (endptr == s) return 0;  /* nothing recognized */
+  while (lisspace(cast_uchar(*endptr))) endptr++;
+  return (*endptr == '\0' ? endptr : NULL);  /* OK if no trailing characters */
+}
+
+
+static const char *l_str2int (const char *s, lua_Integer *result) {
+  lua_Unsigned a = 0;
+  int empty = 1;
+  int neg;
+  while (lisspace(cast_uchar(*s))) s++;  /* skip initial spaces */
+  neg = isneg(&s);
+  if (s[0] == '0' &&
+      (s[1] == 'x' || s[1] == 'X')) {  /* hex? */
+    s += 2;  /* skip '0x' */
+    for (; lisxdigit(cast_uchar(*s)); s++) {
+      a = a * 16 + luaO_hexavalue(*s);
+      empty = 0;
+    }
+  }
+  else {  /* decimal */
+    for (; lisdigit(cast_uchar(*s)); s++) {
+      a = a * 10 + *s - '0';
+      em
