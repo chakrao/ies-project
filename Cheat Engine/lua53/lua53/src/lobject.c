@@ -435,4 +435,36 @@ const char *luaO_pushfstring (lua_State *L, const char *fmt, ...) {
 void luaO_chunkid (char *out, const char *source, size_t bufflen) {
   size_t l = strlen(source);
   if (*source == '=') {  /* 'literal' source */
-    if (l <= bufflen)  /* small enough? *
+    if (l <= bufflen)  /* small enough? */
+      memcpy(out, source + 1, l * sizeof(char));
+    else {  /* truncate it */
+      addstr(out, source + 1, bufflen - 1);
+      *out = '\0';
+    }
+  }
+  else if (*source == '@') {  /* file name */
+    if (l <= bufflen)  /* small enough? */
+      memcpy(out, source + 1, l * sizeof(char));
+    else {  /* add '...' before rest of name */
+      addstr(out, RETS, LL(RETS));
+      bufflen -= LL(RETS);
+      memcpy(out, source + 1 + l - bufflen, bufflen * sizeof(char));
+    }
+  }
+  else {  /* string; format as [string "source"] */
+    const char *nl = strchr(source, '\n');  /* find first new line (if any) */
+    addstr(out, PRE, LL(PRE));  /* add prefix */
+    bufflen -= LL(PRE RETS POS) + 1;  /* save space for prefix+suffix+'\0' */
+    if (l < bufflen && nl == NULL) {  /* small one-line source? */
+      addstr(out, source, l);  /* keep it */
+    }
+    else {
+      if (nl != NULL) l = nl - source;  /* stop at first newline */
+      if (l > bufflen) l = bufflen;
+      addstr(out, source, l);
+      addstr(out, RETS, LL(RETS));
+    }
+    memcpy(out, POS, (LL(POS) + 1) * sizeof(char));
+  }
+}
+
