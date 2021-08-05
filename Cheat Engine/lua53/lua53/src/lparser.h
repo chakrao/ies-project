@@ -72,4 +72,49 @@ typedef struct Labeldesc {
 
 /* list of labels or gotos */
 typedef struct Labellist {
-  Labelde
+  Labeldesc *arr;  /* array */
+  int n;  /* number of entries in use */
+  int size;  /* array size */
+} Labellist;
+
+
+/* dynamic structures used by the parser */
+typedef struct Dyndata {
+  struct {  /* list of active local variables */
+    Vardesc *arr;
+    int n;
+    int size;
+  } actvar;
+  Labellist gt;  /* list of pending gotos */
+  Labellist label;   /* list of active labels */
+} Dyndata;
+
+
+/* control of blocks */
+struct BlockCnt;  /* defined in lparser.c */
+
+
+/* state needed to generate code for a given function */
+typedef struct FuncState {
+  Proto *f;  /* current function header */
+  struct FuncState *prev;  /* enclosing function */
+  struct LexState *ls;  /* lexical state */
+  struct BlockCnt *bl;  /* chain of current blocks */
+  int pc;  /* next position to code (equivalent to 'ncode') */
+  int lasttarget;   /* 'label' of last 'jump label' */
+  int jpc;  /* list of pending jumps to 'pc' */
+  int nk;  /* number of elements in 'k' */
+  int np;  /* number of elements in 'p' */
+  int firstlocal;  /* index of first local var (in Dyndata array) */
+  short nlocvars;  /* number of elements in 'f->locvars' */
+  lu_byte nactvar;  /* number of active local variables */
+  lu_byte nups;  /* number of upvalues */
+  lu_byte freereg;  /* first free register */
+} FuncState;
+
+
+LUAI_FUNC LClosure *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff,
+                                 Dyndata *dyd, const char *name, int firstchar);
+
+
+#endif
