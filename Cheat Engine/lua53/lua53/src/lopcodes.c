@@ -111,4 +111,14 @@ LUAI_DDEF const lu_byte luaP_opmodes[NUM_OPCODES] = {
  ,opmode(1, 1, OpArgR, OpArgU, iABC)		/* OP_TESTSET */
  ,opmode(0, 1, OpArgU, OpArgU, iABC)		/* OP_CALL */
  ,opmode(0, 1, OpArgU, OpArgU, iABC)		/* OP_TAILCALL */
- ,opm
+ ,opmode(0, 0, OpArgU, OpArgN, iABC)		/* OP_RETURN */
+ ,opmode(0, 1, OpArgR, OpArgN, iAsBx)		/* OP_FORLOOP */
+ ,opmode(0, 1, OpArgR, OpArgN, iAsBx)		/* OP_FORPREP */
+ ,opmode(0, 0, OpArgN, OpArgU, iABC)		/* OP_TFORCALL */
+ ,opmode(0, 1, OpArgR, OpArgN, iAsBx)		/* OP_TFORLOOP */
+ ,opmode(0, 0, OpArgU, OpArgU, iABC)		/* OP_SETLIST */
+ ,opmode(0, 1, OpArgU, OpArgN, iABx)		/* OP_CLOSURE */
+ ,opmode(0, 1, OpArgU, OpArgN, iABC)		/* OP_VARARG */
+ ,opmode(0, 0, OpArgU, OpArgU, iAx)		/* OP_EXTRAARG */
+};
+
