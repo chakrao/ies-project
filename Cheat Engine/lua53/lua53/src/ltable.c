@@ -515,3 +515,136 @@ const TValue *luaH_getint (Table *t, lua_Integer key) {
 
 
 /*
+** search function for short strings
+*/
+const TValue *luaH_getstr (Table *t, TString *key) {
+  Node *n = hashstr(t, key);
+  lua_assert(key->tt == LUA_TSHRSTR);
+  for (;;) {  /* check whether 'key' is somewhere in the chain */
+    const TValue *k = gkey(n);
+    if (ttisshrstring(k) && eqshrstr(tsvalue(k), key))
+      return gval(n);  /* that's it */
+    else {
+      int nx = gnext(n);
+      if (nx == 0) break;
+      n += nx;
+    }
+  };
+  return luaO_nilobject;
+}
+
+
+/*
+** main search function
+*/
+const TValue *luaH_get (Table *t, const TValue *key) {
+  switch (ttype(key)) {
+    case LUA_TSHRSTR: return luaH_getstr(t, tsvalue(key));
+    case LUA_TNUMINT: return luaH_getint(t, ivalue(key));
+    case LUA_TNIL: return luaO_nilobject;
+    case LUA_TNUMFLT: {
+      lua_Integer k;
+      if (numisinteger(fltvalue(key), &k)) /* index is int? */
+        return luaH_getint(t, k);  /* use specialized version */
+      /* else go through */
+    }
+    default: {
+      Node *n = mainposition(t, key);
+      for (;;) {  /* check whether 'key' is somewhere in the chain */
+        if (luaV_rawequalobj(gkey(n), key))
+          return gval(n);  /* that's it */
+        else {
+          int nx = gnext(n);
+          if (nx == 0) break;
+          n += nx;
+        }
+      };
+      return luaO_nilobject;
+    }
+  }
+}
+
+
+/*
+** beware: when using this function you probably need to check a GC
+** barrier and invalidate the TM cache.
+*/
+TValue *luaH_set (lua_State *L, Table *t, const TValue *key) {
+  const TValue *p = luaH_get(t, key);
+  if (p != luaO_nilobject)
+    return cast(TValue *, p);
+  else return luaH_newkey(L, t, key);
+}
+
+
+void luaH_setint (lua_State *L, Table *t, lua_Integer key, TValue *value) {
+  const TValue *p = luaH_getint(t, key);
+  TValue *cell;
+  if (p != luaO_nilobject)
+    cell = cast(TValue *, p);
+  else {
+    TValue k;
+    setivalue(&k, key);
+    cell = luaH_newkey(L, t, &k);
+  }
+  setobj2t(L, cell, value);
+}
+
+
+static int unbound_search (Table *t, unsigned int j) {
+  unsigned int i = j;  /* i is zero or a present index */
+  j++;
+  /* find 'i' and 'j' such that i is present and j is not */
+  while (!ttisnil(luaH_getint(t, j))) {
+    i = j;
+    if (j > cast(unsigned int, MAX_INT)/2) {  /* overflow? */
+      /* table was built with bad purposes: resort to linear search */
+      i = 1;
+      while (!ttisnil(luaH_getint(t, i))) i++;
+      return i - 1;
+    }
+    j *= 2;
+  }
+  /* now do a binary search between them */
+  while (j - i > 1) {
+    unsigned int m = (i+j)/2;
+    if (ttisnil(luaH_getint(t, m))) j = m;
+    else i = m;
+  }
+  return i;
+}
+
+
+/*
+** Try to find a boundary in table 't'. A 'boundary' is an integer index
+** such that t[i] is non-nil and t[i+1] is nil (and 0 if t[1] is nil).
+*/
+int luaH_getn (Table *t) {
+  unsigned int j = t->sizearray;
+  if (j > 0 && ttisnil(&t->array[j - 1])) {
+    /* there is a boundary in the array part: (binary) search for it */
+    unsigned int i = 0;
+    while (j - i > 1) {
+      unsigned int m = (i+j)/2;
+      if (ttisnil(&t->array[m - 1])) j = m;
+      else i = m;
+    }
+    return i;
+  }
+  /* else must find a boundary in hash part */
+  else if (isdummy(t->node))  /* hash part is empty? */
+    return j;  /* that is easy... */
+  else return unbound_search(t, j);
+}
+
+
+
+#if defined(LUA_DEBUG)
+
+Node *luaH_mainposition (const Table *t, const TValue *key) {
+  return mainposition(t, key);
+}
+
+int luaH_isdummy (Node *n) { return isdummy(n); }
+
+#endif
