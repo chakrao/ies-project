@@ -202,4 +202,160 @@ int luaH_next (lua_State *L, Table *t, StkId key) {
   for (i -= t->sizearray; cast_int(i) < sizenode(t); i++) {  /* hash part */
     if (!ttisnil(gval(gnode(t, i)))) {  /* a non-nil value? */
       setobj2s(L, key, gkey(gnode(t, i)));
-      setobj2s(L, key+1, gv
+      setobj2s(L, key+1, gval(gnode(t, i)));
+      return 1;
+    }
+  }
+  return 0;  /* no more elements */
+}
+
+
+/*
+** {=============================================================
+** Rehash
+** ==============================================================
+*/
+
+/*
+** Compute the optimal size for the array part of table 't'. 'nums' is a
+** "count array" where 'nums[i]' is the number of integers in the table
+** between 2^(i - 1) + 1 and 2^i. Put in '*narray' the optimal size, and
+** return the number of elements that will go to that part.
+*/
+static unsigned int computesizes (unsigned int nums[], unsigned int *narray) {
+  int i;
+  unsigned int twotoi;  /* 2^i */
+  unsigned int a = 0;  /* number of elements smaller than 2^i */
+  unsigned int na = 0;  /* number of elements to go to array part */
+  unsigned int n = 0;  /* optimal size for array part */
+  for (i = 0, twotoi = 1; twotoi/2 < *narray; i++, twotoi *= 2) {
+    if (nums[i] > 0) {
+      a += nums[i];
+      if (a > twotoi/2) {  /* more than half elements present? */
+        n = twotoi;  /* optimal size (till now) */
+        na = a;  /* all elements up to 'n' will go to array part */
+      }
+    }
+    if (a == *narray) break;  /* all elements already counted */
+  }
+  *narray = n;
+  lua_assert(*narray/2 <= na && na <= *narray);
+  return na;
+}
+
+
+static int countint (const TValue *key, unsigned int *nums) {
+  unsigned int k = arrayindex(key);
+  if (k != 0) {  /* is 'key' an appropriate array index? */
+    nums[luaO_ceillog2(k)]++;  /* count as such */
+    return 1;
+  }
+  else
+    return 0;
+}
+
+
+static unsigned int numusearray (const Table *t, unsigned int *nums) {
+  int lg;
+  unsigned int ttlg;  /* 2^lg */
+  unsigned int ause = 0;  /* summation of 'nums' */
+  unsigned int i = 1;  /* count to traverse all array keys */
+  /* traverse each slice */
+  for (lg = 0, ttlg = 1; lg <= MAXABITS; lg++, ttlg *= 2) {
+    unsigned int lc = 0;  /* counter */
+    unsigned int lim = ttlg;
+    if (lim > t->sizearray) {
+      lim = t->sizearray;  /* adjust upper limit */
+      if (i > lim)
+        break;  /* no more elements to count */
+    }
+    /* count elements in range (2^(lg - 1), 2^lg] */
+    for (; i <= lim; i++) {
+      if (!ttisnil(&t->array[i-1]))
+        lc++;
+    }
+    nums[lg] += lc;
+    ause += lc;
+  }
+  return ause;
+}
+
+
+static int numusehash (const Table *t, unsigned int *nums,
+                       unsigned int *pnasize) {
+  int totaluse = 0;  /* total number of elements */
+  int ause = 0;  /* elements added to 'nums' (can go to array part) */
+  int i = sizenode(t);
+  while (i--) {
+    Node *n = &t->node[i];
+    if (!ttisnil(gval(n))) {
+      ause += countint(gkey(n), nums);
+      totaluse++;
+    }
+  }
+  *pnasize += ause;
+  return totaluse;
+}
+
+
+static void setarrayvector (lua_State *L, Table *t, unsigned int size) {
+  unsigned int i;
+  luaM_reallocvector(L, t->array, t->sizearray, size, TValue);
+  for (i=t->sizearray; i<size; i++)
+     setnilvalue(&t->array[i]);
+  t->sizearray = size;
+}
+
+
+static void setnodevector (lua_State *L, Table *t, unsigned int size) {
+  int lsize;
+  if (size == 0) {  /* no elements to hash part? */
+    t->node = cast(Node *, dummynode);  /* use common 'dummynode' */
+    lsize = 0;
+  }
+  else {
+    int i;
+    lsize = luaO_ceillog2(size);
+    if (lsize > MAXHBITS)
+      luaG_runerror(L, "table overflow");
+    size = twoto(lsize);
+    t->node = luaM_newvector(L, size, Node);
+    for (i = 0; i < (int)size; i++) {
+      Node *n = gnode(t, i);
+      gnext(n) = 0;
+      setnilvalue(wgkey(n));
+      setnilvalue(gval(n));
+    }
+  }
+  t->lsizenode = cast_byte(lsize);
+  t->lastfree = gnode(t, size);  /* all positions are free */
+}
+
+
+void luaH_resize (lua_State *L, Table *t, unsigned int nasize,
+                                          unsigned int nhsize) {
+  unsigned int i;
+  int j;
+  unsigned int oldasize = t->sizearray;
+  int oldhsize = t->lsizenode;
+  Node *nold = t->node;  /* save old hash ... */
+  if (nasize > oldasize)  /* array part must grow? */
+    setarrayvector(L, t, nasize);
+  /* create new hash part with appropriate size */
+  setnodevector(L, t, nhsize);
+  if (nasize < oldasize) {  /* array part must shrink? */
+    t->sizearray = nasize;
+    /* re-insert elements from vanishing slice */
+    for (i=nasize; i<oldasize; i++) {
+      if (!ttisnil(&t->array[i]))
+        luaH_setint(L, t, i + 1, &t->array[i]);
+    }
+    /* shrink array */
+    luaM_reallocvector(L, t->array, oldasize, nasize, TValue);
+  }
+  /* re-insert elements from hash part */
+  for (j = twoto(oldhsize) - 1; j >= 0; j--) {
+    Node *old = nold + j;
+    if (!ttisnil(gval(old))) {
+      /* doesn't need barrier/invalidate cache, as entry was
+     
