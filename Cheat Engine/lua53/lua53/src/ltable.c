@@ -358,4 +358,160 @@ void luaH_resize (lua_State *L, Table *t, unsigned int nasize,
     Node *old = nold + j;
     if (!ttisnil(gval(old))) {
       /* doesn't need barrier/invalidate cache, as entry was
-     
+         already present in the table */
+      setobjt2t(L, luaH_set(L, t, gkey(old)), gval(old));
+    }
+  }
+  if (!isdummy(nold))
+    luaM_freearray(L, nold, cast(size_t, twoto(oldhsize))); /* free old array */
+}
+
+
+void luaH_resizearray (lua_State *L, Table *t, unsigned int nasize) {
+  int nsize = isdummy(t->node) ? 0 : sizenode(t);
+  luaH_resize(L, t, nasize, nsize);
+}
+
+/*
+** nums[i] = number of keys 'k' where 2^(i - 1) < k <= 2^i
+*/
+static void rehash (lua_State *L, Table *t, const TValue *ek) {
+  unsigned int nasize, na;
+  unsigned int nums[MAXABITS + 1];
+  int i;
+  int totaluse;
+  for (i = 0; i <= MAXABITS; i++) nums[i] = 0;  /* reset counts */
+  nasize = numusearray(t, nums);  /* count keys in array part */
+  totaluse = nasize;  /* all those keys are integer keys */
+  totaluse += numusehash(t, nums, &nasize);  /* count keys in hash part */
+  /* count extra key */
+  nasize += countint(ek, nums);
+  totaluse++;
+  /* compute new size for array part */
+  na = computesizes(nums, &nasize);
+  /* resize the table to new computed sizes */
+  luaH_resize(L, t, nasize, totaluse - na);
+}
+
+
+
+/*
+** }=============================================================
+*/
+
+
+Table *luaH_new (lua_State *L) {
+  GCObject *o = luaC_newobj(L, LUA_TTABLE, sizeof(Table));
+  Table *t = gco2t(o);
+  t->metatable = NULL;
+  t->flags = cast_byte(~0);
+  t->array = NULL;
+  t->sizearray = 0;
+  setnodevector(L, t, 0);
+  return t;
+}
+
+
+void luaH_free (lua_State *L, Table *t) {
+  if (!isdummy(t->node))
+    luaM_freearray(L, t->node, cast(size_t, sizenode(t)));
+  luaM_freearray(L, t->array, t->sizearray);
+  luaM_free(L, t);
+}
+
+
+static Node *getfreepos (Table *t) {
+  while (t->lastfree > t->node) {
+    t->lastfree--;
+    if (ttisnil(gkey(t->lastfree)))
+      return t->lastfree;
+  }
+  return NULL;  /* could not find a free place */
+}
+
+
+
+/*
+** inserts a new key into a hash table; first, check whether key's main
+** position is free. If not, check whether colliding node is in its main
+** position or not: if it is not, move colliding node to an empty place and
+** put new key in its main position; otherwise (colliding node is in its main
+** position), new key goes to an empty position.
+*/
+TValue *luaH_newkey (lua_State *L, Table *t, const TValue *key) {
+  Node *mp;
+  TValue aux;
+  if (ttisnil(key)) luaG_runerror(L, "table index is nil");
+  else if (ttisfloat(key)) {
+    lua_Number n = fltvalue(key);
+    lua_Integer k;
+    if (luai_numisnan(n))
+      luaG_runerror(L, "table index is NaN");
+    if (numisinteger(n, &k)) {  /* index is int? */
+      setivalue(&aux, k);
+      key = &aux;  /* insert it as an integer */
+    }
+  }
+  mp = mainposition(t, key);
+  if (!ttisnil(gval(mp)) || isdummy(mp)) {  /* main position is taken? */
+    Node *othern;
+    Node *f = getfreepos(t);  /* get a free place */
+    if (f == NULL) {  /* cannot find a free place? */
+      rehash(L, t, key);  /* grow table */
+      /* whatever called 'newkey' takes care of TM cache and GC barrier */
+      return luaH_set(L, t, key);  /* insert key into grown table */
+    }
+    lua_assert(!isdummy(f));
+    othern = mainposition(t, gkey(mp));
+    if (othern != mp) {  /* is colliding node out of its main position? */
+      /* yes; move colliding node into free position */
+      while (othern + gnext(othern) != mp)  /* find previous */
+        othern += gnext(othern);
+      gnext(othern) = cast_int(f - othern);  /* rechain to point to 'f' */
+      *f = *mp;  /* copy colliding node into free pos. (mp->next also goes) */
+      if (gnext(mp) != 0) {
+        gnext(f) += cast_int(mp - f);  /* correct 'next' */
+        gnext(mp) = 0;  /* now 'mp' is free */
+      }
+      setnilvalue(gval(mp));
+    }
+    else {  /* colliding node is in its own main position */
+      /* new node will go into free position */
+      if (gnext(mp) != 0)
+        gnext(f) = cast_int((mp + gnext(mp)) - f);  /* chain new position */
+      else lua_assert(gnext(f) == 0);
+      gnext(mp) = cast_int(f - mp);
+      mp = f;
+    }
+  }
+  setnodekey(L, &mp->i_key, key);
+  luaC_barrierback(L, t, key);
+  lua_assert(ttisnil(gval(mp)));
+  return gval(mp);
+}
+
+
+/*
+** search function for integers
+*/
+const TValue *luaH_getint (Table *t, lua_Integer key) {
+  /* (1 <= key && key <= t->sizearray) */
+  if (l_castS2U(key - 1) < t->sizearray)
+    return &t->array[key - 1];
+  else {
+    Node *n = hashint(t, key);
+    for (;;) {  /* check whether 'key' is somewhere in the chain */
+      if (ttisinteger(gkey(n)) && ivalue(gkey(n)) == key)
+        return gval(n);  /* that's it */
+      else {
+        int nx = gnext(n);
+        if (nx == 0) break;
+        n += nx;
+      }
+    };
+    return luaO_nilobject;
+  }
+}
+
+
+/*
