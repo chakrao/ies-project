@@ -573,4 +573,207 @@ ifeq "$(TEC_CC)" "vc"
   RESBIN ?= $(COMPILER)/bin
   CC        = $(BIN)/cl -nologo
   CPPC      = $(BIN)/cl -nologo
-  LIBC      = $(BIN)/link -lib 
+  LIBC      = $(BIN)/link -lib -nologo
+  LINKER    = $(BIN)/link -nologo
+  MT        = $(RESBIN)/mt -nologo
+  RCC       = $(RESBIN)/rc -fo
+  ifdef NEW_SDK_UM
+    STDINCS = $(PLATSDK)/include/shared $(PLATSDK)/include/um $(COMPILER)/include
+  else
+    STDINCS = $(PLATSDK)/include $(COMPILER)/include
+  endif
+  STDFLAGS  = -c -Fo$(OBJDIR)/ -W3
+  STDLFLAGS =
+  DEPDEFS   = -D_WIN32 -D_M_IX86 -D_STDCALL_SUPPORTED
+  STDLIBDIR = -LIBPATH:$(COMPILER)/lib$(VCLIBBIN) -LIBPATH:$(PLATSDK)/lib$(SDKLIBBIN)
+  OPTFLAGS := -O2
+  DEBUGFLAGS := -Z7 -Od -GZ
+  ifdef USE_ATL
+    STDINCS += $(COMPILER)/atlmfc/include
+    STDLIBDIR += -LIBPATH:$(COMPILER)/atlmfc/lib$(VCLIBBIN)
+  endif
+  ifdef NEW_VC_COMPILER
+    DEBUGFLAGS := -Z7 -Od -RTC1
+    STDDEFS += -D_CRT_SECURE_NO_DEPRECATE
+    ifndef CPP_NARROW_INLINES
+      STDDEFS += -D_CPP_NARROW_INLINES_DEFINED
+    endif
+    ifdef USE_CLR
+      STDFLAGS += -clr
+    else
+      STDFLAGS += -EHsc
+    endif
+    ifdef USE_OPENMP
+      STDFLAGS += -openmp
+      LIBS += vcomp
+    endif
+  else                  # Exception Handling Model
+    STDFLAGS += -GX
+  endif
+  ifneq ($(MAKETYPE), LIB)
+    ifeq "$(COMPILER)" "$(VC6)"
+      STDLFLAGS += -pdb:none -incremental:no -machine:$(MACHINE)
+    else
+      STDLFLAGS += -incremental:no -machine:$(MACHINE)
+    endif
+    ifdef DBG
+      STDLFLAGS += -debug
+    endif
+    ifdef NEW_VC_COMPILER
+      ifndef GEN_MANIFEST
+        STDLFLAGS += -MANIFEST:NO
+      else
+        ifeq ($(GEN_MANIFEST), No)
+          STDLFLAGS += -MANIFEST:NO
+        else
+          STDLFLAGS += -MANIFEST
+        endif
+      endif
+    endif
+  endif
+  ifeq ($(MAKETYPE), APP)
+    ifeq "$(COMPILER)" "$(VC6)"
+      STDFLAGS += -GA
+    else
+      OPTFLAGS += -GL
+      ifdef OPT
+        STDLFLAGS += -LTCG
+      endif
+    endif
+    STDLFLAGS += -subsystem:$(APPTYPE) -out:$(TARGETEXE)
+  else
+    ifeq ($(MAKETYPE), DLL)
+      ifeq "$(COMPILER)" "$(VC6)"
+        STDFLAGS += -GD
+      else
+        OPTFLAGS += -GL
+        ifdef OPT
+          STDLFLAGS += -LTCG
+        endif
+      endif
+      STDLFLAGS += -dll -subsystem:$(APPTYPE) -out:$(TARGETDLL) -implib:$(TARGETLIB) -def:$(DEF_FILE)
+    else
+      STDLFLAGS += -out:$(TARGETLIB)
+    endif
+  endif
+  ifdef USE_DLL
+    ifdef DBG
+      STDFLAGS += -MDd
+    else
+      STDFLAGS += -MD
+    endif
+  else
+    ifdef USE_MT
+      ifdef DBG
+        STDFLAGS += -MTd
+      else
+        STDFLAGS += -MT
+      endif
+    else
+      ifdef DBG
+        STDFLAGS += -MLd
+      else
+        STDFLAGS += -ML
+      endif
+    endif
+  endif
+endif
+
+##########################################################################
+
+ifeq "$(TEC_UNAME)" "owc1"
+  COMPILER = $(OWC1)
+  TEC_CC  = wc
+  STDLFLAGS =
+endif
+
+ifeq "$(TEC_CC)" "wc"
+  WIN_OTHER = YES
+  BIN     = $(COMPILER)/binnt
+  CC      = $(SLASH) $(BIN)/wcc386
+  CPPC    = $(SLASH) $(BIN)/wpp386
+  LIBC    = $(SLASH) $(BIN)/wlib
+  LINKER  = $(SLASH) $(BIN)/wlink
+  RCC     = $(SLASH) $(BIN)/rc -fo
+  STDINCS = $(COMPILER)/h $(COMPILER)/h/nt
+  STDFLAGS += -od -w4 -5r -bt=nt -mf -e25 -zq -fo$(OBJDIR)/
+  STDLIBDIR = LIBP $(COMPILER)/lib386 LIBP $(COMPILER)/lib386/nt
+  DEBUGFLAGS := -d2
+  OPTFLAGS := -ot
+  ifeq ($(MAKETYPE), APP)
+    STDLFLAGS = OP maxe=25 OP quiet FORM windows nt NAME $(TARGETEXE)
+    ifeq ($(APPTYPE), console)
+      STDLFLAGS += RU con
+    endif
+  else
+    STDLFLAGS += -b -c -n -q -p=512 $(TARGETLIB)
+  endif
+  ifdef USE_DLL
+    STDFLAGS += -bm -br
+  endif
+endif
+
+##########################################################################
+
+ifeq "$(TEC_UNAME)" "bc55"
+  COMPILER = $(BC55)
+  TEC_CC  = bc
+  OLD_OPENGL = Yes
+endif
+
+ifeq "$(TEC_UNAME)" "bc56"
+  COMPILER = $(BC56)
+  TEC_CC  = bc
+  OLD_OPENGL = Yes
+endif
+
+ifeq "$(TEC_UNAME)" "bc6"
+  COMPILER = $(BC6)
+  TEC_CC  = bc
+  OLD_OPENGL = Yes
+endif
+
+ifeq "$(TEC_CC)" "bc"
+  WIN_OTHER = YES
+  TEC_CC   = bc
+  BIN      = $(COMPILER)/bin
+  CC       = $(BIN)/bcc32
+  CPPC     = $(BIN)/bcc32
+  LIBC     = $(BIN)/tlib /P32
+  RCC      = $(BIN)/brc32 -r -fo
+  LINKER   = $(SLASH) $(BIN)/ilink32
+  STDINCS  = $(COMPILER)/include $(COMPILER)/include/dinkumware
+  STDLIBDIR = -L$(COMPILER)/lib -L$(COMPILER)/lib/PSDK
+  STDFLAGS  = -c -n$(OBJDIR)/
+  STDLIB    := cw32 import32 $(STDLIB)
+  ifeq ($(MAKETYPE), APP)
+    STDLFLAGS = -Tpe #-x -c -Gn
+    ifeq ($(APPTYPE), console)
+      STARTUP = c0x32.obj
+      STDLFLAGS += -ap
+    else
+      STARTUP = c0w32.obj
+      STDLFLAGS += -aa
+    endif
+  else
+    STDLFLAGS = $(TARGETLIB)
+  endif
+  OPTFLAGS := -O2
+  DEBUGFLAGS := -v -x -xp
+  ifdef USE_DLL
+    STDFLAGS += -tWDMR
+  endif
+endif
+
+##########################################################################
+
+ifneq ($(findstring gcc, $(TEC_UNAME)), )
+  TEC_CC = gcc
+endif
+
+ifneq ($(findstring mingw, $(TEC_UNAME)), )
+  TEC_CC = gcc
+endif
+
+ifeq "$(TEC_UNAME)" "gcc3"
+  COMPILER = $(GCC3
