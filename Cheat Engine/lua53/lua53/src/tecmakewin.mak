@@ -322,4 +322,255 @@ MINGW3 ?= x:/lng/mingw3
 MINGW4 ?= x:/lng/mingw4
 MINGW4_64 ?= x:/lng/mingw4_64
 # The default location is in the PATH
-#GCC3 ?= x:/lng/gc
+#GCC3 ?= x:/lng/gcc3
+#GCC4 ?= x:/lng/gcc4
+
+#Tools
+QT ?= x:/lng/qt
+ifdef USE_GTK3
+  GTKSFX:=3
+  GTK3 ?= x:/lng/gtk3
+  GTK := $(GTK3)
+else
+  GTKSFX:=2
+  GTK ?= x:/lng/gtk
+endif
+
+GLUT ?= x:/lng/glut
+GLUT_LIB ?= $(GLUT)/lib
+GLUT_INC ?= $(GLUT)/include
+
+OBJEXT = obj
+LIBEXT = lib
+
+ifneq ($(findstring _64, $(TEC_UNAME)), )
+  BUILD64 = Yes
+endif
+
+ifneq ($(findstring dll, $(TEC_UNAME)), )
+  USE_DLL = Yes
+endif
+
+##########################################################################
+
+ifeq "$(TEC_UNAME)" "vc6"
+  COMPILER = $(VC6)
+endif
+
+ifeq "$(TEC_UNAME)" "vc7"
+  COMPILER = $(VC7)
+endif
+
+ifeq "$(TEC_UNAME)" "vc8"
+  COMPILER = $(VC8)
+endif
+
+ifeq "$(TEC_UNAME)" "vc8_64"
+  COMPILER = $(VC8)
+  SDKLIBBIN = /amd64
+endif
+
+ifneq ($(findstring vc9, $(TEC_UNAME)), )
+  COMPILER = $(VC9)
+endif
+
+ifneq ($(findstring vc10, $(TEC_UNAME)), )
+  COMPILER = $(VC10)
+endif
+
+ifneq ($(findstring vc11, $(TEC_UNAME)), )
+  COMPILER = $(VC11)
+endif
+
+ifneq ($(findstring vc12, $(TEC_UNAME)), )
+  COMPILER = $(VC12)
+endif
+
+ifeq "$(TEC_UNAME)" "dll"
+  COMPILER = $(VC6)
+endif
+
+ifeq "$(TEC_UNAME)" "dll7"
+  COMPILER = $(VC7)
+endif
+
+ifeq "$(TEC_UNAME)" "dll8"
+  COMPILER = $(VC8)
+  ifdef DBG
+    #debug info not working for dll8 linker
+    define DBG
+    endef
+  endif
+endif
+
+ifeq "$(TEC_UNAME)" "dll8_64"
+  COMPILER = $(VC8)
+  SDKLIBBIN = /amd64
+endif
+
+ifneq ($(findstring dll9, $(TEC_UNAME)), )
+  COMPILER = $(VC9)
+endif
+
+ifneq ($(findstring dll10, $(TEC_UNAME)), )
+  COMPILER = $(VC10)
+endif
+
+ifneq ($(findstring dll11, $(TEC_UNAME)), )
+  COMPILER = $(VC11)
+endif
+
+ifneq ($(findstring dll12, $(TEC_UNAME)), )
+  COMPILER = $(VC12)
+endif
+
+ifeq "$(COMPILER)" "$(VC6)"
+  TEC_CC = vc
+  # Use the VC7 Platform SDK, no harm if VC7 is not installed
+  PLATSDK ?= $(VC7)/PlatformSDK
+  OLD_OPENGL = Yes
+endif
+
+ifeq "$(COMPILER)" "$(VC7)"
+  TEC_CC = vc
+  PLATSDK ?= $(VC7)/PlatformSDK
+  OLD_OPENGL = Yes
+endif
+
+ifeq "$(COMPILER)" "$(VC8)"
+  NEW_VC_COMPILER = Yes
+  TEC_CC = vc
+  STDDEFS += -DMSVC8
+  PLATSDK ?= $(VC8)/PlatformSDK
+  OLD_OPENGL = Yes
+  ifdef USE_DLL
+    GEN_MANIFEST ?= Yes
+  else
+    #there is no single thread RTL in VC8
+    USE_MT = Yes
+  endif
+endif
+
+ifeq "$(COMPILER)" "$(VC9)"
+  NEW_VC_COMPILER = Yes
+  TEC_CC = vc
+  STDDEFS += -DMSVC9
+  ifdef USE_DLL
+    GEN_MANIFEST ?= Yes
+  else
+    #there is no single thread RTL in VC9
+    USE_MT = Yes
+  endif
+  ifdef VC9SDK
+    PLATSDK ?= $(VC9SDK)
+  else
+    # Not the real folder, we copied from "C:\Program Files\Microsoft SDKs\Windows\v6.0A"
+    PLATSDK ?= $(VC9)/WinSDK
+  endif
+  RESBIN := $(PLATSDK)/bin
+  ifdef BUILD64
+    RESBIN := $(RESBIN)/x64
+  endif
+endif
+
+ifeq "$(COMPILER)" "$(VC10)"
+  NEW_VC_COMPILER = Yes
+  TEC_CC = vc
+  STDDEFS += -DMSVC10
+  ifdef USE_DLL
+#    GEN_MANIFEST ?= Yes
+  else
+    #there is no single thread RTL in VC10
+    USE_MT = Yes
+  endif
+  ifdef VC10SDK
+    PLATSDK ?= $(VC10SDK)
+  else
+    # Not the real folder, we copied from "C:\Program Files\Microsoft SDKs\Windows\v7.1"
+    PLATSDK ?= $(VC10)/WinSDK
+  endif
+  RESBIN := $(PLATSDK)/bin
+  ifdef BUILD64
+    RESBIN := $(RESBIN)/x64
+  endif
+endif
+
+ifeq "$(COMPILER)" "$(VC11)"
+  NEW_VC_COMPILER = Yes
+  NEW_SDK_UM = Yes
+  UMDIR := /win8/um
+  TEC_CC = vc
+  STDDEFS += -DMSVC11
+  ifdef USE_DLL
+#    GEN_MANIFEST ?= Yes
+  else
+    #there is no single thread RTL in VC11
+    USE_MT = Yes
+  endif
+  ifdef VC11SDK
+    PLATSDK ?= $(VC11SDK)
+  else
+    # Not the real folder, we copied from "C:\Program Files (x86)\Windows Kits\8.0"
+    PLATSDK ?= $(VC11)/WinSDK
+  endif
+  ifdef BUILD64
+    RESBIN := $(PLATSDK)/bin/x64
+  else
+    RESBIN := $(PLATSDK)/bin/x86
+  endif
+endif
+
+ifeq "$(COMPILER)" "$(VC12)"
+  NEW_VC_COMPILER = Yes
+  NEW_SDK_UM = Yes
+  UMDIR := /winv6.3/um
+  TEC_CC = vc
+  STDDEFS += -DMSVC12
+  ifdef USE_DLL
+#    GEN_MANIFEST ?= Yes
+  else
+    #there is no single thread RTL in VC12
+    USE_MT = Yes
+  endif
+  ifdef VC12SDK
+    PLATSDK ?= $(VC12SDK)
+  else
+    # Not the real folder, we copied from "C:\Program Files (x86)\Windows Kits\8.1"
+    PLATSDK ?= $(VC12)/WinSDK
+  endif
+  ifdef BUILD64
+    RESBIN := $(PLATSDK)/bin/x64
+  else
+    RESBIN := $(PLATSDK)/bin/x86
+  endif
+endif
+
+ifeq "$(TEC_CC)" "vc"
+  ifdef BUILD64
+    STDDEFS += -DWIN64
+    MACHINE = X64
+    GTK := $(GTK)_x64
+    VCLIBBIN = /amd64
+    ifdef NEW_SDK_UM
+      SDKLIBBIN := $(UMDIR)/x64
+    else
+      SDKLIBBIN ?= /x64
+    endif
+    ifdef USE_X86_CL64
+      BIN = $(COMPILER)/bin/x86_amd64
+    else
+      BIN = $(COMPILER)/bin/amd64
+    endif
+  else
+    ifdef NEW_SDK_UM
+      SDKLIBBIN := $(UMDIR)/x86
+    else
+      VCLIBBIN =
+    endif
+    MACHINE = X86
+    BIN = $(COMPILER)/bin
+  endif
+  RESBIN ?= $(COMPILER)/bin
+  CC        = $(BIN)/cl -nologo
+  CPPC      = $(BIN)/cl -nologo
+  LIBC      = $(BIN)/link -lib 
