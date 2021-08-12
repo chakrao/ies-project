@@ -776,4 +776,268 @@ ifneq ($(findstring mingw, $(TEC_UNAME)), )
 endif
 
 ifeq "$(TEC_UNAME)" "gcc3"
-  COMPILER = $(GCC3
+  COMPILER = $(GCC3)
+  ifdef USE_OPENGL
+    STDDEFS += -DUSE_OPENGL32
+  endif
+endif
+
+ifeq "$(TEC_UNAME)" "mingw3"
+  COMPILER = $(MINGW3)
+  OLD_OPENGL = Yes
+endif
+
+ifneq ($(findstring gcc4, $(TEC_UNAME)), )
+  COMPILER = $(GCC4)
+endif
+
+ifeq "$(TEC_UNAME)" "mingw4"
+  COMPILER = $(MINGW4)
+  OLD_OPENGL = Yes
+endif
+
+ifeq "$(TEC_UNAME)" "mingw4_64"
+  COMPILER = $(MINGW4_64)
+#  OLD_OPENGL = Yes
+  BUILD64 = Yes
+endif
+
+ifneq ($(findstring dllg4, $(TEC_UNAME)), )
+  COMPILER = $(GCC4)
+  TEC_CC = gcc
+endif
+
+ifeq "$(TEC_UNAME)" "dllw4"
+  COMPILER = $(MINGW4)
+  TEC_CC = gcc
+  OLD_OPENGL = Yes
+endif
+
+ifeq "$(TEC_UNAME)" "dllw4_64"
+  COMPILER = $(MINGW4_64)
+  TEC_CC = gcc
+#  OLD_OPENGL = Yes
+  BUILD64 = Yes
+endif
+
+ifeq "$(COMPILER)" "$(GCC4)"
+  ifdef USE_OPENGL
+    STDDEFS += -DUSE_OPENGL32
+  endif
+endif
+
+ifeq "$(TEC_CC)" "gcc"
+  WIN_OTHER = YES
+  ifneq ($(findstring w4, $(TEC_UNAME)), )
+    WIN_OTHER :=
+  endif
+  ifdef BUILD64
+    STDDEFS += -DWIN64
+    GTK := $(GTK)_x64
+  endif
+  ifneq "$(findstring mingw, $(COMPILER))" ""
+    BIN   = $(COMPILER)/bin/
+  endif
+  CC      = $(BIN)gcc
+  CPPC    = $(BIN)g++
+  LIBC    = $(BIN)ar
+  RCC     = $(BIN)windres -O coff -o
+  ifndef LINKER
+    ifneq "$(findstring .cpp, $(SRC))" ""
+      LINKER := $(CPPC)
+    else
+      LINKER := $(CC)
+    endif
+  endif
+  RANLIB  = $(BIN)ranlib
+  ifneq "$(findstring mingw, $(COMPILER))" ""
+    STDINCS = $(COMPILER)/include
+    STDLIBDIR = -L$(COMPILER)/lib
+  endif
+  STDFLAGS += -Wall
+  DEBUGFLAGS := -g
+  OPTFLAGS := -O2
+  OBJEXT=o
+  LIBEXT=a
+  ifdef USE_OPENMP
+    STDFLAGS += -fopenmp
+    LIBS += gomp
+  endif
+  ifeq ($(MAKETYPE), APP)
+    STDLFLAGS = -Wl,-subsystem,$(APPTYPE)
+  else
+    ifeq ($(MAKETYPE), DLL)
+      ifneq ($(findstring w4, $(TEC_UNAME)), )
+        STDLFLAGS = -static-libgcc
+        ifneq "$(findstring .cpp, $(SRC))" ""
+          STDLFLAGS += -static-libstdc++
+        endif
+      else
+        STDLFLAGS =
+      endif
+    else
+      STDLFLAGS = r
+    endif
+  endif
+endif
+
+##########################################################################
+
+ifdef DBG
+  STDFLAGS += $(DEBUGFLAGS)
+  STDDEFS += -DDEBUG
+else
+  STDDEFS += -DNDEBUG
+  ifdef OPT
+    STDFLAGS += $(OPTFLAGS)
+  endif
+endif
+
+# allows an extra configuration file.
+ifdef EXTRA_CONFIG
+include $(EXTRA_CONFIG)
+endif
+
+.PHONY: system-check
+system-check:
+  ifndef TEC_UNAME
+			@echo ''; echo 'Tecmake: check failed, TEC_UNAME not defined.'; echo '';
+			@exit 1;
+  endif
+  ifndef TEC_WIN32
+    ifndef TEC_WIN64
+			@echo ''; echo 'Tecmake: check failed, TEC_UNAME not recognized.'; echo '';
+			@exit 1;
+    endif
+  endif
+  ifdef CHECK_GDIPLUS
+    ifdef WIN_OTHER
+			@echo ''; echo 'Tecmake: check failed, GDI+ NOT available in this system.'; echo '';
+			@exit 1;
+    endif
+  endif
+
+
+#---------------------------------#
+# Tecgraf Libraries Location
+TECTOOLS_HOME ?= ../..
+
+IUP   ?= $(TECTOOLS_HOME)/iup
+CD    ?= $(TECTOOLS_HOME)/cd
+IM    ?= $(TECTOOLS_HOME)/im
+LUA   ?= $(TECTOOLS_HOME)/lua
+LUA51 ?= $(TECTOOLS_HOME)/lua5.1
+LUA52 ?= $(TECTOOLS_HOME)/lua52
+LUA53 ?= $(TECTOOLS_HOME)/lua53
+
+
+#---------------------------------#
+#  Pre-defined libraries
+
+# Library order:
+#   user + iupcd + cd + iup + motif + X
+# Library path order is reversed
+
+ifdef USE_LUA
+  LUA_SUFFIX ?=
+  LIBLUASUFX := 3
+endif
+
+ifdef USE_LUA4
+  LUA_SUFFIX ?= 4
+  LIBLUASUFX := 4
+  override USE_LUA = Yes
+  LUA := $(LUA4)
+endif
+
+ifdef USE_LUA5
+  LUA_SUFFIX ?= 5
+  LIBLUASUFX := 5
+  override USE_LUA = Yes
+  LUA := $(LUA5)
+endif
+
+ifdef USE_LUA50
+  LUA_SUFFIX ?= 50
+  LIBLUASUFX := 5
+  override USE_LUA = Yes
+  LUA := $(LUA50)
+  NO_LUALIB := Yes
+endif
+
+ifdef USE_LUA51
+  LUA_SUFFIX ?= 5.1
+  LIBLUASUFX := 51
+  override USE_LUA = Yes
+  LUA := $(LUA51)
+  NO_LUALIB := Yes
+endif
+
+ifdef USE_LUA52
+  LUA_SUFFIX ?= 52
+  LIBLUASUFX := 52
+  override USE_LUA = Yes
+  LUA := $(LUA52)
+  NO_LUALIB := Yes
+endif
+
+ifdef USE_LUA53
+  LUA_SUFFIX ?= 53
+  LIBLUASUFX := 53
+  override USE_LUA = Yes
+  LUA := $(LUA53)
+  NO_LUALIB := Yes
+endif
+
+ifdef USE_IUP
+  override USE_IUP3 = Yes
+endif
+ifdef USE_IUP3
+  override USE_IUP = Yes
+endif
+
+ifdef USE_IUP2
+  override USE_IUP = Yes
+  IUP := $(IUP)2
+endif
+
+ifdef USE_IUPBETA
+  IUP := $(IUP)/beta
+endif
+
+ifdef USE_CDBETA
+  CD := $(CD)/beta
+endif
+
+ifdef USE_IMBETA
+  IM := $(IM)/beta
+endif
+
+ifdef USE_GLUT
+  override USE_OPENGL = Yes
+  LIBS += glut32
+  LDIR += $(GLUT_INC)
+  STDINCS += $(GLUT_LIB)
+endif
+
+ifdef USE_GDK
+  override USE_GTK = Yes
+endif
+
+ifdef USE_IUPCONTROLS
+  override USE_CD = Yes
+  override USE_IUP = Yes
+  ifdef USE_IUPLUA
+    LIBS += iupluacontrols$(LIBLUASUFX)
+    override USE_CDLUA = Yes
+  endif
+  LIBS += iupcontrols
+endif
+
+ifdef USE_IUPGLCONTROLS
+  override USE_OPENGL = Yes
+  override USE_IUP = Yes
+  ifdef USE_IUPLUA
+    LIBS += iupluaglcontrols$(LIBLUASUFX)
+  endif
+  LIBS += iupglcontrols ftgl
