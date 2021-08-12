@@ -1041,3 +1041,230 @@ ifdef USE_IUPGLCONTROLS
     LIBS += iupluaglcontrols$(LIBLUASUFX)
   endif
   LIBS += iupglcontrols ftgl
+endif
+
+ifdef USE_IMLUA
+  override USE_IM = Yes
+  LIBS += imlua$(LIBLUASUFX)
+endif
+
+ifdef USE_CDLUA
+  override USE_CD = Yes
+  LIBS += cdlua$(LIBLUASUFX)
+endif
+
+ifdef USE_IUPLUA
+  override USE_IUP = Yes
+  ifdef USE_CD
+    LIBS += iupluacd$(LIBLUASUFX)
+  endif
+  ifdef USE_OPENGL
+    LIBS += iupluagl$(LIBLUASUFX)
+  endif
+  LIBS += iuplua$(LIBLUASUFX)
+endif
+
+ifdef USE_LUA
+  ifndef NO_LUALIB
+    LIBS += lualib$(LUA_SUFFIX)
+  endif
+  LIBS += lua$(LUA_SUFFIX)
+
+  LUA_LIB ?= $(LUA)/lib/$(TEC_UNAME)
+  LDIR += $(LUA_LIB)
+
+  LUA_INC ?= $(LUA)/include
+  INCLUDES += $(LUA_INC)
+
+  LUA_BIN ?= $(LUA)/bin/$(TEC_SYSNAME)
+  ifdef USE_BIN2C_LUA
+    BIN2C := $(LUA_BIN)/lua$(LUA_SUFFIX) $(BIN2C_PATH)bin2c.lua
+  else
+    BIN2C := $(LUA_BIN)/bin2c$(LUA_SUFFIX)
+  endif
+  LUAC   := $(LUA_BIN)/luac$(LUA_SUFFIX)
+  LUABIN := $(LUA_BIN)/lua$(LUA_SUFFIX)
+endif
+
+ifdef USE_IUP
+  ifdef USE_CD
+    LIBS += iupcd
+  endif
+  ifdef USE_GTK
+    LIBS += iupgtk
+  else
+    LIBS += iup
+  endif
+  
+  IUP_LIB ?= $(IUP)/lib/$(TEC_UNAME)
+  LDIR += $(IUP_LIB)
+  
+  ifdef USE_OPENGL
+    LIBS += iupgl
+  endif
+  
+  ifdef USE_DLL
+    ifeq ($(MAKETYPE), APP)
+      LIBS += iupstub
+    endif
+  endif
+
+  IUP_INC ?= $(IUP)/include
+  INCLUDES += $(IUP_INC)
+endif
+
+ifdef USE_CD
+  ifdef USE_GDIPLUS
+    CHECK_GDIPLUS = Yes
+    LIBS += cdcontextplus gdiplus
+  endif
+  
+  ifdef USE_CAIRO
+    # To use Cairo with Win32 base driver (NOT for GDK)
+    # Can NOT be used together with GDI+
+    LIBS += cdcairo pangocairo-1.0 cairo
+  endif
+  
+  ifdef USE_GDK
+    LIBS += cdgdk
+  else
+    LIBS += cd
+  endif
+  
+  LINK_FREETYPE = Yes
+  
+  CD_LIB ?= $(CD)/lib/$(TEC_UNAME)
+  LDIR += $(CD_LIB)
+
+  CD_INC ?= $(CD)/include
+  INCLUDES += $(CD_INC)
+endif
+
+ifdef LINK_FREETYPE
+  # To be compatible with the existing DLLs of gnuwin32
+  LIBS += freetype6
+  
+  ifndef NO_ZLIB
+    LINK_ZLIB = Yes
+  endif
+endif
+
+ifdef USE_IM
+  LIBS += im
+  
+  ifndef NO_ZLIB
+    LINK_ZLIB = Yes
+  endif
+  
+  IM_LIB ?= $(IM)/lib/$(TEC_UNAME)
+  LDIR += $(IM_LIB)
+
+  IM_INC ?= $(IM)/include
+  INCLUDES += $(IM_INC)
+endif
+
+ifdef LINK_ZLIB
+  ifndef ZLIB
+    ZLIB = zlib1
+    
+    ifneq ($(findstring gcc, $(TEC_UNAME)), )
+      ZLIB = z
+    endif
+    ifneq ($(findstring mingw, $(TEC_UNAME)), )
+      ZLIB = z
+    endif
+  endif
+
+  LIBS += $(ZLIB)
+endif
+
+ifdef USE_OPENGL
+  ifdef OLD_OPENGL
+    LIBS += glaux glu32 opengl32
+  else
+    LIBS += glu32 opengl32
+  endif
+endif
+
+ifdef USE_GTK
+  STDINCS += $(GTK)/include/atk-1.0 $(GTK)/include/gtk-$(GTKSFX).0 $(GTK)/include/gdk-pixbuf-2.0 
+  STDINCS += $(GTK)/include/cairo $(GTK)/include/pango-1.0 $(GTK)/include/glib-2.0 
+  STDINCS += $(GTK)/lib/glib-2.0/include 
+  ifndef USE_GTK3
+    STDINCS += $(GTK)/lib/gtk-2.0/include
+  endif
+  ifeq "$(TEC_CC)" "gcc"
+    STDFLAGS += -mms-bitfields
+  endif
+  LDIR += $(GTK)/lib
+  ifdef USE_GTK3
+    LIBS += gtk-3 gdk-3
+  else
+    LIBS += gtk-win32-2.0 gdk-win32-2.0 
+  endif
+  LIBS += gdk_pixbuf-2.0 pango-1.0 pangowin32-1.0 gobject-2.0 gmodule-2.0 glib-2.0
+endif
+
+ifdef USE_QT
+	#STDFLAGS += -Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189
+  STDINCS += $(QT)/include $(QT)/include/QtCore $(QT)/include/QtGui $(QT)/include/ActiveQt $(QT)/mkspecs/win32-msvc2005
+  STDDEFS += -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_QT3SUPPORT_LIB -DQT3_SUPPORT -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT
+  LDIR += $(QT)/lib
+  LIBS += QtMain QtGui4 QtCore4
+endif
+
+
+#---------------------------------#
+#  Building compilation flags that are sets
+
+DEPINCS := $(INCLUDES) $(EXTRAINCS)
+
+# INCLUDES for dependencies, remove references to "c:" and similars
+DEPINCS := $(patsubst c:%, /cygdrive/c%, $(DEPINCS))
+DEPINCS := $(patsubst d:%, /cygdrive/d%, $(DEPINCS))
+DEPINCS := $(patsubst x:%, /cygdrive/x%, $(DEPINCS))
+DEPINCS := $(patsubst t:%, /cygdrive/t%, $(DEPINCS))
+DEPINCS := $(addprefix -I, $(DEPINCS))
+
+INCLUDES := $(addprefix -I, $(INCLUDES))
+STDINCS := $(addprefix -I, $(STDINCS))
+EXTRAINCS := $(addprefix -I, $(EXTRAINCS))
+DEFINES := $(addprefix -D, $(DEFINES))
+
+# For aplications and DLLs
+ifneq ($(MAKETYPE), LIB)
+  LIBS += $(STDLIB)
+  LIBS := $(addsuffix .$(LIBEXT), $(LIBS))
+
+  ifeq ($(TEC_CC), vc)
+    ifdef LDIR
+      LDIR  := $(addprefix -LIBPATH:, $(LDIR))
+    endif
+
+    STDLFLAGS += $(LDIR) $(STDLIBDIR) $(LIBS)
+  endif
+
+  ifeq ($(TEC_CC), bc)
+    ifdef LDIR
+      LDIR  := $(addprefix -L, $(LDIR))
+    endif
+  endif
+
+  ifeq ($(TEC_CC), wc)
+    ifdef LDIR
+      LDIR  := $(addprefix LIBP , $(LDIR))
+    endif
+
+    LIBS := $(addprefix LIB , $(LIBS))
+
+    STDLFLAGS += $(LDIR) $(STDLIBDIR) $(LIBS)
+  endif
+
+  ifeq ($(TEC_CC), gcc)
+    LIBS := $(addprefix -l, $(LIBS))
+    LIBS := $(LIBS:.a=)
+    ifdef LDIR
+      LDIR  := $(addprefix -L, $(LDIR))
+    endif
+
+    STDLFLAGS +=
