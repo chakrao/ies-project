@@ -1439,4 +1439,205 @@ $(SRELEASE): $(TARGETEXE)
 directories: $(OBJDIR) $(TARGETDIR) $(EXTRADIR) $(LOHDIR) $(LHDIR)
 
 $(OBJDIR) $(TARGETDIR):
-	if [ ! -d $@ ] ; then mkd
+	if [ ! -d $@ ] ; then mkdir -p $@ ; fi
+
+ifdef EXTRADIR
+  $(EXTRADIR):
+	  if [ ! -d $@ ] ; then mkdir -p $@ ; fi
+else
+  $(EXTRADIR): ;
+endif
+
+ifdef LOHDIR
+  $(LOHDIR):
+	  if [ ! -d $@ ] ; then mkdir -p $@ ; fi
+else
+  $(LOHDIR): ;
+endif
+
+ifdef LHDIR
+  $(LHDIR):
+	  if [ ! -d $@ ] ; then mkdir -p $@ ; fi
+else
+  $(LHDIR): ;
+endif
+
+
+#---------------------------------#
+# Compilation Rules
+
+$(OBJDIR)/%.o:  $(SRCDIR)/%.c
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(CC) -c $(CFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o:  $(SRCDIR)/%.cpp
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(CPPC) -c $(CXXFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o:  $(SRCDIR)/%.cxx
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(CPPC) -c $(CXXFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o:  $(SRCDIR)/%.cc
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(CPPC) -c $(CXXFLAGS) -o $@ $<
+
+$(OBJDIR)/%.obj:  $(SRCDIR)/%.c
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(CC) $(CFLAGS) $<
+
+$(OBJDIR)/%.obj:  $(SRCDIR)/%.cpp
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(CPPC) $(CXXFLAGS) $<
+	
+$(OBJDIR)/%.obj:  $(SRCDIR)/%.cxx
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(CPPC) $(CXXFLAGS) $<
+	
+$(OBJDIR)/%.obj:  $(SRCDIR)/%.cc
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(CPPC) $(CXXFLAGS) $<
+	
+$(OBJDIR)/%.res:  $(SRCDIR)/%.rc
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(RCC) $@ $(RCFLAGS) $<
+
+$(LHDIR)/%.lh:  $(SRCLUADIR)/%.lua
+	@echo ''; echo Tecmake: generating $(<F) ...
+	$(ECHO)$(BIN2C) $< > $@
+
+$(LOHDIR)/%.loh:  $(OBJROOT)/%.lo
+	@echo ''; echo Tecmake: generating $(<F) ...
+	$(ECHO)$(BIN2C) $< > $@
+
+$(OBJROOT)/%$(LO_SUFFIX).lo: $(SRCLUADIR)/%.lua
+	@echo ''; echo Tecmake: compiling $(<F) ...
+	$(ECHO)$(LUAC) -o $@ $<
+
+ifdef LOHPACK
+$(LOHDIR)/$(LOHPACK):  $(SRCLUA)
+	@echo ''; echo Tecmake: Generating $(<F) ...
+	$(ECHO)$(LUABIN) $(LUAPRE) $(LUAPREFLAGS) -l $(SRCLUADIR) -o $@ $(SRCLUA)
+endif
+
+
+#---------------------------------#
+# Rule to add a manifest file to the generated binary
+.PHONY: addmanifest
+addmanifest:
+  ifdef NEW_VC_COMPILER
+    ifeq ($(GEN_MANIFEST), Yes)
+	    @echo ''; echo Tecmake: adding Manifest ...
+      ifeq ($(MAKETYPE), DLL)
+	      $(ECHO)$(MT) -manifest $(TARGETDLL).manifest "-outputresource:$(TARGETDLL);2"
+      endif
+      ifeq ($(MAKETYPE), APP)
+	      $(ECHO)$(MT) -manifest $(TARGETEXE).manifest "-outputresource:$(TARGETEXE);1"
+      endif
+    endif
+  endif
+
+
+#---------------------------------#
+# Dependencies
+
+.PHONY: depend
+depend: $(DEPEND)
+
+$(DEPEND): $(MAKENAME)
+  ifdef SRC
+	  @echo "" > $(DEPEND)
+	  @which gcc 2> /dev/null 1>&2 ;\
+	  if [ $$? -eq 0 ]; then \
+	    echo "Tecmake: Building Dependencies ... (can be slow)" ;\
+	    g++ $(DEPINCS) $(DEFINES) $(STDDEFS) $(DEPDEFS) -MM $(SOURCES) | \
+	    sed -e '1,$$s/^\([^ ]*\)\.o/$$(OBJDIR)\/\1.$(OBJEXT)/' | \
+	    sed -e 's/\([ \t][ \t]*\)\([a-zA-Z]\):/\1\/cygdrive\/\2/g' > $(DEPEND) ;\
+	  else \
+	    echo "" ;\
+	    echo "Tecmake: error, g++ not found. Dependencies can not be built." ;\
+	    echo "Must set NO_DEPEND=Yes" ;\
+	    echo "" ;\
+	    exit 1 ;\
+	  fi
+  endif
+
+ifdef USE_NODEPEND
+  NO_DEPEND:=Yes
+endif
+
+###################
+ifndef NO_DEPEND
+include $(DEPEND)
+endif
+###################
+
+
+#---------------------------------#
+# Management Rules
+
+.PHONY: clean-dir
+clean-dir:
+	rm -fr $(OBJROOT) $(TARGETROOT)
+
+#   Remove extra files
+.PHONY: clean-extra
+clean-extra:
+	rm -f $(DEPEND) $(SRELEASE)
+
+#   Remove Lua object inclusion files
+.PHONY: clean-lohs
+clean-lohs:
+	rm -f $(LOS) $(LOHS)
+	
+#   Remove Lua inclusion files
+.PHONY: clean-lhs
+clean-lhs:
+	rm -f $(LHS)
+	
+#   Remove object files
+.PHONY: clean-obj
+clean-obj:
+	rm -f $(OBJS)
+
+#   Remove target
+.PHONY: clean-target
+clean-target:
+	rm -f $(TARGET)
+
+#   Remove target and object files
+.PHONY: clean-all-obj
+clean-all-obj:
+	@for d in $(UNAMES); do \
+	  (cd $(OBJROOT)/$$d; echo $(OBJ) | xargs rm -f) ;\
+	done
+
+#   Remove libraries and executables for all platforms
+.PHONY: clean-all-target
+clean-all-target:
+	@for d in $(UNAMES); do \
+	  (rm -f $(TARGETROOT)/$$d/$(TARGETNAME).exe $(TARGETROOT)/$$d/$(TARGETNAME).$(LIBEXT) $(TARGETROOT)/$$d/$(TARGETNAME).dll $(TARGETROOT)/$$d/$(TARGETNAME).exp) ;\
+	done
+
+.PHONY: clean
+clean: clean-target clean-obj
+
+.PHONY: clean-all
+clean-all: clean-extra clean-lohs clean-lhs clean-all-target clean-all-obj
+
+#   Rebuild target and object files
+.PHONY: rebuild
+rebuild: clean-obj clean-target tecmake
+
+#   Rebuild target without rebuilding object files
+.PHONY: relink
+relink: clean-target tecmake
+
+
+#---------------------------------#
+
+.PHONY: version
+version:
+	@echo "Tecmake Windows Version $(VERSION)"
+
+#---------------------------------#
