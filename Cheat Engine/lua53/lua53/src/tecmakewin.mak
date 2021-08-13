@@ -1267,4 +1267,176 @@ ifneq ($(MAKETYPE), LIB)
       LDIR  := $(addprefix -L, $(LDIR))
     endif
 
-    STDLFLAGS +=
+    STDLFLAGS += $(LDIR) $(STDLIBDIR) $(LIBS)
+  endif
+
+endif
+
+
+#---------------------------------#
+# Definitions of private variables
+
+# C, C++ and RC compiler flags
+CFLAGS   = $(FLAGS) $(STDFLAGS) $(INCLUDES) $(STDINCS) $(EXTRAINCS) $(DEFINES) $(STDDEFS)
+CXXFLAGS = $(CPPFLAGS) $(STDFLAGS) $(INCLUDES) $(STDINCS) $(EXTRAINCS) $(DEFINES) $(STDDEFS)
+RCFLAGS  = $(INCLUDES) $(STDINCS) $(EXTRAINCS) $(DEFINES) $(STDDEFS)
+
+# Sources with relative path
+SOURCES    = $(addprefix $(SRCDIR)/, $(SRC))
+
+# Target for applications or libraries
+ifeq ($(MAKETYPE), APP)
+  TARGET := $(TARGETEXE)
+else
+  ifeq ($(MAKETYPE), DLL)
+    TARGET := $(TARGETDLL) $(TARGETLIB) $(TARGETDIR)/$(TARGETNAME).exp
+  else
+    TARGET := $(TARGETLIB)
+  endif
+endif
+
+# OBJ: list of .o, without path
+# OBJS: list of .o with relative path
+OBJ = $(notdir $(SRC))
+OBJ := $(OBJ:.c=.$(OBJEXT))
+OBJ := $(OBJ:.cpp=.$(OBJEXT))
+OBJ := $(OBJ:.cxx=.$(OBJEXT))
+OBJ := $(OBJ:.cc=.$(OBJEXT))
+OBJ := $(OBJ:.rc=.res)
+OBJS = $(addprefix $(OBJDIR)/, $(OBJ))
+
+# Construct VPATH variable
+P-SRC = $(dir $(SRC))
+P-SRC += $(dir $(SRCLUA))
+VPATH = .:$(foreach dir,$(P-SRC),$(if $(dir)="./",:$(dir)))
+
+#---------------------------------#
+ifdef LOHPACK
+  # Pacote LOH unificado com todos scripts Lua precompilados
+  LOHS := $(LOHDIR)/$(LOHPACK)
+  LOHDIRS :=
+else
+  ifdef NO_LUAOBJECT
+    LH = $(notdir $(SRCLUA))
+    LH := $(LH:.lua=.lh)
+    LHS = $(addprefix $(LHDIR)/, $(LH))
+    LUAS := $(LHS)
+  else
+    # LOH: lista dos arquivos .loh, sem path
+    # LOHS: lista dos arquivos .loh, com path relativo
+    LO = $(notdir $(SRCLUA))
+    LO := $(LO:.lua=$(LO_SUFFIX).lo)
+    LOS = $(addprefix $(OBJROOT)/, $(LO))
+
+    LOH = $(notdir $(SRCLUA))
+    LOH := $(LOH:.lua=$(LO_SUFFIX).loh)
+    LOHS = $(addprefix $(LOHDIR)/, $(LOH))
+    LUAS := $(LOHS)
+  endif
+endif
+
+#---------------------------------#
+# Compiler depedent adjusts
+
+# CFLAGS: parametros passados ao linker e librarian
+LINKFLAGS := $(LFLAGS)  $(STDLFLAGS) $(OBJS) $(SLIB)
+LIBFLAGS  := $(LCFLAGS) $(STDLFLAGS) $(OBJS) $(SLIB)
+
+ifeq ($(TEC_CC), bc)
+  ifeq ($(MAKETYPE), APP)
+    LINKFLAGS = $(LFLAGS) $(STDLFLAGS) $(LDIR) $(STDLIBDIR) $(STARTUP) $(OBJS), $(TARGETEXE), , $(LIBS) $(SLIB),
+  else
+    LIBFLAGS  = $(LCFLAGS) $(subst /,\\, $(STDLFLAGS) $(addprefix +,$(OBJS) $(SLIB)))
+  endif
+endif
+
+ifeq ($(TEC_CC), wc)
+  ifeq ($(MAKETYPE), APP)
+    LINKFLAGS = $(LFLAGS) $(STDLFLAGS) $(addprefix F , $(OBJS) $(SLIB))
+  else
+    #wlib adds files using "+" as an option
+    LIBFLAGS  := $(LCFLAGS) $(STDLFLAGS) $(addprefix +, $(OBJS) $(SLIB))
+  endif
+endif
+
+ifeq ($(TEC_CC), gcc)
+  ifeq ($(MAKETYPE), APP)
+    LINKFLAGS = -o $(TARGETEXE) $(OBJS) $(SLIB) $(LFLAGS) $(STDLFLAGS)
+  endif
+  ifeq ($(MAKETYPE), DLL)
+    LINKFLAGS = -shared -o $(TARGETDLL) -Wl,--out-implib=$(TARGETLIB) $(OBJS) $(DEF_FILE) $(SLIB) $(LFLAGS) $(STDLFLAGS)
+  endif
+endif
+
+#---------------------------------#
+# Dynamic Library Build
+
+.PHONY: dynamic-lib
+dynamic-lib: $(TARGETDLL) addmanifest
+
+$(TARGETDLL) : $(LUAS) $(OBJS) $(EXTRADEPS) $(DEF_FILE)
+	@echo ''; echo Tecmake: linking $(@F) ...
+	$(ECHO)$(LINKER) $(LINKFLAGS)
+	@echo ''; echo 'Tecmake: Dynamic Library ($@) Done'; echo ''
+
+
+#---------------------------------#
+# Static Library Build
+
+.PHONY: static-lib
+static-lib: $(TARGETLIB)
+
+$(TARGETDIR)/$(TARGETNAME).lib : $(LUAS) $(OBJS) $(EXTRADEPS)
+	@echo ''; echo Tecmake: librarian $(@F) ...
+	$(ECHO)$(LIBC) $(LIBFLAGS)
+	@echo ''; echo 'Tecmake: Static Library ($@) Done'; echo ''
+	
+$(TARGETDIR)/lib$(TARGETNAME).a : $(LUAS) $(OBJS) $(EXTRADEPS)
+	@echo ''; echo Tecmake: librarian $(@F) ...
+	$(ECHO)$(LIBC) $(ARFLAGS) $@ $(OBJS) $(SLIB)
+	@echo ''; echo Tecmake: updating lib TOC $(@F) ...
+	$(ECHO)-$(RANLIB) $@
+	@echo ''; echo 'Tecmake: Static Library ($@) Done'; echo ''
+
+
+#---------------------------------#
+# Application Build
+
+.PHONY: application
+application: $(TARGETEXE) addmanifest
+
+$(TARGETEXE) : $(LUAS) $(OBJS) $(EXTRADEPS)
+	@echo ''; echo Tecmake: linking $(@F) ...
+	$(ECHO)$(LINKER) $(LINKFLAGS)
+	@echo ''; echo 'Tecmake: Application ($@) Done.'; echo ''
+
+
+#---------------------------------#
+#  Application Scripts
+
+# Nomes dos scripts
+SRELEASE = $(SRCDIR)/$(TARGETNAME).bat
+EXEC := $(subst /,\,$(TARGETEXE))
+
+.PHONY: scripts
+ifdef NO_SCRIPTS
+  scripts: ;
+else
+  scripts: $(SRELEASE) ;
+endif
+
+$(SRELEASE): $(TARGETEXE)
+	@echo ''; echo 'Tecmake: generating script $(@F)'
+	@echo '@echo off' > $@
+	@echo 'REM Script generated automatically by tecmake v$(VERSION)' >> $@
+	@echo '$(EXEC) %*' >> $@
+
+
+#---------------------------------#
+# Directories Creation
+
+.PHONY: directories
+directories: $(OBJDIR) $(TARGETDIR) $(EXTRADIR) $(LOHDIR) $(LHDIR)
+
+$(OBJDIR) $(TARGETDIR):
+	if [ ! -d $@ ] ; then mkd
