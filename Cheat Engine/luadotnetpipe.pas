@@ -372,4 +372,205 @@ function dotnetpipe_getAddressData(L: PLua_state): integer; cdecl;
 var
   dnp: TDotNetPipe;
   address: uint64;
-  addressD
+  addressData: TAddressData;
+  i: integer;
+begin
+  result:=0;
+  dnp:=luaclass_getClassObject(L);
+  if lua_gettop(L)>=1 then
+  begin
+    address:=lua_tointeger(L,1);
+
+    FillByte(addressData, sizeof(addressData),0);
+    dnp.GetAddressData(address, addressData);
+
+    if addressdata.startaddress=0 then exit(0);
+
+    lua_createtable(L,0,8);
+    lua_pushstring(L,'StartAddress');
+    lua_pushinteger(L, addressData.startaddress);
+    lua_settable(L,-3);
+
+    lua_pushstring(L,'ObjectType');
+    lua_pushinteger(L, addressData.typedata.ObjectType);
+    lua_settable(L,-3);
+
+    lua_pushstring(L,'ElementType');
+    lua_pushinteger(L, addressData.typedata.ElementType);
+    lua_settable(L,-3);
+
+    lua_pushstring(L,'CountOffset');
+    lua_pushinteger(L, addressData.typedata.CountOffset);
+    lua_settable(L,-3);
+
+    lua_pushstring(L,'ElementSize');
+    lua_pushinteger(L, addressData.typedata.ElementSize);
+    lua_settable(L,-3);
+
+    lua_pushstring(L,'FirstElementOffset');
+    lua_pushinteger(L, addressData.typedata.FirstElementOffset);
+    lua_settable(L,-3);
+
+    lua_pushstring(L,'ClassName');
+    lua_pushstring(L, addressData.typedata.ClassName);
+    lua_settable(L,-3);
+
+    lua_pushstring(L,'Fields');
+    lua_createtable(L, length(addressData.typedata.fields),0);
+    for i:=0 to length(addressData.typedata.Fields)-1 do
+    begin
+      lua_pushinteger(L, i+1);
+      lua_createtable(L,0,4);
+
+      lua_pushstring(L,'Token');
+      lua_pushinteger(L, addressData.typedata.fields[i].token);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'Offset');
+      lua_pushinteger(L, addressData.typedata.fields[i].offset);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'FieldType');
+      lua_pushinteger(L, addressData.typedata.fields[i].fieldtype);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'Name');
+      lua_pushstring(L, addressData.typedata.fields[i].name);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'FieldTypeClassName');
+      lua_pushstring(L, addressData.typedata.fields[i].fieldTypeClassName);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'IsStatic');
+      lua_pushboolean(L, addressData.typedata.fields[i].IsStatic);
+      lua_settable(L,-3);
+
+
+      lua_settable(L,-3);
+    end;
+    lua_settable(L,-3);
+
+
+
+    result:=1;
+  end;
+end;
+
+function dotnetpipe_enumAllObjectsOfType(L: PLua_state): integer; cdecl;
+var
+  dnp: TDotNetPipe;
+  module: QWORD;
+  typedef: dword;
+  list: TList;
+  i: integer;
+begin
+  result:=0;
+  dnp:=luaclass_getClassObject(L);
+
+  if lua_gettop(L)>=2 then
+  begin
+    module:=lua_tointeger(L,1);
+    typedef:=lua_tointeger(L,2);
+
+    list:=tlist.create;
+    dnp.EnumAllObjectsOfType(module, typedef, list);
+
+    lua_createtable(L,list.count,0);
+    for i:=0 to list.count-1 do
+    begin
+      lua_pushinteger(L,i+1);
+      lua_pushinteger(L,qword(list[i]));
+      lua_settable(L,-3);
+    end;
+
+    list.free;
+
+    result:=1;
+  end;
+end;
+
+function dotnetpipe_enumAllObjects(L: PLua_state): integer; cdecl;
+var
+  dnp: TDotNetPipe;
+  address: uint64;
+  addressData: TAddressData;
+  i: integer;
+
+  map: TDOTNETObjectList;
+  mi: TMapIterator=nil;
+
+  dno: PDotNetObject;
+begin
+  result:=0;
+  dnp:=luaclass_getClassObject(L);
+
+  map:=dnp.EnumAllObjects;
+  mi:=TMapIterator.Create(map);
+  try
+    lua_createtable(L,map.Count,0);
+
+    i:=1;
+    mi.First;
+    while not mi.EOM do
+    begin
+      dno:=mi.DataPtr;
+
+      lua_pushinteger(L,i);
+      lua_createtable(L,4,0);
+      //entry table
+
+      lua_pushstring(L,'StartAddress');
+      lua_pushinteger(L,dno^.startaddress);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'Size');
+      lua_pushinteger(L,dno^.size);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'TypeID');
+      lua_createtable(L,0,2);
+      //-1=typeid table
+
+      lua_pushstring(L,'token1');
+      lua_pushinteger(L,dno^.typeid.token1);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'token2');
+      lua_pushinteger(L,dno^.typeid.token2);
+      lua_settable(L,-3);
+
+      lua_settable(L,-3); //typeid table
+
+
+      lua_pushstring(L,'ClassName');
+      lua_pushstring(L,dno^.classname);
+      lua_settable(L,-3);
+
+      lua_settable(L,-3); //set entry to index
+
+      mi.Next;
+      inc(i);
+    end;
+
+    result:=1;  //return the table
+  finally
+    mi.free;
+    dnp.freeNETObjectList(map);
+  end;
+
+
+end;
+
+function lua_getDotNetDataCollector(L: PLua_state): integer; cdecl;
+begin
+  luaclass_newClass(L, symhandler.getDotNetDataCollector);
+  result:=1;
+end;
+
+procedure dotnetpipe_addMetaData(L: PLua_state; metatable: integer; userdata: integer );
+begin
+  object_addMetaData(L, metatable, userdata);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumDomains', dotnetpipe_enumDomains);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumModuleList', dotnetpipe_enumModuleList);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumTypeDefs', dotne
