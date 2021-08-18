@@ -573,4 +573,28 @@ begin
   object_addMetaData(L, metatable, userdata);
   luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumDomains', dotnetpipe_enumDomains);
   luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumModuleList', dotnetpipe_enumModuleList);
-  luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumTypeDefs', dotne
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumTypeDefs', dotnetpipe_enumTypeDefs);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'getTypeDefMethods', dotnetpipe_getTypeDefMethods);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'getTypeDefData', dotnetpipe_getTypeDefData);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'getTypeDefParent', dotnetpipe_getTypeDefParent);
+
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'getMethodParameters', dotnetpipe_getMethodParameters);
+
+
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'getAddressData', dotnetpipe_getAddressData);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumAllObjects', dotnetpipe_enumAllObjects);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'enumAllObjectsOfType', dotnetpipe_enumAllObjectsOfType);
+
+
+end;
+
+procedure initializeLuaDotNetPipe;
+begin
+  lua_register(LuaVM, 'getDotNetDataCollector', lua_getDotNetDataCollector);
+end;
+
+initialization
+  luaclass_register(TDotNetPipe, dotnetpipe_addMetaData);
+
+end.
+
