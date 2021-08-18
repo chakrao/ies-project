@@ -128,4 +128,178 @@ begin
   result:=sharedMemory^.ReturnValue;
 end;
 
-function TRemoteExecutor.LocalToRemote
+function TRemoteExecutor.LocalToRemoteAddress(LocalAddress: ptruint): ptruint;
+begin
+  result:=sharedMemoryClientLocation+(LocalAddress-ptruint(sharedMemory));
+end;
+
+procedure TRemoteExecutor.executeStub(stubdata: TStubdata; values: array of Tvalueinfo; timeout: dword);
+var
+  i: integer;
+  r: dword;
+  len: integer;
+
+  paramsizeneeded: integer; //after this space the buffers can be placed
+
+  sizeneeded: integer;
+
+  currentParam: ptruint;
+
+  dataPosition: ptruint;
+
+  ExecBuffer: TExecBuffer;
+begin
+  {$ifdef windows}
+  if length(stubdata.parameters)<>length(values) then
+    raise exception.create('Incorrect parameter count');
+
+  sizeneeded:=0;
+  paramsizeneeded:=0;
+
+  //size check
+  for i:=0 to length(stubdata.parameters)-1 do
+  begin
+    //0: integer/pointer
+    //1: float
+    //2: double
+    //3: asciistring (turns into 0:pointer after writing the string)
+    //4: widestring
+
+    //<0: pointer to input/output buffer:
+    //  bit31: Pointer to buffer
+    //  bit30: Output Only. Needs no init
+    //  bit29: Input Only. Don't return when getting results
+
+
+
+    case stubdata.parameters[i] of
+      0,1: //integer/pointer/float
+      begin
+        inc(sizeneeded, processhandler.pointersize);
+        inc(paramsizeneeded, processhandler.pointersize);
+      end;
+
+      2: //double
+      begin
+        inc(sizeneeded, 8);
+        inc(paramsizeneeded,8); //32-bit uses 8 bytes for double params
+      end;
+      3:
+      begin
+        inc(sizeneeded, processhandler.pointersize+strlen(pchar(values[i].value))+32);
+        inc(paramsizeneeded, processhandler.pointersize);
+      end;
+
+      4:
+      begin
+        inc(sizeneeded, processhandler.pointersize+StrLen(pwidechar(values[i].value))+32);
+        inc(paramsizeneeded, processhandler.pointersize);
+      end;
+
+      else
+      begin
+        if stubdata.parameters[i]<0 then
+          inc(sizeneeded, processhandler.pointersize+32+values[i].bytesize)
+        else
+          inc(sizeNeeded, processhandler.pointersize);
+
+        inc(paramsizeneeded, processhandler.pointersize);
+      end;
+    end;
+  end;
+
+  if sizeneeded>sharedMemorySize then
+    growSharedMemorySize(sizeneeded*2+1024, timeout);
+
+  //enter the stub data into shared memory
+  //still here, so everything is ok
+
+  waitForProcessedDataEvent(timeout);
+  //fill in the call data
+
+  sharedMemory^.Command:=CMD_EXECUTE;
+  sharedMemory^.Address:=stubdata.address;
+  sharedMemory^.ReturnValue:=0;
+  currentParam:=ptruint(@sharedMemory^.ParamStart);
+  dataPosition:=align(ptruint(@sharedMemory^.ParamStart)+paramsizeneeded,16);
+
+  setlength(lastbuffers,0);
+
+  for i:=0 to length(stubdata.parameters)-1 do
+  begin
+    //0: integer/pointer
+    //1: float
+    //2: double
+    //3: asciistring (turns into 0:pointer after writing the string)
+    //4: widestring
+
+    case stubdata.parameters[i] of
+      0,1: //integer/pointer/float
+      begin
+        if processhandler.is64Bit then
+          pqword(currentparam)^:=values[i].value
+        else
+          pdword(currentparam)^:=values[i].value;
+
+        inc(currentparam, processhandler.pointersize);
+      end;
+
+      2: //double
+      begin
+        pqword(currentparam)^:=values[i].value;
+        inc(currentparam, 8);
+      end;
+
+      3: //pchar
+      begin
+        if processhandler.is64Bit then
+          pqword(currentparam)^:=LocalToRemoteAddress(DataPosition)
+        else
+          pdword(currentparam)^:=LocalToRemoteAddress(DataPosition);
+
+
+        len:=strlen(pchar(values[i].value))+1;
+        strcopy(pchar(dataPosition),pchar(values[i].value));
+        dataposition:=align(DataPosition+len,16);
+
+        inc(currentparam, processhandler.pointersize);
+      end;
+
+      4: //widechar
+      begin
+        if processhandler.is64Bit then
+          pqword(currentparam)^:=LocalToRemoteAddress(DataPosition)
+        else
+          pdword(currentparam)^:=LocalToRemoteAddress(DataPosition);
+
+
+        len:=strlen(pwidechar(values[i].value))+2;
+        strcopy(pwidechar(dataPosition),pwidechar(values[i].value));
+        dataposition:=align(DataPosition+len,16);
+
+        inc(currentparam, processhandler.pointersize);
+      end;
+
+      else
+      begin
+        if stubdata.parameters[i]<0 then
+        begin
+          len:=values[i].bytesize;
+          if processhandler.is64Bit then
+            pqword(currentparam)^:=LocalToRemoteAddress(DataPosition)
+          else
+            pdword(currentparam)^:=LocalToRemoteAddress(DataPosition);
+
+
+          if (stubdata.parameters[i] and (1 shl 29))=0 then //it's not an input only param, record it for output
+          begin
+            Execbuffer.parameternr:=i;
+            Execbuffer.length:=len;
+            Execbuffer.data:=DataPosition;
+
+            setlength(lastbuffers, length(lastBuffers)+1);
+            lastbuffers[length(lastBuffers)-1]:=ExecBuffer;
+          end;
+
+
+          if (stubdata.parameters[i] and (1 shl 30))=0 then //not an output only param, 
