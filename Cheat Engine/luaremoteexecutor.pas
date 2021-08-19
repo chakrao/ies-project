@@ -432,4 +432,144 @@ begin
       script.add('mov rbp,rsp'); //[rbp: +0-7: storage of the mapped memory address, 8-f: filemapping handle; 10-17: old filehandle on reinit; 18-1f: return address; 20-28: scratchspace for param1
       script.add('mov [rbp],0');  //mapped base address
       script.add('mov [rbp+8],rcx'); //filemapping handle
-      //rbp+10 will contain the old 
+      //rbp+10 will contain the old filehandle on reinit
+      script.add('sub rsp,30'); //allocate scratchspace memory for function calls (mapviewoffile takes 5)
+    end
+    else
+    begin
+      script.add('mov ecx,[esp+4]'); //ecx now contains the filemapping handle
+      script.add('sub esp,c'); //allocate local vars
+      script.add('mov ebp,esp'); //[ebp: +0-3: stortage of the mapped memory address, +4-7: filemapping handle +8-b:old filehandle on reinit c-f: return address 10-13: filemaphandle
+
+      script.add('mov [ebp],0');
+      script.add('mov [ebp+4],ecx'); //it's a bit double, but just to confirm
+    end;
+
+    script.add('reinit:');
+    script.add('cmp [rbp],0');
+    script.add('je short getSharedMemory');
+
+    //free the old memoryblock first
+    if processhandler.is64Bit then
+      script.add('mov rcx,[rbp]')  //[rbp] contains the old address
+    else
+      script.add('push [ebp]');    //[ebp] contains the old address
+
+    script.add('call unmapviewoffile');
+
+    if processhandler.is64Bit then
+      script.add('mov rcx,[rbp+10]') //[rbp+10] contains the old filehandle
+    else
+      script.add('mov rcx,[rbp+8]'); //[ebp+8] contains the old filehandle
+
+    script.add('call CloseHandle');
+
+
+    script.add('getSharedMemory:');
+    if processhandler.is64Bit then
+    begin
+      script.add('mov rcx,[rbp+8]'); //p1: Handle. [rbp+8] = filemapping handle
+      script.add('mov rdx,6');       //p2: access rights FILE_MAP_READ or FILE_MAP_WRITE
+      script.add('mov r8,0');        //p3:
+      script.add('mov r9,0');        //p4:
+      script.add('mov [rsp+20],0');  //p5:
+    end
+    else
+    begin
+      script.add('push 0');           //p5
+      script.add('push 0');           //p4
+      script.add('push 0');           //p3
+      script.add('push 6');           //p2
+      script.add('push [ebp+4]');     //p1 Handle
+    end;
+    script.add('call mapviewoffile');
+
+    script.add('cmp rax,0');
+    script.add('je end'); //the fuck?
+
+    //handle result
+    script.add('mov [rbp],rax');
+    script.add('mov [rax+20],rax'); //store the address also in the shared memory result field so CE knows which address to use for direct memory access
+
+    if processhandler.is64Bit then
+      script.add('mov rcx,[rax+8]') //HasProcessedDataEventHandle (is not set at the start, this will set it, so CE will know it can go)
+    else
+      script.add('push [rax+8]');
+
+    script.add('call SetEvent');  //let CE know it can send some new commands
+    script.add('cmp rax,0'); //did SetEvent fail?
+    script.add('je end'); //if so, quit
+
+    script.add('workloop:');
+    {
+      //sharedblock layout:
+      0: HasDataEventHandle  : Set by CE when it has configured a datablock
+      8: HasProcessedDataEventHandle :Set by the client when it has read out the datablock
+      10: CMD   (0=reinit: resizes the shared memory block so there is enough data available for calls, 1=execute , 2+=terminate
+      18: If reinit, contains the new handle, else address to execute
+      20: Return value of the function/CMD
+      28: parameters....
+      }
+
+      //wait for data
+    if processhandler.is64Bit then
+    begin
+      script.add('mov rcx,[rbp+0]');
+      script.add('mov rcx,[rcx]');
+      script.add('mov rdx,FFFFFFFF');
+    end
+    else
+    begin
+      script.add('push ffffffff');
+      script.add('mov eax,[ebp+0]');
+      script.add('push [eax]');
+    end;
+    script.add('call WaitForSingleObject');
+
+    script.add('cmp rax,0');
+    script.add('jne end');   //invalid result. give up
+
+    //if realloc sharedblock then jmp reinit with new rcx
+    script.add('mov rax,[rbp]'); //get shared mem
+    script.add('cmp [rax+10],0');  //check CMD.  Is it 0?
+    script.add('jne notreinit');
+
+    //reinit call
+    if processhandler.is64bit then
+    begin
+      script.add('mov rcx,[rbp+8]');  //get the current handle
+      script.add('mov [rbp+10],rcx'); //and write it to the old handle
+    end
+    else
+    begin
+      script.add('mov ecx,[ebp+4]');
+      script.add('mov [ebp+8],ecx');
+    end;
+
+    script.add('mov rcx,[rax+18]'); //get the new handle
+    if processhandler.is64Bit then
+      script.add('mov [rbp+8],rcx') //put it in place of the current handle
+    else
+      script.add('mov [ebp+4],ecx');
+
+    script.add('jmp reinit');
+
+    script.add('notreinit:');
+    //make sure it's 1, else it's either the terminate command, or garbage. either way, terminate
+
+    script.add('cmp [rax+10],1');
+    script.add('jne end');
+
+    //execute the function
+    script.add('lea rcx,[rax+28]'); //load rcx with the pointer to the parameters
+    if processhandler.is64Bit=false then
+      script.add('push ecx');
+
+    script.add('call [rax+18]'); //call the stub
+
+    //save the result.
+    script.add('mov rbx,[rbp]');
+    script.add('mov [rbx+20],rax');
+
+    if processhandler.is64Bit then
+  
