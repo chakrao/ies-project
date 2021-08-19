@@ -302,4 +302,134 @@ begin
           end;
 
 
-          if (stubdata.parameters[i] and (1 shl 30))=0 then //not an output only param, 
+          if (stubdata.parameters[i] and (1 shl 30))=0 then //not an output only param, copy the data
+            copymemory(pointer(dataPosition),pointer(values[i].value),len);
+
+          dataposition:=align(DataPosition+len,16);
+
+          inc(currentparam, processhandler.pointersize);
+        end
+        else
+        begin
+          //unknown type
+          if processhandler.is64Bit then
+            pqword(currentparam)^:=values[i].value
+          else
+            pdword(currentparam)^:=values[i].value;
+
+          inc(currentparam, processhandler.pointersize);
+        end;
+      end;
+    end;
+
+  end;
+
+
+  ResetEvent(HasProcessedDataEventHandle);
+  SetEvent(HasDataEventHandle);  //do the call command
+
+  {$else}
+  raise exception.create('Not yet implemented');
+  {$endif}
+end;
+
+procedure TRemoteExecutor.growSharedMemorySize(newsize: integer; timeout: DWORD);
+var
+  newmemmap: THandle;
+  newSharedMemory: pointer;
+
+  oldSharedMemory: PRemoteExecutorSharedMemory;
+  oldmemmap: THandle;
+begin
+  {$ifdef windows}
+  if newsize>sharedMemorySize then
+  begin
+    oldSharedMemory:=sharedmemory;
+    oldmemmap:=memmap;
+
+
+    waitForProcessedDataEvent(timeout); //in case there was a previous no-wait call going on
+
+
+    newmemmap:=CreateFileMapping(INVALID_HANDLE_VALUE,nil,PAGE_READWRITE,0,newsize,nil);
+    if (newmemmap=0) or (newmemmap=INVALID_HANDLE_VALUE) then raise exception.create('Remap: Failure creating remote executor filemapping');
+
+    newsharedMemory:=MapViewOfFile(newmemmap,FILE_MAP_READ or FILE_MAP_WRITE,0,0,newsize);
+    if newsharedMemory=nil then
+      raise exception.create('Remap: Failure mapping memorymap into memory');
+
+    if DuplicateHandle(GetCurrentProcess, newmemmap, processhandle, @remoteMemMapHandle, 0, false, DUPLICATE_SAME_ACCESS )=false then
+      raise exception.create('Remap: Failure duplicating memmap handle');
+
+    zeromemory(newSharedMemory, newsize);
+    copymemory(newSharedMemory, sharedmemory, sharedmemorysize);
+
+
+    sharedMemory^.Address:=remoteMemMapHandle;
+    sharedMemory^.Command:=CMD_RELOADMEM;
+
+    ResetEvent(HasProcessedDataEventHandle);
+    setevent(HasDataEventHandle);
+
+    waitForProcessedDataEvent(timeout);
+
+    //after this, the map has swapped to the new one, so the return is in the new one
+    memmap:=newmemmap;
+    sharedMemory:=newSharedMemory;
+    sharedMemoryClientLocation:=sharedmemory^.ReturnValue;
+    sharedmemorysize:=newsize;
+
+    UnmapViewOfFile(oldsharedMemory);
+    CloseHandle(oldmemmap);
+
+
+  end;
+  {$endif}
+end;
+
+constructor TRemoteExecutor.create;
+var
+  h: THandle;
+
+  disableinfo: TDisableInfo;
+  executorThreadID: dword;
+  script: TStringlist=nil;
+begin
+  {$ifdef windows}
+  sharedmemorysize:=5*8; //sizeof(TRemoteExecutorSharedMemory); //can grow if needed
+  memmap:=CreateFileMapping(INVALID_HANDLE_VALUE,nil,PAGE_READWRITE,0,sharedmemorysize,nil);
+  if (memmap=0) or (memmap=INVALID_HANDLE_VALUE) then raise exception.create('Failure creating remote executor filemapping');
+
+  sharedMemory:=MapViewOfFile(memmap,FILE_MAP_READ or FILE_MAP_WRITE,0,0,sharedmemorysize);
+  if sharedmemory=nil then
+    raise exception.create('Failure mapping memorymap into memory');
+
+  zeromemory(sharedMemory, sharedmemorysize);
+
+
+  HasDataEventHandle:=CreateEvent(nil,false,false,nil);
+  HasProcessedDataEventHandle:=CreateEvent(nil,true,false,nil);
+
+  if DuplicateHandle(GetCurrentProcess, HasDataEventHandle, processhandle, @(sharedmemory^.HasDataEventHandle), 0, false, DUPLICATE_SAME_ACCESS )=false then
+    raise exception.create('Failure duplicating HasDataEventHandle');
+
+  if  DuplicateHandle(GetCurrentProcess, HasProcessedDataEventHandle, processhandle, @(sharedmemory^.HasProcessedDataEventHandle), 0, false, DUPLICATE_SAME_ACCESS )=false then
+    raise exception.create('Failure duplicating HasProcessedDataEventHandle');
+
+  if  DuplicateHandle(GetCurrentProcess, MemMap, processhandle, @remoteMemMapHandle, 0, false, DUPLICATE_SAME_ACCESS )=false then
+    raise exception.create('Failure duplicating HasProcessedDataEventHandle');
+
+
+  //inject the executor code
+  disableinfo:=TDisableInfo.create;
+  script:=tstringlist.create;
+  try
+    script.add('alloc(Executor,2048)');
+    script.add('Executor:'); //At entrypoint the first param ([esp+4 or RCX) contains a filemapping handle (created by ce and duplicated to the target, like veh)
+    if processhandler.is64Bit then
+    begin
+      script.add('sub rsp,18');  //allocate local vars
+      script.add('mov rbp,rsp'); //[rbp: +0-7: storage of the mapped memory address, 8-f: filemapping handle; 10-17: old filehandle on reinit; 18-1f: return address; 20-28: scratchspace for param1
+      script.add('mov [rbp],0');  //mapped base address
+      script.add('mov [rbp+8],rcx'); //filemapping handle
+      //rbp+10 will contain the old 
