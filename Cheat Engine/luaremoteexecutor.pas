@@ -572,4 +572,179 @@ begin
     script.add('mov [rbx+20],rax');
 
     if processhandler.is64Bit then
-  
+      script.add('mov rcx,[rbx+8]')  //HasProcessedEventHandle
+    else
+      script.add('push [ebx+8]');
+
+    script.add('call SetEvent'); //let CE know it can send some new commands
+
+    script.add('jmp workloop');
+    script.add('end:');
+    if processhandler.is64Bit then
+    begin
+      script.add('add rsp,48');
+      script.add('ret');
+    end
+    else
+      script.add('ret 4');
+
+    //debug:
+   // clipboard.AsText:=script.text;
+
+    if autoAssemble(script,false,true,false,false,disableinfo) then
+    begin
+      //create thread
+      ExecutorThreadExecMemory:=disableinfo.allocs[0].address;
+      ExecutorThreadHandle:=CreateRemoteThread(processhandle,nil,0,pointer(ExecutorThreadExecMemory), pointer(remoteMemMapHandle),0,executorThreadID);
+
+      if (ExecutorThreadHandle=0) or (ExecutorThreadHandle=INVALID_HANDLE_VALUE) then
+        raise exception.create('Failure creating executor thread');
+    end
+    else
+      raise exception.create('Failure assembling remote executor');
+
+
+  finally
+    script.free;
+    disableinfo.free;
+  end;
+  {$endif}
+end;
+
+destructor TRemoteExecutor.destroy;
+begin
+  {$ifdef windows}
+  //terminate the thread if it exists and free the memory
+  if (ExecutorThreadHandle<>0) and (ExecutorThreadHandle=INVALID_HANDLE_VALUE) then
+    TerminateThread(ExecutorThreadHandle,$101);
+
+  if (targetedProcessID=processid) then
+  begin
+    VirtualFreeEx(processhandle, pointer(ExecutorThreadExecMemory),0,MEM_RELEASE);
+
+    if sharedMemory<>nil then
+    begin
+      //close the handles
+      if (sharedMemory^.HasProcessedDataEventHandle<>0) and (sharedMemory^.HasProcessedDataEventHandle<>INVALID_HANDLE_VALUE) then
+      begin
+        DuplicateHandle(processhandle, sharedMemory^.HasProcessedDataEventHandle,0,nil, 0, false, DUPLICATE_CLOSE_SOURCE);
+        sharedMemory^.HasProcessedDataEventHandle:=0;
+      end;
+
+      if (sharedMemory^.HasDataEventHandle<>0) and (sharedMemory^.HasDataEventHandle<>INVALID_HANDLE_VALUE) then
+      begin
+        DuplicateHandle(processhandle, sharedMemory^.HasDataEventHandle,0,nil, 0, false, DUPLICATE_CLOSE_SOURCE);
+        sharedMemory^.HasProcessedDataEventHandle:=0;
+      end;
+    end;
+
+    if (remoteMemMapHandle<>0) and (remoteMemMapHandle<>INVALID_HANDLE_VALUE) then
+      DuplicateHandle(processhandle, remoteMemMapHandle,0,nil, 0, false, DUPLICATE_CLOSE_SOURCE);
+
+  end;
+
+  if (HasProcessedDataEventHandle<>0) and (HasProcessedDataEventHandle<>INVALID_HANDLE_VALUE) then
+    closeHandle(HasProcessedDataEventHandle);
+
+  if (HasDataEventHandle<>0) and (HasDataEventHandle<>INVALID_HANDLE_VALUE) then
+    closeHandle(HasDataEventHandle);
+
+  if sharedMemory<>nil then
+    UnmapViewOfFile(sharedMemory);
+
+  closehandle(memmap);
+  {$endif}
+end;
+
+
+
+function remoteexecutor_waitTillDoneAndGetResult(L: PLua_state): integer; cdecl;
+var
+  re: TRemoteExecutor;
+  timeout: DWORD;
+  buffers: array of TExecBuffer;
+
+  r: qword;
+  i: integer;
+begin
+  re:=luaclass_getClassObject(L);
+  if lua_gettop(L)>0 then
+    timeout:=lua_tointeger(L,1)
+  else
+    timeout:=INFINITE;
+
+  setlength(buffers,0);
+  try
+    r:=re.waitTillDoneAndGetResult(timeout, buffers);
+
+    lua_pushinteger(L,r);
+    //return the buffers as tables
+    for i:=0 to length(buffers)-1 do
+    begin
+      lua_createtable(L,2,0);
+      lua_pushstring(L,'Data');
+      CreateByteTableFromPointer(L,pointer(buffers[i].data),buffers[i].length);
+      lua_settable(L,-3);
+
+      lua_pushstring(L,'Parameter');
+      lua_pushinteger(L,buffers[i].parameternr);
+      lua_settable(L,-3);
+    end;
+
+    result:=1+length(buffers);
+  except
+    on e:Exception do
+    begin
+      lua_pushnil(L);
+      lua_pushstring(L,pchar(e.message));
+      result:=2;
+    end;
+  end;
+
+end;
+
+function remoteexecutor_executeStub(L: PLua_state): integer; cdecl;
+  function invalidStubData:integer;
+  begin
+    lua_pushnil(L);
+    lua_pushstring(L,'Invalid stubdata');
+    exit(2);
+  end;
+
+var
+  re: TRemoteExecutor;
+  stubdata: TStubdata;
+  values: array of Tvalueinfo;
+  timeout: dword;
+  waittilldone: boolean;
+  i,len: integer;
+
+  intvalue: qword;
+  floatvalue: single absolute intvalue;
+  doublevalue: double absolute intvalue;
+
+  widecharstrings: array of string;
+  objectlist: array of pointer;
+  obj: pointer;
+begin
+  re:=luaclass_getClassObject(L);
+  result:=0;
+  try
+    if (lua_gettop(L)>=1) and (lua_istable(L,1)) then
+    begin
+      //get the stubdata
+      lua_pushstring(L,'StubAddress');
+      lua_gettable(L,1);
+
+      if lua_isnil(L,-1) then exit(invalidStubData);
+      stubdata.address:=lua_tointeger(L,-1);
+
+      lua_pop(L,1);
+
+      lua_pushstring(L,'Parameters');
+      lua_gettable(L,1);
+      if not lua_istable(L,-1) then exit(invalidStubData);
+
+
+      len:=lua_objlen(L,-1);
+      setlength(stubdata.p
