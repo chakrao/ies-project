@@ -912,4 +912,20 @@ procedure remoteexecutor_addMetaData(L: PLua_state; metatable: integer; userdata
 begin
   object_addMetaData(L, metatable, userdata);
   luaclass_addClassFunctionToTable(L, metatable, userdata, 'executeStub', remoteexecutor_executeStub);
-  luaclass_addClassFunctionToTable(L, metatable, userdata, 'waitTillDoneAndGetResult', remoteexecutor_waitTillDoneAnd
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'waitTillDoneAndGetResult', remoteexecutor_waitTillDoneAndGetResult);
+
+end;
+
+procedure InitializeLuaRemoteExecutor;
+begin
+  {$ifdef windows}
+  lua_register(LuaVM, 'createStubExecutor', lua_createStubExecutor);
+  lua_register(LuaVM, 'createRemoteExecutor', lua_createStubExecutor); //just for those that dislike stubs
+  {$endif}
+end;
+
+initialization
+  luaclass_register(TRemoteExecutor, remoteexecutor_addMetaData);
+
+end.
+
