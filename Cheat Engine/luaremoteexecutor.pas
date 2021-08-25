@@ -747,4 +747,169 @@ begin
 
 
       len:=lua_objlen(L,-1);
-      setlength(stubdata.p
+      setlength(stubdata.parameters, len);
+
+      for i:=0 to len-1 do
+      begin
+        lua_pushinteger(L,i+1);
+        lua_gettable(L,-2);
+        stubdata.parameters[i]:=lua_tointeger(L,-1);
+        lua_pop(L,1);
+      end;
+      lua_pop(L,1);
+
+      if (lua_gettop(L)>=2) and (not lua_isnil(L,2)) then
+      begin
+        if lua_istable(L,2) then
+        begin
+          len:=lua_objlen(L,2);
+
+          if len<>length(stubdata.parameters) then
+          begin
+            lua_pushnil(L);
+            lua_pushstring(L,'Incorrect parameter count');
+            exit(2);
+          end;
+
+          setlength(values, len);
+
+          for i:=0 to len-1 do
+          begin
+            lua_pushinteger(L,i+1);
+            lua_gettable(L,2);
+
+            //interpret the value based on the given stubdata parametertype
+            //0: integer/pointer
+            //1: float
+            //2: double
+            //3: asciistring (turns into 0:pointer after writing the string)
+            //4: widestring
+            //<0: bytetable
+
+            case stubdata.parameters[i] of
+              0: values[i].value:=lua_tointeger(L,-1);
+              1:
+              begin
+                floatvalue:=lua_tonumber(L,-1);
+                values[i].value:=intvalue;
+              end;
+
+              2:
+              begin
+                doublevalue:=lua_tonumber(L,-1);
+                values[i].value:=intvalue;
+              end;
+
+              3: values[i].value:=qword(lua.lua_tostring(L,-1));
+              4:
+              begin
+                setlength(widecharstrings, length(widecharstrings)+1);
+                widecharstrings[length(widecharstrings)-1]:=Lua_ToString(L,-1);
+                values[i].value:=qword(@widecharstrings[length(widecharstrings)-1][1]);
+              end;
+
+              else
+              begin
+                if stubdata.parameters[i]<0 then
+                begin
+                  if lua_istable(L,-1) then
+                  begin
+                    //create a memoryblock that encompasses this table
+                    len:=stubdata.parameters[i] and $1fffffff;
+
+                    if len=0 then //no length given. Rely on the provided table info
+                    begin
+                      //get the length from the table instead
+                      len:=lua_objlen(L,-1);
+                    end; //else use the predefined size
+
+                    getmem(obj, len);
+
+                    readBytesFromTable(L,lua_gettop(L),obj,len);
+
+                    values[i].value:=qword(obj);
+                    values[i].bytesize:=len;
+
+                    setlength(objectlist,length(objectlist)+1);
+                    objectlist[length(objectlist)-1]:=obj; //so it can be freed aftrerwards
+                  end
+                  else
+                  begin
+                    lua_pushnil(L);
+                    lua_pushstring(L,pchar('Parameter '+inttostr(i+1)+' is supposed to be a table'));
+                    exit(2);
+                  end;
+                end;
+              end;
+
+            end;
+
+            lua_pop(L,1);
+          end;
+        end
+        else
+        begin
+          lua_pushnil(L);
+          lua_pushstring(L,'Invalid value field. Has to be a table');
+          exit(2);
+        end;
+      end;
+
+      if (lua_gettop(L)>=3) and (not lua_isnil(L,3)) then
+        timeout:=lua_tointeger(L,3)
+      else
+        timeout:=INFINITE;
+
+      if (lua_gettop(L)>=4) and (not lua_isnil(L,4)) then
+        waittilldone:=not lua_toboolean(L,4)
+      else
+        waittilldone:=true;
+
+      try
+        re.executeStub(stubdata, values, timeout);
+        if waittilldone then
+        begin
+          lua_pop(L,lua_gettop(L));
+          lua_pushinteger(L, timeout);
+          exit(remoteexecutor_waitTillDoneAndGetResult(L));
+        end
+        else
+          exit(0);
+
+      except
+        on e:exception do
+        begin
+          lua_pushnil(L);
+          lua_pushstring(L, pchar(e.Message));
+          result:=2;
+        end;
+      end;
+    end;
+
+  finally
+    for i:=0 to length(objectlist)-1 do
+      freemem(objectlist[i]);
+  end;
+end;
+
+function lua_createStubExecutor(L: PLua_state): integer; cdecl;
+begin
+  try
+    luaclass_newClass(L, TRemoteExecutor.create);
+    result:=1;
+  except
+    on e:exception do
+    begin
+      lua_pushnil(L);
+      lua_pushstring(L, pchar(e.message));
+      result:=2;
+    end;
+  end;
+
+end;
+
+procedure remoteexecutor_addMetaData(L: PLua_state; metatable: integer; userdata: integer );
+begin
+  object_addMetaData(L, metatable, userdata);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'executeStub', remoteexecutor_executeStub);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'waitTillDoneAndGetResult', remoteexecutor_waitTillDoneAnd
