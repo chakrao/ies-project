@@ -198,4 +198,33 @@ begin
   customcontrol_addMetaData(L, metatable, userdata);
 
   luaclass_addPropertyToTable(L, metatable, userdata, 'SelStart', syn_getSelStart, syn_setSelStart);
-  luaclass_addPropertyToTable(L, metatable, userdata, 'SelEnd', syn_getSelEnd, syn_s
+  luaclass_addPropertyToTable(L, metatable, userdata, 'SelEnd', syn_getSelEnd, syn_setSelEnd);
+  luaclass_addPropertyToTable(L, metatable, userdata, 'SelText', syn_getSelText, syn_setSelText);
+  luaclass_addPropertyToTable(L, metatable, userdata, 'CanPaste', syn_getCanPaste, nil);
+  luaclass_addPropertyToTable(L, metatable, userdata, 'CanRedo', syn_getCanRedo, nil);
+  luaclass_addPropertyToTable(L, metatable, userdata, 'CanUndo', syn_getCanUndo, nil);
+  luaclass_addPropertyToTable(L, metatable, userdata, 'CharWidth', syn_getCharWidth, nil);
+  luaclass_addPropertyToTable(L, metatable, userdata, 'LineHeight', syn_getLineHeight, nil);
+
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'CopyToClipboard', syn_CopyToClipboard);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'CutToClipboard', syn_CutToClipboard);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'PasteFromClipboard', syn_PasteFromClipboard);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'ClearUndo', syn_ClearUndo);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'Redo', syn_Redo);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'Undo', syn_Undo);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'MarkTextAsSaved', syn_MarkTextAsSaved);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'ClearSelection', syn_ClearSelection);
+  luaclass_addClassFunctionToTable(L, metatable, userdata, 'SelectAll', syn_SelectAll);
+end;
+
+procedure initializeLuaSynEdit;
+begin
+  lua_register(LuaVM, 'createSynEdit', createSynEdit);
+end;
+
+initialization
+  luaclass_register(TSynEdit, luasynedit_addMetaData);
+
+
+end.
+
