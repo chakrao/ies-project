@@ -114,4 +114,64 @@ topm.add(mf4)");
         public void NewThreadExample()
         {
             //return;
-            sdk.lua.DoString("print('Running from 
+            sdk.lua.DoString("print('Running from a different thread. And showing this requires the synchronize capability of the main thread')"); //print is threadsafe
+
+            //now running an arbitrary method in a different thread
+
+        }
+        int MyFunction3()
+        {
+            Thread thr = new Thread(NewThreadExample);
+            int i = 0;
+            thr.Start();
+
+            while (thr.IsAlive)
+            {                
+                sdk.CheckSynchronize(10); //ce would freeze without this as print will call Synchronize to run it in the main thread               
+                i = i + 1;
+            }
+
+            sdk.lua.PushInteger(i);
+            
+            return 1;
+        }
+
+        void NewGuiThread()
+        {
+            int i = sdk.lua.GetTop();
+
+            PluginExampleForm formpy = new PluginExampleForm();
+
+            try
+            {                
+                System.Windows.Forms.Application.Run(formpy);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }           
+
+            return;
+        }
+
+        int MyFunction4()
+        {
+            if (sdk.lua.ToBoolean(1))
+            {
+                //run in a thread
+                Thread thr = new Thread(NewGuiThread);
+                thr.Start();
+            }
+            else
+            {
+                //formpy.Show(); //or formpy.ShowDialog()
+                //run in the current thread (kinda)
+                NewGuiThread();                
+            }
+
+            sdk.lua.PushInteger(100);
+            return 1;
+        }
+
+    }
+}
