@@ -99,3 +99,76 @@ namespace CEPluginLibrary
             });        
             button2.Enabled = false;           
         }
+
+        private void PluginExampleForm_Load(object sender, EventArgs e)
+        {
+           
+            try
+            {
+                ms = new MemScan();
+
+                ms.OnGuiUpdate = MemScanGuiUpdate;
+                ms.OnScanDone = MemScanDone;
+
+                fl = new FoundList(ms);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+           
+
+            comboBox1.SelectedIndex = 2;
+            //listView1.VirtualListSize = 10;
+        }
+
+        private void listView1_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            if (e.Item == null)
+            {
+                e.Item = new ListViewItem();
+                e.Item.Text = fl.GetAddress(e.ItemIndex); //  "weee"+e.ItemIndex;
+                e.Item.SubItems.Add(fl.GetValue(e.ItemIndex));
+            }
+           
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {            
+            listView1.VirtualListSize = 0;
+            ms.Reset();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //you can also directly access lua without writing a wrapper first
+            CESDKLua lua = CESDK.CESDK.currentPlugin.sdk.lua;
+            int ProcessID = 0;
+            IntPtr Handle = (IntPtr)0;
+
+            lua.GetGlobal("getOpenedProcessID");
+            if (lua.IsFunction(-1))
+            {
+                lua.PCall(0, 1);
+                ProcessID = (int)lua.ToInteger(-1);                
+            }
+            else
+                MessageBox.Show("Failure getting the ProcessID");
+
+            lua.Pop(1);
+
+            lua.GetGlobal("getOpenedProcessHandle");
+            if (lua.IsFunction(-1))
+            {
+                lua.PCall(0, 1);
+                Handle = (IntPtr)lua.ToInteger(-1);                
+            }
+            else
+                MessageBox.Show("Failure getting the ProcessHandle");
+
+            lua.Pop(1);
+
+            MessageBox.Show("Processid="+ProcessID+" Handle="+Handle);
+        }
+    }
+}
