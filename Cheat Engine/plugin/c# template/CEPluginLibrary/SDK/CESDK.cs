@@ -160,4 +160,32 @@ namespace CESDK
                 {
                     if (x[i].IsSubclassOf(typeof(CESDKPluginClass)))
                     {
-              
+                        currentPlugin = (CESDKPluginClass)Activator.CreateInstance(x[i]);
+                        break;
+                    }
+                }
+
+                if (currentPlugin == null)
+                    return 0;
+
+                PluginNamePtr = Marshal.StringToHGlobalAnsi(currentPlugin.GetPluginName());
+            }
+
+
+
+            UInt64 a = UInt64.Parse(parameters);
+
+
+            TPluginInit bla;
+            bla.name = PluginNamePtr;
+            bla.GetVersion = Marshal.GetFunctionPointerForDelegate(mainself.delGetVersion);
+            bla.EnablePlugin = Marshal.GetFunctionPointerForDelegate(mainself.delEnablePlugin);
+            bla.DisablePlugin = Marshal.GetFunctionPointerForDelegate(mainself.delDisablePlugin);
+            bla.version = PLUGINVERSION;
+            Marshal.StructureToPtr<TPluginInit>(bla, (IntPtr)a, false);
+
+            return 1;
+        }
+
+    }   
+}
