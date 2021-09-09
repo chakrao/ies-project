@@ -33,4 +33,39 @@ Non-C90 features currently in use, as revealed by
     Testing
 
 A simple "make test" is sufficient for some simple changes. However,
-before committing a change consider p
+before committing a change consider performing some of the following
+additional tests:
+
+- Build and run "make test" on several architectures.
+
+- Build with ./configure --enable-cross.
+
+- If the generation of relocations has been changed, try compiling
+  with TCC and linking with GCC/Clang. If the linker has been
+  modified, try compiling with GCC/Clang and linking with TCC.
+
+- Test with ASan/UBSan to detect memory corruption and undefined behaviour:
+
+make clean
+./configure
+make
+make test
+cp libtcc.a libtcc.a.hide
+
+make clean
+./configure --extra-cflags="-fsanitize=address,undefined -g"
+make
+cp libtcc.a.hide libtcc.a
+make test
+
+- Test with Valgrind to detect some uses of uninitialised values:
+
+make clean
+./configure
+make
+# On Intel, because Valgrind does floating-point arithmetic differently:
+( cd tests && gcc -I.. tcctest.c && valgrind -q ./a.out > test.ref )
+make test TCC="valgrind -q --leak-check=full `pwd`/tcc -B`pwd` -I`pwd`"
+
+  (Because of how VLAs are implemented, invalid reads are expected
+  with 79_vla_continue.)
