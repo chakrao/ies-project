@@ -257,4 +257,141 @@ static void asm_binary_opcode(TCCState *s1, int token)
     }
 
     if (ops[1].reg == 13)
-        tcc_warning("Using 'sp' as operand with '%s' is deprecated by ARM", get_tok_str(tok
+        tcc_warning("Using 'sp' as operand with '%s' is deprecated by ARM", get_tok_str(token, NULL));
+
+    if (tok == ',') {
+        next(); // skip ','
+        if (tok == TOK_ASM_ror) {
+            next(); // skip 'ror'
+            parse_operand(s1, &rotation);
+            if (rotation.type != OP_IM8) {
+                expect("immediate value for rotation");
+                return;
+            } else {
+                amount = rotation.e.v;
+                switch (amount) {
+                case 8:
+                    encoded_rotation = 1 << 10;
+                    break;
+                case 16:
+                    encoded_rotation = 2 << 10;
+                    break;
+                case 24:
+                    encoded_rotation = 3 << 10;
+                    break;
+                default:
+                    expect("'8' or '16' or '24'");
+                    return;
+                }
+            }
+        }
+    }
+    switch (ARM_INSTRUCTION_GROUP(token)) {
+    case TOK_ASM_clzeq:
+        if (encoded_rotation)
+            tcc_error("clz does not support rotation");
+        asm_emit_opcode(token, 0x16f0f10 | (ops[0].reg << 12) | ops[1].reg);
+        break;
+    case TOK_ASM_sxtbeq:
+        asm_emit_opcode(token, 0x6af0070 | (ops[0].reg << 12) | ops[1].reg | encoded_rotation);
+        break;
+    case TOK_ASM_sxtheq:
+        asm_emit_opcode(token, 0x6bf0070 | (ops[0].reg << 12) | ops[1].reg | encoded_rotation);
+        break;
+    case TOK_ASM_uxtbeq:
+        asm_emit_opcode(token, 0x6ef0070 | (ops[0].reg << 12) | ops[1].reg | encoded_rotation);
+        break;
+    case TOK_ASM_uxtheq:
+        asm_emit_opcode(token, 0x6ff0070 | (ops[0].reg << 12) | ops[1].reg | encoded_rotation);
+        break;
+    default:
+        expect("binary instruction");
+    }
+}
+
+/* data processing and single data transfer instructions only */
+#define ENCODE_RN(register_index) ((register_index) << 16)
+#define ENCODE_RD(register_index) ((register_index) << 12)
+#define ENCODE_SET_CONDITION_CODES (1 << 20)
+
+/* Note: For data processing instructions, "1" means immediate.
+   Note: For single data transfer instructions, "0" means immediate. */
+#define ENCODE_IMMEDIATE_FLAG (1 << 25)
+
+#define ENCODE_BARREL_SHIFTER_SHIFT_BY_REGISTER (1 << 4)
+#define ENCODE_BARREL_SHIFTER_MODE_LSL (0 << 5)
+#define ENCODE_BARREL_SHIFTER_MODE_LSR (1 << 5)
+#define ENCODE_BARREL_SHIFTER_MODE_ASR (2 << 5)
+#define ENCODE_BARREL_SHIFTER_MODE_ROR (3 << 5)
+#define ENCODE_BARREL_SHIFTER_REGISTER(register_index) ((register_index) << 8)
+#define ENCODE_BARREL_SHIFTER_IMMEDIATE(value) ((value) << 7)
+
+static void asm_block_data_transfer_opcode(TCCState *s1, int token)
+{
+    uint32_t opcode;
+    int op0_exclam = 0;
+    Operand ops[2];
+    int nb_ops = 1;
+    parse_operand(s1, &ops[0]);
+    if (tok == '!') {
+        op0_exclam = 1;
+        next(); // skip '!'
+    }
+    if (tok == ',') {
+        next(); // skip comma
+        parse_operand(s1, &ops[1]);
+        ++nb_ops;
+    }
+    if (nb_ops < 1) {
+        expect("at least one operand");
+        return;
+    } else if (ops[nb_ops - 1].type != OP_REGSET32) {
+        expect("(last operand) register list");
+        return;
+    }
+
+    // block data transfer: 1 0 0 P U S W L << 20 (general case):
+    // operands:
+    //   Rn: bits 19...16 base register
+    //   Register List: bits 15...0
+
+    switch (ARM_INSTRUCTION_GROUP(token)) {
+    case TOK_ASM_pusheq: // TODO: Optimize 1-register case to: str ?, [sp, #-4]!
+        // Instruction: 1 I=0 P=1 U=0 S=0 W=1 L=0 << 20, op 1101
+        //   operands:
+        //      Rn: base register
+        //      Register List: bits 15...0
+        if (nb_ops != 1)
+            expect("exactly one operand");
+        else
+            asm_emit_opcode(token, (0x92d << 16) | ops[0].regset); // TODO: base register ?
+        break;
+    case TOK_ASM_popeq: // TODO: Optimize 1-register case to: ldr ?, [sp], #4
+        // Instruction: 1 I=0 P=0 U=1 S=0 W=0 L=1 << 20, op 1101
+        //   operands:
+        //      Rn: base register
+        //      Register List: bits 15...0
+        if (nb_ops != 1)
+            expect("exactly one operand");
+        else
+            asm_emit_opcode(token, (0x8bd << 16) | ops[0].regset); // TODO: base register ?
+        break;
+    case TOK_ASM_stmdaeq:
+    case TOK_ASM_ldmdaeq:
+    case TOK_ASM_stmeq:
+    case TOK_ASM_ldmeq:
+    case TOK_ASM_stmiaeq:
+    case TOK_ASM_ldmiaeq:
+    case TOK_ASM_stmdbeq:
+    case TOK_ASM_ldmdbeq:
+    case TOK_ASM_stmibeq:
+    case TOK_ASM_ldmibeq:
+        switch (ARM_INSTRUCTION_GROUP(token)) {
+        case TOK_ASM_stmdaeq: // post-decrement store
+            opcode = 0x80 << 20;
+            break;
+        case TOK_ASM_ldmdaeq: // post-decrement load
+            opcode = 0x81 << 20;
+            break;
+        case TOK_ASM_stmeq: // post-increment store
+        case TOK_ASM_stmiaeq: // pos
