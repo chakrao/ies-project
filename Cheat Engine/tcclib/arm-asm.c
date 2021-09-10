@@ -394,4 +394,148 @@ static void asm_block_data_transfer_opcode(TCCState *s1, int token)
             opcode = 0x81 << 20;
             break;
         case TOK_ASM_stmeq: // post-increment store
-        case TOK_ASM_stmiaeq: // pos
+        case TOK_ASM_stmiaeq: // post-increment store
+            opcode = 0x88 << 20;
+            break;
+        case TOK_ASM_ldmeq: // post-increment load
+        case TOK_ASM_ldmiaeq: // post-increment load
+            opcode = 0x89 << 20;
+            break;
+        case TOK_ASM_stmdbeq: // pre-decrement store
+            opcode = 0x90 << 20;
+            break;
+        case TOK_ASM_ldmdbeq: // pre-decrement load
+            opcode = 0x91 << 20;
+            break;
+        case TOK_ASM_stmibeq: // pre-increment store
+            opcode = 0x98 << 20;
+            break;
+        case TOK_ASM_ldmibeq: // pre-increment load
+            opcode = 0x99 << 20;
+            break;
+        default:
+            tcc_error("internal error: This place should not be reached (fallback in asm_block_data_transfer_opcode)");
+        }
+        // operands:
+        //    Rn: first operand
+        //    Register List: lower bits
+        if (nb_ops != 2)
+            expect("exactly two operands");
+        else if (ops[0].type != OP_REG32)
+            expect("(first operand) register");
+        else {
+            if (op0_exclam)
+                opcode |= 1 << 21; // writeback
+            asm_emit_opcode(token, opcode | ENCODE_RN(ops[0].reg) | ops[1].regset);
+        }
+        break;
+    default:
+        expect("block data transfer instruction");
+    }
+}
+
+/* Parses shift directive and returns the parts that would have to be set in the opcode because of it.
+   Does not encode the actual shift amount.
+   It's not an error if there is no shift directive.
+
+   NB_SHIFT: will be set to 1 iff SHIFT is filled.  Note that for rrx, there's no need to fill SHIFT.
+   SHIFT: will be filled in with the shift operand to use, if any. */
+static uint32_t asm_parse_optional_shift(TCCState* s1, int* nb_shift, Operand* shift)
+{
+    uint32_t opcode = 0;
+    *nb_shift = 0;
+    switch (tok) {
+    case TOK_ASM_asl:
+    case TOK_ASM_lsl:
+    case TOK_ASM_asr:
+    case TOK_ASM_lsr:
+    case TOK_ASM_ror:
+        switch (tok) {
+        case TOK_ASM_asl:
+            /* fallthrough */
+        case TOK_ASM_lsl:
+            opcode = ENCODE_BARREL_SHIFTER_MODE_LSL;
+            break;
+        case TOK_ASM_asr:
+            opcode = ENCODE_BARREL_SHIFTER_MODE_ASR;
+            break;
+        case TOK_ASM_lsr:
+            opcode = ENCODE_BARREL_SHIFTER_MODE_LSR;
+            break;
+        case TOK_ASM_ror:
+            opcode = ENCODE_BARREL_SHIFTER_MODE_ROR;
+            break;
+        }
+        next();
+        parse_operand(s1, shift);
+        *nb_shift = 1;
+        break;
+    case TOK_ASM_rrx:
+        next();
+        opcode = ENCODE_BARREL_SHIFTER_MODE_ROR;
+        break;
+    }
+    return opcode;
+}
+
+static uint32_t asm_encode_shift(Operand* shift)
+{
+    uint64_t amount;
+    uint32_t operands = 0;
+    switch (shift->type) {
+    case OP_REG32:
+        if (shift->reg == 15)
+            tcc_error("r15 cannot be used as a shift count");
+        else {
+            operands = ENCODE_BARREL_SHIFTER_SHIFT_BY_REGISTER;
+            operands |= ENCODE_BARREL_SHIFTER_REGISTER(shift->reg);
+        }
+        break;
+    case OP_IM8:
+        amount = shift->e.v;
+        if (amount > 0 && amount < 32)
+            operands = ENCODE_BARREL_SHIFTER_IMMEDIATE(amount);
+        else
+            tcc_error("shift count out of range");
+        break;
+    default:
+        tcc_error("unknown shift amount");
+    }
+    return operands;
+}
+
+static void asm_data_processing_opcode(TCCState *s1, int token)
+{
+    Operand ops[3];
+    int nb_ops;
+	Operand shift;// = {}; //cheat engine modification (won't compile in vs2017)
+    int nb_shift = 0;
+    uint32_t operands = 0;
+
+	shift.type = 0; //cheat engine modification (in vs2017: set to 0)
+	
+
+    /* modulo 16 entries per instruction for the different condition codes */
+    uint32_t opcode_idx = (ARM_INSTRUCTION_GROUP(token) - TOK_ASM_andeq) >> 4;
+    uint32_t opcode_nos = opcode_idx >> 1; // without "s"; "OpCode" in ARM docs
+
+    for (nb_ops = 0; nb_ops < sizeof(ops)/sizeof(ops[0]); ) {
+        if (tok == TOK_ASM_asl || tok == TOK_ASM_lsl || tok == TOK_ASM_lsr || tok == TOK_ASM_asr || tok == TOK_ASM_ror || tok == TOK_ASM_rrx)
+            break;
+        parse_operand(s1, &ops[nb_ops]);
+        ++nb_ops;
+        if (tok != ',')
+            break;
+        next(); // skip ','
+    }
+    if (tok == ',')
+        next();
+    operands |= asm_parse_optional_shift(s1, &nb_shift, &shift);
+    if (nb_ops < 2)
+        expect("at least two operands");
+    else if (nb_ops == 2) {
+        memcpy(&ops[2], &ops[1], sizeof(ops[1])); // move ops[2]
+        memcpy(&ops[1], &ops[0], sizeof(ops[0])); // ops[1] was implicit
+        nb_ops = 3;
+    } else if (nb_ops == 3) {
+        if (opcode_nos == 0xd || opcode_nos == 0xf || opcode_nos == 0xa
