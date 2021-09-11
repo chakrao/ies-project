@@ -538,4 +538,105 @@ static void asm_data_processing_opcode(TCCState *s1, int token)
         memcpy(&ops[1], &ops[0], sizeof(ops[0])); // ops[1] was implicit
         nb_ops = 3;
     } else if (nb_ops == 3) {
-        if (opcode_nos == 0xd || opcode_nos == 0xf || opcode_nos == 0xa
+        if (opcode_nos == 0xd || opcode_nos == 0xf || opcode_nos == 0xa || opcode_nos == 0xb || opcode_nos == 0x8 || opcode_nos == 0x9) { // mov, mvn, cmp, cmn, tst, teq
+            tcc_error("'%s' cannot be used with three operands", get_tok_str(token, NULL));
+            return;
+        }
+    }
+    if (nb_ops != 3) {
+        expect("two or three operands");
+        return;
+    } else {
+        uint32_t opcode = 0;
+        uint32_t immediate_value;
+        uint8_t half_immediate_rotation;
+        if (nb_shift && shift.type == OP_REG32) {
+            if ((ops[0].type == OP_REG32 && ops[0].reg == 15) ||
+                (ops[1].type == OP_REG32 && ops[1].reg == 15)) {
+                tcc_error("Using the 'pc' register in data processing instructions that have a register-controlled shift is not implemented by ARM");
+                return;
+            }
+        }
+
+        // data processing (general case):
+        // operands:
+        //   Rn: bits 19...16 (first operand)
+        //   Rd: bits 15...12 (destination)
+        //   Operand2: bits 11...0 (second operand);  depending on I that's either a register or an immediate
+        // operator:
+        //   bits 24...21: "OpCode"--see below
+
+        /* operations in the token list are ordered by opcode */
+        opcode = opcode_nos << 21; // drop "s"
+        if (ops[0].type != OP_REG32)
+            expect("(destination operand) register");
+        else if (opcode_nos == 0xa || opcode_nos == 0xb || opcode_nos == 0x8 || opcode_nos == 0x9) // cmp, cmn, tst, teq
+            operands |= ENCODE_SET_CONDITION_CODES; // force S set, otherwise it's a completely different instruction.
+        else
+            operands |= ENCODE_RD(ops[0].reg);
+        if (ops[1].type != OP_REG32)
+            expect("(first source operand) register");
+        else if (!(opcode_nos == 0xd || opcode_nos == 0xf)) // not: mov, mvn (those have only one source operand)
+            operands |= ENCODE_RN(ops[1].reg);
+        switch (ops[2].type) {
+        case OP_REG32:
+            operands |= ops[2].reg;
+            break;
+        case OP_IM8:
+        case OP_IM32:
+            operands |= ENCODE_IMMEDIATE_FLAG;
+            immediate_value = ops[2].e.v;
+            for (half_immediate_rotation = 0; half_immediate_rotation < 16; ++half_immediate_rotation) {
+                if (immediate_value >= 0x00 && immediate_value < 0x100)
+                    break;
+                // rotate left by two
+                immediate_value = ((immediate_value & 0x3FFFFFFF) << 2) | ((immediate_value & 0xC0000000) >> 30);
+            }
+            if (half_immediate_rotation >= 16) {
+                /* fallthrough */
+            } else {
+                operands |= immediate_value;
+                operands |= half_immediate_rotation << 8;
+                break;
+            }
+        case OP_IM8N: // immediate negative value
+            operands |= ENCODE_IMMEDIATE_FLAG;
+            immediate_value = ops[2].e.v;
+            /* Instruction swapping:
+               0001 = EOR - Rd:= Op1 EOR Op2     -> difficult
+               0011 = RSB - Rd:= Op2 - Op1       -> difficult
+               0111 = RSC - Rd:= Op2 - Op1 + C   -> difficult
+               1000 = TST - CC on: Op1 AND Op2   -> difficult
+               1001 = TEQ - CC on: Op1 EOR Op2   -> difficult
+               1100 = ORR - Rd:= Op1 OR Op2      -> difficult
+            */
+            switch (opcode_nos) {
+            case 0x0: // AND - Rd:= Op1 AND Op2
+                opcode = 0xe << 21; // BIC
+                immediate_value = ~immediate_value;
+                break;
+            case 0x2: // SUB - Rd:= Op1 - Op2
+                opcode = 0x4 << 21; // ADD
+                immediate_value = -immediate_value;
+                break;
+            case 0x4: // ADD - Rd:= Op1 + Op2
+                opcode = 0x2 << 21; // SUB
+                immediate_value = -immediate_value;
+                break;
+            case 0x5: // ADC - Rd:= Op1 + Op2 + C
+                opcode = 0x6 << 21; // SBC
+                immediate_value = ~immediate_value;
+                break;
+            case 0x6: // SBC - Rd:= Op1 - Op2 + C
+                opcode = 0x5 << 21; // ADC
+                immediate_value = ~immediate_value;
+                break;
+            case 0xa: // CMP - CC on: Op1 - Op2
+                opcode = 0xb << 21; // CMN
+                immediate_value = -immediate_value;
+                break;
+            case 0xb: // CMN - CC on: Op1 + Op2
+                opcode = 0xa << 21; // CMP
+                immediate_value = -immediate_value;
+                break;
+            case 0xd: // MOV - R
