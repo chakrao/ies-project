@@ -639,4 +639,146 @@ static void asm_data_processing_opcode(TCCState *s1, int token)
                 opcode = 0xa << 21; // CMP
                 immediate_value = -immediate_value;
                 break;
-            case 0xd: // MOV - R
+            case 0xd: // MOV - Rd:= Op2
+                opcode = 0xf << 21; // MVN
+                immediate_value = ~immediate_value;
+                break;
+            case 0xe: // BIC - Rd:= Op1 AND NOT Op2
+                opcode = 0x0 << 21; // AND
+                immediate_value = ~immediate_value;
+                break;
+            case 0xf: // MVN - Rd:= NOT Op2
+                opcode = 0xd << 21; // MOV
+                immediate_value = ~immediate_value;
+                break;
+            default:
+                tcc_error("cannot use '%s' with a negative immediate value", get_tok_str(token, NULL));
+            }
+            for (half_immediate_rotation = 0; half_immediate_rotation < 16; ++half_immediate_rotation) {
+                if (immediate_value >= 0x00 && immediate_value < 0x100)
+                    break;
+                // rotate left by two
+                immediate_value = ((immediate_value & 0x3FFFFFFF) << 2) | ((immediate_value & 0xC0000000) >> 30);
+            }
+            if (half_immediate_rotation >= 16) {
+                immediate_value = ops[2].e.v;
+                tcc_error("immediate value 0x%X cannot be encoded into ARM immediate", (unsigned) immediate_value);
+                return;
+            }
+            operands |= immediate_value;
+            operands |= half_immediate_rotation << 8;
+            break;
+        default:
+            expect("(second source operand) register or immediate value");
+        }
+
+        if (nb_shift) {
+            if (operands & ENCODE_IMMEDIATE_FLAG)
+                tcc_error("immediate rotation not implemented");
+            else
+                operands |= asm_encode_shift(&shift);
+        }
+
+        /* S=0 and S=1 entries alternate one after another, in that order */
+        opcode |= (opcode_idx & 1) ? ENCODE_SET_CONDITION_CODES : 0;
+        asm_emit_opcode(token, opcode | operands);
+    }
+}
+
+static void asm_shift_opcode(TCCState *s1, int token)
+{
+    Operand ops[3];
+    int nb_ops;
+    int definitely_neutral = 0;
+    uint32_t opcode = 0xd << 21; // MOV
+    uint32_t operands = 0;
+
+    for (nb_ops = 0; nb_ops < sizeof(ops)/sizeof(ops[0]); ++nb_ops) {
+        parse_operand(s1, &ops[nb_ops]);
+        if (tok != ',') {
+            ++nb_ops;
+            break;
+        }
+        next(); // skip ','
+    }
+    if (nb_ops < 2) {
+        expect("at least two operands");
+        return;
+    }
+
+    if (ops[0].type != OP_REG32) {
+        expect("(destination operand) register");
+        return;
+    } else
+        operands |= ENCODE_RD(ops[0].reg);
+
+    if (nb_ops == 2) {
+        switch (ARM_INSTRUCTION_GROUP(token)) {
+        case TOK_ASM_rrxseq:
+            opcode |= ENCODE_SET_CONDITION_CODES;
+            /* fallthrough */
+        case TOK_ASM_rrxeq:
+            if (ops[1].type == OP_REG32) {
+                operands |= ops[1].reg;
+                operands |= ENCODE_BARREL_SHIFTER_MODE_ROR;
+                asm_emit_opcode(token, opcode | operands);
+            } else
+                tcc_error("(first source operand) register");
+            return;
+        default:
+            memcpy(&ops[2], &ops[1], sizeof(ops[1])); // move ops[2]
+            memcpy(&ops[1], &ops[0], sizeof(ops[0])); // ops[1] was implicit
+            nb_ops = 3;
+        }
+    }
+    if (nb_ops != 3) {
+        expect("two or three operands");
+        return;
+    }
+
+    switch (ARM_INSTRUCTION_GROUP(token)) {
+    case TOK_ASM_lslseq:
+    case TOK_ASM_lsrseq:
+    case TOK_ASM_asrseq:
+    case TOK_ASM_rorseq:
+        opcode |= ENCODE_SET_CONDITION_CODES;
+        break;
+    }
+
+    switch (ops[1].type) {
+    case OP_REG32:
+        operands |= ops[1].reg;
+        break;
+    case OP_IM8:
+        operands |= ENCODE_IMMEDIATE_FLAG;
+        operands |= ops[1].e.v;
+        break;
+    }
+
+    switch (ops[2].type) {
+    case OP_REG32:
+        if ((ops[0].type == OP_REG32 && ops[0].reg == 15) ||
+            (ops[1].type == OP_REG32 && ops[1].reg == 15)) {
+            tcc_error("Using the 'pc' register in data processing instructions that have a register-controlled shift is not implemented by ARM");
+        }
+        operands |= asm_encode_shift(&ops[2]);
+        break;
+    case OP_IM8:
+        if (ops[2].e.v)
+            operands |= asm_encode_shift(&ops[2]);
+        else
+            definitely_neutral = 1;
+        break;
+    }
+
+    if (!definitely_neutral) switch (ARM_INSTRUCTION_GROUP(token)) {
+    case TOK_ASM_lslseq:
+    case TOK_ASM_lsleq:
+        operands |= ENCODE_BARREL_SHIFTER_MODE_LSL;
+        break;
+    case TOK_ASM_lsrseq:
+    case TOK_ASM_lsreq:
+        operands |= ENCODE_BARREL_SHIFTER_MODE_LSR;
+        break;
+    case TOK_ASM_asrseq:
+    case T
