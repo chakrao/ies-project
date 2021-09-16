@@ -1108,4 +1108,139 @@ static void asm_single_data_transfer_opcode(TCCState *s1, int token)
         asm_emit_opcode(token, opcode);
         break;
     case TOK_ASM_strexbeq:
-        opcode |= 1 << 2
+        opcode |= 1 << 22; // B
+        /* fallthrough */
+    case TOK_ASM_strexeq:
+        if ((opcode & 0xFFF) || nb_shift) {
+            tcc_error("neither offset nor shift allowed with 'strex'");
+            return;
+        } else if (opcode & ENCODE_IMMEDIATE_FLAG) { // if set, it means it's NOT immediate
+            tcc_error("offset not allowed with 'strex'");
+            return;
+        }
+        if ((opcode & (1 << 24)) == 0) { // add offset after transfer
+            tcc_error("adding offset after transfer not allowed with 'strex'");
+            return;
+        }
+
+        opcode |= 0xf90; // Used to mean: barrel shifter is enabled, barrel shift register is r15, mode is LSL
+        opcode |= strex_operand.reg;
+        asm_emit_opcode(token, opcode);
+        break;
+    case TOK_ASM_ldrexbeq:
+        opcode |= 1 << 22; // B
+        /* fallthrough */
+    case TOK_ASM_ldrexeq:
+        if ((opcode & 0xFFF) || nb_shift) {
+            tcc_error("neither offset nor shift allowed with 'ldrex'");
+            return;
+        } else if (opcode & ENCODE_IMMEDIATE_FLAG) { // if set, it means it's NOT immediate
+            tcc_error("offset not allowed with 'ldrex'");
+            return;
+        }
+        if ((opcode & (1 << 24)) == 0) { // add offset after transfer
+            tcc_error("adding offset after transfer not allowed with 'ldrex'");
+            return;
+        }
+        opcode |= 1 << 20; // L
+        opcode |= 0x00f;
+        opcode |= 0xf90; // Used to mean: barrel shifter is enabled, barrel shift register is r15, mode is LSL
+        asm_emit_opcode(token, opcode);
+        break;
+    default:
+        expect("data transfer instruction");
+    }
+}
+
+static void asm_misc_single_data_transfer_opcode(TCCState *s1, int token)
+{
+    Operand ops[3];
+    int exclam = 0;
+    int closed_bracket = 0;
+    int op2_minus = 0;
+    uint32_t opcode = (1 << 7) | (1 << 4);
+
+    /* Note:
+       The argument syntax is exactly the same as in arm_single_data_transfer_opcode, except that there's no STREX argument form.
+       The main difference between this function and asm_misc_single_data_transfer_opcode is that the immediate values here must be smaller.
+       Also, the combination (P=0, W=1) is unpredictable here.
+       The immediate flag has moved to bit index 22--and its meaning has flipped.
+       The immediate value itself has been split into two parts: one at bits 11...8, one at bits 3...0
+       bit 26 (Load/Store instruction) is unset here.
+       bits 7 and 4 are set here. */
+
+    // Here: 0 0 0 P U I W L << 20
+    // [compare single data transfer: 0 1 I P U B W L << 20]
+
+    parse_operand(s1, &ops[0]);
+    if (ops[0].type == OP_REG32)
+        opcode |= ENCODE_RD(ops[0].reg);
+    else {
+        expect("(destination operand) register");
+        return;
+    }
+    if (tok != ',')
+        expect("at least two arguments");
+    else
+        next(); // skip ','
+
+    if (tok != '[')
+        expect("'['");
+    else
+        next(); // skip '['
+
+    parse_operand(s1, &ops[1]);
+    if (ops[1].type == OP_REG32)
+        opcode |= ENCODE_RN(ops[1].reg);
+    else {
+        expect("(first source operand) register");
+        return;
+    }
+    if (tok == ']') {
+        next();
+        closed_bracket = 1;
+        // exclam = 1; // implicit in hardware; don't do it in software
+    }
+    if (tok == ',') {
+        next(); // skip ','
+        if (tok == '-') {
+            op2_minus = 1;
+            next();
+        }
+        parse_operand(s1, &ops[2]);
+    } else {
+        // end of input expression in brackets--assume 0 offset
+        ops[2].type = OP_IM8;
+        ops[2].e.v = 0;
+        opcode |= 1 << 24; // add offset before transfer
+    }
+    if (!closed_bracket) {
+        if (tok != ']')
+            expect("']'");
+        else
+            next(); // skip ']'
+        opcode |= 1 << 24; // add offset before transfer
+        if (tok == '!') {
+            exclam = 1;
+            next(); // skip '!'
+        }
+    }
+
+    if (exclam) {
+        if ((opcode & (1 << 24)) == 0) {
+            tcc_error("result of '%s' would be unpredictable here", get_tok_str(token, NULL));
+            return;
+        }
+        opcode |= 1 << 21; // write offset back into register
+    }
+
+    if (ops[2].type == OP_IM32 || ops[2].type == OP_IM8 || ops[2].type == OP_IM8N) {
+        int v = ops[2].e.v;
+        if (op2_minus)
+            tcc_error("minus before '#' not supported for immediate values");
+        if (v >= 0) {
+            opcode |= 1 << 23; // up
+            if (v >= 0x100)
+                tcc_error("offset out of range for '%s'", get_tok_str(token, NULL));
+            else {
+                // bits 11..
