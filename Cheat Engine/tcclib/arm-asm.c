@@ -1243,4 +1243,178 @@ static void asm_misc_single_data_transfer_opcode(TCCState *s1, int token)
             if (v >= 0x100)
                 tcc_error("offset out of range for '%s'", get_tok_str(token, NULL));
             else {
-                // bits 11..
+                // bits 11...8: immediate hi nibble
+                // bits 3...0: immediate lo nibble
+                opcode |= (v & 0xF0) << 4;
+                opcode |= v & 0xF;
+            }
+        } else { // down
+            if (v <= -0x100)
+                tcc_error("offset out of range for '%s'", get_tok_str(token, NULL));
+            else {
+                v = -v;
+                // bits 11...8: immediate hi nibble
+                // bits 3...0: immediate lo nibble
+                opcode |= (v & 0xF0) << 4;
+                opcode |= v & 0xF;
+            }
+        }
+        opcode |= 1 << 22; // not ENCODE_IMMEDIATE_FLAG;
+    } else if (ops[2].type == OP_REG32) {
+        if (!op2_minus)
+            opcode |= 1 << 23; // up
+        opcode |= ops[2].reg;
+    } else
+        expect("register");
+
+    switch (ARM_INSTRUCTION_GROUP(token)) {
+    case TOK_ASM_ldrsheq:
+        opcode |= 1 << 5; // halfword, not byte
+        /* fallthrough */
+    case TOK_ASM_ldrsbeq:
+        opcode |= 1 << 6; // sign extend
+        opcode |= 1 << 20; // L
+        asm_emit_opcode(token, opcode);
+        break;
+    case TOK_ASM_ldrheq:
+        opcode |= 1 << 5; // halfword, not byte
+        opcode |= 1 << 20; // L
+        asm_emit_opcode(token, opcode);
+        break;
+    case TOK_ASM_strheq:
+        opcode |= 1 << 5; // halfword, not byte
+        asm_emit_opcode(token, opcode);
+        break;
+    }
+}
+
+/* Note: almost dupe of encbranch in arm-gen.c */
+static uint32_t encbranchoffset(int pos, int addr, int fail)
+{
+  addr-=pos+8;
+  addr/=4;
+  if(addr>=0x7fffff || addr<-0x800000) {
+    if(fail)
+      tcc_error("branch offset is too far");
+    return 0;
+  }
+  return /*not 0x0A000000|*/(addr&0xffffff);
+}
+
+static void asm_branch_opcode(TCCState *s1, int token)
+{
+    int jmp_disp = 0;
+    Operand op;
+    ExprValue e;
+    ElfSym *esym;
+
+    switch (ARM_INSTRUCTION_GROUP(token)) {
+    case TOK_ASM_beq:
+    case TOK_ASM_bleq:
+        asm_expr(s1, &e);
+        esym = elfsym(e.sym);
+        if (!esym || esym->st_shndx != cur_text_section->sh_num) {
+            tcc_error("invalid branch target");
+            return;
+        }
+        jmp_disp = encbranchoffset(ind, e.v + esym->st_value, 1);
+        break;
+    default:
+        parse_operand(s1, &op);
+        break;
+    }
+    switch (ARM_INSTRUCTION_GROUP(token)) {
+    case TOK_ASM_beq:
+        asm_emit_opcode(token, (0xa << 24) | (jmp_disp & 0xffffff));
+        break;
+    case TOK_ASM_bleq:
+        asm_emit_opcode(token, (0xb << 24) | (jmp_disp & 0xffffff));
+        break;
+    case TOK_ASM_bxeq:
+        if (op.type != OP_REG32)
+            expect("register");
+        else
+            asm_emit_opcode(token, (0x12fff1 << 4) | op.reg);
+        break;
+    case TOK_ASM_blxeq:
+        if (op.type != OP_REG32)
+            expect("register");
+        else
+            asm_emit_opcode(token, (0x12fff3 << 4) | op.reg);
+        break;
+    default:
+        expect("branch instruction");
+    }
+}
+
+ST_FUNC void asm_opcode(TCCState *s1, int token)
+{
+    while (token == TOK_LINEFEED) {
+        next();
+        token = tok;
+    }
+    if (token == TOK_EOF)
+        return;
+    if (token < TOK_ASM_nopeq) {
+        expect("instruction");
+        return;
+    }
+
+    switch (ARM_INSTRUCTION_GROUP(token)) {
+    case TOK_ASM_pusheq:
+    case TOK_ASM_popeq:
+    case TOK_ASM_stmdaeq:
+    case TOK_ASM_ldmdaeq:
+    case TOK_ASM_stmeq:
+    case TOK_ASM_ldmeq:
+    case TOK_ASM_stmiaeq:
+    case TOK_ASM_ldmiaeq:
+    case TOK_ASM_stmdbeq:
+    case TOK_ASM_ldmdbeq:
+    case TOK_ASM_stmibeq:
+    case TOK_ASM_ldmibeq:
+        return asm_block_data_transfer_opcode(s1, token);
+    case TOK_ASM_nopeq:
+    case TOK_ASM_wfeeq:
+    case TOK_ASM_wfieq:
+        return asm_nullary_opcode(token);
+    case TOK_ASM_swieq:
+        return asm_unary_opcode(s1, token);
+    case TOK_ASM_beq:
+    case TOK_ASM_bleq:
+    case TOK_ASM_bxeq:
+    case TOK_ASM_blxeq:
+        return asm_branch_opcode(s1, token);
+    case TOK_ASM_clzeq:
+    case TOK_ASM_sxtbeq:
+    case TOK_ASM_sxtheq:
+    case TOK_ASM_uxtbeq:
+    case TOK_ASM_uxtheq:
+    case TOK_ASM_movteq:
+    case TOK_ASM_movweq:
+        return asm_binary_opcode(s1, token);
+
+    case TOK_ASM_ldreq:
+    case TOK_ASM_ldrbeq:
+    case TOK_ASM_streq:
+    case TOK_ASM_strbeq:
+    case TOK_ASM_ldrexeq:
+    case TOK_ASM_ldrexbeq:
+    case TOK_ASM_strexeq:
+    case TOK_ASM_strexbeq:
+        return asm_single_data_transfer_opcode(s1, token);
+
+    case TOK_ASM_ldrheq:
+    case TOK_ASM_ldrsheq:
+    case TOK_ASM_ldrsbeq:
+    case TOK_ASM_strheq:
+       return asm_misc_single_data_transfer_opcode(s1, token);
+
+    case TOK_ASM_andeq:
+    case TOK_ASM_eoreq:
+    case TOK_ASM_subeq:
+    case TOK_ASM_rsbeq:
+    case TOK_ASM_addeq:
+    case TOK_ASM_adceq:
+    case TOK_ASM_sbceq:
+    cas
