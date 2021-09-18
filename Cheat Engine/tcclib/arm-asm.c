@@ -1572,4 +1572,137 @@ ST_FUNC void asm_gen_code(ASMOperand *operands, int nb_operands,
     for(i = 0; i < nb_operands;i++) {
         op = &operands[i];
         if (op->reg >= 0)
-            
+            regs_allocated[op->reg] = 1;
+    }
+    for(i = 0; i < sizeof(reg_saved)/sizeof(reg_saved[0]); i++) {
+        reg = reg_saved[i];
+        if (regs_allocated[reg])
+            saved_regset |= 1 << reg;
+    }
+
+    if (!is_output) { // prolog
+        /* generate reg save code */
+        if (saved_regset)
+            gen_le32(0xe92d0000 | saved_regset); // push {...}
+
+        /* generate load code */
+        for(i = 0; i < nb_operands; i++) {
+            op = &operands[i];
+            if (op->reg >= 0) {
+                if ((op->vt->r & VT_VALMASK) == VT_LLOCAL &&
+                    op->is_memory) {
+                    /* memory reference case (for both input and
+                       output cases) */
+                    SValue sv;
+                    sv = *op->vt;
+                    sv.r = (sv.r & ~VT_VALMASK) | VT_LOCAL | VT_LVAL;
+                    sv.type.t = VT_PTR;
+                    load(op->reg, &sv);
+                } else if (i >= nb_outputs || op->is_rw) { // not write-only
+                    /* load value in register */
+                    load(op->reg, op->vt);
+                    if (op->is_llong)
+                        tcc_error("long long not implemented");
+                }
+            }
+        }
+    } else { // epilog
+        /* generate save code */
+        for(i = 0 ; i < nb_outputs; i++) {
+            op = &operands[i];
+            if (op->reg >= 0) {
+                if ((op->vt->r & VT_VALMASK) == VT_LLOCAL) {
+                    if (!op->is_memory) {
+                        SValue sv;
+                        sv = *op->vt;
+                        sv.r = (sv.r & ~VT_VALMASK) | VT_LOCAL;
+                        sv.type.t = VT_PTR;
+                        load(out_reg, &sv);
+
+                        sv = *op->vt;
+                        sv.r = (sv.r & ~VT_VALMASK) | out_reg;
+                        store(op->reg, &sv);
+                    }
+                } else {
+                    store(op->reg, op->vt);
+                    if (op->is_llong)
+                        tcc_error("long long not implemented");
+                }
+            }
+        }
+
+        /* generate reg restore code */
+        if (saved_regset)
+            gen_le32(0xe8bd0000 | saved_regset); // pop {...}
+    }
+}
+
+/* return the constraint priority (we allocate first the lowest
+   numbered constraints) */
+static inline int constraint_priority(const char *str)
+{
+    int priority, c, pr;
+
+    /* we take the lowest priority */
+    priority = 0;
+    for(;;) {
+        c = *str;
+        if (c == '\0')
+            break;
+        str++;
+        switch(c) {
+        case 'l': // in ARM mode, that's  an alias for 'r' [ARM].
+        case 'r': // register [general]
+        case 'p': // valid memory address for load,store [general]
+            pr = 3;
+            break;
+        case 'M': // integer constant for shifts [ARM]
+        case 'I': // integer valid for data processing instruction immediate
+        case 'J': // integer in range -4095...4095
+
+        case 'i': // immediate integer operand, including symbolic constants [general]
+        case 'm': // memory operand [general]
+        case 'g': // general-purpose-register, memory, immediate integer [general]
+            pr = 4;
+            break;
+        default:
+            tcc_error("unknown constraint '%c'", c);
+            pr = 0;
+        }
+        if (pr > priority)
+            priority = pr;
+    }
+    return priority;
+}
+
+static const char *skip_constraint_modifiers(const char *p)
+{
+    /* Constraint modifier:
+        =   Operand is written to by this instruction
+        +   Operand is both read and written to by this instruction
+        %   Instruction is commutative for this operand and the following operand.
+
+       Per-alternative constraint modifier:
+        &   Operand is clobbered before the instruction is done using the input operands
+    */
+    while (*p == '=' || *p == '&' || *p == '+' || *p == '%')
+        p++;
+    return p;
+}
+
+#define REG_OUT_MASK 0x01
+#define REG_IN_MASK  0x02
+
+#define is_reg_allocated(reg) (regs_allocated[reg] & reg_mask)
+
+ST_FUNC void asm_compute_constraints(ASMOperand *operands,
+                                    int nb_operands, int nb_outputs,
+                                    const uint8_t *clobber_regs,
+                                    int *pout_reg)
+{
+    /* overall format: modifier, then ,-seperated list of alternatives; all operands for a single instruction must have the same number of alternatives */
+    /* TODO: Simple constraints
+        whitespace  ignored
+        o  memory operand that is offsetable
+        V  memory but not offsetable
+        <  memory operand with
