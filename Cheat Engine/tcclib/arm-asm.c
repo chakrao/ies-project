@@ -1953,4 +1953,22 @@ ST_FUNC int asm_parse_regvar (int t)
 {
     if (t >= TOK_ASM_r0 && t <= TOK_ASM_pc) { /* register name */
         switch (t) {
-            case TOK_AS
+            case TOK_ASM_fp:
+                return TOK_ASM_r11 - TOK_ASM_r0;
+            case TOK_ASM_ip:
+                return TOK_ASM_r12 - TOK_ASM_r0;
+            case TOK_ASM_sp:
+                return TOK_ASM_r13 - TOK_ASM_r0;
+            case TOK_ASM_lr:
+                return TOK_ASM_r14 - TOK_ASM_r0;
+            case TOK_ASM_pc:
+                return TOK_ASM_r15 - TOK_ASM_r0;
+            default:
+                return t - TOK_ASM_r0;
+        }
+    } else
+        return -1;
+}
+
+/*************************************************************/
+#endif /* ndef TARGET_DEFS_ONLY */
