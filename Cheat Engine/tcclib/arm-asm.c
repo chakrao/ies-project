@@ -1826,4 +1826,131 @@ ST_FUNC void asm_compute_constraints(ASMOperand *operands,
             /* FALL THRU */
         case '&': // Operand is clobbered before the instruction is done using the input operands
             if (j >= nb_outputs)
-                tcc_error("'%c
+                tcc_error("'%c' modifier can only be applied to outputs",
+                          c);
+            reg_mask = REG_IN_MASK | REG_OUT_MASK;
+            goto try_next;
+        case 'l': // In non-thumb mode, alias for 'r'--otherwise r0-r7 [ARM]
+        case 'r': // general-purpose register
+        case 'p': // loadable/storable address
+            /* any general register */
+            for (reg = 0; reg <= 8; reg++) {
+                if (!is_reg_allocated(reg))
+                    goto reg_found;
+            }
+            goto try_next;
+          reg_found:
+            /* now we can reload in the register */
+            op->is_llong = 0;
+            op->reg = reg;
+            regs_allocated[reg] |= reg_mask;
+            break;
+        case 'I': // integer that is valid as an data processing instruction immediate (0...255, rotated by a multiple of two)
+        case 'J': // integer in the range -4095 to 4095 [ARM]
+        case 'K': // integer that satisfies constraint I when inverted (one's complement)
+        case 'L': // integer that satisfies constraint I when inverted (two's complement)
+        case 'i': // immediate integer operand, including symbolic constants
+            if (!((op->vt->r & (VT_VALMASK | VT_LVAL)) == VT_CONST))
+                goto try_next;
+            break;
+        case 'M': // integer in the range 0 to 32
+            if (!
+                ((op->vt->r & (VT_VALMASK | VT_LVAL | VT_SYM)) ==
+                 VT_CONST))
+                goto try_next;
+            break;
+        case 'm': // memory operand
+        case 'g':
+            /* nothing special to do because the operand is already in
+               memory, except if the pointer itself is stored in a
+               memory variable (VT_LLOCAL case) */
+            /* XXX: fix constant case */
+            /* if it is a reference to a memory zone, it must lie
+               in a register, so we reserve the register in the
+               input registers and a load will be generated
+               later */
+            if (j < nb_outputs || c == 'm') {
+                if ((op->vt->r & VT_VALMASK) == VT_LLOCAL) {
+                    /* any general register */
+                    for (reg = 0; reg <= 8; reg++) {
+                        if (!(regs_allocated[reg] & REG_IN_MASK))
+                            goto reg_found1;
+                    }
+                    goto try_next;
+                  reg_found1:
+                    /* now we can reload in the register */
+                    regs_allocated[reg] |= REG_IN_MASK;
+                    op->reg = reg;
+                    op->is_memory = 1;
+                }
+            }
+            break;
+        default:
+            tcc_error("asm constraint %d ('%s') could not be satisfied",
+                      j, op->constraint);
+            break;
+        }
+        /* if a reference is present for that operand, we assign it too */
+        if (op->input_index >= 0) {
+            operands[op->input_index].reg = op->reg;
+            operands[op->input_index].is_llong = op->is_llong;
+        }
+    }
+
+    /* compute out_reg. It is used to store outputs registers to memory
+       locations references by pointers (VT_LLOCAL case) */
+    *pout_reg = -1;
+    for (i = 0; i < nb_operands; i++) {
+        op = &operands[i];
+        if (op->reg >= 0 &&
+            (op->vt->r & VT_VALMASK) == VT_LLOCAL && !op->is_memory) {
+            for (reg = 0; reg <= 8; reg++) {
+                if (!(regs_allocated[reg] & REG_OUT_MASK))
+                    goto reg_found2;
+            }
+            tcc_error("could not find free output register for reloading");
+          reg_found2:
+            *pout_reg = reg;
+            break;
+        }
+    }
+
+    /* print sorted constraints */
+#ifdef ASM_DEBUG
+    for (i = 0; i < nb_operands; i++) {
+        j = sorted_op[i];
+        op = &operands[j];
+        printf("%%%d [%s]: \"%s\" r=0x%04x reg=%d\n",
+               j,
+               op->id ? get_tok_str(op->id, NULL) : "",
+               op->constraint, op->vt->r, op->reg);
+    }
+    if (*pout_reg >= 0)
+        printf("out_reg=%d\n", *pout_reg);
+#endif
+}
+
+ST_FUNC void asm_clobber(uint8_t *clobber_regs, const char *str)
+{
+    int reg;
+    TokenSym *ts;
+
+    if (!strcmp(str, "memory") ||
+        !strcmp(str, "cc") ||
+        !strcmp(str, "flags"))
+        return;
+    ts = tok_alloc(str, strlen(str));
+    reg = asm_parse_regvar(ts->tok);
+    if (reg == -1) {
+        tcc_error("invalid clobber register '%s'", str);
+    }
+    clobber_regs[reg] = 1;
+}
+
+/* If T refers to a register then return the register number and type.
+   Otherwise return -1.  */
+ST_FUNC int asm_parse_regvar (int t)
+{
+    if (t >= TOK_ASM_r0 && t <= TOK_ASM_pc) { /* register name */
+        switch (t) {
+            case TOK_AS
