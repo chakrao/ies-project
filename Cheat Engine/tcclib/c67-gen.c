@@ -1498,3 +1498,1045 @@ void C67_ADDSP(int r, int v)
 {
     C67_asm("ADDSP.L", v, r, v);
 }
+
+void C67_SUBSP(int r, int v)
+{
+    C67_asm("SUBSP.L", v, r, v);
+}
+
+void C67_MPYSP(int r, int v)
+{
+    C67_asm("MPYSP.M", v, r, v);
+}
+
+void C67_ADDDP(int r, int v)
+{
+    C67_asm("ADDDP.L", v, r, v);
+}
+
+void C67_SUBDP(int r, int v)
+{
+    C67_asm("SUBDP.L", v, r, v);
+}
+
+void C67_MPYDP(int r, int v)
+{
+    C67_asm("MPYDP.M", v, r, v);
+}
+
+void C67_MPYI(int r, int v)
+{
+    C67_asm("MPYI.M", v, r, v);
+}
+
+void C67_SHL(int r, int v)
+{
+    C67_asm("SHL.S", r, v, v);
+}
+
+void C67_SHRU(int r, int v)
+{
+    C67_asm("SHRU.S", r, v, v);
+}
+
+void C67_SHR(int r, int v)
+{
+    C67_asm("SHR.S", r, v, v);
+}
+
+
+
+/* load 'r' from value 'sv' */
+void load(int r, SValue * sv)
+{
+    int v, t, ft, fc, fr, size = 0, element;
+    BOOL Unsigned = FALSE;
+    SValue v1;
+
+    fr = sv->r;
+    ft = sv->type.t;
+    fc = sv->c.i;
+
+    v = fr & VT_VALMASK;
+    if (fr & VT_LVAL) {
+	if (v == VT_LLOCAL) {
+	    v1.type.t = VT_INT;
+	    v1.r = VT_LOCAL | VT_LVAL;
+	    v1.c.i = fc;
+	    load(r, &v1);
+	    fr = r;
+	} else if ((ft & VT_BTYPE) == VT_LDOUBLE) {
+	    tcc_error("long double not supported");
+	} else if ((ft & VT_TYPE) == VT_BYTE) {
+	    size = 1;
+	} else if ((ft & VT_TYPE) == (VT_BYTE | VT_UNSIGNED)) {
+	    size = 1;
+	    Unsigned = TRUE;
+	} else if ((ft & VT_TYPE) == VT_SHORT) {
+	    size = 2;
+	} else if ((ft & VT_TYPE) == (VT_SHORT | VT_UNSIGNED)) {
+	    size = 2;
+	    Unsigned = TRUE;
+	} else if ((ft & VT_BTYPE) == VT_DOUBLE) {
+	    size = 8;
+	} else {
+	    size = 4;
+	}
+
+	// check if fc is a positive reference on the stack, 
+	// if it is tcc is referencing what it thinks is a parameter
+	// on the stack, so check if it is really in a register.
+
+
+	if (v == VT_LOCAL && fc > 0) {
+	    int stack_pos = 8;
+
+	    for (t = 0; t < NoCallArgsPassedOnStack; t++) {
+		if (fc == stack_pos)
+		    break;
+
+		stack_pos += TranslateStackToReg[t];
+	    }
+
+	    // param has been pushed on stack, get it like a local var
+
+	    fc = ParamLocOnStack[t] - 8;
+	}
+
+	if ((fr & VT_VALMASK) < VT_CONST)	// check for pure indirect
+	{
+	    if (size == 1) {
+		if (Unsigned)
+		    C67_LDBU_PTR(v, r);	// LDBU  *v,r
+		else
+		    C67_LDB_PTR(v, r);	// LDB  *v,r
+	    } else if (size == 2) {
+		if (Unsigned)
+		    C67_LDHU_PTR(v, r);	// LDHU  *v,r
+		else
+		    C67_LDH_PTR(v, r);	// LDH  *v,r
+	    } else if (size == 4) {
+		C67_LDW_PTR(v, r);	// LDW  *v,r
+	    } else if (size == 8) {
+		C67_LDDW_PTR(v, r);	// LDDW  *v,r
+	    }
+
+	    C67_NOP(4);		// NOP 4
+	    return;
+	} else if (fr & VT_SYM) {
+	    greloc(cur_text_section, sv->sym, ind, R_C60LO16);	// rem the inst need to be patched
+	    greloc(cur_text_section, sv->sym, ind + 4, R_C60HI16);
+
+
+	    C67_MVKL(C67_A0, fc);	//r=reg to load,  constant
+	    C67_MVKH(C67_A0, fc);	//r=reg to load,  constant
+
+
+	    if (size == 1) {
+		if (Unsigned)
+		    C67_LDBU_PTR(C67_A0, r);	// LDBU  *A0,r
+		else
+		    C67_LDB_PTR(C67_A0, r);	// LDB  *A0,r
+	    } else if (size == 2) {
+		if (Unsigned)
+		    C67_LDHU_PTR(C67_A0, r);	// LDHU  *A0,r
+		else
+		    C67_LDH_PTR(C67_A0, r);	// LDH  *A0,r
+	    } else if (size == 4) {
+		C67_LDW_PTR(C67_A0, r);	// LDW  *A0,r
+	    } else if (size == 8) {
+		C67_LDDW_PTR(C67_A0, r);	// LDDW  *A0,r
+	    }
+
+	    C67_NOP(4);		// NOP 4
+	    return;
+	} else {
+	    element = size;
+
+	    // divide offset in bytes to create element index
+	    C67_MVKL(C67_A0, (fc / element) + 8 / element);	//r=reg to load,  constant
+	    C67_MVKH(C67_A0, (fc / element) + 8 / element);	//r=reg to load,  constant
+
+	    if (size == 1) {
+		if (Unsigned)
+		    C67_LDBU_SP_A0(r);	// LDBU  r, SP[A0]
+		else
+		    C67_LDB_SP_A0(r);	// LDB  r, SP[A0]
+	    } else if (size == 2) {
+		if (Unsigned)
+		    C67_LDHU_SP_A0(r);	// LDHU  r, SP[A0]
+		else
+		    C67_LDH_SP_A0(r);	// LDH  r, SP[A0]
+	    } else if (size == 4) {
+		C67_LDW_SP_A0(r);	// LDW  r, SP[A0]
+	    } else if (size == 8) {
+		C67_LDDW_SP_A0(r);	// LDDW  r, SP[A0]
+	    }
+
+
+	    C67_NOP(4);		// NOP 4
+	    return;
+	}
+    } else {
+	if (v == VT_CONST) {
+	    if (fr & VT_SYM) {
+		greloc(cur_text_section, sv->sym, ind, R_C60LO16);	// rem the inst need to be patched
+		greloc(cur_text_section, sv->sym, ind + 4, R_C60HI16);
+	    }
+	    C67_MVKL(r, fc);	//r=reg to load, constant
+	    C67_MVKH(r, fc);	//r=reg to load, constant
+	} else if (v == VT_LOCAL) {
+	    C67_MVKL(r, fc + 8);	//r=reg to load, constant C67 stack points to next free
+	    C67_MVKH(r, fc + 8);	//r=reg to load, constant
+	    C67_ADD(C67_FP, r);	// MV v,r   v -> r
+	} else if (v == VT_CMP) {
+	    C67_MV(C67_compare_reg, r);	// MV v,r   v -> r
+	} else if (v == VT_JMP || v == VT_JMPI) {
+	    t = v & 1;
+	    C67_B_DISP(4);	//  Branch with constant displacement, skip over this branch, load, nop, load
+	    C67_MVKL(r, t);	//  r=reg to load, 0 or 1 (do this while branching)
+	    C67_NOP(4);		//  NOP 4
+	    gsym(fc);		//  modifies other branches to branch here
+	    C67_MVKL(r, t ^ 1);	//  r=reg to load, 0 or 1
+	} else if (v != r) {
+	    C67_MV(v, r);	// MV v,r   v -> r
+
+	    if ((ft & VT_BTYPE) == VT_DOUBLE)
+		C67_MV(v + 1, r + 1);	// MV v,r   v -> r
+	}
+    }
+}
+
+
+/* store register 'r' in lvalue 'v' */
+void store(int r, SValue * v)
+{
+    int fr, bt, ft, fc, size, t, element;
+
+    ft = v->type.t;
+    fc = v->c.i;
+    fr = v->r & VT_VALMASK;
+    bt = ft & VT_BTYPE;
+    /* XXX: incorrect if float reg to reg */
+
+    if (bt == VT_LDOUBLE) {
+	tcc_error("long double not supported");
+    } else {
+	if (bt == VT_SHORT)
+	    size = 2;
+	else if (bt == VT_BYTE)
+	    size = 1;
+	else if (bt == VT_DOUBLE)
+	    size = 8;
+	else
+	    size = 4;
+
+	if ((v->r & VT_VALMASK) == VT_CONST) {
+	    /* constant memory reference */
+
+	    if (v->r & VT_SYM) {
+		greloc(cur_text_section, v->sym, ind, R_C60LO16);	// rem the inst need to be patched
+		greloc(cur_text_section, v->sym, ind + 4, R_C60HI16);
+	    }
+	    C67_MVKL(C67_A0, fc);	//r=reg to load,  constant
+	    C67_MVKH(C67_A0, fc);	//r=reg to load,  constant
+
+	    if (size == 1)
+		C67_STB_PTR(r, C67_A0);	// STB  r, *A0
+	    else if (size == 2)
+		C67_STH_PTR(r, C67_A0);	// STH  r, *A0
+	    else if (size == 4 || size == 8)
+		C67_STW_PTR(r, C67_A0);	// STW  r, *A0
+
+	    if (size == 8)
+		C67_STW_PTR_PRE_INC(r + 1, C67_A0, 1);	// STW  r, *+A0[1]
+	} else if ((v->r & VT_VALMASK) == VT_LOCAL) {
+	    // check case of storing to passed argument that
+	    // tcc thinks is on the stack but for C67 is
+	    // passed as a reg.  However it may have been
+	    // saved to the stack, if that reg was required
+	    // for a call to a child function
+
+	    if (fc > 0)		// argument ??
+	    {
+		// walk through sizes and figure which param
+
+		int stack_pos = 8;
+
+		for (t = 0; t < NoCallArgsPassedOnStack; t++) {
+		    if (fc == stack_pos)
+			break;
+
+		    stack_pos += TranslateStackToReg[t];
+		}
+
+		// param has been pushed on stack, get it like a local var
+		fc = ParamLocOnStack[t] - 8;
+	    }
+
+	    if (size == 8)
+		element = 4;
+	    else
+		element = size;
+
+	    // divide offset in bytes to create word index
+	    C67_MVKL(C67_A0, (fc / element) + 8 / element);	//r=reg to load,  constant
+	    C67_MVKH(C67_A0, (fc / element) + 8 / element);	//r=reg to load,  constant
+
+
+
+	    if (size == 1)
+		C67_STB_SP_A0(r);	// STB  r, SP[A0]
+	    else if (size == 2)
+		C67_STH_SP_A0(r);	// STH  r, SP[A0]
+	    else if (size == 4 || size == 8)
+		C67_STW_SP_A0(r);	// STW  r, SP[A0]
+
+	    if (size == 8) {
+		C67_ADDK(1, C67_A0);	//  ADDK 1,A0
+		C67_STW_SP_A0(r + 1);	//  STW  r, SP[A0]
+	    }
+	} else {
+	    if (size == 1)
+		C67_STB_PTR(r, fr);	// STB  r, *fr
+	    else if (size == 2)
+		C67_STH_PTR(r, fr);	// STH  r, *fr
+	    else if (size == 4 || size == 8)
+		C67_STW_PTR(r, fr);	// STW  r, *fr
+
+	    if (size == 8) {
+		C67_STW_PTR_PRE_INC(r + 1, fr, 1);	// STW  r, *+fr[1]
+	    }
+	}
+    }
+}
+
+/* 'is_jmp' is '1' if it is a jump */
+static void gcall_or_jmp(int is_jmp)
+{
+    int r;
+    Sym *sym;
+
+    if ((vtop->r & (VT_VALMASK | VT_LVAL)) == VT_CONST) {
+	/* constant case */
+	if (vtop->r & VT_SYM) {
+	    /* relocation case */
+
+	    // get add into A0, then start the jump B3
+
+	    greloc(cur_text_section, vtop->sym, ind, R_C60LO16);	// rem the inst need to be patched
+	    greloc(cur_text_section, vtop->sym, ind + 4, R_C60HI16);
+
+	    C67_MVKL(C67_A0, 0);	//r=reg to load, constant
+	    C67_MVKH(C67_A0, 0);	//r=reg to load, constant
+	    C67_IREG_B_REG(0, C67_CREG_ZERO, C67_A0);	//  B.S2x  A0
+
+	    if (is_jmp) {
+		C67_NOP(5);	// simple jump, just put NOP
+	    } else {
+		// Call, must load return address into B3 during delay slots
+
+		sym = get_sym_ref(&char_pointer_type, cur_text_section, ind + 12, 0);	// symbol for return address
+		greloc(cur_text_section, sym, ind, R_C60LO16);	// rem the inst need to be patched
+		greloc(cur_text_section, sym, ind + 4, R_C60HI16);
+		C67_MVKL(C67_B3, 0);	//r=reg to load, constant
+		C67_MVKH(C67_B3, 0);	//r=reg to load, constant
+		C67_NOP(3);	// put remaining NOPs
+	    }
+	} else {
+	    /* put an empty PC32 relocation */
+	    ALWAYS_ASSERT(FALSE);
+	}
+    } else {
+	/* otherwise, indirect call */
+	r = gv(RC_INT);
+	C67_IREG_B_REG(0, C67_CREG_ZERO, r);	//  B.S2x  r
+
+	if (is_jmp) {
+	    C67_NOP(5);		// simple jump, just put NOP
+	} else {
+	    // Call, must load return address into B3 during delay slots
+
+	    sym = get_sym_ref(&char_pointer_type, cur_text_section, ind + 12, 0);	// symbol for return address
+	    greloc(cur_text_section, sym, ind, R_C60LO16);	// rem the inst need to be patched
+	    greloc(cur_text_section, sym, ind + 4, R_C60HI16);
+	    C67_MVKL(C67_B3, 0);	//r=reg to load, constant
+	    C67_MVKH(C67_B3, 0);	//r=reg to load, constant
+	    C67_NOP(3);		// put remaining NOPs
+	}
+    }
+}
+
+/* Return the number of registers needed to return the struct, or 0 if
+   returning via struct pointer. */
+ST_FUNC int gfunc_sret(CType *vt, int variadic, CType *ret, int *ret_align, int *regsize) {
+    *ret_align = 1; // Never have to re-align return values for x86-64
+    return 0;
+}
+
+/* generate function call with address in (vtop->t, vtop->c) and free function
+   context. Stack entry is popped */
+void gfunc_call(int nb_args)
+{
+    int i, r, size = 0;
+    int args_sizes[NoCallArgsPassedOnStack];
+
+    if (nb_args > NoCallArgsPassedOnStack) {
+	tcc_error("more than 10 function params not currently supported");
+	// handle more than 10, put some on the stack
+    }
+
+    for (i = 0; i < nb_args; i++) {
+	if ((vtop->type.t & VT_BTYPE) == VT_STRUCT) {
+	    ALWAYS_ASSERT(FALSE);
+	} else {
+	    /* simple type (currently always same size) */
+	    /* XXX: implicit cast ? */
+
+
+	    if ((vtop->type.t & VT_BTYPE) == VT_LLONG) {
+		tcc_error("long long not supported");
+	    } else if ((vtop->type.t & VT_BTYPE) == VT_LDOUBLE) {
+		tcc_error("long double not supported");
+	    } else if ((vtop->type.t & VT_BTYPE) == VT_DOUBLE) {
+		size = 8;
+	    } else {
+		size = 4;
+	    }
+
+	    // put the parameter into the corresponding reg (pair)
+
+	    r = gv(RC_C67_A4 << (2 * i));
+
+	    // must put on stack because with 1 pass compiler , no way to tell
+	    // if an up coming nested call might overwrite these regs
+
+	    C67_PUSH(r);
+
+	    if (size == 8) {
+		C67_STW_PTR_PRE_INC(r + 1, C67_SP, 3);	// STW  r, *+SP[3] (go back and put the other)
+	    }
+	    args_sizes[i] = size;
+	}
+	vtop--;
+    }
+    // POP all the params on the stack into registers for the
+    // immediate call (in reverse order)
+
+    for (i = nb_args - 1; i >= 0; i--) {
+
+	if (args_sizes[i] == 8)
+	    C67_POP_DW(TREG_C67_A4 + i * 2);
+	else
+	    C67_POP(TREG_C67_A4 + i * 2);
+    }
+    gcall_or_jmp(0);
+    vtop--;
+}
+
+
+// to be compatible with Code Composer for the C67
+// the first 10 parameters must be passed in registers
+// (pairs for 64 bits) starting wit; A4:A5, then B4:B5 and
+// ending with B12:B13.
+//
+// When a call is made, if the caller has its parameters
+// in regs A4-B13 these must be saved before/as the call 
+// parameters are loaded and restored upon return (or if/when needed).
+
+/* generate function prolog of type 't' */
+void gfunc_prolog(Sym *func_sym)
+{
+    CType *func_type = &func_sym->type;
+    int addr, align, size, func_call, i;
+    Sym *sym;
+    CType *type;
+
+    sym = func_type->ref;
+    func_call = sym->f.func_call;
+    addr = 8;
+    /* if the function returns a structure, then add an
+       implicit pointer parameter */
+    if ((func_vt.t & VT_BTYPE) == VT_STRUCT) {
+	func_vc = addr;
+	addr += 4;
+    }
+
+    NoOfCurFuncArgs = 0;
+
+    /* define parameters */
+    while ((sym = sym->next) != NULL) {
+	type = &sym->type;
+	sym_push(sym->v & ~SYM_FIELD, type, VT_LOCAL | VT_LVAL, addr);
+	size = type_size(type, &align);
+	size = (size + 3) & ~3;
+
+	// keep track of size of arguments so
+	// we can translate where tcc thinks they
+	// are on the stack into the appropriate reg
+
+	TranslateStackToReg[NoOfCurFuncArgs] = size;
+	NoOfCurFuncArgs++;
+
+#ifdef FUNC_STRUCT_PARAM_AS_PTR
+	/* structs are passed as pointer */
+	if ((type->t & VT_BTYPE) == VT_STRUCT) {
+	    size = 4;
+	}
+#endif
+	addr += size;
+    }
+    func_ret_sub = 0;
+    /* pascal type call ? */
+    if (func_call == FUNC_STDCALL)
+	func_ret_sub = addr - 8;
+
+    C67_MV(C67_FP, C67_A0);	//  move FP -> A0
+    C67_MV(C67_SP, C67_FP);	//  move SP -> FP
+
+    // place all the args passed in regs onto the stack
+
+    loc = 0;
+    for (i = 0; i < NoOfCurFuncArgs; i++) {
+
+	ParamLocOnStack[i] = loc;	// remember where the param is
+	loc += -8;
+
+	C67_PUSH(TREG_C67_A4 + i * 2);
+
+	if (TranslateStackToReg[i] == 8) {
+	    C67_STW_PTR_PRE_INC(TREG_C67_A4 + i * 2 + 1, C67_SP, 3);	// STW  r, *+SP[1] (go back and put the other)
+	}
+    }
+
+    TotalBytesPushedOnStack = -loc;
+
+    func_sub_sp_offset = ind;	// remember where we put the stack instruction 
+    C67_ADDK(0, C67_SP);	//  ADDK.L2 loc,SP  (just put zero temporarily)
+
+    C67_PUSH(C67_A0);
+    C67_PUSH(C67_B3);
+}
+
+/* generate function epilog */
+void gfunc_epilog(void)
+{
+    {
+	int local = (-loc + 7) & -8;	// stack must stay aligned to 8 bytes for LDDW instr
+	C67_POP(C67_B3);
+	C67_NOP(4);		// NOP wait for load
+	C67_IREG_B_REG(0, C67_CREG_ZERO, C67_B3);	//  B.S2  B3
+	C67_POP(C67_FP);
+	C67_ADDK(local, C67_SP);	//  ADDK.L2 loc,SP  
+	C67_Adjust_ADDK((int *) (cur_text_section->data +
+				 func_sub_sp_offset),
+			-local + TotalBytesPushedOnStack);
+	C67_NOP(3);		// NOP 
+    }
+}
+
+ST_FUNC void gen_fill_nops(int bytes)
+{
+    if ((bytes & 3))
+      tcc_error("alignment of code section not multiple of 4");
+    while (bytes > 0) {
+	C67_NOP(4);
+	bytes -= 4;
+    }
+}
+
+/* generate a jump to a label */
+int gjmp(int t)
+{
+    int ind1 = ind;
+    if (nocode_wanted)
+        return t;
+
+    C67_MVKL(C67_A0, t);	//r=reg to load,  constant
+    C67_MVKH(C67_A0, t);	//r=reg to load,  constant
+    C67_IREG_B_REG(0, C67_CREG_ZERO, C67_A0);	// [!R] B.S2x  A0
+    C67_NOP(5);
+    return ind1;
+}
+
+/* generate a jump to a fixed address */
+void gjmp_addr(int a)
+{
+    Sym *sym;
+    // I guess this routine is used for relative short
+    // local jumps, for now just handle it as the general
+    // case
+
+    // define a label that will be relocated
+
+    sym = get_sym_ref(&char_pointer_type, cur_text_section, a, 0);
+    greloc(cur_text_section, sym, ind, R_C60LO16);
+    greloc(cur_text_section, sym, ind + 4, R_C60HI16);
+
+    gjmp(0);			// place a zero there later the symbol will be added to it
+}
+
+/* generate a test. set 'inv' to invert test. Stack entry is popped */
+ST_FUNC int gjmp_cond(int op, int t)
+{
+        int ind1;
+        int inv = op & 1;
+        if (nocode_wanted)
+            return t;
+
+	/* fast case : can jump directly since flags are set */
+	// C67 uses B2 sort of as flags register
+	ind1 = ind;
+	C67_MVKL(C67_A0, t);	//r=reg to load, constant
+	C67_MVKH(C67_A0, t);	//r=reg to load, constant
+
+	if (C67_compare_reg != TREG_EAX &&	// check if not already in a conditional test reg
+	    C67_compare_reg != TREG_EDX &&
+	    C67_compare_reg != TREG_ST0 && C67_compare_reg != C67_B2) {
+	    C67_MV(C67_compare_reg, C67_B2);
+	    C67_compare_reg = C67_B2;
+	}
+
+	C67_IREG_B_REG(C67_invert_test ^ inv, C67_compare_reg, C67_A0);	// [!R] B.S2x  A0
+	C67_NOP(5);
+	t = ind1;		//return where we need to patch
+
+        return t;
+}
+
+ST_FUNC int gjmp_append(int n0, int t)
+{
+    if (n0) {
+            int n = n0, *p;
+	    /* insert vtop->c jump list in t */
+
+	    // I guess the idea is to traverse to the
+	    // null at the end of the list and store t
+	    // there
+	    while (n != 0) {
+		p = (int *) (cur_text_section->data + n);
+
+		// extract 32 bit address from MVKH/MVKL
+		n = ((*p >> 7) & 0xffff);
+		n |= ((*(p + 1) >> 7) & 0xffff) << 16;
+	    }
+	    *p |= (t & 0xffff) << 7;
+	    *(p + 1) |= ((t >> 16) & 0xffff) << 7;
+	    t = n0;
+    }
+    return t;
+}
+
+/* generate an integer binary operation */
+void gen_opi(int op)
+{
+    int r, fr, opc, t;
+
+    switch (op) {
+    case '+':
+    case TOK_ADDC1:		/* add with carry generation */
+	opc = 0;
+      gen_op8:
+
+
+// C67 can't do const compares, must load into a reg
+// so just go to gv2 directly - tktk
+
+
+
+	if (op >= TOK_ULT && op <= TOK_GT)
+	    gv2(RC_INT_BSIDE, RC_INT);	// make sure r (src1) is on the B Side of CPU
+	else
+	    gv2(RC_INT, RC_INT);
+
+	r = vtop[-1].r;
+	fr = vtop[0].r;
+
+	C67_compare_reg = C67_B2;
+
+
+	if (op == TOK_LT) {
+	    C67_CMPLT(r, fr, C67_B2);
+	    C67_invert_test = FALSE;
+	} else if (op == TOK_GE) {
+	    C67_CMPLT(r, fr, C67_B2);
+	    C67_invert_test = TRUE;
+	} else if (op == TOK_GT) {
+	    C67_CMPGT(r, fr, C67_B2);
+	    C67_invert_test = FALSE;
+	} else if (op == TOK_LE) {
+	    C67_CMPGT(r, fr, C67_B2);
+	    C67_invert_test = TRUE;
+	} else if (op == TOK_EQ) {
+	    C67_CMPEQ(r, fr, C67_B2);
+	    C67_invert_test = FALSE;
+	} else if (op == TOK_NE) {
+	    C67_CMPEQ(r, fr, C67_B2);
+	    C67_invert_test = TRUE;
+	} else if (op == TOK_ULT) {
+	    C67_CMPLTU(r, fr, C67_B2);
+	    C67_invert_test = FALSE;
+	} else if (op == TOK_UGE) {
+	    C67_CMPLTU(r, fr, C67_B2);
+	    C67_invert_test = TRUE;
+	} else if (op == TOK_UGT) {
+	    C67_CMPGTU(r, fr, C67_B2);
+	    C67_invert_test = FALSE;
+	} else if (op == TOK_ULE) {
+	    C67_CMPGTU(r, fr, C67_B2);
+	    C67_invert_test = TRUE;
+	} else if (op == '+')
+	    C67_ADD(fr, r);	// ADD  r,fr,r
+	else if (op == '-')
+	    C67_SUB(fr, r);	// SUB  r,fr,r
+	else if (op == '&')
+	    C67_AND(fr, r);	// AND  r,fr,r
+	else if (op == '|')
+	    C67_OR(fr, r);	// OR  r,fr,r
+	else if (op == '^')
+	    C67_XOR(fr, r);	// XOR  r,fr,r
+	else
+	    ALWAYS_ASSERT(FALSE);
+
+	vtop--;
+	if (op >= TOK_ULT && op <= TOK_GT)
+            vset_VT_CMP(0x80);
+	break;
+    case '-':
+    case TOK_SUBC1:		/* sub with carry generation */
+	opc = 5;
+	goto gen_op8;
+    case TOK_ADDC2:		/* add with carry use */
+	opc = 2;
+	goto gen_op8;
+    case TOK_SUBC2:		/* sub with carry use */
+	opc = 3;
+	goto gen_op8;
+    case '&':
+	opc = 4;
+	goto gen_op8;
+    case '^':
+	opc = 6;
+	goto gen_op8;
+    case '|':
+	opc = 1;
+	goto gen_op8;
+    case '*':
+    case TOK_UMULL:
+	gv2(RC_INT, RC_INT);
+	r = vtop[-1].r;
+	fr = vtop[0].r;
+	vtop--;
+	C67_MPYI(fr, r);	// 32 bit multiply  fr,r,fr
+	C67_NOP(8);		// NOP 8 for worst case
+	break;
+    case TOK_SHL:
+	gv2(RC_INT_BSIDE, RC_INT_BSIDE);	// shift amount must be on same side as dst
+	r = vtop[-1].r;
+	fr = vtop[0].r;
+	vtop--;
+	C67_SHL(fr, r);		// arithmetic/logical shift
+	break;
+
+    case TOK_SHR:
+	gv2(RC_INT_BSIDE, RC_INT_BSIDE);	// shift amount must be on same side as dst
+	r = vtop[-1].r;
+	fr = vtop[0].r;
+	vtop--;
+	C67_SHRU(fr, r);	// logical shift
+	break;
+
+    case TOK_SAR:
+	gv2(RC_INT_BSIDE, RC_INT_BSIDE);	// shift amount must be on same side as dst
+	r = vtop[-1].r;
+	fr = vtop[0].r;
+	vtop--;
+	C67_SHR(fr, r);		// arithmetic shift
+	break;
+
+    case '/':
+	t = TOK__divi;
+      call_func:
+	vswap();
+	/* call generic idiv function */
+	vpush_helper_func(t);
+	vrott(3);
+	gfunc_call(2);
+	vpushi(0);
+	vtop->r = REG_IRET;
+	vtop->r2 = VT_CONST;
+	break;
+    case TOK_UDIV:
+    case TOK_PDIV:
+	t = TOK__divu;
+	goto call_func;
+    case '%':
+	t = TOK__remi;
+	goto call_func;
+    case TOK_UMOD:
+	t = TOK__remu;
+	goto call_func;
+
+    default:
+	opc = 7;
+	goto gen_op8;
+    }
+}
+
+/* generate a floating point operation 'v = t1 op t2' instruction. The
+   two operands are guaranteed to have the same floating point type */
+/* XXX: need to use ST1 too */
+void gen_opf(int op)
+{
+    int ft, fc, fr, r;
+
+    if (op >= TOK_ULT && op <= TOK_GT)
+	gv2(RC_EDX, RC_EAX);	// make sure src2 is on b side
+    else
+	gv2(RC_FLOAT, RC_FLOAT);	// make sure src2 is on b side
+
+    ft = vtop->type.t;
+    fc = vtop->c.i;
+    r = vtop->r;
+    fr = vtop[-1].r;
+
+
+    if ((ft & VT_BTYPE) == VT_LDOUBLE)
+	tcc_error("long doubles not supported");
+
+    if (op >= TOK_ULT && op <= TOK_GT) {
+
+	r = vtop[-1].r;
+	fr = vtop[0].r;
+
+	C67_compare_reg = C67_B2;
+
+	if (op == TOK_LT) {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE)
+		C67_CMPLTDP(r, fr, C67_B2);
+	    else
+		C67_CMPLTSP(r, fr, C67_B2);
+
+	    C67_invert_test = FALSE;
+	} else if (op == TOK_GE) {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE)
+		C67_CMPLTDP(r, fr, C67_B2);
+	    else
+		C67_CMPLTSP(r, fr, C67_B2);
+
+	    C67_invert_test = TRUE;
+	} else if (op == TOK_GT) {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE)
+		C67_CMPGTDP(r, fr, C67_B2);
+	    else
+		C67_CMPGTSP(r, fr, C67_B2);
+
+	    C67_invert_test = FALSE;
+	} else if (op == TOK_LE) {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE)
+		C67_CMPGTDP(r, fr, C67_B2);
+	    else
+		C67_CMPGTSP(r, fr, C67_B2);
+
+	    C67_invert_test = TRUE;
+	} else if (op == TOK_EQ) {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE)
+		C67_CMPEQDP(r, fr, C67_B2);
+	    else
+		C67_CMPEQSP(r, fr, C67_B2);
+
+	    C67_invert_test = FALSE;
+	} else if (op == TOK_NE) {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE)
+		C67_CMPEQDP(r, fr, C67_B2);
+	    else
+		C67_CMPEQSP(r, fr, C67_B2);
+
+	    C67_invert_test = TRUE;
+	} else {
+	    ALWAYS_ASSERT(FALSE);
+	}
+        vset_VT_CMP(0x80);
+    } else {
+	if (op == '+') {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE) {
+		C67_ADDDP(r, fr);	// ADD  fr,r,fr
+		C67_NOP(6);
+	    } else {
+		C67_ADDSP(r, fr);	// ADD  fr,r,fr
+		C67_NOP(3);
+	    }
+	    vtop--;
+	} else if (op == '-') {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE) {
+		C67_SUBDP(r, fr);	// SUB  fr,r,fr
+		C67_NOP(6);
+	    } else {
+		C67_SUBSP(r, fr);	// SUB  fr,r,fr
+		C67_NOP(3);
+	    }
+	    vtop--;
+	} else if (op == '*') {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE) {
+		C67_MPYDP(r, fr);	// MPY  fr,r,fr
+		C67_NOP(9);
+	    } else {
+		C67_MPYSP(r, fr);	// MPY  fr,r,fr
+		C67_NOP(3);
+	    }
+	    vtop--;
+	} else if (op == '/') {
+	    if ((ft & VT_BTYPE) == VT_DOUBLE) {
+		// must call intrinsic DP floating point divide
+		vswap();
+		/* call generic idiv function */
+		vpush_helper_func(TOK__divd);
+		vrott(3);
+		gfunc_call(2);
+		vpushi(0);
+		vtop->r = REG_FRET;
+		vtop->r2 = REG_IRE2;
+
+	    } else {
+		// must call intrinsic SP floating point divide
+		vswap();
+		/* call generic idiv function */
+		vpush_helper_func(TOK__divf);
+		vrott(3);
+		gfunc_call(2);
+		vpushi(0);
+		vtop->r = REG_FRET;
+		vtop->r2 = VT_CONST;
+	    }
+	} else
+	    ALWAYS_ASSERT(FALSE);
+
+
+    }
+}
+
+
+/* convert integers to fp 't' type. Must handle 'int', 'unsigned int'
+   and 'long long' cases. */
+void gen_cvt_itof(int t)
+{
+    int r;
+
+    gv(RC_INT);
+    r = vtop->r;
+
+    if ((t & VT_BTYPE) == VT_DOUBLE) {
+	if (t & VT_UNSIGNED)
+	    C67_INTDPU(r, r);
+	else
+	    C67_INTDP(r, r);
+
+	C67_NOP(4);
+	vtop->type.t = VT_DOUBLE;
+    } else {
+	if (t & VT_UNSIGNED)
+	    C67_INTSPU(r, r);
+	else
+	    C67_INTSP(r, r);
+	C67_NOP(3);
+	vtop->type.t = VT_FLOAT;
+    }
+
+}
+
+/* convert fp to int 't' type */
+/* XXX: handle long long case */
+void gen_cvt_ftoi(int t)
+{
+    int r;
+
+    gv(RC_FLOAT);
+    r = vtop->r;
+
+    if (t != VT_INT)
+	tcc_error("long long not supported");
+    else {
+	if ((vtop->type.t & VT_BTYPE) == VT_DOUBLE) {
+	    C67_DPTRUNC(r, r);
+	    C67_NOP(3);
+	} else {
+	    C67_SPTRUNC(r, r);
+	    C67_NOP(3);
+	}
+
+	vtop->type.t = VT_INT;
+
+    }
+}
+
+/* convert from one floating point type to another */
+void gen_cvt_ftof(int t)
+{
+    int r, r2;
+
+    if ((vtop->type.t & VT_BTYPE) == VT_DOUBLE &&
+	(t & VT_BTYPE) == VT_FLOAT) {
+	// convert double to float
+
+	gv(RC_FLOAT);		// get it in a register pair
+
+	r = vtop->r;
+
+	C67_DPSP(r, r);		// convert it to SP same register
+	C67_NOP(3);
+
+	vtop->type.t = VT_FLOAT;
+	vtop->r2 = VT_CONST;	// set this as unused
+    } else if ((vtop->type.t & VT_BTYPE) == VT_FLOAT &&
+	       (t & VT_BTYPE) == VT_DOUBLE) {
+	// convert float to double
+
+	gv(RC_FLOAT);		// get it in a register
+
+	r = vtop->r;
+
+	if (r == TREG_EAX) {	// make sure the paired reg is avail
+	    r2 = get_reg(RC_ECX);
+	} else if (r == TREG_EDX) {
+	    r2 = get_reg(RC_ST0);
+	} else {
+	    ALWAYS_ASSERT(FALSE);
+            r2 = 0; /* avoid warning */
+        }
+
+	C67_SPDP(r, r);		// convert it to DP same register
+	C67_NOP(1);
+
+	vtop->type.t = VT_DOUBLE;
+	vtop->r2 = r2;		// set this as unused
+    } else {
+	ALWAYS_ASSERT(FALSE);
+    }
+}
+
+/* computed goto support */
+void ggoto(void)
+{
+    gcall_or_jmp(1);
+    vtop--;
+}
+
+/* Save the stack pointer onto the stack and return the location of its address */
+ST_FUNC void gen_vla_sp_save(int addr) {
+    tcc_error("variable length arrays unsupported for this target");
+}
+
+/* Restore the SP from a location on the stack */
+ST_FUNC void gen_vla_sp_restore(int addr) {
+    tcc_error("variable length arrays unsupported for this target");
+}
+
+/* Subtract from the stack pointer, and push the resulting value onto the stack */
+ST_FUNC void gen_vla_alloc(CType *type, int align) {
+    tcc_error("variable length arrays unsupported for this target");
+}
+
+/* end of C67 code generator */
+/*************************************************************/
+#endif
+/*************************************************************/
