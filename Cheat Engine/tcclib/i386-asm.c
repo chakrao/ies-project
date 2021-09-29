@@ -265,4 +265,183 @@ static inline int get_reg_shift(TCCState *s1)
         shift = 1;
         break;
     case 4:
-        
+        shift = 2;
+        break;
+    case 8:
+        shift = 3;
+        break;
+    default:
+        expect("1, 2, 4 or 8 constant");
+        shift = 0;
+        break;
+    }
+    return shift;
+}
+
+#ifdef TCC_TARGET_X86_64
+static int asm_parse_numeric_reg(int t, unsigned int *type)
+{
+    int reg = -1;
+    if (t >= TOK_IDENT && t < tok_ident) {
+	const char *s = table_ident[t - TOK_IDENT]->str;
+	char c;
+	*type = OP_REG64;
+	if (*s == 'c') {
+	    s++;
+	    *type = OP_CR;
+	}
+	if (*s++ != 'r')
+	  return -1;
+	/* Don't allow leading '0'.  */
+	if ((c = *s++) >= '1' && c <= '9')
+	  reg = c - '0';
+	else
+	  return -1;
+	if ((c = *s) >= '0' && c <= '5')
+	  s++, reg = reg * 10 + c - '0';
+	if (reg > 15)
+	  return -1;
+	if ((c = *s) == 0)
+	  ;
+	else if (*type != OP_REG64)
+	  return -1;
+	else if (c == 'b' && !s[1])
+	  *type = OP_REG8;
+	else if (c == 'w' && !s[1])
+	  *type = OP_REG16;
+	else if (c == 'd' && !s[1])
+	  *type = OP_REG32;
+	else
+	  return -1;
+    }
+    return reg;
+}
+#endif
+
+static int asm_parse_reg(unsigned int *type)
+{
+    int reg = 0;
+    *type = 0;
+    if (tok != '%')
+        goto error_32;
+    next();
+    if (tok >= TOK_ASM_eax && tok <= TOK_ASM_edi) {
+        reg = tok - TOK_ASM_eax;
+	*type = OP_REG32;
+#ifdef TCC_TARGET_X86_64
+    } else if (tok >= TOK_ASM_rax && tok <= TOK_ASM_rdi) {
+        reg = tok - TOK_ASM_rax;
+	*type = OP_REG64;
+    } else if (tok == TOK_ASM_rip) {
+        reg = -2; /* Probably should use different escape code. */
+	*type = OP_REG64;
+    } else if ((reg = asm_parse_numeric_reg(tok, type)) >= 0
+	       && (*type == OP_REG32 || *type == OP_REG64)) {
+	;
+#endif
+    } else {
+    error_32:
+        expect("register");
+    }
+    next();
+    return reg;
+}
+
+static void parse_operand(TCCState *s1, Operand *op)
+{
+    ExprValue e;
+    int reg, indir;
+    const char *p;
+
+    indir = 0;
+    if (tok == '*') {
+        next();
+        indir = OP_INDIR;
+    }
+
+    if (tok == '%') {
+        next();
+        if (tok >= TOK_ASM_al && tok <= TOK_ASM_db7) {
+            reg = tok - TOK_ASM_al;
+            op->type = 1 << (reg >> 3); /* WARNING: do not change constant order */
+            op->reg = reg & 7;
+            if ((op->type & OP_REG) && op->reg == TREG_XAX)
+                op->type |= OP_EAX;
+            else if (op->type == OP_REG8 && op->reg == TREG_XCX)
+                op->type |= OP_CL;
+            else if (op->type == OP_REG16 && op->reg == TREG_XDX)
+                op->type |= OP_DX;
+        } else if (tok >= TOK_ASM_dr0 && tok <= TOK_ASM_dr7) {
+            op->type = OP_DB;
+            op->reg = tok - TOK_ASM_dr0;
+        } else if (tok >= TOK_ASM_es && tok <= TOK_ASM_gs) {
+            op->type = OP_SEG;
+            op->reg = tok - TOK_ASM_es;
+        } else if (tok == TOK_ASM_st) {
+            op->type = OP_ST;
+            op->reg = 0;
+            next();
+            if (tok == '(') {
+                next();
+                if (tok != TOK_PPNUM)
+                    goto reg_error;
+                p = tokc.str.data;
+                reg = p[0] - '0';
+                if ((unsigned)reg >= 8 || p[1] != '\0')
+                    goto reg_error;
+                op->reg = reg;
+                next();
+                skip(')');
+            }
+            if (op->reg == 0)
+                op->type |= OP_ST0;
+            goto no_skip;
+#ifdef TCC_TARGET_X86_64
+	} else if (tok >= TOK_ASM_spl && tok <= TOK_ASM_dil) {
+	    op->type = OP_REG8 | OP_REG8_LOW;
+	    op->reg = 4 + tok - TOK_ASM_spl;
+        } else if ((op->reg = asm_parse_numeric_reg(tok, &op->type)) >= 0) {
+	    ;
+#endif
+        } else {
+        reg_error:
+            tcc_error("unknown register %%%s", get_tok_str(tok, &tokc));
+        }
+        next();
+    no_skip: ;
+    } else if (tok == '$') {
+        /* constant value */
+        next();
+        asm_expr(s1, &e);
+        op->type = OP_IM32;
+        op->e = e;
+        if (!op->e.sym) {
+            if (op->e.v == (uint8_t)op->e.v)
+                op->type |= OP_IM8;
+            if (op->e.v == (int8_t)op->e.v)
+                op->type |= OP_IM8S;
+            if (op->e.v == (uint16_t)op->e.v)
+                op->type |= OP_IM16;
+#ifdef TCC_TARGET_X86_64
+            if (op->e.v != (int32_t)op->e.v && op->e.v != (uint32_t)op->e.v)
+                op->type = OP_IM64;
+#endif
+        }
+    } else {
+        /* address(reg,reg2,shift) with all variants */
+        op->type = OP_EA;
+        op->reg = -1;
+        op->reg2 = -1;
+        op->shift = 0;
+        if (tok != '(') {
+            asm_expr(s1, &e);
+            op->e = e;
+        } else {
+            next();
+            if (tok == '%') {
+                unget_tok('(');
+                op->e.v = 0;
+                op->e.sym = NULL;
+            } else {
+                /* bracketed offset expression */
+         
