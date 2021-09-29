@@ -612,4 +612,152 @@ static void asm_rex(int width64, Operand *ops, int nb_ops, int *op_type,
 	      rex |= 0x40;
 	  else if (ops[regi].type & OP_REG8 && ops[regi].reg >= 4)
 	      /* An 8 bit reg >= 4 without REG8 is ah/ch/dh/bh */
-	      saw_high_8bit =
+	      saw_high_8bit = ops[regi].reg;
+      }
+      if (ops[rmi].type & (OP_REG | OP_MMX | OP_SSE | OP_CR | OP_EA)) {
+	  if (ops[rmi].reg >= 8) {
+	      rex |= REX_B;
+	      ops[rmi].reg -= 8;
+	  } else if (ops[rmi].type & OP_REG8_LOW)
+	      rex |= 0x40;
+	  else if (ops[rmi].type & OP_REG8 && ops[rmi].reg >= 4)
+	      /* An 8 bit reg >= 4 without REG8 is ah/ch/dh/bh */
+	      saw_high_8bit = ops[rmi].reg;
+      }
+      if (ops[rmi].type & OP_EA && ops[rmi].reg2 >= 8) {
+	  rex |= REX_X;
+	  ops[rmi].reg2 -= 8;
+      }
+  }
+  if (rex) {
+      if (saw_high_8bit)
+	  tcc_error("can't encode register %%%ch when REX prefix is required",
+		    "acdb"[saw_high_8bit-4]);
+      g(rex);
+  }
+}
+#endif
+
+static void maybe_print_stats (void)
+{
+  static int already = 1;
+  if (!already)
+    /* print stats about opcodes */
+    {
+        const struct ASMInstr *pa;
+        int freq[4];
+        int op_vals[500];
+        int nb_op_vals, i, j;
+
+	already = 1;
+        nb_op_vals = 0;
+        memset(freq, 0, sizeof(freq));
+        for(pa = asm_instrs; pa->sym != 0; pa++) {
+            freq[pa->nb_ops]++;
+            //for(i=0;i<pa->nb_ops;i++) {
+                for(j=0;j<nb_op_vals;j++) {
+                    //if (pa->op_type[i] == op_vals[j])
+                    if (pa->instr_type == op_vals[j])
+                        goto found;
+                }
+                //op_vals[nb_op_vals++] = pa->op_type[i];
+                op_vals[nb_op_vals++] = pa->instr_type;
+            found: ;
+            //}
+        }
+        for(i=0;i<nb_op_vals;i++) {
+            int v = op_vals[i];
+            //if ((v & (v - 1)) != 0)
+                printf("%3d: %08x\n", i, v);
+        }
+        printf("size=%d nb=%d f0=%d f1=%d f2=%d f3=%d\n",
+               (int)sizeof(asm_instrs),
+	       (int)sizeof(asm_instrs) / (int)sizeof(ASMInstr),
+               freq[0], freq[1], freq[2], freq[3]);
+    }
+}
+
+ST_FUNC void asm_opcode(TCCState *s1, int opcode)
+{
+    const ASMInstr *pa;
+    int i, modrm_index, modreg_index, reg, v, op1, seg_prefix, pc;
+    int nb_ops, s;
+    Operand ops[MAX_OPERANDS], *pop;
+    int op_type[3]; /* decoded op type */
+    int alltypes;   /* OR of all operand types */
+    int autosize;
+    int p66;
+#ifdef TCC_TARGET_X86_64
+    int rex64;
+#endif
+
+    maybe_print_stats();
+    /* force synthetic ';' after prefix instruction, so we can handle */
+    /* one-line things like "rep stosb" instead of only "rep\nstosb" */
+    if (opcode >= TOK_ASM_wait && opcode <= TOK_ASM_repnz)
+        unget_tok(';');
+
+    /* get operands */
+    pop = ops;
+    nb_ops = 0;
+    seg_prefix = 0;
+    alltypes = 0;
+    for(;;) {
+        if (tok == ';' || tok == TOK_LINEFEED)
+            break;
+        if (nb_ops >= MAX_OPERANDS) {
+            tcc_error("incorrect number of operands");
+        }
+        parse_operand(s1, pop);
+        if (tok == ':') {
+           if (pop->type != OP_SEG || seg_prefix)
+               tcc_error("incorrect prefix");
+           seg_prefix = segment_prefixes[pop->reg];
+           next();
+           parse_operand(s1, pop);
+           if (!(pop->type & OP_EA)) {
+               tcc_error("segment prefix must be followed by memory reference");
+           }
+        }
+        pop++;
+        nb_ops++;
+        if (tok != ',')
+            break;
+        next();
+    }
+
+    s = 0; /* avoid warning */
+
+again:
+    /* optimize matching by using a lookup table (no hashing is needed
+       !) */
+    for(pa = asm_instrs; pa->sym != 0; pa++) {
+	int it = pa->instr_type & OPCT_MASK;
+        s = 0;
+        if (it == OPC_FARITH) {
+            v = opcode - pa->sym;
+            if (!((unsigned)v < 8 * 6 && (v % 6) == 0))
+                continue;
+        } else if (it == OPC_ARITH) {
+            if (!(opcode >= pa->sym && opcode < pa->sym + 8*NBWLX))
+                continue;
+            s = (opcode - pa->sym) % NBWLX;
+	    if ((pa->instr_type & OPC_BWLX) == OPC_WLX)
+	      {
+		/* We need to reject the xxxb opcodes that we accepted above.
+		   Note that pa->sym for WLX opcodes is the 'w' token,
+		   to get the 'b' token subtract one.  */
+		if (((opcode - pa->sym + 1) % NBWLX) == 0)
+		    continue;
+	        s++;
+	      }
+        } else if (it == OPC_SHIFT) {
+            if (!(opcode >= pa->sym && opcode < pa->sym + 7*NBWLX))
+                continue;
+            s = (opcode - pa->sym) % NBWLX;
+        } else if (it == OPC_TEST) {
+            if (!(opcode >= pa->sym && opcode < pa->sym + NB_TEST_OPCODES))
+                continue;
+	    /* cmovxx is a test opcode but accepts multiple sizes.
+	       The suffixes aren't encoded in the table, instead we
+	       simply force size autodetection always and deal
