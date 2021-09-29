@@ -444,4 +444,172 @@ static void parse_operand(TCCState *s1, Operand *op)
                 op->e.sym = NULL;
             } else {
                 /* bracketed offset expression */
-         
+                asm_expr(s1, &e);
+                if (tok != ')')
+                    expect(")");
+                next();
+                op->e.v = e.v;
+                op->e.sym = e.sym;
+            }
+	    op->e.pcrel = 0;
+        }
+        if (tok == '(') {
+	    unsigned int type = 0;
+            next();
+            if (tok != ',') {
+                op->reg = asm_parse_reg(&type);
+            }
+            if (tok == ',') {
+                next();
+                if (tok != ',') {
+                    op->reg2 = asm_parse_reg(&type);
+                }
+                if (tok == ',') {
+                    next();
+                    op->shift = get_reg_shift(s1);
+                }
+            }
+	    if (type & OP_REG32)
+	        op->type |= OP_EA32;
+            skip(')');
+        }
+        if (op->reg == -1 && op->reg2 == -1)
+            op->type |= OP_ADDR;
+    }
+    op->type |= indir;
+}
+
+/* XXX: unify with C code output ? */
+ST_FUNC void gen_expr32(ExprValue *pe)
+{
+    if (pe->pcrel)
+        /* If PC-relative, always set VT_SYM, even without symbol,
+	   so as to force a relocation to be emitted.  */
+	gen_addrpc32(VT_SYM, pe->sym, pe->v);
+    else
+	gen_addr32(pe->sym ? VT_SYM : 0, pe->sym, pe->v);
+}
+
+#ifdef TCC_TARGET_X86_64
+ST_FUNC void gen_expr64(ExprValue *pe)
+{
+    gen_addr64(pe->sym ? VT_SYM : 0, pe->sym, pe->v);
+}
+#endif
+
+/* XXX: unify with C code output ? */
+static void gen_disp32(ExprValue *pe)
+{
+    Sym *sym = pe->sym;
+    ElfSym *esym = elfsym(sym);
+    if (esym && esym->st_shndx == cur_text_section->sh_num) {
+        /* same section: we can output an absolute value. Note
+           that the TCC compiler behaves differently here because
+           it always outputs a relocation to ease (future) code
+           elimination in the linker */
+        gen_le32(pe->v + esym->st_value - ind - 4);
+    } else {
+        if (sym && sym->type.t == VT_VOID) {
+            sym->type.t = VT_FUNC;
+            sym->type.ref = NULL;
+        }
+        gen_addrpc32(VT_SYM, sym, pe->v);
+    }
+}
+
+/* generate the modrm operand */
+static inline int asm_modrm(int reg, Operand *op)
+{
+    int mod, reg1, reg2, sib_reg1;
+
+    if (op->type & (OP_REG | OP_MMX | OP_SSE)) {
+        g(0xc0 + (reg << 3) + op->reg);
+    } else if (op->reg == -1 && op->reg2 == -1) {
+        /* displacement only */
+#ifdef TCC_TARGET_X86_64
+	g(0x04 + (reg << 3));
+	g(0x25);
+#else
+	g(0x05 + (reg << 3));
+#endif
+	gen_expr32(&op->e);
+#ifdef TCC_TARGET_X86_64
+    } else if (op->reg == -2) {
+        ExprValue *pe = &op->e;
+        g(0x05 + (reg << 3));
+        gen_addrpc32(pe->sym ? VT_SYM : 0, pe->sym, pe->v);
+        return ind;
+#endif
+    } else {
+        sib_reg1 = op->reg;
+        /* fist compute displacement encoding */
+        if (sib_reg1 == -1) {
+            sib_reg1 = 5;
+            mod = 0x00;
+        } else if (op->e.v == 0 && !op->e.sym && op->reg != 5) {
+            mod = 0x00;
+        } else if (op->e.v == (int8_t)op->e.v && !op->e.sym) {
+            mod = 0x40;
+        } else {
+            mod = 0x80;
+        }
+        /* compute if sib byte needed */
+        reg1 = op->reg;
+        if (op->reg2 != -1)
+            reg1 = 4;
+        g(mod + (reg << 3) + reg1);
+        if (reg1 == 4) {
+            /* add sib byte */
+            reg2 = op->reg2;
+            if (reg2 == -1)
+                reg2 = 4; /* indicate no index */
+            g((op->shift << 6) + (reg2 << 3) + sib_reg1);
+        }
+        /* add offset */
+        if (mod == 0x40) {
+            g(op->e.v);
+        } else if (mod == 0x80 || op->reg == -1) {
+	    gen_expr32(&op->e);
+        }
+    }
+    return 0;
+}
+
+#ifdef TCC_TARGET_X86_64
+#define REX_W 0x48
+#define REX_R 0x44
+#define REX_X 0x42
+#define REX_B 0x41
+
+static void asm_rex(int width64, Operand *ops, int nb_ops, int *op_type,
+		    int regi, int rmi)
+{
+  unsigned char rex = width64 ? 0x48 : 0;
+  int saw_high_8bit = 0;
+  int i;
+  if (rmi == -1) {
+      /* No mod/rm byte, but we might have a register op nevertheless
+         (we will add it to the opcode later).  */
+      for(i = 0; i < nb_ops; i++) {
+	  if (op_type[i] & (OP_REG | OP_ST)) {
+	      if (ops[i].reg >= 8) {
+		  rex |= REX_B;
+		  ops[i].reg -= 8;
+	      } else if (ops[i].type & OP_REG8_LOW)
+		  rex |= 0x40;
+	      else if (ops[i].type & OP_REG8 && ops[i].reg >= 4)
+		  /* An 8 bit reg >= 4 without REG8 is ah/ch/dh/bh */
+		  saw_high_8bit = ops[i].reg;
+	      break;
+	  }
+      }
+  } else {
+      if (regi != -1) {
+	  if (ops[regi].reg >= 8) {
+	      rex |= REX_R;
+	      ops[regi].reg -= 8;
+	  } else if (ops[regi].type & OP_REG8_LOW)
+	      rex |= 0x40;
+	  else if (ops[regi].type & OP_REG8 && ops[regi].reg >= 4)
+	      /* An 8 bit reg >= 4 without REG8 is ah/ch/dh/bh */
+	      saw_high_8bit =
