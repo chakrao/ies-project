@@ -760,4 +760,148 @@ again:
                 continue;
 	    /* cmovxx is a test opcode but accepts multiple sizes.
 	       The suffixes aren't encoded in the table, instead we
-	       simply force size autodetection always and deal
+	       simply force size autodetection always and deal with suffixed
+	       variants below when we don't find e.g. "cmovzl".  */
+	    if (pa->instr_type & OPC_WLX)
+	        s = NBWLX - 1;
+        } else if (pa->instr_type & OPC_B) {
+#ifdef TCC_TARGET_X86_64
+	    /* Some instructions don't have the full size but only
+	       bwl form.  insb e.g. */
+	    if ((pa->instr_type & OPC_WLQ) != OPC_WLQ
+		&& !(opcode >= pa->sym && opcode < pa->sym + NBWLX-1))
+	        continue;
+#endif
+            if (!(opcode >= pa->sym && opcode < pa->sym + NBWLX))
+                continue;
+            s = opcode - pa->sym;
+        } else if (pa->instr_type & OPC_WLX) {
+            if (!(opcode >= pa->sym && opcode < pa->sym + NBWLX-1))
+                continue;
+            s = opcode - pa->sym + 1;
+        } else {
+            if (pa->sym != opcode)
+                continue;
+        }
+        if (pa->nb_ops != nb_ops)
+            continue;
+#ifdef TCC_TARGET_X86_64
+	/* Special case for moves.  Selecting the IM64->REG64 form
+	   should only be done if we really have an >32bit imm64, and that
+	   is hardcoded.  Ignore it here.  */
+	if (pa->opcode == 0xb0 && ops[0].type != OP_IM64
+	    && (ops[1].type & OP_REG) == OP_REG64
+	    && !(pa->instr_type & OPC_0F))
+	    continue;
+#endif
+        /* now decode and check each operand */
+	alltypes = 0;
+        for(i = 0; i < nb_ops; i++) {
+            int op1, op2;
+            op1 = pa->op_type[i];
+            op2 = op1 & 0x1f;
+            switch(op2) {
+            case OPT_IM:
+                v = OP_IM8 | OP_IM16 | OP_IM32;
+                break;
+            case OPT_REG:
+                v = OP_REG8 | OP_REG16 | OP_REG32 | OP_REG64;
+                break;
+            case OPT_REGW:
+                v = OP_REG16 | OP_REG32 | OP_REG64;
+                break;
+            case OPT_IMW:
+                v = OP_IM16 | OP_IM32;
+                break;
+	    case OPT_MMXSSE:
+		v = OP_MMX | OP_SSE;
+		break;
+	    case OPT_DISP:
+	    case OPT_DISP8:
+		v = OP_ADDR;
+		break;
+            default:
+                v = 1 << op2;
+                break;
+            }
+            if (op1 & OPT_EA)
+                v |= OP_EA;
+	    op_type[i] = v;
+            if ((ops[i].type & v) == 0)
+                goto next;
+	    alltypes |= ops[i].type;
+        }
+        /* all is matching ! */
+        break;
+    next: ;
+    }
+    if (pa->sym == 0) {
+        if (opcode >= TOK_ASM_first && opcode <= TOK_ASM_last) {
+            int b;
+            b = op0_codes[opcode - TOK_ASM_first];
+            if (b & 0xff00) 
+                g(b >> 8);
+            g(b);
+            return;
+        } else if (opcode <= TOK_ASM_alllast) {
+            tcc_error("bad operand with opcode '%s'",
+                  get_tok_str(opcode, NULL));
+        } else {
+	    /* Special case for cmovcc, we accept size suffixes but ignore
+	       them, but we don't want them to blow up our tables.  */
+	    TokenSym *ts = table_ident[opcode - TOK_IDENT];
+	    if (ts->len >= 6
+		&& strchr("wlq", ts->str[ts->len-1])
+		&& !memcmp(ts->str, "cmov", 4)) {
+		opcode = tok_alloc(ts->str, ts->len-1)->tok;
+		goto again;
+	    }
+            tcc_error("unknown opcode '%s'", ts->str);
+        }
+    }
+    /* if the size is unknown, then evaluate it (OPC_B or OPC_WL case) */
+    autosize = NBWLX-1;
+#ifdef TCC_TARGET_X86_64
+    /* XXX the autosize should rather be zero, to not have to adjust this
+       all the time.  */
+    if ((pa->instr_type & OPC_BWLQ) == OPC_B)
+        autosize = NBWLX-2;
+#endif
+    if (s == autosize) {
+	/* Check for register operands providing hints about the size.
+	   Start from the end, i.e. destination operands.  This matters
+	   only for opcodes accepting different sized registers, lar and lsl
+	   are such opcodes.  */
+        for(i = nb_ops - 1; s == autosize && i >= 0; i--) {
+            if ((ops[i].type & OP_REG) && !(op_type[i] & (OP_CL | OP_DX)))
+                s = reg_to_size[ops[i].type & OP_REG];
+        }
+        if (s == autosize) {
+            if ((opcode == TOK_ASM_push || opcode == TOK_ASM_pop) &&
+                (ops[0].type & (OP_SEG | OP_IM8S | OP_IM32)))
+                s = 2;
+	    else if ((opcode == TOK_ASM_push || opcode == TOK_ASM_pop) &&
+		     (ops[0].type & OP_EA))
+	        s = NBWLX - 2;
+            else
+                tcc_error("cannot infer opcode suffix");
+        }
+    }
+
+#ifdef TCC_TARGET_X86_64
+    /* Generate addr32 prefix if needed */
+    for(i = 0; i < nb_ops; i++) {
+        if (ops[i].type & OP_EA32) {
+	    g(0x67);
+	    break;
+        }
+    }
+#endif
+    /* generate data16 prefix if needed */
+    p66 = 0;
+    if (s == 1)
+        p66 = 1;
+    else {
+	/* accepting mmx+sse in all operands --> needs 0x66 to
+	   switch to sse mode.  Accepting only sse in an operand --> is
+	   already S
