@@ -904,4 +904,154 @@ again:
     else {
 	/* accepting mmx+sse in all operands --> needs 0x66 to
 	   switch to sse mode.  Accepting only sse in an operand --> is
-	   already S
+	   already SSE insn and needs 0x66/f2/f3 handling.  */
+        for (i = 0; i < nb_ops; i++)
+            if ((op_type[i] & (OP_MMX | OP_SSE)) == (OP_MMX | OP_SSE)
+	        && ops[i].type & OP_SSE)
+	        p66 = 1;
+    }
+    if (p66)
+        g(0x66);
+#ifdef TCC_TARGET_X86_64
+    rex64 = 0;
+    if (pa->instr_type & OPC_48)
+        rex64 = 1;
+    else if (s == 3 || (alltypes & OP_REG64)) {
+        /* generate REX prefix */
+	int default64 = 0;
+	for(i = 0; i < nb_ops; i++) {
+	    if (op_type[i] == OP_REG64 && pa->opcode != 0xb8) {
+		/* If only 64bit regs are accepted in one operand
+		   this is a default64 instruction without need for
+		   REX prefixes, except for movabs(0xb8).  */
+		default64 = 1;
+		break;
+	    }
+	}
+	/* XXX find better encoding for the default64 instructions.  */
+        if (((opcode != TOK_ASM_push && opcode != TOK_ASM_pop
+	      && opcode != TOK_ASM_pushw && opcode != TOK_ASM_pushl
+	      && opcode != TOK_ASM_pushq && opcode != TOK_ASM_popw
+	      && opcode != TOK_ASM_popl && opcode != TOK_ASM_popq
+	      && opcode != TOK_ASM_call && opcode != TOK_ASM_jmp))
+	    && !default64)
+            rex64 = 1;
+    }
+#endif
+
+    /* now generates the operation */
+    if (OPCT_IS(pa->instr_type, OPC_FWAIT))
+        g(0x9b);
+    if (seg_prefix)
+        g(seg_prefix);
+
+    v = pa->opcode;
+    if (pa->instr_type & OPC_0F)
+        v = ((v & ~0xff) << 8) | 0x0f00 | (v & 0xff);
+    if ((v == 0x69 || v == 0x6b) && nb_ops == 2) {
+        /* kludge for imul $im, %reg */
+        nb_ops = 3;
+        ops[2] = ops[1];
+        op_type[2] = op_type[1];
+    } else if (v == 0xcd && ops[0].e.v == 3 && !ops[0].e.sym) {
+        v--; /* int $3 case */
+        nb_ops = 0;
+    } else if ((v == 0x06 || v == 0x07)) {
+        if (ops[0].reg >= 4) {
+            /* push/pop %fs or %gs */
+            v = 0x0fa0 + (v - 0x06) + ((ops[0].reg - 4) << 3);
+        } else {
+            v += ops[0].reg << 3;
+        }
+        nb_ops = 0;
+    } else if (v <= 0x05) {
+        /* arith case */
+        v += ((opcode - TOK_ASM_addb) / NBWLX) << 3;
+    } else if ((pa->instr_type & (OPCT_MASK | OPC_MODRM)) == OPC_FARITH) {
+        /* fpu arith case */
+        v += ((opcode - pa->sym) / 6) << 3;
+    }
+
+    /* search which operand will be used for modrm */
+    modrm_index = -1;
+    modreg_index = -1;
+    if (pa->instr_type & OPC_MODRM) {
+	if (!nb_ops) {
+	    /* A modrm opcode without operands is a special case (e.g. mfence).
+	       It has a group and acts as if there's an register operand 0
+	       (ax).  */
+	    i = 0;
+	    ops[i].type = OP_REG;
+	    ops[i].reg = 0;
+	    goto modrm_found;
+	}
+        /* first look for an ea operand */
+        for(i = 0;i < nb_ops; i++) {
+            if (op_type[i] & OP_EA)
+                goto modrm_found;
+        }
+        /* then if not found, a register or indirection (shift instructions) */
+        for(i = 0;i < nb_ops; i++) {
+            if (op_type[i] & (OP_REG | OP_MMX | OP_SSE | OP_INDIR))
+                goto modrm_found;
+        }
+#ifdef ASM_DEBUG
+        tcc_error("bad op table");
+#endif
+    modrm_found:
+        modrm_index = i;
+        /* if a register is used in another operand then it is
+           used instead of group */
+        for(i = 0;i < nb_ops; i++) {
+            int t = op_type[i];
+            if (i != modrm_index &&
+                (t & (OP_REG | OP_MMX | OP_SSE | OP_CR | OP_TR | OP_DB | OP_SEG))) {
+                modreg_index = i;
+                break;
+            }
+        }
+    }
+#ifdef TCC_TARGET_X86_64
+    asm_rex (rex64, ops, nb_ops, op_type, modreg_index, modrm_index);
+#endif
+
+    if (pa->instr_type & OPC_REG) {
+        /* mov $im, %reg case */
+        if (v == 0xb0 && s >= 1)
+            v += 7;
+        for(i = 0; i < nb_ops; i++) {
+            if (op_type[i] & (OP_REG | OP_ST)) {
+                v += ops[i].reg;
+                break;
+            }
+        }
+    }
+    if (pa->instr_type & OPC_B)
+        v += s >= 1;
+    if (nb_ops == 1 && pa->op_type[0] == OPT_DISP8) {
+	ElfSym *esym;
+        int jmp_disp;
+
+        /* see if we can really generate the jump with a byte offset */
+	esym = elfsym(ops[0].e.sym);
+        if (!esym || esym->st_shndx != cur_text_section->sh_num)
+            goto no_short_jump;
+        jmp_disp = ops[0].e.v + esym->st_value - ind - 2 - (v >= 0xff);
+        if (jmp_disp == (int8_t)jmp_disp) {
+            /* OK to generate jump */
+	    ops[0].e.sym = 0;
+            ops[0].e.v = jmp_disp;
+	    op_type[0] = OP_IM8S;
+        } else {
+        no_short_jump:
+	    /* long jump will be allowed. need to modify the
+	       opcode slightly */
+	    if (v == 0xeb) /* jmp */
+	        v = 0xe9;
+	    else if (v == 0x70) /* jcc */
+	        v += 0x0f10;
+	    else
+	        tcc_error("invalid displacement");
+        }
+    }
+ 
