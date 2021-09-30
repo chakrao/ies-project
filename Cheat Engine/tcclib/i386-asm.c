@@ -1054,4 +1054,180 @@ again:
 	        tcc_error("invalid displacement");
         }
     }
- 
+    if (OPCT_IS(pa->instr_type, OPC_TEST))
+        v += test_bits[opcode - pa->sym];
+    op1 = v >> 16;
+    if (op1)
+        g(op1);
+    op1 = (v >> 8) & 0xff;
+    if (op1)
+        g(op1);
+    g(v);
+
+    if (OPCT_IS(pa->instr_type, OPC_SHIFT)) {
+        reg = (opcode - pa->sym) / NBWLX;
+        if (reg == 6)
+            reg = 7;
+    } else if (OPCT_IS(pa->instr_type, OPC_ARITH)) {
+        reg = (opcode - pa->sym) / NBWLX;
+    } else if (OPCT_IS(pa->instr_type, OPC_FARITH)) {
+        reg = (opcode - pa->sym) / 6;
+    } else {
+        reg = (pa->instr_type >> OPC_GROUP_SHIFT) & 7;
+    }
+
+    pc = 0;
+    if (pa->instr_type & OPC_MODRM) {
+        /* if a register is used in another operand then it is
+           used instead of group */
+	if (modreg_index >= 0)
+	    reg = ops[modreg_index].reg;
+        pc = asm_modrm(reg, &ops[modrm_index]);
+    }
+
+    /* emit constants */
+#ifndef TCC_TARGET_X86_64
+    if (!(pa->instr_type & OPC_0F)
+	&& (pa->opcode == 0x9a || pa->opcode == 0xea)) {
+        /* ljmp or lcall kludge */
+	gen_expr32(&ops[1].e);
+        if (ops[0].e.sym)
+            tcc_error("cannot relocate");
+        gen_le16(ops[0].e.v);
+        return;
+    }
+#endif
+    for(i = 0;i < nb_ops; i++) {
+        v = op_type[i];
+        if (v & (OP_IM8 | OP_IM16 | OP_IM32 | OP_IM64 | OP_IM8S | OP_ADDR)) {
+            /* if multiple sizes are given it means we must look
+               at the op size */
+            if ((v | OP_IM8 | OP_IM64) == (OP_IM8 | OP_IM16 | OP_IM32 | OP_IM64)) {
+                if (s == 0)
+                    v = OP_IM8;
+                else if (s == 1)
+                    v = OP_IM16;
+                else if (s == 2 || (v & OP_IM64) == 0)
+                    v = OP_IM32;
+                else
+                    v = OP_IM64;
+            }
+
+            if ((v & (OP_IM8 | OP_IM8S | OP_IM16)) && ops[i].e.sym)
+                tcc_error("cannot relocate");
+
+            if (v & (OP_IM8 | OP_IM8S)) {
+                g(ops[i].e.v);
+            } else if (v & OP_IM16) {
+                gen_le16(ops[i].e.v);
+#ifdef TCC_TARGET_X86_64
+            } else if (v & OP_IM64) {
+                gen_expr64(&ops[i].e);
+#endif
+	    } else if (pa->op_type[i] == OPT_DISP || pa->op_type[i] == OPT_DISP8) {
+                gen_disp32(&ops[i].e);
+            } else {
+                gen_expr32(&ops[i].e);
+            }
+        }
+    }
+
+    /* after immediate operands, adjust pc-relative address */
+    if (pc)
+        add32le(cur_text_section->data + pc - 4, pc - ind);
+}
+
+/* return the constraint priority (we allocate first the lowest
+   numbered constraints) */
+static inline int constraint_priority(const char *str)
+{
+    int priority, c, pr;
+
+    /* we take the lowest priority */
+    priority = 0;
+    for(;;) {
+        c = *str;
+        if (c == '\0')
+            break;
+        str++;
+        switch(c) {
+        case 'A':
+            pr = 0;
+            break;
+        case 'a':
+        case 'b':
+        case 'c':
+        case 'd':
+        case 'S':
+        case 'D':
+            pr = 1;
+            break;
+        case 'q':
+            pr = 2;
+            break;
+        case 'r':
+	case 'R':
+	case 'p':
+            pr = 3;
+            break;
+        case 'N':
+        case 'M':
+        case 'I':
+	case 'e':
+        case 'i':
+        case 'm':
+        case 'g':
+            pr = 4;
+            break;
+        default:
+            tcc_error("unknown constraint '%c'", c);
+            pr = 0;
+        }
+        if (pr > priority)
+            priority = pr;
+    }
+    return priority;
+}
+
+static const char *skip_constraint_modifiers(const char *p)
+{
+    while (*p == '=' || *p == '&' || *p == '+' || *p == '%')
+        p++;
+    return p;
+}
+
+/* If T (a token) is of the form "%reg" returns the register
+   number and type, otherwise return -1.  */
+ST_FUNC int asm_parse_regvar (int t)
+{
+    const char *s;
+    Operand op;
+    if (t < TOK_IDENT || (t & SYM_FIELD))
+        return -1;
+    s = table_ident[t - TOK_IDENT]->str;
+    if (s[0] != '%')
+        return -1;
+    t = tok_alloc_const(s + 1);
+    unget_tok(t);
+    unget_tok('%');
+    parse_operand(tcc_state, &op);
+    /* Accept only integer regs for now.  */
+    if (op.type & OP_REG)
+        return op.reg;
+    else
+        return -1;
+}
+
+#define REG_OUT_MASK 0x01
+#define REG_IN_MASK  0x02
+
+#define is_reg_allocated(reg) (regs_allocated[reg] & reg_mask)
+
+ST_FUNC void asm_compute_constraints(ASMOperand *operands,
+                                    int nb_operands, int nb_outputs,
+                                    const uint8_t *clobber_regs,
+                                    int *pout_reg)
+{
+    ASMOperand *op;
+    int sorted_op[MAX_ASM_OPERANDS];
+    int i, j, k, p1, p2, tmp, reg, c
