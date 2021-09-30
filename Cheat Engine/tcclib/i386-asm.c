@@ -1230,4 +1230,154 @@ ST_FUNC void asm_compute_constraints(ASMOperand *operands,
 {
     ASMOperand *op;
     int sorted_op[MAX_ASM_OPERANDS];
-    int i, j, k, p1, p2, tmp, reg, c
+    int i, j, k, p1, p2, tmp, reg, c, reg_mask;
+    const char *str;
+    uint8_t regs_allocated[NB_ASM_REGS];
+
+    /* init fields */
+    for(i=0;i<nb_operands;i++) {
+        op = &operands[i];
+        op->input_index = -1;
+        op->ref_index = -1;
+        op->reg = -1;
+        op->is_memory = 0;
+        op->is_rw = 0;
+    }
+    /* compute constraint priority and evaluate references to output
+       constraints if input constraints */
+    for(i=0;i<nb_operands;i++) {
+        op = &operands[i];
+        str = op->constraint;
+        str = skip_constraint_modifiers(str);
+        if (isnum(*str) || *str == '[') {
+            /* this is a reference to another constraint */
+            k = find_constraint(operands, nb_operands, str, NULL);
+            if ((unsigned)k >= i || i < nb_outputs)
+                tcc_error("invalid reference in constraint %d ('%s')",
+                      i, str);
+            op->ref_index = k;
+            if (operands[k].input_index >= 0)
+                tcc_error("cannot reference twice the same operand");
+            operands[k].input_index = i;
+            op->priority = 5;
+	} else if ((op->vt->r & VT_VALMASK) == VT_LOCAL
+		   && op->vt->sym
+		   && (reg = op->vt->sym->r & VT_VALMASK) < VT_CONST) {
+	    op->priority = 1;
+	    op->reg = reg;
+        } else {
+            op->priority = constraint_priority(str);
+        }
+    }
+
+    /* sort operands according to their priority */
+    for(i=0;i<nb_operands;i++)
+        sorted_op[i] = i;
+    for(i=0;i<nb_operands - 1;i++) {
+        for(j=i+1;j<nb_operands;j++) {
+            p1 = operands[sorted_op[i]].priority;
+            p2 = operands[sorted_op[j]].priority;
+            if (p2 < p1) {
+                tmp = sorted_op[i];
+                sorted_op[i] = sorted_op[j];
+                sorted_op[j] = tmp;
+            }
+        }
+    }
+
+    for(i = 0;i < NB_ASM_REGS; i++) {
+        if (clobber_regs[i])
+            regs_allocated[i] = REG_IN_MASK | REG_OUT_MASK;
+        else
+            regs_allocated[i] = 0;
+    }
+    /* esp cannot be used */
+    regs_allocated[4] = REG_IN_MASK | REG_OUT_MASK;
+    /* ebp cannot be used yet */
+    regs_allocated[5] = REG_IN_MASK | REG_OUT_MASK;
+
+    /* allocate registers and generate corresponding asm moves */
+    for(i=0;i<nb_operands;i++) {
+        j = sorted_op[i];
+        op = &operands[j];
+        str = op->constraint;
+        /* no need to allocate references */
+        if (op->ref_index >= 0)
+            continue;
+        /* select if register is used for output, input or both */
+        if (op->input_index >= 0) {
+            reg_mask = REG_IN_MASK | REG_OUT_MASK;
+        } else if (j < nb_outputs) {
+            reg_mask = REG_OUT_MASK;
+        } else {
+            reg_mask = REG_IN_MASK;
+        }
+	if (op->reg >= 0) {
+	    if (is_reg_allocated(op->reg))
+	        tcc_error("asm regvar requests register that's taken already");
+	    reg = op->reg;
+	    goto reg_found;
+	}
+    try_next:
+        c = *str++;
+        switch(c) {
+        case '=':
+            goto try_next;
+        case '+':
+            op->is_rw = 1;
+            /* FALL THRU */
+        case '&':
+            if (j >= nb_outputs)
+                tcc_error("'%c' modifier can only be applied to outputs", c);
+            reg_mask = REG_IN_MASK | REG_OUT_MASK;
+            goto try_next;
+        case 'A':
+            /* allocate both eax and edx */
+            if (is_reg_allocated(TREG_XAX) ||
+                is_reg_allocated(TREG_XDX))
+                goto try_next;
+            op->is_llong = 1;
+            op->reg = TREG_XAX;
+            regs_allocated[TREG_XAX] |= reg_mask;
+            regs_allocated[TREG_XDX] |= reg_mask;
+            break;
+        case 'a':
+            reg = TREG_XAX;
+            goto alloc_reg;
+        case 'b':
+            reg = 3;
+            goto alloc_reg;
+        case 'c':
+            reg = TREG_XCX;
+            goto alloc_reg;
+        case 'd':
+            reg = TREG_XDX;
+            goto alloc_reg;
+        case 'S':
+            reg = 6;
+            goto alloc_reg;
+        case 'D':
+            reg = 7;
+        alloc_reg:
+            if (is_reg_allocated(reg))
+                goto try_next;
+            goto reg_found;
+        case 'q':
+            /* eax, ebx, ecx or edx */
+            for(reg = 0; reg < 4; reg++) {
+                if (!is_reg_allocated(reg))
+                    goto reg_found;
+            }
+            goto try_next;
+        case 'r':
+	case 'R':
+	case 'p': /* A general address, for x86(64) any register is acceptable*/
+            /* any general register */
+            for(reg = 0; reg < 8; reg++) {
+                if (!is_reg_allocated(reg))
+                    goto reg_found;
+            }
+            goto try_next;
+        reg_found:
+            /* now we can reload in the register */
+        
