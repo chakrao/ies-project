@@ -1380,4 +1380,144 @@ ST_FUNC void asm_compute_constraints(ASMOperand *operands,
             goto try_next;
         reg_found:
             /* now we can reload in the register */
-        
+            op->is_llong = 0;
+            op->reg = reg;
+            regs_allocated[reg] |= reg_mask;
+            break;
+	case 'e':
+        case 'i':
+            if (!((op->vt->r & (VT_VALMASK | VT_LVAL)) == VT_CONST))
+                goto try_next;
+            break;
+        case 'I':
+        case 'N':
+        case 'M':
+            if (!((op->vt->r & (VT_VALMASK | VT_LVAL | VT_SYM)) == VT_CONST))
+                goto try_next;
+            break;
+        case 'm':
+        case 'g':
+            /* nothing special to do because the operand is already in
+               memory, except if the pointer itself is stored in a
+               memory variable (VT_LLOCAL case) */
+            /* XXX: fix constant case */
+            /* if it is a reference to a memory zone, it must lie
+               in a register, so we reserve the register in the
+               input registers and a load will be generated
+               later */
+            if (j < nb_outputs || c == 'm') {
+                if ((op->vt->r & VT_VALMASK) == VT_LLOCAL) {
+                    /* any general register */
+                    for(reg = 0; reg < 8; reg++) {
+                        if (!(regs_allocated[reg] & REG_IN_MASK))
+                            goto reg_found1;
+                    }
+                    goto try_next;
+                reg_found1:
+                    /* now we can reload in the register */
+                    regs_allocated[reg] |= REG_IN_MASK;
+                    op->reg = reg;
+                    op->is_memory = 1;
+                }
+            }
+            break;
+        default:
+            tcc_error("asm constraint %d ('%s') could not be satisfied",
+                  j, op->constraint);
+            break;
+        }
+        /* if a reference is present for that operand, we assign it too */
+        if (op->input_index >= 0) {
+            operands[op->input_index].reg = op->reg;
+            operands[op->input_index].is_llong = op->is_llong;
+        }
+    }
+
+    /* compute out_reg. It is used to store outputs registers to memory
+       locations references by pointers (VT_LLOCAL case) */
+    *pout_reg = -1;
+    for(i=0;i<nb_operands;i++) {
+        op = &operands[i];
+        if (op->reg >= 0 &&
+            (op->vt->r & VT_VALMASK) == VT_LLOCAL  &&
+            !op->is_memory) {
+            for(reg = 0; reg < 8; reg++) {
+                if (!(regs_allocated[reg] & REG_OUT_MASK))
+                    goto reg_found2;
+            }
+            tcc_error("could not find free output register for reloading");
+        reg_found2:
+            *pout_reg = reg;
+            break;
+        }
+    }
+
+    /* print sorted constraints */
+#ifdef ASM_DEBUG
+    for(i=0;i<nb_operands;i++) {
+        j = sorted_op[i];
+        op = &operands[j];
+        printf("%%%d [%s]: \"%s\" r=0x%04x reg=%d\n",
+               j,
+               op->id ? get_tok_str(op->id, NULL) : "",
+               op->constraint,
+               op->vt->r,
+               op->reg);
+    }
+    if (*pout_reg >= 0)
+        printf("out_reg=%d\n", *pout_reg);
+#endif
+}
+
+ST_FUNC void subst_asm_operand(CString *add_str,
+                              SValue *sv, int modifier)
+{
+    int r, reg, size, val;
+    char buf[64];
+
+    r = sv->r;
+    if ((r & VT_VALMASK) == VT_CONST) {
+        if (!(r & VT_LVAL) && modifier != 'c' && modifier != 'n' &&
+	    modifier != 'P')
+            cstr_ccat(add_str, '$');
+        if (r & VT_SYM) {
+	    const char *name = get_tok_str(sv->sym->v, NULL);
+	    if (sv->sym->v >= SYM_FIRST_ANOM) {
+		/* In case of anonymous symbols ("L.42", used
+		   for static data labels) we can't find them
+		   in the C symbol table when later looking up
+		   this name.  So enter them now into the asm label
+		   list when we still know the symbol.  */
+		get_asm_sym(tok_alloc_const(name), sv->sym);
+	    }
+            if (tcc_state->leading_underscore)
+              cstr_ccat(add_str, '_');
+            cstr_cat(add_str, name, -1);
+            if ((uint32_t)sv->c.i == 0)
+                goto no_offset;
+	    cstr_ccat(add_str, '+');
+        }
+        val = sv->c.i;
+        if (modifier == 'n')
+            val = -val;
+        snprintf(buf, sizeof(buf), "%d", (int)sv->c.i);
+        cstr_cat(add_str, buf, -1);
+    no_offset:;
+#ifdef TCC_TARGET_X86_64
+        if (r & VT_LVAL)
+            cstr_cat(add_str, "(%rip)", -1);
+#endif
+    } else if ((r & VT_VALMASK) == VT_LOCAL) {
+#ifdef TCC_TARGET_X86_64
+        snprintf(buf, sizeof(buf), "%d(%%rbp)", (int)sv->c.i);
+#else
+        snprintf(buf, sizeof(buf), "%d(%%ebp)", (int)sv->c.i);
+#endif
+        cstr_cat(add_str, buf, -1);
+    } else if (r & VT_LVAL) {
+        reg = r & VT_VALMASK;
+        if (reg >= VT_CONST)
+            tcc_internal_error("");
+        snprintf(buf, sizeof(buf), "(%%%s)",
+#ifdef TCC_TARGET_X86_64
+                 get_tok_str(TOK_ASM_rax 
