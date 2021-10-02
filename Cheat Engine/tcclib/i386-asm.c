@@ -1520,4 +1520,157 @@ ST_FUNC void subst_asm_operand(CString *add_str,
             tcc_internal_error("");
         snprintf(buf, sizeof(buf), "(%%%s)",
 #ifdef TCC_TARGET_X86_64
-                 get_tok_str(TOK_ASM_rax 
+                 get_tok_str(TOK_ASM_rax + reg, NULL)
+#else
+                 get_tok_str(TOK_ASM_eax + reg, NULL)
+#endif
+		 );
+        cstr_cat(add_str, buf, -1);
+    } else {
+        /* register case */
+        reg = r & VT_VALMASK;
+        if (reg >= VT_CONST)
+            tcc_internal_error("");
+
+        /* choose register operand size */
+        if ((sv->type.t & VT_BTYPE) == VT_BYTE ||
+	    (sv->type.t & VT_BTYPE) == VT_BOOL)
+            size = 1;
+        else if ((sv->type.t & VT_BTYPE) == VT_SHORT)
+            size = 2;
+#ifdef TCC_TARGET_X86_64
+        else if ((sv->type.t & VT_BTYPE) == VT_LLONG ||
+		 (sv->type.t & VT_BTYPE) == VT_PTR)
+            size = 8;
+#endif
+        else
+            size = 4;
+        if (size == 1 && reg >= 4)
+            size = 4;
+
+        if (modifier == 'b') {
+            if (reg >= 4)
+                tcc_error("cannot use byte register");
+            size = 1;
+        } else if (modifier == 'h') {
+            if (reg >= 4)
+                tcc_error("cannot use byte register");
+            size = -1;
+        } else if (modifier == 'w') {
+            size = 2;
+        } else if (modifier == 'k') {
+            size = 4;
+#ifdef TCC_TARGET_X86_64
+        } else if (modifier == 'q') {
+            size = 8;
+#endif
+        }
+
+        switch(size) {
+        case -1:
+            reg = TOK_ASM_ah + reg;
+            break;
+        case 1:
+            reg = TOK_ASM_al + reg;
+            break;
+        case 2:
+            reg = TOK_ASM_ax + reg;
+            break;
+        default:
+            reg = TOK_ASM_eax + reg;
+            break;
+#ifdef TCC_TARGET_X86_64
+        case 8:
+            reg = TOK_ASM_rax + reg;
+            break;
+#endif
+        }
+        snprintf(buf, sizeof(buf), "%%%s", get_tok_str(reg, NULL));
+        cstr_cat(add_str, buf, -1);
+    }
+}
+
+/* generate prolog and epilog code for asm statement */
+ST_FUNC void asm_gen_code(ASMOperand *operands, int nb_operands,
+                         int nb_outputs, int is_output,
+                         uint8_t *clobber_regs,
+                         int out_reg)
+{
+    uint8_t regs_allocated[NB_ASM_REGS];
+    ASMOperand *op;
+    int i, reg;
+
+    /* Strictly speaking %Xbp and %Xsp should be included in the
+       call-preserved registers, but currently it doesn't matter.  */
+#ifdef TCC_TARGET_X86_64
+#ifdef TCC_TARGET_PE
+    static uint8_t reg_saved[] = { 3, 6, 7, 12, 13, 14, 15 };
+#else
+    static uint8_t reg_saved[] = { 3, 12, 13, 14, 15 };
+#endif
+#else
+    static uint8_t reg_saved[] = { 3, 6, 7 };
+#endif
+
+    /* mark all used registers */
+    memcpy(regs_allocated, clobber_regs, sizeof(regs_allocated));
+    for(i = 0; i < nb_operands;i++) {
+        op = &operands[i];
+        if (op->reg >= 0)
+            regs_allocated[op->reg] = 1;
+    }
+    if (!is_output) {
+        /* generate reg save code */
+        for(i = 0; i < sizeof(reg_saved)/sizeof(reg_saved[0]); i++) {
+            reg = reg_saved[i];
+            if (regs_allocated[reg]) {
+		if (reg >= 8)
+		  g(0x41), reg-=8;
+                g(0x50 + reg);
+            }
+        }
+
+        /* generate load code */
+        for(i = 0; i < nb_operands; i++) {
+            op = &operands[i];
+            if (op->reg >= 0) {
+                if ((op->vt->r & VT_VALMASK) == VT_LLOCAL &&
+                    op->is_memory) {
+                    /* memory reference case (for both input and
+                       output cases) */
+                    SValue sv;
+                    sv = *op->vt;
+                    sv.r = (sv.r & ~VT_VALMASK) | VT_LOCAL | VT_LVAL;
+                    sv.type.t = VT_PTR;
+                    load(op->reg, &sv);
+                } else if (i >= nb_outputs || op->is_rw) {
+                    /* load value in register */
+                    load(op->reg, op->vt);
+                    if (op->is_llong) {
+                        SValue sv;
+                        sv = *op->vt;
+                        sv.c.i += 4;
+                        load(TREG_XDX, &sv);
+                    }
+                }
+            }
+        }
+    } else {
+        /* generate save code */
+        for(i = 0 ; i < nb_outputs; i++) {
+            op = &operands[i];
+            if (op->reg >= 0) {
+                if ((op->vt->r & VT_VALMASK) == VT_LLOCAL) {
+                    if (!op->is_memory) {
+                        SValue sv;
+                        sv = *op->vt;
+                        sv.r = (sv.r & ~VT_VALMASK) | VT_LOCAL;
+			sv.type.t = VT_PTR;
+                        load(out_reg, &sv);
+
+			sv = *op->vt;
+                        sv.r = (sv.r & ~VT_VALMASK) | out_reg;
+                        store(op->reg, &sv);
+                    }
+                } else {
+      
