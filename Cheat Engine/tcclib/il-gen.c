@@ -221,4 +221,177 @@ static void il_type_to_str(char *buf, int buf_size,
     }
     if (varstr) {
         pstrcat(buf, buf_size, " ");
-  
+        pstrcat(buf, buf_size, varstr);
+    }
+ no_var: ;
+}
+
+
+/* patch relocation entry with value 'val' */
+void greloc_patch1(Reloc *p, int val)
+{
+}
+
+/* output a symbol and patch all calls to it */
+void gsym_addr(t, a)
+{
+}
+
+/* output jump and return symbol */
+static int out_opj(int op, int c)
+{
+    out_op1(op);
+    out_le32(0);
+    if (c == 0) {
+        c = ind - (int)cur_text_section->data;
+    }
+    fprintf(il_outfile, " %s L%d\n", il_opcodes_str[op], c);
+    return c;
+}
+
+void gsym(int t)
+{
+    fprintf(il_outfile, "L%d:\n", t);
+}
+
+/* load 'r' from value 'sv' */
+void load(int r, SValue *sv)
+{
+    int v, fc, ft;
+
+    v = sv->r & VT_VALMASK;
+    fc = sv->c.i;
+    ft = sv->t;
+
+    if (sv->r & VT_LVAL) {
+        if (v == VT_LOCAL) {
+            if (fc >= ARG_BASE) {
+                fc -= ARG_BASE;
+                if (fc >= 0 && fc <= 4) {
+                    out_op(IL_OP_LDARG_0 + fc);
+                } else if (fc <= 0xff) {
+                    out_opb(IL_OP_LDARG_S, fc);
+                } else {
+                    out_opi(IL_OP_LDARG, fc);
+                }
+            } else {
+                if (fc >= 0 && fc <= 4) {
+                    out_op(IL_OP_LDLOC_0 + fc);
+                } else if (fc <= 0xff) {
+                    out_opb(IL_OP_LDLOC_S, fc);
+                } else {
+                    out_opi(IL_OP_LDLOC, fc);
+                }
+            }
+        } else if (v == VT_CONST) {
+                /* XXX: handle globals */
+                out_opi(IL_OP_LDSFLD, 0);
+        } else {
+            if ((ft & VT_BTYPE) == VT_FLOAT) {
+                out_op(IL_OP_LDIND_R4);
+            } else if ((ft & VT_BTYPE) == VT_DOUBLE) {
+                out_op(IL_OP_LDIND_R8);
+            } else if ((ft & VT_BTYPE) == VT_LDOUBLE) {
+                out_op(IL_OP_LDIND_R8);
+            } else if ((ft & VT_TYPE) == VT_BYTE)
+                out_op(IL_OP_LDIND_I1);
+            else if ((ft & VT_TYPE) == (VT_BYTE | VT_UNSIGNED))
+                out_op(IL_OP_LDIND_U1);
+            else if ((ft & VT_TYPE) == VT_SHORT)
+                out_op(IL_OP_LDIND_I2);
+            else if ((ft & VT_TYPE) == (VT_SHORT | VT_UNSIGNED))
+                out_op(IL_OP_LDIND_U2);
+            else
+                out_op(IL_OP_LDIND_I4);
+        } 
+    } else {
+        if (v == VT_CONST) {
+            /* XXX: handle globals */
+            if (fc >= -1 && fc <= 8) {
+                out_op(IL_OP_LDC_I4_M1 + fc + 1); 
+            } else {
+                out_opi(IL_OP_LDC_I4, fc);
+            }
+        } else if (v == VT_LOCAL) {
+            if (fc >= ARG_BASE) {
+                fc -= ARG_BASE;
+                if (fc <= 0xff) {
+                    out_opb(IL_OP_LDARGA_S, fc);
+                } else {
+                    out_opi(IL_OP_LDARGA, fc);
+                }
+            } else {
+                if (fc <= 0xff) {
+                    out_opb(IL_OP_LDLOCA_S, fc);
+                } else {
+                    out_opi(IL_OP_LDLOCA, fc);
+                }
+            }
+        } else {
+            /* XXX: do it */
+        }
+    }
+}
+
+/* store register 'r' in lvalue 'v' */
+void store(int r, SValue *sv)
+{
+    int v, fc, ft;
+
+    v = sv->r & VT_VALMASK;
+    fc = sv->c.i;
+    ft = sv->t;
+    if (v == VT_LOCAL) {
+        if (fc >= ARG_BASE) {
+            fc -= ARG_BASE;
+            /* XXX: check IL arg store semantics */
+            if (fc <= 0xff) {
+                out_opb(IL_OP_STARG_S, fc);
+            } else {
+                out_opi(IL_OP_STARG, fc);
+            }
+        } else {
+            if (fc >= 0 && fc <= 4) {
+                out_op(IL_OP_STLOC_0 + fc);
+            } else if (fc <= 0xff) {
+                out_opb(IL_OP_STLOC_S, fc);
+            } else {
+                out_opi(IL_OP_STLOC, fc);
+            }
+        }
+    } else if (v == VT_CONST) {
+        /* XXX: handle globals */
+        out_opi(IL_OP_STSFLD, 0);
+    } else {
+        if ((ft & VT_BTYPE) == VT_FLOAT)
+            out_op(IL_OP_STIND_R4);
+        else if ((ft & VT_BTYPE) == VT_DOUBLE)
+            out_op(IL_OP_STIND_R8);
+        else if ((ft & VT_BTYPE) == VT_LDOUBLE)
+            out_op(IL_OP_STIND_R8);
+        else if ((ft & VT_BTYPE) == VT_BYTE)
+            out_op(IL_OP_STIND_I1);
+        else if ((ft & VT_BTYPE) == VT_SHORT)
+            out_op(IL_OP_STIND_I2);
+        else
+            out_op(IL_OP_STIND_I4);
+    }
+}
+
+/* start function call and return function call context */
+void gfunc_start(GFuncContext *c, int func_call)
+{
+    c->func_call = func_call;
+}
+
+/* push function parameter which is in (vtop->t, vtop->c). Stack entry
+   is then popped. */
+void gfunc_param(GFuncContext *c)
+{
+    if ((vtop->t & VT_BTYPE) == VT_STRUCT) {
+        tcc_error("structures passed as value not handled yet");
+    } else {
+        /* simply push on stack */
+        gv(RC_ST0);
+    }
+   
