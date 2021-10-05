@@ -394,4 +394,211 @@ void gfunc_param(GFuncContext *c)
         /* simply push on stack */
         gv(RC_ST0);
     }
-   
+    vtop--;
+}
+
+/* generate function call with address in (vtop->t, vtop->c) and free function
+   context. Stack entry is popped */
+void gfunc_call(GFuncContext *c)
+{
+    char buf[1024];
+
+    if ((vtop->r & (VT_VALMASK | VT_LVAL)) == VT_CONST) {
+        /* XXX: more info needed from tcc */
+        il_type_to_str(buf, sizeof(buf), vtop->t, "xxx");
+        fprintf(il_outfile, " call %s\n", buf);
+    } else {
+        /* indirect call */
+        gv(RC_INT);
+        il_type_to_str(buf, sizeof(buf), vtop->t, NULL);
+        fprintf(il_outfile, " calli %s\n", buf);
+    }
+    vtop--;
+}
+
+/* generate function prolog of type 't' */
+void gfunc_prolog(int t)
+{
+    int addr, u, func_call;
+    Sym *sym;
+    char buf[1024];
+
+    init_outfile();
+
+    /* XXX: pass function name to gfunc_prolog */
+    il_type_to_str(buf, sizeof(buf), t, funcname);
+    fprintf(il_outfile, ".method static %s il managed\n", buf);
+    fprintf(il_outfile, "{\n");
+    /* XXX: cannot do better now */
+    fprintf(il_outfile, " .maxstack %d\n", NB_REGS);
+    fprintf(il_outfile, " .locals (int32, int32, int32, int32, int32, int32, int32, int32)\n");
+    
+    if (!strcmp(funcname, "main"))
+        fprintf(il_outfile, " .entrypoint\n");
+        
+    sym = sym_find((unsigned)t >> VT_STRUCT_SHIFT);
+    func_call = sym->r;
+
+    addr = ARG_BASE;
+    /* if the function returns a structure, then add an
+       implicit pointer parameter */
+    func_vt = sym->t;
+    func_var = (sym->c == FUNC_ELLIPSIS);
+    if ((func_vt & VT_BTYPE) == VT_STRUCT) {
+        func_vc = addr;
+        addr++;
+    }
+    /* define parameters */
+    while ((sym = sym->next) != NULL) {
+        u = sym->t;
+        sym_push(sym->v & ~SYM_FIELD, u,
+                 VT_LOCAL | lvalue_type(sym->type.t), addr);
+        addr++;
+    }
+}
+
+/* generate function epilog */
+void gfunc_epilog(void)
+{
+    out_op(IL_OP_RET);
+    fprintf(il_outfile, "}\n\n");
+}
+
+/* generate a jump to a label */
+int gjmp(int t)
+{
+    return out_opj(IL_OP_BR, t);
+}
+
+/* generate a jump to a fixed address */
+void gjmp_addr(int a)
+{
+    /* XXX: handle syms */
+    out_opi(IL_OP_BR, a);
+}
+
+/* generate a test. set 'inv' to invert test. Stack entry is popped */
+int gtst(int inv, int t)
+{
+    int v, *p, c;
+
+    v = vtop->r & VT_VALMASK;
+    if (v == VT_CMP) {
+        c = vtop->c.i ^ inv;
+        switch(c) {
+        case TOK_EQ:
+            c = IL_OP_BEQ;
+            break;
+        case TOK_NE:
+            c = IL_OP_BNE_UN;
+            break;
+        case TOK_LT:
+            c = IL_OP_BLT;
+            break;
+        case TOK_LE:
+            c = IL_OP_BLE;
+            break;
+        case TOK_GT:
+            c = IL_OP_BGT;
+            break;
+        case TOK_GE:
+            c = IL_OP_BGE;
+            break;
+        case TOK_ULT:
+            c = IL_OP_BLT_UN;
+            break;
+        case TOK_ULE:
+            c = IL_OP_BLE_UN;
+            break;
+        case TOK_UGT:
+            c = IL_OP_BGT_UN;
+            break;
+        case TOK_UGE:
+            c = IL_OP_BGE_UN;
+            break;
+        }
+        t = out_opj(c, t);
+    } else if (v == VT_JMP || v == VT_JMPI) {
+        /* && or || optimization */
+        if ((v & 1) == inv) {
+            /* insert vtop->c jump list in t */
+            p = &vtop->c.i;
+            while (*p != 0)
+                p = (int *)*p;
+            *p = t;
+            t = vtop->c.i;
+        } else {
+            t = gjmp(t);
+            gsym(vtop->c.i);
+        }
+    }
+    vtop--;
+    return t;
+}
+
+/* generate an integer binary operation */
+void gen_opi(int op)
+{
+    gv2(RC_ST1, RC_ST0);
+    switch(op) {
+    case '+':
+        out_op(IL_OP_ADD);
+        goto std_op;
+    case '-':
+        out_op(IL_OP_SUB);
+        goto std_op;
+    case '&':
+        out_op(IL_OP_AND);
+        goto std_op;
+    case '^':
+        out_op(IL_OP_XOR);
+        goto std_op;
+    case '|':
+        out_op(IL_OP_OR);
+        goto std_op;
+    case '*':
+        out_op(IL_OP_MUL);
+        goto std_op;
+    case TOK_SHL:
+        out_op(IL_OP_SHL);
+        goto std_op;
+    case TOK_SHR:
+        out_op(IL_OP_SHR_UN);
+        goto std_op;
+    case TOK_SAR:
+        out_op(IL_OP_SHR);
+        goto std_op;
+    case '/':
+    case TOK_PDIV:
+        out_op(IL_OP_DIV);
+        goto std_op;
+    case TOK_UDIV:
+        out_op(IL_OP_DIV_UN);
+        goto std_op;
+    case '%':
+        out_op(IL_OP_REM);
+        goto std_op;
+    case TOK_UMOD:
+        out_op(IL_OP_REM_UN);
+    std_op:
+        vtop--;
+        vtop[0].r = REG_ST0;
+        break;
+    case TOK_EQ:
+    case TOK_NE:
+    case TOK_LT:
+    case TOK_LE:
+    case TOK_GT:
+    case TOK_GE:
+    case TOK_ULT:
+    case TOK_ULE:
+    case TOK_UGT:
+    case TOK_UGE:
+        vtop--;
+        vtop[0].r = VT_CMP;
+        vtop[0].c.i = op;
+        break;
+    }
+}
+
+/* generate a floating point operation 'v = t1 op 
