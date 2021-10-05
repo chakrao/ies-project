@@ -601,4 +601,57 @@ void gen_opi(int op)
     }
 }
 
-/* generate a floating point operation 'v = t1 op 
+/* generate a floating point operation 'v = t1 op t2' instruction. The
+   two operands are guaranteed to have the same floating point type */
+void gen_opf(int op)
+{
+    /* same as integer */
+    gen_opi(op);
+}
+
+/* convert integers to fp 't' type. Must handle 'int', 'unsigned int'
+   and 'long long' cases. */
+void gen_cvt_itof(int t)
+{
+    gv(RC_ST0);
+    if (t == VT_FLOAT)
+        out_op(IL_OP_CONV_R4);
+    else
+        out_op(IL_OP_CONV_R8);
+}
+
+/* convert fp to int 't' type */
+/* XXX: handle long long case */
+void gen_cvt_ftoi(int t)
+{
+    gv(RC_ST0);
+    switch(t) {
+    case VT_INT | VT_UNSIGNED:
+        out_op(IL_OP_CONV_U4);
+        break;
+    case VT_LLONG:
+        out_op(IL_OP_CONV_I8);
+        break;
+    case VT_LLONG | VT_UNSIGNED:
+        out_op(IL_OP_CONV_U8);
+        break;
+    default:
+        out_op(IL_OP_CONV_I4);
+        break;
+    }
+}
+
+/* convert from one floating point type to another */
+void gen_cvt_ftof(int t)
+{
+    gv(RC_ST0);
+    if (t == VT_FLOAT) {
+        out_op(IL_OP_CONV_R4);
+    } else {
+        out_op(IL_OP_CONV_R8);
+    }
+}
+
+/* end of CIL code generator */
+/*************************************************************/
+
