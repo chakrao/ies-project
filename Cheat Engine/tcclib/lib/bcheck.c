@@ -281,4 +281,97 @@ DLL_EXPORT int __bound_memcmp(const void *s1, const void *s2, size_t size);
 DLL_EXPORT void *__bound_memmove(void *dst, const void *src, size_t size);
 DLL_EXPORT void *__bound_memset(void *dst, int c, size_t size);
 DLL_EXPORT int __bound_strlen(const char *s);
-DLL_EXPORT char *__bound_strcpy(char *dst, const c
+DLL_EXPORT char *__bound_strcpy(char *dst, const char *src);
+DLL_EXPORT char *__bound_strncpy(char *dst, const char *src, size_t n);
+DLL_EXPORT int __bound_strcmp(const char *s1, const char *s2);
+DLL_EXPORT int __bound_strncmp(const char *s1, const char *s2, size_t n);
+DLL_EXPORT char *__bound_strcat(char *dest, const char *src);
+DLL_EXPORT char *__bound_strchr(const char *string, int ch);
+DLL_EXPORT char *__bound_strdup(const char *s);
+
+#if defined(__arm__) && defined(__ARM_EABI__)
+DLL_EXPORT void *__bound___aeabi_memcpy(void *dst, const void *src, size_t size);
+DLL_EXPORT void *__bound___aeabi_memmove(void *dst, const void *src, size_t size);
+DLL_EXPORT void *__bound___aeabi_memmove4(void *dst, const void *src, size_t size);
+DLL_EXPORT void *__bound___aeabi_memmove8(void *dst, const void *src, size_t size);
+DLL_EXPORT void *__bound___aeabi_memset(void *dst, int c, size_t size);
+DLL_EXPORT void *__aeabi_memcpy(void *dst, const void *src, size_t size);
+DLL_EXPORT void *__aeabi_memmove(void *dst, const void *src, size_t size);
+DLL_EXPORT void *__aeabi_memmove4(void *dst, const void *src, size_t size);
+DLL_EXPORT void *__aeabi_memmove8(void *dst, const void *src, size_t size);
+DLL_EXPORT void *__aeabi_memset(void *dst, int c, size_t size);
+#endif
+
+#if MALLOC_REDIR
+#define BOUND_MALLOC(a)          malloc_redir(a)
+#define BOUND_MEMALIGN(a,b)      memalign_redir(a,b)
+#define BOUND_FREE(a)            free_redir(a)
+#define BOUND_REALLOC(a,b)       realloc_redir(a,b)
+#define BOUND_CALLOC(a,b)        calloc_redir(a,b)
+#else
+#define BOUND_MALLOC(a)          malloc(a)
+#define BOUND_MEMALIGN(a,b)      memalign(a,b)
+#define BOUND_FREE(a)            free(a)
+#define BOUND_REALLOC(a,b)       realloc(a,b)
+#define BOUND_CALLOC(a,b)        calloc(a,b)
+DLL_EXPORT void *__bound_malloc(size_t size, const void *caller);
+DLL_EXPORT void *__bound_memalign(size_t size, size_t align, const void *caller);
+DLL_EXPORT void __bound_free(void *ptr, const void *caller);
+DLL_EXPORT void *__bound_realloc(void *ptr, size_t size, const void *caller);
+DLL_EXPORT void *__bound_calloc(size_t nmemb, size_t size);
+#endif
+
+#define FREE_REUSE_SIZE (100)
+static unsigned int free_reuse_index;
+static void *free_reuse_list[FREE_REUSE_SIZE];
+
+static Tree *tree = NULL;
+#define TREE_REUSE      (1)
+#if TREE_REUSE
+static Tree *tree_free_list;
+#endif
+static alloca_list_type *alloca_list;
+static jmp_list_type *jmp_list;
+
+static unsigned char inited;
+static unsigned char print_warn_ptr_add;
+static unsigned char print_calls;
+static unsigned char print_heap;
+static unsigned char print_statistic;
+static unsigned char no_strdup;
+static unsigned char use_sem;
+static int never_fatal;
+#if HAVE_TLS_FUNC
+#if defined(_WIN32)
+static int no_checking = 0;
+static DWORD no_checking_key;
+#define NO_CHECKING_CHECK() if (!p) {                                         \
+                                  p = (int *) LocalAlloc(LPTR, sizeof(int));  \
+                                  if (!p) bound_alloc_error("tls malloc");    \
+                                  *p = 0;                                     \
+                                  TlsSetValue(no_checking_key, p);            \
+                            }
+#define NO_CHECKING_GET()   ({ int *p = TlsGetValue(no_checking_key);         \
+                               NO_CHECKING_CHECK();                           \
+                               *p;                                            \
+                            })
+#define NO_CHECKING_SET(v)  { int *p = TlsGetValue(no_checking_key);          \
+                              NO_CHECKING_CHECK();                            \
+                              *p = v;                                         \
+                            }
+#else
+static int no_checking = 0;
+static pthread_key_t no_checking_key;
+#define NO_CHECKING_CHECK() if (!p) {                                         \
+                                  p = (int *) BOUND_MALLOC(sizeof(int));      \
+                                  if (!p) bound_alloc_error("tls malloc");    \
+                                  *p = 0;                                     \
+                                  pthread_setspecific(no_checking_key, p);    \
+                            }
+#define NO_CHECKING_GET()   ({ int *p = pthread_getspecific(no_checking_key); \
+                               NO_CHECKING_CHECK();                           \
+                               *p;                                            \
+                            })
+#define NO_CHECKING_SET(v)  { int *p = pthread_getspecific(no_checking_key);  \
+                              NO_CHECKING_CHECK();                            \
+                              *p = v;           
