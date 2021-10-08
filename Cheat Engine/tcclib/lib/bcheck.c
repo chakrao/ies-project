@@ -374,4 +374,152 @@ static pthread_key_t no_checking_key;
                             })
 #define NO_CHECKING_SET(v)  { int *p = pthread_getspecific(no_checking_key);  \
                               NO_CHECKING_CHECK();                            \
-                              *p = v;           
+                              *p = v;                                         \
+                            }
+#endif
+#elif HAVE_TLS_VAR
+static __thread int no_checking = 0;
+#define NO_CHECKING_GET()  no_checking
+#define NO_CHECKING_SET(v) no_checking = v 
+#else
+static int no_checking = 0;
+#define NO_CHECKING_GET()  no_checking
+#define NO_CHECKING_SET(v) no_checking = v 
+#endif
+static char exec[100];
+
+#if BOUND_STATISTIC
+static unsigned long long bound_ptr_add_count;
+static unsigned long long bound_ptr_indir1_count;
+static unsigned long long bound_ptr_indir2_count;
+static unsigned long long bound_ptr_indir4_count;
+static unsigned long long bound_ptr_indir8_count;
+static unsigned long long bound_ptr_indir12_count;
+static unsigned long long bound_ptr_indir16_count;
+static unsigned long long bound_local_new_count;
+static unsigned long long bound_local_delete_count;
+static unsigned long long bound_malloc_count;
+static unsigned long long bound_calloc_count;
+static unsigned long long bound_realloc_count;
+static unsigned long long bound_free_count;
+static unsigned long long bound_memalign_count;
+static unsigned long long bound_mmap_count;
+static unsigned long long bound_munmap_count;
+static unsigned long long bound_alloca_count;
+static unsigned long long bound_setjmp_count;
+static unsigned long long bound_longjmp_count;
+static unsigned long long bound_mempcy_count;
+static unsigned long long bound_memcmp_count;
+static unsigned long long bound_memmove_count;
+static unsigned long long bound_memset_count;
+static unsigned long long bound_strlen_count;
+static unsigned long long bound_strcpy_count;
+static unsigned long long bound_strncpy_count;
+static unsigned long long bound_strcmp_count;
+static unsigned long long bound_strncmp_count;
+static unsigned long long bound_strcat_count;
+static unsigned long long bound_strchr_count;
+static unsigned long long bound_strdup_count;
+static unsigned long long bound_not_found;
+#define INCR_COUNT(x)          ++x
+#else
+#define INCR_COUNT(x)
+#endif
+#if BOUND_STATISTIC_SPLAY
+static unsigned long long bound_splay;
+static unsigned long long bound_splay_end;
+static unsigned long long bound_splay_insert;
+static unsigned long long bound_splay_delete;
+#define INCR_COUNT_SPLAY(x)    ++x
+#else
+#define INCR_COUNT_SPLAY(x)
+#endif
+
+int tcc_backtrace(const char *fmt, ...);
+
+/* print a bound error message */
+#define bound_warning(...) \
+    tcc_backtrace("^bcheck.c^BCHECK: " __VA_ARGS__)
+
+#define bound_error(...)            \
+    do {                            \
+        bound_warning(__VA_ARGS__); \
+        if (never_fatal == 0)       \
+            exit(255);              \
+    } while (0)
+
+static void bound_alloc_error(const char *s)
+{
+    fprintf(stderr,"FATAL: %s\n",s);
+    exit (1);
+}
+
+static void bound_not_found_warning(const char *file, const char *function,
+                                    void *ptr)
+{
+    dprintf(stderr, "%s%s, %s(): Not found %p\n", exec, file, function, ptr);
+}
+
+static void fetch_and_add(int* variable, int value)
+{
+#if defined __i386__ || defined __x86_64__
+      __asm__ volatile("lock; addl %0, %1"
+        : "+r" (value), "+m" (*variable) // input+output
+        : // No input-only
+        : "memory"
+      );
+#elif defined __arm__
+      extern void fetch_and_add_arm(int* variable, int value);
+      fetch_and_add_arm(variable, value);
+#elif defined __aarch64__
+      extern void fetch_and_add_arm64(int* variable, int value);
+      fetch_and_add_arm64(variable, value);
+#elif defined __riscv
+      extern void fetch_and_add_riscv64(int* variable, int value);
+      fetch_and_add_riscv64(variable, value);
+#else
+      *variable += value;
+#endif
+}
+
+/* enable/disable checking. This can be used in signal handlers. */
+void __bounds_checking (int no_check)
+{
+#if HAVE_TLS_FUNC || HAVE_TLS_VAR
+    NO_CHECKING_SET(NO_CHECKING_GET() + no_check);
+#else
+    fetch_and_add (&no_checking, no_check);
+#endif
+}
+
+/* enable/disable checking. This can be used in signal handlers. */
+void __bound_never_fatal (int neverfatal)
+{
+    fetch_and_add (&never_fatal, neverfatal);
+}
+
+/* return '(p + offset)' for pointer arithmetic (a pointer can reach
+   the end of a region in this case */
+void * __bound_ptr_add(void *p, size_t offset)
+{
+    size_t addr = (size_t)p;
+
+    if (NO_CHECKING_GET())
+        return p + offset;
+
+    dprintf(stderr, "%s, %s(): %p 0x%lx\n",
+            __FILE__, __FUNCTION__, p, (unsigned long)offset);
+
+    WAIT_SEM ();
+    INCR_COUNT(bound_ptr_add_count);
+    if (tree) {
+        addr -= tree->start;
+        if (addr >= tree->size) {
+            addr = (size_t)p;
+            tree = splay (addr, tree);
+            addr -= tree->start;
+        }
+        if (addr >= tree->size) {
+            addr = (size_t)p;
+            tree = splay_end (addr, tree);
+            addr -= tree->start;
