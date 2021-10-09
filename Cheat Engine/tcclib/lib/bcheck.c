@@ -608,4 +608,167 @@ BOUND_PTR_INDIR(16)
 #endif
 
 /* return the frame pointer of the caller */
-#
+#define GET_CALLER_FP(fp)\
+{\
+    fp = (size_t)__builtin_frame_address(1);\
+}
+
+/* called when entering a function to add all the local regions */
+void FASTCALL __bound_local_new(void *p1) 
+{
+    size_t addr, fp, *p = p1;
+
+    if (NO_CHECKING_GET())
+         return;
+    GET_CALLER_FP(fp);
+    dprintf(stderr, "%s, %s(): p1=%p fp=%p\n",
+            __FILE__, __FUNCTION__, p, (void *)fp);
+    WAIT_SEM ();
+    while ((addr = p[0])) {
+        INCR_COUNT(bound_local_new_count);
+        tree = splay_insert(addr + fp, p[1], tree);
+        p += 2;
+    }
+    POST_SEM ();
+#if BOUND_DEBUG
+    if (print_calls) {
+        p = p1;
+        while ((addr = p[0])) {
+            dprintf(stderr, "%s, %s(): %p 0x%lx\n",
+                    __FILE__, __FUNCTION__,
+                    (void *) (addr + fp), (unsigned long) p[1]);
+            p += 2;
+        }
+    }
+#endif
+}
+
+/* called when leaving a function to delete all the local regions */
+void FASTCALL __bound_local_delete(void *p1) 
+{
+    size_t addr, fp, *p = p1;
+
+    if (NO_CHECKING_GET())
+         return;
+    GET_CALLER_FP(fp);
+    dprintf(stderr, "%s, %s(): p1=%p fp=%p\n",
+            __FILE__, __FUNCTION__, p, (void *)fp);
+    WAIT_SEM ();
+    while ((addr = p[0])) {
+        INCR_COUNT(bound_local_delete_count);
+        tree = splay_delete(addr + fp, tree);
+        p += 2;
+    }
+    if (alloca_list) {
+        alloca_list_type *last = NULL;
+        alloca_list_type *cur = alloca_list;
+
+        do {
+            if (cur->fp == fp) {
+                if (last)
+                    last->next = cur->next;
+                else
+                    alloca_list = cur->next;
+                tree = splay_delete ((size_t) cur->p, tree);
+                dprintf(stderr, "%s, %s(): remove alloca/vla %p\n",
+                        __FILE__, __FUNCTION__, cur->p);
+                BOUND_FREE (cur);
+                cur = last ? last->next : alloca_list;
+             }
+             else {
+                 last = cur;
+                 cur = cur->next;
+             }
+        } while (cur);
+    }
+    if (jmp_list) {
+        jmp_list_type *last = NULL;
+        jmp_list_type *cur = jmp_list;
+
+        do {
+            if (cur->fp == fp) {
+                if (last)
+                    last->next = cur->next;
+                else
+                    jmp_list = cur->next;
+                dprintf(stderr, "%s, %s(): remove setjmp %p\n",
+                       __FILE__, __FUNCTION__, cur->penv);
+                BOUND_FREE (cur);
+                cur = last ? last->next : jmp_list;
+            }
+            else {
+                last = cur;
+                cur = cur->next;
+            }
+        } while (cur);
+    }
+
+    POST_SEM ();
+#if BOUND_DEBUG
+    if (print_calls) {
+        p = p1;
+        while ((addr = p[0])) {
+            if (addr != 1) {
+                dprintf(stderr, "%s, %s(): %p 0x%lx\n",
+                        __FILE__, __FUNCTION__,
+                        (void *) (addr + fp), (unsigned long) p[1]);
+            }
+            p+= 2;
+        }
+    }
+#endif
+}
+
+/* used by alloca */
+void __bound_new_region(void *p, size_t size)
+{
+    size_t fp;
+    alloca_list_type *last;
+    alloca_list_type *cur;
+    alloca_list_type *new;
+
+    if (NO_CHECKING_GET())
+        return;
+
+    dprintf(stderr, "%s, %s(): %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, p, (unsigned long)size);
+    GET_CALLER_FP (fp);
+    new = BOUND_MALLOC (sizeof (alloca_list_type));
+    WAIT_SEM ();
+    INCR_COUNT(bound_alloca_count);
+    last = NULL;
+    cur = alloca_list;
+    while (cur) {
+#if defined(__i386__) || (defined(__arm__) && !defined(__ARM_EABI__))
+        int align = 4;
+#elif defined(__arm__)
+        int align = 8;
+#else
+        int align = 16;
+#endif
+        void *cure = (void *)((char *)cur->p + ((cur->size + align) & -align));
+        void *pe = (void *)((char *)p + ((size + align) & -align));
+        if (cur->fp == fp && ((cur->p <= p && cure > p) ||
+                              (p <= cur->p && pe > cur->p))) {
+            if (last)
+                last->next = cur->next;
+            else
+                alloca_list = cur->next;
+            tree = splay_delete((size_t)cur->p, tree);
+            break;
+        }
+        last = cur;
+        cur = cur->next;
+    }
+    tree = splay_insert((size_t)p, size, tree);
+    if (new) {
+        new->fp = fp;
+        new->p = p;
+        new->size = size;
+        new->next = alloca_list;
+        alloca_list = new;
+    }
+    POST_SEM ();
+    if (cur) {
+        dprintf(stderr, "%s, %s(): remove alloca/vla %p\n",
+                __FILE__, __FUNCTI
