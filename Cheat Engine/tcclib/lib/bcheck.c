@@ -523,3 +523,89 @@ void * __bound_ptr_add(void *p, size_t offset)
             addr = (size_t)p;
             tree = splay_end (addr, tree);
             addr -= tree->start;
+        }
+        if (addr <= tree->size) {
+            if (tree->is_invalid || addr + offset > tree->size) {
+                POST_SEM ();
+                if (print_warn_ptr_add)
+                    bound_warning("%p is outside of the region", p + offset);
+                if (never_fatal <= 0)
+                    return INVALID_POINTER; /* return an invalid pointer */
+                return p + offset;
+            }
+        }
+        else if (p) { /* Allow NULL + offset. offsetoff is using it. */
+            INCR_COUNT(bound_not_found);
+            POST_SEM ();
+            bound_not_found_warning (__FILE__, __FUNCTION__, p);
+            return p + offset;
+        }
+    }
+    POST_SEM ();
+    return p + offset;
+}
+
+/* return '(p + offset)' for pointer indirection (the resulting must
+   be strictly inside the region */
+#define BOUND_PTR_INDIR(dsize)                                                 \
+void * __bound_ptr_indir ## dsize (void *p, size_t offset)                     \
+{                                                                              \
+    size_t addr = (size_t)p;                                                   \
+                                                                               \
+    if (NO_CHECKING_GET())                                                     \
+        return p + offset;                                                     \
+                                                                               \
+    dprintf(stderr, "%s, %s(): %p 0x%lx\n",                                    \
+            __FILE__, __FUNCTION__, p, (unsigned long)offset);                 \
+    WAIT_SEM ();                                                               \
+    INCR_COUNT(bound_ptr_indir ## dsize ## _count);                            \
+    if (tree) {                                                                \
+        addr -= tree->start;                                                   \
+        if (addr >= tree->size) {                                              \
+            addr = (size_t)p;                                                  \
+            tree = splay (addr, tree);                                         \
+            addr -= tree->start;                                               \
+        }                                                                      \
+        if (addr >= tree->size) {                                              \
+            addr = (size_t)p;                                                  \
+            tree = splay_end (addr, tree);                                     \
+            addr -= tree->start;                                               \
+        }                                                                      \
+        if (addr <= tree->size) {                                              \
+            if (tree->is_invalid || addr + offset + dsize > tree->size) {      \
+                POST_SEM ();                                                   \
+                bound_warning("%p is outside of the region", p + offset); \
+                if (never_fatal <= 0)                                          \
+                    return INVALID_POINTER; /* return an invalid pointer */    \
+                return p + offset;                                             \
+            }                                                                  \
+        }                                                                      \
+        else {                                                                 \
+            INCR_COUNT(bound_not_found);                                       \
+            POST_SEM ();                                                       \
+            bound_not_found_warning (__FILE__, __FUNCTION__, p);               \
+            return p + offset;                                                 \
+        }                                                                      \
+    }                                                                          \
+    POST_SEM ();                                                               \
+    return p + offset;                                                         \
+}
+
+BOUND_PTR_INDIR(1)
+BOUND_PTR_INDIR(2)
+BOUND_PTR_INDIR(4)
+BOUND_PTR_INDIR(8)
+BOUND_PTR_INDIR(12)
+BOUND_PTR_INDIR(16)
+
+#if defined(__GNUC__) && (__GNUC__ >= 6)
+/*
+ * At least gcc 6.2 complains when __builtin_frame_address is used with
+ * nonzero argument.
+ */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wframe-address"
+#endif
+
+/* return the frame pointer of the caller */
+#
