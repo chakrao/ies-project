@@ -771,4 +771,162 @@ void __bound_new_region(void *p, size_t size)
     POST_SEM ();
     if (cur) {
         dprintf(stderr, "%s, %s(): remove alloca/vla %p\n",
-                __FILE__, __FUNCTI
+                __FILE__, __FUNCTION__, cur->p);
+        BOUND_FREE (cur);
+    }
+}
+
+void __bound_setjmp(jmp_buf env)
+{
+    jmp_list_type *jl;
+    void *e = (void *) env;
+
+    if (NO_CHECKING_GET() == 0) {
+        dprintf(stderr, "%s, %s(): %p\n", __FILE__, __FUNCTION__, e);
+        WAIT_SEM ();
+        INCR_COUNT(bound_setjmp_count);
+        jl = jmp_list;
+        while (jl) {
+            if (jl->penv == e)
+                break;
+            jl = jl->next;
+        }
+        if (jl == NULL) {
+            jl = BOUND_MALLOC (sizeof (jmp_list_type));
+            if (jl) {
+                jl->penv = e;
+                jl->next = jmp_list;
+                jmp_list = jl;
+            }
+        }
+        if (jl) {
+            size_t fp;
+
+            GET_CALLER_FP (fp);
+            jl->fp = fp;
+            jl->end_fp = (size_t)__builtin_frame_address(0);
+            jl->tid = BOUND_GET_TID;
+        }
+        POST_SEM ();
+    }
+}
+
+static void __bound_long_jump(jmp_buf env, int val, int sig, const char *func)
+{
+    jmp_list_type *jl;
+    void *e;
+    BOUND_TID_TYPE tid;
+
+    if (NO_CHECKING_GET() == 0) {
+        e = (void *)env;
+        tid = BOUND_GET_TID;
+        dprintf(stderr, "%s, %s(): %p\n", __FILE__, func, e);
+        WAIT_SEM();
+        INCR_COUNT(bound_longjmp_count);
+        jl = jmp_list;
+        while (jl) {
+            if (jl->penv == e && jl->tid == tid) {
+                size_t start_fp = (size_t)__builtin_frame_address(0);
+                size_t end_fp = jl->end_fp;
+                jmp_list_type *cur = jmp_list;
+                jmp_list_type *last = NULL;
+
+                while (cur->penv != e || cur->tid != tid) {
+                    if (cur->tid == tid) {
+                        dprintf(stderr, "%s, %s(): remove setjmp %p\n",
+                                __FILE__, func, cur->penv);
+                        if (last)
+                            last->next = cur->next;
+                        else
+                            jmp_list = cur->next;
+                        BOUND_FREE (cur);
+                        cur = last ? last->next : jmp_list;
+                    }
+                    else {
+                        last = cur;
+                        cur = cur->next;
+                    }
+                }
+                for (;;) {
+                    Tree *t = tree;
+                    alloca_list_type *last;
+                    alloca_list_type *cur;
+
+                    while (t && (t->start < start_fp || t->start > end_fp))
+                        if (t->start < start_fp)
+                            t = t->right;
+                        else
+                            t = t->left;
+                    if (t == NULL)
+                        break;
+                    last = NULL;
+                    cur = alloca_list;
+                    while (cur) {
+                         if ((size_t) cur->p == t->start) {
+                             dprintf(stderr, "%s, %s(): remove alloca/vla %p\n",
+                                     __FILE__, func, cur->p);
+                             if (last)
+                                 last->next = cur->next;
+                             else
+                                 alloca_list = cur->next;
+                             BOUND_FREE (cur);
+                             break;
+                         }
+                         last = cur;
+                         cur = cur->next;
+                    }
+                    dprintf(stderr, "%s, %s(): delete %p\n",
+                            __FILE__, func, (void *) t->start);
+                    tree = splay_delete(t->start, tree);
+                }
+                break;
+            }
+            jl = jl->next;
+        }
+        POST_SEM();
+    }
+#if !defined(_WIN32)
+    sig ? siglongjmp(env, val) :
+#endif
+    longjmp (env, val);
+}
+
+void __bound_longjmp(jmp_buf env, int val)
+{
+    __bound_long_jump(env,val, 0, __FUNCTION__);
+}
+
+#if !defined(_WIN32)
+void __bound_siglongjmp(jmp_buf env, int val)
+{
+    __bound_long_jump(env,val, 1, __FUNCTION__);
+}
+#endif
+
+#if defined(__GNUC__) && (__GNUC__ >= 6)
+#pragma GCC diagnostic pop
+#endif
+
+void __bound_init(size_t *p, int mode)
+{
+    dprintf(stderr, "%s, %s(): start %s\n", __FILE__, __FUNCTION__,
+            mode < 0 ? "lazy" : mode == 0 ? "normal use" : "for -run");
+
+    if (inited) {
+        WAIT_SEM();
+        goto add_bounds;
+    }
+    inited = 1;
+
+#if HAVE_TLS_FUNC
+#if defined(_WIN32)
+    no_checking_key = TlsAlloc();
+    TlsSetValue(no_checking_key, &no_checking);
+#else
+    pthread_key_create(&no_checking_key, NULL);
+    pthread_setspecific(no_checking_key, &no_checking);
+#endif
+#endif
+    NO_CHECKING_SET(1);
+
+    print_warn_ptr_add = getenv ("TCC_BOUNDS
