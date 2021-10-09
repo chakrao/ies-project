@@ -929,4 +929,126 @@ void __bound_init(size_t *p, int mode)
 #endif
     NO_CHECKING_SET(1);
 
-    print_warn_ptr_add = getenv ("TCC_BOUNDS
+    print_warn_ptr_add = getenv ("TCC_BOUNDS_WARN_POINTER_ADD") != NULL;
+    print_calls = getenv ("TCC_BOUNDS_PRINT_CALLS") != NULL;
+    print_heap = getenv ("TCC_BOUNDS_PRINT_HEAP") != NULL;
+    print_statistic = getenv ("TCC_BOUNDS_PRINT_STATISTIC") != NULL;
+    never_fatal = getenv ("TCC_BOUNDS_NEVER_FATAL") != NULL;
+
+    INIT_SEM ();
+
+#if MALLOC_REDIR
+    {
+        void *addr = mode > 0 ? RTLD_DEFAULT : RTLD_NEXT;
+
+        /* tcc -run required RTLD_DEFAULT. Normal usage requires RTLD_NEXT,
+           but using RTLD_NEXT with -run segfaults on MacOS in dyld as the
+           generated code segment isn't registered with dyld and hence the
+           caller image of dlsym isn't known to it */
+        *(void **) (&malloc_redir) = dlsym (addr, "malloc");
+        if (malloc_redir == NULL) {
+            dprintf(stderr, "%s, %s(): use RTLD_DEFAULT\n",
+                    __FILE__, __FUNCTION__);
+            addr = RTLD_DEFAULT;
+            *(void **) (&malloc_redir) = dlsym (addr, "malloc");
+        }
+        *(void **) (&calloc_redir) = dlsym (addr, "calloc");
+        *(void **) (&free_redir) = dlsym (addr, "free");
+        *(void **) (&realloc_redir) = dlsym (addr, "realloc");
+        *(void **) (&memalign_redir) = dlsym (addr, "memalign");
+        dprintf(stderr, "%s, %s(): malloc_redir %p\n",
+                __FILE__, __FUNCTION__, malloc_redir);
+        dprintf(stderr, "%s, %s(): free_redir %p\n",
+                __FILE__, __FUNCTION__, free_redir);
+        dprintf(stderr, "%s, %s(): realloc_redir %p\n",
+                __FILE__, __FUNCTION__, realloc_redir);
+        dprintf(stderr, "%s, %s(): memalign_redir %p\n",
+                __FILE__, __FUNCTION__, memalign_redir);
+        if (malloc_redir == NULL || free_redir == NULL)
+            bound_alloc_error ("Cannot redirect malloc/free");
+#if HAVE_PTHREAD_CREATE
+        *(void **) (&pthread_create_redir) = dlsym (addr, "pthread_create");
+        dprintf(stderr, "%s, %s(): pthread_create_redir %p\n",
+                __FILE__, __FUNCTION__, pthread_create_redir);
+        if (pthread_create_redir == NULL)
+            bound_alloc_error ("Cannot redirect pthread_create");
+#endif
+#if HAVE_SIGNAL
+        *(void **) (&signal_redir) = dlsym (addr, "signal");
+        dprintf(stderr, "%s, %s(): signal_redir %p\n",
+                __FILE__, __FUNCTION__, signal_redir);
+        if (signal_redir == NULL)
+            bound_alloc_error ("Cannot redirect signal");
+#endif
+#if HAVE_SIGACTION
+        *(void **) (&sigaction_redir) = dlsym (addr, "sigaction");
+        dprintf(stderr, "%s, %s(): sigaction_redir %p\n",
+                __FILE__, __FUNCTION__, sigaction_redir);
+        if (sigaction_redir == NULL)
+            bound_alloc_error ("Cannot redirect sigaction");
+#endif
+#if HAVE_FORK
+        *(void **) (&fork_redir) = dlsym (addr, "fork");
+        dprintf(stderr, "%s, %s(): fork_redir %p\n",
+                __FILE__, __FUNCTION__, fork_redir);
+        if (fork_redir == NULL)
+            bound_alloc_error ("Cannot redirect fork");
+#endif
+    }
+#endif
+
+#ifdef __linux__
+    {
+        FILE *fp;
+        unsigned char found;
+        unsigned long start;
+        unsigned long end;
+        unsigned long ad =
+            (unsigned long) __builtin_return_address(0);
+        char line[1000];
+
+        /* Display exec name. Usefull when a lot of code is compiled with tcc */
+        fp = fopen ("/proc/self/comm", "r");
+        if (fp) {
+            memset (exec, 0, sizeof(exec));
+            fread (exec, 1, sizeof(exec) - 2, fp);
+            if (strchr(exec,'\n'))
+                *strchr(exec,'\n') = '\0';
+            strcat (exec, ":");
+            fclose (fp);
+        }
+        /* check if dlopen is used (is threre a better way?) */ 
+        found = 0;
+        fp = fopen ("/proc/self/maps", "r");
+        if (fp) {
+            while (fgets (line, sizeof(line), fp)) {
+                if (sscanf (line, "%lx-%lx", &start, &end) == 2 &&
+                            ad >= start && ad < end) {
+                    found = 1;
+                    break;
+                }
+                if (strstr (line,"[heap]"))
+                    break;
+            }
+            fclose (fp);
+        }
+        if (found == 0) {
+            use_sem = 1;
+            no_strdup = 1;
+        }
+    }
+#endif
+
+    WAIT_SEM ();
+
+#if HAVE_CTYPE
+#ifdef __APPLE__
+    tree = splay_insert((size_t) &_DefaultRuneLocale,
+                        sizeof (_DefaultRuneLocale), tree);
+#else
+    /* XXX: Does not work if locale is changed */
+    tree = splay_insert((size_t) __ctype_b_loc(),
+                        sizeof (unsigned short *), tree);
+    tree = splay_insert((size_t) (*__ctype_b_loc() - 128),
+                        384 * sizeof (unsigned short), tree);
+    tree = splay_insert((size_t) __ctype_tolower_loc(
