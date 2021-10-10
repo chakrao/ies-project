@@ -1051,4 +1051,160 @@ void __bound_init(size_t *p, int mode)
                         sizeof (unsigned short *), tree);
     tree = splay_insert((size_t) (*__ctype_b_loc() - 128),
                         384 * sizeof (unsigned short), tree);
-    tree = splay_insert((size_t) __ctype_tolower_loc(
+    tree = splay_insert((size_t) __ctype_tolower_loc(),
+                        sizeof (__int32_t *), tree);
+    tree = splay_insert((size_t) (*__ctype_tolower_loc() - 128),
+                        384 * sizeof (__int32_t), tree);
+    tree = splay_insert((size_t) __ctype_toupper_loc(),
+                        sizeof (__int32_t *), tree);
+    tree = splay_insert((size_t) (*__ctype_toupper_loc() - 128),
+                        384 * sizeof (__int32_t), tree);
+#endif
+#endif
+#if HAVE_ERRNO
+    tree = splay_insert((size_t) (&errno), sizeof (int), tree);
+#endif
+
+add_bounds:
+    if (!p)
+        goto no_bounds;
+
+    /* add all static bound check values */
+    while (p[0] != 0) {
+        tree = splay_insert(p[0], p[1], tree);
+#if BOUND_DEBUG
+        if (print_calls) {
+            dprintf(stderr, "%s, %s(): static var %p 0x%lx\n",
+                    __FILE__, __FUNCTION__,
+                    (void *) p[0], (unsigned long) p[1]);
+        }
+#endif
+        p += 2;
+    }
+no_bounds:
+
+    POST_SEM ();
+    NO_CHECKING_SET(0);
+    dprintf(stderr, "%s, %s(): end\n\n", __FILE__, __FUNCTION__);
+}
+
+void
+#if (defined(__GLIBC__) && (__GLIBC_MINOR__ >= 4)) || defined(_WIN32)
+__attribute__((constructor))
+#endif
+__bound_main_arg(int argc, char **argv, char **envp)
+{
+    __bound_init (0, -1);
+    if (argc && argv) {
+        int i;
+
+        WAIT_SEM ();
+        for (i = 0; i < argc; i++)
+            tree = splay_insert((size_t) argv[i], strlen (argv[i]) + 1, tree);
+        tree = splay_insert((size_t) argv, (argc + 1) * sizeof(char *), tree);
+        POST_SEM ();
+#if BOUND_DEBUG
+        if (print_calls) {
+            for (i = 0; i < argc; i++)
+                dprintf(stderr, "%s, %s(): arg %p 0x%lx\n",
+                        __FILE__, __FUNCTION__,
+                        argv[i], (unsigned long)(strlen (argv[i]) + 1));
+            dprintf(stderr, "%s, %s(): argv %p %d\n",
+                    __FILE__, __FUNCTION__, argv,
+                    (int)((argc + 1) * sizeof(char *)));
+        }
+#endif
+    }
+
+    if (envp && *envp) {
+        char **p = envp;
+
+        WAIT_SEM ();
+        while (*p) {
+            tree = splay_insert((size_t) *p, strlen (*p) + 1, tree);
+            ++p;
+        }
+        tree = splay_insert((size_t) envp, (++p - envp) * sizeof(char *), tree);
+        POST_SEM ();
+#if BOUND_DEBUG
+        if (print_calls) {
+            p = envp;
+            while (*p) {
+                dprintf(stderr, "%s, %s(): env %p 0x%lx\n",
+                        __FILE__, __FUNCTION__,
+                        *p, (unsigned long)(strlen (*p) + 1));
+                ++p;
+            }
+            dprintf(stderr, "%s, %s(): environ %p %d\n",
+                    __FILE__, __FUNCTION__, envp,
+                    (int)((++p - envp) * sizeof(char *)));
+        }
+#endif
+    }
+}
+
+void __attribute__((destructor)) __bound_exit(void)
+{
+    int i;
+    static const char * const alloc_type[] = {
+        "", "malloc", "calloc", "realloc", "memalign", "strdup"
+    };
+
+    dprintf(stderr, "%s, %s():\n", __FILE__, __FUNCTION__);
+
+    if (inited) {
+#if !defined(_WIN32) && !defined(__APPLE__) && !defined TCC_MUSL && \
+    !defined(__OpenBSD__) && !defined(__FreeBSD__) && !defined(__NetBSD__)
+        if (print_heap) {
+            extern void __libc_freeres (void);
+            __libc_freeres ();
+        }
+#endif
+
+        NO_CHECKING_SET(1);
+
+        TRY_SEM ();
+        while (alloca_list) {
+            alloca_list_type *next = alloca_list->next;
+
+            tree = splay_delete ((size_t) alloca_list->p, tree);
+            BOUND_FREE (alloca_list);
+            alloca_list = next;
+        }
+        while (jmp_list) {
+           jmp_list_type *next  = jmp_list->next;
+
+           BOUND_FREE (jmp_list);
+           jmp_list = next;
+        }
+        for (i = 0; i < FREE_REUSE_SIZE; i++) {
+            if (free_reuse_list[i]) {
+                tree = splay_delete ((size_t) free_reuse_list[i], tree);
+                BOUND_FREE (free_reuse_list[i]);
+             }
+        }
+        while (tree) {
+            if (print_heap && tree->type != 0)
+                fprintf (stderr, "%s, %s(): %s found size %lu\n",
+                         __FILE__, __FUNCTION__, alloc_type[tree->type],
+                         (unsigned long) tree->size);
+            tree = splay_delete (tree->start, tree);
+        }
+#if TREE_REUSE
+        while (tree_free_list) {
+            Tree *next = tree_free_list->left;
+            BOUND_FREE (tree_free_list);
+            tree_free_list = next;
+        }
+#endif
+        POST_SEM ();
+        EXIT_SEM ();
+#if HAVE_TLS_FUNC
+#if defined(_WIN32)
+        TlsFree(no_checking_key);
+#else
+        pthread_key_delete(no_checking_key);
+#endif
+#endif
+        inited = 0;
+    
