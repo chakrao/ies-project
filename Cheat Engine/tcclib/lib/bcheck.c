@@ -1207,4 +1207,101 @@ void __attribute__((destructor)) __bound_exit(void)
 #endif
 #endif
         inited = 0;
-    
+        if (print_statistic) {
+#if BOUND_STATISTIC
+            fprintf (stderr, "bound_ptr_add_count      %llu\n", bound_ptr_add_count);
+            fprintf (stderr, "bound_ptr_indir1_count   %llu\n", bound_ptr_indir1_count);
+            fprintf (stderr, "bound_ptr_indir2_count   %llu\n", bound_ptr_indir2_count);
+            fprintf (stderr, "bound_ptr_indir4_count   %llu\n", bound_ptr_indir4_count);
+            fprintf (stderr, "bound_ptr_indir8_count   %llu\n", bound_ptr_indir8_count);
+            fprintf (stderr, "bound_ptr_indir12_count  %llu\n", bound_ptr_indir12_count);
+            fprintf (stderr, "bound_ptr_indir16_count  %llu\n", bound_ptr_indir16_count);
+            fprintf (stderr, "bound_local_new_count    %llu\n", bound_local_new_count);
+            fprintf (stderr, "bound_local_delete_count %llu\n", bound_local_delete_count);
+            fprintf (stderr, "bound_malloc_count       %llu\n", bound_malloc_count);
+            fprintf (stderr, "bound_calloc_count       %llu\n", bound_calloc_count);
+            fprintf (stderr, "bound_realloc_count      %llu\n", bound_realloc_count);
+            fprintf (stderr, "bound_free_count         %llu\n", bound_free_count);
+            fprintf (stderr, "bound_memalign_count     %llu\n", bound_memalign_count);
+            fprintf (stderr, "bound_mmap_count         %llu\n", bound_mmap_count);
+            fprintf (stderr, "bound_munmap_count       %llu\n", bound_munmap_count);
+            fprintf (stderr, "bound_alloca_count       %llu\n", bound_alloca_count);
+            fprintf (stderr, "bound_setjmp_count       %llu\n", bound_setjmp_count);
+            fprintf (stderr, "bound_longjmp_count      %llu\n", bound_longjmp_count);
+            fprintf (stderr, "bound_mempcy_count       %llu\n", bound_mempcy_count);
+            fprintf (stderr, "bound_memcmp_count       %llu\n", bound_memcmp_count);
+            fprintf (stderr, "bound_memmove_count      %llu\n", bound_memmove_count);
+            fprintf (stderr, "bound_memset_count       %llu\n", bound_memset_count);
+            fprintf (stderr, "bound_strlen_count       %llu\n", bound_strlen_count);
+            fprintf (stderr, "bound_strcpy_count       %llu\n", bound_strcpy_count);
+            fprintf (stderr, "bound_strncpy_count      %llu\n", bound_strncpy_count);
+            fprintf (stderr, "bound_strcmp_count       %llu\n", bound_strcmp_count);
+            fprintf (stderr, "bound_strncmp_count      %llu\n", bound_strncmp_count);
+            fprintf (stderr, "bound_strcat_count       %llu\n", bound_strcat_count);
+            fprintf (stderr, "bound_strchr_count       %llu\n", bound_strchr_count);
+            fprintf (stderr, "bound_strdup_count       %llu\n", bound_strdup_count);
+            fprintf (stderr, "bound_not_found          %llu\n", bound_not_found);
+#endif
+#if BOUND_STATISTIC_SPLAY
+            fprintf (stderr, "bound_splay              %llu\n", bound_splay);
+            fprintf (stderr, "bound_splay_end          %llu\n", bound_splay_end);
+            fprintf (stderr, "bound_splay_insert       %llu\n", bound_splay_insert);
+            fprintf (stderr, "bound_splay_delete       %llu\n", bound_splay_delete);
+#endif
+        }
+    }
+}
+
+#if HAVE_PTHREAD_CREATE
+typedef struct {
+    void *(*start_routine) (void *);
+    void *arg;
+    sigset_t old_mask;
+} bound_thread_create_type;
+
+static void *bound_thread_create(void *bdata)
+{
+    bound_thread_create_type *data = (bound_thread_create_type *) bdata;
+    void *retval;
+#if HAVE_TLS_FUNC
+    int *p = (int *) BOUND_MALLOC(sizeof(int));
+  
+    if (!p) bound_alloc_error("bound_thread_create malloc");
+    *p = 0;
+    pthread_setspecific(no_checking_key, p);
+#endif
+    pthread_sigmask(SIG_SETMASK, &data->old_mask, NULL);
+    retval = data->start_routine(data->arg);
+#if HAVE_TLS_FUNC
+    pthread_setspecific(no_checking_key, NULL);
+    BOUND_FREE (p);
+#endif
+    BOUND_FREE (data);
+    return retval;
+}
+
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                   void *(*start_routine) (void *), void *arg)
+{
+    int retval;
+    bound_thread_create_type *data;
+    sigset_t mask;
+    sigset_t old_mask;
+  
+    use_sem = 1;
+    dprintf (stderr, "%s, %s()\n", __FILE__, __FUNCTION__);
+    sigfillset(&mask);
+    pthread_sigmask(SIG_SETMASK, &mask, &old_mask);
+    data = (bound_thread_create_type *) BOUND_MALLOC(sizeof(bound_thread_create_type));
+    if (!data) bound_alloc_error("bound_thread_create malloc");
+    data->start_routine = start_routine;
+    data->arg = arg;
+    data->old_mask = old_mask;
+    retval = pthread_create_redir(thread, attr, bound_thread_create, data);
+    pthread_sigmask(SIG_SETMASK, &old_mask, NULL);
+    return retval;
+}
+#endif
+
+#if HAVE_SIGNAL || HAVE_SIGACTION
+typede
