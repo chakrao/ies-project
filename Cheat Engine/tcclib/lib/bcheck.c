@@ -1304,4 +1304,179 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
 #endif
 
 #if HAVE_SIGNAL || HAVE_SIGACTION
-typede
+typedef union {
+#if HAVE_SIGNAL
+    bound_sig signal_handler;
+#endif
+#if HAVE_SIGACTION
+    void (*sig_handler)(int);
+    void (*sig_sigaction)(int, siginfo_t *, void *);
+#endif
+} bound_sig_type;
+
+static unsigned char bound_sig_used[NSIG];
+static bound_sig_type bound_sig_data[NSIG];
+#endif
+
+#if HAVE_SIGNAL
+static void signal_handler(int sig)
+{
+   __bounds_checking(1);
+   bound_sig_data[sig].signal_handler(sig);
+   __bounds_checking(-1);
+}
+
+bound_sig signal(int signum, bound_sig handler)
+{
+    bound_sig retval;
+
+    dprintf (stderr, "%s, %s() %d %p\n", __FILE__, __FUNCTION__,
+             signum, handler);
+    retval = signal_redir(signum, handler ? signal_handler : handler);
+    if (retval != SIG_ERR) {
+        if (bound_sig_used[signum])
+            retval = bound_sig_data[signum].signal_handler;
+        if (handler) {
+            bound_sig_used[signum] = 1;
+            bound_sig_data[signum].signal_handler = handler;
+        }
+    }
+    return retval;
+}
+#endif
+
+#if HAVE_SIGACTION
+static void sig_handler(int sig)
+{
+   __bounds_checking(1);
+   bound_sig_data[sig].sig_handler(sig);
+   __bounds_checking(-1);
+}
+
+static void sig_sigaction(int sig, siginfo_t *info, void *ucontext)
+{
+   __bounds_checking(1);
+   bound_sig_data[sig].sig_sigaction(sig, info, ucontext);
+   __bounds_checking(-1);
+}
+
+int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
+{
+    int retval;
+    struct sigaction nact, oact;
+
+    dprintf (stderr, "%s, %s() %d %p %p\n", __FILE__, __FUNCTION__,
+             signum, act, oldact);
+    if (act) {
+        nact = *act;
+        if (nact.sa_flags & SA_SIGINFO)
+            nact.sa_sigaction = sig_sigaction;
+        else
+            nact.sa_handler = sig_handler;
+        retval = sigaction_redir(signum, &nact, &oact);
+    }
+    else
+        retval = sigaction_redir(signum, act, &oact);
+    if (retval >= 0) {
+        if (bound_sig_used[signum]) {
+            if (oact.sa_flags & SA_SIGINFO)
+                oact.sa_sigaction = bound_sig_data[signum].sig_sigaction;
+            else
+                oact.sa_handler = bound_sig_data[signum].sig_handler;
+        }
+        if (oldact) {
+            *oldact = oact;
+        }
+        if (act) {
+            bound_sig_used[signum] = 1;
+            if (act->sa_flags & SA_SIGINFO)
+                bound_sig_data[signum].sig_sigaction = act->sa_sigaction;
+            else
+                bound_sig_data[signum].sig_handler = act->sa_handler;
+        }
+    }
+    return retval;
+}
+#endif
+
+#if HAVE_FORK
+pid_t fork(void)
+{
+    pid_t retval;
+
+    WAIT_SEM();
+    retval = (*fork_redir)();
+    if (retval == 0)
+        INIT_SEM();
+    else
+        POST_SEM();
+    return retval;
+}
+#endif
+
+#if MALLOC_REDIR
+void *malloc(size_t size)
+#else
+void *__bound_malloc(size_t size, const void *caller)
+#endif
+{
+    void *ptr;
+    
+#if MALLOC_REDIR
+    /* This will catch the first dlsym call from __bound_init */
+    if (malloc_redir == NULL) {
+        __bound_init (0, -1);
+        if (malloc_redir == NULL) {
+            ptr = &initial_pool[pool_index];
+            pool_index = (pool_index + size + 15) & ~15;
+            if (pool_index >= sizeof (initial_pool))
+                bound_alloc_error ("initial memory pool too small");
+            dprintf (stderr, "%s, %s(): initial %p, 0x%lx\n",
+                     __FILE__, __FUNCTION__, ptr, (unsigned long)size);
+            return ptr;
+        }
+    }
+#endif
+    /* we allocate one more byte to ensure the regions will be
+       separated by at least one byte. With the glibc malloc, it may
+       be in fact not necessary */
+    ptr = BOUND_MALLOC (size + 1);
+    dprintf(stderr, "%s, %s(): %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, ptr, (unsigned long)size);
+    
+    if (NO_CHECKING_GET() == 0) {
+        WAIT_SEM ();
+        INCR_COUNT(bound_malloc_count);
+
+        if (ptr) {
+            tree = splay_insert ((size_t) ptr, size ? size : size + 1, tree);
+            if (tree && tree->start == (size_t) ptr)
+                tree->type = TCC_TYPE_MALLOC;
+        }
+        POST_SEM ();
+    }
+    return ptr;
+}
+
+#if MALLOC_REDIR
+void *memalign(size_t size, size_t align)
+#else
+void *__bound_memalign(size_t size, size_t align, const void *caller)
+#endif
+{
+    void *ptr;
+
+#if HAVE_MEMALIGN
+    /* we allocate one more byte to ensure the regions will be
+       separated by at least one byte. With the glibc malloc, it may
+       be in fact not necessary */
+    ptr = BOUND_MEMALIGN(size + 1, align);
+#else
+    if (align > 4) {
+        /* XXX: handle it ? */
+        ptr = NULL;
+    } else {
+        /* we suppose that malloc aligns to at least four bytes */
+        ptr = BOUND_MALLOC(size + 1);
+    }
+#e
