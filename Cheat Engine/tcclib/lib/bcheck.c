@@ -1479,4 +1479,169 @@ void *__bound_memalign(size_t size, size_t align, const void *caller)
         /* we suppose that malloc aligns to at least four bytes */
         ptr = BOUND_MALLOC(size + 1);
     }
-#e
+#endif
+    dprintf(stderr, "%s, %s(): %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, ptr, (unsigned long)size);
+
+    if (NO_CHECKING_GET() == 0) {
+        WAIT_SEM ();
+        INCR_COUNT(bound_memalign_count);
+
+        if (ptr) {
+            tree = splay_insert((size_t) ptr, size ? size : size + 1, tree);
+            if (tree && tree->start == (size_t) ptr)
+                tree->type = TCC_TYPE_MEMALIGN;
+        }
+        POST_SEM ();
+    }
+    return ptr;
+}
+
+#if MALLOC_REDIR
+void free(void *ptr)
+#else
+void __bound_free(void *ptr, const void *caller)
+#endif
+{
+    size_t addr = (size_t) ptr;
+    void *p;
+
+    if (ptr == NULL || tree == NULL
+#if MALLOC_REDIR
+        || ((unsigned char *) ptr >= &initial_pool[0] &&
+            (unsigned char *) ptr < &initial_pool[sizeof(initial_pool)])
+#endif
+        )
+        return;
+
+    dprintf(stderr, "%s, %s(): %p\n", __FILE__, __FUNCTION__, ptr);
+
+    if (NO_CHECKING_GET() == 0) {
+        WAIT_SEM ();
+        INCR_COUNT(bound_free_count);
+        tree = splay (addr, tree);
+        if (tree->start == addr) {
+            if (tree->is_invalid) {
+                POST_SEM ();
+                bound_error("freeing invalid region");
+                return;
+            }
+            tree->is_invalid = 1;
+            memset (ptr, 0x5a, tree->size);
+            p = free_reuse_list[free_reuse_index];
+            free_reuse_list[free_reuse_index] = ptr;
+            free_reuse_index = (free_reuse_index + 1) % FREE_REUSE_SIZE;
+            if (p)
+                tree = splay_delete((size_t)p, tree);
+            ptr = p;
+        }
+        POST_SEM ();
+    }
+    BOUND_FREE (ptr);
+}
+
+#if MALLOC_REDIR
+void *realloc(void *ptr, size_t size)
+#else
+void *__bound_realloc(void *ptr, size_t size, const void *caller)
+#endif
+{
+    void *new_ptr;
+
+    if (size == 0) {
+#if MALLOC_REDIR
+        free(ptr);
+#else
+        __bound_free(ptr, caller);
+#endif
+        return NULL;
+    }
+
+    new_ptr = BOUND_REALLOC (ptr, size + 1);
+    dprintf(stderr, "%s, %s(): %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, new_ptr, (unsigned long)size);
+
+    if (NO_CHECKING_GET() == 0) {
+        WAIT_SEM ();
+        INCR_COUNT(bound_realloc_count);
+
+        if (ptr)
+            tree = splay_delete ((size_t) ptr, tree);
+        if (new_ptr) {
+            tree = splay_insert ((size_t) new_ptr, size ? size : size + 1, tree);
+            if (tree && tree->start == (size_t) new_ptr)
+                tree->type = TCC_TYPE_REALLOC;
+        }
+        POST_SEM ();
+    }
+    return new_ptr;
+}
+
+#if MALLOC_REDIR
+void *calloc(size_t nmemb, size_t size)
+#else
+void *__bound_calloc(size_t nmemb, size_t size)
+#endif
+{
+    void *ptr;
+
+    size *= nmemb;
+#if MALLOC_REDIR
+    /* This will catch the first dlsym call from __bound_init */
+    if (malloc_redir == NULL) {
+        __bound_init (0, -1);
+        if (malloc_redir == NULL) {
+            ptr = &initial_pool[pool_index];
+            pool_index = (pool_index + size + 15) & ~15;
+            if (pool_index >= sizeof (initial_pool))
+                bound_alloc_error ("initial memory pool too small");
+            dprintf (stderr, "%s, %s(): initial %p, 0x%lx\n",
+                     __FILE__, __FUNCTION__, ptr, (unsigned long)size);
+            memset (ptr, 0, size);
+            return ptr;
+        }
+    }
+#endif
+    ptr = BOUND_MALLOC(size + 1);
+    dprintf (stderr, "%s, %s(): %p, 0x%lx\n",
+             __FILE__, __FUNCTION__, ptr, (unsigned long)size);
+
+    if (ptr) {
+        memset (ptr, 0, size);
+        if (NO_CHECKING_GET() == 0) {
+            WAIT_SEM ();
+            INCR_COUNT(bound_calloc_count);
+            tree = splay_insert ((size_t) ptr, size ? size : size + 1, tree);
+            if (tree && tree->start == (size_t) ptr)
+                tree->type = TCC_TYPE_CALLOC;
+            POST_SEM ();
+        }
+    }
+    return ptr;
+}
+
+#if !defined(_WIN32)
+void *__bound_mmap (void *start, size_t size, int prot,
+                    int flags, int fd, off_t offset)
+{
+    void *result;
+
+    dprintf(stderr, "%s, %s(): %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, start, (unsigned long)size);
+    result = mmap (start, size, prot, flags, fd, offset);
+    if (result && NO_CHECKING_GET() == 0) {
+        WAIT_SEM ();
+        INCR_COUNT(bound_mmap_count);
+        tree = splay_insert((size_t)result, size, tree);
+        POST_SEM ();
+    }
+    return result;
+}
+
+int __bound_munmap (void *start, size_t size)
+{
+    int result;
+
+    dprintf(stderr, "%s, %s(): %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, start, (unsigned long)size);
+    if (start && NO_CH
