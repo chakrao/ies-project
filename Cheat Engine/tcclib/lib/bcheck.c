@@ -1644,4 +1644,151 @@ int __bound_munmap (void *start, size_t size)
 
     dprintf(stderr, "%s, %s(): %p, 0x%lx\n",
             __FILE__, __FUNCTION__, start, (unsigned long)size);
-    if (start && NO_CH
+    if (start && NO_CHECKING_GET() == 0) {
+        WAIT_SEM ();
+        INCR_COUNT(bound_munmap_count);
+        tree = splay_delete ((size_t) start, tree);
+        POST_SEM ();
+    }
+    result = munmap (start, size);
+    return result;
+}
+#endif
+
+/* some useful checked functions */
+
+/* check that (p ... p + size - 1) lies inside 'p' region, if any */
+static void __bound_check(const void *p, size_t size, const char *function)
+{
+    if (size != 0 && __bound_ptr_add((void *)p, size) == INVALID_POINTER) {
+        bound_error("invalid pointer %p, size 0x%lx in %s",
+                p, (unsigned long)size, function);
+    }
+}
+
+static int check_overlap (const void *p1, size_t n1,
+                          const void *p2, size_t n2,
+                          const char *function)
+{
+    const void *p1e = (const void *) ((const char *) p1 + n1);
+    const void *p2e = (const void *) ((const char *) p2 + n2);
+
+    if (NO_CHECKING_GET() == 0 && n1 != 0 && n2 !=0 &&
+        ((p1 <= p2 && p1e > p2) ||     /* p1----p2====p1e----p2e */
+         (p2 <= p1 && p2e > p1))) {    /* p2----p1====p2e----p1e */
+        bound_error("overlapping regions %p(0x%lx), %p(0x%lx) in %s",
+                p1, (unsigned long)n1, p2, (unsigned long)n2, function);
+        return never_fatal < 0;
+    }
+    return 0;
+}
+
+void *__bound_memcpy(void *dest, const void *src, size_t n)
+{
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, dest, src, (unsigned long)n);
+    INCR_COUNT(bound_mempcy_count);
+    __bound_check(dest, n, "memcpy dest");
+    __bound_check(src, n, "memcpy src");
+    if (check_overlap(dest, n, src, n, "memcpy"))
+        return dest;
+    return memcpy(dest, src, n);
+}
+
+int __bound_memcmp(const void *s1, const void *s2, size_t n)
+{
+    const unsigned char *u1 = (const unsigned char *) s1;
+    const unsigned char *u2 = (const unsigned char *) s2;
+    int retval = 0;
+
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, s1, s2, (unsigned long)n);
+    INCR_COUNT(bound_memcmp_count);
+    for (;;) {
+        if ((ssize_t) --n == -1)
+            break;
+        else if (*u1 != *u2) {
+            retval = *u1++ - *u2++;
+            break;
+        }
+        ++u1;
+        ++u2;
+    }
+    __bound_check(s1, (const void *)u1 - s1, "memcmp s1");
+    __bound_check(s2, (const void *)u2 - s2, "memcmp s2");
+    return retval;
+}
+
+void *__bound_memmove(void *dest, const void *src, size_t n)
+{
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, dest, src, (unsigned long)n);
+    INCR_COUNT(bound_memmove_count);
+    __bound_check(dest, n, "memmove dest");
+    __bound_check(src, n, "memmove src");
+    return memmove(dest, src, n);
+}
+
+void *__bound_memset(void *s, int c, size_t n)
+{
+    dprintf(stderr, "%s, %s(): %p, %d, 0x%lx\n",
+            __FILE__, __FUNCTION__, s, c, (unsigned long)n);
+    INCR_COUNT(bound_memset_count);
+    __bound_check(s, n, "memset");
+    return memset(s, c, n);
+}
+
+#if defined(__arm__) && defined(__ARM_EABI__)
+void *__bound___aeabi_memcpy(void *dest, const void *src, size_t n)
+{
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, dest, src, (unsigned long)n);
+    INCR_COUNT(bound_mempcy_count);
+    __bound_check(dest, n, "memcpy dest");
+    __bound_check(src, n, "memcpy src");
+    if (check_overlap(dest, n, src, n, "memcpy"))
+        return dest;
+    return __aeabi_memcpy(dest, src, n);
+}
+
+void *__bound___aeabi_memmove(void *dest, const void *src, size_t n)
+{
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, dest, src, (unsigned long)n);
+    INCR_COUNT(bound_memmove_count);
+    __bound_check(dest, n, "memmove dest");
+    __bound_check(src, n, "memmove src");
+    return __aeabi_memmove(dest, src, n);
+}
+
+void *__bound___aeabi_memmove4(void *dest, const void *src, size_t n)
+{
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, dest, src, (unsigned long)n);
+    INCR_COUNT(bound_memmove_count);
+    __bound_check(dest, n, "memmove dest");
+    __bound_check(src, n, "memmove src");
+    return __aeabi_memmove4(dest, src, n);
+}
+
+void *__bound___aeabi_memmove8(void *dest, const void *src, size_t n)
+{
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, dest, src, (unsigned long)n);
+    INCR_COUNT(bound_memmove_count);
+    __bound_check(dest, n, "memmove dest");
+    __bound_check(src, n, "memmove src");
+    return __aeabi_memmove8(dest, src, n);
+}
+
+void *__bound___aeabi_memset(void *s, int c, size_t n)
+{
+    dprintf(stderr, "%s, %s(): %p, %d, 0x%lx\n",
+            __FILE__, __FUNCTION__, s, c, (unsigned long)n);
+    INCR_COUNT(bound_memset_count);
+    __bound_check(s, n, "memset");
+    return __aeabi_memset(s, c, n);
+}
+#endif
+
+int __bound_strlen(const char *s)
