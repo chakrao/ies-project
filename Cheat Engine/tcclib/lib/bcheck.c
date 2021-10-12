@@ -1792,3 +1792,160 @@ void *__bound___aeabi_memset(void *s, int c, size_t n)
 #endif
 
 int __bound_strlen(const char *s)
+{
+    const char *p = s;
+
+    dprintf(stderr, "%s, %s(): %p\n",
+            __FILE__, __FUNCTION__, s);
+    INCR_COUNT(bound_strlen_count);
+    while (*p++);
+    __bound_check(s, p - s, "strlen");
+    return (p - s) - 1;
+}
+
+char *__bound_strcpy(char *dest, const char *src)
+{
+    size_t len;
+    const char *p = src;
+
+    dprintf(stderr, "%s, %s(): %p, %p\n",
+            __FILE__, __FUNCTION__, dest, src);
+    INCR_COUNT(bound_strcpy_count);
+    while (*p++);
+    len = p - src;
+    __bound_check(dest, len, "strcpy dest");
+    __bound_check(src, len, "strcpy src");
+    if (check_overlap(dest, len, src, len, "strcpy"))
+        return dest;
+    return strcpy (dest, src);
+}
+
+char *__bound_strncpy(char *dest, const char *src, size_t n)
+{
+    size_t len = n;
+    const char *p = src;
+
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, dest, src, (unsigned long)n);
+    INCR_COUNT(bound_strncpy_count);
+    while (len-- && *p++);
+    len = p - src;
+    __bound_check(dest, len, "strncpy dest");
+    __bound_check(src, len, "strncpy src");
+    if (check_overlap(dest, len, src, len, "strncpy"))
+        return dest;
+    return strncpy(dest, src, n);
+}
+
+int __bound_strcmp(const char *s1, const char *s2)
+{
+    const unsigned char *u1 = (const unsigned char *) s1;
+    const unsigned char *u2 = (const unsigned char *) s2;
+
+    dprintf(stderr, "%s, %s(): %p, %p\n",
+            __FILE__, __FUNCTION__, s1, s2);
+    INCR_COUNT(bound_strcmp_count);
+    while (*u1 && *u1 == *u2) {
+        ++u1;
+        ++u2;
+    }
+    __bound_check(s1, ((const char *)u1 - s1) + 1, "strcmp s1");
+    __bound_check(s2, ((const char *)u2 - s2) + 1, "strcmp s2");
+    return *u1 - *u2;
+}
+
+int __bound_strncmp(const char *s1, const char *s2, size_t n)
+{
+    const unsigned char *u1 = (const unsigned char *) s1;
+    const unsigned char *u2 = (const unsigned char *) s2;
+    int retval = 0;
+
+    dprintf(stderr, "%s, %s(): %p, %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, s1, s2, (unsigned long)n);
+    INCR_COUNT(bound_strncmp_count);
+    do {
+        if ((ssize_t) --n == -1)
+            break;
+        else if (*u1 != *u2) {
+            retval = *u1++ - *u2++;
+            break;
+        }
+        ++u2;
+    } while (*u1++);
+    __bound_check(s1, (const char *)u1 - s1, "strncmp s1");
+    __bound_check(s2, (const char *)u2 - s2, "strncmp s2");
+    return retval;
+}
+
+char *__bound_strcat(char *dest, const char *src)
+{
+    char *r = dest;
+    const char *s = src;
+
+    dprintf(stderr, "%s, %s(): %p, %p\n",
+            __FILE__, __FUNCTION__, dest, src);
+    INCR_COUNT(bound_strcat_count);
+    while (*dest++);
+    while (*src++);
+    __bound_check(r, (dest - r) + (src - s) - 1, "strcat dest");
+    __bound_check(s, src - s, "strcat src");
+    if (check_overlap(r, (dest - r) + (src - s) - 1, s, src - s, "strcat"))
+        return dest;
+    return strcat(r, s);
+}
+
+char *__bound_strchr(const char *s, int c)
+{
+    const unsigned char *str = (const unsigned char *) s;
+    unsigned char ch = c;
+
+    dprintf(stderr, "%s, %s(): %p, %d\n",
+            __FILE__, __FUNCTION__, s, ch);
+    INCR_COUNT(bound_strchr_count);
+    while (*str) {
+        if (*str == ch)
+            break;
+        ++str;
+    }
+    __bound_check(s, ((const char *)str - s) + 1, "strchr");
+    return *str == ch ? (char *) str : NULL;
+}
+
+char *__bound_strdup(const char *s)
+{
+    const char *p = s;
+    char *new;
+
+    INCR_COUNT(bound_strdup_count);
+    while (*p++);
+    __bound_check(s, p - s, "strdup");
+    new = BOUND_MALLOC ((p - s) + 1);
+    dprintf(stderr, "%s, %s(): %p, 0x%lx\n",
+            __FILE__, __FUNCTION__, new, (unsigned long)(p -s));
+    if (new) {
+        if (NO_CHECKING_GET() == 0 && no_strdup == 0) {
+            WAIT_SEM ();
+            tree = splay_insert((size_t)new, p - s, tree);
+            if (tree && tree->start == (size_t) new)
+                tree->type = TCC_TYPE_STRDUP;
+            POST_SEM ();
+        }
+        memcpy (new, s, p - s);
+    }
+    return new;
+}
+
+/*
+           An implementation of top-down splaying with sizes
+             D. Sleator <sleator@cs.cmu.edu>, January 1994.
+
+  This extends top-down-splay.c to maintain a size field in each node.
+  This is the number of nodes in the subtree rooted there.  This makes
+  it possible to efficiently compute the rank of a key.  (The rank is
+  the number of nodes to the left of the given key.)  It it also
+  possible to quickly find the node of a given rank.  Both of these
+  operations are illustrated in the code below.  The remainder of this
+  introduction is taken from top-down-splay.c.
+
+  "Splay trees", or "self-adjusting search trees" are a simple and
+  effi
