@@ -1948,4 +1948,128 @@ char *__bound_strdup(const char *s)
   introduction is taken from top-down-splay.c.
 
   "Splay trees", or "self-adjusting search trees" are a simple and
-  effi
+  efficient data structure for storing an ordered set.  The data
+  structure consists of a binary tree, with no additional fields.  It
+  allows searching, insertion, deletion, deletemin, deletemax,
+  splitting, joining, and many other operations, all with amortized
+  logarithmic performance.  Since the trees adapt to the sequence of
+  requests, their performance on real access patterns is typically even
+  better.  Splay trees are described in a number of texts and papers
+  [1,2,3,4].
+
+  The code here is adapted from simple top-down splay, at the bottom of
+  page 669 of [2].  It can be obtained via anonymous ftp from
+  spade.pc.cs.cmu.edu in directory /usr/sleator/public.
+
+  The chief modification here is that the splay operation works even if the
+  item being splayed is not in the tree, and even if the tree root of the
+  tree is NULL.  So the line:
+
+                              t = splay(i, t);
+
+  causes it to search for item with key i in the tree rooted at t.  If it's
+  there, it is splayed to the root.  If it isn't there, then the node put
+  at the root is the last one before NULL that would have been reached in a
+  normal binary search for i.  (It's a neighbor of i in the tree.)  This
+  allows many other operations to be easily implemented, as shown below.
+
+  [1] "Data Structures and Their Algorithms", Lewis and Denenberg,
+       Harper Collins, 1991, pp 243-251.
+  [2] "Self-adjusting Binary Search Trees" Sleator and Tarjan,
+       JACM Volume 32, No 3, July 1985, pp 652-686.
+  [3] "Data Structure and Algorithm Analysis", Mark Weiss,
+       Benjamin Cummins, 1992, pp 119-130.
+  [4] "Data Structures, Algorithms, and Performance", Derick Wood,
+       Addison-Wesley, 1993, pp 367-375
+*/
+
+/* Code adapted for tcc */
+
+#define compare(start,tstart,tsize) (start < tstart ? -1 : \
+                                     start >= tstart+tsize  ? 1 : 0)
+
+static Tree * splay (size_t addr, Tree *t)
+/* Splay using the key start (which may or may not be in the tree.) */
+/* The starting root is t, and the tree used is defined by rat      */
+{
+    Tree N, *l, *r, *y;
+    int comp;
+    
+    INCR_COUNT_SPLAY(bound_splay);
+    if (t == NULL) return t;
+    N.left = N.right = NULL;
+    l = r = &N;
+ 
+    for (;;) {
+        comp = compare(addr, t->start, t->size);
+        if (comp < 0) {
+            y = t->left;
+            if (y == NULL) break;
+            if (compare(addr, y->start, y->size) < 0) {
+                t->left = y->right;                    /* rotate right */
+                y->right = t;
+                t = y;
+                if (t->left == NULL) break;
+            }
+            r->left = t;                               /* link right */
+            r = t;
+            t = t->left;
+        } else if (comp > 0) {
+            y = t->right;
+            if (y == NULL) break;
+            if (compare(addr, y->start, y->size) > 0) {
+                t->right = y->left;                    /* rotate left */
+                y->left = t;
+                t = y;
+                if (t->right == NULL) break;
+            }
+            l->right = t;                              /* link left */
+            l = t;
+            t = t->right;
+        } else {
+            break;
+        }
+    }
+    l->right = t->left;                                /* assemble */
+    r->left = t->right;
+    t->left = N.right;
+    t->right = N.left;
+
+    return t;
+}
+
+#define compare_end(start,tend) (start < tend ? -1 : \
+                                 start > tend  ? 1 : 0)
+
+static Tree * splay_end (size_t addr, Tree *t)
+/* Splay using the key start (which may or may not be in the tree.) */
+/* The starting root is t, and the tree used is defined by rat  */
+{
+    Tree N, *l, *r, *y;
+    int comp;
+    
+    INCR_COUNT_SPLAY(bound_splay_end);
+    if (t == NULL) return t;
+    N.left = N.right = NULL;
+    l = r = &N;
+ 
+    for (;;) {
+        comp = compare_end(addr, t->start + t->size);
+        if (comp < 0) {
+            y = t->left;
+            if (y == NULL) break;
+            if (compare_end(addr, y->start + y->size) < 0) {
+                t->left = y->right;                    /* rotate right */
+                y->right = t;
+                t = y;
+                if (t->left == NULL) break;
+            }
+            r->left = t;                               /* link right */
+            r = t;
+            t = t->left;
+        } else if (comp > 0) {
+            y = t->right;
+            if (y == NULL) break;
+            if (compare_end(addr, y->start + y->size) > 0) {
+                t->right = y->left;                    /* rotate left */
+ 
