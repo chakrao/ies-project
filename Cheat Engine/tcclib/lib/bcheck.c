@@ -2072,4 +2072,110 @@ static Tree * splay_end (size_t addr, Tree *t)
             if (y == NULL) break;
             if (compare_end(addr, y->start + y->size) > 0) {
                 t->right = y->left;                    /* rotate left */
- 
+                y->left = t;
+                t = y;
+                if (t->right == NULL) break;
+            }
+            l->right = t;                              /* link left */
+            l = t;
+            t = t->right;
+        } else {
+            break;
+        }
+    }
+    l->right = t->left;                                /* assemble */
+    r->left = t->right;
+    t->left = N.right;
+    t->right = N.left;
+
+    return t;
+}
+
+static Tree * splay_insert(size_t addr, size_t size, Tree * t)
+/* Insert key start into the tree t, if it is not already there. */
+/* Return a pointer to the resulting tree.                       */
+{
+    Tree * new;
+
+    INCR_COUNT_SPLAY(bound_splay_insert);
+    if (t != NULL) {
+        t = splay(addr,t);
+        if (compare(addr, t->start, t->size)==0) {
+            return t;  /* it's already there */
+        }
+    }
+#if TREE_REUSE
+    if (tree_free_list) {
+          new = tree_free_list;
+          tree_free_list = new->left;
+    }
+    else
+#endif
+    {
+        new = (Tree *) BOUND_MALLOC (sizeof (Tree));
+    }
+    if (new == NULL) {
+        bound_alloc_error("not enough memory for bound checking code");
+    }
+    else {
+        if (t == NULL) {
+            new->left = new->right = NULL;
+        } else if (compare(addr, t->start, t->size) < 0) {
+            new->left = t->left;
+            new->right = t;
+            t->left = NULL;
+        } else {
+            new->right = t->right;
+            new->left = t;
+            t->right = NULL;
+        }
+        new->start = addr;
+        new->size = size;
+        new->type = TCC_TYPE_NONE;
+        new->is_invalid = 0;
+    }
+    return new;
+}
+
+#define compare_destroy(start,tstart) (start < tstart ? -1 : \
+                                       start > tstart  ? 1 : 0)
+
+static Tree * splay_delete(size_t addr, Tree *t)
+/* Deletes addr from the tree if it's there.               */
+/* Return a pointer to the resulting tree.                 */
+{
+    Tree * x;
+
+    INCR_COUNT_SPLAY(bound_splay_delete);
+    if (t==NULL) return NULL;
+    t = splay(addr,t);
+    if (compare_destroy(addr, t->start) == 0) {        /* found it */
+        if (t->left == NULL) {
+            x = t->right;
+        } else {
+            x = splay(addr, t->left);
+            x->right = t->right;
+        }
+#if TREE_REUSE
+        t->left = tree_free_list;
+        tree_free_list = t;
+#else
+        BOUND_FREE(t);
+#endif
+        return x;
+    } else {
+        return t;                                      /* It wasn't there */
+    }
+}
+
+void splay_printtree(Tree * t, int d)
+{
+    int i;
+    if (t == NULL) return;
+    splay_printtree(t->right, d+1);
+    for (i=0; i<d; i++) fprintf(stderr," ");
+    fprintf(stderr,"%p(0x%lx:%u:%u)\n",
+            (void *) t->start, (unsigned long) t->size,
+            (unsigned)t->type, (unsigned)t->is_invalid);
+    splay_printtree(t->left, d+1);
+}
