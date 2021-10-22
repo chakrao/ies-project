@@ -282,4 +282,131 @@ ST_FUNC void load(int r, SValue *sv)
         if (is_float(sv->type.t) && bt != VT_LDOUBLE)
           tcc_error("unimp: load(float)");
         if (fc != sv->c.i) {
-            int64_t si 
+            int64_t si = sv->c.i;
+            si >>= 32;
+            if (si != 0) {
+		load_large_constant(rr, fc, si);
+                fc &= 0xff;
+                rb = rr;
+                do32bit = 0;
+            } else if (bt == VT_LLONG) {
+                /* A 32bit unsigned constant for a 64bit type.
+                   lui always sign extends, so we need to do an explicit zext.*/
+                zext = 1;
+            }
+        }
+        if (((unsigned)fc + (1 << 11)) >> 12)
+            o(0x37 | (rr << 7) | ((0x800 + fc) & 0xfffff000)), rb = rr; //lui RR, upper(fc)
+        if (fc || (rr != rb) || do32bit || (fr & VT_SYM))
+          EI(0x13 | do32bit, 0, rr, rb, fc << 20 >> 20); // addi[w] R, x0|R, FC
+        if (zext) {
+            EI(0x13, 1, rr, rr, 32); // slli RR, RR, 32
+            EI(0x13, 5, rr, rr, 32); // srli RR, RR, 32
+        }
+    } else if (v == VT_LOCAL) {
+        int br = load_symofs(r, sv, 0);
+        assert(is_ireg(r));
+        fc = sv->c.i;
+        EI(0x13, 0, rr, br, fc); // addi R, s0, FC
+    } else if (v < VT_CONST) { /* reg-reg */
+        //assert(!fc); XXX support offseted regs
+        if (is_freg(r) && is_freg(v))
+          ER(0x53, 0, rr, freg(v), freg(v), bt == VT_DOUBLE ? 0x11 : 0x10); //fsgnj.[sd] RR, V, V == fmv.[sd] RR, V
+        else if (is_ireg(r) && is_ireg(v))
+          EI(0x13, 0, rr, ireg(v), 0); // addi RR, V, 0 == mv RR, V
+        else {
+            int func7 = is_ireg(r) ? 0x70 : 0x78;
+            size = type_size(&sv->type, &align);
+            if (size == 8)
+              func7 |= 1;
+            assert(size == 4 || size == 8);
+            o(0x53 | (rr << 7) | ((is_freg(v) ? freg(v) : ireg(v)) << 15)
+              | (func7 << 25)); // fmv.{w.x, x.w, d.x, x.d} RR, VR
+        }
+    } else if (v == VT_CMP) {
+        int op = vtop->cmp_op;
+        int a = vtop->cmp_r & 0xff;
+        int b = (vtop->cmp_r >> 8) & 0xff;
+        int inv = 0;
+        switch (op) {
+            case TOK_ULT:
+            case TOK_UGE:
+            case TOK_ULE:
+            case TOK_UGT:
+            case TOK_LT:
+            case TOK_GE:
+            case TOK_LE:
+            case TOK_GT:
+                if (op & 1) { // remove [U]GE,GT
+                    inv = 1;
+                    op--;
+                }
+                if ((op & 7) == 6) { // [U]LE
+                    int t = a; a = b; b = t;
+                    inv ^= 1;
+                }
+                ER(0x33, (op > TOK_UGT) ? 2 : 3, rr, a, b, 0); // slt[u] d, a, b
+                if (inv)
+                  EI(0x13, 4, rr, rr, 1); // xori d, d, 1
+                break;
+            case TOK_NE:
+            case TOK_EQ:
+                if (rr != a || b)
+                  ER(0x33, 0, rr, a, b, 0x20); // sub d, a, b
+                if (op == TOK_NE)
+                  ER(0x33, 3, rr, 0, rr, 0); // sltu d, x0, d == snez d,d
+                else
+                  EI(0x13, 3, rr, rr, 1); // sltiu d, d, 1 == seqz d,d
+                break;
+        }
+    } else if ((v & ~1) == VT_JMP) {
+        int t = v & 1;
+        assert(is_ireg(r));
+        EI(0x13, 0, rr, 0, t);      // addi RR, x0, t
+        gjmp_addr(ind + 8);
+        gsym(fc);
+        EI(0x13, 0, rr, 0, t ^ 1);  // addi RR, x0, !t
+    } else
+      tcc_error("unimp: load(non-const)");
+}
+
+ST_FUNC void store(int r, SValue *sv)
+{
+    int fr = sv->r & VT_VALMASK;
+    int rr = is_ireg(r) ? ireg(r) : freg(r), ptrreg;
+    int fc = sv->c.i;
+    int bt = sv->type.t & VT_BTYPE;
+    int align, size = type_size(&sv->type, &align);
+    assert(!is_float(bt) || is_freg(r) || bt == VT_LDOUBLE);
+    /* long doubles are in two integer registers, but the load/store
+       primitives only deal with one, so do as if it's one reg.  */
+    if (bt == VT_LDOUBLE)
+      size = align = 8;
+    if (bt == VT_STRUCT)
+      tcc_error("unimp: store(struct)");
+    if (size > 8)
+      tcc_error("unimp: large sized store");
+    assert(sv->r & VT_LVAL);
+    if (fr == VT_LOCAL || (sv->r & VT_SYM)) {
+        ptrreg = load_symofs(-1, sv, 1);
+        fc = sv->c.i;
+    } else if (fr < VT_CONST) {
+        ptrreg = ireg(fr);
+        /*if (((unsigned)fc + (1 << 11)) >> 12)
+          tcc_error("unimp: store(large addend) (0x%x)", fc);*/
+        fc = 0; // XXX support offsets regs
+    } else if (fr == VT_CONST) {
+        int64_t si = sv->c.i;
+        ptrreg = 8; // s0
+        si >>= 32;
+        if (si != 0) {
+	    load_large_constant(ptrreg, fc, si);
+            fc &= 0xff;
+        } else {
+            o(0x37 | (ptrreg << 7) | ((0x800 + fc) & 0xfffff000)); //lui RR, upper(fc)
+            fc = fc << 20 >> 20;
+	}
+    } else
+      tcc_error("implement me: %s(!local)", __FUNCTION__);
+    ES(is_freg(r) ? 0x27 : 0x23,                          // fs... | s...
+       size == 
