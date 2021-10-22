@@ -154,4 +154,132 @@ ST_FUNC void gsym_addr(int t_, int a_)
         uint32_t next = read32le(ptr);
         uint32_t r = a - t, imm;
         if ((r + (1 << 21)) & ~((1U << 22) - 2))
-          tcc_error("out-of-range branch 
+          tcc_error("out-of-range branch chain");
+        imm =   (((r >> 12) &  0xff) << 12)
+            | (((r >> 11) &     1) << 20)
+            | (((r >>  1) & 0x3ff) << 21)
+            | (((r >> 20) &     1) << 31);
+        write32le(ptr, r == 4 ? 0x33 : 0x6f | imm); // nop || j imm
+        t = next;
+    }
+}
+
+static int load_symofs(int r, SValue *sv, int forstore)
+{
+    static Sym label;
+    int rr, doload = 0;
+    int fc = sv->c.i, v = sv->r & VT_VALMASK;
+    if (sv->r & VT_SYM) {
+        assert(v == VT_CONST);
+        if (sv->sym->type.t & VT_STATIC) { // XXX do this per linker relax
+            greloca(cur_text_section, sv->sym, ind,
+                    R_RISCV_PCREL_HI20, sv->c.i);
+            sv->c.i = 0;
+        } else {
+            if (((unsigned)fc + (1 << 11)) >> 12)
+              tcc_error("unimp: large addend for global address (0x%lx)", (long)sv->c.i);
+            greloca(cur_text_section, sv->sym, ind,
+                    R_RISCV_GOT_HI20, 0);
+            doload = 1;
+        }
+        if (!label.v) {
+            label.v = tok_alloc(".L0 ", 4)->tok;
+            label.type.t = VT_VOID | VT_STATIC;
+        }
+        label.c = 0; /* force new local ELF symbol */
+        put_extern_sym(&label, cur_text_section, ind, 0);
+        rr = is_ireg(r) ? ireg(r) : 5;
+        o(0x17 | (rr << 7));   // auipc RR, 0 %pcrel_hi(sym)+addend
+        greloca(cur_text_section, &label, ind,
+                doload || !forstore
+                  ? R_RISCV_PCREL_LO12_I : R_RISCV_PCREL_LO12_S, 0);
+        if (doload) {
+            EI(0x03, 3, rr, rr, 0); // ld RR, 0(RR)
+        }
+    } else if (v == VT_LOCAL || v == VT_LLOCAL) {
+        rr = 8; // s0
+        if (fc != sv->c.i)
+          tcc_error("unimp: store(giant local off) (0x%lx)", (long)sv->c.i);
+        if (((unsigned)fc + (1 << 11)) >> 12) {
+            rr = is_ireg(r) ? ireg(r) : 5; // t0
+            o(0x37 | (rr << 7) | ((0x800 + fc) & 0xfffff000)); //lui RR, upper(fc)
+            ER(0x33, 0, rr, rr, 8, 0); // add RR, RR, s0
+            sv->c.i = fc << 20 >> 20;
+        }
+    } else
+      tcc_error("uhh");
+    return rr;
+}
+
+static void load_large_constant(int rr, int fc, uint32_t pi)
+{
+    if (fc < 0)
+	pi++;
+    o(0x37 | (rr << 7) | (((pi + 0x800) & 0xfffff000))); // lui RR, up(up(fc))
+    EI(0x13, 0, rr, rr, (int)pi << 20 >> 20);   // addi RR, RR, lo(up(fc))
+    EI(0x13, 1, rr, rr, 12); // slli RR, RR, 12
+    EI(0x13, 0, rr, rr, (fc + (1 << 19)) >> 20);  // addi RR, RR, up(lo(fc))
+    EI(0x13, 1, rr, rr, 12); // slli RR, RR, 12
+    fc = fc << 12 >> 12;
+    EI(0x13, 0, rr, rr, fc >> 8);  // addi RR, RR, lo1(lo(fc))
+    EI(0x13, 1, rr, rr, 8); // slli RR, RR, 8
+}
+
+ST_FUNC void load(int r, SValue *sv)
+{
+    int fr = sv->r;
+    int v = fr & VT_VALMASK;
+    int rr = is_ireg(r) ? ireg(r) : freg(r);
+    int fc = sv->c.i;
+    int bt = sv->type.t & VT_BTYPE;
+    int align, size;
+    if (fr & VT_LVAL) {
+        int func3, opcode = is_freg(r) ? 0x07 : 0x03, br;
+        size = type_size(&sv->type, &align);
+        assert (!is_freg(r) || bt == VT_FLOAT || bt == VT_DOUBLE);
+        if (bt == VT_FUNC) /* XXX should be done in generic code */
+          size = PTR_SIZE;
+        func3 = size == 1 ? 0 : size == 2 ? 1 : size == 4 ? 2 : 3;
+        if (size < 4 && !is_float(sv->type.t) && (sv->type.t & VT_UNSIGNED))
+          func3 |= 4;
+        if (v == VT_LOCAL || (fr & VT_SYM)) {
+            br = load_symofs(r, sv, 0);
+            fc = sv->c.i;
+        } else if (v < VT_CONST) {
+            br = ireg(v);
+            /*if (((unsigned)fc + (1 << 11)) >> 12)
+              tcc_error("unimp: load(large addend) (0x%x)", fc);*/
+            fc = 0; // XXX store ofs in LVAL(reg)
+        } else if (v == VT_LLOCAL) {
+            br = load_symofs(r, sv, 0);
+            fc = sv->c.i;
+            EI(0x03, 3, rr, br, fc); // ld RR, fc(BR)
+            br = rr;
+            fc = 0;
+        } else if (v == VT_CONST) {
+            int64_t si = sv->c.i;
+            si >>= 32;
+            if (si != 0) {
+		load_large_constant(rr, fc, si);
+                fc &= 0xff;
+            } else {
+                o(0x37 | (rr << 7) | ((0x800 + fc) & 0xfffff000)); //lui RR, upper(fc)
+                fc = fc << 20 >> 20;
+	    }
+            br = rr;
+	} else {
+            tcc_error("unimp: load(non-local lval)");
+        }
+        EI(opcode, func3, rr, br, fc); // l[bhwd][u] / fl[wd] RR, fc(BR)
+    } else if (v == VT_CONST) {
+        int rb = 0, do32bit = 8, zext = 0;
+        assert((!is_float(sv->type.t) && is_ireg(r)) || bt == VT_LDOUBLE);
+        if (fr & VT_SYM) {
+            rb = load_symofs(r, sv, 0);
+            fc = sv->c.i;
+            do32bit = 0;
+        }
+        if (is_float(sv->type.t) && bt != VT_LDOUBLE)
+          tcc_error("unimp: load(float)");
+        if (fc != sv->c.i) {
+            int64_t si 
