@@ -409,4 +409,130 @@ ST_FUNC void store(int r, SValue *sv)
     } else
       tcc_error("implement me: %s(!local)", __FUNCTION__);
     ES(is_freg(r) ? 0x27 : 0x23,                          // fs... | s...
-       size == 
+       size == 1 ? 0 : size == 2 ? 1 : size == 4 ? 2 : 3, // ... [wd] | [bhwd]
+       ptrreg, rr, fc);                                   // RR, fc(base)
+}
+
+static void gcall_or_jmp(int docall)
+{
+    int tr = docall ? 1 : 5; // ra or t0
+    if ((vtop->r & (VT_VALMASK | VT_LVAL)) == VT_CONST &&
+        ((vtop->r & VT_SYM) && vtop->c.i == (int)vtop->c.i)) {
+        /* constant symbolic case -> simple relocation */
+        greloca(cur_text_section, vtop->sym, ind,
+                R_RISCV_CALL_PLT, (int)vtop->c.i);
+        o(0x17 | (tr << 7));   // auipc TR, 0 %call(func)
+        EI(0x67, 0, tr, tr, 0);// jalr  TR, r(TR)
+    } else if (vtop->r < VT_CONST) {
+        int r = ireg(vtop->r);
+        EI(0x67, 0, tr, r, 0);      // jalr TR, 0(R)
+    } else {
+        int r = TREG_RA;
+        load(r, vtop);
+        r = ireg(r);
+        EI(0x67, 0, tr, r, 0);      // jalr TR, 0(R)
+    }
+}
+
+#if defined(CONFIG_TCC_BCHECK)
+
+static void gen_bounds_call(int v)
+{
+    Sym *sym = external_helper_sym(v);
+
+    greloca(cur_text_section, sym, ind, R_RISCV_CALL_PLT, 0);
+    o(0x17 | (1 << 7));   // auipc TR, 0 %call(func)
+    EI(0x67, 0, 1, 1, 0); // jalr  TR, r(TR)
+}
+
+static void gen_bounds_prolog(void)
+{
+    /* leave some room for bound checking code */
+    func_bound_offset = lbounds_section->data_offset;
+    func_bound_ind = ind;
+    func_bound_add_epilog = 0;
+    o(0x00000013);  /* ld a0,#lbound section pointer */
+    o(0x00000013);
+    o(0x00000013);  /* nop -> call __bound_local_new */
+    o(0x00000013);
+}
+
+static void gen_bounds_epilog(void)
+{
+    static Sym label;
+    addr_t saved_ind;
+    addr_t *bounds_ptr;
+    Sym *sym_data;
+    int offset_modified = func_bound_offset != lbounds_section->data_offset;
+
+    if (!offset_modified && !func_bound_add_epilog)
+        return;
+
+    /* add end of table info */
+    bounds_ptr = section_ptr_add(lbounds_section, sizeof(addr_t));
+    *bounds_ptr = 0;
+
+    sym_data = get_sym_ref(&char_pointer_type, lbounds_section,
+                           func_bound_offset, lbounds_section->data_offset);
+
+    if (!label.v) {
+        label.v = tok_alloc(".LB0 ", 4)->tok;
+        label.type.t = VT_VOID | VT_STATIC;
+    }
+    /* generate bound local allocation */
+    if (offset_modified) {
+        saved_ind = ind;
+        ind = func_bound_ind;
+        label.c = 0; /* force new local ELF symbol */
+        put_extern_sym(&label, cur_text_section, ind, 0);
+        greloca(cur_text_section, sym_data, ind, R_RISCV_GOT_HI20, 0);
+        o(0x17 | (10 << 7));    // auipc a0, 0 %pcrel_hi(sym)+addend
+        greloca(cur_text_section, &label, ind, R_RISCV_PCREL_LO12_I, 0);
+        EI(0x03, 3, 10, 10, 0); // ld a0, 0(a0)
+        gen_bounds_call(TOK___bound_local_new);
+        ind = saved_ind;
+    }
+
+    /* generate bound check local freeing */
+    o(0xe02a1101); /* addi sp,sp,-32  sd   a0,0(sp)   */
+    o(0xa82ae42e); /* sd   a1,8(sp)   fsd  fa0,16(sp) */
+    label.c = 0; /* force new local ELF symbol */
+    put_extern_sym(&label, cur_text_section, ind, 0);
+    greloca(cur_text_section, sym_data, ind, R_RISCV_GOT_HI20, 0);
+    o(0x17 | (10 << 7));    // auipc a0, 0 %pcrel_hi(sym)+addend
+    greloca(cur_text_section, &label, ind, R_RISCV_PCREL_LO12_I, 0);
+    EI(0x03, 3, 10, 10, 0); // ld a0, 0(a0)
+    gen_bounds_call(TOK___bound_local_delete);
+    o(0x65a26502); /* ld   a0,0(sp)   ld   a1,8(sp)   */
+    o(0x61052542); /* fld  fa0,16(sp) addi sp,sp,32   */
+}
+#endif
+
+static void reg_pass_rec(CType *type, int *rc, int *fieldofs, int ofs)
+{
+    if ((type->t & VT_BTYPE) == VT_STRUCT) {
+        Sym *f;
+        if (type->ref->type.t == VT_UNION)
+          rc[0] = -1;
+        else for (f = type->ref->next; f; f = f->next)
+          reg_pass_rec(&f->type, rc, fieldofs, ofs + f->c);
+    } else if (type->t & VT_ARRAY) {
+        if (type->ref->c < 0 || type->ref->c > 2)
+          rc[0] = -1;
+        else {
+            int a, sz = type_size(&type->ref->type, &a);
+            reg_pass_rec(&type->ref->type, rc, fieldofs, ofs);
+            if (rc[0] > 2 || (rc[0] == 2 && type->ref->c > 1))
+              rc[0] = -1;
+            else if (type->ref->c == 2 && rc[0] && rc[1] == RC_FLOAT) {
+              rc[++rc[0]] = RC_FLOAT;
+              fieldofs[rc[0]] = ((ofs + sz) << 4)
+                                | (type->ref->type.t & VT_BTYPE);
+            } else if (type->ref->c == 2)
+              rc[0] = -1;
+        }
+    } else if (rc[0] == 2 || rc[0] < 0 || (type->t & VT_BTYPE) == VT_LDOUBLE)
+      rc[0] = -1;
+    else if (!rc[0] || rc[1] == RC_FLOAT || is_float(type->t)) {
+      rc[++rc[0]] = is_float(type->t) ? RC_FLOAT : RC_INT;
+      fieldofs[rc[0]] = (ofs
