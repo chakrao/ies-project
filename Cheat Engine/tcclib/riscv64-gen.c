@@ -535,4 +535,127 @@ static void reg_pass_rec(CType *type, int *rc, int *fieldofs, int ofs)
       rc[0] = -1;
     else if (!rc[0] || rc[1] == RC_FLOAT || is_float(type->t)) {
       rc[++rc[0]] = is_float(type->t) ? RC_FLOAT : RC_INT;
-      fieldofs[rc[0]] = (ofs
+      fieldofs[rc[0]] = (ofs << 4) | ((type->t & VT_BTYPE) == VT_PTR ? VT_LLONG : type->t & VT_BTYPE);
+    } else
+      rc[0] = -1;
+}
+
+static void reg_pass(CType *type, int *prc, int *fieldofs, int named)
+{
+    prc[0] = 0;
+    reg_pass_rec(type, prc, fieldofs, 0);
+    if (prc[0] <= 0 || !named) {
+        int align, size = type_size(type, &align);
+        prc[0] = (size + 7) >> 3;
+        prc[1] = prc[2] = RC_INT;
+        fieldofs[1] = (0 << 4) | (size <= 1 ? VT_BYTE : size <= 2 ? VT_SHORT : size <= 4 ? VT_INT : VT_LLONG);
+        fieldofs[2] = (8 << 4) | (size <= 9 ? VT_BYTE : size <= 10 ? VT_SHORT : size <= 12 ? VT_INT : VT_LLONG);
+    }
+}
+
+ST_FUNC void gfunc_call(int nb_args)
+{
+    int i, align, size, areg[2];
+    int *info = tcc_malloc((nb_args + 1) * sizeof (int));
+    int stack_adj = 0, tempspace = 0, stack_add, ofs, splitofs = 0;
+    SValue *sv;
+    Sym *sa;
+
+#ifdef CONFIG_TCC_BCHECK
+    int bc_save = tcc_state->do_bounds_check;
+    if (tcc_state->do_bounds_check)
+        gbound_args(nb_args);
+#endif
+
+    areg[0] = 0; /* int arg regs */
+    areg[1] = 8; /* float arg regs */
+    sa = vtop[-nb_args].type.ref->next;
+    for (i = 0; i < nb_args; i++) {
+        int nregs, byref = 0, tempofs;
+        int prc[3], fieldofs[3];
+        sv = &vtop[1 + i - nb_args];
+        sv->type.t &= ~VT_ARRAY; // XXX this should be done in tccgen.c
+        size = type_size(&sv->type, &align);
+        if (size > 16) {
+            if (align < XLEN)
+              align = XLEN;
+            tempspace = (tempspace + align - 1) & -align;
+            tempofs = tempspace;
+            tempspace += size;
+            size = align = 8;
+            byref = 64 | (tempofs << 7);
+        }
+        reg_pass(&sv->type, prc, fieldofs, sa != 0);
+        if (!sa && align == 2*XLEN && size <= 2*XLEN)
+          areg[0] = (areg[0] + 1) & ~1;
+        nregs = prc[0];
+        if (size == 0)
+            info[i] = 0;
+        else if ((prc[1] == RC_INT && areg[0] >= 8)
+            || (prc[1] == RC_FLOAT && areg[1] >= 16)
+            || (nregs == 2 && prc[1] == RC_FLOAT && prc[2] == RC_FLOAT
+                && areg[1] >= 15)
+            || (nregs == 2 && prc[1] != prc[2]
+                && (areg[1] >= 16 || areg[0] >= 8))) {
+            info[i] = 32;
+            if (align < XLEN)
+              align = XLEN;
+            stack_adj += (size + align - 1) & -align;
+            if (!sa) /* one vararg on stack forces the rest on stack */
+              areg[0] = 8, areg[1] = 16;
+        } else {
+            info[i] = areg[prc[1] - 1]++;
+            if (!byref)
+              info[i] |= (fieldofs[1] & VT_BTYPE) << 12;
+            assert(!(fieldofs[1] >> 4));
+            if (nregs == 2) {
+                if (prc[2] == RC_FLOAT || areg[0] < 8)
+                  info[i] |= (1 + areg[prc[2] - 1]++) << 7;
+                else {
+                    info[i] |= 16;
+                    stack_adj += 8;
+                }
+                if (!byref) {
+                    assert((fieldofs[2] >> 4) < 2048);
+                    info[i] |= fieldofs[2] << (12 + 4); // includes offset
+                }
+            }
+        }
+        info[i] |= byref;
+        if (sa)
+          sa = sa->next;
+    }
+    stack_adj = (stack_adj + 15) & -16;
+    tempspace = (tempspace + 15) & -16;
+    stack_add = stack_adj + tempspace;
+    if (stack_add) {
+        if (stack_add >= 0x1000) {
+            o(0x37 | (5 << 7) | (-stack_add & 0xfffff000)); //lui t0, upper(v)
+            EI(0x13, 0, 5, 5, -stack_add << 20 >> 20); // addi t0, t0, lo(v)
+            ER(0x33, 0, 2, 2, 5, 0); // add sp, sp, t0
+        }
+        else
+            EI(0x13, 0, 2, 2, -stack_add);   // addi sp, sp, -adj
+        for (i = ofs = 0; i < nb_args; i++) {
+            if (info[i] & (64 | 32)) {
+                vrotb(nb_args - i);
+                size = type_size(&vtop->type, &align);
+                if (info[i] & 64) {
+                    vset(&char_pointer_type, TREG_SP, 0);
+                    vpushi(stack_adj + (info[i] >> 7));
+                    gen_op('+');
+                    vpushv(vtop); // this replaces the old argument
+                    vrott(3);
+                    indir();
+                    vtop->type = vtop[-1].type;
+                    vswap();
+                    vstore();
+                    vpop();
+                    size = align = 8;
+                }
+                if (info[i] & 32) {
+                    if (align < XLEN)
+                      align = XLEN;
+                    /* Once we support offseted regs we can do this:
+                       vset(&vtop->type, TREG_SP | VT_LVAL, ofs);
+                       to construct the lvalue for 
