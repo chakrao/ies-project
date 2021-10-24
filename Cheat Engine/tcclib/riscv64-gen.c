@@ -658,4 +658,148 @@ ST_FUNC void gfunc_call(int nb_args)
                       align = XLEN;
                     /* Once we support offseted regs we can do this:
                        vset(&vtop->type, TREG_SP | VT_LVAL, ofs);
-                       to construct the lvalue for 
+                       to construct the lvalue for the outgoing stack slot,
+                       until then we have to jump through hoops.  */
+                    vset(&char_pointer_type, TREG_SP, 0);
+                    ofs = (ofs + align - 1) & -align;
+                    vpushi(ofs);
+                    gen_op('+');
+                    indir();
+                    vtop->type = vtop[-1].type;
+                    vswap();
+                    vstore();
+                    vtop->r = vtop->r2 = VT_CONST; // this arg is done
+                    ofs += size;
+                }
+                vrott(nb_args - i);
+            } else if (info[i] & 16) {
+                assert(!splitofs);
+                splitofs = ofs;
+                ofs += 8;
+            }
+        }
+    }
+    for (i = 0; i < nb_args; i++) {
+        int ii = info[nb_args - 1 - i], r = ii, r2 = r;
+        if (!(r & 32)) {
+            CType origtype;
+            int loadt;
+            r &= 15;
+            r2 = r2 & 64 ? 0 : (r2 >> 7) & 31;
+            assert(r2 <= 16);
+            vrotb(i+1);
+            origtype = vtop->type;
+            size = type_size(&vtop->type, &align);
+            if (size == 0)
+                goto done;
+            loadt = vtop->type.t & VT_BTYPE;
+            if (loadt == VT_STRUCT) {
+                loadt = (ii >> 12) & VT_BTYPE;
+            }
+            if (info[nb_args - 1 - i] & 16) {
+                assert(!r2);
+                r2 = 1 + TREG_RA;
+            }
+            if (loadt == VT_LDOUBLE) {
+                assert(r2);
+                r2--;
+            } else if (r2) {
+                test_lvalue();
+                vpushv(vtop);
+            }
+            vtop->type.t = loadt | (vtop->type.t & VT_UNSIGNED);
+            gv(r < 8 ? RC_R(r) : RC_F(r - 8));
+            vtop->type = origtype;
+
+            if (r2 && loadt != VT_LDOUBLE) {
+                r2--;
+                assert(r2 < 16 || r2 == TREG_RA);
+                vswap();
+                gaddrof();
+                vtop->type = char_pointer_type;
+                vpushi(ii >> 20);
+#ifdef CONFIG_TCC_BCHECK
+		if ((origtype.t & VT_BTYPE) == VT_STRUCT)
+                    tcc_state->do_bounds_check = 0;
+#endif
+                gen_op('+');
+#ifdef CONFIG_TCC_BCHECK
+		tcc_state->do_bounds_check = bc_save;
+#endif
+                indir();
+                vtop->type = origtype;
+                loadt = vtop->type.t & VT_BTYPE;
+                if (loadt == VT_STRUCT) {
+                    loadt = (ii >> 16) & VT_BTYPE;
+                }
+                save_reg_upstack(r2, 1);
+                vtop->type.t = loadt | (vtop->type.t & VT_UNSIGNED);
+                load(r2, vtop);
+                assert(r2 < VT_CONST);
+                vtop--;
+                vtop->r2 = r2;
+            }
+            if (info[nb_args - 1 - i] & 16) {
+                ES(0x23, 3, 2, ireg(vtop->r2), splitofs); // sd t0, ofs(sp)
+                vtop->r2 = VT_CONST;
+            } else if (loadt == VT_LDOUBLE && vtop->r2 != r2) {
+                assert(vtop->r2 <= 7 && r2 <= 7);
+                /* XXX we'd like to have 'gv' move directly into
+                   the right class instead of us fixing it up.  */
+                EI(0x13, 0, ireg(r2), ireg(vtop->r2), 0); // mv Ra+1, RR2
+                vtop->r2 = r2;
+            }
+done:
+            vrott(i+1);
+        }
+    }
+    vrotb(nb_args + 1);
+    save_regs(nb_args + 1);
+    gcall_or_jmp(1);
+    vtop -= nb_args + 1;
+    if (stack_add) {
+        if (stack_add >= 0x1000) {
+            o(0x37 | (5 << 7) | (stack_add & 0xfffff000)); //lui t0, upper(v)
+            EI(0x13, 0, 5, 5, stack_add << 20 >> 20); // addi t0, t0, lo(v)
+            ER(0x33, 0, 2, 2, 5, 0); // add sp, sp, t0
+        }
+        else
+            EI(0x13, 0, 2, 2, stack_add);      // addi sp, sp, adj
+   }
+   tcc_free(info);
+}
+
+static int func_sub_sp_offset, num_va_regs, func_va_list_ofs;
+
+ST_FUNC void gfunc_prolog(Sym *func_sym)
+{
+    CType *func_type = &func_sym->type;
+    int i, addr, align, size;
+    int param_addr = 0;
+    int areg[2];
+    Sym *sym;
+    CType *type;
+
+    sym = func_type->ref;
+    loc = -16; // for ra and s0
+    func_sub_sp_offset = ind;
+    ind += 5 * 4;
+
+    areg[0] = 0, areg[1] = 0;
+    addr = 0;
+    /* if the function returns by reference, then add an
+       implicit pointer parameter */
+    size = type_size(&func_vt, &align);
+    if (size > 2 * XLEN) {
+        loc -= 8;
+        func_vc = loc;
+        ES(0x23, 3, 8, 10 + areg[0]++, loc); // sd a0, loc(s0)
+    }
+    /* define parameters */
+    while ((sym = sym->next) != NULL) {
+        int byref = 0;
+        int regcount;
+        int prc[3], fieldofs[3];
+        type = &sym->type;
+        size = type_size(type, &align);
+    
