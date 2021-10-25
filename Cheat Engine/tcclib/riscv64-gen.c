@@ -802,4 +802,140 @@ ST_FUNC void gfunc_prolog(Sym *func_sym)
         int prc[3], fieldofs[3];
         type = &sym->type;
         size = type_size(type, &align);
-    
+        if (size > 2 * XLEN) {
+            type = &char_pointer_type;
+            size = align = byref = 8;
+        }
+        reg_pass(type, prc, fieldofs, 1);
+        regcount = prc[0];
+        if (areg[prc[1] - 1] >= 8
+            || (regcount == 2
+                && ((prc[1] == RC_FLOAT && prc[2] == RC_FLOAT && areg[1] >= 7)
+                    || (prc[1] != prc[2] && (areg[1] >= 8 || areg[0] >= 8))))) {
+            if (align < XLEN)
+              align = XLEN;
+            addr = (addr + align - 1) & -align;
+            param_addr = addr;
+            addr += size;
+        } else {
+            loc -= regcount * 8; // XXX could reserve only 'size' bytes
+            param_addr = loc;
+            for (i = 0; i < regcount; i++) {
+                if (areg[prc[1+i] - 1] >= 8) {
+                    assert(i == 1 && regcount == 2 && !(addr & 7));
+                    EI(0x03, 3, 5, 8, addr); // ld t0, addr(s0)
+                    addr += 8;
+                    ES(0x23, 3, 8, 5, loc + i*8); // sd t0, loc(s0)
+                } else if (prc[1+i] == RC_FLOAT) {
+                    ES(0x27, (size / regcount) == 4 ? 2 : 3, 8, 10 + areg[1]++, loc + (fieldofs[i+1] >> 4)); // fs[wd] FAi, loc(s0)
+                } else {
+                    ES(0x23, 3, 8, 10 + areg[0]++, loc + i*8); // sd aX, loc(s0) // XXX
+                }
+            }
+        }
+        sym_push(sym->v & ~SYM_FIELD, &sym->type,
+                 (byref ? VT_LLOCAL : VT_LOCAL) | VT_LVAL,
+                 param_addr);
+    }
+    func_va_list_ofs = addr;
+    num_va_regs = 0;
+    if (func_var) {
+        for (; areg[0] < 8; areg[0]++) {
+            num_va_regs++;
+            ES(0x23, 3, 8, 10 + areg[0], -8 + num_va_regs * 8); // sd aX, loc(s0)
+        }
+    }
+#ifdef CONFIG_TCC_BCHECK
+    if (tcc_state->do_bounds_check)
+        gen_bounds_prolog();
+#endif
+}
+
+ST_FUNC int gfunc_sret(CType *vt, int variadic, CType *ret,
+                       int *ret_align, int *regsize)
+{
+    int align, size = type_size(vt, &align), nregs;
+    int prc[3], fieldofs[3];
+    *ret_align = 1;
+    *regsize = 8;
+    if (size > 16)
+      return 0;
+    reg_pass(vt, prc, fieldofs, 1);
+    nregs = prc[0];
+    if (nregs == 2 && prc[1] != prc[2])
+      return -1;  /* generic code can't deal with this case */
+    if (prc[1] == RC_FLOAT) {
+        *regsize = size / nregs;
+    }
+    ret->t = fieldofs[1] & VT_BTYPE;
+    ret->ref = NULL;
+    return nregs;
+}
+
+ST_FUNC void arch_transfer_ret_regs(int aftercall)
+{
+    int prc[3], fieldofs[3];
+    reg_pass(&vtop->type, prc, fieldofs, 1);
+    assert(prc[0] == 2 && prc[1] != prc[2] && !(fieldofs[1] >> 4));
+    assert(vtop->r == (VT_LOCAL | VT_LVAL));
+    vpushv(vtop);
+    vtop->type.t = fieldofs[1] & VT_BTYPE;
+    (aftercall ? store : load)(prc[1] == RC_INT ? REG_IRET : REG_FRET, vtop);
+    vtop->c.i += fieldofs[2] >> 4;
+    vtop->type.t = fieldofs[2] & VT_BTYPE;
+    (aftercall ? store : load)(prc[2] == RC_INT ? REG_IRET : REG_FRET, vtop);
+    vtop--;
+}
+
+ST_FUNC void gfunc_epilog(void)
+{
+    int v, saved_ind, d, large_ofs_ind;
+
+#ifdef CONFIG_TCC_BCHECK
+    if (tcc_state->do_bounds_check)
+        gen_bounds_epilog();
+#endif
+
+    loc = (loc - num_va_regs * 8);
+    d = v = (-loc + 15) & -16;
+
+    if (v >= (1 << 11)) {
+        d = 16;
+        o(0x37 | (5 << 7) | ((0x800 + (v-16)) & 0xfffff000)); //lui t0, upper(v)
+        EI(0x13, 0, 5, 5, (v-16) << 20 >> 20); // addi t0, t0, lo(v)
+        ER(0x33, 0, 2, 2, 5, 0); // add sp, sp, t0
+    }
+    EI(0x03, 3, 1, 2, d - 8 - num_va_regs * 8);  // ld ra, v-8(sp)
+    EI(0x03, 3, 8, 2, d - 16 - num_va_regs * 8); // ld s0, v-16(sp)
+    EI(0x13, 0, 2, 2, d);      // addi sp, sp, v
+    EI(0x67, 0, 0, 1, 0);      // jalr x0, 0(x1), aka ret
+    large_ofs_ind = ind;
+    if (v >= (1 << 11)) {
+        EI(0x13, 0, 8, 2, d - num_va_regs * 8);      // addi s0, sp, d
+        o(0x37 | (5 << 7) | ((0x800 + (v-16)) & 0xfffff000)); //lui t0, upper(v)
+        EI(0x13, 0, 5, 5, (v-16) << 20 >> 20); // addi t0, t0, lo(v)
+        ER(0x33, 0, 2, 2, 5, 0x20); // sub sp, sp, t0
+        gjmp_addr(func_sub_sp_offset + 5*4);
+    }
+    saved_ind = ind;
+
+    ind = func_sub_sp_offset;
+    EI(0x13, 0, 2, 2, -d);     // addi sp, sp, -d
+    ES(0x23, 3, 2, 1, d - 8 - num_va_regs * 8);  // sd ra, d-8(sp)
+    ES(0x23, 3, 2, 8, d - 16 - num_va_regs * 8); // sd s0, d-16(sp)
+    if (v < (1 << 11))
+      EI(0x13, 0, 8, 2, d - num_va_regs * 8);      // addi s0, sp, d
+    else
+      gjmp_addr(large_ofs_ind);
+    if ((ind - func_sub_sp_offset) != 5*4)
+      EI(0x13, 0, 0, 0, 0);      // addi x0, x0, 0 == nop
+    ind = saved_ind;
+}
+
+ST_FUNC void gen_va_start(void)
+{
+    vtop--;
+    vset(&char_pointer_type, VT_LOCAL, func_va_list_ofs);
+}
+
+ST_FUNC void g
