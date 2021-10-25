@@ -1089,4 +1089,184 @@ static void gen_opil(int op, int ll)
     d = ireg(d);
     switch (op) {
     default:
-        if (op >= TOK_ULT && op <= T
+        if (op >= TOK_ULT && op <= TOK_GT) {
+            vset_VT_CMP(op);
+            vtop->cmp_r = a | b << 8;
+            break;
+        }
+        tcc_error("implement me: %s(%s)", __FUNCTION__, get_tok_str(op, NULL));
+        break;
+
+    case '+':
+        ER(0x33 | ll, 0, d, a, b, 0); // add d, a, b
+        break;
+    case '-':
+        ER(0x33 | ll, 0, d, a, b, 0x20); // sub d, a, b
+        break;
+    case TOK_SAR:
+        ER(0x33 | ll | ll, 5, d, a, b, 0x20); // sra d, a, b
+        break;
+    case TOK_SHR:
+        ER(0x33 | ll | ll, 5, d, a, b, 0); // srl d, a, b
+        break;
+    case TOK_SHL:
+        ER(0x33 | ll, 1, d, a, b, 0); // sll d, a, b
+        break;
+    case '*':
+        ER(0x33 | ll, 0, d, a, b, 1); // mul d, a, b
+        break;
+    case '/':
+        ER(0x33 | ll, 4, d, a, b, 1); // div d, a, b
+        break;
+    case '&':
+        ER(0x33, 7, d, a, b, 0); // and d, a, b
+        break;
+    case '^':
+        ER(0x33, 4, d, a, b, 0); // xor d, a, b
+        break;
+    case '|':
+        ER(0x33, 6, d, a, b, 0); // or d, a, b
+        break;
+    case '%':
+        ER(ll ? 0x3b:  0x33, 6, d, a, b, 1); // rem d, a, b
+        break;
+    case TOK_UMOD:
+        ER(0x33 | ll, 7, d, a, b, 1); // remu d, a, b
+        break;
+    case TOK_PDIV:
+    case TOK_UDIV:
+        ER(0x33 | ll, 5, d, a, b, 1); // divu d, a, b
+        break;
+    }
+}
+
+ST_FUNC void gen_opi(int op)
+{
+    gen_opil(op, 0);
+}
+
+ST_FUNC void gen_opl(int op)
+{
+    gen_opil(op, 1);
+}
+
+ST_FUNC void gen_opf(int op)
+{
+    int rs1, rs2, rd, dbl, invert;
+    if (vtop[0].type.t == VT_LDOUBLE) {
+        CType type = vtop[0].type;
+        int func = 0;
+        int cond = -1;
+        switch (op) {
+        case '*': func = TOK___multf3; break;
+        case '+': func = TOK___addtf3; break;
+        case '-': func = TOK___subtf3; break;
+        case '/': func = TOK___divtf3; break;
+        case TOK_EQ: func = TOK___eqtf2; cond = 1; break;
+        case TOK_NE: func = TOK___netf2; cond = 0; break;
+        case TOK_LT: func = TOK___lttf2; cond = 10; break;
+        case TOK_GE: func = TOK___getf2; cond = 11; break;
+        case TOK_LE: func = TOK___letf2; cond = 12; break;
+        case TOK_GT: func = TOK___gttf2; cond = 13; break;
+        default: assert(0); break;
+        }
+        vpush_helper_func(func);
+        vrott(3);
+        gfunc_call(2);
+        vpushi(0);
+        vtop->r = REG_IRET;
+        vtop->r2 = cond < 0 ? TREG_R(1) : VT_CONST;
+        if (cond < 0)
+            vtop->type = type;
+        else {
+            vpushi(0);
+            gen_opil(op, 1);
+        }
+        return;
+    }
+
+    gv2(RC_FLOAT, RC_FLOAT);
+    assert(vtop->type.t == VT_DOUBLE || vtop->type.t == VT_FLOAT);
+    dbl = vtop->type.t == VT_DOUBLE;
+    rs1 = freg(vtop[-1].r);
+    rs2 = freg(vtop->r);
+    vtop--;
+    invert = 0;
+    switch(op) {
+    default:
+        assert(0);
+    case '+':
+        op = 0; // fadd
+    arithop:
+        rd = get_reg(RC_FLOAT);
+        vtop->r = rd;
+        rd = freg(rd);
+        ER(0x53, 7, rd, rs1, rs2, dbl | (op << 2)); // fop.[sd] RD, RS1, RS2 (dyn rm)
+        break;
+    case '-':
+        op = 1; // fsub
+        goto arithop;
+    case '*':
+        op = 2; // fmul
+        goto arithop;
+    case '/':
+        op = 3; // fdiv
+        goto arithop;
+    case TOK_EQ:
+        op = 2; // EQ
+    cmpop:
+        rd = get_reg(RC_INT);
+        vtop->r = rd;
+        rd = ireg(rd);
+        ER(0x53, op, rd, rs1, rs2, dbl | 0x50); // fcmp.[sd] RD, RS1, RS2 (op == eq/lt/le)
+        if (invert)
+          EI(0x13, 4, rd, rd, 1); // xori RD, 1
+        break;
+    case TOK_NE:
+        invert = 1;
+        op = 2; // EQ
+        goto cmpop;
+    case TOK_LT:
+        op = 1; // LT
+        goto cmpop;
+    case TOK_LE:
+        op = 0; // LE
+        goto cmpop;
+    case TOK_GT:
+        op = 1; // LT
+        rd = rs1, rs1 = rs2, rs2 = rd;
+        goto cmpop;
+    case TOK_GE:
+        op = 0; // LE
+        rd = rs1, rs1 = rs2, rs2 = rd;
+        goto cmpop;
+    }
+}
+
+ST_FUNC void gen_cvt_sxtw(void)
+{
+    /* XXX on risc-v the registers are usually sign-extended already.
+       Let's try to not do anything here.  */
+}
+
+ST_FUNC void gen_cvt_itof(int t)
+{
+    int rr = ireg(gv(RC_INT)), dr;
+    int u = vtop->type.t & VT_UNSIGNED;
+    int l = (vtop->type.t & VT_BTYPE) == VT_LLONG;
+    if (t == VT_LDOUBLE) {
+        int func = l ?
+          (u ? TOK___floatunditf : TOK___floatditf) :
+          (u ? TOK___floatunsitf : TOK___floatsitf);
+        vpush_helper_func(func);
+        vrott(2);
+        gfunc_call(1);
+        vpushi(0);
+        vtop->type.t = t;
+        vtop->r = REG_IRET;
+        vtop->r2 = TREG_R(1);
+    } else {
+        vtop--;
+        dr = get_reg(RC_FLOAT);
+        vtop++;
+        vtop->r 
