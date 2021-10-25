@@ -938,4 +938,155 @@ ST_FUNC void gen_va_start(void)
     vset(&char_pointer_type, VT_LOCAL, func_va_list_ofs);
 }
 
-ST_FUNC void g
+ST_FUNC void gen_fill_nops(int bytes)
+{
+    if ((bytes & 3))
+      tcc_error("alignment of code section not multiple of 4");
+    while (bytes > 0) {
+        EI(0x13, 0, 0, 0, 0);      // addi x0, x0, 0 == nop
+        bytes -= 4;
+    }
+}
+
+// Generate forward branch to label:
+ST_FUNC int gjmp(int t)
+{
+    if (nocode_wanted)
+      return t;
+    o(t);
+    return ind - 4;
+}
+
+// Generate branch to known address:
+ST_FUNC void gjmp_addr(int a)
+{
+    uint32_t r = a - ind, imm;
+    if ((r + (1 << 21)) & ~((1U << 22) - 2)) {
+        o(0x17 | (5 << 7) | (((r + 0x800) & 0xfffff000))); // lui RR, up(r)
+        r = (int)r << 20 >> 20;
+        EI(0x67, 0, 0, 5, r);      // jalr x0, r(t0)
+    } else {
+        imm = (((r >> 12) &  0xff) << 12)
+            | (((r >> 11) &     1) << 20)
+            | (((r >>  1) & 0x3ff) << 21)
+            | (((r >> 20) &     1) << 31);
+        o(0x6f | imm); // jal x0, imm ==  j imm
+    }
+}
+
+ST_FUNC int gjmp_cond(int op, int t)
+{
+    int tmp;
+    int a = vtop->cmp_r & 0xff;
+    int b = (vtop->cmp_r >> 8) & 0xff;
+    switch (op) {
+        case TOK_ULT: op = 6; break;
+        case TOK_UGE: op = 7; break;
+        case TOK_ULE: op = 7; tmp = a; a = b; b = tmp; break;
+        case TOK_UGT: op = 6; tmp = a; a = b; b = tmp; break;
+        case TOK_LT:  op = 4; break;
+        case TOK_GE:  op = 5; break;
+        case TOK_LE:  op = 5; tmp = a; a = b; b = tmp; break;
+        case TOK_GT:  op = 4; tmp = a; a = b; b = tmp; break;
+        case TOK_NE:  op = 1; break;
+        case TOK_EQ:  op = 0; break;
+    }
+    o(0x63 | (op ^ 1) << 12 | a << 15 | b << 20 | 8 << 7); // bOP a,b,+4
+    return gjmp(t);
+}
+
+ST_FUNC int gjmp_append(int n, int t)
+{
+    void *p;
+    /* insert jump list n into t */
+    if (n) {
+        uint32_t n1 = n, n2;
+        while ((n2 = read32le(p = cur_text_section->data + n1)))
+            n1 = n2;
+        write32le(p, t);
+        t = n;
+    }
+    return t;
+}
+
+static void gen_opil(int op, int ll)
+{
+    int a, b, d;
+    int func3 = 0;
+    ll = ll ? 0 : 8;
+    if ((vtop->r & (VT_VALMASK | VT_LVAL | VT_SYM)) == VT_CONST) {
+        int fc = vtop->c.i;
+        if (fc == vtop->c.i && !(((unsigned)fc + (1 << 11)) >> 12)) {
+            int cll = 0;
+            int m = ll ? 31 : 63;
+            vswap();
+            gv(RC_INT);
+            a = ireg(vtop[0].r);
+            --vtop;
+            d = get_reg(RC_INT);
+            ++vtop;
+            vswap();
+            switch (op) {
+                case '-':
+                    if (fc <= -(1 << 11))
+                      break;
+                    fc = -fc;
+                case '+':
+                    func3 = 0; // addi d, a, fc
+                    cll = ll;
+                do_cop:
+                    EI(0x13 | cll, func3, ireg(d), a, fc);
+                    --vtop;
+                    if (op >= TOK_ULT && op <= TOK_GT) {
+                      vset_VT_CMP(TOK_NE);
+                      vtop->cmp_r = ireg(d) | 0 << 8;
+                    } else
+                      vtop[0].r = d;
+                    return;
+                case TOK_LE:
+                    if (fc >= (1 << 11) - 1)
+                      break;
+                    ++fc;
+                case TOK_LT:  func3 = 2; goto do_cop; // slti d, a, fc
+                case TOK_ULE:
+                    if (fc >= (1 << 11) - 1 || fc == -1)
+                      break;
+                    ++fc;
+                case TOK_ULT: func3 = 3; goto do_cop; // sltiu d, a, fc
+                case '^':     func3 = 4; goto do_cop; // xori d, a, fc
+                case '|':     func3 = 6; goto do_cop; // ori  d, a, fc
+                case '&':     func3 = 7; goto do_cop; // andi d, a, fc
+                case TOK_SHL: func3 = 1; cll = ll; fc &= m; goto do_cop; // slli d, a, fc
+                case TOK_SHR: func3 = 5; cll = ll; fc &= m; goto do_cop; // srli d, a, fc
+                case TOK_SAR: func3 = 5; cll = ll; fc = 1024 | (fc & m); goto do_cop;
+
+                case TOK_UGE: /* -> TOK_ULT */
+                case TOK_UGT: /* -> TOK_ULE */
+                case TOK_GE:  /* -> TOK_LT */
+                case TOK_GT:  /* -> TOK_LE */
+                    gen_opil(op - 1, !ll);
+                    vtop->cmp_op ^= 1;
+                    return;
+
+                case TOK_NE:
+                case TOK_EQ:
+                    if (fc)
+                      gen_opil('-', !ll), a = ireg(vtop++->r);
+                    --vtop;
+                    vset_VT_CMP(op);
+                    vtop->cmp_r = a | 0 << 8;
+                    return;
+            }
+        }
+    }
+    gv2(RC_INT, RC_INT);
+    a = ireg(vtop[-1].r);
+    b = ireg(vtop[0].r);
+    vtop -= 2;
+    d = get_reg(RC_INT);
+    vtop++;
+    vtop[0].r = d;
+    d = ireg(d);
+    switch (op) {
+    default:
+        if (op >= TOK_ULT && op <= T
