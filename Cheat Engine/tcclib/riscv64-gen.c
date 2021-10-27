@@ -1269,4 +1269,129 @@ ST_FUNC void gen_cvt_itof(int t)
         vtop--;
         dr = get_reg(RC_FLOAT);
         vtop++;
-        vtop->r 
+        vtop->r = dr;
+        dr = freg(dr);
+        EIu(0x53, 7, dr, rr, ((0x68 | (t == VT_DOUBLE ? 1 : 0)) << 5) | (u ? 1 : 0) | (l ? 2 : 0)); // fcvt.[sd].[wl][u]
+    }
+}
+
+ST_FUNC void gen_cvt_ftoi(int t)
+{
+    int ft = vtop->type.t & VT_BTYPE;
+    int l = (t & VT_BTYPE) == VT_LLONG;
+    int u = t & VT_UNSIGNED;
+    if (ft == VT_LDOUBLE) {
+        int func = l ?
+          (u ? TOK___fixunstfdi : TOK___fixtfdi) :
+          (u ? TOK___fixunstfsi : TOK___fixtfsi);
+        vpush_helper_func(func);
+        vrott(2);
+        gfunc_call(1);
+        vpushi(0);
+        vtop->type.t = t;
+        vtop->r = REG_IRET;
+    } else {
+        int rr = freg(gv(RC_FLOAT)), dr;
+        vtop--;
+        dr = get_reg(RC_INT);
+        vtop++;
+        vtop->r = dr;
+        dr = ireg(dr);
+        EIu(0x53, 1, dr, rr, ((0x60 | (ft == VT_DOUBLE ? 1 : 0)) << 5) | (u ? 1 : 0) | (l ? 2 : 0)); // fcvt.[wl][u].[sd] rtz
+    }
+}
+
+ST_FUNC void gen_cvt_ftof(int dt)
+{
+    int st = vtop->type.t & VT_BTYPE, rs, rd;
+    dt &= VT_BTYPE;
+    if (st == dt)
+      return;
+    if (dt == VT_LDOUBLE || st == VT_LDOUBLE) {
+        int func = (dt == VT_LDOUBLE) ?
+            (st == VT_FLOAT ? TOK___extendsftf2 : TOK___extenddftf2) :
+            (dt == VT_FLOAT ? TOK___trunctfsf2 : TOK___trunctfdf2);
+        /* We can't use gfunc_call, as func_old_type works like vararg
+           functions, and on riscv unnamed float args are passed like
+           integers.  But we really need them in the float argument registers
+           for extendsftf2/extenddftf2.  So, do it explicitely.  */
+        save_regs(1);
+        if (dt == VT_LDOUBLE)
+          gv(RC_F(0));
+        else {
+            gv(RC_R(0));
+            assert(vtop->r2 < 7);
+            if (vtop->r2 != 1 + vtop->r) {
+                EI(0x13, 0, ireg(vtop->r) + 1, ireg(vtop->r2), 0); // mv Ra+1, RR2
+                vtop->r2 = 1 + vtop->r;
+            }
+        }
+        vpush_helper_func(func);
+        gcall_or_jmp(1);
+        vtop -= 2;
+        vpushi(0);
+        vtop->type.t = dt;
+        if (dt == VT_LDOUBLE)
+          vtop->r = REG_IRET, vtop->r2 = REG_IRET+1;
+        else
+          vtop->r = REG_FRET;
+    } else {
+        assert (dt == VT_FLOAT || dt == VT_DOUBLE);
+        assert (st == VT_FLOAT || st == VT_DOUBLE);
+        rs = gv(RC_FLOAT);
+        rd = get_reg(RC_FLOAT);
+        if (dt == VT_DOUBLE)
+          EI(0x53, 0, freg(rd), freg(rs), 0x21 << 5); // fcvt.d.s RD, RS (no rm)
+        else
+          EI(0x53, 7, freg(rd), freg(rs), (0x20 << 5) | 1); // fcvt.s.d RD, RS (dyn rm)
+        vtop->r = rd;
+    }
+}
+
+ST_FUNC void ggoto(void)
+{
+    gcall_or_jmp(0);
+    vtop--;
+}
+
+ST_FUNC void gen_vla_sp_save(int addr)
+{
+    ES(0x23, 3, 8, 2, addr); // sd sp, fc(s0)
+}
+
+ST_FUNC void gen_vla_sp_restore(int addr)
+{
+    EI(0x03, 3, 2, 8, addr); // ld sp, fc(s0)
+}
+
+ST_FUNC void gen_vla_alloc(CType *type, int align)
+{
+    int rr;
+#if defined(CONFIG_TCC_BCHECK)
+    if (tcc_state->do_bounds_check)
+        vpushv(vtop);
+#endif
+    rr = ireg(gv(RC_INT));
+#if defined(CONFIG_TCC_BCHECK)
+    if (tcc_state->do_bounds_check)
+        EI(0x13, 0, rr, rr, 15+1);   // addi RR, RR, 15+1
+    else
+#endif
+    EI(0x13, 0, rr, rr, 15);   // addi RR, RR, 15
+    EI(0x13, 7, rr, rr, -16);  // andi, RR, RR, -16
+    ER(0x33, 0, 2, 2, rr, 0x20); // sub sp, sp, rr
+    vpop();
+#if defined(CONFIG_TCC_BCHECK)
+    if (tcc_state->do_bounds_check) {
+        vpushi(0);
+        vtop->r = TREG_R(0);
+        o(0x00010513); /* mv a0,sp */
+        vswap();
+        vpush_helper_func(TOK___bound_new_region);
+        vrott(3);
+        gfunc_call(2);
+        func_bound_add_epilog = 1;
+    }
+#endif
+}
+#endif
