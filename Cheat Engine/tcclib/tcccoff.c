@@ -136,4 +136,197 @@ ST_FUNC int tcc_output_coff(TCCState *s1, FILE *f)
 	    coff_sec->s_lnnoptr = 0;	/* file ptr to line numbers */
 	    coff_sec->s_nreloc = 0;	/* number of relocation entries */
 	    coff_sec->s_flags = GetCoffFlags(coff_sec->s_name);	/* flags */
-	    coff_sec->s_reserved = 0;	/* re
+	    coff_sec->s_reserved = 0;	/* reserved byte */
+	    coff_sec->s_page = 0;	/* memory page id */
+
+	    file_pointer += sizeof(SCNHDR);
+	}
+    }
+
+    file_hdr.f_nscns = NSectionsToOutput;	/* number of sections */
+
+    // now loop through and determine file pointer locations
+    // for the raw data
+
+
+    for (i = 1; i < s1->nb_sections; i++) {
+	coff_sec = &section_header[i];
+	tcc_sect = s1->sections[i];
+
+	if (OutputTheSection(tcc_sect)) {
+	    // put raw data
+	    coff_sec->s_scnptr = file_pointer;	/* file ptr to raw data for section */
+	    file_pointer += coff_sec->s_size;
+	}
+    }
+
+    // now loop through and determine file pointer locations
+    // for the relocation data
+
+    for (i = 1; i < s1->nb_sections; i++) {
+	coff_sec = &section_header[i];
+	tcc_sect = s1->sections[i];
+
+	if (OutputTheSection(tcc_sect)) {
+	    // put relocations data
+	    if (coff_sec->s_nreloc > 0) {
+		coff_sec->s_relptr = file_pointer;	/* file ptr to relocation */
+		file_pointer += coff_sec->s_nreloc * sizeof(struct reloc);
+	    }
+	}
+    }
+
+    // now loop through and determine file pointer locations
+    // for the line number data
+
+    for (i = 1; i < s1->nb_sections; i++) {
+	coff_sec = &section_header[i];
+	tcc_sect = s1->sections[i];
+
+	coff_sec->s_nlnno = 0;
+	coff_sec->s_lnnoptr = 0;
+
+	if (s1->do_debug && tcc_sect == stext) {
+	    // count how many line nos data
+
+	    // also find association between source file name and function
+	    // so we can sort the symbol table
+
+
+	    Stab_Sym *sym, *sym_end;
+	    char func_name[MAX_FUNC_NAME_LENGTH],
+		last_func_name[MAX_FUNC_NAME_LENGTH];
+	    unsigned long func_addr, last_pc, pc;
+	    const char *incl_files[INCLUDE_STACK_SIZE];
+	    int incl_index, len, last_line_num;
+	    const char *str, *p;
+
+	    coff_sec->s_lnnoptr = file_pointer;	/* file ptr to linno */
+
+
+	    func_name[0] = '\0';
+	    func_addr = 0;
+	    incl_index = 0;
+	    last_func_name[0] = '\0';
+	    last_pc = 0xffffffff;
+	    last_line_num = 1;
+	    sym = (Stab_Sym *) stab_section->data + 1;
+	    sym_end =
+		(Stab_Sym *) (stab_section->data +
+			      stab_section->data_offset);
+
+	    nFuncs = 0;
+	    while (sym < sym_end) {
+		switch (sym->n_type) {
+		    /* function start or end */
+		case N_FUN:
+		    if (sym->n_strx == 0) {
+			// end of function
+
+			coff_sec->s_nlnno++;
+			file_pointer += LINESZ;
+
+			pc = sym->n_value + func_addr;
+			func_name[0] = '\0';
+			func_addr = 0;
+			EndAddress[nFuncs] = pc;
+			FuncEntries[nFuncs] =
+			    (file_pointer -
+			     LineNoFilePtr[nFuncs]) / LINESZ - 1;
+			LastLineNo[nFuncs++] = last_line_num + 1;
+		    } else {
+			// beginning of function
+
+			LineNoFilePtr[nFuncs] = file_pointer;
+			coff_sec->s_nlnno++;
+			file_pointer += LINESZ;
+
+			str =
+			    (const char *) stabstr_section->data +
+			    sym->n_strx;
+
+			p = strchr(str, ':');
+			if (!p) {
+			    pstrcpy(func_name, sizeof(func_name), str);
+			    pstrcpy(Func[nFuncs], sizeof(func_name), str);
+			} else {
+			    len = p - str;
+			    if (len > sizeof(func_name) - 1)
+				len = sizeof(func_name) - 1;
+			    memcpy(func_name, str, len);
+			    memcpy(Func[nFuncs], str, len);
+			    func_name[len] = '\0';
+			}
+
+			// save the file that it came in so we can sort later
+			pstrcpy(AssociatedFile[nFuncs], sizeof(func_name),
+				incl_files[incl_index - 1]);
+
+			func_addr = sym->n_value;
+		    }
+		    break;
+
+		    /* line number info */
+		case N_SLINE:
+		    pc = sym->n_value + func_addr;
+
+		    last_pc = pc;
+		    last_line_num = sym->n_desc;
+
+		    /* XXX: slow! */
+		    strcpy(last_func_name, func_name);
+
+		    coff_sec->s_nlnno++;
+		    file_pointer += LINESZ;
+		    break;
+		    /* include files */
+		case N_BINCL:
+		    str =
+			(const char *) stabstr_section->data + sym->n_strx;
+		  add_incl:
+		    if (incl_index < INCLUDE_STACK_SIZE) {
+			incl_files[incl_index++] = str;
+		    }
+		    break;
+		case N_EINCL:
+		    if (incl_index > 1)
+			incl_index--;
+		    break;
+		case N_SO:
+		    if (sym->n_strx == 0) {
+			incl_index = 0;	/* end of translation unit */
+		    } else {
+			str =
+			    (const char *) stabstr_section->data +
+			    sym->n_strx;
+			/* do not add path */
+			len = strlen(str);
+			if (len > 0 && str[len - 1] != '/')
+			    goto add_incl;
+		    }
+		    break;
+		}
+		sym++;
+	    }
+	}
+
+    }
+
+    file_hdr.f_symptr = file_pointer;	/* file pointer to symtab */
+
+    if (s1->do_debug)
+	file_hdr.f_nsyms = coff_nb_syms;	/* number of symtab entries */
+    else
+	file_hdr.f_nsyms = 0;
+
+    file_pointer += file_hdr.f_nsyms * SYMNMLEN;
+
+    // OK now we are all set to write the file
+
+
+    fwrite(&file_hdr, FILHSZ, 1, f);
+    fwrite(&o_filehdr, sizeof(o_filehdr), 1, f);
+
+    // write section headers
+    for (i = 1; i < s1->nb_sections; i++) {
+	coff_sec = &section_
