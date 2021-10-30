@@ -761,4 +761,188 @@ void SortSymbolTable(TCCState *s1)
 
     // copy it all back
 
-    p = (Elf32_Sym *) symtab_section->da
+    p = (Elf32_Sym *) symtab_section->data;
+    for (i = 0; i < nb_syms; i++) {
+	*p++ = NewTable[i];
+    }
+
+    tcc_free(NewTable);
+}
+
+
+int FindCoffSymbolIndex(TCCState *s1, const char *func_name)
+{
+    int i, n = 0;
+    Elf32_Sym *p;
+    char *name;
+
+    p = (Elf32_Sym *) symtab_section->data;
+
+    for (i = 0; i < nb_syms; i++) {
+
+	name = (char *) symtab_section->link->data + p->st_name;
+
+	if (p->st_info == 4) {
+	    // put a filename symbol
+	    n++;
+	} else if (p->st_info == 0x12) {
+
+	    if (strcmp(func_name, name) == 0)
+		return n;
+
+	    n += 6;
+
+	    // put a Function Name
+
+	    // now put aux info
+
+	    // put a .bf
+
+	    // now put aux info
+
+	    // put a .ef
+
+	    // now put aux info
+
+	} else {
+	    n += 2;
+	}
+
+	p++;
+    }
+
+    return n;			// total number of symbols
+}
+
+int OutputTheSection(Section * sect)
+{
+    const char *s = sect->name;
+
+    if (!strcmp(s, ".text"))
+	return 1;
+    else if (!strcmp(s, ".data"))
+	return 1;
+    else
+	return 0;
+}
+
+short int GetCoffFlags(const char *s)
+{
+    if (!strcmp(s, ".text"))
+	return STYP_TEXT | STYP_DATA | STYP_ALIGN | 0x400;
+    else if (!strcmp(s, ".data"))
+	return STYP_DATA;
+    else if (!strcmp(s, ".bss"))
+	return STYP_BSS;
+    else if (!strcmp(s, ".stack"))
+	return STYP_BSS | STYP_ALIGN | 0x200;
+    else if (!strcmp(s, ".cinit"))
+	return STYP_COPY | STYP_DATA | STYP_ALIGN | 0x200;
+    else
+	return 0;
+}
+
+Section *FindSection(TCCState * s1, const char *sname)
+{
+    Section *s;
+    int i;
+
+    for (i = 1; i < s1->nb_sections; i++) {
+	s = s1->sections[i];
+
+	if (!strcmp(sname, s->name))
+	    return s;
+    }
+
+    tcc_error("could not find section %s", sname);
+    return 0;
+}
+
+ST_FUNC int tcc_load_coff(TCCState * s1, int fd)
+{
+// tktk TokenSym *ts;
+
+    FILE *f;
+    unsigned int str_size;
+    char *Coff_str_table, *name;
+    int i, k;
+    struct syment csym;
+    char name2[9];
+    FILHDR file_hdr;		/* FILE HEADER STRUCTURE              */
+
+    f = fdopen(fd, "rb");
+    if (!f) {
+	tcc_error("Unable to open .out file for input");
+    }
+
+    if (fread(&file_hdr, FILHSZ, 1, f) != 1)
+	tcc_error("error reading .out file for input");
+
+    if (fread(&o_filehdr, sizeof(o_filehdr), 1, f) != 1)
+	tcc_error("error reading .out file for input");
+
+    // first read the string table
+
+    if (fseek(f, file_hdr.f_symptr + file_hdr.f_nsyms * SYMESZ, SEEK_SET))
+	tcc_error("error reading .out file for input");
+
+    if (fread(&str_size, sizeof(int), 1, f) != 1)
+	tcc_error("error reading .out file for input");
+
+
+    Coff_str_table = (char *) tcc_malloc(str_size);
+
+    if (fread(Coff_str_table, str_size - 4, 1, f) != 1)
+	tcc_error("error reading .out file for input");
+
+    // read/process all the symbols
+
+    // seek back to symbols
+
+    if (fseek(f, file_hdr.f_symptr, SEEK_SET))
+	tcc_error("error reading .out file for input");
+
+    for (i = 0; i < file_hdr.f_nsyms; i++) {
+	if (fread(&csym, SYMESZ, 1, f) != 1)
+	    tcc_error("error reading .out file for input");
+
+	if (csym._n._n_n._n_zeroes == 0) {
+	    name = Coff_str_table + csym._n._n_n._n_offset - 4;
+	} else {
+	    name = csym._n._n_name;
+
+	    if (name[7] != 0) {
+		for (k = 0; k < 8; k++)
+		    name2[k] = name[k];
+
+		name2[8] = 0;
+
+		name = name2;
+	    }
+	}
+//              if (strcmp("_DAC_Buffer",name)==0)  // tktk
+//                      name[0]=0;
+
+	if (((csym.n_type & 0x30) == 0x20 && csym.n_sclass == 0x2) || ((csym.n_type & 0x30) == 0x30 && csym.n_sclass == 0x2) || (csym.n_type == 0x4 && csym.n_sclass == 0x2) || (csym.n_type == 0x8 && csym.n_sclass == 0x2) ||	// structures
+	    (csym.n_type == 0x18 && csym.n_sclass == 0x2) ||	// pointer to structure
+	    (csym.n_type == 0x7 && csym.n_sclass == 0x2) ||	// doubles
+	    (csym.n_type == 0x6 && csym.n_sclass == 0x2))	// floats
+	{
+	    // strip off any leading underscore (except for other main routine)
+
+	    if (name[0] == '_' && strcmp(name, "_main") != 0)
+		name++;
+
+	    tcc_add_symbol(s1, name, (void*)(uintptr_t)csym.n_value);
+	}
+	// skip any aux records
+
+	if (csym.n_numaux == 1) {
+	    if (fread(&csym, SYMESZ, 1, f) != 1)
+		tcc_error("error reading .out file for input");
+	    i++;
+	}
+    }
+
+    return 0;
+}
