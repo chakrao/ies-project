@@ -547,4 +547,218 @@ ST_FUNC int tcc_output_coff(TCCState *s1, FILE *f)
 	    if (p->st_info == 4) {
 		// put a filename symbol
 		csym.n_value = 33;	// ?????
-		c
+		csym.n_scnum = N_DEBUG;
+		csym.n_type = 0;
+		csym.n_sclass = C_FILE;
+		csym.n_numaux = 0;
+		fwrite(&csym, 18, 1, f);
+		n++;
+
+	    } else if (p->st_info == 0x12) {
+		// find the function data
+
+		for (k = 0; k < nFuncs; k++) {
+		    if (strcmp(name, Func[k]) == 0)
+			break;
+		}
+
+		if (k >= nFuncs) {
+		    tcc_error("debug info can't find function: %s", name);
+		}
+		// put a Function Name
+
+		csym.n_value = p->st_value;	// physical address
+		csym.n_scnum = CoffTextSectionNo;
+		csym.n_type = MKTYPE(T_INT, DT_FCN, 0, 0, 0, 0, 0);
+		csym.n_sclass = C_EXT;
+		csym.n_numaux = 1;
+		fwrite(&csym, 18, 1, f);
+
+		// now put aux info
+
+		auxfunc.tag = 0;
+		auxfunc.size = EndAddress[k] - p->st_value;
+		auxfunc.fileptr = LineNoFilePtr[k];
+		auxfunc.nextsym = n + 6;	// tktk
+		auxfunc.dummy = 0;
+		fwrite(&auxfunc, 18, 1, f);
+
+		// put a .bf
+
+		strcpy(csym._n._n_name, ".bf");
+		csym.n_value = p->st_value;	// physical address
+		csym.n_scnum = CoffTextSectionNo;
+		csym.n_type = 0;
+		csym.n_sclass = C_FCN;
+		csym.n_numaux = 1;
+		fwrite(&csym, 18, 1, f);
+
+		// now put aux info
+
+		auxbf.regmask = 0;
+		auxbf.lineno = 0;
+		auxbf.nentries = FuncEntries[k];
+		auxbf.localframe = 0;
+		auxbf.nextentry = n + 6;
+		auxbf.dummy = 0;
+		fwrite(&auxbf, 18, 1, f);
+
+		// put a .ef
+
+		strcpy(csym._n._n_name, ".ef");
+		csym.n_value = EndAddress[k];	// physical address  
+		csym.n_scnum = CoffTextSectionNo;
+		csym.n_type = 0;
+		csym.n_sclass = C_FCN;
+		csym.n_numaux = 1;
+		fwrite(&csym, 18, 1, f);
+
+		// now put aux info
+
+		auxef.dummy = 0;
+		auxef.lineno = LastLineNo[k];
+		auxef.dummy1 = 0;
+		auxef.dummy2 = 0;
+		auxef.dummy3 = 0;
+		auxef.dummy4 = 0;
+		fwrite(&auxef, 18, 1, f);
+
+		n += 6;
+
+	    } else {
+		// try an put some type info
+
+		if ((p->st_other & VT_BTYPE) == VT_DOUBLE) {
+		    csym.n_type = T_DOUBLE;	// int
+		    csym.n_sclass = C_EXT;
+		} else if ((p->st_other & VT_BTYPE) == VT_FLOAT) {
+		    csym.n_type = T_FLOAT;
+		    csym.n_sclass = C_EXT;
+		} else if ((p->st_other & VT_BTYPE) == VT_INT) {
+		    csym.n_type = T_INT;	// int
+		    csym.n_sclass = C_EXT;
+		} else if ((p->st_other & VT_BTYPE) == VT_SHORT) {
+		    csym.n_type = T_SHORT;
+		    csym.n_sclass = C_EXT;
+		} else if ((p->st_other & VT_BTYPE) == VT_BYTE) {
+		    csym.n_type = T_CHAR;
+		    csym.n_sclass = C_EXT;
+		} else {
+		    csym.n_type = T_INT;	// just mark as a label
+		    csym.n_sclass = C_LABEL;
+		}
+
+
+		csym.n_value = p->st_value;
+		csym.n_scnum = 2;
+		csym.n_numaux = 1;
+		fwrite(&csym, 18, 1, f);
+
+		auxfunc.tag = 0;
+		auxfunc.size = 0x20;
+		auxfunc.fileptr = 0;
+		auxfunc.nextsym = 0;
+		auxfunc.dummy = 0;
+		fwrite(&auxfunc, 18, 1, f);
+		n++;
+		n++;
+
+	    }
+
+	    p++;
+	}
+    }
+
+    if (s1->do_debug) {
+	// write string table
+
+	// first write the size
+	i = pCoff_str_table - Coff_str_table;
+	fwrite(&i, 4, 1, f);
+
+	// then write the strings
+	fwrite(Coff_str_table, i, 1, f);
+
+	tcc_free(Coff_str_table);
+    }
+
+    return 0;
+}
+
+
+
+// group the symbols in order of filename, func1, func2, etc
+// finally global symbols
+
+void SortSymbolTable(TCCState *s1)
+{
+    int i, j, k, n = 0;
+    Elf32_Sym *p, *p2, *NewTable;
+    char *name, *name2;
+
+    NewTable = (Elf32_Sym *) tcc_malloc(nb_syms * sizeof(Elf32_Sym));
+
+    p = (Elf32_Sym *) symtab_section->data;
+
+
+    // find a file symbol, copy it over
+    // then scan the whole symbol list and copy any function
+    // symbols that match the file association
+
+    for (i = 0; i < nb_syms; i++) {
+	if (p->st_info == 4) {
+	    name = (char *) symtab_section->link->data + p->st_name;
+
+	    // this is a file symbol, copy it over
+
+	    NewTable[n++] = *p;
+
+	    p2 = (Elf32_Sym *) symtab_section->data;
+
+	    for (j = 0; j < nb_syms; j++) {
+		if (p2->st_info == 0x12) {
+		    // this is a func symbol
+
+		    name2 =
+			(char *) symtab_section->link->data + p2->st_name;
+
+		    // find the function data index
+
+		    for (k = 0; k < nFuncs; k++) {
+			if (strcmp(name2, Func[k]) == 0)
+			    break;
+		    }
+
+		    if (k >= nFuncs) {
+                        tcc_error("debug (sort) info can't find function: %s", name2);
+		    }
+
+		    if (strcmp(AssociatedFile[k], name) == 0) {
+			// yes they match copy it over
+
+			NewTable[n++] = *p2;
+		    }
+		}
+		p2++;
+	    }
+	}
+	p++;
+    }
+
+    // now all the filename and func symbols should have been copied over
+    // copy all the rest over (all except file and funcs)
+
+    p = (Elf32_Sym *) symtab_section->data;
+    for (i = 0; i < nb_syms; i++) {
+	if (p->st_info != 4 && p->st_info != 0x12) {
+	    NewTable[n++] = *p;
+	}
+	p++;
+    }
+
+    if (n != nb_syms)
+	tcc_error("Internal Compiler error, debug info");
+
+    // copy it all back
+
+    p = (Elf32_Sym *) symtab_section->da
