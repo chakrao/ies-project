@@ -329,4 +329,222 @@ ST_FUNC int tcc_output_coff(TCCState *s1, FILE *f)
 
     // write section headers
     for (i = 1; i < s1->nb_sections; i++) {
-	coff_sec = &section_
+	coff_sec = &section_header[i];
+	tcc_sect = s1->sections[i];
+
+	if (OutputTheSection(tcc_sect)) {
+	    fwrite(coff_sec, sizeof(SCNHDR), 1, f);
+	}
+    }
+
+    // write raw data
+    for (i = 1; i < s1->nb_sections; i++) {
+	coff_sec = &section_header[i];
+	tcc_sect = s1->sections[i];
+
+	if (OutputTheSection(tcc_sect)) {
+	    fwrite(tcc_sect->data, tcc_sect->data_offset, 1, f);
+	}
+    }
+
+    // write relocation data
+    for (i = 1; i < s1->nb_sections; i++) {
+	coff_sec = &section_header[i];
+	tcc_sect = s1->sections[i];
+
+	if (OutputTheSection(tcc_sect)) {
+	    // put relocations data
+	    if (coff_sec->s_nreloc > 0) {
+		fwrite(tcc_sect->reloc,
+		       coff_sec->s_nreloc * sizeof(struct reloc), 1, f);
+	    }
+	}
+    }
+
+
+    // group the symbols in order of filename, func1, func2, etc
+    // finally global symbols
+
+    if (s1->do_debug)
+	SortSymbolTable(s1);
+
+    // write line no data
+
+    for (i = 1; i < s1->nb_sections; i++) {
+	coff_sec = &section_header[i];
+	tcc_sect = s1->sections[i];
+
+	if (s1->do_debug && tcc_sect == stext) {
+	    // count how many line nos data
+
+
+	    Stab_Sym *sym, *sym_end;
+	    char func_name[128], last_func_name[128];
+	    unsigned long func_addr, last_pc, pc;
+	    const char *incl_files[INCLUDE_STACK_SIZE];
+	    int incl_index, len, last_line_num;
+	    const char *str, *p;
+
+	    LINENO CoffLineNo;
+
+	    func_name[0] = '\0';
+	    func_addr = 0;
+	    incl_index = 0;
+	    last_func_name[0] = '\0';
+	    last_pc = 0;
+	    last_line_num = 1;
+	    sym = (Stab_Sym *) stab_section->data + 1;
+	    sym_end =
+		(Stab_Sym *) (stab_section->data +
+			      stab_section->data_offset);
+
+	    while (sym < sym_end) {
+		switch (sym->n_type) {
+		    /* function start or end */
+		case N_FUN:
+		    if (sym->n_strx == 0) {
+			// end of function
+
+			CoffLineNo.l_addr.l_paddr = last_pc;
+			CoffLineNo.l_lnno = last_line_num + 1;
+			fwrite(&CoffLineNo, 6, 1, f);
+
+			pc = sym->n_value + func_addr;
+			func_name[0] = '\0';
+			func_addr = 0;
+		    } else {
+			// beginning of function
+
+			str =
+			    (const char *) stabstr_section->data +
+			    sym->n_strx;
+
+
+			p = strchr(str, ':');
+			if (!p) {
+			    pstrcpy(func_name, sizeof(func_name), str);
+			} else {
+			    len = p - str;
+			    if (len > sizeof(func_name) - 1)
+				len = sizeof(func_name) - 1;
+			    memcpy(func_name, str, len);
+			    func_name[len] = '\0';
+			}
+			func_addr = sym->n_value;
+			last_pc = func_addr;
+			last_line_num = -1;
+
+			// output a function begin
+
+			CoffLineNo.l_addr.l_symndx =
+			    FindCoffSymbolIndex(s1, func_name);
+			CoffLineNo.l_lnno = 0;
+
+			fwrite(&CoffLineNo, 6, 1, f);
+		    }
+		    break;
+
+		    /* line number info */
+		case N_SLINE:
+		    pc = sym->n_value + func_addr;
+
+
+		    /* XXX: slow! */
+		    strcpy(last_func_name, func_name);
+
+		    // output a line reference
+
+		    CoffLineNo.l_addr.l_paddr = last_pc;
+
+		    if (last_line_num == -1) {
+			CoffLineNo.l_lnno = sym->n_desc;
+		    } else {
+			CoffLineNo.l_lnno = last_line_num + 1;
+		    }
+
+		    fwrite(&CoffLineNo, 6, 1, f);
+
+		    last_pc = pc;
+		    last_line_num = sym->n_desc;
+
+		    break;
+
+		    /* include files */
+		case N_BINCL:
+		    str =
+			(const char *) stabstr_section->data + sym->n_strx;
+		  add_incl2:
+		    if (incl_index < INCLUDE_STACK_SIZE) {
+			incl_files[incl_index++] = str;
+		    }
+		    break;
+		case N_EINCL:
+		    if (incl_index > 1)
+			incl_index--;
+		    break;
+		case N_SO:
+		    if (sym->n_strx == 0) {
+			incl_index = 0;	/* end of translation unit */
+		    } else {
+			str =
+			    (const char *) stabstr_section->data +
+			    sym->n_strx;
+			/* do not add path */
+			len = strlen(str);
+			if (len > 0 && str[len - 1] != '/')
+			    goto add_incl2;
+		    }
+		    break;
+		}
+		sym++;
+	    }
+	}
+    }
+
+    // write symbol table
+    if (s1->do_debug) {
+	int k;
+	struct syment csym;
+	AUXFUNC auxfunc;
+	AUXBF auxbf;
+	AUXEF auxef;
+	int i;
+	Elf32_Sym *p;
+	const char *name;
+	int nstr;
+	int n = 0;
+
+	Coff_str_table = (char *) tcc_malloc(MAX_STR_TABLE);
+	pCoff_str_table = Coff_str_table;
+	nstr = 0;
+
+	p = (Elf32_Sym *) symtab_section->data;
+
+
+	for (i = 0; i < nb_syms; i++) {
+
+	    name = symtab_section->link->data + p->st_name;
+
+	    for (k = 0; k < 8; k++)
+		csym._n._n_name[k] = 0;
+
+	    if (strlen(name) <= 8) {
+		strcpy(csym._n._n_name, name);
+	    } else {
+		if (pCoff_str_table - Coff_str_table + strlen(name) >
+		    MAX_STR_TABLE - 1)
+		    tcc_error("String table too large");
+
+		csym._n._n_n._n_zeroes = 0;
+		csym._n._n_n._n_offset =
+		    pCoff_str_table - Coff_str_table + 4;
+
+		strcpy(pCoff_str_table, name);
+		pCoff_str_table += strlen(name) + 1;	// skip over null
+		nstr++;
+	    }
+
+	    if (p->st_info == 4) {
+		// put a filename symbol
+		csym.n_value = 33;	// ?????
+		c
