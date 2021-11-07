@@ -69,4 +69,12 @@ size_t strlen(const char *s);
 
 /* dlfcn.h */
 #define RTLD_LAZY       0x001
-#define RTLD_NOW        0
+#define RTLD_NOW        0x002
+#define RTLD_GLOBAL     0x100
+
+void *dlopen(const char *filename, int flag);
+const char *dlerror(void);
+void *dlsym(void *handle, char *symbol);
+int dlclose(void *handle);
+
+#endif /* _TCCLIB_H */
