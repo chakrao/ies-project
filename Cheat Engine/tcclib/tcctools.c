@@ -174,4 +174,142 @@ ST_FUNC int tcc_tool_ar(TCCState *s1, int argc, char **argv)
             goto the_end;
         }
 
-        shdr = (ElfW(Shdr) *) (buf + ehdr->e_shoff + ehdr->e_shstrndx * ehdr->e_shent
+        shdr = (ElfW(Shdr) *) (buf + ehdr->e_shoff + ehdr->e_shstrndx * ehdr->e_shentsize);
+        shstr = (char *)(buf + shdr->sh_offset);
+        for (i = 0; i < ehdr->e_shnum; i++)
+        {
+            shdr = (ElfW(Shdr) *) (buf + ehdr->e_shoff + i * ehdr->e_shentsize);
+            if (!shdr->sh_offset)
+                continue;
+            if (shdr->sh_type == SHT_SYMTAB)
+            {
+                symtab = (char *)(buf + shdr->sh_offset);
+                symtabsize = shdr->sh_size;
+            }
+            if (shdr->sh_type == SHT_STRTAB)
+            {
+                if (!strcmp(shstr + shdr->sh_name, ".strtab"))
+                {
+                    strtab = (char *)(buf + shdr->sh_offset);
+                    //strtabsize = shdr->sh_size;
+                }
+            }
+        }
+
+        if (symtab && symtabsize)
+        {
+            int nsym = symtabsize / sizeof(ElfW(Sym));
+            //printf("symtab: info size shndx name\n");
+            for (i = 1; i < nsym; i++)
+            {
+                sym = (ElfW(Sym) *) (symtab + i * sizeof(ElfW(Sym)));
+                if (sym->st_shndx &&
+                    (sym->st_info == 0x10
+                    || sym->st_info == 0x11
+                    || sym->st_info == 0x12
+                    )) {
+                    //printf("symtab: %2Xh %4Xh %2Xh %s\n", sym->st_info, sym->st_size, sym->st_shndx, strtab + sym->st_name);
+                    istrlen = strlen(strtab + sym->st_name)+1;
+                    anames = tcc_realloc(anames, strpos+istrlen);
+                    strcpy(anames + strpos, strtab + sym->st_name);
+                    strpos += istrlen;
+                    if (++funccnt >= funcmax) {
+                        funcmax += 250;
+                        afpos = tcc_realloc(afpos, funcmax * sizeof *afpos); // 250 func more
+                    }
+                    afpos[funccnt] = fpos;
+                }
+            }
+        }
+
+        file = argv[i_obj];
+        for (name = strchr(file, 0);
+             name > file && name[-1] != '/' && name[-1] != '\\';
+             --name);
+        istrlen = strlen(name);
+        if (istrlen >= sizeof(arhdro.ar_name))
+            istrlen = sizeof(arhdro.ar_name) - 1;
+        memset(arhdro.ar_name, ' ', sizeof(arhdro.ar_name));
+        memcpy(arhdro.ar_name, name, istrlen);
+        arhdro.ar_name[istrlen] = '/';
+        sprintf(stmp, "%-10d", fsize);
+        memcpy(&arhdro.ar_size, stmp, 10);
+        fwrite(&arhdro, sizeof(arhdro), 1, fo);
+        fwrite(buf, fsize, 1, fo);
+        tcc_free(buf);
+        i_obj++;
+        fpos += (fsize + sizeof(arhdro));
+    }
+    hofs = 8 + sizeof(arhdr) + strpos + (funccnt+1) * sizeof(int);
+    fpos = 0;
+    if ((hofs & 1)) // align
+        hofs++, fpos = 1;
+    // write header
+    fwrite("!<arch>\n", 8, 1, fh);
+    sprintf(stmp, "%-10d", (int)(strpos + (funccnt+1) * sizeof(int)));
+    memcpy(&arhdr.ar_size, stmp, 10);
+    fwrite(&arhdr, sizeof(arhdr), 1, fh);
+    afpos[0] = le2belong(funccnt);
+    for (i=1; i<=funccnt; i++)
+        afpos[i] = le2belong(afpos[i] + hofs);
+    fwrite(afpos, (funccnt+1) * sizeof(int), 1, fh);
+    fwrite(anames, strpos, 1, fh);
+    if (fpos)
+        fwrite("", 1, 1, fh);
+    // write objects
+    fseek(fo, 0, SEEK_END);
+    fsize = ftell(fo);
+    fseek(fo, 0, SEEK_SET);
+    buf = tcc_malloc(fsize + 1);
+    fread(buf, fsize, 1, fo);
+    fwrite(buf, fsize, 1, fh);
+    tcc_free(buf);
+    ret = 0;
+the_end:
+    if (anames)
+        tcc_free(anames);
+    if (afpos)
+        tcc_free(afpos);
+    if (fh)
+        fclose(fh);
+    if (fo)
+        fclose(fo), remove(tfile);
+    return ret;
+}
+
+/* -------------------------------------------------------------- */
+/*
+ * tiny_impdef creates an export definition file (.def) from a dll
+ * on MS-Windows. Usage: tiny_impdef library.dll [-o outputfile]"
+ *
+ *  Copyright (c) 2005,2007 grischka
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+#ifdef TCC_TARGET_PE
+
+ST_FUNC int tcc_tool_impdef(TCCState *s1, int argc, char **argv)
+{
+    int ret, v, i;
+    char infile[260];
+    char outfile[260];
+
+    const char *file;
+    char *p, *q;
+    FILE *fp, *op;
+
+#ifdef _WIN32
+    cha
