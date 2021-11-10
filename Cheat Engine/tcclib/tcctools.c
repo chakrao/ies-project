@@ -494,4 +494,57 @@ ST_FUNC void tcc_tool_cross(TCCState *s1, char **argv, int target)
 #ifdef _WIN32
         ".exe"
 #endif
-        , prefix, a0, target == 64 ? "x86_64"
+        , prefix, a0, target == 64 ? "x86_64" : "i386");
+
+    if (strcmp(a0, program))
+        execvp(argv[0] = program, argv);
+    tcc_error("could not run '%s'", program);
+}
+
+#endif /* TCC_TARGET_I386 && TCC_TARGET_X86_64 */
+/* -------------------------------------------------------------- */
+/* enable commandline wildcard expansion (tcc -o x.exe *.c) */
+
+#ifdef _WIN32
+int _CRT_glob = 1;
+#ifndef _CRT_glob
+int _dowildcard = 1;
+#endif
+#endif
+
+/* -------------------------------------------------------------- */
+/* generate xxx.d file */
+
+ST_FUNC void gen_makedeps(TCCState *s1, const char *target, const char *filename)
+{
+    FILE *depout;
+    char buf[1024];
+    int i, k;
+
+    if (!filename) {
+        /* compute filename automatically: dir/file.o -> dir/file.d */
+        snprintf(buf, sizeof buf, "%.*s.d",
+            (int)(tcc_fileextension(target) - target), target);
+        filename = buf;
+    }
+
+    if (s1->verbose)
+        printf("<- %s\n", filename);
+
+    /* XXX return err codes instead of error() ? */
+    depout = fopen(filename, "w");
+    if (!depout)
+        tcc_error("could not open '%s'", filename);
+    fprintf(depout, "%s:", target);
+    for (i = 0; i<s1->nb_target_deps; ++i) {
+        for (k = 0; k < i; ++k)
+            if (0 == strcmp(s1->target_deps[i], s1->target_deps[k]))
+                goto next;
+        fprintf(depout, " \\\n  %s", s1->target_deps[i]);
+    next:;
+    }
+    fprintf(depout, "\n");
+    fclose(depout);
+}
+
+/* -------------------------------------------------------------- */
