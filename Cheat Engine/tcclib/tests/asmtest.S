@@ -352,4 +352,397 @@ ret $10
 #ifdef __i386__
 retl
 retl $10
-#e
+#else
+retq
+retq $10
+#endif
+
+lret
+
+lret $10
+
+enter $1234, $10
+
+L3:
+ jo 0x1000
+ jnp 0x1001
+ jne 0x1002
+ jg 0x1003
+
+ jo L3
+ jnp L3
+ jne L3
+ jg L3
+
+ loopne L3
+ loopnz L3
+ loope L3
+ loopz L3
+ loop L3
+ jecxz L3
+
+        
+ seto %al
+ setc %al
+ setcb %al
+ setnp 0x1000
+ setl 0xaaaa
+ setg %dl
+
+ fadd
+ fadd %st(1), %st
+ fadd %st(0), %st(1)
+ fadd %st(3)
+
+ fmul %st(0),%st(0)
+ fmul %st(0),%st(1)
+
+ faddp %st(5)
+ faddp
+ faddp %st(1), %st
+
+ fadds 0x1000
+ fiadds 0x1002
+ faddl 0x1004
+ fiaddl 0x1006
+
+ fmul
+ fmul %st(1), %st
+ fmul %st(3)
+
+ fmulp %st(5)
+ fmulp
+ fmulp %st(1), %st
+
+ fmuls 0x1000
+ fimuls 0x1002
+ fmull 0x1004
+ fimull 0x1006
+
+ fsub
+ fsub %st(1), %st
+ fsub %st(3)
+
+ fsubp %st(5)
+ fsubp
+ fsubp %st(1), %st
+
+ fsubs 0x1000
+ fisubs 0x1002
+ fsubl 0x1004
+ fisubl 0x1006
+
+ fsubr
+ fsubr %st(1), %st
+ fsubr %st(3)
+
+ fsubrp %st(5)
+ fsubrp
+ fsubrp %st(1), %st
+
+ fsubrs 0x1000
+ fisubrs 0x1002
+ fsubrl 0x1004
+ fisubrl 0x1006
+
+ fdiv
+ fdiv %st(1), %st
+ fdiv %st(3)
+
+ fdivp %st(5)
+ fdivp
+ fdivp %st(1), %st
+
+ fdivs 0x1000
+ fidivs 0x1002
+ fdivl 0x1004
+ fidivl 0x1006
+
+ fcom %st(3)
+
+ fcoms 0x1000
+ ficoms 0x1002
+ fcoml 0x1004
+ ficoml 0x1006
+
+ fcomp %st(5)
+ fcomp
+ fcompp
+
+ fcomps 0x1000
+ ficomps 0x1002
+ fcompl 0x1004
+ ficompl 0x1006
+
+ fld %st(5)
+ fldl 0x1000
+ flds 0x1002
+ fildl 0x1004
+ fst %st(4)
+ fstp %st(6)
+ fstpt 0x1006
+ fbstp 0x1008
+
+ fxch
+ fxch %st(4)
+
+ fucom %st(6)
+ fucomp %st(3)
+ fucompp
+
+ finit
+ fninit
+ fldcw 0x1000
+ fnstcw 0x1002
+ fstcw 0x1002
+ fnstsw 0x1004
+ fnstsw (%eax)
+ fstsw 0x1004
+ fstsw (%eax)
+ fnclex
+ fclex
+ fnstenv 0x1000
+ fstenv 0x1000
+ fldenv 0x1000
+ fnsave 0x1002
+ fsave 0x1000
+ frstor 0x1000
+ ffree %st(7)
+ ffreep %st(6)
+ 
+    ftst
+    fxam
+    fld1
+    fldl2t
+    fldl2e
+    fldpi
+    fldlg2
+    fldln2
+    fldz
+
+    f2xm1
+    fyl2x
+    fptan
+    fpatan
+    fxtract
+    fprem1
+    fdecstp
+    fincstp
+    fprem
+    fyl2xp1
+    fsqrt
+    fsincos
+    frndint
+    fscale
+    fsin
+    fcos
+    fchs
+    fabs
+    fnop
+    fwait
+
+bswap %edx
+bswapl %ecx
+xadd %ecx, %edx
+xaddb %dl, 0x1000
+xaddw %ax, 0x1000
+xaddl %eax, 0x1000
+cmpxchg %ecx, %edx
+cmpxchgb %dl, 0x1000
+cmpxchgw %ax, 0x1000
+cmpxchgl %eax, 0x1000
+invlpg 0x1000
+cmpxchg8b 0x1002
+#ifdef __x86_64__
+cmpxchg16b (%rax)
+cmpxchg16b (%r10,%r11)
+#endif
+
+fcmovb %st(5), %st
+fcmove %st(5), %st
+fcmovbe %st(5), %st
+fcmovu %st(5), %st
+fcmovnb %st(5), %st
+fcmovne %st(5), %st
+fcmovnbe %st(5), %st
+fcmovnu %st(5), %st
+fcomi %st(5), %st
+fucomi %st(5), %st
+fcomip %st(5), %st
+fucomip %st(5), %st
+
+
+
+ cmovo 0x1000, %eax
+ cmovs 0x1000, %eax
+ cmovns %edx, %edi
+ cmovne %ax, %si
+ cmovbw %ax, %di
+ cmovnbel %edx, %ecx
+#ifdef __x86_64__
+ bswapq %rsi
+ bswapq %r10
+ cmovz %rdi,%rbx
+ cmovpeq %rsi, %rdx
+#endif
+
+int $3
+int $0x10
+
+#ifdef __i386__
+    pusha
+    popa
+#endif
+    clc # another comment
+    cld # a comment with embedded ' tick
+    cli
+    clts
+    cmc
+    lahf
+    sahf
+#ifdef __i386__
+    pushfl
+    popfl
+#else
+    pushfq
+    popfq
+#endif
+    pushf
+    popf
+    stc
+    std
+    sti
+#ifdef __i386__
+    aaa
+    aas
+    daa
+    das
+    aad
+    aam
+    into
+#endif
+    cbw
+    cwd
+    cwde
+    cdq
+    cbtw
+    cwtd
+    cwtl
+    cltd
+    leave
+    int3
+    iret
+    rsm
+    hlt
+    wait
+    nop
+
+    /* XXX: handle prefixes */
+#if 0
+    aword
+    addr16
+#endif
+    lock
+    rep
+    repe
+    repz
+    repne
+    repnz
+    nop
+
+    lock ;negl (%eax)
+    wait ;pushf
+    rep  ;stosb
+    repe ;lodsb
+    repz ;cmpsb
+    repne;movsb
+    repnz;outsb
+
+    /* handle one-line prefix + ops */
+    lock  negl (%eax)
+    wait  pushf
+    rep   stosb
+    repe  lodsb
+    repz  cmpsb
+    repne movsb
+    repnz outsb
+    
+    invd
+    wbinvd
+    cpuid
+    wrmsr
+    rdtsc
+    rdmsr
+    rdpmc
+    ud2
+#ifdef __x86_64__
+    syscall
+    sysret
+    sysretq
+    lfence
+    mfence
+    sfence
+    prefetchnta 0x18(%rdx)
+    prefetcht0 (%rcx)
+    prefetcht1 (%rsi)
+    prefetcht2 (%rdi)
+    prefetchw (%rdi)
+    clflush 0x1000(%rax,%rcx)
+    fxsaveq (%rdx)
+    fxsaveq (%r11)
+    fxrstorq (%rcx)
+    fxrstorq (%r10)
+
+#endif
+
+    lar %ax,%dx
+    lar %eax,%dx
+    lar %ax,%edx
+    lar %eax,%edx
+#ifdef __x86_64__
+    lar %ax,%rdx
+    lar %eax,%rdx
+#endif
+    emms
+    movd %edx, %mm3
+    movd 0x1000, %mm2
+    movd %mm4, %ecx
+    movd %mm5, 0x1000
+                    
+    movq 0x1000, %mm2
+    movq %mm4, 0x1000
+    
+    pand 0x1000, %mm3
+    pand %mm4, %mm5
+    
+    psllw $1, %mm6
+    psllw 0x1000, %mm7
+    psllw %mm2, %mm7
+
+    xlat
+    cmpsb
+    scmpw
+    insl
+    outsw
+    lodsb
+    slodl
+    movsb
+    movsl
+    smovb
+    scasb
+    sscaw
+    stosw
+    sstol
+
+    bsf 0x1000, %ebx
+    bsr 0x1000, %ebx
+    bt %edx, 0x1000
+    btl $2, 0x1000
+    btc %edx, 0x1000
+    btcl $2, 0x1000
+    btr %edx, 0x1000
+    btrl $2, 0x1000
+    bts %edx, 0x1000
+    btsl $2, 0x1000
+
+     
