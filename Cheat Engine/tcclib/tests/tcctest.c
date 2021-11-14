@@ -3994,3 +3994,284 @@ void math_cmp_test(void)
   FCMP(one, one, !=, ==, 1);
   /* Non-equality is a bit special.  */
   if (!fcompare (nan, nan, 1))
+    bug (nan, nan, !=, ==, 6);
+
+  /* Relational tests on numbers.  */
+  FCMP(two, one, <, >=, 2);
+  FCMP(one, two, >=, <, 3);
+  FCMP(one, two, >, <=, 4);
+  FCMP(two, one, <=, >, 5);
+
+  /* Relational tests on NaNs.  Note that the inverse op here is
+     always !=, there's no operator in C that is equivalent to !(a < b),
+     when NaNs are involved, same for the other relational ops.  */
+  FCMP(nan, nan, <, !=, 2);
+  FCMP(nan, nan, >=, !=, 3);
+  FCMP(nan, nan, >, !=, 4);
+  FCMP(nan, nan, <=, !=, 5);
+}
+
+double get100 () { return 100.0; }
+
+void callsave_test(void)
+{
+#if defined __i386__ || defined __x86_64__ || defined __arm__
+  int i, s; double *d; double t;
+  s = sizeof (double);
+  printf ("callsavetest: %d\n", s);
+  d = alloca (sizeof(double));
+  d[0] = 10.0;
+  /* x86-64 had a bug were the next call to get100 would evict
+     the lvalue &d[0] as VT_LLOCAL, and the reload would be done
+     in int type, not pointer type.  When alloca returns a pointer
+     with the high 32 bit set (which is likely on x86-64) the access
+     generates a segfault.  */
+  i = d[0] > get100 ();
+  printf ("%d\n", i);
+#endif
+}
+
+
+void bfa3(ptrdiff_t str_offset)
+{
+    printf("bfa3: %s\n", (char *)__builtin_frame_address(3) + str_offset);
+}
+void bfa2(ptrdiff_t str_offset)
+{
+    printf("bfa2: %s\n", (char *)__builtin_frame_address(2) + str_offset);
+    bfa3(str_offset);
+}
+void bfa1(ptrdiff_t str_offset)
+{
+    printf("bfa1: %s\n", (char *)__builtin_frame_address(1) + str_offset);
+    bfa2(str_offset);
+}
+
+void builtin_frame_address_test(void)
+{
+/* builtin_frame_address fails on ARM with gcc which make test3 fail */
+#ifndef __arm__
+    char str[] = "__builtin_frame_address";
+    char *fp0 = __builtin_frame_address(0);
+
+    printf("str: %s\n", str);
+#ifndef __riscv // gcc dumps core. tcc, clang work
+    bfa1(str-fp0);
+#endif
+#endif
+}
+
+char via_volatile (char i)
+{
+  char volatile vi;
+  vi = i;
+  return vi;
+}
+
+void volatile_test(void)
+{
+    if (via_volatile (42) != 42)
+      printf (" broken\n");
+    else
+      printf (" ok\n");
+}
+
+struct __attribute__((__packed__)) Spacked {
+    char a;
+    short b;
+    int c;
+};
+struct Spacked spacked;
+typedef struct __attribute__((__packed__)) {
+    char a;
+    short b;
+    int c;
+} Spacked2;
+Spacked2 spacked2;
+typedef struct Spacked3_s {
+    char a;
+    short b;
+    int c;
+} __attribute__((__packed__)) Spacked3;
+Spacked3 spacked3;
+struct gate_struct64 {
+    unsigned short offset_low;
+    unsigned short segment;
+    unsigned ist : 3, zero0 : 5, type : 5, dpl : 2, p : 1;
+    unsigned short offset_middle;
+    unsigned offset_high;
+    unsigned zero1;
+} __attribute__((packed));
+typedef struct gate_struct64 gate_desc;
+gate_desc a_gate_desc;
+void attrib_test(void)
+{
+#ifndef _WIN32
+  printf("attr: %d %d %d %d\n", sizeof(struct Spacked),
+	 sizeof(spacked), sizeof(Spacked2), sizeof(spacked2));
+  printf("attr: %d %d\n", sizeof(Spacked3), sizeof(spacked3));
+  printf("attr: %d %d\n", sizeof(gate_desc), sizeof(a_gate_desc));
+#endif
+}
+extern __attribute__((__unused__)) char * __attribute__((__unused__)) *
+strange_attrib_placement (void);
+
+void * __attribute__((__unused__)) get_void_ptr (void *a)
+{
+  return a;
+}
+
+/* This part checks for a bug in TOK_GET (used for inline expansion),
+   where the large long long constant left the the high bits set for
+   the integer constant token.  */
+static inline
+int __get_order(unsigned long long size)
+{
+  int order;
+  size -= 0xffff880000000000ULL; // this const left high bits set in the token
+    {
+      struct S { int i : 1; } s; // constructed for this '1'
+    }
+  order = size;
+  return order;
+}
+
+/* This just forces the above inline function to be actually emitted.  */
+int force_get_order(unsigned long s)
+{
+    return __get_order(s);
+}
+
+#define pv(m) printf(sizeof (s->m + 0) == 8 ? "%016llx\n" : "%02x\n", s->m)
+
+/* Test failed when using bounds checking */
+void bounds_check1_test (void)
+{
+    struct s {
+        int x;
+        long long y;
+    } _s, *s = &_s;
+    s->x = 10;
+    s->y = 20;
+    pv(x);
+    pv(y);
+}
+
+/* gcc 2.95.3 does not handle correctly CR in strings or after strays */
+#define CORRECT_CR_HANDLING
+
+/* deprecated and no longer supported in gcc 3.3 */
+#ifdef __TINYC__
+# define ACCEPT_CR_IN_STRINGS
+#endif
+
+/* keep this as the last test because GCC messes up line-numbers
+   with the ^L^K^M characters below */
+void whitespace_test(void)
+{
+    char *str;
+
+#if 1
+    pri\
+ntf("whitspace:\n");
+#endif
+    pf("N=%d\n", 2);
+
+#ifdef CORRECT_CR_HANDLING
+    pri\
+ntf("aaa=%d\n", 3);
+#endif
+
+    pri\
+\
+ntf("min=%d\n", 4);
+
+#ifdef ACCEPT_CR_IN_STRINGS
+    printf("len1=%d\n", strlen("
+"));
+#ifdef CORRECT_CR_HANDLING
+    str = "
+";
+    printf("len1=%d str[0]=%d\n", strlen(str), str[0]);
+#endif
+    printf("len1=%d\n", strlen("a
+"));
+#else
+    printf("len1=1\nlen1=1 str[0]=10\nlen1=3\n");
+#endif /* ACCEPT_CR_IN_STRINGS */
+
+#ifdef __LINE__
+    printf("__LINE__ defined\n");
+#endif
+
+#if 0
+    /* wrong with GCC */
+    printf("__LINE__=%d __FILE__=%s\n", __LINE__, __FILE__);
+#line 1111
+    printf("__LINE__=%d __FILE__=%s\n", __LINE__, __FILE__);
+#line 2222 "test"
+    printf("__LINE__=%d __FILE__=%s\n", __LINE__, __FILE__);
+#endif
+}
+
+#define RUN(test) puts("---- " #test " ----"), test(), puts("")
+
+int main(int argc, char **argv)
+{
+    RUN(whitespace_test);
+    RUN(macro_test);
+    RUN(recursive_macro_test);
+    RUN(string_test);
+    RUN(expr_test);
+    RUN(scope_test);
+    RUN(scope2_test);
+    RUN(forward_test);
+    RUN(funcptr_test);
+    RUN(if_test);
+    RUN(loop_test);
+    RUN(switch_test);
+    RUN(goto_test);
+    RUN(enum_test);
+    RUN(typedef_test);
+    RUN(struct_test);
+    RUN(array_test);
+    RUN(expr_ptr_test);
+    RUN(bool_test);
+    RUN(optimize_out_test);
+    RUN(expr2_test);
+    RUN(constant_expr_test);
+    RUN(expr_cmp_test);
+    RUN(char_short_test);
+    RUN(init_test);
+    RUN(compound_literal_test);
+    RUN(kr_test);
+    RUN(struct_assign_test);
+    RUN(cast_test);
+    RUN(bitfield_test);
+    RUN(c99_bool_test);
+    RUN(float_test);
+    RUN(longlong_test);
+    RUN(manyarg_test);
+    RUN(stdarg_test);
+    RUN(relocation_test);
+    RUN(old_style_function_test);
+    RUN(alloca_test);
+    RUN(c99_vla_test);
+    RUN(sizeof_test);
+    RUN(typeof_test);
+    RUN(statement_expr_test);
+    RUN(local_label_test);
+    RUN(asm_test);
+    RUN(builtin_test);
+    RUN(weak_test);
+    RUN(global_data_test);
+    RUN(cmp_comparison_test);
+    RUN(math_cmp_test);
+    RUN(callsave_test);
+    RUN(builtin_frame_address_test);
+    RUN(volatile_test);
+    RUN(attrib_test);
+    RUN(bounds_check1_test);
+
+    return 0;
+}
