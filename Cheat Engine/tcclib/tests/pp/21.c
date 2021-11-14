@@ -24,3 +24,14 @@ NOT OK
 #define DDD (DEFINED ( AAA ) && AAA > 1 && !DEFINED BBB)
 #if (DDD)
 OK
+#else
+NOT OK
+#endif
+
+----- 4 ------
+#undef AAA
+#if !(DDD)
+OK
+#else
+NOT OK
+#endif
