@@ -179,4 +179,173 @@ void nanz(void)
         x[n++] = make(1, 32767, 0x7596c7099ad5, 0xe25fed2c58f73fc9);
         x[n++] = make(0, 32767, 0x835d143360f9, 0x5e315efb35630666);
         check(n == sizeof(x) / sizeof(*x));
-        for (i = 0; i <
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                fadd(x[i], x[j]);
+                fsub(x[i], x[j]);
+                fmul(x[i], x[j]);
+                fdiv(x[i], x[j]);
+            }
+        }
+    }
+
+    // Check infinities and zeroes:
+    {
+        long double x[6];
+        int i, j, n = 0;
+        x[n++] = make(1, 32000, 0x62acda85f700, 0x47b6c9f35edc4044);
+        x[n++] = make(0, 32001, 0x94b7abf55af7, 0x9f425fe354428e19);
+        x[n++] = make(0, 32767, 0, 0);
+        x[n++] = make(1, 32767, 0, 0);
+        x[n++] = make(0, 0, 0, 0);
+        x[n++] = make(1, 0, 0, 0);
+        check(n == sizeof(x) / sizeof(*x));
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                fadd(x[i], x[j]);
+                fsub(x[i], x[j]);
+                fmul(x[i], x[j]);
+                fdiv(x[i], x[j]);
+            }
+        }
+    }
+}
+
+void adds(void)
+{
+    // Check shifting and add/sub:
+    {
+        int i;
+        for (i = -130; i <= 130; i++) {
+            int s1 = (uint32_t)i % 3 < 1;
+            int s2 = (uint32_t)i % 5 < 2;
+            fadd(make(s1, 16384    , 0x502c065e4f71a65d, 0xd2f9bdb031f4f031),
+                 make(s2, 16384 + i, 0xae267395a9bc1033, 0xb56b5800da1ba448));
+        }
+    }
+
+    // Check normalisation:
+    {
+        uint64_t a0 = 0xc6bab0a6afbef5ed;
+        uint64_t a1 = 0x4f84136c4a2e9b52;
+        int ee[] = { 0, 1, 10000 };
+        int e, i;
+        for (e = 0; e < sizeof(ee) / sizeof(*ee); e++) {
+            int exp = ee[e];
+            fsub(make(0, exp, a1, a0), make(0, 0, 0, 0));
+            for (i = 63; i >= 0; i--)
+                fsub(make(0, exp, a1 | (uint64_t)1 << i >> 1, a0),
+                     make(0, exp, a1 >> i << i, 0));
+            for (i = 63; i >=0; i--)
+                fsub(make(0, exp, a1, a0 | (uint64_t)1 << i >> 1),
+                     make(0, exp, a1, a0 >> i << i));
+        }
+    }
+
+    // Carry/overflow from rounding:
+    {
+        fadd(make(0, 114, -1, -1), make(0, 1, 0, 0));
+        fadd(make(0, 32766, -1, -1), make(0, 32653, 0, 0));
+        fsub(make(1, 32766, -1, -1), make(0, 32653, 0, 0));
+    }
+}
+
+void muls(void)
+{
+    int i, j;
+
+    {
+        long double max = make(0, 32766, -1, -1);
+        long double min = make(0, 0, 0, 1);
+        fmul(max, max);
+        fmul(max, min);
+        fmul(min, min);
+    }
+
+    for (i = 117; i > 0; i--)
+        fmul(make(0, 16268, 0x643dcea76edc, 0xe0877a598403627a),
+             make(i & 1, i, 0, 0));
+
+    fmul(make(0, 16383, -1, -3), make(0, 16383, 0, 1));
+    // Round to next exponent:
+    fmul(make(0, 16383, -1, -2), make(0, 16383, 0, 1));
+    // Round from subnormal to normal:
+    fmul(make(0, 1, -1, -1), make(0, 16382, 0, 0));
+
+    for (i = 0; i < 2; i++)
+        for (j = 0; j < 112; j++)
+            fmul(make(0, 16383, (uint64_t)1 << i, 0),
+                 make(0, 16383,
+                      j < 64 ? 0 : (uint64_t)1 << (j - 64),
+                      j < 64 ? (uint64_t)1 << j : 0));
+}
+
+void divs(void)
+{
+    int i;
+
+    {
+        long double max = make(0, 32766, -1, -1);
+        long double min = make(0, 0, 0, 1);
+        fdiv(max, max);
+        fdiv(max, min);
+        fdiv(min, max);
+        fdiv(min, min);
+    }
+
+    for (i = 0; i < 64; i++)
+        fdiv(make(0, 16383, -1, -1), make(0, 16383, -1, -(uint64_t)1 << i));
+    for (i = 0; i < 48; i++)
+        fdiv(make(0, 16383, -1, -1), make(0, 16383, -(uint64_t)1 << i, 0));
+}
+
+void cvtlsw(int32_t a)
+{
+    long double f = a;
+    u128_t x = copy_ild(f);
+    printf("cvtlsw %08lx %016llx%016llx\n", (long)(uint32_t)a, x.x1, x.x0);
+}
+
+void cvtlsx(int64_t a)
+{
+    long double f = a;
+    u128_t x = copy_ild(f);
+    printf("cvtlsx %016llx %016llx%016llx\n",
+           (long long)(uint64_t)a, x.x1, x.x0);
+}
+
+void cvtluw(uint32_t a)
+{
+    long double f = a;
+    u128_t x = copy_ild(f);
+    printf("cvtluw %08lx %016llx%016llx\n", (long)a, x.x1, x.x0);
+}
+
+void cvtlux(uint64_t a)
+{
+    long double f = a;
+    u128_t x = copy_ild(f);
+    printf("cvtlux %016llx %016llx%016llx\n", (long long)a, x.x1, x.x0);
+}
+
+void cvtil(long double a)
+{
+    u128_t x = copy_ild(a);
+    int32_t b1 = a;
+    int64_t b2 = a;
+    uint32_t b3 = a;
+    uint64_t b4 = a;
+    printf("cvtswl %016llx%016llx %08lx\n",
+           x.x1, x.x0, (long)(uint32_t)b1);
+    printf("cvtsxl %016llx%016llx %016llx\n",
+           x.x1, x.x0, (long long)(uint64_t)b2);
+    printf("cvtuwl %016llx%016llx %08lx\n",
+           x.x1, x.x0, (long)b3);
+    printf("cvtuxl %016llx%016llx %016llx\n",
+           x.x1, x.x0, (long long)b4);
+}
+
+void cvtlf(float a)
+{
+    uint32_t ax = copy_if(a);
+    long double b = a
