@@ -348,4 +348,162 @@ void cvtil(long double a)
 void cvtlf(float a)
 {
     uint32_t ax = copy_if(a);
-    long double b = a
+    long double b = a;
+    u128_t bx = copy_ild(b);
+    printf("cvtlf %08lx %016llx%016llx\n", (long)ax, bx.x1, bx.x0);
+}
+
+void cvtld(double a)
+{
+    uint64_t ax = copy_id(a);
+    long double b = a;
+    u128_t bx = copy_ild(b);
+    printf("cvtld %016llx %016llx%016llx\n", (long long)ax, bx.x1, bx.x0);
+}
+
+void cvtfl(long double a)
+{
+    u128_t ax = copy_ild(a);
+    float b = a;
+    uint32_t bx = copy_if(b);
+    printf("cvtfl %016llx%016llx %08lx\n", ax.x1, ax.x0, (long)bx);
+}
+
+void cvtdl(long double a)
+{
+    u128_t ax = copy_ild(a);
+    double b = a;
+    uint64_t bx = copy_id(b);
+    printf("cvtdl %016llx%016llx %016llx\n", ax.x1, ax.x0, (long long)bx);
+}
+
+void cvts(void)
+{
+    int i, j;
+
+    {
+        uint32_t x = 0xad040c5b;
+        cvtlsw(0);
+        for (i = 0; i < 31; i++)
+            cvtlsw(x >> (31 - i));
+        for (i = 0; i < 31; i++)
+            cvtlsw(-(x >> (31 - i)));
+        cvtlsw(0x80000000);
+    }
+    {
+        uint64_t x = 0xb630a248cad9afd2;
+        cvtlsx(0);
+        for (i = 0; i < 63; i++)
+            cvtlsx(x >> (63 - i));
+        for (i = 0; i < 63; i++)
+            cvtlsx(-(x >> (63 - i)));
+        cvtlsx(0x8000000000000000);
+    }
+    {
+        uint32_t x = 0xad040c5b;
+        cvtluw(0);
+        for (i = 0; i < 32; i++)
+            cvtluw(x >> (31 - i));
+    }
+    {
+        uint64_t x = 0xb630a248cad9afd2;
+        cvtlux(0);
+        for (i = 0; i < 64; i++)
+            cvtlux(x >> (63 - i));
+    }
+
+    for (i = 0; i < 2; i++) {
+        cvtil(make(i, 32767, 0, 1));
+        cvtil(make(i, 32767, (uint64_t)1 << 47, 0));
+        cvtil(make(i, 32767, 123, 456));
+        cvtil(make(i, 32767, 0, 0));
+        cvtil(make(i, 16382, -1, -1));
+        cvtil(make(i, 16383, -1, -1));
+        cvtil(make(i, 16384, 0x7fffffffffff, -1));
+        cvtil(make(i, 16384, 0x800000000000, 0));
+        for (j = 0; j < 68; j++)
+            cvtil(make(i, 16381 + j, 0xd4822c0a10ec, 0x1fe2f8b2669f5c9d));
+    }
+
+    cvtlf(copy_fi(0x00000000));
+    cvtlf(copy_fi(0x456789ab));
+    cvtlf(copy_fi(0x7f800000));
+    cvtlf(copy_fi(0x7f923456));
+    cvtlf(copy_fi(0x7fdbcdef));
+    cvtlf(copy_fi(0x80000000));
+    cvtlf(copy_fi(0xabcdef12));
+    cvtlf(copy_fi(0xff800000));
+    cvtlf(copy_fi(0xff923456));
+    cvtlf(copy_fi(0xffdbcdef));
+
+    cvtld(copy_di(0x0000000000000000));
+    cvtld(copy_di(0x456789abcdef0123));
+    cvtld(copy_di(0x7ff0000000000000));
+    cvtld(copy_di(0x7ff123456789abcd));
+    cvtld(copy_di(0x7ffabcdef1234567));
+    cvtld(copy_di(0x8000000000000000));
+    cvtld(copy_di(0xcdef123456789abc));
+    cvtld(copy_di(0xfff0000000000000));
+    cvtld(copy_di(0xfff123456789abcd));
+    cvtld(copy_di(0xfffabcdef1234567));
+
+    for (i = 0; i < 2; i++) {                   \
+        cvtfl(make(i, 0, 0, 0));
+        cvtfl(make(i, 16232, -1, -1));
+        cvtfl(make(i, 16233, 0, 0));
+        cvtfl(make(i, 16233, 0, 1));
+        cvtfl(make(i, 16383, 0xab0ffd000000, 0));
+        cvtfl(make(i, 16383, 0xab0ffd000001, 0));
+        cvtfl(make(i, 16383, 0xab0ffeffffff, 0));
+        cvtfl(make(i, 16383, 0xab0fff000000, 0));
+        cvtfl(make(i, 16383, 0xab0fff000001, 0));
+        cvtfl(make(i, 16510, 0xfffffeffffff, -1));
+        cvtfl(make(i, 16510, 0xffffff000000, 0));
+        cvtfl(make(i, 16511, 0, 0));
+        cvtfl(make(i, 32767, 0, 0));
+        cvtfl(make(i, 32767, 0, 1));
+        cvtfl(make(i, 32767, 0x4cbe01ac5f40, 0x75cee3c6afbb00b5));
+        cvtfl(make(i, 32767, 0x800000000000, 1));
+        cvtfl(make(i, 32767, 0xa11caaaf6a52, 0x696033e871eab099));
+    }
+
+    for (i = 0; i < 2; i++) {
+        cvtdl(make(i, 0, 0, 0));
+        cvtdl(make(i, 15307, -1, -1));
+        cvtdl(make(i, 15308, 0, 0));
+        cvtdl(make(i, 15308, 0, 1));
+        cvtdl(make(i, 16383, 0xabc123abc0ff, 0xe800000000000000));
+        cvtdl(make(i, 16383, 0xabc123abc0ff, 0xe800000000000001));
+        cvtdl(make(i, 16383, 0xabc123abc0ff, 0xf7ffffffffffffff));
+        cvtdl(make(i, 16383, 0xabc123abc0ff, 0xf800000000000000));
+        cvtdl(make(i, 16383, 0xabc123abc0ff, 0xf800000000000001));
+        cvtdl(make(i, 17406, 0xffffffffffff, 0xf7ffffffffffffff));
+        cvtdl(make(i, 17406, 0xffffffffffff, 0xf800000000000000));
+        cvtdl(make(i, 17407, 0, 0));
+        cvtdl(make(i, 32767, 0, 0));
+        cvtdl(make(i, 32767, 0, 1));
+        cvtdl(make(i, 32767, 0x4cbe01ac5f40, 0x75cee3c6afbb00b5));
+        cvtdl(make(i, 32767, 0x800000000000, 1));
+        cvtdl(make(i, 32767, 0xa11caaaf6a52, 0x696033e871eab099));
+    }
+}
+
+void tests(void)
+{
+    cmps();
+    nanz();
+    adds();
+    muls();
+    divs();
+    cvts();
+}
+
+int main()
+{
+#ifdef __aarch64__
+    tests();
+#else
+    printf("This test program is intended for a little-endian architecture\n"
+           "with an IEEE-standard 128-bit long double.\n");
+#endif
+   
