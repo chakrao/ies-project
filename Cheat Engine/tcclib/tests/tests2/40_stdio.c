@@ -17,4 +17,36 @@ int main()
    printf("%s", freddy);
 
    int InChar;
-   char Sh
+   char ShowChar;
+   f = fopen("fred.txt", "r");
+   while ( (InChar = fgetc(f)) != EOF)
+   {
+      ShowChar = InChar;
+      if (ShowChar < ' ')
+         ShowChar = '.';
+
+      printf("ch: %d '%c'\n", InChar, ShowChar);
+   }
+   fclose(f);
+
+   f = fopen("fred.txt", "r");
+   while ( (InChar = getc(f)) != EOF)
+   {
+      ShowChar = InChar;
+      if (ShowChar < ' ')
+         ShowChar = '.';
+
+      printf("ch: %d '%c'\n", InChar, ShowChar);
+   }
+   fclose(f);
+
+   f = fopen("fred.txt", "r");
+   while (fgets(freddy, sizeof(freddy), f) != NULL)
+      printf("x: %s", freddy);
+
+   fclose(f);
+
+   return 0;
+}
+
+/* vim: set expandtab ts=4 sw=3 sts=3 tw=80 :*/
