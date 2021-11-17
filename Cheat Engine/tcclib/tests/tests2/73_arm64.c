@@ -143,4 +143,153 @@ void arg(void)
     fa1(s8, s9, s10, s11, s12, s13);
     fa2(s9, s10, s11, s12, s13, s14);
     fa3(hfa14, hfa23, hfa32);
-    fa4(s
+    fa4(s1, hfa14, s2, hfa24, s3, hfa34);
+}
+
+struct s1 fr_s1(void) { return s1; }
+struct s2 fr_s2(void) { return s2; }
+struct s3 fr_s3(void) { return s3; }
+struct s4 fr_s4(void) { return s4; }
+struct s5 fr_s5(void) { return s5; }
+struct s6 fr_s6(void) { return s6; }
+struct s7 fr_s7(void) { return s7; }
+struct s8 fr_s8(void) { return s8; }
+struct s9 fr_s9(void) { return s9; }
+struct s10 fr_s10(void) { return s10; }
+struct s11 fr_s11(void) { return s11; }
+struct s12 fr_s12(void) { return s12; }
+struct s13 fr_s13(void) { return s13; }
+struct s14 fr_s14(void) { return s14; }
+struct s15 fr_s15(void) { return s15; }
+struct s16 fr_s16(void) { return s16; }
+struct s17 fr_s17(void) { return s17; }
+
+struct hfa11 fr_hfa11(void) { return hfa11; }
+struct hfa12 fr_hfa12(void) { return hfa12; }
+struct hfa13 fr_hfa13(void) { return hfa13; }
+struct hfa14 fr_hfa14(void) { return hfa14; }
+
+struct hfa21 fr_hfa21(void) { return hfa21; }
+struct hfa22 fr_hfa22(void) { return hfa22; }
+struct hfa23 fr_hfa23(void) { return hfa23; }
+struct hfa24 fr_hfa24(void) { return hfa24; }
+
+struct hfa31 fr_hfa31(void) { return hfa31; }
+struct hfa32 fr_hfa32(void) { return hfa32; }
+struct hfa33 fr_hfa33(void) { return hfa33; }
+struct hfa34 fr_hfa34(void) { return hfa34; }
+
+void ret(void)
+{
+    struct s1 t1 = fr_s1();
+    struct s2 t2 = fr_s2();
+    struct s3 t3 = fr_s3();
+    struct s4 t4 = fr_s4();
+    struct s5 t5 = fr_s5();
+    struct s6 t6 = fr_s6();
+    struct s7 t7 = fr_s7();
+    struct s8 t8 = fr_s8();
+    struct s9 t9 = fr_s9();
+    struct s10 t10 = fr_s10();
+    struct s11 t11 = fr_s11();
+    struct s12 t12 = fr_s12();
+    struct s13 t13 = fr_s13();
+    struct s14 t14 = fr_s14();
+    struct s15 t15 = fr_s15();
+    struct s16 t16 = fr_s16();
+    struct s17 t17 = fr_s17();
+    printf("Return values:\n");
+    printf("%.1s\n", t1.x);
+    printf("%.2s\n", t2.x);
+    printf("%.3s\n", t3.x);
+    printf("%.4s\n", t4.x);
+    printf("%.5s\n", t5.x);
+    printf("%.6s\n", t6.x);
+    printf("%.7s\n", t7.x);
+    printf("%.8s\n", t8.x);
+    printf("%.9s\n", t9.x);
+    printf("%.10s\n", t10.x);
+    printf("%.11s\n", t11.x);
+    printf("%.12s\n", t12.x);
+    printf("%.13s\n", t13.x);
+    printf("%.14s\n", t14.x);
+    printf("%.15s\n", t15.x);
+    printf("%.16s\n", t16.x);
+    printf("%.17s\n", t17.x);
+    printf("%.1f\n", fr_hfa11().a);
+    printf("%.1f %.1f\n", fr_hfa12().a, fr_hfa12().b);
+    printf("%.1f %.1f\n", fr_hfa13().a, fr_hfa13().c);
+    printf("%.1f %.1f\n", fr_hfa14().a, fr_hfa14().d);
+    printf("%.1f\n", fr_hfa21().a);
+    printf("%.1f %.1f\n", fr_hfa22().a, fr_hfa22().b);
+    printf("%.1f %.1f\n", fr_hfa23().a, fr_hfa23().c);
+    printf("%.1f %.1f\n", fr_hfa24().a, fr_hfa24().d);
+    printf("%.1Lf\n", fr_hfa31().a);
+    printf("%.1Lf %.1Lf\n", fr_hfa32().a, fr_hfa32().b);
+    printf("%.1Lf %.1Lf\n", fr_hfa33().a, fr_hfa33().c);
+    printf("%.1Lf %.1Lf\n", fr_hfa34().a, fr_hfa34().d);
+}
+
+void*
+va_arg_with_struct_ptr(va_list ap) {
+        /*
+         * This was a BUG identified with FFTW-3.3.8 on arm64.
+         * The test case only checks it compiles.
+         */
+        struct X { int _x; };
+        struct X *x = va_arg(ap, struct X *);
+        return x;
+}
+
+int match(const char **s, const char *f)
+{
+    const char *p = *s;
+    for (p = *s; *f && *f == *p; f++, p++)
+        ;
+    if (!*f) {
+        *s = p - 1;
+        return 1;
+    }
+    return 0;
+}
+
+void myprintf(const char *format, ...)
+{
+    const char *s;
+    va_list ap;
+    va_start(ap, format);
+    for (s = format; *s; s++) {
+        if (match(&s, "%7s")) {
+            struct s7 t7 = va_arg(ap, struct s7);
+            printf("%.7s", t7.x);
+        }
+        else if (match(&s, "%9s")) {
+            struct s9 t9 = va_arg(ap, struct s9);
+            printf("%.9s", t9.x);
+        }
+        else if (match(&s, "%hfa11")) {
+            struct hfa11 x = va_arg(ap, struct hfa11);
+            printf("%.1f,%.1f", x.a, x.a);
+        }
+        else if (match(&s, "%hfa12")) {
+            struct hfa12 x = va_arg(ap, struct hfa12);
+            printf("%.1f,%.1f", x.a, x.b);
+        }
+        else if (match(&s, "%hfa13")) {
+            struct hfa13 x = va_arg(ap, struct hfa13);
+            printf("%.1f,%.1f", x.a, x.c);
+        }
+        else if (match(&s, "%hfa14")) {
+            struct hfa14 x = va_arg(ap, struct hfa14);
+            printf("%.1f,%.1f", x.a, x.d);
+        }
+        else if (match(&s, "%hfa21")) {
+            struct hfa21 x = va_arg(ap, struct hfa21);
+            printf("%.1f,%.1f", x.a, x.a);
+        }
+        else if (match(&s, "%hfa22")) {
+            struct hfa22 x = va_arg(ap, struct hfa22);
+            printf("%.1f,%.1f", x.a, x.b);
+        }
+        else if (match(&s, "%hfa23")) {
+    
