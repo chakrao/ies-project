@@ -292,4 +292,144 @@ void myprintf(const char *format, ...)
             printf("%.1f,%.1f", x.a, x.b);
         }
         else if (match(&s, "%hfa23")) {
-    
+            struct hfa23 x = va_arg(ap, struct hfa23);
+            printf("%.1f,%.1f", x.a, x.c);
+        }
+        else if (match(&s, "%hfa24")) {
+            struct hfa24 x = va_arg(ap, struct hfa24);
+            printf("%.1f,%.1f", x.a, x.d);
+        }
+        else if (match(&s, "%hfa31")) {
+            struct hfa31 x = va_arg(ap, struct hfa31);
+            printf("%.1Lf,%.1Lf", x.a, x.a);
+        }
+        else if (match(&s, "%hfa32")) {
+            struct hfa32 x = va_arg(ap, struct hfa32);
+            printf("%.1Lf,%.1Lf", x.a, x.b);
+        }
+        else if (match(&s, "%hfa33")) {
+            struct hfa33 x = va_arg(ap, struct hfa33);
+            printf("%.1Lf,%.1Lf", x.a, x.c);
+        }
+        else if (match(&s, "%hfa34")) {
+            struct hfa34 x = va_arg(ap, struct hfa34);
+            printf("%.1Lf,%.1Lf", x.a, x.d);
+        }
+        else
+            putchar(*s);
+    }
+    putchar('\n');
+}
+
+void stdarg(void)
+{
+    printf("stdarg:\n");
+    myprintf("%9s %9s %9s %9s %9s %9s", s9, s9, s9, s9, s9, s9);
+    myprintf("%7s %9s %9s %9s %9s %9s", s7, s9, s9, s9, s9, s9);
+
+    myprintf("HFA long double:");
+    myprintf("%hfa34 %hfa34 %hfa34 %hfa34", hfa34, hfa34, hfa34, hfa34);
+    myprintf("%hfa33 %hfa34 %hfa34 %hfa34", hfa33, hfa34, hfa34, hfa34);
+    myprintf("%hfa32 %hfa34 %hfa34 %hfa34", hfa32, hfa34, hfa34, hfa34);
+    myprintf("%hfa31 %hfa34 %hfa34 %hfa34", hfa31, hfa34, hfa34, hfa34);
+
+    myprintf("%hfa32 %hfa33 %hfa33 %hfa33 %hfa33",
+             hfa32, hfa33, hfa33, hfa33, hfa33);
+    myprintf("%hfa31 %hfa33 %hfa33 %hfa33 %hfa33",
+             hfa31, hfa33, hfa33, hfa33, hfa33);
+    myprintf("%hfa33 %hfa33 %hfa33 %hfa33",
+             hfa33, hfa33, hfa33, hfa33);
+
+    myprintf("%hfa34 %hfa32 %hfa32 %hfa32 %hfa32",
+             hfa34, hfa32, hfa32, hfa32, hfa32);
+    myprintf("%hfa33 %hfa32 %hfa32 %hfa32 %hfa32",
+             hfa33, hfa32, hfa32, hfa32, hfa32);
+
+    myprintf("%hfa34 %hfa32 %hfa31 %hfa31 %hfa31 %hfa31",
+             hfa34, hfa32, hfa31, hfa31, hfa31, hfa31);
+
+    myprintf("HFA double:");
+    myprintf("%hfa24 %hfa24 %hfa24 %hfa24", hfa24, hfa24, hfa24, hfa24);
+    myprintf("%hfa23 %hfa24 %hfa24 %hfa24", hfa23, hfa24, hfa24, hfa24);
+    myprintf("%hfa22 %hfa24 %hfa24 %hfa24", hfa22, hfa24, hfa24, hfa24);
+    myprintf("%hfa21 %hfa24 %hfa24 %hfa24", hfa21, hfa24, hfa24, hfa24);
+
+    myprintf("%hfa22 %hfa23 %hfa23 %hfa23 %hfa23",
+             hfa22, hfa23, hfa23, hfa23, hfa23);
+    myprintf("%hfa21 %hfa23 %hfa23 %hfa23 %hfa23",
+             hfa21, hfa23, hfa23, hfa23, hfa23);
+    myprintf("%hfa23 %hfa23 %hfa23 %hfa23",
+             hfa23, hfa23, hfa23, hfa23);
+
+    myprintf("%hfa24 %hfa22 %hfa22 %hfa22 %hfa22",
+             hfa24, hfa22, hfa22, hfa22, hfa22);
+    myprintf("%hfa23 %hfa22 %hfa22 %hfa22 %hfa22",
+             hfa23, hfa22, hfa22, hfa22, hfa22);
+
+    myprintf("%hfa24 %hfa22 %hfa21 %hfa21 %hfa21 %hfa21",
+             hfa24, hfa22, hfa21, hfa21, hfa21, hfa21);
+
+    myprintf("HFA float:");
+    myprintf("%hfa14 %hfa14 %hfa14 %hfa14", hfa14, hfa14, hfa14, hfa14);
+    myprintf("%hfa13 %hfa14 %hfa14 %hfa14", hfa13, hfa14, hfa14, hfa14);
+    myprintf("%hfa12 %hfa14 %hfa14 %hfa14", hfa12, hfa14, hfa14, hfa14);
+    myprintf("%hfa11 %hfa14 %hfa14 %hfa14", hfa11, hfa14, hfa14, hfa14);
+
+    myprintf("%hfa12 %hfa13 %hfa13 %hfa13 %hfa13",
+             hfa12, hfa13, hfa13, hfa13, hfa13);
+    myprintf("%hfa11 %hfa13 %hfa13 %hfa13 %hfa13",
+             hfa11, hfa13, hfa13, hfa13, hfa13);
+    myprintf("%hfa13 %hfa13 %hfa13 %hfa13",
+             hfa13, hfa13, hfa13, hfa13);
+
+    myprintf("%hfa14 %hfa12 %hfa12 %hfa12 %hfa12",
+             hfa14, hfa12, hfa12, hfa12, hfa12);
+    myprintf("%hfa13 %hfa12 %hfa12 %hfa12 %hfa12",
+             hfa13, hfa12, hfa12, hfa12, hfa12);
+
+    myprintf("%hfa14 %hfa12 %hfa11 %hfa11 %hfa11 %hfa11",
+             hfa14, hfa12, hfa11, hfa11, hfa11, hfa11);
+}
+
+void pll(unsigned long long x)
+{
+    printf("%llx\n", x);
+}
+
+void movi(void)
+{
+    printf("MOVI:\n");
+    pll(0);
+    pll(0xabcd);
+    pll(0xabcd0000);
+    pll(0xabcd00000000);
+    pll(0xabcd000000000000);
+    pll(0xffffabcd);
+    pll(0xabcdffff);
+    pll(0xffffffffffffabcd);
+    pll(0xffffffffabcdffff);
+    pll(0xffffabcdffffffff);
+    pll(0xabcdffffffffffff);
+    pll(0xaaaaaaaa);
+    pll(0x5555555555555555);
+    pll(0x77777777);
+    pll(0x3333333333333333);
+    pll(0xf8f8f8f8);
+    pll(0x1e1e1e1e1e1e1e1e);
+    pll(0x3f803f80);
+    pll(0x01ff01ff01ff01ff);
+    pll(0x007fffc0);
+    pll(0x03fff80003fff800);
+    pll(0x0007fffffffffe00);
+
+    pll(0xabcd1234);
+    pll(0xabcd00001234);
+    pll(0xabcd000000001234);
+    pll(0xabcd12340000);
+    pll(0xabcd000012340000);
+    pll(0xabcd123400000000);
+    pll(0xffffffffabcd1234);
+    pll(0xffffabcdffff1234);
+    pll(0xabcdffffffff1234);
+    pll(0xffffabcd1234ffff);
+    pll(0xabcdffff1234f
