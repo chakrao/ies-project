@@ -71,4 +71,28 @@ ts1:;
             s.x, s.y, s.z, s.a, s.b);
     }
 te1:;
-    st
+    static char de1 = 0;
+
+    dl += &de1 - &ds1;
+    tl += &&te1 - &&ts1;
+    printf("size of data/text:\n  %s/%s\n",
+        dl ? "non-zero":"zero", tl ? "non-zero":"zero");
+    /*printf("# %d/%d\n", dl, tl);*/
+}
+
+#elif defined test_static_data
+
+#include <stdio.h>
+int main(int argc, char **argv)
+{
+    goto there;
+    if (0) {
+        static int a = 1;
+        printf("hello\n"); /* the "hello\n" string is still suppressed */
+there:
+        printf("a = %d\n", a);
+    }
+    return 0;
+}
+
+#endif
