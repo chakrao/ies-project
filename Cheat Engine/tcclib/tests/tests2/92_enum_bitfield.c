@@ -44,4 +44,15 @@ int convert_like_real (tree convs)
     default:
       break;
     };
-   printf("unsigned enum bit-fields brok
+   printf("unsigned enum bit-fields broken\n");
+   return 0;
+}
+
+int main()
+{
+  union tree_node convs;
+
+  convs.common.code = AMBIG_CONV;
+  convert_like_real (&convs);
+  return 0;
+}
