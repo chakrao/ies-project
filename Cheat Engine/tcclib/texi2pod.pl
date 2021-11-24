@@ -372,4 +372,56 @@ sub postprocess
     s/&GT;/>/g;
     1 while s/B<((?:[^<>]|I<[^<>]*>)*)R<([^>]*)>/B<$1>${2}B</g;
     1 while (s/B<([^<>]*)I<([^>]+)>/B<$1>I<$2>B</g);
-    1 while (s/I<([^<
+    1 while (s/I<([^<>]*)B<([^>]+)>/I<$1>B<$2>I</g);
+    s/[BI]<>//g;
+    s/([BI])<(\s+)([^>]+)>/$2$1<$3>/g;
+    s/([BI])<([^>]+?)(\s+)>/$1<$2>$3/g;
+
+    # Extract footnotes.  This has to be done after all other
+    # processing because otherwise the regexp will choke on formatting
+    # inside @footnote.
+    while (/\@footnote/g) {
+	s/\@footnote\{([^\}]+)\}/[$fnno]/;
+	add_footnote($1, $fnno);
+	$fnno++;
+    }
+
+    return $_;
+}
+
+sub unmunge
+{
+    # Replace escaped symbols with their equivalents.
+    local $_ = $_[0];
+
+    s/&lt;/E<lt>/g;
+    s/&gt;/E<gt>/g;
+    s/&lbrace;/\{/g;
+    s/&rbrace;/\}/g;
+    s/&at;/\@/g;
+    s/&amp;/&/g;
+    return $_;
+}
+
+sub add_footnote
+{
+    unless (exists $sects{FOOTNOTES}) {
+	$sects{FOOTNOTES} = "\n=over 4\n\n";
+    }
+
+    $sects{FOOTNOTES} .= "=item $fnno.\n\n"; $fnno++;
+    $sects{FOOTNOTES} .= $_[0];
+    $sects{FOOTNOTES} .= "\n\n";
+}
+
+# stolen from Symbol.pm
+{
+    my $genseq = 0;
+    sub gensym
+    {
+	my $name = "GEN" . $genseq++;
+	my $ref = \*{$name};
+	delete $::{$name};
+	return $ref;
+    }
+}
