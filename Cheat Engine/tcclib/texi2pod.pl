@@ -189,4 +189,187 @@ while(<$inf>) {
     next if $skipping;
 
     # Character entities.  First the ones that can be replaced by raw text
-   
+    # or discarded outright:
+    s/\@copyright\{\}/(c)/g;
+    s/\@dots\{\}/.../g;
+    s/\@enddots\{\}/..../g;
+    s/\@([.!? ])/$1/g;
+    s/\@[:-]//g;
+    s/\@bullet(?:\{\})?/*/g;
+    s/\@TeX\{\}/TeX/g;
+    s/\@pounds\{\}/\#/g;
+    s/\@minus(?:\{\})?/-/g;
+    s/\\,/,/g;
+
+    # Now the ones that have to be replaced by special escapes
+    # (which will be turned back into text by unmunge())
+    s/&/&amp;/g;
+    s/\@\{/&lbrace;/g;
+    s/\@\}/&rbrace;/g;
+    s/\@\@/&at;/g;
+
+    # Inside a verbatim block, handle @var specially.
+    if ($shift ne "") {
+	s/\@var\{([^\}]*)\}/<$1>/g;
+    }
+
+    # POD doesn't interpret E<> inside a verbatim block.
+    if ($shift eq "") {
+	s/</&lt;/g;
+	s/>/&gt;/g;
+    } else {
+	s/</&LT;/g;
+	s/>/&GT;/g;
+    }
+
+    # Single line command handlers.
+
+    /^\@include\s+(.+)$/ and do {
+	push @instack, $inf;
+	$inf = gensym();
+
+	# Try cwd and $ibase.
+	open($inf, "<" . $1) 
+	    or open($inf, "<" . $ibase . "/" . $1)
+		or die "cannot open $1 or $ibase/$1: $!\n";
+	next;
+    };
+
+    /^\@(?:section|unnumbered|unnumberedsec|center)\s+(.+)$/
+	and $_ = "\n=head2 $1\n";
+    /^\@subsection\s+(.+)$/
+	and $_ = "\n=head3 $1\n";
+
+    # Block command handlers:
+    /^\@itemize\s+(\@[a-z]+|\*|-)/ and do {
+	push @endwstack, $endw;
+	push @icstack, $ic;
+	$ic = $1;
+	$_ = "\n=over 4\n";
+	$endw = "itemize";
+    };
+
+    /^\@enumerate(?:\s+([a-zA-Z0-9]+))?/ and do {
+	push @endwstack, $endw;
+	push @icstack, $ic;
+	if (defined $1) {
+	    $ic = $1 . ".";
+	} else {
+	    $ic = "1.";
+	}
+	$_ = "\n=over 4\n";
+	$endw = "enumerate";
+    };
+
+    /^\@([fv]?table)\s+(\@[a-z]+)/ and do {
+	push @endwstack, $endw;
+	push @icstack, $ic;
+	$endw = $1;
+	$ic = $2;
+	$ic =~ s/\@(?:samp|strong|key|gcctabopt|option|env)/B/;
+	$ic =~ s/\@(?:code|kbd)/C/;
+	$ic =~ s/\@(?:dfn|var|emph|cite|i)/I/;
+	$ic =~ s/\@(?:file)/F/;
+	$_ = "\n=over 4\n";
+    };
+
+    /^\@((?:small)?example|display)/ and do {
+	push @endwstack, $endw;
+	$endw = $1;
+	$shift = "\t";
+	$_ = "";	# need a paragraph break
+    };
+
+    /^\@itemx?\s*(.+)?$/ and do {
+	if (defined $1) {
+	    # Entity escapes prevent munging by the <> processing below.
+	    $_ = "\n=item $ic\&LT;$1\&GT;\n";
+	} else {
+	    $_ = "\n=item $ic\n";
+	    $ic =~ y/A-Ya-y/B-Zb-z/;
+	    $ic =~ s/(\d+)/$1 + 1/eg;
+	}
+    };
+
+    $section .= $shift.$_."\n";
+}
+# End of current file.
+close($inf);
+$inf = pop @instack;
+}
+
+die "No filename or title\n" unless defined $fn && defined $tl;
+
+$sects{NAME} = "$fn \- $tl\n";
+$sects{FOOTNOTES} .= "=back\n" if exists $sects{FOOTNOTES};
+
+for $sect (qw(NAME SYNOPSIS DESCRIPTION OPTIONS ENVIRONMENT FILES
+	      BUGS NOTES FOOTNOTES SEEALSO AUTHOR COPYRIGHT)) {
+    if(exists $sects{$sect}) {
+	$head = $sect;
+	$head =~ s/SEEALSO/SEE ALSO/;
+	print "=head1 $head\n\n";
+	print scalar unmunge ($sects{$sect});
+	print "\n";
+    }
+}
+
+sub usage
+{
+    die "usage: $0 [-D toggle...] [infile [outfile]]\n";
+}
+
+sub postprocess
+{
+    local $_ = $_[0];
+
+    # @value{foo} is replaced by whatever 'foo' is defined as.
+    while (m/(\@value\{([a-zA-Z0-9_-]+)\})/g) {
+	if (! exists $defs{$2}) {
+	    print STDERR "Option $2 not defined\n";
+	    s/\Q$1\E//;
+	} else {
+	    $value = $defs{$2};
+	    s/\Q$1\E/$value/;
+	}
+    }
+
+    # Formatting commands.
+    # Temporary escape for @r.
+    s/\@r\{([^\}]*)\}/R<$1>/g;
+    s/\@(?:dfn|var|emph|cite|i)\{([^\}]*)\}/I<$1>/g;
+    s/\@(?:code|kbd)\{([^\}]*)\}/C<$1>/g;
+    s/\@(?:gccoptlist|samp|strong|key|option|env|command|b)\{([^\}]*)\}/B<$1>/g;
+    s/\@sc\{([^\}]*)\}/\U$1/g;
+    s/\@file\{([^\}]*)\}/F<$1>/g;
+    s/\@w\{([^\}]*)\}/S<$1>/g;
+    s/\@(?:dmn|math)\{([^\}]*)\}/$1/g;
+
+    # Cross references are thrown away, as are @noindent and @refill.
+    # (@noindent is impossible in .pod, and @refill is unnecessary.)
+    # @* is also impossible in .pod; we discard it and any newline that
+    # follows it.  Similarly, our macro @gol must be discarded.
+
+    s/\(?\@xref\{(?:[^\}]*)\}(?:[^.<]|(?:<[^<>]*>))*\.\)?//g;
+    s/\s+\(\@pxref\{(?:[^\}]*)\}\)//g;
+    s/;\s+\@pxref\{(?:[^\}]*)\}//g;
+    s/\@noindent\s*//g;
+    s/\@refill//g;
+    s/\@gol//g;
+    s/\@\*\s*\n?//g;
+
+    # @uref can take one, two, or three arguments, with different
+    # semantics each time.  @url and @email are just like @uref with
+    # one argument, for our purposes.
+    s/\@(?:uref|url|email)\{([^\},]*)\}/&lt;B<$1>&gt;/g;
+    s/\@uref\{([^\},]*),([^\},]*)\}/$2 (C<$1>)/g;
+    s/\@uref\{([^\},]*),([^\},]*),([^\},]*)\}/$3/g;
+
+    # Turn B<blah I<blah> blah> into B<blah> I<blah> B<blah> to
+    # match Texinfo semantics of @emph inside @samp.  Also handle @r
+    # inside bold.
+    s/&LT;/</g;
+    s/&GT;/>/g;
+    1 while s/B<((?:[^<>]|I<[^<>]*>)*)R<([^>]*)>/B<$1>${2}B</g;
+    1 while (s/B<([^<>]*)I<([^>]+)>/B<$1>I<$2>B</g);
+    1 while (s/I<([^<
