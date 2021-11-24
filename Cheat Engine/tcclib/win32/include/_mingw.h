@@ -92,4 +92,73 @@
 #define _INTPTR_T_DEFINED
 #define _INTEGRAL_MAX_BITS 64
 
-#
+#ifndef _TIME32_T_DEFINED
+#define _TIME32_T_DEFINED
+typedef long __time32_t;
+#endif
+
+#ifndef _TIME64_T_DEFINED
+#define _TIME64_T_DEFINED
+typedef long long __time64_t;
+#endif
+
+#ifndef _TIME_T_DEFINED
+#define _TIME_T_DEFINED
+#ifdef _USE_32BIT_TIME_T
+typedef __time32_t time_t;
+#else
+typedef __time64_t time_t;
+#endif
+#endif
+
+#ifndef _WCTYPE_T_DEFINED
+#define _WCTYPE_T_DEFINED
+typedef wchar_t wctype_t;
+#endif
+
+#ifndef _WINT_T
+#define _WINT_T
+typedef __WINT_TYPE__ wint_t;
+#endif
+
+typedef int errno_t;
+#define _ERRCODE_DEFINED
+
+typedef struct threadlocaleinfostruct *pthreadlocinfo;
+typedef struct threadmbcinfostruct *pthreadmbcinfo;
+typedef struct localeinfo_struct _locale_tstruct,*_locale_t;
+
+/* for winapi */
+#define _ANONYMOUS_UNION
+#define _ANONYMOUS_STRUCT
+#define DECLSPEC_NORETURN __declspec(noreturn)
+#define DECLARE_STDCALL_P(type) __stdcall type
+#define NOSERVICE 1
+#define NOMCX 1
+#define NOIME 1
+#define __INTRIN_H_
+#ifndef DUMMYUNIONNAME
+#  define DUMMYUNIONNAME
+#  define DUMMYUNIONNAME1
+#  define DUMMYUNIONNAME2
+#  define DUMMYUNIONNAME3
+#  define DUMMYUNIONNAME4
+#  define DUMMYUNIONNAME5
+#endif
+#ifndef DUMMYSTRUCTNAME
+#  define DUMMYSTRUCTNAME
+#endif
+#ifndef WINVER
+# define WINVER 0x0502
+#endif
+#ifndef _WIN32_WINNT
+# define _WIN32_WINNT 0x502
+#endif
+
+#define __C89_NAMELESS
+#define __MINGW_EXTENSION
+#define WINAPI_FAMILY_PARTITION(X) 1
+#define MINGW_HAS_SECURE_API
+#define WIN32 1
+
+#endif /* __MINGW_H */
