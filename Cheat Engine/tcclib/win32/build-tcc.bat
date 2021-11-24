@@ -139,4 +139,51 @@ copy>nul tcc-win32.txt doc
 
 :libtcc1.a
 @set O1=libtcc1.o crt1.o crt1w.o wincrt1.o wincrt1w.o dllcrt1.o dllmain.o chkstk.o bcheck.o
-.\tcc -m32 -c ../lib/lib
+.\tcc -m32 -c ../lib/libtcc1.c
+.\tcc -m32 -c lib/crt1.c
+.\tcc -m32 -c lib/crt1w.c
+.\tcc -m32 -c lib/wincrt1.c
+.\tcc -m32 -c lib/wincrt1w.c
+.\tcc -m32 -c lib/dllcrt1.c
+.\tcc -m32 -c lib/dllmain.c
+.\tcc -m32 -c lib/chkstk.S
+.\tcc -m32 -w -c ../lib/bcheck.c
+.\tcc -m32 -c ../lib/alloca86.S
+.\tcc -m32 -c ../lib/alloca86-bt.S
+.\tcc -m32 -ar lib/libtcc1-32.a %O1% alloca86.o alloca86-bt.o
+@if errorlevel 1 goto :the_end
+.\tcc -m64 -c ../lib/libtcc1.c
+.\tcc -m64 -c lib/crt1.c
+.\tcc -m64 -c lib/crt1w.c
+.\tcc -m64 -c lib/wincrt1.c
+.\tcc -m64 -c lib/wincrt1w.c
+.\tcc -m64 -c lib/dllcrt1.c
+.\tcc -m64 -c lib/dllmain.c
+.\tcc -m64 -c lib/chkstk.S
+.\tcc -m64 -w -c ../lib/bcheck.c
+.\tcc -m64 -c ../lib/alloca86_64.S
+.\tcc -m64 -c ../lib/alloca86_64-bt.S
+.\tcc -m64 -ar lib/libtcc1-64.a %O1% alloca86_64.o alloca86_64-bt.o
+@if errorlevel 1 goto :the_end
+
+:tcc-doc.html
+@if not (%DOC%)==(yes) goto :doc-done
+echo>..\config.texi @set VERSION %VERSION%
+cmd /c makeinfo --html --no-split ../tcc-doc.texi -o doc/tcc-doc.html
+:doc-done
+
+:files-done
+for %%f in (*.o *.def) do @del %%f
+
+:copy-install
+@if (%INST%)==() goto :the_end
+if not exist %INST% mkdir %INST%
+@if (%BIN%)==() set BIN=%INST%
+if not exist %BIN% mkdir %BIN%
+for %%f in (*tcc.exe *tcc.dll) do @copy>nul %%f %BIN%\%%f
+@if not exist %INST%\lib mkdir %INST%\lib
+for %%f in (lib\*.a lib\*.def) do @copy>nul %%f %INST%\%%f
+for %%f in (include examples libtcc doc) do @xcopy>nul /s/i/q/y %%f %INST%\%%f
+
+:the_end
+exit /B %ERRORLEVEL%
