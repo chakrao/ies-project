@@ -26,4 +26,83 @@
 
 /* The MXCSR exception flags are the same as the
    FE flags. */
-#define __MXCSR_EXCEPT_FLAG_SHIFT 
+#define __MXCSR_EXCEPT_FLAG_SHIFT 0
+
+/* How much to shift FE status word exception flags
+   to get MXCSR rounding flags,  */
+#define __MXCSR_ROUND_FLAG_SHIFT 3
+
+#ifndef RC_INVOKED
+/*
+  For now, support only for the basic abstraction of flags that are
+  either set or clear. fexcept_t could be  structure that holds more
+  info about the fp environment.
+*/
+typedef unsigned short fexcept_t;
+
+/* This 32-byte struct represents the entire floating point
+   environment as stored by fnstenv or fstenv, augmented by
+   the  contents of the MXCSR register, as stored by stmxcsr
+   (if CPU supports it). */
+typedef struct
+{
+  unsigned short __control_word;
+  unsigned short __unused0;
+  unsigned short __status_word;
+  unsigned short __unused1;
+  unsigned short __tag_word;
+  unsigned short __unused2;  
+  unsigned int	 __ip_offset;    /* instruction pointer offset */
+  unsigned short __ip_selector;  
+  unsigned short __opcode;
+  unsigned int	 __data_offset;
+  unsigned short __data_selector;  
+  unsigned short __unused3;
+  unsigned int   __mxcsr; /* contents of the MXCSR register  */
+} fenv_t;
+
+
+/*The C99 standard (7.6.9) allows us to define implementation-specific macros for
+  different fp environments */
+  
+/* The default Intel x87 floating point environment (64-bit mantissa) */
+#define FE_PC64_ENV ((const fenv_t *)-1)
+
+/* The floating point environment set by MSVCRT _fpreset (53-bit mantissa) */
+#define FE_PC53_ENV ((const fenv_t *)-2)
+
+/* The FE_DFL_ENV macro is required by standard.
+  fesetenv will use the environment set at app startup.*/
+#define FE_DFL_ENV ((const fenv_t *) 0)
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*TODO: Some of these could be inlined */
+/* 7.6.2 Exception */
+
+extern int __cdecl feclearexcept (int);
+extern int __cdecl fegetexceptflag (fexcept_t * flagp, int excepts);
+extern int __cdecl feraiseexcept (int excepts );
+extern int __cdecl fesetexceptflag (const fexcept_t *, int);
+extern int __cdecl fetestexcept (int excepts);
+
+/* 7.6.3 Rounding */
+
+extern int __cdecl fegetround (void);
+extern int __cdecl fesetround (int mode);
+
+/* 7.6.4 Environment */
+
+extern int __cdecl fegetenv(fenv_t * envp);
+extern int __cdecl fesetenv(const fenv_t * );
+extern int __cdecl feupdateenv(const fenv_t *);
+extern int __cdecl feholdexcept(fenv_t *);
+
+#ifdef __cplusplus
+}
+#endif
+#endif	/* Not RC_INVOKED */
+
+#endif /* ndef _FENV_H */
