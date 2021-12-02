@@ -359,4 +359,60 @@ _CRTIMP char* __cdecl _getcwd (char*, int);
   int __cdecl access(const char *_Filename,int _AccessMode);
   int __cdecl chmod(const char *_Filename,int _AccessMode);
   int __cdecl chsize(int _FileHandle,long _Size);
-  int __cdecl clos
+  int __cdecl close(int _FileHandle);
+  int __cdecl creat(const char *_Filename,int _PermissionMode);
+  int __cdecl dup(int _FileHandle);
+  int __cdecl dup2(int _FileHandleSrc,int _FileHandleDst);
+  int __cdecl eof(int _FileHandle);
+  long __cdecl filelength(int _FileHandle);
+  int __cdecl isatty(int _FileHandle);
+  int __cdecl locking(int _FileHandle,int _LockMode,long _NumOfBytes);
+  long __cdecl lseek(int _FileHandle,long _Offset,int _Origin);
+  char *__cdecl mktemp(char *_TemplateName);
+  int __cdecl open(const char *_Filename,int _OpenFlag,...);
+  int __cdecl read(int _FileHandle,void *_DstBuf,unsigned int _MaxCharCount);
+  int __cdecl setmode(int _FileHandle,int _Mode);
+  int __cdecl sopen(const char *_Filename,int _OpenFlag,int _ShareFlag,...);
+  long __cdecl tell(int _FileHandle);
+  int __cdecl umask(int _Mode);
+  int __cdecl write(int _Filehandle,const void *_Buf,unsigned int _MaxCharCount);
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Misc stuff */
+char *getlogin(void);
+#ifdef __USE_MINGW_ALARM
+unsigned int alarm(unsigned int seconds);
+#endif
+
+#ifdef __USE_MINGW_ACCESS
+/*  Old versions of MSVCRT access() just ignored X_OK, while the version
+    shipped with Vista, returns an error code.  This will restore the
+    old behaviour  */
+static inline int __mingw_access (const char *__fname, int __mode) {
+  return  _access (__fname, __mode & ~X_OK);
+}
+
+#define access(__f,__m)  __mingw_access (__f, __m)
+#endif
+
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#pragma pack(pop)
+
+#include <sec_api/io_s.h>
+
+#endif /* End _IO_H_ */
+
