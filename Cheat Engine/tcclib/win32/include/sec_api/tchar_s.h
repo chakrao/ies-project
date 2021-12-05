@@ -202,4 +202,65 @@ extern "C" {
 #define _tcsncset_s_l _mbsnset_s_l
 
 #define _tcslwr_s _mbslwr_s
-#define _tcslwr_s_l _mb
+#define _tcslwr_s_l _mbslwr_s_l
+#define _tcsupr_s _mbsupr_s
+#define _tcsupr_s_l _mbsupr_s_l
+
+#define _tccpy_s _mbccpy_s
+#define _tccpy_s_l _mbccpy_s_l
+#else
+
+  _CRTIMP char *__cdecl _tcsncat_s(char *_Dst,size_t _DstSizeInChars,const char *_Src,size_t _MaxCount);
+  _CRTIMP char *__cdecl _tcsncat_s_l(char *_Dst,size_t _DstSizeInChars,const char *_Src,size_t _MaxCount,_locale_t _Locale);
+  _CRTIMP char *__cdecl _tcsncpy_s(char *_Dst,size_t _DstSizeInChars,const char *_Src,size_t _MaxCount);
+  _CRTIMP char *__cdecl _tcsncpy_s_l(char *_Dst,size_t _DstSizeInChars,const char *_Src,size_t _MaxCount,_locale_t _Locale);
+  _CRTIMP char *__cdecl _tcstok_s(char *_Str,const char *_Delim,char **_Context);
+  _CRTIMP char *__cdecl _tcstok_s_l(char *_Str,const char *_Delim,char **_Context,_locale_t _Locale);
+  _CRTIMP errno_t __cdecl _tcsset_s(char *_Str,size_t _SizeInChars,unsigned int _Val);
+  _CRTIMP errno_t __cdecl _tcsset_s_l(char *_Str,size_t _SizeInChars,unsigned int,_locale_t _Locale);
+  _CRTIMP char *__cdecl _tcsnccat_s(char *_Dst,size_t _DstSizeInChars,const char *_Src,size_t _MaxCount);
+  _CRTIMP char *__cdecl _tcsnccat_s_l(char *_Dst,size_t _DstSizeInChars,const char *_Src,size_t _MaxCount,_locale_t _Locale);
+  _CRTIMP char *__cdecl _tcsnccpy_s(char *_Dst,size_t _DstSizeInChars,const char *_Src,size_t _MaxCount);
+  _CRTIMP char *__cdecl _tcsnccpy_s_l(char *_Dst,size_t _DstSizeInChars,const char *_Src,size_t _MaxCount,_locale_t _Locale);
+  _CRTIMP char *__cdecl _tcslwr_s(char *_Str,size_t _SizeInChars);
+  _CRTIMP char *__cdecl _tcslwr_s_l(char *_Str,size_t _SizeInChars,_locale_t _Locale);
+  _CRTIMP char *__cdecl _tcsupr_s(char *_Str,size_t _SizeInChars);
+  _CRTIMP char *__cdecl _tcsupr_s_l(char *_Str,size_t _SizeInChars,_locale_t _Locale);
+
+#endif
+
+#else
+
+#define _tcsncat_s strncat_s
+#define _tcsncat_s_l _strncat_s_l
+#define _tcsncpy_s strncpy_s
+#define _tcsncpy_s_l _strncpy_s_l
+#define _tcstok_s strtok_s
+#define _tcstok_s_l _strtok_s_l
+
+#define _tcsnset_s _strnset_s
+#define _tcsnset_s_l _strnset_s_l
+#define _tcsset_s _strset_s
+#define _tcsset_s _strset_s
+#define _tcsset_s_l _strset_s_l
+
+#define _tcsnccat_s strncat_s
+#define _tcsnccat_s_l _strncat_s_l
+#define _tcsnccpy_s strncpy_s
+#define _tcsnccpy_s_l _strncpy_s_l
+
+#define _tcslwr_s _strlwr_s
+#define _tcslwr_s_l _strlwr_s_l
+#define _tcsupr_s _strupr_s
+#define _tcsupr_s_l _strupr_s_l
+
+#define _strnset_s_l(_Destination,_Destination_size_chars,_Value,_Count,_Locale) (_strnset_s(_Destination,_Destination_size_chars,_Value,_Count))
+#define _strset_s_l(_Destination,_Destination_size_chars,_Value,_Locale) (_strset_s(_Destination,_Destination_size_chars,_Value))
+#endif
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+#endif
+#endif
