@@ -47,4 +47,17 @@ extern "C" {
 #define SIG_DFL (__p_sig_fn_t)0
 #define SIG_IGN (__p_sig_fn_t)1
 #define SIG_GET (__p_sig_fn_t)2
-#define SIG_SGE (__p_sig_f
+#define SIG_SGE (__p_sig_fn_t)3
+#define SIG_ACK (__p_sig_fn_t)4
+#define SIG_ERR (__p_sig_fn_t)-1
+
+  extern void **__cdecl __pxcptinfoptrs(void);
+#define _pxcptinfoptrs (*__pxcptinfoptrs())
+
+  __p_sig_fn_t __cdecl signal(int _SigNum,__p_sig_fn_t _Func);
+  int __cdecl raise(int _SigNum);
+
+#ifdef __cplusplus
+}
+#endif
+#endif
