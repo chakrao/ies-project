@@ -61,4 +61,192 @@ extern "C" {
 #ifndef _WCHAR_T_DEFINED
   typedef unsigned short wchar_t;
 #define _WCHAR_T_DEFINED
-#endi
+#endif
+
+#ifndef _STAT_DEFINED
+
+#ifdef _USE_32BIT_TIME_T
+#ifndef _WIN64
+#define _fstat32 _fstat
+#define _stat32 _stat
+#define _wstat32 _wstat
+#else
+#define _fstat _fstat32
+#define _stat _stat32
+#define _wstat _wstat32
+#endif
+#define _fstati64 _fstat32i64
+#define _stati64 _stat32i64
+#define _wstati64 _wstat32i64
+#else
+#define _fstat _fstat64i32
+#define _fstati64 _fstat64
+#define _stat _stat64
+#define _stati64 _stat64
+#define _wstat _wstat64
+#define _wstati64 _wstat64
+#endif
+
+  struct _stat32 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    _off_t st_size;
+    __time32_t st_atime;
+    __time32_t st_mtime;
+    __time32_t st_ctime;
+  };
+
+#ifndef	NO_OLDNAMES
+  struct stat {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    _off_t st_size;
+    time_t st_atime;
+    time_t st_mtime;
+    time_t st_ctime;
+  };
+#endif
+
+#if _INTEGRAL_MAX_BITS >= 64
+  struct _stat32i64 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    __int64 st_size;
+    __time32_t st_atime;
+    __time32_t st_mtime;
+    __time32_t st_ctime;
+  };
+
+  struct _stat64i32 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    _off_t st_size;
+    __time64_t st_atime;
+    __time64_t st_mtime;
+    __time64_t st_ctime;
+  };
+
+  struct _stat64 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    __int64 st_size;
+    __time64_t st_atime;
+    __time64_t st_mtime;
+    __time64_t st_ctime;
+  };
+#endif
+
+#define __stat64 _stat64
+
+#define _STAT_DEFINED
+#endif
+
+#define _S_IFMT 0xF000
+#define _S_IFDIR 0x4000
+#define _S_IFCHR 0x2000
+#define _S_IFIFO 0x1000
+#define _S_IFREG 0x8000
+#define _S_IREAD 0x0100
+#define _S_IWRITE 0x0080
+#define _S_IEXEC 0x0040
+
+  _CRTIMP int __cdecl _fstat32(int _FileDes,struct _stat32 *_Stat);
+  _CRTIMP int __cdecl _stat32(const char *_Name,struct _stat32 *_Stat);
+#if _INTEGRAL_MAX_BITS >= 64
+  _CRTIMP int __cdecl _fstat64(int _FileDes,struct _stat64 *_Stat);
+  _CRTIMP int __cdecl _fstat32i64(int _FileDes,struct _stat32i64 *_Stat);
+  int __cdecl _fstat64i32(int _FileDes,struct _stat64i32 *_Stat);
+  __CRT_INLINE int __cdecl _fstat64i32(int _FileDes,struct _stat64i32 *_Stat)
+  {
+    struct _stat64 st;
+    int ret=_fstat64(_FileDes,&st);
+    _Stat->st_dev=st.st_dev;
+    _Stat->st_ino=st.st_ino;
+    _Stat->st_mode=st.st_mode;
+    _Stat->st_nlink=st.st_nlink;
+    _Stat->st_uid=st.st_uid;
+    _Stat->st_gid=st.st_gid;
+    _Stat->st_rdev=st.st_rdev;
+    _Stat->st_size=(_off_t) st.st_size;
+    _Stat->st_atime=st.st_atime;
+    _Stat->st_mtime=st.st_mtime;
+    _Stat->st_ctime=st.st_ctime;
+    return ret;
+  }
+  _CRTIMP int __cdecl _stat64(const char *_Name,struct _stat64 *_Stat);
+  _CRTIMP int __cdecl _stat32i64(const char *_Name,struct _stat32i64 *_Stat);
+  int __cdecl _stat64i32(const char *_Name,struct _stat64i32 *_Stat);
+  __CRT_INLINE int __cdecl _stat64i32(const char *_Name,struct _stat64i32 *_Stat)
+  {
+    struct _stat64 st;
+    int ret=_stat64(_Name,&st);
+    _Stat->st_dev=st.st_dev;
+    _Stat->st_ino=st.st_ino;
+    _Stat->st_mode=st.st_mode;
+    _Stat->st_nlink=st.st_nlink;
+    _Stat->st_uid=st.st_uid;
+    _Stat->st_gid=st.st_gid;
+    _Stat->st_rdev=st.st_rdev;
+    _Stat->st_size=(_off_t) st.st_size;
+    _Stat->st_atime=st.st_atime;
+    _Stat->st_mtime=st.st_mtime;
+    _Stat->st_ctime=st.st_ctime;
+    return ret;
+  }
+#endif
+
+#ifndef _WSTAT_DEFINED
+#define _WSTAT_DEFINED
+  _CRTIMP int __cdecl _wstat32(const wchar_t *_Name,struct _stat32 *_Stat);
+#if _INTEGRAL_MAX_BITS >= 64
+  _CRTIMP int __cdecl _wstat32i64(const wchar_t *_Name,struct _stat32i64 *_Stat);
+  int __cdecl _wstat64i32(const wchar_t *_Name,struct _stat64i32 *_Stat);
+  _CRTIMP int __cdecl _wstat64(const wchar_t *_Name,struct _stat64 *_Stat);
+#endif
+#endif
+
+#ifndef	NO_OLDNAMES
+#define	_S_IFBLK	0x3000	/* Block: Is this ever set under w32? */
+
+#define S_IFMT _S_IFMT
+#define S_IFDIR _S_IFDIR
+#define S_IFCHR _S_IFCHR
+#define S_IFREG _S_IFREG
+#define S_IREAD _S_IREAD
+#define S_IWRITE _S_IWRITE
+#define S_IEXEC _S_IEXEC
+#define	S_IFIFO		_S_IFIFO
+#define	S_IFBLK		_S_IFBLK
+
+#define	_S_IRWXU	(_S_IREAD | _S_IWRITE | _S_IEXEC)
+#define	_S_IXUSR	_S_IEXEC
+#define	_S_IWUSR	_S_IWRITE
+
+#define	S_IRWXU		_S_IRWXU
+#define	S_IXUSR		_S_IXUSR
+#define	S_IWUSR		_
