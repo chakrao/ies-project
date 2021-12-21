@@ -123,4 +123,42 @@ extern "C" {
   _CRTIMP int __cdecl _wcsicmp(const wchar_t *_Str1,const wchar_t *_Str2);
   _CRTIMP int __cdecl _wcsicmp_l(const wchar_t *_Str1,const wchar_t *_Str2,_locale_t _Locale);
   _CRTIMP int __cdecl _wcsnicmp(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
-  _CRTIMP int __cdecl _wcsnicmp_l(const wchar_t *_Str1,const wchar_t *_
+  _CRTIMP int __cdecl _wcsnicmp_l(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount,_locale_t _Locale);
+  _CRTIMP wchar_t *__cdecl _wcsnset(wchar_t *_Str,wchar_t _Val,size_t _MaxCount);
+  _CRTIMP wchar_t *__cdecl _wcsrev(wchar_t *_Str);
+  _CRTIMP wchar_t *__cdecl _wcsset(wchar_t *_Str,wchar_t _Val);
+  _CRTIMP wchar_t *__cdecl _wcslwr(wchar_t *_String);
+  _CRTIMP wchar_t *_wcslwr_l(wchar_t *_String,_locale_t _Locale);
+  _CRTIMP wchar_t *__cdecl _wcsupr(wchar_t *_String);
+  _CRTIMP wchar_t *_wcsupr_l(wchar_t *_String,_locale_t _Locale);
+  size_t __cdecl wcsxfrm(wchar_t *_Dst,const wchar_t *_Src,size_t _MaxCount);
+  _CRTIMP size_t __cdecl _wcsxfrm_l(wchar_t *_Dst,const wchar_t *_Src,size_t _MaxCount,_locale_t _Locale);
+  int __cdecl wcscoll(const wchar_t *_Str1,const wchar_t *_Str2);
+  _CRTIMP int __cdecl _wcscoll_l(const wchar_t *_Str1,const wchar_t *_Str2,_locale_t _Locale);
+  _CRTIMP int __cdecl _wcsicoll(const wchar_t *_Str1,const wchar_t *_Str2);
+  _CRTIMP int __cdecl _wcsicoll_l(const wchar_t *_Str1,const wchar_t *_Str2,_locale_t _Locale);
+  _CRTIMP int __cdecl _wcsncoll(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
+  _CRTIMP int __cdecl _wcsncoll_l(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount,_locale_t _Locale);
+  _CRTIMP int __cdecl _wcsnicoll(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
+  _CRTIMP int __cdecl _wcsnicoll_l(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount,_locale_t _Locale);
+
+#ifndef	NO_OLDNAMES
+  wchar_t *__cdecl wcsdup(const wchar_t *_Str);
+#define wcswcs wcsstr
+  int __cdecl wcsicmp(const wchar_t *_Str1,const wchar_t *_Str2);
+  int __cdecl wcsnicmp(const wchar_t *_Str1,const wchar_t *_Str2,size_t _MaxCount);
+  wchar_t *__cdecl wcsnset(wchar_t *_Str,wchar_t _Val,size_t _MaxCount);
+  wchar_t *__cdecl wcsrev(wchar_t *_Str);
+  wchar_t *__cdecl wcsset(wchar_t *_Str,wchar_t _Val);
+  wchar_t *__cdecl wcslwr(wchar_t *_Str);
+  wchar_t *__cdecl wcsupr(wchar_t *_Str);
+  int __cdecl wcsicoll(const wchar_t *_Str1,const wchar_t *_Str2);
+#endif
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#include <sec_api/string_s.h>
+#endif
