@@ -100,4 +100,34 @@ extern "C" {
 
 #ifndef _TIMESPEC_DEFINED
 #define _TIMESPEC_DEFINED
-struct tim
+struct timespec {
+  time_t  tv_sec;   /* Seconds */
+  long    tv_nsec;  /* Nanoseconds */
+};
+
+struct itimerspec {
+  struct timespec  it_interval;  /* Timer period */
+  struct timespec  it_value;     /* Timer expiration */
+};
+#endif
+
+#if !defined (RC_INVOKED) && !defined (NO_OLDNAMES)
+#ifdef _USE_32BIT_TIME_T
+__CRT_INLINE void __cdecl ftime(struct timeb *_Tmb) {
+  _ftime32((struct __timeb32 *)_Tmb);
+}
+#else
+__CRT_INLINE void __cdecl ftime(struct timeb *_Tmb) {
+  _ftime64((struct __timeb64 *)_Tmb);
+}
+#endif
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#pragma pack(pop)
+
+#include <sec_api/sys/timeb_s.h>
+#endif
