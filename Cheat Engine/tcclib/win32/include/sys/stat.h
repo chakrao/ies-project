@@ -249,4 +249,42 @@ extern "C" {
 
 #define	S_IRWXU		_S_IRWXU
 #define	S_IXUSR		_S_IXUSR
-#define	S_IWUSR		_
+#define	S_IWUSR		_S_IWUSR
+#define	S_IRUSR		_S_IRUSR
+#define	_S_IRUSR	_S_IREAD
+
+#define	S_ISDIR(m)	(((m) & S_IFMT) == S_IFDIR)
+#define	S_ISFIFO(m)	(((m) & S_IFMT) == S_IFIFO)
+#define	S_ISCHR(m)	(((m) & S_IFMT) == S_IFCHR)
+#define	S_ISBLK(m)	(((m) & S_IFMT) == S_IFBLK)
+#define	S_ISREG(m)	(((m) & S_IFMT) == S_IFREG)
+
+#endif
+
+#if !defined (RC_INVOKED) && !defined (NO_OLDNAMES)
+int __cdecl stat(const char *_Filename,struct stat *_Stat);
+int __cdecl fstat(int _Desc,struct stat *_Stat);
+int __cdecl wstat(const wchar_t *_Filename,struct stat *_Stat);
+#ifdef _USE_32BIT_TIME_T
+__CRT_INLINE int __cdecl fstat(int _Desc,struct stat *_Stat) {
+  return _fstat32(_Desc,(struct _stat32 *)_Stat);
+}
+__CRT_INLINE int __cdecl stat(const char *_Filename,struct stat *_Stat) {
+  return _stat32(_Filename,(struct _stat32 *)_Stat);
+}
+#else
+__CRT_INLINE int __cdecl fstat(int _Desc,struct stat *_Stat) {
+  return _fstat64i32(_Desc,(struct _stat64i32 *)_Stat);
+}
+__CRT_INLINE int __cdecl stat(const char *_Filename,struct stat *_Stat) {
+  return _stat64i32(_Filename,(struct _stat64i32 *)_Stat);
+}
+#endif
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#pragma pack(pop)
+#endif
