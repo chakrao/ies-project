@@ -2828,3 +2828,125 @@ extern "C" {
 
   typedef const ACTCTXA *PCACTCTXA;
   typedef const ACTCTXW *PCACTCTXW;
+
+#ifdef UNICODE
+  typedef ACTCTXW ACTCTX;
+  typedef PACTCTXW PACTCTX;
+  typedef PCACTCTXW PCACTCTX;
+#else
+  typedef ACTCTXA ACTCTX;
+  typedef PACTCTXA PACTCTX;
+  typedef PCACTCTXA PCACTCTX;
+#endif
+
+#ifdef UNICODE
+#define CreateActCtx CreateActCtxW
+#else
+#define CreateActCtx CreateActCtxA
+#endif
+
+  WINBASEAPI HANDLE WINAPI CreateActCtxA(PCACTCTXA pActCtx);
+  WINBASEAPI HANDLE WINAPI CreateActCtxW(PCACTCTXW pActCtx);
+  WINBASEAPI VOID WINAPI AddRefActCtx(HANDLE hActCtx);
+  WINBASEAPI VOID WINAPI ReleaseActCtx(HANDLE hActCtx);
+  WINBASEAPI WINBOOL WINAPI ZombifyActCtx(HANDLE hActCtx);
+  WINBASEAPI WINBOOL WINAPI ActivateActCtx(HANDLE hActCtx,ULONG_PTR *lpCookie);
+
+#define DEACTIVATE_ACTCTX_FLAG_FORCE_EARLY_DEACTIVATION (0x1)
+
+  WINBASEAPI WINBOOL WINAPI DeactivateActCtx(DWORD dwFlags,ULONG_PTR ulCookie);
+  WINBASEAPI WINBOOL WINAPI GetCurrentActCtx(HANDLE *lphActCtx);
+
+  typedef struct tagACTCTX_SECTION_KEYED_DATA_2600 {
+    ULONG cbSize;
+    ULONG ulDataFormatVersion;
+    PVOID lpData;
+    ULONG ulLength;
+    PVOID lpSectionGlobalData;
+    ULONG ulSectionGlobalDataLength;
+    PVOID lpSectionBase;
+    ULONG ulSectionTotalLength;
+    HANDLE hActCtx;
+    ULONG ulAssemblyRosterIndex;
+  } ACTCTX_SECTION_KEYED_DATA_2600,*PACTCTX_SECTION_KEYED_DATA_2600;
+
+  typedef const ACTCTX_SECTION_KEYED_DATA_2600 *PCACTCTX_SECTION_KEYED_DATA_2600;
+
+  typedef struct tagACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA {
+    PVOID lpInformation;
+    PVOID lpSectionBase;
+    ULONG ulSectionLength;
+    PVOID lpSectionGlobalDataBase;
+    ULONG ulSectionGlobalDataLength;
+  } ACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA,*PACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA;
+
+  typedef const ACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA *PCACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA;
+
+  typedef struct tagACTCTX_SECTION_KEYED_DATA {
+    ULONG cbSize;
+    ULONG ulDataFormatVersion;
+    PVOID lpData;
+    ULONG ulLength;
+    PVOID lpSectionGlobalData;
+    ULONG ulSectionGlobalDataLength;
+    PVOID lpSectionBase;
+    ULONG ulSectionTotalLength;
+    HANDLE hActCtx;
+    ULONG ulAssemblyRosterIndex;
+
+    ULONG ulFlags;
+    ACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA AssemblyMetadata;
+  } ACTCTX_SECTION_KEYED_DATA,*PACTCTX_SECTION_KEYED_DATA;
+
+  typedef const ACTCTX_SECTION_KEYED_DATA *PCACTCTX_SECTION_KEYED_DATA;
+
+#define FIND_ACTCTX_SECTION_KEY_RETURN_HACTCTX 0x1
+#define FIND_ACTCTX_SECTION_KEY_RETURN_FLAGS 0x2
+#define FIND_ACTCTX_SECTION_KEY_RETURN_ASSEMBLY_METADATA 0x4
+
+#ifdef UNICODE
+#define FindActCtxSectionString FindActCtxSectionStringW
+#else
+#define FindActCtxSectionString FindActCtxSectionStringA
+#endif
+
+  WINBASEAPI WINBOOL WINAPI FindActCtxSectionStringA(DWORD dwFlags,const GUID *lpExtensionGuid,ULONG ulSectionId,LPCSTR lpStringToFind,PACTCTX_SECTION_KEYED_DATA ReturnedData);
+  WINBASEAPI WINBOOL WINAPI FindActCtxSectionStringW(DWORD dwFlags,const GUID *lpExtensionGuid,ULONG ulSectionId,LPCWSTR lpStringToFind,PACTCTX_SECTION_KEYED_DATA ReturnedData);
+  WINBASEAPI WINBOOL WINAPI FindActCtxSectionGuid(DWORD dwFlags,const GUID *lpExtensionGuid,ULONG ulSectionId,const GUID *lpGuidToFind,PACTCTX_SECTION_KEYED_DATA ReturnedData);
+
+#ifndef RC_INVOKED
+#ifndef ACTIVATION_CONTEXT_BASIC_INFORMATION_DEFINED
+
+  typedef struct _ACTIVATION_CONTEXT_BASIC_INFORMATION {
+    HANDLE hActCtx;
+    DWORD dwFlags;
+  } ACTIVATION_CONTEXT_BASIC_INFORMATION,*PACTIVATION_CONTEXT_BASIC_INFORMATION;
+
+  typedef const struct _ACTIVATION_CONTEXT_BASIC_INFORMATION *PCACTIVATION_CONTEXT_BASIC_INFORMATION;
+
+#define ACTIVATION_CONTEXT_BASIC_INFORMATION_DEFINED 1
+#endif
+#endif
+
+#define QUERY_ACTCTX_FLAG_USE_ACTIVE_ACTCTX 0x4
+#define QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE 0x8
+#define QUERY_ACTCTX_FLAG_ACTCTX_IS_ADDRESS 0x10
+#define QUERY_ACTCTX_FLAG_NO_ADDREF 0x80000000
+
+  WINBASEAPI WINBOOL WINAPI QueryActCtxW(DWORD dwFlags,HANDLE hActCtx,PVOID pvSubInstance,ULONG ulInfoClass,PVOID pvBuffer,SIZE_T cbBuffer,SIZE_T *pcbWrittenOrRequired);
+
+  typedef WINBOOL (WINAPI *PQUERYACTCTXW_FUNC)(DWORD dwFlags,HANDLE hActCtx,PVOID pvSubInstance,ULONG ulInfoClass,PVOID pvBuffer,SIZE_T cbBuffer,SIZE_T *pcbWrittenOrRequired);
+
+  WINBASEAPI WINBOOL WINAPI ProcessIdToSessionId(DWORD dwProcessId,DWORD *pSessionId);
+  WINBASEAPI DWORD WINAPI WTSGetActiveConsoleSessionId();
+  WINBASEAPI WINBOOL WINAPI IsWow64Process(HANDLE hProcess,PBOOL Wow64Process);
+  WINBASEAPI WINBOOL WINAPI GetLogicalProcessorInformation(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION Buffer,PDWORD ReturnedLength);
+  WINBASEAPI WINBOOL WINAPI GetNumaHighestNodeNumber(PULONG HighestNodeNumber);
+  WINBASEAPI WINBOOL WINAPI GetNumaProcessorNode(UCHAR Processor,PUCHAR NodeNumber);
+  WINBASEAPI WINBOOL WINAPI GetNumaNodeProcessorMask(UCHAR Node,PULONGLONG ProcessorMask);
+  WINBASEAPI WINBOOL WINAPI GetNumaAvailableMemoryNode(UCHAR Node,PULONGLONG AvailableBytes);
+
+#ifdef __cplusplus
+}
+#endif
+#endif
