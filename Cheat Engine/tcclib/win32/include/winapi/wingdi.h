@@ -3370,3 +3370,712 @@ extern "C" {
     DWORD iArcDirection;
 
   } EMRSETARCDIRECTION,*PEMRSETARCDIRECTION;
+
+  typedef struct tagEMRSETMAPPERFLAGS {
+    EMR emr;
+    DWORD dwFlags;
+  } EMRSETMAPPERFLAGS,*PEMRSETMAPPERFLAGS;
+
+  typedef struct tagEMRSETTEXTCOLOR {
+    EMR emr;
+    COLORREF crColor;
+  } EMRSETBKCOLOR,*PEMRSETBKCOLOR,EMRSETTEXTCOLOR,*PEMRSETTEXTCOLOR;
+
+  typedef struct tagEMRSELECTOBJECT {
+    EMR emr;
+    DWORD ihObject;
+  } EMRSELECTOBJECT,*PEMRSELECTOBJECT,EMRDELETEOBJECT,*PEMRDELETEOBJECT;
+
+  typedef struct tagEMRSELECTPALETTE {
+    EMR emr;
+    DWORD ihPal;
+  } EMRSELECTPALETTE,*PEMRSELECTPALETTE;
+
+  typedef struct tagEMRRESIZEPALETTE {
+    EMR emr;
+    DWORD ihPal;
+    DWORD cEntries;
+  } EMRRESIZEPALETTE,*PEMRRESIZEPALETTE;
+
+  typedef struct tagEMRSETPALETTEENTRIES {
+    EMR emr;
+    DWORD ihPal;
+    DWORD iStart;
+    DWORD cEntries;
+    PALETTEENTRY aPalEntries[1];
+  } EMRSETPALETTEENTRIES,*PEMRSETPALETTEENTRIES;
+
+  typedef struct tagEMRSETCOLORADJUSTMENT {
+    EMR emr;
+    COLORADJUSTMENT ColorAdjustment;
+  } EMRSETCOLORADJUSTMENT,*PEMRSETCOLORADJUSTMENT;
+
+  typedef struct tagEMRGDICOMMENT {
+    EMR emr;
+    DWORD cbData;
+    BYTE Data[1];
+  } EMRGDICOMMENT,*PEMRGDICOMMENT;
+
+  typedef struct tagEMREOF {
+    EMR emr;
+    DWORD nPalEntries;
+    DWORD offPalEntries;
+    DWORD nSizeLast;
+  } EMREOF,*PEMREOF;
+
+  typedef struct tagEMRLINETO {
+    EMR emr;
+    POINTL ptl;
+  } EMRLINETO,*PEMRLINETO,EMRMOVETOEX,*PEMRMOVETOEX;
+
+  typedef struct tagEMROFFSETCLIPRGN {
+    EMR emr;
+    POINTL ptlOffset;
+  } EMROFFSETCLIPRGN,*PEMROFFSETCLIPRGN;
+
+  typedef struct tagEMRFILLPATH {
+    EMR emr;
+    RECTL rclBounds;
+  } EMRFILLPATH,*PEMRFILLPATH,EMRSTROKEANDFILLPATH,*PEMRSTROKEANDFILLPATH,EMRSTROKEPATH,*PEMRSTROKEPATH;
+
+  typedef struct tagEMREXCLUDECLIPRECT {
+    EMR emr;
+    RECTL rclClip;
+  } EMREXCLUDECLIPRECT,*PEMREXCLUDECLIPRECT,EMRINTERSECTCLIPRECT,*PEMRINTERSECTCLIPRECT;
+
+  typedef struct tagEMRSETVIEWPORTORGEX {
+    EMR emr;
+    POINTL ptlOrigin;
+  } EMRSETVIEWPORTORGEX,*PEMRSETVIEWPORTORGEX,EMRSETWINDOWORGEX,*PEMRSETWINDOWORGEX,EMRSETBRUSHORGEX,*PEMRSETBRUSHORGEX;
+
+  typedef struct tagEMRSETVIEWPORTEXTEX {
+    EMR emr;
+    SIZEL szlExtent;
+  } EMRSETVIEWPORTEXTEX,*PEMRSETVIEWPORTEXTEX,EMRSETWINDOWEXTEX,*PEMRSETWINDOWEXTEX;
+
+  typedef struct tagEMRSCALEVIEWPORTEXTEX {
+    EMR emr;
+    LONG xNum;
+    LONG xDenom;
+    LONG yNum;
+    LONG yDenom;
+  } EMRSCALEVIEWPORTEXTEX,*PEMRSCALEVIEWPORTEXTEX,EMRSCALEWINDOWEXTEX,*PEMRSCALEWINDOWEXTEX;
+
+  typedef struct tagEMRSETWORLDTRANSFORM {
+    EMR emr;
+    XFORM xform;
+  } EMRSETWORLDTRANSFORM,*PEMRSETWORLDTRANSFORM;
+
+  typedef struct tagEMRMODIFYWORLDTRANSFORM {
+    EMR emr;
+    XFORM xform;
+    DWORD iMode;
+  } EMRMODIFYWORLDTRANSFORM,*PEMRMODIFYWORLDTRANSFORM;
+
+  typedef struct tagEMRSETPIXELV {
+    EMR emr;
+    POINTL ptlPixel;
+    COLORREF crColor;
+  } EMRSETPIXELV,*PEMRSETPIXELV;
+
+  typedef struct tagEMREXTFLOODFILL {
+    EMR emr;
+    POINTL ptlStart;
+    COLORREF crColor;
+    DWORD iMode;
+  } EMREXTFLOODFILL,*PEMREXTFLOODFILL;
+
+  typedef struct tagEMRELLIPSE {
+    EMR emr;
+    RECTL rclBox;
+  } EMRELLIPSE,*PEMRELLIPSE,EMRRECTANGLE,*PEMRRECTANGLE;
+
+  typedef struct tagEMRROUNDRECT {
+    EMR emr;
+    RECTL rclBox;
+    SIZEL szlCorner;
+  } EMRROUNDRECT,*PEMRROUNDRECT;
+
+  typedef struct tagEMRARC {
+    EMR emr;
+    RECTL rclBox;
+    POINTL ptlStart;
+    POINTL ptlEnd;
+  } EMRARC,*PEMRARC,EMRARCTO,*PEMRARCTO,EMRCHORD,*PEMRCHORD,EMRPIE,*PEMRPIE;
+
+  typedef struct tagEMRANGLEARC {
+    EMR emr;
+    POINTL ptlCenter;
+    DWORD nRadius;
+    FLOAT eStartAngle;
+    FLOAT eSweepAngle;
+  } EMRANGLEARC,*PEMRANGLEARC;
+
+  typedef struct tagEMRPOLYLINE {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD cptl;
+    POINTL aptl[1];
+  } EMRPOLYLINE,*PEMRPOLYLINE,EMRPOLYBEZIER,*PEMRPOLYBEZIER,EMRPOLYGON,*PEMRPOLYGON,EMRPOLYBEZIERTO,*PEMRPOLYBEZIERTO,EMRPOLYLINETO,*PEMRPOLYLINETO;
+
+  typedef struct tagEMRPOLYLINE16 {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD cpts;
+    POINTS apts[1];
+  } EMRPOLYLINE16,*PEMRPOLYLINE16,EMRPOLYBEZIER16,*PEMRPOLYBEZIER16,EMRPOLYGON16,*PEMRPOLYGON16,EMRPOLYBEZIERTO16,*PEMRPOLYBEZIERTO16,EMRPOLYLINETO16,*PEMRPOLYLINETO16;
+
+  typedef struct tagEMRPOLYDRAW {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD cptl;
+    POINTL aptl[1];
+    BYTE abTypes[1];
+  } EMRPOLYDRAW,*PEMRPOLYDRAW;
+
+  typedef struct tagEMRPOLYDRAW16 {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD cpts;
+    POINTS apts[1];
+    BYTE abTypes[1];
+  } EMRPOLYDRAW16,*PEMRPOLYDRAW16;
+
+  typedef struct tagEMRPOLYPOLYLINE {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD nPolys;
+    DWORD cptl;
+    DWORD aPolyCounts[1];
+    POINTL aptl[1];
+  } EMRPOLYPOLYLINE,*PEMRPOLYPOLYLINE,EMRPOLYPOLYGON,*PEMRPOLYPOLYGON;
+
+  typedef struct tagEMRPOLYPOLYLINE16 {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD nPolys;
+    DWORD cpts;
+    DWORD aPolyCounts[1];
+    POINTS apts[1];
+  } EMRPOLYPOLYLINE16,*PEMRPOLYPOLYLINE16,EMRPOLYPOLYGON16,*PEMRPOLYPOLYGON16;
+
+  typedef struct tagEMRINVERTRGN {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD cbRgnData;
+    BYTE RgnData[1];
+  } EMRINVERTRGN,*PEMRINVERTRGN,EMRPAINTRGN,*PEMRPAINTRGN;
+
+  typedef struct tagEMRFILLRGN {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD cbRgnData;
+    DWORD ihBrush;
+    BYTE RgnData[1];
+  } EMRFILLRGN,*PEMRFILLRGN;
+
+  typedef struct tagEMRFRAMERGN {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD cbRgnData;
+    DWORD ihBrush;
+    SIZEL szlStroke;
+    BYTE RgnData[1];
+  } EMRFRAMERGN,*PEMRFRAMERGN;
+
+  typedef struct tagEMREXTSELECTCLIPRGN {
+    EMR emr;
+    DWORD cbRgnData;
+    DWORD iMode;
+    BYTE RgnData[1];
+  } EMREXTSELECTCLIPRGN,*PEMREXTSELECTCLIPRGN;
+
+  typedef struct tagEMREXTTEXTOUTA {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD iGraphicsMode;
+    FLOAT exScale;
+    FLOAT eyScale;
+    EMRTEXT emrtext;
+  } EMREXTTEXTOUTA,*PEMREXTTEXTOUTA,EMREXTTEXTOUTW,*PEMREXTTEXTOUTW;
+
+  typedef struct tagEMRPOLYTEXTOUTA {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD iGraphicsMode;
+    FLOAT exScale;
+    FLOAT eyScale;
+    LONG cStrings;
+    EMRTEXT aemrtext[1];
+  } EMRPOLYTEXTOUTA,*PEMRPOLYTEXTOUTA,EMRPOLYTEXTOUTW,*PEMRPOLYTEXTOUTW;
+
+  typedef struct tagEMRBITBLT {
+    EMR emr;
+    RECTL rclBounds;
+    LONG xDest;
+    LONG yDest;
+    LONG cxDest;
+    LONG cyDest;
+    DWORD dwRop;
+    LONG xSrc;
+    LONG ySrc;
+    XFORM xformSrc;
+    COLORREF crBkColorSrc;
+    DWORD iUsageSrc;
+    DWORD offBmiSrc;
+    DWORD cbBmiSrc;
+    DWORD offBitsSrc;
+    DWORD cbBitsSrc;
+  } EMRBITBLT,*PEMRBITBLT;
+
+  typedef struct tagEMRSTRETCHBLT {
+    EMR emr;
+    RECTL rclBounds;
+    LONG xDest;
+    LONG yDest;
+    LONG cxDest;
+    LONG cyDest;
+    DWORD dwRop;
+    LONG xSrc;
+    LONG ySrc;
+    XFORM xformSrc;
+    COLORREF crBkColorSrc;
+    DWORD iUsageSrc;
+    DWORD offBmiSrc;
+    DWORD cbBmiSrc;
+    DWORD offBitsSrc;
+    DWORD cbBitsSrc;
+    LONG cxSrc;
+    LONG cySrc;
+  } EMRSTRETCHBLT,*PEMRSTRETCHBLT;
+
+  typedef struct tagEMRMASKBLT {
+    EMR emr;
+    RECTL rclBounds;
+    LONG xDest;
+    LONG yDest;
+    LONG cxDest;
+    LONG cyDest;
+    DWORD dwRop;
+    LONG xSrc;
+    LONG ySrc;
+    XFORM xformSrc;
+    COLORREF crBkColorSrc;
+    DWORD iUsageSrc;
+    DWORD offBmiSrc;
+    DWORD cbBmiSrc;
+    DWORD offBitsSrc;
+    DWORD cbBitsSrc;
+    LONG xMask;
+    LONG yMask;
+    DWORD iUsageMask;
+    DWORD offBmiMask;
+    DWORD cbBmiMask;
+    DWORD offBitsMask;
+    DWORD cbBitsMask;
+  } EMRMASKBLT,*PEMRMASKBLT;
+
+  typedef struct tagEMRPLGBLT {
+    EMR emr;
+    RECTL rclBounds;
+    POINTL aptlDest[3];
+    LONG xSrc;
+    LONG ySrc;
+    LONG cxSrc;
+    LONG cySrc;
+    XFORM xformSrc;
+    COLORREF crBkColorSrc;
+    DWORD iUsageSrc;
+    DWORD offBmiSrc;
+    DWORD cbBmiSrc;
+    DWORD offBitsSrc;
+    DWORD cbBitsSrc;
+    LONG xMask;
+    LONG yMask;
+    DWORD iUsageMask;
+    DWORD offBmiMask;
+    DWORD cbBmiMask;
+    DWORD offBitsMask;
+    DWORD cbBitsMask;
+  } EMRPLGBLT,*PEMRPLGBLT;
+
+  typedef struct tagEMRSETDIBITSTODEVICE {
+    EMR emr;
+    RECTL rclBounds;
+    LONG xDest;
+    LONG yDest;
+    LONG xSrc;
+    LONG ySrc;
+    LONG cxSrc;
+    LONG cySrc;
+    DWORD offBmiSrc;
+    DWORD cbBmiSrc;
+    DWORD offBitsSrc;
+    DWORD cbBitsSrc;
+    DWORD iUsageSrc;
+    DWORD iStartScan;
+    DWORD cScans;
+  } EMRSETDIBITSTODEVICE,*PEMRSETDIBITSTODEVICE;
+
+  typedef struct tagEMRSTRETCHDIBITS {
+    EMR emr;
+    RECTL rclBounds;
+    LONG xDest;
+    LONG yDest;
+    LONG xSrc;
+    LONG ySrc;
+    LONG cxSrc;
+    LONG cySrc;
+    DWORD offBmiSrc;
+    DWORD cbBmiSrc;
+    DWORD offBitsSrc;
+    DWORD cbBitsSrc;
+    DWORD iUsageSrc;
+    DWORD dwRop;
+    LONG cxDest;
+    LONG cyDest;
+  } EMRSTRETCHDIBITS,*PEMRSTRETCHDIBITS;
+
+  typedef struct tagEMREXTCREATEFONTINDIRECTW {
+    EMR emr;
+    DWORD ihFont;
+    EXTLOGFONTW elfw;
+  } EMREXTCREATEFONTINDIRECTW,*PEMREXTCREATEFONTINDIRECTW;
+
+  typedef struct tagEMRCREATEPALETTE {
+    EMR emr;
+    DWORD ihPal;
+    LOGPALETTE lgpl;
+  } EMRCREATEPALETTE,*PEMRCREATEPALETTE;
+
+  typedef struct tagEMRCREATEPEN {
+    EMR emr;
+    DWORD ihPen;
+    LOGPEN lopn;
+  } EMRCREATEPEN,*PEMRCREATEPEN;
+
+  typedef struct tagEMREXTCREATEPEN {
+    EMR emr;
+    DWORD ihPen;
+    DWORD offBmi;
+    DWORD cbBmi;
+    DWORD offBits;
+    DWORD cbBits;
+    EXTLOGPEN elp;
+  } EMREXTCREATEPEN,*PEMREXTCREATEPEN;
+
+  typedef struct tagEMRCREATEBRUSHINDIRECT {
+    EMR emr;
+    DWORD ihBrush;
+    LOGBRUSH32 lb;
+  } EMRCREATEBRUSHINDIRECT,*PEMRCREATEBRUSHINDIRECT;
+
+  typedef struct tagEMRCREATEMONOBRUSH {
+    EMR emr;
+    DWORD ihBrush;
+    DWORD iUsage;
+    DWORD offBmi;
+    DWORD cbBmi;
+    DWORD offBits;
+    DWORD cbBits;
+  } EMRCREATEMONOBRUSH,*PEMRCREATEMONOBRUSH;
+
+  typedef struct tagEMRCREATEDIBPATTERNBRUSHPT {
+    EMR emr;
+    DWORD ihBrush;
+    DWORD iUsage;
+    DWORD offBmi;
+    DWORD cbBmi;
+    DWORD offBits;
+    DWORD cbBits;
+  } EMRCREATEDIBPATTERNBRUSHPT,*PEMRCREATEDIBPATTERNBRUSHPT;
+
+  typedef struct tagEMRFORMAT {
+    DWORD dSignature;
+    DWORD nVersion;
+    DWORD cbData;
+    DWORD offData;
+  } EMRFORMAT,*PEMRFORMAT;
+
+  typedef struct tagEMRGLSRECORD {
+    EMR emr;
+    DWORD cbData;
+    BYTE Data[1];
+  } EMRGLSRECORD,*PEMRGLSRECORD;
+
+  typedef struct tagEMRGLSBOUNDEDRECORD {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD cbData;
+    BYTE Data[1];
+  } EMRGLSBOUNDEDRECORD,*PEMRGLSBOUNDEDRECORD;
+
+  typedef struct tagEMRPIXELFORMAT {
+    EMR emr;
+    PIXELFORMATDESCRIPTOR pfd;
+  } EMRPIXELFORMAT,*PEMRPIXELFORMAT;
+
+  typedef struct tagEMRCREATECOLORSPACE {
+    EMR emr;
+    DWORD ihCS;
+    LOGCOLORSPACEA lcs;
+  } EMRCREATECOLORSPACE,*PEMRCREATECOLORSPACE;
+
+  typedef struct tagEMRSETCOLORSPACE {
+    EMR emr;
+    DWORD ihCS;
+  } EMRSETCOLORSPACE,*PEMRSETCOLORSPACE,EMRSELECTCOLORSPACE,*PEMRSELECTCOLORSPACE,EMRDELETECOLORSPACE,*PEMRDELETECOLORSPACE;
+
+  typedef struct tagEMREXTESCAPE {
+    EMR emr;
+    INT iEscape;
+    INT cbEscData;
+    BYTE EscData[1];
+  } EMREXTESCAPE,*PEMREXTESCAPE,EMRDRAWESCAPE,*PEMRDRAWESCAPE;
+
+  typedef struct tagEMRNAMEDESCAPE {
+    EMR emr;
+    INT iEscape;
+    INT cbDriver;
+    INT cbEscData;
+    BYTE EscData[1];
+  } EMRNAMEDESCAPE,*PEMRNAMEDESCAPE;
+
+#define SETICMPROFILE_EMBEDED 0x00000001
+
+  typedef struct tagEMRSETICMPROFILE {
+    EMR emr;
+    DWORD dwFlags;
+    DWORD cbName;
+    DWORD cbData;
+    BYTE Data[1];
+  } EMRSETICMPROFILE,*PEMRSETICMPROFILE,EMRSETICMPROFILEA,*PEMRSETICMPROFILEA,EMRSETICMPROFILEW,*PEMRSETICMPROFILEW;
+
+#define CREATECOLORSPACE_EMBEDED 0x00000001
+
+  typedef struct tagEMRCREATECOLORSPACEW {
+    EMR emr;
+    DWORD ihCS;
+    LOGCOLORSPACEW lcs;
+    DWORD dwFlags;
+    DWORD cbData;
+    BYTE Data[1];
+  } EMRCREATECOLORSPACEW,*PEMRCREATECOLORSPACEW;
+
+#define COLORMATCHTOTARGET_EMBEDED 0x00000001
+
+  typedef struct tagCOLORMATCHTOTARGET {
+    EMR emr;
+    DWORD dwAction;
+    DWORD dwFlags;
+    DWORD cbName;
+    DWORD cbData;
+    BYTE Data[1];
+  } EMRCOLORMATCHTOTARGET,*PEMRCOLORMATCHTOTARGET;
+
+  typedef struct tagCOLORCORRECTPALETTE {
+    EMR emr;
+    DWORD ihPalette;
+    DWORD nFirstEntry;
+    DWORD nPalEntries;
+    DWORD nReserved;
+  } EMRCOLORCORRECTPALETTE,*PEMRCOLORCORRECTPALETTE;
+
+  typedef struct tagEMRALPHABLEND {
+    EMR emr;
+    RECTL rclBounds;
+    LONG xDest;
+    LONG yDest;
+    LONG cxDest;
+    LONG cyDest;
+    DWORD dwRop;
+    LONG xSrc;
+    LONG ySrc;
+    XFORM xformSrc;
+    COLORREF crBkColorSrc;
+    DWORD iUsageSrc;
+    DWORD offBmiSrc;
+    DWORD cbBmiSrc;
+    DWORD offBitsSrc;
+    DWORD cbBitsSrc;
+    LONG cxSrc;
+    LONG cySrc;
+  } EMRALPHABLEND,*PEMRALPHABLEND;
+
+  typedef struct tagEMRGRADIENTFILL {
+    EMR emr;
+    RECTL rclBounds;
+    DWORD nVer;
+    DWORD nTri;
+    ULONG ulMode;
+    TRIVERTEX Ver[1];
+  } EMRGRADIENTFILL,*PEMRGRADIENTFILL;
+
+  typedef struct tagEMRTRANSPARENTBLT {
+    EMR emr;
+    RECTL rclBounds;
+    LONG xDest;
+    LONG yDest;
+    LONG cxDest;
+    LONG cyDest;
+    DWORD dwRop;
+    LONG xSrc;
+    LONG ySrc;
+    XFORM xformSrc;
+    COLORREF crBkColorSrc;
+    DWORD iUsageSrc;
+    DWORD offBmiSrc;
+    DWORD cbBmiSrc;
+    DWORD offBitsSrc;
+    DWORD cbBitsSrc;
+    LONG cxSrc;
+    LONG cySrc;
+  } EMRTRANSPARENTBLT,*PEMRTRANSPARENTBLT;
+
+#define GDICOMMENT_IDENTIFIER 0x43494447
+#define GDICOMMENT_WINDOWS_METAFILE 0x80000001
+#define GDICOMMENT_BEGINGROUP 0x00000002
+#define GDICOMMENT_ENDGROUP 0x00000003
+#define GDICOMMENT_MULTIFORMATS 0x40000004
+#define EPS_SIGNATURE 0x46535045
+#define GDICOMMENT_UNICODE_STRING 0x00000040
+#define GDICOMMENT_UNICODE_END 0x00000080
+#endif
+
+#ifdef UNICODE
+#define wglUseFontBitmaps wglUseFontBitmapsW
+#else
+#define wglUseFontBitmaps wglUseFontBitmapsA
+#endif
+
+  WINGDIAPI WINBOOL WINAPI wglCopyContext(HGLRC,HGLRC,UINT);
+  WINGDIAPI HGLRC WINAPI wglCreateContext(HDC);
+  WINGDIAPI HGLRC WINAPI wglCreateLayerContext(HDC,int);
+  WINGDIAPI WINBOOL WINAPI wglDeleteContext(HGLRC);
+  WINGDIAPI HGLRC WINAPI wglGetCurrentContext(VOID);
+  WINGDIAPI HDC WINAPI wglGetCurrentDC(VOID);
+  WINGDIAPI PROC WINAPI wglGetProcAddress(LPCSTR);
+  WINGDIAPI WINBOOL WINAPI wglMakeCurrent(HDC,HGLRC);
+  WINGDIAPI WINBOOL WINAPI wglShareLists(HGLRC,HGLRC);
+  WINGDIAPI WINBOOL WINAPI wglUseFontBitmapsA(HDC,DWORD,DWORD,DWORD);
+  WINGDIAPI WINBOOL WINAPI wglUseFontBitmapsW(HDC,DWORD,DWORD,DWORD);
+  WINGDIAPI WINBOOL WINAPI SwapBuffers(HDC);
+
+  typedef struct _POINTFLOAT {
+    FLOAT x;
+    FLOAT y;
+  } POINTFLOAT,*PPOINTFLOAT;
+
+  typedef struct _GLYPHMETRICSFLOAT {
+    FLOAT gmfBlackBoxX;
+    FLOAT gmfBlackBoxY;
+    POINTFLOAT gmfptGlyphOrigin;
+    FLOAT gmfCellIncX;
+    FLOAT gmfCellIncY;
+  } GLYPHMETRICSFLOAT,*PGLYPHMETRICSFLOAT,*LPGLYPHMETRICSFLOAT;
+
+#define WGL_FONT_LINES 0
+#define WGL_FONT_POLYGONS 1
+
+#ifdef UNICODE
+#define wglUseFontOutlines wglUseFontOutlinesW
+#else
+#define wglUseFontOutlines wglUseFontOutlinesA
+#endif
+
+  WINGDIAPI WINBOOL WINAPI wglUseFontOutlinesA(HDC,DWORD,DWORD,DWORD,FLOAT,FLOAT,int,LPGLYPHMETRICSFLOAT);
+  WINGDIAPI WINBOOL WINAPI wglUseFontOutlinesW(HDC,DWORD,DWORD,DWORD,FLOAT,FLOAT,int,LPGLYPHMETRICSFLOAT);
+
+  typedef struct tagLAYERPLANEDESCRIPTOR {
+    WORD nSize;
+    WORD nVersion;
+    DWORD dwFlags;
+    BYTE iPixelType;
+    BYTE cColorBits;
+    BYTE cRedBits;
+    BYTE cRedShift;
+    BYTE cGreenBits;
+    BYTE cGreenShift;
+    BYTE cBlueBits;
+    BYTE cBlueShift;
+    BYTE cAlphaBits;
+    BYTE cAlphaShift;
+    BYTE cAccumBits;
+    BYTE cAccumRedBits;
+    BYTE cAccumGreenBits;
+    BYTE cAccumBlueBits;
+    BYTE cAccumAlphaBits;
+    BYTE cDepthBits;
+    BYTE cStencilBits;
+    BYTE cAuxBuffers;
+    BYTE iLayerPlane;
+    BYTE bReserved;
+    COLORREF crTransparent;
+  } LAYERPLANEDESCRIPTOR,*PLAYERPLANEDESCRIPTOR,*LPLAYERPLANEDESCRIPTOR;
+
+#define LPD_DOUBLEBUFFER 0x00000001
+#define LPD_STEREO 0x00000002
+#define LPD_SUPPORT_GDI 0x00000010
+#define LPD_SUPPORT_OPENGL 0x00000020
+#define LPD_SHARE_DEPTH 0x00000040
+#define LPD_SHARE_STENCIL 0x00000080
+#define LPD_SHARE_ACCUM 0x00000100
+#define LPD_SWAP_EXCHANGE 0x00000200
+#define LPD_SWAP_COPY 0x00000400
+#define LPD_TRANSPARENT 0x00001000
+
+#define LPD_TYPE_RGBA 0
+#define LPD_TYPE_COLORINDEX 1
+
+#define WGL_SWAP_MAIN_PLANE 0x00000001
+#define WGL_SWAP_OVERLAY1 0x00000002
+#define WGL_SWAP_OVERLAY2 0x00000004
+#define WGL_SWAP_OVERLAY3 0x00000008
+#define WGL_SWAP_OVERLAY4 0x00000010
+#define WGL_SWAP_OVERLAY5 0x00000020
+#define WGL_SWAP_OVERLAY6 0x00000040
+#define WGL_SWAP_OVERLAY7 0x00000080
+#define WGL_SWAP_OVERLAY8 0x00000100
+#define WGL_SWAP_OVERLAY9 0x00000200
+#define WGL_SWAP_OVERLAY10 0x00000400
+#define WGL_SWAP_OVERLAY11 0x00000800
+#define WGL_SWAP_OVERLAY12 0x00001000
+#define WGL_SWAP_OVERLAY13 0x00002000
+#define WGL_SWAP_OVERLAY14 0x00004000
+#define WGL_SWAP_OVERLAY15 0x00008000
+#define WGL_SWAP_UNDERLAY1 0x00010000
+#define WGL_SWAP_UNDERLAY2 0x00020000
+#define WGL_SWAP_UNDERLAY3 0x00040000
+#define WGL_SWAP_UNDERLAY4 0x00080000
+#define WGL_SWAP_UNDERLAY5 0x00100000
+#define WGL_SWAP_UNDERLAY6 0x00200000
+#define WGL_SWAP_UNDERLAY7 0x00400000
+#define WGL_SWAP_UNDERLAY8 0x00800000
+#define WGL_SWAP_UNDERLAY9 0x01000000
+#define WGL_SWAP_UNDERLAY10 0x02000000
+#define WGL_SWAP_UNDERLAY11 0x04000000
+#define WGL_SWAP_UNDERLAY12 0x08000000
+#define WGL_SWAP_UNDERLAY13 0x10000000
+#define WGL_SWAP_UNDERLAY14 0x20000000
+#define WGL_SWAP_UNDERLAY15 0x40000000
+
+  WINGDIAPI WINBOOL WINAPI wglDescribeLayerPlane(HDC,int,int,UINT,LPLAYERPLANEDESCRIPTOR);
+  WINGDIAPI int WINAPI wglSetLayerPaletteEntries(HDC,int,int,int,CONST COLORREF *);
+  WINGDIAPI int WINAPI wglGetLayerPaletteEntries(HDC,int,int,int,COLORREF *);
+  WINGDIAPI WINBOOL WINAPI wglRealizeLayerPalette(HDC,int,WINBOOL);
+  WINGDIAPI WINBOOL WINAPI wglSwapLayerBuffers(HDC,UINT);
+
+  typedef struct _WGLSWAP {
+    HDC hdc;
+    UINT uiFlags;
+  } WGLSWAP,*PWGLSWAP,*LPWGLSWAP;
+
+#define WGL_SWAPMULTIPLE_MAX 16
+
+  WINGDIAPI DWORD WINAPI wglSwapMultipleBuffers(UINT,CONST WGLSWAP *);
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+#endif
