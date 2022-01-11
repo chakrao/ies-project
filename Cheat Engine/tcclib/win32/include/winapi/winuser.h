@@ -876,4 +876,208 @@ extern "C" {
 #else
   typedef WNDCLASSA WNDCLASS;
   typedef PWNDCLASSA PWNDCLASS;
-  typedef NPWNDCLASSA NPWNDCLAS
+  typedef NPWNDCLASSA NPWNDCLASS;
+  typedef LPWNDCLASSA LPWNDCLASS;
+#endif
+
+  WINUSERAPI WINBOOL WINAPI IsHungAppWindow(HWND hwnd);
+  WINUSERAPI VOID WINAPI DisableProcessWindowsGhosting(VOID);
+
+#ifndef NOMSG
+  typedef struct tagMSG {
+    HWND hwnd;
+    UINT message;
+    WPARAM wParam;
+    LPARAM lParam;
+    DWORD time;
+    POINT pt;
+  } MSG,*PMSG,*NPMSG,*LPMSG;
+
+#define POINTSTOPOINT(pt,pts) { (pt).x = (LONG)(SHORT)LOWORD(*(LONG*)&pts); (pt).y = (LONG)(SHORT)HIWORD(*(LONG*)&pts); }
+
+#define POINTTOPOINTS(pt) (MAKELONG((short)((pt).x),(short)((pt).y)))
+#define MAKEWPARAM(l,h) ((WPARAM)(DWORD)MAKELONG(l,h))
+#define MAKELPARAM(l,h) ((LPARAM)(DWORD)MAKELONG(l,h))
+#define MAKELRESULT(l,h) ((LRESULT)(DWORD)MAKELONG(l,h))
+#endif
+
+#ifndef NOWINOFFSETS
+#define GWL_WNDPROC (-4)
+#define GWL_HINSTANCE (-6)
+#define GWL_HWNDPARENT (-8)
+#define GWL_STYLE (-16)
+#define GWL_EXSTYLE (-20)
+#define GWL_USERDATA (-21)
+#define GWL_ID (-12)
+
+#ifdef _WIN64
+#undef GWL_WNDPROC
+#undef GWL_HINSTANCE
+#undef GWL_HWNDPARENT
+#undef GWL_USERDATA
+#endif
+
+#define GWLP_WNDPROC (-4)
+#define GWLP_HINSTANCE (-6)
+#define GWLP_HWNDPARENT (-8)
+#define GWLP_USERDATA (-21)
+#define GWLP_ID (-12)
+
+#define GCL_MENUNAME (-8)
+#define GCL_HBRBACKGROUND (-10)
+#define GCL_HCURSOR (-12)
+#define GCL_HICON (-14)
+#define GCL_HMODULE (-16)
+#define GCL_CBWNDEXTRA (-18)
+#define GCL_CBCLSEXTRA (-20)
+#define GCL_WNDPROC (-24)
+#define GCL_STYLE (-26)
+#define GCW_ATOM (-32)
+#define GCL_HICONSM (-34)
+
+#ifdef _WIN64
+
+#undef GCL_MENUNAME
+#undef GCL_HBRBACKGROUND
+#undef GCL_HCURSOR
+#undef GCL_HICON
+#undef GCL_HMODULE
+#undef GCL_WNDPROC
+#undef GCL_HICONSM
+#endif
+
+#define GCLP_MENUNAME (-8)
+#define GCLP_HBRBACKGROUND (-10)
+#define GCLP_HCURSOR (-12)
+#define GCLP_HICON (-14)
+#define GCLP_HMODULE (-16)
+#define GCLP_WNDPROC (-24)
+#define GCLP_HICONSM (-34)
+#endif
+
+#ifndef NOWINMESSAGES
+
+#define WM_NULL 0x0000
+#define WM_CREATE 0x0001
+#define WM_DESTROY 0x0002
+#define WM_MOVE 0x0003
+#define WM_SIZE 0x0005
+
+#define WM_ACTIVATE 0x0006
+
+#define WA_INACTIVE 0
+#define WA_ACTIVE 1
+#define WA_CLICKACTIVE 2
+
+#define WM_SETFOCUS 0x0007
+#define WM_KILLFOCUS 0x0008
+#define WM_ENABLE 0x000A
+#define WM_SETREDRAW 0x000B
+#define WM_SETTEXT 0x000C
+#define WM_GETTEXT 0x000D
+#define WM_GETTEXTLENGTH 0x000E
+#define WM_PAINT 0x000F
+#define WM_CLOSE 0x0010
+#ifndef _WIN32_WCE
+#define WM_QUERYENDSESSION 0x0011
+#define WM_QUERYOPEN 0x0013
+#define WM_ENDSESSION 0x0016
+#endif
+#define WM_QUIT 0x0012
+#define WM_ERASEBKGND 0x0014
+#define WM_SYSCOLORCHANGE 0x0015
+#define WM_SHOWWINDOW 0x0018
+#define WM_WININICHANGE 0x001A
+#define WM_SETTINGCHANGE WM_WININICHANGE
+#define WM_DEVMODECHANGE 0x001B
+#define WM_ACTIVATEAPP 0x001C
+#define WM_FONTCHANGE 0x001D
+#define WM_TIMECHANGE 0x001E
+#define WM_CANCELMODE 0x001F
+#define WM_SETCURSOR 0x0020
+#define WM_MOUSEACTIVATE 0x0021
+#define WM_CHILDACTIVATE 0x0022
+#define WM_QUEUESYNC 0x0023
+
+#define WM_GETMINMAXINFO 0x0024
+
+  typedef struct tagMINMAXINFO {
+    POINT ptReserved;
+    POINT ptMaxSize;
+    POINT ptMaxPosition;
+    POINT ptMinTrackSize;
+    POINT ptMaxTrackSize;
+  } MINMAXINFO,*PMINMAXINFO,*LPMINMAXINFO;
+
+#define WM_PAINTICON 0x0026
+#define WM_ICONERASEBKGND 0x0027
+#define WM_NEXTDLGCTL 0x0028
+#define WM_SPOOLERSTATUS 0x002A
+#define WM_DRAWITEM 0x002B
+#define WM_MEASUREITEM 0x002C
+#define WM_DELETEITEM 0x002D
+#define WM_VKEYTOITEM 0x002E
+#define WM_CHARTOITEM 0x002F
+#define WM_SETFONT 0x0030
+#define WM_GETFONT 0x0031
+#define WM_SETHOTKEY 0x0032
+#define WM_GETHOTKEY 0x0033
+#define WM_QUERYDRAGICON 0x0037
+#define WM_COMPAREITEM 0x0039
+#ifndef _WIN32_WCE
+#define WM_GETOBJECT 0x003D
+#endif
+#define WM_COMPACTING 0x0041
+#define WM_COMMNOTIFY 0x0044
+#define WM_WINDOWPOSCHANGING 0x0046
+#define WM_WINDOWPOSCHANGED 0x0047
+
+#define WM_POWER 0x0048
+
+#define PWR_OK 1
+#define PWR_FAIL (-1)
+#define PWR_SUSPENDREQUEST 1
+#define PWR_SUSPENDRESUME 2
+#define PWR_CRITICALRESUME 3
+
+#define WM_COPYDATA 0x004A
+#define WM_CANCELJOURNAL 0x004B
+
+  typedef struct tagCOPYDATASTRUCT {
+    ULONG_PTR dwData;
+    DWORD cbData;
+    PVOID lpData;
+  } COPYDATASTRUCT,*PCOPYDATASTRUCT;
+
+  typedef struct tagMDINEXTMENU {
+    HMENU hmenuIn;
+    HMENU hmenuNext;
+    HWND hwndNext;
+  } MDINEXTMENU,*PMDINEXTMENU,*LPMDINEXTMENU;
+
+#define WM_NOTIFY 0x004E
+#define WM_INPUTLANGCHANGEREQUEST 0x0050
+#define WM_INPUTLANGCHANGE 0x0051
+#define WM_TCARD 0x0052
+#define WM_HELP 0x0053
+#define WM_USERCHANGED 0x0054
+#define WM_NOTIFYFORMAT 0x0055
+
+#define NFR_ANSI 1
+#define NFR_UNICODE 2
+#define NF_QUERY 3
+#define NF_REQUERY 4
+
+#define WM_CONTEXTMENU 0x007B
+#define WM_STYLECHANGING 0x007C
+#define WM_STYLECHANGED 0x007D
+#define WM_DISPLAYCHANGE 0x007E
+#define WM_GETICON 0x007F
+#define WM_SETICON 0x0080
+
+#define WM_NCCREATE 0x0081
+#define WM_NCDESTROY 0x0082
+#define WM_NCCALCSIZE 0x0083
+#define WM_NCHITTEST 0x0084
+#define WM_NCPAINT 0x0085
+#define W
