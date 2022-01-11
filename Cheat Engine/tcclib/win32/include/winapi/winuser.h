@@ -740,4 +740,140 @@ extern "C" {
 #define WINSTA_CREATEDESKTOP 0x0008L
 #define WINSTA_WRITEATTRIBUTES 0x0010L
 #define WINSTA_ACCESSGLOBALATOMS 0x0020L
-#define WINSTA_EXIT
+#define WINSTA_EXITWINDOWS 0x0040L
+#define WINSTA_ENUMERATE 0x0100L
+#define WINSTA_READSCREEN 0x0200L
+#define WINSTA_ALL_ACCESS (WINSTA_ENUMDESKTOPS | WINSTA_READATTRIBUTES | WINSTA_ACCESSCLIPBOARD | WINSTA_CREATEDESKTOP | WINSTA_WRITEATTRIBUTES | WINSTA_ACCESSGLOBALATOMS | WINSTA_EXITWINDOWS | WINSTA_ENUMERATE | WINSTA_READSCREEN)
+
+#define CWF_CREATE_ONLY 0x0001L
+
+#define WSF_VISIBLE 0x0001L
+
+#ifdef UNICODE
+#define CreateWindowStation CreateWindowStationW
+#define OpenWindowStation OpenWindowStationW
+#define EnumWindowStations EnumWindowStationsW
+#else
+#define CreateWindowStation CreateWindowStationA
+#define OpenWindowStation OpenWindowStationA
+#define EnumWindowStations EnumWindowStationsA
+#endif
+
+  WINUSERAPI HWINSTA WINAPI CreateWindowStationA(LPCSTR lpwinsta,DWORD dwFlags,ACCESS_MASK dwDesiredAccess,LPSECURITY_ATTRIBUTES lpsa);
+  WINUSERAPI HWINSTA WINAPI CreateWindowStationW(LPCWSTR lpwinsta,DWORD dwFlags,ACCESS_MASK dwDesiredAccess,LPSECURITY_ATTRIBUTES lpsa);
+  WINUSERAPI HWINSTA WINAPI OpenWindowStationA(LPCSTR lpszWinSta,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI HWINSTA WINAPI OpenWindowStationW(LPCWSTR lpszWinSta,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI WINBOOL WINAPI EnumWindowStationsA(WINSTAENUMPROCA lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI EnumWindowStationsW(WINSTAENUMPROCW lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI CloseWindowStation(HWINSTA hWinSta);
+  WINUSERAPI WINBOOL WINAPI SetProcessWindowStation(HWINSTA hWinSta);
+  WINUSERAPI HWINSTA WINAPI GetProcessWindowStation(VOID);
+#endif
+
+#ifndef NOSECURITY
+  WINUSERAPI WINBOOL WINAPI SetUserObjectSecurity(HANDLE hObj,PSECURITY_INFORMATION pSIRequested,PSECURITY_DESCRIPTOR pSID);
+  WINUSERAPI WINBOOL WINAPI GetUserObjectSecurity(HANDLE hObj,PSECURITY_INFORMATION pSIRequested,PSECURITY_DESCRIPTOR pSID,DWORD nLength,LPDWORD lpnLengthNeeded);
+
+#define UOI_FLAGS 1
+#define UOI_NAME 2
+#define UOI_TYPE 3
+#define UOI_USER_SID 4
+
+  typedef struct tagUSEROBJECTFLAGS {
+    WINBOOL fInherit;
+    WINBOOL fReserved;
+    DWORD dwFlags;
+  } USEROBJECTFLAGS,*PUSEROBJECTFLAGS;
+
+#ifdef UNICODE
+#define GetUserObjectInformation GetUserObjectInformationW
+#define SetUserObjectInformation SetUserObjectInformationW
+#else
+#define GetUserObjectInformation GetUserObjectInformationA
+#define SetUserObjectInformation SetUserObjectInformationA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetUserObjectInformationA(HANDLE hObj,int nIndex,PVOID pvInfo,DWORD nLength,LPDWORD lpnLengthNeeded);
+  WINUSERAPI WINBOOL WINAPI GetUserObjectInformationW(HANDLE hObj,int nIndex,PVOID pvInfo,DWORD nLength,LPDWORD lpnLengthNeeded);
+  WINUSERAPI WINBOOL WINAPI SetUserObjectInformationA(HANDLE hObj,int nIndex,PVOID pvInfo,DWORD nLength);
+  WINUSERAPI WINBOOL WINAPI SetUserObjectInformationW(HANDLE hObj,int nIndex,PVOID pvInfo,DWORD nLength);
+#endif
+
+  typedef struct tagWNDCLASSEXA {
+    UINT cbSize;
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCSTR lpszMenuName;
+    LPCSTR lpszClassName;
+    HICON hIconSm;
+  } WNDCLASSEXA,*PWNDCLASSEXA,*NPWNDCLASSEXA,*LPWNDCLASSEXA;
+
+  typedef struct tagWNDCLASSEXW {
+    UINT cbSize;
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCWSTR lpszMenuName;
+    LPCWSTR lpszClassName;
+
+    HICON hIconSm;
+  } WNDCLASSEXW,*PWNDCLASSEXW,*NPWNDCLASSEXW,*LPWNDCLASSEXW;
+
+#ifdef UNICODE
+  typedef WNDCLASSEXW WNDCLASSEX;
+  typedef PWNDCLASSEXW PWNDCLASSEX;
+  typedef NPWNDCLASSEXW NPWNDCLASSEX;
+  typedef LPWNDCLASSEXW LPWNDCLASSEX;
+#else
+  typedef WNDCLASSEXA WNDCLASSEX;
+  typedef PWNDCLASSEXA PWNDCLASSEX;
+  typedef NPWNDCLASSEXA NPWNDCLASSEX;
+  typedef LPWNDCLASSEXA LPWNDCLASSEX;
+#endif
+
+  typedef struct tagWNDCLASSA {
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCSTR lpszMenuName;
+    LPCSTR lpszClassName;
+  } WNDCLASSA,*PWNDCLASSA,*NPWNDCLASSA,*LPWNDCLASSA;
+
+  typedef struct tagWNDCLASSW {
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCWSTR lpszMenuName;
+    LPCWSTR lpszClassName;
+  } WNDCLASSW,*PWNDCLASSW,*NPWNDCLASSW,*LPWNDCLASSW;
+
+#ifdef UNICODE
+  typedef WNDCLASSW WNDCLASS;
+  typedef PWNDCLASSW PWNDCLASS;
+  typedef NPWNDCLASSW NPWNDCLASS;
+  typedef LPWNDCLASSW LPWNDCLASS;
+#else
+  typedef WNDCLASSA WNDCLASS;
+  typedef PWNDCLASSA PWNDCLASS;
+  typedef NPWNDCLASSA NPWNDCLAS
