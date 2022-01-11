@@ -610,4 +610,134 @@ extern "C" {
     LPARAM lParam;
     WPARAM wParam;
     int code;
-  } DEBUGHOOKINFO,*PDEBUGHOOKINFO,*NPDEBUGHOOKINF
+  } DEBUGHOOKINFO,*PDEBUGHOOKINFO,*NPDEBUGHOOKINFO,*LPDEBUGHOOKINFO;
+
+  typedef struct tagMOUSEHOOKSTRUCT {
+    POINT pt;
+    HWND hwnd;
+    UINT wHitTestCode;
+    ULONG_PTR dwExtraInfo;
+  } MOUSEHOOKSTRUCT,*LPMOUSEHOOKSTRUCT,*PMOUSEHOOKSTRUCT;
+
+#ifdef __cplusplus
+  typedef struct tagMOUSEHOOKSTRUCTEX : public tagMOUSEHOOKSTRUCT {
+    DWORD mouseData;
+  } MOUSEHOOKSTRUCTEX,*LPMOUSEHOOKSTRUCTEX,*PMOUSEHOOKSTRUCTEX;
+#else
+  typedef struct tagMOUSEHOOKSTRUCTEX {
+    MOUSEHOOKSTRUCT _unnamed;
+    DWORD mouseData;
+  } MOUSEHOOKSTRUCTEX,*LPMOUSEHOOKSTRUCTEX,*PMOUSEHOOKSTRUCTEX;
+#endif
+
+  typedef struct tagHARDWAREHOOKSTRUCT {
+    HWND hwnd;
+    UINT message;
+    WPARAM wParam;
+    LPARAM lParam;
+  } HARDWAREHOOKSTRUCT,*LPHARDWAREHOOKSTRUCT,*PHARDWAREHOOKSTRUCT;
+#endif
+
+#define HKL_PREV 0
+#define HKL_NEXT 1
+
+#define KLF_ACTIVATE 0x00000001
+#define KLF_SUBSTITUTE_OK 0x00000002
+#define KLF_REORDER 0x00000008
+#define KLF_REPLACELANG 0x00000010
+#define KLF_NOTELLSHELL 0x00000080
+#define KLF_SETFORPROCESS 0x00000100
+#define KLF_SHIFTLOCK 0x00010000
+#define KLF_RESET 0x40000000
+
+#define INPUTLANGCHANGE_SYSCHARSET 0x0001
+#define INPUTLANGCHANGE_FORWARD 0x0002
+#define INPUTLANGCHANGE_BACKWARD 0x0004
+
+#define KL_NAMELENGTH 9
+
+#ifdef UNICODE
+#define LoadKeyboardLayout LoadKeyboardLayoutW
+#define GetKeyboardLayoutName GetKeyboardLayoutNameW
+#else
+#define LoadKeyboardLayout LoadKeyboardLayoutA
+#define GetKeyboardLayoutName GetKeyboardLayoutNameA
+#endif
+
+  WINUSERAPI HKL WINAPI LoadKeyboardLayoutA(LPCSTR pwszKLID,UINT Flags);
+  WINUSERAPI HKL WINAPI LoadKeyboardLayoutW(LPCWSTR pwszKLID,UINT Flags);
+  WINUSERAPI HKL WINAPI ActivateKeyboardLayout(HKL hkl,UINT Flags);
+  WINUSERAPI int WINAPI ToUnicodeEx(UINT wVirtKey,UINT wScanCode,CONST BYTE *lpKeyState,LPWSTR pwszBuff,int cchBuff,UINT wFlags,HKL dwhkl);
+  WINUSERAPI WINBOOL WINAPI UnloadKeyboardLayout(HKL hkl);
+  WINUSERAPI WINBOOL WINAPI GetKeyboardLayoutNameA(LPSTR pwszKLID);
+  WINUSERAPI WINBOOL WINAPI GetKeyboardLayoutNameW(LPWSTR pwszKLID);
+  WINUSERAPI int WINAPI GetKeyboardLayoutList(int nBuff,HKL *lpList);
+  WINUSERAPI HKL WINAPI GetKeyboardLayout(DWORD idThread);
+
+  typedef struct tagMOUSEMOVEPOINT {
+    int x;
+    int y;
+    DWORD time;
+    ULONG_PTR dwExtraInfo;
+  } MOUSEMOVEPOINT,*PMOUSEMOVEPOINT,*LPMOUSEMOVEPOINT;
+
+#define GMMP_USE_DISPLAY_POINTS 1
+#define GMMP_USE_HIGH_RESOLUTION_POINTS 2
+
+  WINUSERAPI int WINAPI GetMouseMovePointsEx(UINT cbSize,LPMOUSEMOVEPOINT lppt,LPMOUSEMOVEPOINT lpptBuf,int nBufPoints,DWORD resolution);
+
+#ifndef NODESKTOP
+
+#define DESKTOP_READOBJECTS 0x0001L
+#define DESKTOP_CREATEWINDOW 0x0002L
+#define DESKTOP_CREATEMENU 0x0004L
+#define DESKTOP_HOOKCONTROL 0x0008L
+#define DESKTOP_JOURNALRECORD 0x0010L
+#define DESKTOP_JOURNALPLAYBACK 0x0020L
+#define DESKTOP_ENUMERATE 0x0040L
+#define DESKTOP_WRITEOBJECTS 0x0080L
+#define DESKTOP_SWITCHDESKTOP 0x0100L
+
+#define DF_ALLOWOTHERACCOUNTHOOK 0x0001L
+
+#ifdef _WINGDI_
+#ifndef NOGDI
+#ifdef UNICODE
+#define CreateDesktop CreateDesktopW
+#else
+#define CreateDesktop CreateDesktopA
+#endif
+
+  WINUSERAPI HDESK WINAPI CreateDesktopA(LPCSTR lpszDesktop,LPCSTR lpszDevice,LPDEVMODEA pDevmode,DWORD dwFlags,ACCESS_MASK dwDesiredAccess,LPSECURITY_ATTRIBUTES lpsa);
+  WINUSERAPI HDESK WINAPI CreateDesktopW(LPCWSTR lpszDesktop,LPCWSTR lpszDevice,LPDEVMODEW pDevmode,DWORD dwFlags,ACCESS_MASK dwDesiredAccess,LPSECURITY_ATTRIBUTES lpsa);
+#endif
+#endif
+
+#ifdef UNICODE
+#define OpenDesktop OpenDesktopW
+#define EnumDesktops EnumDesktopsW
+#else
+#define OpenDesktop OpenDesktopA
+#define EnumDesktops EnumDesktopsA
+#endif
+
+  WINUSERAPI HDESK WINAPI OpenDesktopA(LPCSTR lpszDesktop,DWORD dwFlags,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI HDESK WINAPI OpenDesktopW(LPCWSTR lpszDesktop,DWORD dwFlags,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI HDESK WINAPI OpenInputDesktop(DWORD dwFlags,WINBOOL fInherit,ACCESS_MASK dwDesiredAccess);
+  WINUSERAPI WINBOOL WINAPI EnumDesktopsA(HWINSTA hwinsta,DESKTOPENUMPROCA lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI EnumDesktopsW(HWINSTA hwinsta,DESKTOPENUMPROCW lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI EnumDesktopWindows(HDESK hDesktop,WNDENUMPROC lpfn,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI SwitchDesktop(HDESK hDesktop);
+  WINUSERAPI WINBOOL WINAPI SetThreadDesktop(HDESK hDesktop);
+  WINUSERAPI WINBOOL WINAPI CloseDesktop(HDESK hDesktop);
+  WINUSERAPI HDESK WINAPI GetThreadDesktop(DWORD dwThreadId);
+#endif
+
+#ifndef NOWINDOWSTATION
+#define WINSTA_ENUMDESKTOPS 0x0001L
+#define WINSTA_READATTRIBUTES 0x0002L
+#define WINSTA_ACCESSCLIPBOARD 0x0004L
+#define WINSTA_CREATEDESKTOP 0x0008L
+#define WINSTA_WRITEATTRIBUTES 0x0010L
+#define WINSTA_ACCESSGLOBALATOMS 0x0020L
+#define WINSTA_EXIT
