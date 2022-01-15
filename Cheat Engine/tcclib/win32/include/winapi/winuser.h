@@ -1606,4 +1606,201 @@ extern "C" {
 #define CF_BITMAP 2
 #define CF_METAFILEPICT 3
 #define CF_SYLK 4
-#define 
+#define CF_DIF 5
+#define CF_TIFF 6
+#define CF_OEMTEXT 7
+#define CF_DIB 8
+#define CF_PALETTE 9
+#define CF_PENDATA 10
+#define CF_RIFF 11
+#define CF_WAVE 12
+#define CF_UNICODETEXT 13
+#define CF_ENHMETAFILE 14
+#define CF_HDROP 15
+#define CF_LOCALE 16
+#define CF_DIBV5 17
+#define CF_MAX 18
+
+#define CF_OWNERDISPLAY 0x0080
+#define CF_DSPTEXT 0x0081
+#define CF_DSPBITMAP 0x0082
+#define CF_DSPMETAFILEPICT 0x0083
+#define CF_DSPENHMETAFILE 0x008E
+
+#define CF_PRIVATEFIRST 0x0200
+#define CF_PRIVATELAST 0x02FF
+
+#define CF_GDIOBJFIRST 0x0300
+#define CF_GDIOBJLAST 0x03FF
+#endif
+
+#define FVIRTKEY TRUE
+#define FNOINVERT 0x02
+#define FSHIFT 0x04
+#define FCONTROL 0x08
+#define FALT 0x10
+
+  typedef struct tagACCEL {
+    BYTE fVirt;
+    WORD key;
+    WORD cmd;
+  } ACCEL,*LPACCEL;
+
+  typedef struct tagPAINTSTRUCT {
+    HDC hdc;
+    WINBOOL fErase;
+    RECT rcPaint;
+    WINBOOL fRestore;
+    WINBOOL fIncUpdate;
+    BYTE rgbReserved[32];
+  } PAINTSTRUCT,*PPAINTSTRUCT,*NPPAINTSTRUCT,*LPPAINTSTRUCT;
+
+  typedef struct tagCREATESTRUCTA {
+    LPVOID lpCreateParams;
+    HINSTANCE hInstance;
+    HMENU hMenu;
+    HWND hwndParent;
+    int cy;
+    int cx;
+    int y;
+    int x;
+    LONG style;
+    LPCSTR lpszName;
+    LPCSTR lpszClass;
+    DWORD dwExStyle;
+  } CREATESTRUCTA,*LPCREATESTRUCTA;
+
+  typedef struct tagCREATESTRUCTW {
+    LPVOID lpCreateParams;
+    HINSTANCE hInstance;
+    HMENU hMenu;
+    HWND hwndParent;
+    int cy;
+    int cx;
+    int y;
+    int x;
+    LONG style;
+    LPCWSTR lpszName;
+    LPCWSTR lpszClass;
+    DWORD dwExStyle;
+  } CREATESTRUCTW,*LPCREATESTRUCTW;
+
+#ifdef UNICODE
+  typedef CREATESTRUCTW CREATESTRUCT;
+  typedef LPCREATESTRUCTW LPCREATESTRUCT;
+#else
+  typedef CREATESTRUCTA CREATESTRUCT;
+  typedef LPCREATESTRUCTA LPCREATESTRUCT;
+#endif
+
+  typedef struct tagWINDOWPLACEMENT {
+    UINT length;
+    UINT flags;
+    UINT showCmd;
+    POINT ptMinPosition;
+    POINT ptMaxPosition;
+    RECT rcNormalPosition;
+  } WINDOWPLACEMENT;
+  typedef WINDOWPLACEMENT *PWINDOWPLACEMENT,*LPWINDOWPLACEMENT;
+
+#define WPF_SETMINPOSITION 0x0001
+#define WPF_RESTORETOMAXIMIZED 0x0002
+#define WPF_ASYNCWINDOWPLACEMENT 0x0004
+
+  typedef struct tagNMHDR {
+    HWND hwndFrom;
+    UINT_PTR idFrom;
+    UINT code;
+  } NMHDR;
+
+  typedef NMHDR *LPNMHDR;
+
+  typedef struct tagSTYLESTRUCT {
+    DWORD styleOld;
+    DWORD styleNew;
+  } STYLESTRUCT,*LPSTYLESTRUCT;
+
+#define ODT_MENU 1
+#define ODT_LISTBOX 2
+#define ODT_COMBOBOX 3
+#define ODT_BUTTON 4
+#define ODT_STATIC 5
+
+#define ODA_DRAWENTIRE 0x0001
+#define ODA_SELECT 0x0002
+#define ODA_FOCUS 0x0004
+
+#define ODS_SELECTED 0x0001
+#define ODS_GRAYED 0x0002
+#define ODS_DISABLED 0x0004
+#define ODS_CHECKED 0x0008
+#define ODS_FOCUS 0x0010
+#define ODS_DEFAULT 0x0020
+#define ODS_COMBOBOXEDIT 0x1000
+#define ODS_HOTLIGHT 0x0040
+#define ODS_INACTIVE 0x0080
+#define ODS_NOACCEL 0x0100
+#define ODS_NOFOCUSRECT 0x0200
+
+  typedef struct tagMEASUREITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    UINT itemID;
+    UINT itemWidth;
+    UINT itemHeight;
+    ULONG_PTR itemData;
+  } MEASUREITEMSTRUCT,*PMEASUREITEMSTRUCT,*LPMEASUREITEMSTRUCT;
+
+  typedef struct tagDRAWITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    UINT itemID;
+    UINT itemAction;
+    UINT itemState;
+    HWND hwndItem;
+    HDC hDC;
+    RECT rcItem;
+    ULONG_PTR itemData;
+  } DRAWITEMSTRUCT,*PDRAWITEMSTRUCT,*LPDRAWITEMSTRUCT;
+
+  typedef struct tagDELETEITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    UINT itemID;
+    HWND hwndItem;
+    ULONG_PTR itemData;
+  } DELETEITEMSTRUCT,*PDELETEITEMSTRUCT,*LPDELETEITEMSTRUCT;
+
+  typedef struct tagCOMPAREITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    HWND hwndItem;
+    UINT itemID1;
+    ULONG_PTR itemData1;
+    UINT itemID2;
+    ULONG_PTR itemData2;
+    DWORD dwLocaleId;
+  } COMPAREITEMSTRUCT,*PCOMPAREITEMSTRUCT,*LPCOMPAREITEMSTRUCT;
+
+#ifndef NOMSG
+#ifdef UNICODE
+#define GetMessage GetMessageW
+#define DispatchMessage DispatchMessageW
+#define PeekMessage PeekMessageW
+#else
+#define GetMessage GetMessageA
+#define DispatchMessage DispatchMessageA
+#define PeekMessage PeekMessageA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax);
+  WINUSERAPI WINBOOL WINAPI GetMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax);
+  WINUSERAPI WINBOOL WINAPI TranslateMessage(CONST MSG *lpMsg);
+  WINUSERAPI LRESULT WINAPI DispatchMessageA(CONST MSG *lpMsg);
+  WINUSERAPI LRESULT WINAPI DispatchMessageW(CONST MSG *lpMsg);
+  WINUSERAPI WINBOOL WINAPI SetMessageQueue(int cMessagesMax);
+  WINUSERAPI WINBOOL WINAPI PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg);
+  WINUSERAPI WINBOOL WINAPI PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg);
+
+#define PM_NOREMOVE 0x0000
+#define P
