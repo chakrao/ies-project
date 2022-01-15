@@ -1803,4 +1803,123 @@ extern "C" {
   WINUSERAPI WINBOOL WINAPI PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg);
 
 #define PM_NOREMOVE 0x0000
-#define P
+#define PM_REMOVE 0x0001
+#define PM_NOYIELD 0x0002
+#define PM_QS_INPUT (QS_INPUT << 16)
+#define PM_QS_POSTMESSAGE ((QS_POSTMESSAGE | QS_HOTKEY | QS_TIMER) << 16)
+#define PM_QS_PAINT (QS_PAINT << 16)
+#define PM_QS_SENDMESSAGE (QS_SENDMESSAGE << 16)
+#endif
+
+  WINUSERAPI WINBOOL WINAPI RegisterHotKey(HWND hWnd,int id,UINT fsModifiers,UINT vk);
+  WINUSERAPI WINBOOL WINAPI UnregisterHotKey(HWND hWnd,int id);
+
+#define MOD_ALT 0x0001
+#define MOD_CONTROL 0x0002
+#define MOD_SHIFT 0x0004
+#define MOD_WIN 0x0008
+
+#define IDHOT_SNAPWINDOW (-1)
+#define IDHOT_SNAPDESKTOP (-2)
+
+#ifdef WIN_INTERNAL
+#ifndef LSTRING
+#define NOLSTRING
+#endif
+#ifndef LFILEIO
+#define NOLFILEIO
+#endif
+#endif
+
+#define ENDSESSION_LOGOFF 0x80000000
+
+#define EWX_LOGOFF 0
+#define EWX_SHUTDOWN 0x00000001
+#define EWX_REBOOT 0x00000002
+#define EWX_FORCE 0x00000004
+#define EWX_POWEROFF 0x00000008
+#define EWX_FORCEIFHUNG 0x00000010
+
+#define ExitWindows(dwReserved,Code) ExitWindowsEx(EWX_LOGOFF,0xFFFFFFFF)
+
+#ifdef UNICODE
+#define SendMessage SendMessageW
+#define SendMessageTimeout SendMessageTimeoutW
+#define SendNotifyMessage SendNotifyMessageW
+#define SendMessageCallback SendMessageCallbackW
+#else
+#define SendMessage SendMessageA
+#define SendMessageTimeout SendMessageTimeoutA
+#define SendNotifyMessage SendNotifyMessageA
+#define SendMessageCallback SendMessageCallbackA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI ExitWindowsEx(UINT uFlags,DWORD dwReason);
+  WINUSERAPI WINBOOL WINAPI SwapMouseButton(WINBOOL fSwap);
+  WINUSERAPI DWORD WINAPI GetMessagePos(VOID);
+  WINUSERAPI LONG WINAPI GetMessageTime(VOID);
+  WINUSERAPI LPARAM WINAPI GetMessageExtraInfo(VOID);
+  WINUSERAPI WINBOOL WINAPI IsWow64Message(VOID);
+  WINUSERAPI LPARAM WINAPI SetMessageExtraInfo(LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI SendMessageA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI SendMessageW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI SendMessageTimeoutA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,UINT fuFlags,UINT uTimeout,PDWORD_PTR lpdwResult);
+  WINUSERAPI LRESULT WINAPI SendMessageTimeoutW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,UINT fuFlags,UINT uTimeout,PDWORD_PTR lpdwResult);
+  WINUSERAPI WINBOOL WINAPI SendNotifyMessageA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI SendNotifyMessageW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI SendMessageCallbackA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,SENDASYNCPROC lpResultCallBack,ULONG_PTR dwData);
+  WINUSERAPI WINBOOL WINAPI SendMessageCallbackW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,SENDASYNCPROC lpResultCallBack,ULONG_PTR dwData);
+
+  typedef struct {
+    UINT cbSize;
+    HDESK hdesk;
+    HWND hwnd;
+    LUID luid;
+  } BSMINFO,*PBSMINFO;
+
+#ifdef UNICODE
+#define BroadcastSystemMessageEx BroadcastSystemMessageExW
+#define BroadcastSystemMessage BroadcastSystemMessageW
+#else
+#define BroadcastSystemMessageEx BroadcastSystemMessageExA
+#define BroadcastSystemMessage BroadcastSystemMessageA
+#endif
+
+  WINUSERAPI long WINAPI BroadcastSystemMessageExA(DWORD flags,LPDWORD lpInfo,UINT Msg,WPARAM wParam,LPARAM lParam,PBSMINFO pbsmInfo);
+  WINUSERAPI long WINAPI BroadcastSystemMessageExW(DWORD flags,LPDWORD lpInfo,UINT Msg,WPARAM wParam,LPARAM lParam,PBSMINFO pbsmInfo);
+  WINUSERAPI long WINAPI BroadcastSystemMessageA(DWORD flags,LPDWORD lpInfo,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI long WINAPI BroadcastSystemMessageW(DWORD flags,LPDWORD lpInfo,UINT Msg,WPARAM wParam,LPARAM lParam);
+
+#define BSM_ALLCOMPONENTS 0x00000000
+#define BSM_VXDS 0x00000001
+#define BSM_NETDRIVER 0x00000002
+#define BSM_INSTALLABLEDRIVERS 0x00000004
+#define BSM_APPLICATIONS 0x00000008
+#define BSM_ALLDESKTOPS 0x00000010
+
+#define BSF_QUERY 0x00000001
+#define BSF_IGNORECURRENTTASK 0x00000002
+#define BSF_FLUSHDISK 0x00000004
+#define BSF_NOHANG 0x00000008
+#define BSF_POSTMESSAGE 0x00000010
+#define BSF_FORCEIFHUNG 0x00000020
+#define BSF_NOTIMEOUTIFNOTHUNG 0x00000040
+#define BSF_ALLOWSFW 0x00000080
+#define BSF_SENDNOTIFYMESSAGE 0x00000100
+#define BSF_RETURNHDESK 0x00000200
+#define BSF_LUID 0x00000400
+
+#define BROADCAST_QUERY_DENY 0x424D5144
+
+  typedef PVOID HDEVNOTIFY;
+  typedef HDEVNOTIFY *PHDEVNOTIFY;
+
+#define DEVICE_NOTIFY_WINDOW_HANDLE 0x00000000
+#define DEVICE_NOTIFY_SERVICE_HANDLE 0x00000001
+#define DEVICE_NOTIFY_ALL_INTERFACE_CLASSES 0x00000004
+
+#ifdef UNICODE
+#define RegisterDeviceNotification RegisterDeviceNotificationW
+#define PostMessage PostMessageW
+#define PostThreadMessage PostThreadMessageW
+#define PostAppMessage PostAppMe
