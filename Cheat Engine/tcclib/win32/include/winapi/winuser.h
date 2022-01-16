@@ -1922,4 +1922,87 @@ extern "C" {
 #define RegisterDeviceNotification RegisterDeviceNotificationW
 #define PostMessage PostMessageW
 #define PostThreadMessage PostThreadMessageW
-#define PostAppMessage PostAppMe
+#define PostAppMessage PostAppMessageW
+#define DefWindowProc DefWindowProcW
+#define CallWindowProc CallWindowProcW
+#define RegisterClass RegisterClassW
+#define UnregisterClass UnregisterClassW
+#define GetClassInfo GetClassInfoW
+#define RegisterClassEx RegisterClassExW
+#define GetClassInfoEx GetClassInfoExW
+#else
+#define RegisterDeviceNotification RegisterDeviceNotificationA
+#define PostMessage PostMessageA
+#define PostThreadMessage PostThreadMessageA
+#define PostAppMessage PostAppMessageA
+#define DefWindowProc DefWindowProcA
+#define CallWindowProc CallWindowProcA
+#define RegisterClass RegisterClassA
+#define UnregisterClass UnregisterClassA
+#define GetClassInfo GetClassInfoA
+#define RegisterClassEx RegisterClassExA
+#define GetClassInfoEx GetClassInfoExA
+#endif
+
+  WINUSERAPI HDEVNOTIFY WINAPI RegisterDeviceNotificationA(HANDLE hRecipient,LPVOID NotificationFilter,DWORD Flags);
+  WINUSERAPI HDEVNOTIFY WINAPI RegisterDeviceNotificationW(HANDLE hRecipient,LPVOID NotificationFilter,DWORD Flags);
+  WINUSERAPI WINBOOL WINAPI UnregisterDeviceNotification(HDEVNOTIFY Handle);
+  WINUSERAPI WINBOOL WINAPI PostMessageA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI PostMessageW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI PostThreadMessageA(DWORD idThread,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI PostThreadMessageW(DWORD idThread,UINT Msg,WPARAM wParam,LPARAM lParam);
+#define PostAppMessageA(idThread,wMsg,wParam,lParam) PostThreadMessageA((DWORD)idThread,wMsg,wParam,lParam)
+#define PostAppMessageW(idThread,wMsg,wParam,lParam) PostThreadMessageW((DWORD)idThread,wMsg,wParam,lParam)
+
+#define HWND_BROADCAST ((HWND)0xffff)
+#define HWND_MESSAGE ((HWND)-3)
+
+  WINUSERAPI WINBOOL WINAPI AttachThreadInput(DWORD idAttach,DWORD idAttachTo,WINBOOL fAttach);
+  WINUSERAPI WINBOOL WINAPI ReplyMessage(LRESULT lResult);
+  WINUSERAPI WINBOOL WINAPI WaitMessage(VOID);
+  WINUSERAPI DWORD WINAPI WaitForInputIdle(HANDLE hProcess,DWORD dwMilliseconds);
+  WINUSERAPI LRESULT WINAPI DefWindowProcA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI DefWindowProcW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI VOID WINAPI PostQuitMessage(int nExitCode);
+  WINUSERAPI LRESULT WINAPI CallWindowProcA(WNDPROC lpPrevWndFunc,HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI CallWindowProcW(WNDPROC lpPrevWndFunc,HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI InSendMessage(VOID);
+  WINUSERAPI DWORD WINAPI InSendMessageEx(LPVOID lpReserved);
+
+#define ISMEX_NOSEND 0x00000000
+#define ISMEX_SEND 0x00000001
+#define ISMEX_NOTIFY 0x00000002
+#define ISMEX_CALLBACK 0x00000004
+#define ISMEX_REPLIED 0x00000008
+
+  WINUSERAPI UINT WINAPI GetDoubleClickTime(VOID);
+  WINUSERAPI WINBOOL WINAPI SetDoubleClickTime(UINT);
+  WINUSERAPI ATOM WINAPI RegisterClassA(CONST WNDCLASSA *lpWndClass);
+  WINUSERAPI ATOM WINAPI RegisterClassW(CONST WNDCLASSW *lpWndClass);
+  WINUSERAPI WINBOOL WINAPI UnregisterClassA(LPCSTR lpClassName,HINSTANCE hInstance);
+  WINUSERAPI WINBOOL WINAPI UnregisterClassW(LPCWSTR lpClassName,HINSTANCE hInstance);
+  WINUSERAPI WINBOOL WINAPI GetClassInfoA(HINSTANCE hInstance,LPCSTR lpClassName,LPWNDCLASSA lpWndClass);
+  WINUSERAPI WINBOOL WINAPI GetClassInfoW(HINSTANCE hInstance,LPCWSTR lpClassName,LPWNDCLASSW lpWndClass);
+  WINUSERAPI ATOM WINAPI RegisterClassExA(CONST WNDCLASSEXA *);
+  WINUSERAPI ATOM WINAPI RegisterClassExW(CONST WNDCLASSEXW *);
+  WINUSERAPI WINBOOL WINAPI GetClassInfoExA(HINSTANCE hInstance,LPCSTR lpszClass,LPWNDCLASSEXA lpwcx);
+  WINUSERAPI WINBOOL WINAPI GetClassInfoExW(HINSTANCE hInstance,LPCWSTR lpszClass,LPWNDCLASSEXW lpwcx);
+
+#define CW_USEDEFAULT ((int)0x80000000)
+
+#define HWND_DESKTOP ((HWND)0)
+
+  typedef BOOLEAN (WINAPI *PREGISTERCLASSNAMEW)(LPCWSTR);
+
+#ifdef UNICODE
+#define CreateWindowEx CreateWindowExW
+#define CreateWindow CreateWindowW
+#else
+#define CreateWindowEx CreateWindowExA
+#define CreateWindow CreateWindowA
+#endif
+
+  WINUSERAPI HWND WINAPI CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam);
+  WINUSERAPI HWND WINAPI CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam);
+#define CreateWindowA(lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam) CreateWindowExA(0L,lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam)
+#define CreateWindowW(lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,
