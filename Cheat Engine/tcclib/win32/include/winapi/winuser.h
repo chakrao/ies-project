@@ -2005,4 +2005,149 @@ extern "C" {
   WINUSERAPI HWND WINAPI CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam);
   WINUSERAPI HWND WINAPI CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam);
 #define CreateWindowA(lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam) CreateWindowExA(0L,lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam)
-#define CreateWindowW(lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,
+#define CreateWindowW(lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam) CreateWindowExW(0L,lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam)
+  WINUSERAPI WINBOOL WINAPI IsWindow(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI IsMenu(HMENU hMenu);
+  WINUSERAPI WINBOOL WINAPI IsChild(HWND hWndParent,HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI DestroyWindow(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI ShowWindow(HWND hWnd,int nCmdShow);
+  WINUSERAPI WINBOOL WINAPI AnimateWindow(HWND hWnd,DWORD dwTime,DWORD dwFlags);
+
+#if defined(_WINGDI_) && !defined(NOGDI)
+  WINUSERAPI WINBOOL WINAPI UpdateLayeredWindow(HWND hWnd,HDC hdcDst,POINT *pptDst,SIZE *psize,HDC hdcSrc,POINT *pptSrc,COLORREF crKey,BLENDFUNCTION *pblend,DWORD dwFlags);
+
+  typedef struct tagUPDATELAYEREDWINDOWINFO {
+    DWORD cbSize;
+    HDC hdcDst;
+    POINT CONST *pptDst;
+    SIZE CONST *psize;
+    HDC hdcSrc;
+    POINT CONST *pptSrc;
+    COLORREF crKey;
+    BLENDFUNCTION CONST *pblend;
+    DWORD dwFlags;
+    RECT CONST *prcDirty;
+  } UPDATELAYEREDWINDOWINFO,*PUPDATELAYEREDWINDOWINFO;
+
+  WINUSERAPI WINBOOL WINAPI UpdateLayeredWindowIndirect(HWND hWnd,UPDATELAYEREDWINDOWINFO CONST *pULWInfo);
+  WINUSERAPI WINBOOL WINAPI GetLayeredWindowAttributes(HWND hwnd,COLORREF *pcrKey,BYTE *pbAlpha,DWORD *pdwFlags);
+
+#define PW_CLIENTONLY 0x00000001
+
+  WINUSERAPI WINBOOL WINAPI PrintWindow(HWND hwnd,HDC hdcBlt,UINT nFlags);
+  WINUSERAPI WINBOOL WINAPI SetLayeredWindowAttributes(HWND hwnd,COLORREF crKey,BYTE bAlpha,DWORD dwFlags);
+
+#define LWA_COLORKEY 0x00000001
+#define LWA_ALPHA 0x00000002
+
+#define ULW_COLORKEY 0x00000001
+#define ULW_ALPHA 0x00000002
+#define ULW_OPAQUE 0x00000004
+
+#define ULW_EX_NORESIZE 0x00000008
+
+  WINUSERAPI WINBOOL WINAPI ShowWindowAsync(HWND hWnd,int nCmdShow);
+  WINUSERAPI WINBOOL WINAPI FlashWindow(HWND hWnd,WINBOOL bInvert);
+
+  typedef struct {
+    UINT cbSize;
+    HWND hwnd;
+    DWORD dwFlags;
+    UINT uCount;
+    DWORD dwTimeout;
+  } FLASHWINFO,*PFLASHWINFO;
+
+  WINUSERAPI WINBOOL WINAPI FlashWindowEx(PFLASHWINFO pfwi);
+
+#define FLASHW_STOP 0
+#define FLASHW_CAPTION 0x00000001
+#define FLASHW_TRAY 0x00000002
+#define FLASHW_ALL (FLASHW_CAPTION | FLASHW_TRAY)
+#define FLASHW_TIMER 0x00000004
+#define FLASHW_TIMERNOFG 0x0000000C
+
+  WINUSERAPI WINBOOL WINAPI ShowOwnedPopups(HWND hWnd,WINBOOL fShow);
+  WINUSERAPI WINBOOL WINAPI OpenIcon(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI CloseWindow(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI MoveWindow(HWND hWnd,int X,int Y,int nWidth,int nHeight,WINBOOL bRepaint);
+  WINUSERAPI WINBOOL WINAPI SetWindowPos(HWND hWnd,HWND hWndInsertAfter,int X,int Y,int cx,int cy,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI GetWindowPlacement(HWND hWnd,WINDOWPLACEMENT *lpwndpl);
+  WINUSERAPI WINBOOL WINAPI SetWindowPlacement(HWND hWnd,CONST WINDOWPLACEMENT *lpwndpl);
+
+#ifndef NODEFERWINDOWPOS
+  WINUSERAPI HDWP WINAPI BeginDeferWindowPos(int nNumWindows);
+  WINUSERAPI HDWP WINAPI DeferWindowPos(HDWP hWinPosInfo,HWND hWnd,HWND hWndInsertAfter,int x,int y,int cx,int cy,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI EndDeferWindowPos(HDWP hWinPosInfo);
+#endif
+
+  WINUSERAPI WINBOOL WINAPI IsWindowVisible(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI IsIconic(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI AnyPopup(VOID);
+  WINUSERAPI WINBOOL WINAPI BringWindowToTop(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI IsZoomed(HWND hWnd);
+
+#define SWP_NOSIZE 0x0001
+#define SWP_NOMOVE 0x0002
+#define SWP_NOZORDER 0x0004
+#define SWP_NOREDRAW 0x0008
+#define SWP_NOACTIVATE 0x0010
+#define SWP_FRAMECHANGED 0x0020
+#define SWP_SHOWWINDOW 0x0040
+#define SWP_HIDEWINDOW 0x0080
+#define SWP_NOCOPYBITS 0x0100
+#define SWP_NOOWNERZORDER 0x0200
+#define SWP_NOSENDCHANGING 0x0400
+
+#define SWP_DRAWFRAME SWP_FRAMECHANGED
+#define SWP_NOREPOSITION SWP_NOOWNERZORDER
+#define SWP_DEFERERASE 0x2000
+#define SWP_ASYNCWINDOWPOS 0x4000
+
+#define HWND_TOP ((HWND)0)
+#define HWND_BOTTOM ((HWND)1)
+#define HWND_TOPMOST ((HWND)-1)
+#define HWND_NOTOPMOST ((HWND)-2)
+
+#ifndef NOCTLMGR
+
+#include <pshpack2.h>
+
+  typedef struct {
+    DWORD style;
+    DWORD dwExtendedStyle;
+    WORD cdit;
+    short x;
+    short y;
+    short cx;
+    short cy;
+  } DLGTEMPLATE;
+
+  typedef DLGTEMPLATE *LPDLGTEMPLATEA;
+  typedef DLGTEMPLATE *LPDLGTEMPLATEW;
+
+#ifdef UNICODE
+  typedef LPDLGTEMPLATEW LPDLGTEMPLATE;
+#else
+  typedef LPDLGTEMPLATEA LPDLGTEMPLATE;
+#endif
+
+  typedef CONST DLGTEMPLATE *LPCDLGTEMPLATEA;
+  typedef CONST DLGTEMPLATE *LPCDLGTEMPLATEW;
+
+#ifdef UNICODE
+  typedef LPCDLGTEMPLATEW LPCDLGTEMPLATE;
+#else
+  typedef LPCDLGTEMPLATEA LPCDLGTEMPLATE;
+#endif
+
+  typedef struct {
+    DWORD style;
+    DWORD dwExtendedStyle;
+    short x;
+    short y;
+    short cx;
+    short cy;
+    WORD id;
+  } DLGITEMTEMPLATE;
+
+  typedef 
