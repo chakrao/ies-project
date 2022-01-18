@@ -2150,4 +2150,77 @@ extern "C" {
     WORD id;
   } DLGITEMTEMPLATE;
 
-  typedef 
+  typedef DLGITEMTEMPLATE *PDLGITEMTEMPLATEA;
+  typedef DLGITEMTEMPLATE *PDLGITEMTEMPLATEW;
+
+#ifdef UNICODE
+  typedef PDLGITEMTEMPLATEW PDLGITEMTEMPLATE;
+#else
+  typedef PDLGITEMTEMPLATEA PDLGITEMTEMPLATE;
+#endif
+
+  typedef DLGITEMTEMPLATE *LPDLGITEMTEMPLATEA;
+  typedef DLGITEMTEMPLATE *LPDLGITEMTEMPLATEW;
+
+#ifdef UNICODE
+  typedef LPDLGITEMTEMPLATEW LPDLGITEMTEMPLATE;
+#else
+  typedef LPDLGITEMTEMPLATEA LPDLGITEMTEMPLATE;
+#endif
+
+#include <poppack.h>
+
+#ifdef UNICODE
+#define CreateDialogParam CreateDialogParamW
+#define CreateDialogIndirectParam CreateDialogIndirectParamW
+#define CreateDialog CreateDialogW
+#define CreateDialogIndirect CreateDialogIndirectW
+#define DialogBoxParam DialogBoxParamW
+#define DialogBoxIndirectParam DialogBoxIndirectParamW
+#define DialogBox DialogBoxW
+#define DialogBoxIndirect DialogBoxIndirectW
+#define SetDlgItemText SetDlgItemTextW
+#define GetDlgItemText GetDlgItemTextW
+#define SendDlgItemMessage SendDlgItemMessageW
+#define DefDlgProc DefDlgProcW
+#else
+#define CreateDialogParam CreateDialogParamA
+#define CreateDialogIndirectParam CreateDialogIndirectParamA
+#define CreateDialog CreateDialogA
+#define CreateDialogIndirect CreateDialogIndirectA
+#define DialogBoxParam DialogBoxParamA
+#define DialogBoxIndirectParam DialogBoxIndirectParamA
+#define DialogBox DialogBoxA
+#define DialogBoxIndirect DialogBoxIndirectA
+#define SetDlgItemText SetDlgItemTextA
+#define GetDlgItemText GetDlgItemTextA
+#define SendDlgItemMessage SendDlgItemMessageA
+#define DefDlgProc DefDlgProcA
+#endif
+
+  WINUSERAPI HWND WINAPI CreateDialogParamA(HINSTANCE hInstance,LPCSTR lpTemplateName,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+  WINUSERAPI HWND WINAPI CreateDialogParamW(HINSTANCE hInstance,LPCWSTR lpTemplateName,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+  WINUSERAPI HWND WINAPI CreateDialogIndirectParamA(HINSTANCE hInstance,LPCDLGTEMPLATEA lpTemplate,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+  WINUSERAPI HWND WINAPI CreateDialogIndirectParamW(HINSTANCE hInstance,LPCDLGTEMPLATEW lpTemplate,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+#define CreateDialogA(hInstance,lpName,hWndParent,lpDialogFunc) CreateDialogParamA(hInstance,lpName,hWndParent,lpDialogFunc,0L)
+#define CreateDialogW(hInstance,lpName,hWndParent,lpDialogFunc) CreateDialogParamW(hInstance,lpName,hWndParent,lpDialogFunc,0L)
+#define CreateDialogIndirectA(hInstance,lpTemplate,hWndParent,lpDialogFunc) CreateDialogIndirectParamA(hInstance,lpTemplate,hWndParent,lpDialogFunc,0L)
+#define CreateDialogIndirectW(hInstance,lpTemplate,hWndParent,lpDialogFunc) CreateDialogIndirectParamW(hInstance,lpTemplate,hWndParent,lpDialogFunc,0L)
+  WINUSERAPI INT_PTR WINAPI DialogBoxParamA(HINSTANCE hInstance,LPCSTR lpTemplateName,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+  WINUSERAPI INT_PTR WINAPI DialogBoxParamW(HINSTANCE hInstance,LPCWSTR lpTemplateName,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+  WINUSERAPI INT_PTR WINAPI DialogBoxIndirectParamA(HINSTANCE hInstance,LPCDLGTEMPLATEA hDialogTemplate,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+  WINUSERAPI INT_PTR WINAPI DialogBoxIndirectParamW(HINSTANCE hInstance,LPCDLGTEMPLATEW hDialogTemplate,HWND hWndParent,DLGPROC lpDialogFunc,LPARAM dwInitParam);
+#define DialogBoxA(hInstance,lpTemplate,hWndParent,lpDialogFunc) DialogBoxParamA(hInstance,lpTemplate,hWndParent,lpDialogFunc,0L)
+#define DialogBoxW(hInstance,lpTemplate,hWndParent,lpDialogFunc) DialogBoxParamW(hInstance,lpTemplate,hWndParent,lpDialogFunc,0L)
+#define DialogBoxIndirectA(hInstance,lpTemplate,hWndParent,lpDialogFunc) DialogBoxIndirectParamA(hInstance,lpTemplate,hWndParent,lpDialogFunc,0L)
+#define DialogBoxIndirectW(hInstance,lpTemplate,hWndParent,lpDialogFunc) DialogBoxIndirectParamW(hInstance,lpTemplate,hWndParent,lpDialogFunc,0L)
+  WINUSERAPI WINBOOL WINAPI EndDialog(HWND hDlg,INT_PTR nResult);
+  WINUSERAPI HWND WINAPI GetDlgItem(HWND hDlg,int nIDDlgItem);
+  WINUSERAPI WINBOOL WINAPI SetDlgItemInt(HWND hDlg,int nIDDlgItem,UINT uValue,WINBOOL bSigned);
+  WINUSERAPI UINT WINAPI GetDlgItemInt(HWND hDlg,int nIDDlgItem,WINBOOL *lpTranslated,WINBOOL bSigned);
+  WINUSERAPI WINBOOL WINAPI SetDlgItemTextA(HWND hDlg,int nIDDlgItem,LPCSTR lpString);
+  WINUSERAPI WINBOOL WINAPI SetDlgItemTextW(HWND hDlg,int nIDDlgItem,LPCWSTR lpString);
+  WINUSERAPI UINT WINAPI GetDlgItemTextA(HWND hDlg,int nIDDlgItem,LPSTR lpString,int cchMax);
+  WINUSERAPI UINT WINAPI GetDlgItemTextW(HWND hDlg,int nIDDlgItem,LPWSTR lpString,int cchMax);
+  WINUSERAPI WINBOOL WINAPI CheckDlgButton(HWND hDlg,int nIDButton,UINT uCheck);
+  WINUSERAPI WINBOOL WINAPI CheckRadioButton(HWND hDlg,int nIDFirstButton,int nIDLastButton,int nIDCh
