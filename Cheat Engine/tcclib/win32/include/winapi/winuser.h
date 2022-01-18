@@ -2223,4 +2223,105 @@ extern "C" {
   WINUSERAPI UINT WINAPI GetDlgItemTextA(HWND hDlg,int nIDDlgItem,LPSTR lpString,int cchMax);
   WINUSERAPI UINT WINAPI GetDlgItemTextW(HWND hDlg,int nIDDlgItem,LPWSTR lpString,int cchMax);
   WINUSERAPI WINBOOL WINAPI CheckDlgButton(HWND hDlg,int nIDButton,UINT uCheck);
-  WINUSERAPI WINBOOL WINAPI CheckRadioButton(HWND hDlg,int nIDFirstButton,int nIDLastButton,int nIDCh
+  WINUSERAPI WINBOOL WINAPI CheckRadioButton(HWND hDlg,int nIDFirstButton,int nIDLastButton,int nIDCheckButton);
+  WINUSERAPI UINT WINAPI IsDlgButtonChecked(HWND hDlg,int nIDButton);
+  WINUSERAPI LRESULT WINAPI SendDlgItemMessageA(HWND hDlg,int nIDDlgItem,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI SendDlgItemMessageW(HWND hDlg,int nIDDlgItem,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI HWND WINAPI GetNextDlgGroupItem(HWND hDlg,HWND hCtl,WINBOOL bPrevious);
+  WINUSERAPI HWND WINAPI GetNextDlgTabItem(HWND hDlg,HWND hCtl,WINBOOL bPrevious);
+  WINUSERAPI int WINAPI GetDlgCtrlID(HWND hWnd);
+  WINUSERAPI long WINAPI GetDialogBaseUnits(VOID);
+  WINUSERAPI LRESULT WINAPI DefDlgProcA(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI DefDlgProcW(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam);
+
+#define DLGWINDOWEXTRA 30
+#endif
+
+#ifndef NOMSG
+
+#ifdef UNICODE
+#define CallMsgFilter CallMsgFilterW
+#else
+#define CallMsgFilter CallMsgFilterA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI CallMsgFilterA(LPMSG lpMsg,int nCode);
+  WINUSERAPI WINBOOL WINAPI CallMsgFilterW(LPMSG lpMsg,int nCode);
+#endif
+
+#ifndef NOCLIPBOARD
+
+#ifdef UNICODE
+#define RegisterClipboardFormat RegisterClipboardFormatW
+#define GetClipboardFormatName GetClipboardFormatNameW
+#else
+#define RegisterClipboardFormat RegisterClipboardFormatA
+#define GetClipboardFormatName GetClipboardFormatNameA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI OpenClipboard(HWND hWndNewOwner);
+  WINUSERAPI WINBOOL WINAPI CloseClipboard(VOID);
+  WINUSERAPI DWORD WINAPI GetClipboardSequenceNumber(VOID);
+  WINUSERAPI HWND WINAPI GetClipboardOwner(VOID);
+  WINUSERAPI HWND WINAPI SetClipboardViewer(HWND hWndNewViewer);
+  WINUSERAPI HWND WINAPI GetClipboardViewer(VOID);
+  WINUSERAPI WINBOOL WINAPI ChangeClipboardChain(HWND hWndRemove,HWND hWndNewNext);
+  WINUSERAPI HANDLE WINAPI SetClipboardData(UINT uFormat,HANDLE hMem);
+  WINUSERAPI HANDLE WINAPI GetClipboardData(UINT uFormat);
+  WINUSERAPI UINT WINAPI RegisterClipboardFormatA(LPCSTR lpszFormat);
+  WINUSERAPI UINT WINAPI RegisterClipboardFormatW(LPCWSTR lpszFormat);
+  WINUSERAPI int WINAPI CountClipboardFormats(VOID);
+  WINUSERAPI UINT WINAPI EnumClipboardFormats(UINT format);
+  WINUSERAPI int WINAPI GetClipboardFormatNameA(UINT format,LPSTR lpszFormatName,int cchMaxCount);
+  WINUSERAPI int WINAPI GetClipboardFormatNameW(UINT format,LPWSTR lpszFormatName,int cchMaxCount);
+  WINUSERAPI WINBOOL WINAPI EmptyClipboard(VOID);
+  WINUSERAPI WINBOOL WINAPI IsClipboardFormatAvailable(UINT format);
+  WINUSERAPI int WINAPI GetPriorityClipboardFormat(UINT *paFormatPriorityList,int cFormats);
+  WINUSERAPI HWND WINAPI GetOpenClipboardWindow(VOID);
+#endif
+
+#ifdef UNICODE
+#define CharToOem CharToOemW
+#define OemToChar OemToCharW
+#define CharToOemBuff CharToOemBuffW
+#define OemToCharBuff OemToCharBuffW
+#define CharUpper CharUpperW
+#define CharUpperBuff CharUpperBuffW
+#define CharLower CharLowerW
+#define CharLowerBuff CharLowerBuffW
+#define CharNext CharNextW
+#define CharPrev CharPrevW
+#else
+#define CharToOem CharToOemA
+#define OemToChar OemToCharA
+#define CharToOemBuff CharToOemBuffA
+#define OemToCharBuff OemToCharBuffA
+#define CharUpper CharUpperA
+#define CharUpperBuff CharUpperBuffA
+#define CharLower CharLowerA
+#define CharLowerBuff CharLowerBuffA
+#define CharNext CharNextA
+#define CharPrev CharPrevA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI CharToOemA(LPCSTR lpszSrc,LPSTR lpszDst);
+  WINUSERAPI WINBOOL WINAPI CharToOemW(LPCWSTR lpszSrc,LPSTR lpszDst);
+  WINUSERAPI WINBOOL WINAPI OemToCharA(LPCSTR lpszSrc,LPSTR lpszDst);
+  WINUSERAPI WINBOOL WINAPI OemToCharW(LPCSTR lpszSrc,LPWSTR lpszDst);
+  WINUSERAPI WINBOOL WINAPI CharToOemBuffA(LPCSTR lpszSrc,LPSTR lpszDst,DWORD cchDstLength);
+  WINUSERAPI WINBOOL WINAPI CharToOemBuffW(LPCWSTR lpszSrc,LPSTR lpszDst,DWORD cchDstLength);
+  WINUSERAPI WINBOOL WINAPI OemToCharBuffA(LPCSTR lpszSrc,LPSTR lpszDst,DWORD cchDstLength);
+  WINUSERAPI WINBOOL WINAPI OemToCharBuffW(LPCSTR lpszSrc,LPWSTR lpszDst,DWORD cchDstLength);
+  WINUSERAPI LPSTR WINAPI CharUpperA(LPSTR lpsz);
+  WINUSERAPI LPWSTR WINAPI CharUpperW(LPWSTR lpsz);
+  WINUSERAPI DWORD WINAPI CharUpperBuffA(LPSTR lpsz,DWORD cchLength);
+  WINUSERAPI DWORD WINAPI CharUpperBuffW(LPWSTR lpsz,DWORD cchLength);
+  WINUSERAPI LPSTR WINAPI CharLowerA(LPSTR lpsz);
+  WINUSERAPI LPWSTR WINAPI CharLowerW(LPWSTR lpsz);
+  WINUSERAPI DWORD WINAPI CharLowerBuffA(LPSTR lpsz,DWORD cchLength);
+  WINUSERAPI DWORD WINAPI CharLowerBuffW(LPWSTR lpsz,DWORD cchLength);
+  WINUSERAPI LPSTR WINAPI CharNextA(LPCSTR lpsz);
+  WINUSERAPI LPWSTR WINAPI CharNextW(LPCWSTR lpsz);
+  WINUSERAPI LPSTR WINAPI CharPrevA(LPCSTR lpszStart,LPCSTR lpszCurrent);
+  WINUSERAPI LPWSTR WINAPI CharPrevW(LPCWSTR lpszStart,LPCWSTR lpszCurrent);
+  WINUSERAPI LPSTR WINAPI CharNextExA(WORD CodePage,LPCSTR lpCurrentChar,DWORD dwFla
