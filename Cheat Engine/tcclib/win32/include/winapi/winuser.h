@@ -2465,4 +2465,137 @@ extern "C" {
 #define MapVirtualKeyEx MapVirtualKeyExA
 #endif
 
- 
+  WINUSERAPI WINBOOL WINAPI GetLastInputInfo(PLASTINPUTINFO plii);
+  WINUSERAPI UINT WINAPI MapVirtualKeyA(UINT uCode,UINT uMapType);
+  WINUSERAPI UINT WINAPI MapVirtualKeyW(UINT uCode,UINT uMapType);
+  WINUSERAPI UINT WINAPI MapVirtualKeyExA(UINT uCode,UINT uMapType,HKL dwhkl);
+  WINUSERAPI UINT WINAPI MapVirtualKeyExW(UINT uCode,UINT uMapType,HKL dwhkl);
+  WINUSERAPI WINBOOL WINAPI GetInputState(VOID);
+  WINUSERAPI DWORD WINAPI GetQueueStatus(UINT flags);
+  WINUSERAPI HWND WINAPI GetCapture(VOID);
+  WINUSERAPI HWND WINAPI SetCapture(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI ReleaseCapture(VOID);
+  WINUSERAPI DWORD WINAPI MsgWaitForMultipleObjects(DWORD nCount,CONST HANDLE *pHandles,WINBOOL fWaitAll,DWORD dwMilliseconds,DWORD dwWakeMask);
+  WINUSERAPI DWORD WINAPI MsgWaitForMultipleObjectsEx(DWORD nCount,CONST HANDLE *pHandles,DWORD dwMilliseconds,DWORD dwWakeMask,DWORD dwFlags);
+
+#define MWMO_WAITALL 0x0001
+#define MWMO_ALERTABLE 0x0002
+#define MWMO_INPUTAVAILABLE 0x0004
+
+#define QS_KEY 0x0001
+#define QS_MOUSEMOVE 0x0002
+#define QS_MOUSEBUTTON 0x0004
+#define QS_POSTMESSAGE 0x0008
+#define QS_TIMER 0x0010
+#define QS_PAINT 0x0020
+#define QS_SENDMESSAGE 0x0040
+#define QS_HOTKEY 0x0080
+#define QS_ALLPOSTMESSAGE 0x0100
+#define QS_RAWINPUT 0x0400
+#define QS_MOUSE (QS_MOUSEMOVE | QS_MOUSEBUTTON)
+#define QS_INPUT (QS_MOUSE | QS_KEY | QS_RAWINPUT)
+#define QS_ALLEVENTS (QS_INPUT | QS_POSTMESSAGE | QS_TIMER | QS_PAINT | QS_HOTKEY)
+#define QS_ALLINPUT (QS_INPUT | QS_POSTMESSAGE | QS_TIMER | QS_PAINT | QS_HOTKEY | QS_SENDMESSAGE)
+
+#define USER_TIMER_MAXIMUM 0x7FFFFFFF
+#define USER_TIMER_MINIMUM 0x0000000A
+
+#ifdef UNICODE
+#define LoadAccelerators LoadAcceleratorsW
+#define CreateAcceleratorTable CreateAcceleratorTableW
+#define CopyAcceleratorTable CopyAcceleratorTableW
+#else
+#define LoadAccelerators LoadAcceleratorsA
+#define CreateAcceleratorTable CreateAcceleratorTableA
+#define CopyAcceleratorTable CopyAcceleratorTableA
+#endif
+
+  WINUSERAPI UINT_PTR WINAPI SetTimer(HWND hWnd,UINT_PTR nIDEvent,UINT uElapse,TIMERPROC lpTimerFunc);
+  WINUSERAPI WINBOOL WINAPI KillTimer(HWND hWnd,UINT_PTR uIDEvent);
+  WINUSERAPI WINBOOL WINAPI IsWindowUnicode(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI EnableWindow(HWND hWnd,WINBOOL bEnable);
+  WINUSERAPI WINBOOL WINAPI IsWindowEnabled(HWND hWnd);
+  WINUSERAPI HACCEL WINAPI LoadAcceleratorsA(HINSTANCE hInstance,LPCSTR lpTableName);
+  WINUSERAPI HACCEL WINAPI LoadAcceleratorsW(HINSTANCE hInstance,LPCWSTR lpTableName);
+  WINUSERAPI HACCEL WINAPI CreateAcceleratorTableA(LPACCEL paccel,int cAccel);
+  WINUSERAPI HACCEL WINAPI CreateAcceleratorTableW(LPACCEL paccel,int cAccel);
+  WINUSERAPI WINBOOL WINAPI DestroyAcceleratorTable(HACCEL hAccel);
+  WINUSERAPI int WINAPI CopyAcceleratorTableA(HACCEL hAccelSrc,LPACCEL lpAccelDst,int cAccelEntries);
+  WINUSERAPI int WINAPI CopyAcceleratorTableW(HACCEL hAccelSrc,LPACCEL lpAccelDst,int cAccelEntries);
+
+#ifndef NOMSG
+
+#ifdef UNICODE
+#define TranslateAccelerator TranslateAcceleratorW
+#else
+#define TranslateAccelerator TranslateAcceleratorA
+#endif
+
+  WINUSERAPI int WINAPI TranslateAcceleratorA(HWND hWnd,HACCEL hAccTable,LPMSG lpMsg);
+  WINUSERAPI int WINAPI TranslateAcceleratorW(HWND hWnd,HACCEL hAccTable,LPMSG lpMsg);
+#endif
+
+#ifndef NOSYSMETRICS
+
+#define SM_CXSCREEN 0
+#define SM_CYSCREEN 1
+#define SM_CXVSCROLL 2
+#define SM_CYHSCROLL 3
+#define SM_CYCAPTION 4
+#define SM_CXBORDER 5
+#define SM_CYBORDER 6
+#define SM_CXDLGFRAME 7
+#define SM_CYDLGFRAME 8
+#define SM_CYVTHUMB 9
+#define SM_CXHTHUMB 10
+#define SM_CXICON 11
+#define SM_CYICON 12
+#define SM_CXCURSOR 13
+#define SM_CYCURSOR 14
+#define SM_CYMENU 15
+#define SM_CXFULLSCREEN 16
+#define SM_CYFULLSCREEN 17
+#define SM_CYKANJIWINDOW 18
+#define SM_MOUSEPRESENT 19
+#define SM_CYVSCROLL 20
+#define SM_CXHSCROLL 21
+#define SM_DEBUG 22
+#define SM_SWAPBUTTON 23
+#define SM_RESERVED1 24
+#define SM_RESERVED2 25
+#define SM_RESERVED3 26
+#define SM_RESERVED4 27
+#define SM_CXMIN 28
+#define SM_CYMIN 29
+#define SM_CXSIZE 30
+#define SM_CYSIZE 31
+#define SM_CXFRAME 32
+#define SM_CYFRAME 33
+#define SM_CXMINTRACK 34
+#define SM_CYMINTRACK 35
+#define SM_CXDOUBLECLK 36
+#define SM_CYDOUBLECLK 37
+#define SM_CXICONSPACING 38
+#define SM_CYICONSPACING 39
+#define SM_MENUDROPALIGNMENT 40
+#define SM_PENWINDOWS 41
+#define SM_DBCSENABLED 42
+#define SM_CMOUSEBUTTONS 43
+
+#define SM_CXFIXEDFRAME SM_CXDLGFRAME
+#define SM_CYFIXEDFRAME SM_CYDLGFRAME
+#define SM_CXSIZEFRAME SM_CXFRAME
+#define SM_CYSIZEFRAME SM_CYFRAME
+
+#define SM_SECURE 44
+#define SM_CXEDGE 45
+#define SM_CYEDGE 46
+#define SM_CXMINSPACING 47
+#define SM_CYMINSPACING 48
+#define SM_CXSMICON 49
+#define SM_CYSMICON 50
+#define SM_CYSMCAPTION 51
+#define SM_CXSMSIZE 52
+#define SM_CYSMSIZE 53
+#define SM_CXMENUSIZE 54
+#define SM_
