@@ -2598,4 +2598,116 @@ extern "C" {
 #define SM_CXSMSIZE 52
 #define SM_CYSMSIZE 53
 #define SM_CXMENUSIZE 54
-#define SM_
+#define SM_CYMENUSIZE 55
+#define SM_ARRANGE 56
+#define SM_CXMINIMIZED 57
+#define SM_CYMINIMIZED 58
+#define SM_CXMAXTRACK 59
+#define SM_CYMAXTRACK 60
+#define SM_CXMAXIMIZED 61
+#define SM_CYMAXIMIZED 62
+#define SM_NETWORK 63
+#define SM_CLEANBOOT 67
+#define SM_CXDRAG 68
+#define SM_CYDRAG 69
+#define SM_SHOWSOUNDS 70
+#define SM_CXMENUCHECK 71
+#define SM_CYMENUCHECK 72
+#define SM_SLOWMACHINE 73
+#define SM_MIDEASTENABLED 74
+#define SM_MOUSEWHEELPRESENT 75
+#define SM_XVIRTUALSCREEN 76
+#define SM_YVIRTUALSCREEN 77
+#define SM_CXVIRTUALSCREEN 78
+#define SM_CYVIRTUALSCREEN 79
+#define SM_CMONITORS 80
+#define SM_SAMEDISPLAYFORMAT 81
+#define SM_IMMENABLED 82
+#define SM_CXFOCUSBORDER 83
+#define SM_CYFOCUSBORDER 84
+#define SM_TABLETPC 86
+#define SM_MEDIACENTER 87
+#define SM_STARTER 88
+#define SM_SERVERR2 89
+#define SM_CMETRICS 90
+#define SM_REMOTESESSION 0x1000
+#define SM_SHUTTINGDOWN 0x2000
+#define SM_REMOTECONTROL 0x2001
+#define SM_CARETBLINKINGENABLED 0x2002
+
+  WINUSERAPI int WINAPI GetSystemMetrics(int nIndex);
+#endif
+
+#ifndef NOMENUS
+
+#ifdef UNICODE
+#define LoadMenu LoadMenuW
+#define LoadMenuIndirect LoadMenuIndirectW
+#define ChangeMenu ChangeMenuW
+#define GetMenuString GetMenuStringW
+#define InsertMenu InsertMenuW
+#define AppendMenu AppendMenuW
+#define ModifyMenu ModifyMenuW
+#else
+#define LoadMenu LoadMenuA
+#define LoadMenuIndirect LoadMenuIndirectA
+#define ChangeMenu ChangeMenuA
+#define GetMenuString GetMenuStringA
+#define InsertMenu InsertMenuA
+#define AppendMenu AppendMenuA
+#define ModifyMenu ModifyMenuA
+#endif
+
+  WINUSERAPI HMENU WINAPI LoadMenuA(HINSTANCE hInstance,LPCSTR lpMenuName);
+  WINUSERAPI HMENU WINAPI LoadMenuW(HINSTANCE hInstance,LPCWSTR lpMenuName);
+  WINUSERAPI HMENU WINAPI LoadMenuIndirectA(CONST MENUTEMPLATEA *lpMenuTemplate);
+  WINUSERAPI HMENU WINAPI LoadMenuIndirectW(CONST MENUTEMPLATEW *lpMenuTemplate);
+  WINUSERAPI HMENU WINAPI GetMenu(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI SetMenu(HWND hWnd,HMENU hMenu);
+  WINUSERAPI WINBOOL WINAPI ChangeMenuA(HMENU hMenu,UINT cmd,LPCSTR lpszNewItem,UINT cmdInsert,UINT flags);
+  WINUSERAPI WINBOOL WINAPI ChangeMenuW(HMENU hMenu,UINT cmd,LPCWSTR lpszNewItem,UINT cmdInsert,UINT flags);
+  WINUSERAPI WINBOOL WINAPI HiliteMenuItem(HWND hWnd,HMENU hMenu,UINT uIDHiliteItem,UINT uHilite);
+  WINUSERAPI int WINAPI GetMenuStringA(HMENU hMenu,UINT uIDItem,LPSTR lpString,int cchMax,UINT flags);
+  WINUSERAPI int WINAPI GetMenuStringW(HMENU hMenu,UINT uIDItem,LPWSTR lpString,int cchMax,UINT flags);
+  WINUSERAPI UINT WINAPI GetMenuState(HMENU hMenu,UINT uId,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI DrawMenuBar(HWND hWnd);
+
+#define PMB_ACTIVE 0x00000001
+
+  WINUSERAPI HMENU WINAPI GetSystemMenu(HWND hWnd,WINBOOL bRevert);
+  WINUSERAPI HMENU WINAPI CreateMenu(VOID);
+  WINUSERAPI HMENU WINAPI CreatePopupMenu(VOID);
+  WINUSERAPI WINBOOL WINAPI DestroyMenu(HMENU hMenu);
+  WINUSERAPI DWORD WINAPI CheckMenuItem(HMENU hMenu,UINT uIDCheckItem,UINT uCheck);
+  WINUSERAPI WINBOOL WINAPI EnableMenuItem(HMENU hMenu,UINT uIDEnableItem,UINT uEnable);
+  WINUSERAPI HMENU WINAPI GetSubMenu(HMENU hMenu,int nPos);
+  WINUSERAPI UINT WINAPI GetMenuItemID(HMENU hMenu,int nPos);
+  WINUSERAPI int WINAPI GetMenuItemCount(HMENU hMenu);
+  WINUSERAPI WINBOOL WINAPI InsertMenuA(HMENU hMenu,UINT uPosition,UINT uFlags,UINT_PTR uIDNewItem,LPCSTR lpNewItem);
+  WINUSERAPI WINBOOL WINAPI InsertMenuW(HMENU hMenu,UINT uPosition,UINT uFlags,UINT_PTR uIDNewItem,LPCWSTR lpNewItem);
+  WINUSERAPI WINBOOL WINAPI AppendMenuA(HMENU hMenu,UINT uFlags,UINT_PTR uIDNewItem,LPCSTR lpNewItem);
+  WINUSERAPI WINBOOL WINAPI AppendMenuW(HMENU hMenu,UINT uFlags,UINT_PTR uIDNewItem,LPCWSTR lpNewItem);
+  WINUSERAPI WINBOOL WINAPI ModifyMenuA(HMENU hMnu,UINT uPosition,UINT uFlags,UINT_PTR uIDNewItem,LPCSTR lpNewItem);
+  WINUSERAPI WINBOOL WINAPI ModifyMenuW(HMENU hMnu,UINT uPosition,UINT uFlags,UINT_PTR uIDNewItem,LPCWSTR lpNewItem);
+  WINUSERAPI WINBOOL WINAPI RemoveMenu(HMENU hMenu,UINT uPosition,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI DeleteMenu(HMENU hMenu,UINT uPosition,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI SetMenuItemBitmaps(HMENU hMenu,UINT uPosition,UINT uFlags,HBITMAP hBitmapUnchecked,HBITMAP hBitmapChecked);
+  WINUSERAPI LONG WINAPI GetMenuCheckMarkDimensions(VOID);
+  WINUSERAPI WINBOOL WINAPI TrackPopupMenu(HMENU hMenu,UINT uFlags,int x,int y,int nReserved,HWND hWnd,CONST RECT *prcRect);
+
+#define MNC_IGNORE 0
+#define MNC_CLOSE 1
+#define MNC_EXECUTE 2
+#define MNC_SELECT 3
+
+  typedef struct tagTPMPARAMS {
+    UINT cbSize;
+    RECT rcExclude;
+  } TPMPARAMS;
+
+  typedef TPMPARAMS *LPTPMPARAMS;
+
+  WINUSERAPI WINBOOL WINAPI TrackPopupMenuEx(HMENU,UINT,int,int,HWND,LPTPMPARAMS);
+
+#define MNS_NOCHECK 0x80000000
+#define MNS_MODELESS 0
