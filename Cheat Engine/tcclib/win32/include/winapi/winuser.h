@@ -2324,4 +2324,145 @@ extern "C" {
   WINUSERAPI LPWSTR WINAPI CharNextW(LPCWSTR lpsz);
   WINUSERAPI LPSTR WINAPI CharPrevA(LPCSTR lpszStart,LPCSTR lpszCurrent);
   WINUSERAPI LPWSTR WINAPI CharPrevW(LPCWSTR lpszStart,LPCWSTR lpszCurrent);
-  WINUSERAPI LPSTR WINAPI CharNextExA(WORD CodePage,LPCSTR lpCurrentChar,DWORD dwFla
+  WINUSERAPI LPSTR WINAPI CharNextExA(WORD CodePage,LPCSTR lpCurrentChar,DWORD dwFlags);
+  WINUSERAPI LPSTR WINAPI CharPrevExA(WORD CodePage,LPCSTR lpStart,LPCSTR lpCurrentChar,DWORD dwFlags);
+
+#define AnsiToOem CharToOemA
+#define OemToAnsi OemToCharA
+#define AnsiToOemBuff CharToOemBuffA
+#define OemToAnsiBuff OemToCharBuffA
+#define AnsiUpper CharUpperA
+#define AnsiUpperBuff CharUpperBuffA
+#define AnsiLower CharLowerA
+#define AnsiLowerBuff CharLowerBuffA
+#define AnsiNext CharNextA
+#define AnsiPrev CharPrevA
+
+#ifndef NOLANGUAGE
+
+#ifdef UNICODE
+#define IsCharAlpha IsCharAlphaW
+#define IsCharAlphaNumeric IsCharAlphaNumericW
+#define IsCharUpper IsCharUpperW
+#define IsCharLower IsCharLowerW
+#else
+#define IsCharAlpha IsCharAlphaA
+#define IsCharAlphaNumeric IsCharAlphaNumericA
+#define IsCharUpper IsCharUpperA
+#define IsCharLower IsCharLowerA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI IsCharAlphaA(CHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharAlphaW(WCHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharAlphaNumericA(CHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharAlphaNumericW(WCHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharUpperA(CHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharUpperW(WCHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharLowerA(CHAR ch);
+  WINUSERAPI WINBOOL WINAPI IsCharLowerW(WCHAR ch);
+#endif
+
+#ifdef UNICODE
+#define GetKeyNameText GetKeyNameTextW
+#define VkKeyScan VkKeyScanW
+#define VkKeyScanEx VkKeyScanExW
+#else
+#define GetKeyNameText GetKeyNameTextA
+#define VkKeyScan VkKeyScanA
+#define VkKeyScanEx VkKeyScanExA
+#endif
+
+  WINUSERAPI HWND WINAPI SetFocus(HWND hWnd);
+  WINUSERAPI HWND WINAPI GetActiveWindow(VOID);
+  WINUSERAPI HWND WINAPI GetFocus(VOID);
+  WINUSERAPI UINT WINAPI GetKBCodePage(VOID);
+  WINUSERAPI SHORT WINAPI GetKeyState(int nVirtKey);
+  WINUSERAPI SHORT WINAPI GetAsyncKeyState(int vKey);
+  WINUSERAPI WINBOOL WINAPI GetKeyboardState(PBYTE lpKeyState);
+  WINUSERAPI WINBOOL WINAPI SetKeyboardState(LPBYTE lpKeyState);
+  WINUSERAPI int WINAPI GetKeyNameTextA(LONG lParam,LPSTR lpString,int cchSize);
+  WINUSERAPI int WINAPI GetKeyNameTextW(LONG lParam,LPWSTR lpString,int cchSize);
+  WINUSERAPI int WINAPI GetKeyboardType(int nTypeFlag);
+  WINUSERAPI int WINAPI ToAscii(UINT uVirtKey,UINT uScanCode,CONST BYTE *lpKeyState,LPWORD lpChar,UINT uFlags);
+  WINUSERAPI int WINAPI ToAsciiEx(UINT uVirtKey,UINT uScanCode,CONST BYTE *lpKeyState,LPWORD lpChar,UINT uFlags,HKL dwhkl);
+  WINUSERAPI int WINAPI ToUnicode(UINT wVirtKey,UINT wScanCode,CONST BYTE *lpKeyState,LPWSTR pwszBuff,int cchBuff,UINT wFlags);
+  WINUSERAPI DWORD WINAPI OemKeyScan(WORD wOemChar);
+  WINUSERAPI SHORT WINAPI VkKeyScanA(CHAR ch);
+  WINUSERAPI SHORT WINAPI VkKeyScanW(WCHAR ch);
+  WINUSERAPI SHORT WINAPI VkKeyScanExA(CHAR ch,HKL dwhkl);
+  WINUSERAPI SHORT WINAPI VkKeyScanExW(WCHAR ch,HKL dwhkl);
+
+#define KEYEVENTF_EXTENDEDKEY 0x0001
+#define KEYEVENTF_KEYUP 0x0002
+#define KEYEVENTF_UNICODE 0x0004
+#define KEYEVENTF_SCANCODE 0x0008
+
+  WINUSERAPI VOID WINAPI keybd_event(BYTE bVk,BYTE bScan,DWORD dwFlags,ULONG_PTR dwExtraInfo);
+
+#define MOUSEEVENTF_MOVE 0x0001
+#define MOUSEEVENTF_LEFTDOWN 0x0002
+#define MOUSEEVENTF_LEFTUP 0x0004
+#define MOUSEEVENTF_RIGHTDOWN 0x0008
+#define MOUSEEVENTF_RIGHTUP 0x0010
+#define MOUSEEVENTF_MIDDLEDOWN 0x0020
+#define MOUSEEVENTF_MIDDLEUP 0x0040
+#define MOUSEEVENTF_XDOWN 0x0080
+#define MOUSEEVENTF_XUP 0x0100
+#define MOUSEEVENTF_WHEEL 0x0800
+#define MOUSEEVENTF_VIRTUALDESK 0x4000
+#define MOUSEEVENTF_ABSOLUTE 0x8000
+
+  WINUSERAPI VOID WINAPI mouse_event(DWORD dwFlags,DWORD dx,DWORD dy,DWORD dwData,ULONG_PTR dwExtraInfo);
+
+  typedef struct tagMOUSEINPUT {
+    LONG dx;
+    LONG dy;
+    DWORD mouseData;
+    DWORD dwFlags;
+    DWORD time;
+    ULONG_PTR dwExtraInfo;
+  } MOUSEINPUT,*PMOUSEINPUT,*LPMOUSEINPUT;
+
+  typedef struct tagKEYBDINPUT {
+    WORD wVk;
+    WORD wScan;
+    DWORD dwFlags;
+    DWORD time;
+    ULONG_PTR dwExtraInfo;
+  } KEYBDINPUT,*PKEYBDINPUT,*LPKEYBDINPUT;
+
+  typedef struct tagHARDWAREINPUT {
+    DWORD uMsg;
+    WORD wParamL;
+    WORD wParamH;
+  } HARDWAREINPUT,*PHARDWAREINPUT,*LPHARDWAREINPUT;
+
+#define INPUT_MOUSE 0
+#define INPUT_KEYBOARD 1
+#define INPUT_HARDWARE 2
+
+  typedef struct tagINPUT {
+    DWORD type;
+    union {
+      MOUSEINPUT mi;
+      KEYBDINPUT ki;
+      HARDWAREINPUT hi;
+    };
+  } INPUT,*PINPUT,*LPINPUT;
+
+  WINUSERAPI UINT WINAPI SendInput(UINT cInputs,LPINPUT pInputs,int cbSize);
+
+  typedef struct tagLASTINPUTINFO {
+    UINT cbSize;
+    DWORD dwTime;
+  } LASTINPUTINFO,*PLASTINPUTINFO;
+
+#ifdef UNICODE
+#define MapVirtualKey MapVirtualKeyW
+#define MapVirtualKeyEx MapVirtualKeyExW
+#else
+#define MapVirtualKey MapVirtualKeyA
+#define MapVirtualKeyEx MapVirtualKeyExA
+#endif
+
+ 
