@@ -2865,3 +2865,128 @@ extern "C" {
 #define TPM_RECURSE 0x0001L
 #define TPM_HORPOSANIMATION 0x0400L
 #define TPM_HORNEGANIMATION 0x0800L
+#define TPM_VERPOSANIMATION 0x1000L
+#define TPM_VERNEGANIMATION 0x2000L
+#define TPM_NOANIMATION 0x4000L
+#define TPM_LAYOUTRTL 0x8000L
+#endif
+
+  typedef struct tagDROPSTRUCT {
+    HWND hwndSource;
+    HWND hwndSink;
+    DWORD wFmt;
+    ULONG_PTR dwData;
+    POINT ptDrop;
+    DWORD dwControlData;
+  } DROPSTRUCT,*PDROPSTRUCT,*LPDROPSTRUCT;
+
+#define DOF_EXECUTABLE 0x8001
+#define DOF_DOCUMENT 0x8002
+#define DOF_DIRECTORY 0x8003
+#define DOF_MULTIPLE 0x8004
+#define DOF_PROGMAN 0x0001
+#define DOF_SHELLDATA 0x0002
+
+#define DO_DROPFILE 0x454C4946L
+#define DO_PRINTFILE 0x544E5250L
+
+  WINUSERAPI DWORD WINAPI DragObject(HWND hwndParent,HWND hwndFrom,UINT fmt,ULONG_PTR data,HCURSOR hcur);
+  WINUSERAPI WINBOOL WINAPI DragDetect(HWND hwnd,POINT pt);
+  WINUSERAPI WINBOOL WINAPI DrawIcon(HDC hDC,int X,int Y,HICON hIcon);
+
+#ifndef NODRAWTEXT
+
+#define DT_TOP 0x00000000
+#define DT_LEFT 0x00000000
+#define DT_CENTER 0x00000001
+#define DT_RIGHT 0x00000002
+#define DT_VCENTER 0x00000004
+#define DT_BOTTOM 0x00000008
+#define DT_WORDBREAK 0x00000010
+#define DT_SINGLELINE 0x00000020
+#define DT_EXPANDTABS 0x00000040
+#define DT_TABSTOP 0x00000080
+#define DT_NOCLIP 0x00000100
+#define DT_EXTERNALLEADING 0x00000200
+#define DT_CALCRECT 0x00000400
+#define DT_NOPREFIX 0x00000800
+#define DT_INTERNAL 0x00001000
+
+#define DT_EDITCONTROL 0x00002000
+#define DT_PATH_ELLIPSIS 0x00004000
+#define DT_END_ELLIPSIS 0x00008000
+#define DT_MODIFYSTRING 0x00010000
+#define DT_RTLREADING 0x00020000
+#define DT_WORD_ELLIPSIS 0x00040000
+#define DT_NOFULLWIDTHCHARBREAK 0x00080000
+#define DT_HIDEPREFIX 0x00100000
+#define DT_PREFIXONLY 0x00200000
+
+  typedef struct tagDRAWTEXTPARAMS {
+    UINT cbSize;
+    int iTabLength;
+    int iLeftMargin;
+    int iRightMargin;
+    UINT uiLengthDrawn;
+  } DRAWTEXTPARAMS,*LPDRAWTEXTPARAMS;
+
+#ifdef UNICODE
+#define DrawText DrawTextW
+#define DrawTextEx DrawTextExW
+#else
+#define DrawText DrawTextA
+#define DrawTextEx DrawTextExA
+#endif
+
+  WINUSERAPI int WINAPI DrawTextA(HDC hdc,LPCSTR lpchText,int cchText,LPRECT lprc,UINT format);
+  WINUSERAPI int WINAPI DrawTextW(HDC hdc,LPCWSTR lpchText,int cchText,LPRECT lprc,UINT format);
+  WINUSERAPI int WINAPI DrawTextExA(HDC hdc,LPSTR lpchText,int cchText,LPRECT lprc,UINT format,LPDRAWTEXTPARAMS lpdtp);
+  WINUSERAPI int WINAPI DrawTextExW(HDC hdc,LPWSTR lpchText,int cchText,LPRECT lprc,UINT format,LPDRAWTEXTPARAMS lpdtp);
+#endif
+
+#ifdef UNICODE
+#define GrayString GrayStringW
+#define DrawState DrawStateW
+#define TabbedTextOut TabbedTextOutW
+#define GetTabbedTextExtent GetTabbedTextExtentW
+#else
+#define GrayString GrayStringA
+#define DrawState DrawStateA
+#define TabbedTextOut TabbedTextOutA
+#define GetTabbedTextExtent GetTabbedTextExtentA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GrayStringA(HDC hDC,HBRUSH hBrush,GRAYSTRINGPROC lpOutputFunc,LPARAM lpData,int nCount,int X,int Y,int nWidth,int nHeight);
+  WINUSERAPI WINBOOL WINAPI GrayStringW(HDC hDC,HBRUSH hBrush,GRAYSTRINGPROC lpOutputFunc,LPARAM lpData,int nCount,int X,int Y,int nWidth,int nHeight);
+
+#define DST_COMPLEX 0x0000
+#define DST_TEXT 0x0001
+#define DST_PREFIXTEXT 0x0002
+#define DST_ICON 0x0003
+#define DST_BITMAP 0x0004
+
+#define DSS_NORMAL 0x0000
+#define DSS_UNION 0x0010
+#define DSS_DISABLED 0x0020
+#define DSS_MONO 0x0080
+#define DSS_HIDEPREFIX 0x0200
+#define DSS_PREFIXONLY 0x0400
+#define DSS_RIGHT 0x8000
+
+  WINUSERAPI WINBOOL WINAPI DrawStateA(HDC hdc,HBRUSH hbrFore,DRAWSTATEPROC qfnCallBack,LPARAM lData,WPARAM wData,int x,int y,int cx,int cy,UINT uFlags);
+  WINUSERAPI WINBOOL WINAPI DrawStateW(HDC hdc,HBRUSH hbrFore,DRAWSTATEPROC qfnCallBack,LPARAM lData,WPARAM wData,int x,int y,int cx,int cy,UINT uFlags);
+  WINUSERAPI LONG WINAPI TabbedTextOutA(HDC hdc,int x,int y,LPCSTR lpString,int chCount,int nTabPositions,CONST INT *lpnTabStopPositions,int nTabOrigin);
+  WINUSERAPI LONG WINAPI TabbedTextOutW(HDC hdc,int x,int y,LPCWSTR lpString,int chCount,int nTabPositions,CONST INT *lpnTabStopPositions,int nTabOrigin);
+  WINUSERAPI DWORD WINAPI GetTabbedTextExtentA(HDC hdc,LPCSTR lpString,int chCount,int nTabPositions,CONST INT *lpnTabStopPositions);
+  WINUSERAPI DWORD WINAPI GetTabbedTextExtentW(HDC hdc,LPCWSTR lpString,int chCount,int nTabPositions,CONST INT *lpnTabStopPositions);
+  WINUSERAPI WINBOOL WINAPI UpdateWindow(HWND hWnd);
+  WINUSERAPI HWND WINAPI SetActiveWindow(HWND hWnd);
+  WINUSERAPI HWND WINAPI GetForegroundWindow(VOID);
+  WINUSERAPI WINBOOL WINAPI PaintDesktop(HDC hdc);
+  WINUSERAPI VOID WINAPI SwitchToThisWindow(HWND hwnd,WINBOOL fUnknown);
+  WINUSERAPI WINBOOL WINAPI SetForegroundWindow(HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI AllowSetForegroundWindow(DWORD dwProcessId);
+
+#define ASFW_ANY ((DWORD)-1)
+
+  WINUSERAPI WINBOOL WINAPI LockSetForegroundWindow(
