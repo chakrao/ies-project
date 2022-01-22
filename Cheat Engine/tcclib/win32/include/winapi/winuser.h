@@ -2989,4 +2989,120 @@ extern "C" {
 
 #define ASFW_ANY ((DWORD)-1)
 
-  WINUSERAPI WINBOOL WINAPI LockSetForegroundWindow(
+  WINUSERAPI WINBOOL WINAPI LockSetForegroundWindow(UINT uLockCode);
+
+#define LSFW_LOCK 1
+#define LSFW_UNLOCK 2
+
+  WINUSERAPI HWND WINAPI WindowFromDC(HDC hDC);
+  WINUSERAPI HDC WINAPI GetDC(HWND hWnd);
+  WINUSERAPI HDC WINAPI GetDCEx(HWND hWnd,HRGN hrgnClip,DWORD flags);
+
+#define DCX_WINDOW 0x00000001L
+#define DCX_CACHE 0x00000002L
+#define DCX_NORESETATTRS 0x00000004L
+#define DCX_CLIPCHILDREN 0x00000008L
+#define DCX_CLIPSIBLINGS 0x00000010L
+#define DCX_PARENTCLIP 0x00000020L
+#define DCX_EXCLUDERGN 0x00000040L
+#define DCX_INTERSECTRGN 0x00000080L
+#define DCX_EXCLUDEUPDATE 0x00000100L
+#define DCX_INTERSECTUPDATE 0x00000200L
+#define DCX_LOCKWINDOWUPDATE 0x00000400L
+
+#define DCX_VALIDATE 0x00200000L
+
+  WINUSERAPI HDC WINAPI GetWindowDC(HWND hWnd);
+  WINUSERAPI int WINAPI ReleaseDC(HWND hWnd,HDC hDC);
+  WINUSERAPI HDC WINAPI BeginPaint(HWND hWnd,LPPAINTSTRUCT lpPaint);
+  WINUSERAPI WINBOOL WINAPI EndPaint(HWND hWnd,CONST PAINTSTRUCT *lpPaint);
+  WINUSERAPI WINBOOL WINAPI GetUpdateRect(HWND hWnd,LPRECT lpRect,WINBOOL bErase);
+  WINUSERAPI int WINAPI GetUpdateRgn(HWND hWnd,HRGN hRgn,WINBOOL bErase);
+  WINUSERAPI int WINAPI SetWindowRgn(HWND hWnd,HRGN hRgn,WINBOOL bRedraw);
+  WINUSERAPI int WINAPI GetWindowRgn(HWND hWnd,HRGN hRgn);
+  WINUSERAPI int WINAPI GetWindowRgnBox(HWND hWnd,LPRECT lprc);
+  WINUSERAPI int WINAPI ExcludeUpdateRgn(HDC hDC,HWND hWnd);
+  WINUSERAPI WINBOOL WINAPI InvalidateRect(HWND hWnd,CONST RECT *lpRect,WINBOOL bErase);
+  WINUSERAPI WINBOOL WINAPI ValidateRect(HWND hWnd,CONST RECT *lpRect);
+  WINUSERAPI WINBOOL WINAPI InvalidateRgn(HWND hWnd,HRGN hRgn,WINBOOL bErase);
+  WINUSERAPI WINBOOL WINAPI ValidateRgn(HWND hWnd,HRGN hRgn);
+  WINUSERAPI WINBOOL WINAPI RedrawWindow(HWND hWnd,CONST RECT *lprcUpdate,HRGN hrgnUpdate,UINT flags);
+
+#define RDW_INVALIDATE 0x0001
+#define RDW_INTERNALPAINT 0x0002
+#define RDW_ERASE 0x0004
+
+#define RDW_VALIDATE 0x0008
+#define RDW_NOINTERNALPAINT 0x0010
+#define RDW_NOERASE 0x0020
+
+#define RDW_NOCHILDREN 0x0040
+#define RDW_ALLCHILDREN 0x0080
+
+#define RDW_UPDATENOW 0x0100
+#define RDW_ERASENOW 0x0200
+
+#define RDW_FRAME 0x0400
+#define RDW_NOFRAME 0x0800
+
+  WINUSERAPI WINBOOL WINAPI LockWindowUpdate(HWND hWndLock);
+  WINUSERAPI WINBOOL WINAPI ScrollWindow(HWND hWnd,int XAmount,int YAmount,CONST RECT *lpRect,CONST RECT *lpClipRect);
+  WINUSERAPI WINBOOL WINAPI ScrollDC(HDC hDC,int dx,int dy,CONST RECT *lprcScroll,CONST RECT *lprcClip,HRGN hrgnUpdate,LPRECT lprcUpdate);
+  WINUSERAPI int WINAPI ScrollWindowEx(HWND hWnd,int dx,int dy,CONST RECT *prcScroll,CONST RECT *prcClip,HRGN hrgnUpdate,LPRECT prcUpdate,UINT flags);
+
+#define SW_SCROLLCHILDREN 0x0001
+#define SW_INVALIDATE 0x0002
+#define SW_ERASE 0x0004
+#define SW_SMOOTHSCROLL 0x0010
+
+#ifndef NOSCROLL
+  WINUSERAPI int WINAPI SetScrollPos(HWND hWnd,int nBar,int nPos,WINBOOL bRedraw);
+  WINUSERAPI int WINAPI GetScrollPos(HWND hWnd,int nBar);
+  WINUSERAPI WINBOOL WINAPI SetScrollRange(HWND hWnd,int nBar,int nMinPos,int nMaxPos,WINBOOL bRedraw);
+  WINUSERAPI WINBOOL WINAPI GetScrollRange(HWND hWnd,int nBar,LPINT lpMinPos,LPINT lpMaxPos);
+  WINUSERAPI WINBOOL WINAPI ShowScrollBar(HWND hWnd,int wBar,WINBOOL bShow);
+  WINUSERAPI WINBOOL WINAPI EnableScrollBar(HWND hWnd,UINT wSBflags,UINT wArrows);
+
+#define ESB_ENABLE_BOTH 0x0000
+#define ESB_DISABLE_BOTH 0x0003
+
+#define ESB_DISABLE_LEFT 0x0001
+#define ESB_DISABLE_RIGHT 0x0002
+
+#define ESB_DISABLE_UP 0x0001
+#define ESB_DISABLE_DOWN 0x0002
+
+#define ESB_DISABLE_LTUP ESB_DISABLE_LEFT
+#define ESB_DISABLE_RTDN ESB_DISABLE_RIGHT
+#endif
+
+#ifdef UNICODE
+#define SetProp SetPropW
+#define GetProp GetPropW
+#define RemoveProp RemovePropW
+#define EnumPropsEx EnumPropsExW
+#define EnumProps EnumPropsW
+#define SetWindowText SetWindowTextW
+#define GetWindowText GetWindowTextW
+#define GetWindowTextLength GetWindowTextLengthW
+#else
+#define SetProp SetPropA
+#define GetProp GetPropA
+#define RemoveProp RemovePropA
+#define EnumPropsEx EnumPropsExA
+#define EnumProps EnumPropsA
+#define SetWindowText SetWindowTextA
+#define GetWindowText GetWindowTextA
+#define GetWindowTextLength GetWindowTextLengthA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI SetPropA(HWND hWnd,LPCSTR lpString,HANDLE hData);
+  WINUSERAPI WINBOOL WINAPI SetPropW(HWND hWnd,LPCWSTR lpString,HANDLE hData);
+  WINUSERAPI HANDLE WINAPI GetPropA(HWND hWnd,LPCSTR lpString);
+  WINUSERAPI HANDLE WINAPI GetPropW(HWND hWnd,LPCWSTR lpString);
+  WINUSERAPI HANDLE WINAPI RemovePropA(HWND hWnd,LPCSTR lpString);
+  WINUSERAPI HANDLE WINAPI RemovePropW(HWND hWnd,LPCWSTR lpString);
+  WINUSERAPI int WINAPI EnumPropsExA(HWND hWnd,PROPENUMPROCEXA lpEnumFunc,LPARAM lParam);
+  WINUSERAPI int WINAPI EnumPropsExW(HWND hWnd,PROPENUMPROCEXW lpEnumFunc,LPARAM lParam);
+  WINUSERAPI int WINAPI EnumPropsA(HWND hWnd,PROPENUMPROCA lpEnumFunc);
+  WINUSERAPI int WINAPI EnumPropsW(HWND hWnd,PROPENUMPROCW lpEnumFunc);
