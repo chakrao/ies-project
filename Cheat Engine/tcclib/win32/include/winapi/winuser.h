@@ -3486,4 +3486,140 @@ extern "C" {
 
 #ifdef UNICODE
 #define SetWindowsHook SetWindowsHookW
-#define SetWindowsHookEx S
+#define SetWindowsHookEx SetWindowsHookExW
+#else
+#define SetWindowsHook SetWindowsHookA
+#define SetWindowsHookEx SetWindowsHookExA
+#endif
+
+  WINUSERAPI HHOOK WINAPI SetWindowsHookA(int nFilterType,HOOKPROC pfnFilterProc);
+  WINUSERAPI HHOOK WINAPI SetWindowsHookW(int nFilterType,HOOKPROC pfnFilterProc);
+  WINUSERAPI WINBOOL WINAPI UnhookWindowsHook(int nCode,HOOKPROC pfnFilterProc);
+  WINUSERAPI HHOOK WINAPI SetWindowsHookExA(int idHook,HOOKPROC lpfn,HINSTANCE hmod,DWORD dwThreadId);
+  WINUSERAPI HHOOK WINAPI SetWindowsHookExW(int idHook,HOOKPROC lpfn,HINSTANCE hmod,DWORD dwThreadId);
+  WINUSERAPI WINBOOL WINAPI UnhookWindowsHookEx(HHOOK hhk);
+  WINUSERAPI LRESULT WINAPI CallNextHookEx(HHOOK hhk,int nCode,WPARAM wParam,LPARAM lParam);
+#define DefHookProc(nCode,wParam,lParam,phhk) CallNextHookEx(*phhk,nCode,wParam,lParam)
+#endif
+
+#ifndef NOMENUS
+
+#define MF_INSERT 0x00000000L
+#define MF_CHANGE 0x00000080L
+#define MF_APPEND 0x00000100L
+#define MF_DELETE 0x00000200L
+#define MF_REMOVE 0x00001000L
+#define MF_BYCOMMAND 0x00000000L
+#define MF_BYPOSITION 0x00000400L
+#define MF_SEPARATOR 0x00000800L
+#define MF_ENABLED 0x00000000L
+#define MF_GRAYED 0x00000001L
+#define MF_DISABLED 0x00000002L
+#define MF_UNCHECKED 0x00000000L
+#define MF_CHECKED 0x00000008L
+#define MF_USECHECKBITMAPS 0x00000200L
+#define MF_STRING 0x00000000L
+#define MF_BITMAP 0x00000004L
+#define MF_OWNERDRAW 0x00000100L
+#define MF_POPUP 0x00000010L
+#define MF_MENUBARBREAK 0x00000020L
+#define MF_MENUBREAK 0x00000040L
+#define MF_UNHILITE 0x00000000L
+#define MF_HILITE 0x00000080L
+#define MF_DEFAULT 0x00001000L
+#define MF_SYSMENU 0x00002000L
+#define MF_HELP 0x00004000L
+#define MF_RIGHTJUSTIFY 0x00004000L
+#define MF_MOUSESELECT 0x00008000L
+#define MF_END 0x00000080L
+
+#define MFT_STRING MF_STRING
+#define MFT_BITMAP MF_BITMAP
+#define MFT_MENUBARBREAK MF_MENUBARBREAK
+#define MFT_MENUBREAK MF_MENUBREAK
+#define MFT_OWNERDRAW MF_OWNERDRAW
+#define MFT_RADIOCHECK 0x00000200L
+#define MFT_SEPARATOR MF_SEPARATOR
+#define MFT_RIGHTORDER 0x00002000L
+#define MFT_RIGHTJUSTIFY MF_RIGHTJUSTIFY
+
+#define MFS_GRAYED 0x00000003L
+#define MFS_DISABLED MFS_GRAYED
+#define MFS_CHECKED MF_CHECKED
+#define MFS_HILITE MF_HILITE
+#define MFS_ENABLED MF_ENABLED
+#define MFS_UNCHECKED MF_UNCHECKED
+#define MFS_UNHILITE MF_UNHILITE
+#define MFS_DEFAULT MF_DEFAULT
+
+  WINUSERAPI WINBOOL WINAPI CheckMenuRadioItem(HMENU hmenu,UINT first,UINT last,UINT check,UINT flags);
+
+  typedef struct {
+    WORD versionNumber;
+    WORD offset;
+  } MENUITEMTEMPLATEHEADER,*PMENUITEMTEMPLATEHEADER;
+
+  typedef struct {
+    WORD mtOption;
+    WORD mtID;
+    WCHAR mtString[1];
+  } MENUITEMTEMPLATE,*PMENUITEMTEMPLATE;
+#define MF_END 0x00000080L
+#endif
+
+#ifndef NOSYSCOMMANDS
+
+#define SC_SIZE 0xF000
+#define SC_MOVE 0xF010
+#define SC_MINIMIZE 0xF020
+#define SC_MAXIMIZE 0xF030
+#define SC_NEXTWINDOW 0xF040
+#define SC_PREVWINDOW 0xF050
+#define SC_CLOSE 0xF060
+#define SC_VSCROLL 0xF070
+#define SC_HSCROLL 0xF080
+#define SC_MOUSEMENU 0xF090
+#define SC_KEYMENU 0xF100
+#define SC_ARRANGE 0xF110
+#define SC_RESTORE 0xF120
+#define SC_TASKLIST 0xF130
+#define SC_SCREENSAVE 0xF140
+#define SC_HOTKEY 0xF150
+#define SC_DEFAULT 0xF160
+#define SC_MONITORPOWER 0xF170
+#define SC_CONTEXTHELP 0xF180
+#define SC_SEPARATOR 0xF00F
+#define SC_ICON SC_MINIMIZE
+#define SC_ZOOM SC_MAXIMIZE
+#endif
+
+#ifdef UNICODE
+#define LoadBitmap LoadBitmapW
+#define LoadCursor LoadCursorW
+#define LoadCursorFromFile LoadCursorFromFileW
+#else
+#define LoadBitmap LoadBitmapA
+#define LoadCursor LoadCursorA
+#define LoadCursorFromFile LoadCursorFromFileA
+#endif
+
+  WINUSERAPI HBITMAP WINAPI LoadBitmapA(HINSTANCE hInstance,LPCSTR lpBitmapName);
+  WINUSERAPI HBITMAP WINAPI LoadBitmapW(HINSTANCE hInstance,LPCWSTR lpBitmapName);
+  WINUSERAPI HCURSOR WINAPI LoadCursorA(HINSTANCE hInstance,LPCSTR lpCursorName);
+  WINUSERAPI HCURSOR WINAPI LoadCursorW(HINSTANCE hInstance,LPCWSTR lpCursorName);
+  WINUSERAPI HCURSOR WINAPI LoadCursorFromFileA(LPCSTR lpFileName);
+  WINUSERAPI HCURSOR WINAPI LoadCursorFromFileW(LPCWSTR lpFileName);
+  WINUSERAPI HCURSOR WINAPI CreateCursor(HINSTANCE hInst,int xHotSpot,int yHotSpot,int nWidth,int nHeight,CONST VOID *pvANDPlane,CONST VOID *pvXORPlane);
+  WINUSERAPI WINBOOL WINAPI DestroyCursor(HCURSOR hCursor);
+
+#define CopyCursor(pcur) ((HCURSOR)CopyIcon((HICON)(pcur)))
+
+#define IDC_ARROW MAKEINTRESOURCE(32512)
+#define IDC_IBEAM MAKEINTRESOURCE(32513)
+#define IDC_WAIT MAKEINTRESOURCE(32514)
+#define IDC_CROSS MAKEINTRESOURCE(32515)
+#define IDC_UPARROW MAKEINTRESOURCE(32516)
+#define IDC_SIZE MAKEINTRESOURCE(32640)
+#define IDC_ICON MAKEINTRESOURCE(32641)
+#define IDC_SIZENWSE MAKEINTRESOURCE(32642)
+#define IDC_SIZENESW MAKEINTR
