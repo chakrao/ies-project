@@ -3359,4 +3359,131 @@ extern "C" {
 #define GetWindowLongPtr GetWindowLongPtrW
 #define SetWindowLongPtr SetWindowLongPtrW
 #else
-#define GetWindowLon
+#define GetWindowLongPtr GetWindowLongPtrA
+#define SetWindowLongPtr SetWindowLongPtrA
+#endif
+
+  WINUSERAPI LONG_PTR WINAPI GetWindowLongPtrA(HWND hWnd,int nIndex);
+  WINUSERAPI LONG_PTR WINAPI GetWindowLongPtrW(HWND hWnd,int nIndex);
+  WINUSERAPI LONG_PTR WINAPI SetWindowLongPtrA(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+  WINUSERAPI LONG_PTR WINAPI SetWindowLongPtrW(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+#else
+
+#ifdef UNICODE
+#define GetWindowLongPtr GetWindowLongPtrW
+#define SetWindowLongPtr SetWindowLongPtrW
+#else
+#define GetWindowLongPtr GetWindowLongPtrA
+#define SetWindowLongPtr SetWindowLongPtrA
+#endif
+
+#define GetWindowLongPtrA GetWindowLongA
+#define GetWindowLongPtrW GetWindowLongW
+#define SetWindowLongPtrA SetWindowLongA
+#define SetWindowLongPtrW SetWindowLongW
+#endif
+
+#ifdef UNICODE
+#define GetClassLong GetClassLongW
+#define SetClassLong SetClassLongW
+#else
+#define GetClassLong GetClassLongA
+#define SetClassLong SetClassLongA
+#endif
+
+  WINUSERAPI WORD WINAPI GetClassWord(HWND hWnd,int nIndex);
+  WINUSERAPI WORD WINAPI SetClassWord(HWND hWnd,int nIndex,WORD wNewWord);
+  WINUSERAPI DWORD WINAPI GetClassLongA(HWND hWnd,int nIndex);
+  WINUSERAPI DWORD WINAPI GetClassLongW(HWND hWnd,int nIndex);
+  WINUSERAPI DWORD WINAPI SetClassLongA(HWND hWnd,int nIndex,LONG dwNewLong);
+  WINUSERAPI DWORD WINAPI SetClassLongW(HWND hWnd,int nIndex,LONG dwNewLong);
+
+#ifdef _WIN64
+
+#ifdef UNICODE
+#define GetClassLongPtr GetClassLongPtrW
+#define SetClassLongPtr SetClassLongPtrW
+#else
+#define GetClassLongPtr GetClassLongPtrA
+#define SetClassLongPtr SetClassLongPtrA
+#endif
+
+  WINUSERAPI ULONG_PTR WINAPI GetClassLongPtrA(HWND hWnd,int nIndex);
+  WINUSERAPI ULONG_PTR WINAPI GetClassLongPtrW(HWND hWnd,int nIndex);
+  WINUSERAPI ULONG_PTR WINAPI SetClassLongPtrA(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+  WINUSERAPI ULONG_PTR WINAPI SetClassLongPtrW(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+#else
+#ifdef UNICODE
+#define GetClassLongPtr GetClassLongPtrW
+#define SetClassLongPtr SetClassLongPtrW
+#else
+#define GetClassLongPtr GetClassLongPtrA
+#define SetClassLongPtr SetClassLongPtrA
+#endif
+
+#define GetClassLongPtrA GetClassLongA
+#define GetClassLongPtrW GetClassLongW
+#define SetClassLongPtrA SetClassLongA
+#define SetClassLongPtrW SetClassLongW
+#endif
+#endif
+
+#ifdef UNICODE
+#define FindWindow FindWindowW
+#define FindWindowEx FindWindowExW
+#define GetClassName GetClassNameW
+#else
+#define FindWindow FindWindowA
+#define FindWindowEx FindWindowExA
+#define GetClassName GetClassNameA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetProcessDefaultLayout(DWORD *pdwDefaultLayout);
+  WINUSERAPI WINBOOL WINAPI SetProcessDefaultLayout(DWORD dwDefaultLayout);
+  WINUSERAPI HWND WINAPI GetDesktopWindow(VOID);
+  WINUSERAPI HWND WINAPI GetParent(HWND hWnd);
+  WINUSERAPI HWND WINAPI SetParent(HWND hWndChild,HWND hWndNewParent);
+  WINUSERAPI WINBOOL WINAPI EnumChildWindows(HWND hWndParent,WNDENUMPROC lpEnumFunc,LPARAM lParam);
+  WINUSERAPI HWND WINAPI FindWindowA(LPCSTR lpClassName,LPCSTR lpWindowName);
+  WINUSERAPI HWND WINAPI FindWindowW(LPCWSTR lpClassName,LPCWSTR lpWindowName);
+  WINUSERAPI HWND WINAPI FindWindowExA(HWND hWndParent,HWND hWndChildAfter,LPCSTR lpszClass,LPCSTR lpszWindow);
+  WINUSERAPI HWND WINAPI FindWindowExW(HWND hWndParent,HWND hWndChildAfter,LPCWSTR lpszClass,LPCWSTR lpszWindow);
+  WINUSERAPI HWND WINAPI GetShellWindow(VOID);
+  WINUSERAPI WINBOOL WINAPI RegisterShellHookWindow(HWND hwnd);
+  WINUSERAPI WINBOOL WINAPI DeregisterShellHookWindow(HWND hwnd);
+  WINUSERAPI WINBOOL WINAPI EnumWindows(WNDENUMPROC lpEnumFunc,LPARAM lParam);
+  WINUSERAPI WINBOOL WINAPI EnumThreadWindows(DWORD dwThreadId,WNDENUMPROC lpfn,LPARAM lParam);
+
+#define EnumTaskWindows(hTask,lpfn,lParam) EnumThreadWindows(HandleToUlong(hTask),lpfn,lParam)
+
+  WINUSERAPI int WINAPI GetClassNameA(HWND hWnd,LPSTR lpClassName,int nMaxCount);
+  WINUSERAPI int WINAPI GetClassNameW(HWND hWnd,LPWSTR lpClassName,int nMaxCount);
+  WINUSERAPI HWND WINAPI GetTopWindow(HWND hWnd);
+
+#define GetNextWindow(hWnd,wCmd) GetWindow(hWnd,wCmd)
+#define GetSysModalWindow() (NULL)
+#define SetSysModalWindow(hWnd) (NULL)
+
+  WINUSERAPI DWORD WINAPI GetWindowThreadProcessId(HWND hWnd,LPDWORD lpdwProcessId);
+  WINUSERAPI WINBOOL WINAPI IsGUIThread(WINBOOL bConvert);
+
+#define GetWindowTask(hWnd) ((HANDLE)(DWORD_PTR)GetWindowThreadProcessId(hWnd,NULL))
+
+  WINUSERAPI HWND WINAPI GetLastActivePopup(HWND hWnd);
+
+#define GW_HWNDFIRST 0
+#define GW_HWNDLAST 1
+#define GW_HWNDNEXT 2
+#define GW_HWNDPREV 3
+#define GW_OWNER 4
+#define GW_CHILD 5
+#define GW_ENABLEDPOPUP 6
+#define GW_MAX 6
+
+  WINUSERAPI HWND WINAPI GetWindow(HWND hWnd,UINT uCmd);
+
+#ifndef NOWH
+
+#ifdef UNICODE
+#define SetWindowsHook SetWindowsHookW
+#define SetWindowsHookEx S
