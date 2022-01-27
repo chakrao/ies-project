@@ -3622,4 +3622,146 @@ extern "C" {
 #define IDC_SIZE MAKEINTRESOURCE(32640)
 #define IDC_ICON MAKEINTRESOURCE(32641)
 #define IDC_SIZENWSE MAKEINTRESOURCE(32642)
-#define IDC_SIZENESW MAKEINTR
+#define IDC_SIZENESW MAKEINTRESOURCE(32643)
+#define IDC_SIZEWE MAKEINTRESOURCE(32644)
+#define IDC_SIZENS MAKEINTRESOURCE(32645)
+#define IDC_SIZEALL MAKEINTRESOURCE(32646)
+#define IDC_NO MAKEINTRESOURCE(32648)
+#define IDC_HAND MAKEINTRESOURCE(32649)
+#define IDC_APPSTARTING MAKEINTRESOURCE(32650)
+#define IDC_HELP MAKEINTRESOURCE(32651)
+
+  WINUSERAPI WINBOOL WINAPI SetSystemCursor(HCURSOR hcur,DWORD id);
+
+  typedef struct _ICONINFO {
+    WINBOOL fIcon;
+    DWORD xHotspot;
+    DWORD yHotspot;
+    HBITMAP hbmMask;
+    HBITMAP hbmColor;
+  } ICONINFO;
+  typedef ICONINFO *PICONINFO;
+
+#ifdef UNICODE
+#define LoadIcon LoadIconW
+#define PrivateExtractIcons PrivateExtractIconsW
+#else
+#define LoadIcon LoadIconA
+#define PrivateExtractIcons PrivateExtractIconsA
+#endif
+
+  WINUSERAPI HICON WINAPI LoadIconA(HINSTANCE hInstance,LPCSTR lpIconName);
+  WINUSERAPI HICON WINAPI LoadIconW(HINSTANCE hInstance,LPCWSTR lpIconName);
+  WINUSERAPI UINT WINAPI PrivateExtractIconsA(LPCSTR szFileName,int nIconIndex,int cxIcon,int cyIcon,HICON *phicon,UINT *piconid,UINT nIcons,UINT flags);
+  WINUSERAPI UINT WINAPI PrivateExtractIconsW(LPCWSTR szFileName,int nIconIndex,int cxIcon,int cyIcon,HICON *phicon,UINT *piconid,UINT nIcons,UINT flags);
+  WINUSERAPI HICON WINAPI CreateIcon(HINSTANCE hInstance,int nWidth,int nHeight,BYTE cPlanes,BYTE cBitsPixel,CONST BYTE *lpbANDbits,CONST BYTE *lpbXORbits);
+  WINUSERAPI WINBOOL WINAPI DestroyIcon(HICON hIcon);
+  WINUSERAPI int WINAPI LookupIconIdFromDirectory(PBYTE presbits,WINBOOL fIcon);
+  WINUSERAPI int WINAPI LookupIconIdFromDirectoryEx(PBYTE presbits,WINBOOL fIcon,int cxDesired,int cyDesired,UINT Flags);
+  WINUSERAPI HICON WINAPI CreateIconFromResource(PBYTE presbits,DWORD dwResSize,WINBOOL fIcon,DWORD dwVer);
+  WINUSERAPI HICON WINAPI CreateIconFromResourceEx(PBYTE presbits,DWORD dwResSize,WINBOOL fIcon,DWORD dwVer,int cxDesired,int cyDesired,UINT Flags);
+
+  typedef struct tagCURSORSHAPE {
+    int xHotSpot;
+    int yHotSpot;
+    int cx;
+    int cy;
+    int cbWidth;
+    BYTE Planes;
+    BYTE BitsPixel;
+  } CURSORSHAPE,*LPCURSORSHAPE;
+
+#define IMAGE_BITMAP 0
+#define IMAGE_ICON 1
+#define IMAGE_CURSOR 2
+#define IMAGE_ENHMETAFILE 3
+
+#define LR_DEFAULTCOLOR 0x0000
+#define LR_MONOCHROME 0x0001
+#define LR_COLOR 0x0002
+#define LR_COPYRETURNORG 0x0004
+#define LR_COPYDELETEORG 0x0008
+#define LR_LOADFROMFILE 0x0010
+#define LR_LOADTRANSPARENT 0x0020
+#define LR_DEFAULTSIZE 0x0040
+#define LR_VGACOLOR 0x0080
+#define LR_LOADMAP3DCOLORS 0x1000
+#define LR_CREATEDIBSECTION 0x2000
+#define LR_COPYFROMRESOURCE 0x4000
+#define LR_SHARED 0x8000
+
+#ifdef UNICODE
+#define LoadImage LoadImageW
+#else
+#define LoadImage LoadImageA
+#endif
+
+  WINUSERAPI HANDLE WINAPI LoadImageA(HINSTANCE hInst,LPCSTR name,UINT type,int cx,int cy,UINT fuLoad);
+  WINUSERAPI HANDLE WINAPI LoadImageW(HINSTANCE hInst,LPCWSTR name,UINT type,int cx,int cy,UINT fuLoad);
+  WINUSERAPI HANDLE WINAPI CopyImage(HANDLE h,UINT type,int cx,int cy,UINT flags);
+
+#define DI_MASK 0x0001
+#define DI_IMAGE 0x0002
+#define DI_NORMAL 0x0003
+#define DI_COMPAT 0x0004
+#define DI_DEFAULTSIZE 0x0008
+#define DI_NOMIRROR 0x0010
+
+  WINUSERAPI WINBOOL WINAPI DrawIconEx(HDC hdc,int xLeft,int yTop,HICON hIcon,int cxWidth,int cyWidth,UINT istepIfAniCur,HBRUSH hbrFlickerFreeDraw,UINT diFlags);
+  WINUSERAPI HICON WINAPI CreateIconIndirect(PICONINFO piconinfo);
+  WINUSERAPI HICON WINAPI CopyIcon(HICON hIcon);
+  WINUSERAPI WINBOOL WINAPI GetIconInfo(HICON hIcon,PICONINFO piconinfo);
+
+#define RES_ICON 1
+#define RES_CURSOR 2
+
+#ifdef OEMRESOURCE
+
+#define OBM_CLOSE 32754
+#define OBM_UPARROW 32753
+#define OBM_DNARROW 32752
+#define OBM_RGARROW 32751
+#define OBM_LFARROW 32750
+#define OBM_REDUCE 32749
+#define OBM_ZOOM 32748
+#define OBM_RESTORE 32747
+#define OBM_REDUCED 32746
+#define OBM_ZOOMD 32745
+#define OBM_RESTORED 32744
+#define OBM_UPARROWD 32743
+#define OBM_DNARROWD 32742
+#define OBM_RGARROWD 32741
+#define OBM_LFARROWD 32740
+#define OBM_MNARROW 32739
+#define OBM_COMBO 32738
+#define OBM_UPARROWI 32737
+#define OBM_DNARROWI 32736
+#define OBM_RGARROWI 32735
+#define OBM_LFARROWI 32734
+
+#define OBM_OLD_CLOSE 32767
+#define OBM_SIZE 32766
+#define OBM_OLD_UPARROW 32765
+#define OBM_OLD_DNARROW 32764
+#define OBM_OLD_RGARROW 32763
+#define OBM_OLD_LFARROW 32762
+#define OBM_BTSIZE 32761
+#define OBM_CHECK 32760
+#define OBM_CHECKBOXES 32759
+#define OBM_BTNCORNERS 32758
+#define OBM_OLD_REDUCE 32757
+#define OBM_OLD_ZOOM 32756
+#define OBM_OLD_RESTORE 32755
+
+#define OCR_NORMAL 32512
+#define OCR_IBEAM 32513
+#define OCR_WAIT 32514
+#define OCR_CROSS 32515
+#define OCR_UP 32516
+#define OCR_SIZE 32640
+#define OCR_ICON 32641
+#define OCR_SIZENWSE 32642
+#define OCR_SIZENESW 32643
+#define OCR_SIZEWE 32644
+#define OCR_SIZENS 32645
+#define OCR_SIZEA
