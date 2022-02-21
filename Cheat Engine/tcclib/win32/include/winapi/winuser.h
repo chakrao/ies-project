@@ -3949,4 +3949,167 @@ extern "C" {
 
 #define BN_CLICKED 0
 #define BN_PAINT 1
-#define
+#define BN_HILITE 2
+#define BN_UNHILITE 3
+#define BN_DISABLE 4
+#define BN_DOUBLECLICKED 5
+#define BN_PUSHED BN_HILITE
+#define BN_UNPUSHED BN_UNHILITE
+#define BN_DBLCLK BN_DOUBLECLICKED
+#define BN_SETFOCUS 6
+#define BN_KILLFOCUS 7
+
+#define BM_GETCHECK 0x00F0
+#define BM_SETCHECK 0x00F1
+#define BM_GETSTATE 0x00F2
+#define BM_SETSTATE 0x00F3
+#define BM_SETSTYLE 0x00F4
+#define BM_CLICK 0x00F5
+#define BM_GETIMAGE 0x00F6
+#define BM_SETIMAGE 0x00F7
+
+#define BST_UNCHECKED 0x0000
+#define BST_CHECKED 0x0001
+#define BST_INDETERMINATE 0x0002
+#define BST_PUSHED 0x0004
+#define BST_FOCUS 0x0008
+
+#define SS_LEFT 0x00000000L
+#define SS_CENTER 0x00000001L
+#define SS_RIGHT 0x00000002L
+#define SS_ICON 0x00000003L
+#define SS_BLACKRECT 0x00000004L
+#define SS_GRAYRECT 0x00000005L
+#define SS_WHITERECT 0x00000006L
+#define SS_BLACKFRAME 0x00000007L
+#define SS_GRAYFRAME 0x00000008L
+#define SS_WHITEFRAME 0x00000009L
+#define SS_USERITEM 0x0000000AL
+#define SS_SIMPLE 0x0000000BL
+#define SS_LEFTNOWORDWRAP 0x0000000CL
+#define SS_OWNERDRAW 0x0000000DL
+#define SS_BITMAP 0x0000000EL
+#define SS_ENHMETAFILE 0x0000000FL
+#define SS_ETCHEDHORZ 0x00000010L
+#define SS_ETCHEDVERT 0x00000011L
+#define SS_ETCHEDFRAME 0x00000012L
+#define SS_TYPEMASK 0x0000001FL
+#define SS_REALSIZECONTROL 0x00000040L
+#define SS_NOPREFIX 0x00000080L
+#define SS_NOTIFY 0x00000100L
+#define SS_CENTERIMAGE 0x00000200L
+#define SS_RIGHTJUST 0x00000400L
+#define SS_REALSIZEIMAGE 0x00000800L
+#define SS_SUNKEN 0x00001000L
+#define SS_EDITCONTROL 0x00002000L
+#define SS_ENDELLIPSIS 0x00004000L
+#define SS_PATHELLIPSIS 0x00008000L
+#define SS_WORDELLIPSIS 0x0000C000L
+#define SS_ELLIPSISMASK 0x0000C000L
+
+#ifndef NOWINMESSAGES
+
+#define STM_SETICON 0x0170
+#define STM_GETICON 0x0171
+#define STM_SETIMAGE 0x0172
+#define STM_GETIMAGE 0x0173
+#define STN_CLICKED 0
+#define STN_DBLCLK 1
+#define STN_ENABLE 2
+#define STN_DISABLE 3
+#define STM_MSGMAX 0x0174
+#endif
+
+#define WC_DIALOG (MAKEINTATOM(0x8002))
+
+#define DWL_MSGRESULT 0
+#define DWL_DLGPROC 4
+#define DWL_USER 8
+
+#ifdef _WIN64
+
+#undef DWL_MSGRESULT
+#undef DWL_DLGPROC
+#undef DWL_USER
+#endif
+
+#define DWLP_MSGRESULT 0
+#define DWLP_DLGPROC DWLP_MSGRESULT + sizeof(LRESULT)
+#define DWLP_USER DWLP_DLGPROC + sizeof(DLGPROC)
+
+#ifndef NOMSG
+
+#ifdef UNICODE
+#define IsDialogMessage IsDialogMessageW
+#else
+#define IsDialogMessage IsDialogMessageA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI IsDialogMessageA(HWND hDlg,LPMSG lpMsg);
+  WINUSERAPI WINBOOL WINAPI IsDialogMessageW(HWND hDlg,LPMSG lpMsg);
+#endif
+
+#ifdef UNICODE
+#define DlgDirList DlgDirListW
+#define DlgDirSelectEx DlgDirSelectExW
+#define DlgDirListComboBox DlgDirListComboBoxW
+#define DlgDirSelectComboBoxEx DlgDirSelectComboBoxExW
+#else
+#define DlgDirList DlgDirListA
+#define DlgDirSelectEx DlgDirSelectExA
+#define DlgDirListComboBox DlgDirListComboBoxA
+#define DlgDirSelectComboBoxEx DlgDirSelectComboBoxExA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI MapDialogRect(HWND hDlg,LPRECT lpRect);
+  WINUSERAPI int WINAPI DlgDirListA(HWND hDlg,LPSTR lpPathSpec,int nIDListBox,int nIDStaticPath,UINT uFileType);
+  WINUSERAPI int WINAPI DlgDirListW(HWND hDlg,LPWSTR lpPathSpec,int nIDListBox,int nIDStaticPath,UINT uFileType);
+
+#define DDL_READWRITE 0x0000
+#define DDL_READONLY 0x0001
+#define DDL_HIDDEN 0x0002
+#define DDL_SYSTEM 0x0004
+#define DDL_DIRECTORY 0x0010
+#define DDL_ARCHIVE 0x0020
+
+#define DDL_POSTMSGS 0x2000
+#define DDL_DRIVES 0x4000
+#define DDL_EXCLUSIVE 0x8000
+
+  WINUSERAPI WINBOOL WINAPI DlgDirSelectExA(HWND hwndDlg,LPSTR lpString,int chCount,int idListBox);
+  WINUSERAPI WINBOOL WINAPI DlgDirSelectExW(HWND hwndDlg,LPWSTR lpString,int chCount,int idListBox);
+  WINUSERAPI int WINAPI DlgDirListComboBoxA(HWND hDlg,LPSTR lpPathSpec,int nIDComboBox,int nIDStaticPath,UINT uFiletype);
+  WINUSERAPI int WINAPI DlgDirListComboBoxW(HWND hDlg,LPWSTR lpPathSpec,int nIDComboBox,int nIDStaticPath,UINT uFiletype);
+  WINUSERAPI WINBOOL WINAPI DlgDirSelectComboBoxExA(HWND hwndDlg,LPSTR lpString,int cchOut,int idComboBox);
+  WINUSERAPI WINBOOL WINAPI DlgDirSelectComboBoxExW(HWND hwndDlg,LPWSTR lpString,int cchOut,int idComboBox);
+
+#define DS_ABSALIGN 0x01L
+#define DS_SYSMODAL 0x02L
+#define DS_LOCALEDIT 0x20L
+#define DS_SETFONT 0x40L
+#define DS_MODALFRAME 0x80L
+#define DS_NOIDLEMSG 0x100L
+#define DS_SETFOREGROUND 0x200L
+
+#define DS_3DLOOK 0x0004L
+#define DS_FIXEDSYS 0x0008L
+#define DS_NOFAILCREATE 0x0010L
+#define DS_CONTROL 0x0400L
+#define DS_CENTER 0x0800L
+#define DS_CENTERMOUSE 0x1000L
+#define DS_CONTEXTHELP 0x2000L
+
+#define DS_SHELLFONT (DS_SETFONT | DS_FIXEDSYS)
+
+#if(_WIN32_WCE >= 0x0500)
+#define DS_USEPIXELS 0x8000L
+#endif
+
+#define DM_GETDEFID (WM_USER+0)
+#define DM_SETDEFID (WM_USER+1)
+#define DM_REPOSITION (WM_USER+2)
+
+#define DC_HASDEFID 0x534B
+
+#define DLGC_WANTARROWS 0x0001
+#define DLG
