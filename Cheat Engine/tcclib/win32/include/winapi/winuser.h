@@ -4290,4 +4290,170 @@ extern "C" {
 #define SBS_LEFTALIGN 0x0002L
 #define SBS_BOTTOMALIGN 0x0004L
 #define SBS_RIGHTALIGN 0x0004L
-#define SBS_SIZEBOXTOPLEFTALIGN
+#define SBS_SIZEBOXTOPLEFTALIGN 0x0002L
+#define SBS_SIZEBOXBOTTOMRIGHTALIGN 0x0004L
+#define SBS_SIZEBOX 0x0008L
+#define SBS_SIZEGRIP 0x0010L
+#endif
+
+#ifndef NOWINMESSAGES
+#define SBM_SETPOS 0x00E0
+#define SBM_GETPOS 0x00E1
+#define SBM_SETRANGE 0x00E2
+#define SBM_SETRANGEREDRAW 0x00E6
+#define SBM_GETRANGE 0x00E3
+#define SBM_ENABLE_ARROWS 0x00E4
+#define SBM_SETSCROLLINFO 0x00E9
+#define SBM_GETSCROLLINFO 0x00EA
+#define SBM_GETSCROLLBARINFO 0x00EB
+
+#define SIF_RANGE 0x0001
+#define SIF_PAGE 0x0002
+#define SIF_POS 0x0004
+#define SIF_DISABLENOSCROLL 0x0008
+#define SIF_TRACKPOS 0x0010
+#define SIF_ALL (SIF_RANGE | SIF_PAGE | SIF_POS | SIF_TRACKPOS)
+
+  typedef struct tagSCROLLINFO {
+    UINT cbSize;
+    UINT fMask;
+    int nMin;
+    int nMax;
+    UINT nPage;
+    int nPos;
+    int nTrackPos;
+  } SCROLLINFO,*LPSCROLLINFO;
+  typedef SCROLLINFO CONST *LPCSCROLLINFO;
+
+  WINUSERAPI int WINAPI SetScrollInfo(HWND hwnd,int nBar,LPCSCROLLINFO lpsi,WINBOOL redraw);
+  WINUSERAPI WINBOOL WINAPI GetScrollInfo(HWND hwnd,int nBar,LPSCROLLINFO lpsi);
+#endif
+#endif
+
+#ifndef NOMDI
+
+#define MDIS_ALLCHILDSTYLES 0x0001
+
+#define MDITILE_VERTICAL 0x0000
+#define MDITILE_HORIZONTAL 0x0001
+#define MDITILE_SKIPDISABLED 0x0002
+#define MDITILE_ZORDER 0x0004
+
+  typedef struct tagMDICREATESTRUCTA {
+    LPCSTR szClass;
+    LPCSTR szTitle;
+    HANDLE hOwner;
+    int x;
+    int y;
+    int cx;
+    int cy;
+    DWORD style;
+    LPARAM lParam;
+  } MDICREATESTRUCTA,*LPMDICREATESTRUCTA;
+
+  typedef struct tagMDICREATESTRUCTW {
+    LPCWSTR szClass;
+    LPCWSTR szTitle;
+    HANDLE hOwner;
+    int x;
+    int y;
+    int cx;
+    int cy;
+    DWORD style;
+    LPARAM lParam;
+  } MDICREATESTRUCTW,*LPMDICREATESTRUCTW;
+
+#ifdef UNICODE
+  typedef MDICREATESTRUCTW MDICREATESTRUCT;
+  typedef LPMDICREATESTRUCTW LPMDICREATESTRUCT;
+#else
+  typedef MDICREATESTRUCTA MDICREATESTRUCT;
+  typedef LPMDICREATESTRUCTA LPMDICREATESTRUCT;
+#endif
+
+  typedef struct tagCLIENTCREATESTRUCT {
+    HANDLE hWindowMenu;
+    UINT idFirstChild;
+  } CLIENTCREATESTRUCT,*LPCLIENTCREATESTRUCT;
+
+#ifdef UNICODE
+#define DefFrameProc DefFrameProcW
+#define DefMDIChildProc DefMDIChildProcW
+#define CreateMDIWindow CreateMDIWindowW
+#else
+#define DefFrameProc DefFrameProcA
+#define DefMDIChildProc DefMDIChildProcA
+#define CreateMDIWindow CreateMDIWindowA
+#endif
+
+  WINUSERAPI LRESULT WINAPI DefFrameProcA(HWND hWnd,HWND hWndMDIClient,UINT uMsg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI DefFrameProcW(HWND hWnd,HWND hWndMDIClient,UINT uMsg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI DefMDIChildProcA(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
+  WINUSERAPI LRESULT WINAPI DefMDIChildProcW(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+#ifndef NOMSG
+  WINUSERAPI WINBOOL WINAPI TranslateMDISysAccel(HWND hWndClient,LPMSG lpMsg);
+#endif
+
+  WINUSERAPI UINT WINAPI ArrangeIconicWindows(HWND hWnd);
+  WINUSERAPI HWND WINAPI CreateMDIWindowA(LPCSTR lpClassName,LPCSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HINSTANCE hInstance,LPARAM lParam);
+  WINUSERAPI HWND WINAPI CreateMDIWindowW(LPCWSTR lpClassName,LPCWSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HINSTANCE hInstance,LPARAM lParam);
+  WINUSERAPI WORD WINAPI TileWindows(HWND hwndParent,UINT wHow,CONST RECT *lpRect,UINT cKids,const HWND *lpKids);
+  WINUSERAPI WORD WINAPI CascadeWindows(HWND hwndParent,UINT wHow,CONST RECT *lpRect,UINT cKids,const HWND *lpKids);
+#endif
+#endif
+
+#ifndef NOHELP
+
+  typedef DWORD HELPPOLY;
+  typedef struct tagMULTIKEYHELPA {
+    DWORD mkSize;
+    CHAR mkKeylist;
+    CHAR szKeyphrase[1];
+  } MULTIKEYHELPA,*PMULTIKEYHELPA,*LPMULTIKEYHELPA;
+
+  typedef struct tagMULTIKEYHELPW {
+    DWORD mkSize;
+    WCHAR mkKeylist;
+    WCHAR szKeyphrase[1];
+  } MULTIKEYHELPW,*PMULTIKEYHELPW,*LPMULTIKEYHELPW;
+
+#ifdef UNICODE
+  typedef MULTIKEYHELPW MULTIKEYHELP;
+  typedef PMULTIKEYHELPW PMULTIKEYHELP;
+  typedef LPMULTIKEYHELPW LPMULTIKEYHELP;
+#else
+  typedef MULTIKEYHELPA MULTIKEYHELP;
+  typedef PMULTIKEYHELPA PMULTIKEYHELP;
+  typedef LPMULTIKEYHELPA LPMULTIKEYHELP;
+#endif
+
+  typedef struct tagHELPWININFOA {
+    int wStructSize;
+    int x;
+    int y;
+    int dx;
+    int dy;
+    int wMax;
+    CHAR rgchMember[2];
+  } HELPWININFOA,*PHELPWININFOA,*LPHELPWININFOA;
+
+  typedef struct tagHELPWININFOW {
+    int wStructSize;
+    int x;
+    int y;
+    int dx;
+    int dy;
+    int wMax;
+    WCHAR rgchMember[2];
+  } HELPWININFOW,*PHELPWININFOW,*LPHELPWININFOW;
+
+#ifdef UNICODE
+  typedef HELPWININFOW HELPWININFO;
+  typedef PHELPWININFOW PHELPWININFO;
+  typedef LPHELPWININFOW LPHELPWININFO;
+#else
+  typedef HELPWININFOA HELPWININFO;
+  typedef PHELPWININFOA PHELPWININFO;
+  typedef LPHELPWININFOA LPHELPWININFO;
+#en
