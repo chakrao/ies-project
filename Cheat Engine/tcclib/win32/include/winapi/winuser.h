@@ -4751,4 +4751,162 @@ extern "C" {
 #define ARW_STARTTOP 0x0002L
 
 #define ARW_LEFT 0x0000L
-#defi
+#define ARW_RIGHT 0x0000L
+#define ARW_UP 0x0004L
+#define ARW_DOWN 0x0004L
+#define ARW_HIDE 0x0008L
+
+  typedef struct tagMINIMIZEDMETRICS {
+    UINT cbSize;
+    int iWidth;
+    int iHorzGap;
+    int iVertGap;
+    int iArrange;
+  } MINIMIZEDMETRICS,*PMINIMIZEDMETRICS,*LPMINIMIZEDMETRICS;
+
+#ifdef _WINGDI_
+#ifndef NOGDI
+  typedef struct tagICONMETRICSA {
+    UINT cbSize;
+    int iHorzSpacing;
+    int iVertSpacing;
+    int iTitleWrap;
+    LOGFONTA lfFont;
+  } ICONMETRICSA,*PICONMETRICSA,*LPICONMETRICSA;
+
+  typedef struct tagICONMETRICSW {
+    UINT cbSize;
+    int iHorzSpacing;
+    int iVertSpacing;
+    int iTitleWrap;
+    LOGFONTW lfFont;
+  } ICONMETRICSW,*PICONMETRICSW,*LPICONMETRICSW;
+
+#ifdef UNICODE
+  typedef ICONMETRICSW ICONMETRICS;
+  typedef PICONMETRICSW PICONMETRICS;
+  typedef LPICONMETRICSW LPICONMETRICS;
+#else
+  typedef ICONMETRICSA ICONMETRICS;
+  typedef PICONMETRICSA PICONMETRICS;
+  typedef LPICONMETRICSA LPICONMETRICS;
+#endif
+#endif
+#endif
+
+  typedef struct tagANIMATIONINFO {
+    UINT cbSize;
+    int iMinAnimate;
+  } ANIMATIONINFO,*LPANIMATIONINFO;
+
+  typedef struct tagSERIALKEYSA {
+    UINT cbSize;
+    DWORD dwFlags;
+    LPSTR lpszActivePort;
+    LPSTR lpszPort;
+    UINT iBaudRate;
+    UINT iPortState;
+    UINT iActive;
+  } SERIALKEYSA,*LPSERIALKEYSA;
+
+  typedef struct tagSERIALKEYSW {
+    UINT cbSize;
+    DWORD dwFlags;
+    LPWSTR lpszActivePort;
+    LPWSTR lpszPort;
+    UINT iBaudRate;
+    UINT iPortState;
+    UINT iActive;
+  } SERIALKEYSW,*LPSERIALKEYSW;
+
+#ifdef UNICODE
+  typedef SERIALKEYSW SERIALKEYS;
+  typedef LPSERIALKEYSW LPSERIALKEYS;
+#else
+  typedef SERIALKEYSA SERIALKEYS;
+  typedef LPSERIALKEYSA LPSERIALKEYS;
+#endif
+
+#define SERKF_SERIALKEYSON 0x00000001
+#define SERKF_AVAILABLE 0x00000002
+#define SERKF_INDICATOR 0x00000004
+
+  typedef struct tagHIGHCONTRASTA {
+    UINT cbSize;
+    DWORD dwFlags;
+    LPSTR lpszDefaultScheme;
+  } HIGHCONTRASTA,*LPHIGHCONTRASTA;
+
+  typedef struct tagHIGHCONTRASTW {
+    UINT cbSize;
+    DWORD dwFlags;
+    LPWSTR lpszDefaultScheme;
+  } HIGHCONTRASTW,*LPHIGHCONTRASTW;
+
+#ifdef UNICODE
+  typedef HIGHCONTRASTW HIGHCONTRAST;
+  typedef LPHIGHCONTRASTW LPHIGHCONTRAST;
+#else
+  typedef HIGHCONTRASTA HIGHCONTRAST;
+  typedef LPHIGHCONTRASTA LPHIGHCONTRAST;
+#endif
+
+#define HCF_HIGHCONTRASTON 0x00000001
+#define HCF_AVAILABLE 0x00000002
+#define HCF_HOTKEYACTIVE 0x00000004
+#define HCF_CONFIRMHOTKEY 0x00000008
+#define HCF_HOTKEYSOUND 0x00000010
+#define HCF_INDICATOR 0x00000020
+#define HCF_HOTKEYAVAILABLE 0x00000040
+#define HCF_LOGONDESKTOP 0x00000100
+#define HCF_DEFAULTDESKTOP 0x00000200
+
+#define CDS_UPDATEREGISTRY 0x00000001
+#define CDS_TEST 0x00000002
+#define CDS_FULLSCREEN 0x00000004
+#define CDS_GLOBAL 0x00000008
+#define CDS_SET_PRIMARY 0x00000010
+#define CDS_VIDEOPARAMETERS 0x00000020
+#define CDS_RESET 0x40000000
+#define CDS_NORESET 0x10000000
+
+//gr #include <tvout.h>
+
+#define DISP_CHANGE_SUCCESSFUL 0
+#define DISP_CHANGE_RESTART 1
+#define DISP_CHANGE_FAILED -1
+#define DISP_CHANGE_BADMODE -2
+#define DISP_CHANGE_NOTUPDATED -3
+#define DISP_CHANGE_BADFLAGS -4
+#define DISP_CHANGE_BADPARAM -5
+#define DISP_CHANGE_BADDUALVIEW -6
+
+#ifdef _WINGDI_
+#ifndef NOGDI
+
+#ifdef UNICODE
+#define ChangeDisplaySettings ChangeDisplaySettingsW
+#define ChangeDisplaySettingsEx ChangeDisplaySettingsExW
+#define EnumDisplaySettings EnumDisplaySettingsW
+#define EnumDisplaySettingsEx EnumDisplaySettingsExW
+#define EnumDisplayDevices EnumDisplayDevicesW
+#else
+#define ChangeDisplaySettings ChangeDisplaySettingsA
+#define ChangeDisplaySettingsEx ChangeDisplaySettingsExA
+#define EnumDisplaySettings EnumDisplaySettingsA
+#define EnumDisplaySettingsEx EnumDisplaySettingsExA
+#define EnumDisplayDevices EnumDisplayDevicesA
+#endif
+
+  WINUSERAPI LONG WINAPI ChangeDisplaySettingsA(LPDEVMODEA lpDevMode,DWORD dwFlags);
+  WINUSERAPI LONG WINAPI ChangeDisplaySettingsW(LPDEVMODEW lpDevMode,DWORD dwFlags);
+  WINUSERAPI LONG WINAPI ChangeDisplaySettingsExA(LPCSTR lpszDeviceName,LPDEVMODEA lpDevMode,HWND hwnd,DWORD dwflags,LPVOID lParam);
+  WINUSERAPI LONG WINAPI ChangeDisplaySettingsExW(LPCWSTR lpszDeviceName,LPDEVMODEW lpDevMode,HWND hwnd,DWORD dwflags,LPVOID lParam);
+
+#define ENUM_CURRENT_SETTINGS ((DWORD)-1)
+#define ENUM_REGISTRY_SETTINGS ((DWORD)-2)
+
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsA(LPCSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEA lpDevMode);
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsW(LPCWSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEW lpDevMode);
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsExA(LPCSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEA lpDevMode,DWORD dwFlags);
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsExW(LPCWSTR lpszDeviceName,DWORD i
