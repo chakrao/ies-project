@@ -4909,4 +4909,169 @@ extern "C" {
   WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsA(LPCSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEA lpDevMode);
   WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsW(LPCWSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEW lpDevMode);
   WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsExA(LPCSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEA lpDevMode,DWORD dwFlags);
-  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsExW(LPCWSTR lpszDeviceName,DWORD i
+  WINUSERAPI WINBOOL WINAPI EnumDisplaySettingsExW(LPCWSTR lpszDeviceName,DWORD iModeNum,LPDEVMODEW lpDevMode,DWORD dwFlags);
+
+#define EDS_RAWMODE 0x00000002
+
+  WINUSERAPI WINBOOL WINAPI EnumDisplayDevicesA(LPCSTR lpDevice,DWORD iDevNum,PDISPLAY_DEVICEA lpDisplayDevice,DWORD dwFlags);
+  WINUSERAPI WINBOOL WINAPI EnumDisplayDevicesW(LPCWSTR lpDevice,DWORD iDevNum,PDISPLAY_DEVICEW lpDisplayDevice,DWORD dwFlags);
+#endif
+#endif
+
+#ifdef UNICODE
+#define SystemParametersInfo SystemParametersInfoW
+#else
+#define SystemParametersInfo SystemParametersInfoA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI SystemParametersInfoA(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni);
+  WINUSERAPI WINBOOL WINAPI SystemParametersInfoW(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni);
+#endif
+
+  typedef struct tagFILTERKEYS {
+    UINT cbSize;
+    DWORD dwFlags;
+    DWORD iWaitMSec;
+    DWORD iDelayMSec;
+    DWORD iRepeatMSec;
+    DWORD iBounceMSec;
+  } FILTERKEYS,*LPFILTERKEYS;
+
+#define FKF_FILTERKEYSON 0x00000001
+#define FKF_AVAILABLE 0x00000002
+#define FKF_HOTKEYACTIVE 0x00000004
+#define FKF_CONFIRMHOTKEY 0x00000008
+#define FKF_HOTKEYSOUND 0x00000010
+#define FKF_INDICATOR 0x00000020
+#define FKF_CLICKON 0x00000040
+
+  typedef struct tagSTICKYKEYS {
+    UINT cbSize;
+    DWORD dwFlags;
+  } STICKYKEYS,*LPSTICKYKEYS;
+
+#define SKF_STICKYKEYSON 0x00000001
+#define SKF_AVAILABLE 0x00000002
+#define SKF_HOTKEYACTIVE 0x00000004
+#define SKF_CONFIRMHOTKEY 0x00000008
+#define SKF_HOTKEYSOUND 0x00000010
+#define SKF_INDICATOR 0x00000020
+#define SKF_AUDIBLEFEEDBACK 0x00000040
+#define SKF_TRISTATE 0x00000080
+#define SKF_TWOKEYSOFF 0x00000100
+#define SKF_LALTLATCHED 0x10000000
+#define SKF_LCTLLATCHED 0x04000000
+#define SKF_LSHIFTLATCHED 0x01000000
+#define SKF_RALTLATCHED 0x20000000
+#define SKF_RCTLLATCHED 0x08000000
+#define SKF_RSHIFTLATCHED 0x02000000
+#define SKF_LWINLATCHED 0x40000000
+#define SKF_RWINLATCHED 0x80000000
+#define SKF_LALTLOCKED 0x00100000
+#define SKF_LCTLLOCKED 0x00040000
+#define SKF_LSHIFTLOCKED 0x00010000
+#define SKF_RALTLOCKED 0x00200000
+#define SKF_RCTLLOCKED 0x00080000
+#define SKF_RSHIFTLOCKED 0x00020000
+#define SKF_LWINLOCKED 0x00400000
+#define SKF_RWINLOCKED 0x00800000
+
+  typedef struct tagMOUSEKEYS {
+    UINT cbSize;
+    DWORD dwFlags;
+    DWORD iMaxSpeed;
+    DWORD iTimeToMaxSpeed;
+    DWORD iCtrlSpeed;
+    DWORD dwReserved1;
+    DWORD dwReserved2;
+  } MOUSEKEYS,*LPMOUSEKEYS;
+
+#define MKF_MOUSEKEYSON 0x00000001
+#define MKF_AVAILABLE 0x00000002
+#define MKF_HOTKEYACTIVE 0x00000004
+#define MKF_CONFIRMHOTKEY 0x00000008
+#define MKF_HOTKEYSOUND 0x00000010
+#define MKF_INDICATOR 0x00000020
+#define MKF_MODIFIERS 0x00000040
+#define MKF_REPLACENUMBERS 0x00000080
+#define MKF_LEFTBUTTONSEL 0x10000000
+#define MKF_RIGHTBUTTONSEL 0x20000000
+#define MKF_LEFTBUTTONDOWN 0x01000000
+#define MKF_RIGHTBUTTONDOWN 0x02000000
+#define MKF_MOUSEMODE 0x80000000
+
+  typedef struct tagACCESSTIMEOUT {
+    UINT cbSize;
+    DWORD dwFlags;
+    DWORD iTimeOutMSec;
+  } ACCESSTIMEOUT,*LPACCESSTIMEOUT;
+
+#define ATF_TIMEOUTON 0x00000001
+#define ATF_ONOFFFEEDBACK 0x00000002
+
+#define SSGF_NONE 0
+#define SSGF_DISPLAY 3
+
+#define SSTF_NONE 0
+#define SSTF_CHARS 1
+#define SSTF_BORDER 2
+#define SSTF_DISPLAY 3
+
+#define SSWF_NONE 0
+#define SSWF_TITLE 1
+#define SSWF_WINDOW 2
+#define SSWF_DISPLAY 3
+#define SSWF_CUSTOM 4
+
+  typedef struct tagSOUNDSENTRYA {
+    UINT cbSize;
+    DWORD dwFlags;
+    DWORD iFSTextEffect;
+    DWORD iFSTextEffectMSec;
+    DWORD iFSTextEffectColorBits;
+    DWORD iFSGrafEffect;
+    DWORD iFSGrafEffectMSec;
+    DWORD iFSGrafEffectColor;
+    DWORD iWindowsEffect;
+    DWORD iWindowsEffectMSec;
+    LPSTR lpszWindowsEffectDLL;
+    DWORD iWindowsEffectOrdinal;
+  } SOUNDSENTRYA,*LPSOUNDSENTRYA;
+
+  typedef struct tagSOUNDSENTRYW {
+    UINT cbSize;
+    DWORD dwFlags;
+    DWORD iFSTextEffect;
+    DWORD iFSTextEffectMSec;
+    DWORD iFSTextEffectColorBits;
+    DWORD iFSGrafEffect;
+    DWORD iFSGrafEffectMSec;
+    DWORD iFSGrafEffectColor;
+    DWORD iWindowsEffect;
+    DWORD iWindowsEffectMSec;
+    LPWSTR lpszWindowsEffectDLL;
+    DWORD iWindowsEffectOrdinal;
+  } SOUNDSENTRYW,*LPSOUNDSENTRYW;
+
+#ifdef UNICODE
+  typedef SOUNDSENTRYW SOUNDSENTRY;
+  typedef LPSOUNDSENTRYW LPSOUNDSENTRY;
+#else
+  typedef SOUNDSENTRYA SOUNDSENTRY;
+  typedef LPSOUNDSENTRYA LPSOUNDSENTRY;
+#endif
+
+#define SSF_SOUNDSENTRYON 0x00000001
+#define SSF_AVAILABLE 0x00000002
+#define SSF_INDICATOR 0x00000004
+
+  typedef struct tagTOGGLEKEYS {
+    UINT cbSize;
+    DWORD dwFlags;
+  } TOGGLEKEYS,*LPTOGGLEKEYS;
+
+#define TKF_TOGGLEKEYSON 0x00000001
+#define TKF_AVAILABLE 0x00000002
+#define TKF_HOTKEYACTIVE 0x00000004
+#define TKF_CONFIRMHOTKEY 0x00000008
+#define TKF_HO
