@@ -5531,4 +5531,121 @@ extern "C" {
 #define KEYBOARD_OVERRUN_MAKE_CODE 0xFF
 
 #define RI_KEY_MAKE 0
-#d
+#define RI_KEY_BREAK 1
+#define RI_KEY_E0 2
+#define RI_KEY_E1 4
+#define RI_KEY_TERMSRV_SET_LED 8
+#define RI_KEY_TERMSRV_SHADOW 0x10
+
+  typedef struct tagRAWHID {
+    DWORD dwSizeHid;
+    DWORD dwCount;
+    BYTE bRawData[1];
+  } RAWHID,*PRAWHID,*LPRAWHID;
+
+  typedef struct tagRAWINPUT {
+    RAWINPUTHEADER header;
+    union {
+      RAWMOUSE mouse;
+      RAWKEYBOARD keyboard;
+      RAWHID hid;
+    } data;
+  } RAWINPUT,*PRAWINPUT,*LPRAWINPUT;
+
+#ifdef _WIN64
+#define RAWINPUT_ALIGN(x) (((x) + sizeof(QWORD) - 1) & ~(sizeof(QWORD) - 1))
+#else
+#define RAWINPUT_ALIGN(x) (((x) + sizeof(DWORD) - 1) & ~(sizeof(DWORD) - 1))
+#endif
+
+#define NEXTRAWINPUTBLOCK(ptr) ((PRAWINPUT)RAWINPUT_ALIGN((ULONG_PTR)((PBYTE)(ptr) + (ptr)->header.dwSize)))
+
+#define RID_INPUT 0x10000003
+#define RID_HEADER 0x10000005
+
+  WINUSERAPI UINT WINAPI GetRawInputData(HRAWINPUT hRawInput,UINT uiCommand,LPVOID pData,PUINT pcbSize,UINT cbSizeHeader);
+
+#define RIDI_PREPARSEDDATA 0x20000005
+#define RIDI_DEVICENAME 0x20000007
+#define RIDI_DEVICEINFO 0x2000000b
+
+  typedef struct tagRID_DEVICE_INFO_MOUSE {
+    DWORD dwId;
+    DWORD dwNumberOfButtons;
+    DWORD dwSampleRate;
+  } RID_DEVICE_INFO_MOUSE,*PRID_DEVICE_INFO_MOUSE;
+
+  typedef struct tagRID_DEVICE_INFO_KEYBOARD {
+    DWORD dwType;
+    DWORD dwSubType;
+    DWORD dwKeyboardMode;
+    DWORD dwNumberOfFunctionKeys;
+    DWORD dwNumberOfIndicators;
+    DWORD dwNumberOfKeysTotal;
+  } RID_DEVICE_INFO_KEYBOARD,*PRID_DEVICE_INFO_KEYBOARD;
+
+  typedef struct tagRID_DEVICE_INFO_HID {
+    DWORD dwVendorId;
+    DWORD dwProductId;
+    DWORD dwVersionNumber;
+    USHORT usUsagePage;
+    USHORT usUsage;
+  } RID_DEVICE_INFO_HID,*PRID_DEVICE_INFO_HID;
+
+  typedef struct tagRID_DEVICE_INFO {
+    DWORD cbSize;
+    DWORD dwType;
+    union {
+      RID_DEVICE_INFO_MOUSE mouse;
+      RID_DEVICE_INFO_KEYBOARD keyboard;
+      RID_DEVICE_INFO_HID hid;
+    };
+  } RID_DEVICE_INFO,*PRID_DEVICE_INFO,*LPRID_DEVICE_INFO;
+
+#ifdef UNICODE
+#define GetRawInputDeviceInfo GetRawInputDeviceInfoW
+#else
+#define GetRawInputDeviceInfo GetRawInputDeviceInfoA
+#endif
+
+  WINUSERAPI UINT WINAPI GetRawInputDeviceInfoA(HANDLE hDevice,UINT uiCommand,LPVOID pData,PUINT pcbSize);
+  WINUSERAPI UINT WINAPI GetRawInputDeviceInfoW(HANDLE hDevice,UINT uiCommand,LPVOID pData,PUINT pcbSize);
+  WINUSERAPI UINT WINAPI GetRawInputBuffer(PRAWINPUT pData,PUINT pcbSize,UINT cbSizeHeader);
+
+  typedef struct tagRAWINPUTDEVICE {
+    USHORT usUsagePage;
+    USHORT usUsage;
+    DWORD dwFlags;
+    HWND hwndTarget;
+  } RAWINPUTDEVICE,*PRAWINPUTDEVICE,*LPRAWINPUTDEVICE;
+
+  typedef CONST RAWINPUTDEVICE *PCRAWINPUTDEVICE;
+
+#define RIDEV_REMOVE 0x00000001
+#define RIDEV_EXCLUDE 0x00000010
+#define RIDEV_PAGEONLY 0x00000020
+#define RIDEV_NOLEGACY 0x00000030
+#define RIDEV_INPUTSINK 0x00000100
+#define RIDEV_CAPTUREMOUSE 0x00000200
+#define RIDEV_NOHOTKEYS 0x00000200
+#define RIDEV_APPKEYS 0x00000400
+#define RIDEV_EXMODEMASK 0x000000F0
+#define RIDEV_EXMODE(mode) ((mode) & RIDEV_EXMODEMASK)
+
+  WINUSERAPI WINBOOL WINAPI RegisterRawInputDevices(PCRAWINPUTDEVICE pRawInputDevices,UINT uiNumDevices,UINT cbSize);
+  WINUSERAPI UINT WINAPI GetRegisteredRawInputDevices(PRAWINPUTDEVICE pRawInputDevices,PUINT puiNumDevices,UINT cbSize);
+
+  typedef struct tagRAWINPUTDEVICELIST {
+    HANDLE hDevice;
+    DWORD dwType;
+  } RAWINPUTDEVICELIST,*PRAWINPUTDEVICELIST;
+
+  WINUSERAPI UINT WINAPI GetRawInputDeviceList(PRAWINPUTDEVICELIST pRawInputDeviceList,PUINT puiNumDevices,UINT cbSize);
+  WINUSERAPI LRESULT WINAPI DefRawInputProc(PRAWINPUT *paRawInput,INT nInput,UINT cbSizeHeader);
+
+#endif /* NOUSER */
+
+#ifdef __cplusplus
+}
+#endif
+#endif
