@@ -5360,3 +5360,175 @@ extern "C" {
 
   WINUSERAPI WINBOOL WINAPI GetCursorInfo(PCURSORINFO pci);
 
+  typedef struct tagWINDOWINFO {
+    DWORD cbSize;
+    RECT rcWindow;
+    RECT rcClient;
+    DWORD dwStyle;
+    DWORD dwExStyle;
+    DWORD dwWindowStatus;
+    UINT cxWindowBorders;
+    UINT cyWindowBorders;
+    ATOM atomWindowType;
+    WORD wCreatorVersion;
+  } WINDOWINFO,*PWINDOWINFO,*LPWINDOWINFO;
+
+#define WS_ACTIVECAPTION 0x0001
+
+  WINUSERAPI WINBOOL WINAPI GetWindowInfo(HWND hwnd,PWINDOWINFO pwi);
+
+  typedef struct tagTITLEBARINFO {
+    DWORD cbSize;
+    RECT rcTitleBar;
+    DWORD rgstate[CCHILDREN_TITLEBAR + 1];
+  } TITLEBARINFO,*PTITLEBARINFO,*LPTITLEBARINFO;
+
+  WINUSERAPI WINBOOL WINAPI GetTitleBarInfo(HWND hwnd,PTITLEBARINFO pti);
+
+  typedef struct tagMENUBARINFO {
+    DWORD cbSize;
+    RECT rcBar;
+    HMENU hMenu;
+    HWND hwndMenu;
+    WINBOOL fBarFocused:1;
+    WINBOOL fFocused:1;
+  } MENUBARINFO,*PMENUBARINFO,*LPMENUBARINFO;
+
+  WINUSERAPI WINBOOL WINAPI GetMenuBarInfo(HWND hwnd,LONG idObject,LONG idItem,PMENUBARINFO pmbi);
+
+  typedef struct tagSCROLLBARINFO {
+    DWORD cbSize;
+    RECT rcScrollBar;
+    int dxyLineButton;
+    int xyThumbTop;
+    int xyThumbBottom;
+    int reserved;
+    DWORD rgstate[CCHILDREN_SCROLLBAR + 1];
+  } SCROLLBARINFO,*PSCROLLBARINFO,*LPSCROLLBARINFO;
+
+  WINUSERAPI WINBOOL WINAPI GetScrollBarInfo(HWND hwnd,LONG idObject,PSCROLLBARINFO psbi);
+
+  typedef struct tagCOMBOBOXINFO {
+    DWORD cbSize;
+    RECT rcItem;
+    RECT rcButton;
+    DWORD stateButton;
+    HWND hwndCombo;
+    HWND hwndItem;
+    HWND hwndList;
+  } COMBOBOXINFO,*PCOMBOBOXINFO,*LPCOMBOBOXINFO;
+
+  WINUSERAPI WINBOOL WINAPI GetComboBoxInfo(HWND hwndCombo,PCOMBOBOXINFO pcbi);
+
+#define GA_PARENT 1
+#define GA_ROOT 2
+#define GA_ROOTOWNER 3
+
+  WINUSERAPI HWND WINAPI GetAncestor(HWND hwnd,UINT gaFlags);
+  WINUSERAPI HWND WINAPI RealChildWindowFromPoint(HWND hwndParent,POINT ptParentClientCoords);
+  WINUSERAPI UINT WINAPI RealGetWindowClassA(HWND hwnd,LPSTR ptszClassName,UINT cchClassNameMax);
+  WINUSERAPI UINT WINAPI RealGetWindowClassW(HWND hwnd,LPWSTR ptszClassName,UINT cchClassNameMax);
+#ifdef UNICODE
+#define RealGetWindowClass RealGetWindowClassW
+#else
+#define RealGetWindowClass RealGetWindowClassA
+#endif
+
+  typedef struct tagALTTABINFO {
+    DWORD cbSize;
+    int cItems;
+    int cColumns;
+    int cRows;
+    int iColFocus;
+    int iRowFocus;
+    int cxItem;
+    int cyItem;
+    POINT ptStart;
+  } ALTTABINFO,*PALTTABINFO,*LPALTTABINFO;
+
+#ifdef UNICODE
+#define GetAltTabInfo GetAltTabInfoW
+#else
+#define GetAltTabInfo GetAltTabInfoA
+#endif
+
+  WINUSERAPI WINBOOL WINAPI GetAltTabInfoA(HWND hwnd,int iItem,PALTTABINFO pati,LPSTR pszItemText,UINT cchItemText);
+  WINUSERAPI WINBOOL WINAPI GetAltTabInfoW(HWND hwnd,int iItem,PALTTABINFO pati,LPWSTR pszItemText,UINT cchItemText);
+  WINUSERAPI DWORD WINAPI GetListBoxInfo(HWND hwnd);
+#endif
+
+  WINUSERAPI WINBOOL WINAPI LockWorkStation(VOID);
+  WINUSERAPI WINBOOL WINAPI UserHandleGrantAccess(HANDLE hUserHandle,HANDLE hJob,WINBOOL bGrant);
+
+  DECLARE_HANDLE(HRAWINPUT);
+
+#define GET_RAWINPUT_CODE_WPARAM(wParam) ((wParam) & 0xff)
+
+#define RIM_INPUT 0
+#define RIM_INPUTSINK 1
+
+  typedef struct tagRAWINPUTHEADER {
+    DWORD dwType;
+    DWORD dwSize;
+    HANDLE hDevice;
+    WPARAM wParam;
+  } RAWINPUTHEADER,*PRAWINPUTHEADER,*LPRAWINPUTHEADER;
+
+#define RIM_TYPEMOUSE 0
+#define RIM_TYPEKEYBOARD 1
+#define RIM_TYPEHID 2
+
+  typedef struct tagRAWMOUSE {
+    USHORT usFlags;
+    union {
+      ULONG ulButtons;
+      struct {
+	USHORT usButtonFlags;
+	USHORT usButtonData;
+      };
+    };
+    ULONG ulRawButtons;
+    LONG lLastX;
+    LONG lLastY;
+    ULONG ulExtraInformation;
+  } RAWMOUSE,*PRAWMOUSE,*LPRAWMOUSE;
+
+#define RI_MOUSE_LEFT_BUTTON_DOWN 0x0001
+#define RI_MOUSE_LEFT_BUTTON_UP 0x0002
+#define RI_MOUSE_RIGHT_BUTTON_DOWN 0x0004
+#define RI_MOUSE_RIGHT_BUTTON_UP 0x0008
+#define RI_MOUSE_MIDDLE_BUTTON_DOWN 0x0010
+#define RI_MOUSE_MIDDLE_BUTTON_UP 0x0020
+
+#define RI_MOUSE_BUTTON_1_DOWN RI_MOUSE_LEFT_BUTTON_DOWN
+#define RI_MOUSE_BUTTON_1_UP RI_MOUSE_LEFT_BUTTON_UP
+#define RI_MOUSE_BUTTON_2_DOWN RI_MOUSE_RIGHT_BUTTON_DOWN
+#define RI_MOUSE_BUTTON_2_UP RI_MOUSE_RIGHT_BUTTON_UP
+#define RI_MOUSE_BUTTON_3_DOWN RI_MOUSE_MIDDLE_BUTTON_DOWN
+#define RI_MOUSE_BUTTON_3_UP RI_MOUSE_MIDDLE_BUTTON_UP
+
+#define RI_MOUSE_BUTTON_4_DOWN 0x0040
+#define RI_MOUSE_BUTTON_4_UP 0x0080
+#define RI_MOUSE_BUTTON_5_DOWN 0x0100
+#define RI_MOUSE_BUTTON_5_UP 0x0200
+
+#define RI_MOUSE_WHEEL 0x0400
+
+#define MOUSE_MOVE_RELATIVE 0
+#define MOUSE_MOVE_ABSOLUTE 1
+#define MOUSE_VIRTUAL_DESKTOP 0x02
+#define MOUSE_ATTRIBUTES_CHANGED 0x04
+
+  typedef struct tagRAWKEYBOARD {
+    USHORT MakeCode;
+    USHORT Flags;
+    USHORT Reserved;
+    USHORT VKey;
+    UINT Message;
+    ULONG ExtraInformation;
+  } RAWKEYBOARD,*PRAWKEYBOARD,*LPRAWKEYBOARD;
+
+#define KEYBOARD_OVERRUN_MAKE_CODE 0xFF
+
+#define RI_KEY_MAKE 0
+#d
