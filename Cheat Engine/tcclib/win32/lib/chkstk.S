@@ -37,4 +37,37 @@ P0:
 /* ---------------------------------------------- */
 
 .globl _(__chkstk)
-_(__
+_(__chkstk):
+    xchg    (%rsp),%rbp     /* store ebp, get ret.addr */
+    push    %rbp            /* push ret.addr */
+    lea     8(%rsp),%rbp    /* setup frame ptr */
+    push    %rcx            /* save ecx */
+    mov     %rbp,%rcx
+    movslq  %eax,%rax
+P0:
+    sub     $4096,%rcx
+    test    %rax,(%rcx)
+    sub     $4096,%rax
+    cmp     $4096,%rax
+    jge     P0
+    sub     %rax,%rcx
+    test    %rax,(%rcx)
+
+    mov     %rsp,%rax
+    mov     %rcx,%rsp
+    mov     (%rax),%rcx     /* restore ecx */
+    jmp     *8(%rax)
+
+/* ---------------------------------------------- */
+/* setjmp/longjmp support */
+
+.globl _(tinyc_getbp)
+_(tinyc_getbp):
+    mov %rbp,%rax
+    ret
+
+/* ---------------------------------------------- */
+#endif
+/* ---------------------------------------------- */
+
+
