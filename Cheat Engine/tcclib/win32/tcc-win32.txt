@@ -143,3 +143,27 @@
 
       However libraries for TCC from objects by TCC can be made using
         tcc -ar lib.a files.o ,,,
+
+    - No leading underscore is generated in the ELF symbols.
+
+    Documentation and License:
+    --------------------------
+    TCC is distributed under the GNU Lesser General Public License. (See
+    COPYING file or http://www.gnu.org/licenses/lgpl-2.1.html)
+
+    TinyCC homepage is at:
+
+	http://fabrice.bellard.free.fr/tcc/
+
+
+    WinAPI Help and 3rd-party tools:
+    --------------------------------
+    The Windows API documentation (Win95) in a single .hlp file is
+    available on the lcc-win32 site as "win32hlp.exe" or from other
+    locations as "win32hlp_big.zip".
+
+    A nice RAD tool to create windows resources (dialog boxes etc.) is
+    "ResEd", available at the RadASM website.
+
+
+    --- grischka
