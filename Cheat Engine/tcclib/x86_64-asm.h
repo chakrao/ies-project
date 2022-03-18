@@ -312,4 +312,101 @@ ALT(DEF_ASM_OP1(fstl, 0xdd, 2, OPC_MODRM, OPT_EA))
     DEF_ASM_OP1(fstpl, 0xdd, 3, OPC_MODRM, OPT_EA)
     DEF_ASM_OP1(fist, 0xdf, 2, OPC_MODRM, OPT_EA)
     DEF_ASM_OP1(fistp, 0xdf, 3, OPC_MODRM, OPT_EA)
-    DEF_ASM_OP1(fistl, 0
+    DEF_ASM_OP1(fistl, 0xdb, 2, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(fistpl, 0xdb, 3, OPC_MODRM, OPT_EA)
+
+    DEF_ASM_OP1(fstp, 0xddd8, 0, OPC_REG, OPT_ST)
+    DEF_ASM_OP1(fistpq, 0xdf, 7, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(fistpll, 0xdf, 7, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(fstpt, 0xdb, 7, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(fbstp, 0xdf, 6, OPC_MODRM, OPT_EA)
+
+    /* exchange */
+    DEF_ASM_OP0(fxch, 0xd9c9)
+ALT(DEF_ASM_OP1(fxch, 0xd9c8, 0, OPC_REG, OPT_ST))
+
+    /* misc FPU */
+    DEF_ASM_OP1(fucom, 0xdde0, 0, OPC_REG, OPT_ST )
+    DEF_ASM_OP1(fucomp, 0xdde8, 0, OPC_REG, OPT_ST )
+
+    DEF_ASM_OP0L(finit, 0xdbe3, 0, OPC_FWAIT)
+    DEF_ASM_OP1(fldcw, 0xd9, 5, OPC_MODRM, OPT_EA )
+    DEF_ASM_OP1(fnstcw, 0xd9, 7, OPC_MODRM, OPT_EA )
+    DEF_ASM_OP1(fstcw, 0xd9, 7, OPC_MODRM | OPC_FWAIT, OPT_EA )
+    DEF_ASM_OP0(fnstsw, 0xdfe0)
+ALT(DEF_ASM_OP1(fnstsw, 0xdfe0, 0, 0, OPT_EAX ))
+ALT(DEF_ASM_OP1(fnstsw, 0xdd, 7, OPC_MODRM, OPT_EA ))
+    DEF_ASM_OP1(fstsw, 0xdfe0, 0, OPC_FWAIT, OPT_EAX )
+ALT(DEF_ASM_OP0L(fstsw, 0xdfe0, 0, OPC_FWAIT))
+ALT(DEF_ASM_OP1(fstsw, 0xdd, 7, OPC_MODRM | OPC_FWAIT, OPT_EA ))
+    DEF_ASM_OP0L(fclex, 0xdbe2, 0, OPC_FWAIT)
+    DEF_ASM_OP1(fnstenv, 0xd9, 6, OPC_MODRM, OPT_EA )
+    DEF_ASM_OP1(fstenv, 0xd9, 6, OPC_MODRM | OPC_FWAIT, OPT_EA )
+    DEF_ASM_OP1(fldenv, 0xd9, 4, OPC_MODRM, OPT_EA )
+    DEF_ASM_OP1(fnsave, 0xdd, 6, OPC_MODRM, OPT_EA )
+    DEF_ASM_OP1(fsave, 0xdd, 6, OPC_MODRM | OPC_FWAIT, OPT_EA )
+    DEF_ASM_OP1(frstor, 0xdd, 4, OPC_MODRM, OPT_EA )
+    DEF_ASM_OP1(ffree, 0xddc0, 4, OPC_REG, OPT_ST )
+    DEF_ASM_OP1(ffreep, 0xdfc0, 4, OPC_REG, OPT_ST )
+    DEF_ASM_OP1(fxsave, 0x0fae, 0, OPC_MODRM, OPT_EA )
+    DEF_ASM_OP1(fxrstor, 0x0fae, 1, OPC_MODRM, OPT_EA )
+    /* The *q forms of fxrstor/fxsave use a REX prefix.
+       If the operand would use extended registers we would have to modify
+       it instead of generating a second one.  Currently that's no
+       problem with TCC, we don't use extended registers.  */
+    DEF_ASM_OP1(fxsaveq, 0x0fae, 0, OPC_MODRM | OPC_48, OPT_EA )
+    DEF_ASM_OP1(fxrstorq, 0x0fae, 1, OPC_MODRM | OPC_48, OPT_EA )
+
+    /* segments */
+    DEF_ASM_OP2(arpl, 0x63, 0, OPC_MODRM, OPT_REG16, OPT_REG16 | OPT_EA)
+ALT(DEF_ASM_OP2(larw, 0x0f02, 0, OPC_MODRM | OPC_WLX, OPT_REG | OPT_EA, OPT_REG))
+    DEF_ASM_OP1(lgdt, 0x0f01, 2, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(lgdtq, 0x0f01, 2, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(lidt, 0x0f01, 3, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(lidtq, 0x0f01, 3, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(lldt, 0x0f00, 2, OPC_MODRM, OPT_EA | OPT_REG)
+    DEF_ASM_OP1(lmsw, 0x0f01, 6, OPC_MODRM, OPT_EA | OPT_REG)
+ALT(DEF_ASM_OP2(lslw, 0x0f03, 0, OPC_MODRM | OPC_WLX, OPT_EA | OPT_REG, OPT_REG))
+    DEF_ASM_OP1(ltr, 0x0f00, 3, OPC_MODRM, OPT_EA | OPT_REG16)
+    DEF_ASM_OP1(sgdt, 0x0f01, 0, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(sgdtq, 0x0f01, 0, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(sidt, 0x0f01, 1, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(sidtq, 0x0f01, 1, OPC_MODRM, OPT_EA)
+    DEF_ASM_OP1(sldt, 0x0f00, 0, OPC_MODRM, OPT_REG | OPT_EA)
+    DEF_ASM_OP1(smsw, 0x0f01, 4, OPC_MODRM, OPT_REG | OPT_EA)
+    DEF_ASM_OP1(str, 0x0f00, 1, OPC_MODRM, OPT_REG32 | OPT_EA)
+ALT(DEF_ASM_OP1(str, 0x660f00, 1, OPC_MODRM, OPT_REG16))
+ALT(DEF_ASM_OP1(str, 0x0f00, 1, OPC_MODRM | OPC_48, OPT_REG64))
+    DEF_ASM_OP1(verr, 0x0f00, 4, OPC_MODRM, OPT_REG | OPT_EA)
+    DEF_ASM_OP1(verw, 0x0f00, 5, OPC_MODRM, OPT_REG | OPT_EA)
+    DEF_ASM_OP0L(swapgs, 0x0f01, 7, OPC_MODRM)
+
+    /* 486 */
+    /* bswap can't be applied to 16bit regs */
+    DEF_ASM_OP1(bswap, 0x0fc8, 0, OPC_REG, OPT_REG32 )
+    DEF_ASM_OP1(bswapl, 0x0fc8, 0, OPC_REG, OPT_REG32 )
+    DEF_ASM_OP1(bswapq, 0x0fc8, 0, OPC_REG | OPC_48, OPT_REG64 )
+
+ALT(DEF_ASM_OP2(xaddb, 0x0fc0, 0, OPC_MODRM | OPC_BWLX, OPT_REG, OPT_REG | OPT_EA ))
+ALT(DEF_ASM_OP2(cmpxchgb, 0x0fb0, 0, OPC_MODRM | OPC_BWLX, OPT_REG, OPT_REG | OPT_EA ))
+    DEF_ASM_OP1(invlpg, 0x0f01, 7, OPC_MODRM, OPT_EA )
+
+    /* pentium */
+    DEF_ASM_OP1(cmpxchg8b, 0x0fc7, 1, OPC_MODRM, OPT_EA )
+
+    /* AMD 64 */
+    DEF_ASM_OP1(cmpxchg16b, 0x0fc7, 1, OPC_MODRM | OPC_48, OPT_EA )
+
+    /* pentium pro */
+ALT(DEF_ASM_OP2(cmovo, 0x0f40, 0, OPC_MODRM | OPC_TEST | OPC_WLX, OPT_REGW | OPT_EA, OPT_REGW))
+
+    DEF_ASM_OP2(fcmovb, 0xdac0, 0, OPC_REG, OPT_ST, OPT_ST0 )
+    DEF_ASM_OP2(fcmove, 0xdac8, 0, OPC_REG, OPT_ST, OPT_ST0 )
+    DEF_ASM_OP2(fcmovbe, 0xdad0, 0, OPC_REG, OPT_ST, OPT_ST0 )
+    DEF_ASM_OP2(fcmovu, 0xdad8, 0, OPC_REG, OPT_ST, OPT_ST0 )
+    DEF_ASM_OP2(fcmovnb, 0xdbc0, 0, OPC_REG, OPT_ST, OPT_ST0 )
+    DEF_ASM_OP2(fcmovne, 0xdbc8, 0, OPC_REG, OPT_ST, OPT_ST0 )
+    DEF_ASM_OP2(fcmovnbe, 0xdbd0, 0, OPC_REG, OPT_ST, OPT_ST0 )
+    DEF_ASM_OP2(fcmovnu, 0xdbd8, 0, OPC_REG, OPT_ST, OPT_ST0 )
+
+    DEF_ASM_OP2(fucomi, 0xdbe8, 0, OPC_REG, OPT_ST, OPT_ST
