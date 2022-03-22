@@ -256,4 +256,220 @@ begin
     minaddress:=address
   else
     if address<minaddress then
-      minaddress:=add
+      minaddress:=address;
+
+  if maxaddress=0 then
+    maxaddress:=address
+  else
+    if address>maxaddress then
+      maxaddress:=address;
+end;
+
+procedure tcc_addCIncludePath(path: string);
+begin
+  if additonalIncludePaths=nil then
+    additonalIncludePaths:=tstringlist.create;
+
+  additonalIncludePaths.add(path);
+end;
+
+procedure tcc_removeCIncludePath(path: string);
+var i: integer;
+begin
+  if additonalIncludePaths<>nil then
+  begin
+    i:=additonalIncludePaths.IndexOf(path);
+    if i<>-1 then
+      additonalIncludePaths.Delete(i);
+
+    if additonalIncludePaths.count=0 then
+      freeandnil(additonalIncludePaths);
+  end;
+end;
+
+{$ifdef windows}
+function tcc_linux: TTCC;
+begin
+  {$ifdef cpu64}
+  if processhandler.is64bit then
+  begin
+    if tcc64_linux=nil then
+      tcc64_linux:=ttcc.create(x86_64_sysv);
+
+    result:=tcc64_linux
+  end
+  else
+  {$endif}
+  begin
+    if tcc32_linux=nil then
+      tcc32_linux:=ttcc.create(i386_sysv);
+
+    result:=tcc32_linux;
+  end;
+
+end;
+{$endif}
+
+function tcc: TTCC;
+begin
+  {$ifndef standalonetest}
+    {$ifdef windows}
+    if processhandler.OSABI=abiSystemV then
+      exit(tcc_linux);
+    {$endif}
+
+    {$ifdef cpu64}
+    if processhandler.is64bit then
+      result:=tcc64
+    else
+    {$endif}
+      result:=tcc32;
+  {$else}
+    result:=tcc64;
+  {$endif}
+
+end;
+
+function tccself: TTCC;
+begin
+  {$ifdef cpu64}
+  result:=tcc64;
+  {$else}
+  result:=tcc32;
+  {$endif}
+end;
+
+function TTCCMemorystream.Realloc(var NewCapacity: PtrInt): Pointer;
+var
+  oldcapacity: PtrInt;
+  p: pbytearray;
+begin
+  oldCapacity:=Capacity;
+  result:=inherited ReAlloc(NewCapacity);
+
+  if newCapacity>oldcapacity then
+  begin
+    p:=Memory;
+    zeromemory(@p^[oldcapacity], newCapacity-oldcapacity);
+  end;
+end;
+
+procedure TSourceCodeInfo.outputDebugInfo(o: tstrings);
+var
+  mi: TMapIterator;
+  e: TLineNumberInfo;
+  i,j,k: integer;
+  s: string;
+begin
+  o.addtext('Linenumbers');
+  mi:=TMapIterator.Create(AddressToLineNumberInfo);
+  mi.First;
+  while not mi.EOM do
+  begin
+    mi.GetData(e);
+    o.AddText(inttohex(e.address,8)+':'+inttostr(e.linenr)+' - '+e.sourcecode);
+    mi.Next;
+  end;
+
+  mi.free;
+
+  if fullyParsed then
+  begin
+   { o.add('Types:');
+   for i:=0 to length(types)-1 do
+      o.add(format('%d: %s  (%s)  %d',[types[i].typenr, types[i].name, types[i].full, types[i].desc]));}
+
+
+    for i:=0 to length(parsedsource)-1 do
+    with parsedsource[i] do
+    begin
+      s:=format('Sourcefile:%s (%.8x-%.8x)',[sourcefile, minaddress, maxaddress]);
+      o.add(s);
+      for j:=0 to length(functions)-1 do
+      with functions[j] do
+      begin
+        o.add(format('  Function: %s (%.8x-%.8x)',[functionname, functionaddress, functionstop]));
+
+        for k:=0 to length(parameters)-1 do
+        with parameters[k] do
+        begin
+          if ispointer then
+            o.add('  Parameter: %s:*%d (%s) %.2x',[varname, typenr, varstr, offset])
+          else
+            o.add('  Parameter: %s:%d (%s) %.2x',[varname, typenr, varstr, offset]);
+        end;
+
+
+        for k:=0 to length(lexblocks)-1 do
+        with lexblocks[k] do
+          o.add(format('  LexBlock: %.8x-%.8x %d',[startaddress, stopaddress, level]));
+
+        for k:=0 to length(stackvars)-1 do
+        with stackvars[k] do
+        begin
+          if ispointer then
+            o.add(format('  StackVar: %s:*%d (%s) %.2x  (%.8x-%.8x)',[varname, typenr, varstr, offset, lexblocks[lexblock].startaddress, lexblocks[lexblock].stopaddress]))
+          else
+            o.add(format('  StackVar: %s:%d (%s) %.2x  (%.8x-%.8x)',[varname, typenr, varstr, offset, lexblocks[lexblock].startaddress, lexblocks[lexblock].stopaddress]));
+        end;
+
+      end;
+
+    end;
+
+
+  end
+
+end;
+
+procedure TSourceCodeInfo.parseFullStabData;
+var
+  i,j: integer;
+  p: integer;
+  count: integer;
+
+
+
+  currentlevel: integer;
+
+  parsedSourceIndex: integer;
+  parsedFunctionIndex: integer;
+
+  currentFunctionAddress: ptruint;
+  currentSourceFile: string;
+
+  str, varname: string;
+
+  found: boolean;
+  sa: TStringArray;
+
+  ispointer: boolean;
+begin
+  currentFunctionAddress:=0;
+  ispointer:=false;
+
+  if fullyParsed=false then
+  begin
+    fullyParsed:=true;
+    count:=stabsize div (sizeof(TCCStabEntry)); //12
+
+    parsedSourceIndex:=-1;
+    parsedFunctionIndex:=-1;
+    currentlevel:=0;
+
+    for i:=0 to count-1 do
+    begin
+      case stab[i].n_type of
+        $24: //function
+        begin
+          parsedFunctionIndex:=-1;
+
+          if parsedSourceIndex=-1 then continue;
+          if stab[i].n_strx>=stabstrsize then
+            continue;
+
+          str:=pchar(@stabstr[stab[i].n_strx]);
+          if str='' then continue;
+
+          if pos(':',str)>0 then
+            str:=st
