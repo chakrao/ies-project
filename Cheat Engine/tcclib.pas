@@ -472,4 +472,168 @@ begin
           if str='' then continue;
 
           if pos(':',str)>0 then
-            str:=st
+            str:=str.Split(':')[0]
+          else
+            str:='';
+
+
+          for j:=0 to length(parsedsource[parsedSourceIndex].functions)-1 do
+            if parsedSource[parsedSourceIndex].functions[j].functionname=str then
+            begin
+              currentFunctionAddress:=parsedSource[parsedSourceIndex].functions[j].functionaddress;
+              parsedSource[parsedSourceIndex].functions[j].stackvars:=[];
+              parsedFunctionIndex:=j;
+              break;
+            end;
+        end;
+
+
+
+        $80:
+        begin
+          //stack var
+          if stab[i].n_strx>=stabstrsize then
+            continue;
+
+          str:=pchar(@stabstr[stab[i].n_strx]);
+
+          if stab[i].n_value=0 then
+          begin
+            //typedef
+            {
+            if pos(':',str)>0 then
+            begin
+              sa:=str.split(':');
+              typename:=sa[0];
+
+              found:=false;
+              for j:=0 to length(types)-1 do
+              begin
+                if types[j].name=typename then
+                begin
+                  found:=true;
+                  break; //do not do duplicates
+                end;
+              end;
+
+              if not found then
+              begin
+                j:=length(types);
+                setlength(types,j+1);
+                types[j].name:=typename;
+                types[j].full:=str;
+                types[j].extra:=sa[1];
+                types[j].typenr:=0;
+
+
+                //parse the type line
+                if length(types[j].extra)>2 then
+                begin
+                  case types[j].extra[1] of
+                    't':
+                    begin
+                      //followed by a number
+                      str:='';
+                      p:=2;
+                      while types[j].extra[p] in ['0'..'9'] do
+                      begin
+                        str:=str+types[j].extra[p];
+                        inc(p);
+                      end;
+
+                      if str<>'' then
+                      begin
+                        types[j].typenr:=strtoint(str);
+                      end;
+                    end;
+
+                  end;
+                end;
+
+              end;
+
+
+            end;}
+
+          end
+          else
+          begin
+            //var declaration
+            if (parsedSourceIndex=-1) or (parsedFunctionIndex=-1) then continue;
+
+            sa:=str.Split(':');
+            varname:=sa[0];
+            if varname='' then continue;
+
+            with parsedSource[parsedSourceIndex].functions[parsedFunctionIndex] do
+            begin
+              j:=length(stackvars);
+              setlength(stackvars, j+1);
+              stackvars[j].varstr:=str;
+              stackvars[j].varname:=varname;
+              stackvars[j].offset:=stab[i].n_value;
+              stackvars[j].lexblock:=length(lexblocks);
+              stackvars[j].ispointer:=false;
+
+              ispointer:=false;
+
+              p:=1;
+              while (sa[1][p] in ['0'..'9']=false) and (p<=length(sa[1])) do inc(p);
+
+              if p<=length(sa[1]) then
+              begin
+                str:='';
+                while (p<=length(sa[1])) and (sa[1][p] in ['0'..'9']) do
+                begin
+                  str:=str+sa[1][p];
+                  inc(p);
+                end;
+
+                stackvars[j].typenr:=strtoint(str);
+              end;
+
+              //try to get the final type if there is one:
+
+              p:=RPos('=',sa[1]);
+              if p<>-1 then
+              begin
+                inc(p);
+                if sa[1][p]='*' then
+                begin
+                  ispointer:=true;
+                  inc(p)
+                end;
+
+                if sa[1][p] in ['0'..'9'] then
+                begin
+                  //=##
+                  str:='';
+                  while (p<=length(sa[1])) and (sa[1][p] in ['0'..'9']) do
+                  begin
+                    str:=str+sa[1][p];
+                    inc(p);
+                  end;
+                  stackvars[j].typenr:=strtoint(str);
+                  stackvars[j].ispointer:=ispointer;
+                end;
+              end;
+            end;
+          end;
+        end;
+
+        $84: //sub source
+        begin
+          parsedFunctionIndex:=-1;
+          parsedSourceIndex:=-1;
+
+          currentSourceFile:=pchar(@stabstr[stab[i].n_strx]);
+          if trim(currentSourceFile)='' then continue;
+
+          for j:=0 to length(parsedsource)-1 do
+            if parsedsource[j].sourcefile=currentSourceFile then
+            begin
+              parsedSourceIndex:=j;
+              break;
+            end;
+
+          if parsedSourceIn
