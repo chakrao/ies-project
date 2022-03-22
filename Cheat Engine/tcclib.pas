@@ -636,4 +636,191 @@ begin
               break;
             end;
 
-          if parsedSourceIn
+          if parsedSourceIndex=-1 then  //should never happen as the linenumber parse should have filled this in
+          begin
+            parsedSourceIndex:=length(parsedsource);
+            setlength(parsedsource, parsedSourceIndex+1);
+
+            parsedsource[parsedSourceIndex].sourcefile:=currentSourceFile;
+            parsedsource[parsedSourceIndex].functions:=[];
+          end;
+
+        end;
+
+        $a0: //function parameter
+        begin
+          if (parsedSourceIndex=-1) or (parsedFunctionIndex=-1) then continue;
+          if stab[i].n_strx>=stabstrsize then
+            continue;
+
+          str:=pchar(@stabstr[stab[i].n_strx]);
+          if pos(':',str)=0 then continue;
+
+          sa:=str.Split(':');
+          varname:=sa[0];
+          if varname='' then continue;
+
+          with parsedSource[parsedSourceIndex].functions[parsedFunctionIndex] do
+          begin
+            j:=length(parameters);
+            setlength(parameters,j+1);
+            parameters[j].offset:=stab[i].n_value;
+            parameters[j].varstr:=str;
+            parameters[j].varname:=varname;
+            parameters[j].ispointer:=false;
+
+
+            p:=1;
+            while (sa[1][p] in ['0'..'9']=false) and (p<=length(sa[1])) do inc(p);
+
+            if p<=length(sa[1]) then
+            begin
+              str:='';
+              while (p<=length(sa[1])) and (sa[1][p] in ['0'..'9']) do
+              begin
+                str:=str+sa[1][p];
+                inc(p);
+              end;
+
+              parameters[j].typenr:=strtoint(str);
+            end;
+
+            //try to get the final type if there is one:
+
+            p:=RPos('=',sa[1]);
+            if p<>-1 then
+            begin
+              inc(p);
+              if sa[1][p]='*' then
+              begin
+                ispointer:=true;
+                inc(p)
+              end;
+
+              if sa[1][p] in ['0'..'9'] then
+              begin
+                //=##
+                str:='';
+                while (p<=length(sa[1])) and (sa[1][p] in ['0'..'9']) do
+                begin
+                  str:=str+sa[1][p];
+                  inc(p);
+                end;
+                parameters[j].typenr:=strtoint(str);
+                parameters[j].ispointer:=ispointer;
+              end;
+            end;
+
+
+          end;
+        end;
+
+
+        $c0:
+        begin
+          if (parsedSourceIndex=-1) or (parsedFunctionIndex=-1) then continue;
+
+          //start of lex block
+          with parsedSource[parsedSourceIndex].functions[parsedFunctionIndex] do
+          begin
+            j:=length(lexblocks);
+            setlength(lexblocks, j+1);
+            lexblocks[j].startaddress:=currentFunctionAddress+stab[i].n_value;
+            lexblocks[j].level:=currentlevel;
+            lexblocks[j].stopaddress:=0;
+          end;
+
+          inc(currentlevel);
+        end;
+
+        $e0:
+        begin
+          if (parsedSourceIndex=-1) or (parsedFunctionIndex=-1) then continue;
+          //end of lex block
+          dec(currentlevel);
+
+          with parsedSource[parsedSourceIndex].functions[parsedFunctionIndex] do
+          begin
+            for j:=length(lexblocks)-1 downto 0 do
+            begin
+              if (lexblocks[j].stopaddress = 0)  and (lexblocks[j].level=currentlevel) then
+              begin
+                lexblocks[j].stopaddress := currentFunctionAddress+stab[i].n_value; ;
+                break;
+              end;
+            end;
+          end;
+
+
+        end;
+
+      end;
+
+    end;
+
+  end;
+
+end;
+
+procedure TSourceCodeInfo.parseLineNumbers(symbols: tstrings; stringsources: tstrings);
+var
+  count: integer;
+  i,j,ln, si: integer;
+
+  address: ptruint;
+
+  currentSourceFile: string;
+  currentFunction: record
+   valid: boolean;
+   name: string;
+   address: ptruint;
+  end;
+
+  str: string;
+
+  sl: Tstringlist;
+  source: TStrings;
+
+
+  parsedSourceIndex: integer;
+  parsedFunctionIndex: integer;
+begin
+  parsedSourceIndex:=-1;
+  parsedFunctionIndex:=-1;
+
+  source:=nil;
+  currentSourceFile:='';
+
+  count:=stabsize div (sizeof(TCCStabEntry)); //12
+
+  parsedsource:=[];
+
+  for i:=0 to count-1 do
+  begin
+    case stab[i].n_type of
+      $24:
+      begin
+        if parsedSourceIndex=-1 then continue; //broken stabs file
+
+        parsedFunctionIndex:=-1;
+        //symbol/function
+        //setlength(stackvars,0);
+
+        if stab[i].n_strx>=stabstrsize then
+          continue;
+
+        str:=pchar(@stabstr[stab[i].n_strx]);
+        if pos(':',str)>0 then
+          str:=str.Split(':')[0];
+
+        si:=symbols.IndexOf(str);
+        if si<>-1 then
+        begin
+          currentFunction.valid:=true;
+          currentFunction.name:=str;
+          currentFunction.address:=ptruint(symbols.Objects[si]);
+        end;
+
+
+        updateMinMax(currentFunction.address, minaddress, maxaddress);
+        up
