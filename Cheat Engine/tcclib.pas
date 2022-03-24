@@ -1288,4 +1288,154 @@ begin
            assigned(compile_string) and
            assigned(output_file) and
            assigned(delete) and
-           assigned(ge
+           assigned(get_stab) and
+           assigned(install_filehook);
+
+  if working then
+  begin
+    install_filehook(@TCC_OpenFileCallBack, @TCC_ReadFileCallback, @TCC_CloseFileCallback);
+  end;
+end;
+
+procedure ErrorLogger(opaque: pointer; msg: pchar); cdecl;
+begin
+  {$ifdef standalonetest}
+  showmessage(msg);
+  {$endif}
+  tstrings(opaque).Add(msg);
+end;
+
+function symbolLookupFunctionTestCompile( log: tstrings; name: pchar): pointer; cdecl;
+begin
+  result:=pointer($00400000);
+
+  if log<>nil then
+    log.add(name);
+end;
+
+function symbolLookupFunction(secondaryLookup: tstrings; name: pchar): pointer; cdecl;
+var
+  error: boolean;
+  i: integer;
+begin
+  {$ifdef standalonetest}
+  result:=pointer($1234);
+  {$else}
+
+  if secondaryLookup<>nil then
+  begin
+    i:=secondaryLookup.IndexOf(name);
+    if i<>-1 then
+      exit(secondaryLookup.Objects[i]);
+  end;
+
+  result:=pointer(symhandler.GetAddressFromName(name,true,error));
+  {$endif}
+end;
+
+{$ifndef standalonetest}
+function symbolLookupFunctionSelf(secondaryLookup: tstrings; name: pchar): pointer; cdecl;
+var
+  error: boolean;
+  i: integer;
+begin
+
+
+  if secondaryLookup<>nil then
+  begin
+    i:=secondaryLookup.IndexOf(name);
+    if i<>-1 then
+      exit(secondaryLookup.Objects[i]);
+  end;
+
+  result:=pointer(selfsymhandler.GetAddressFromName(name,true,error));
+
+end;
+{$endif}
+
+ {
+procedure SelfWriter(userdata: tobject; address: ptruint; data: pointer; size: integer; protection: integer);  cdecl; //writes to the local process
+begin
+  OutputDebugString(format('Binary writer 1: %p -> %p : %d',[pointer(address), pointer(address+size), protection]));
+  CopyMemory(pointer(address), data, size);
+end;  }
+
+procedure NullWriter(userdata: tobject; address: ptruint; data: pointer; size: integer; protection: integer);  cdecl; //writes nothing
+begin
+  OutputDebugString(format('Binary writer 0: %p -> %p : %d',[pointer(address), pointer(address+size), protection]));
+end;
+
+procedure TCCMemorystreamWriter(m: TTCCMemorystream; address: ptruint; data: pointer; size: integer; protection: integer);  cdecl; //Writes to a TTCCMemorystreamWriter based on the base address stored within
+var i: integer;
+begin
+  OutputDebugString(format('Binary writer 2: %p -> %p : %d',[pointer(address), pointer(address+size), protection]));
+  m.position:=address-m.base;
+  m.WriteBuffer(data^,size);
+
+  i:=length(m.protections);
+  if (i>0) and ((protection=0) or ((protection=1) and (m.protections[i-1].protection=PAGE_EXECUTE_READ)) or ((protection=2) and (m.protections[i-1].protection=PAGE_READWRITE) )) then  //protection=0 is filler
+  begin
+    m.protections[i-1].size:=(address+size)-m.protections[i-1].address;
+  end
+  else
+  begin
+    setlength(m.protections,i+1);
+    m.protections[i].address:=address;
+    m.protections[i].size:=size;
+    if protection=1 then m.protections[i].protection:=PAGE_EXECUTE_READ else m.protections[i].protection:=PAGE_READWRITE;
+  end;
+end;
+
+{$ifndef standalonetest}
+procedure MemoryWriter(userdata: tobject; address: ptruint; data: pointer; size: integer; protection: integer);  cdecl; //Writes directly to the target process memory
+var bw: size_t;
+begin
+  WriteProcessMemory(processhandle,pointer(address),data,size,bw);
+end;
+{$endif}
+
+
+procedure symbolCallback(sl: TStrings; address: qword; name: pchar); cdecl;
+var s: string;
+begin
+  if trim(name)='' then exit;
+
+  if (length(name)>=4) then
+  begin
+    case name[0] of
+      '.': if name='.uw_base' then exit;
+      '_':
+      begin
+
+        case name[1] of
+          'e': if (name = '_etext') or (name='_edata') or (name='_end') then exit;
+          '_':
+          begin
+            s:=name;
+            if s.EndsWith('array_start') or s.EndsWith('array_end') or (s.StartsWith('__mzero') and s.EndsWith('f')) then exit;
+          end;
+        end;
+      end;
+    end;
+  end;
+
+  if sl<>nil then
+    sl.AddObject(name, tobject(ptruint(address)));
+
+end;
+
+procedure ttcc.setupCompileEnvironment(s: PTCCState; textlog: tstrings; targetself: boolean=false; nodebug: boolean=false);
+var
+  params: string;
+  i: integer;
+begin
+  add_include_path(s,{$ifdef standalonetest}'/Users/ericheijnen/Documents/GitHub/cheat-engine/Cheat Engine/bin/cheatengine-x86_64.app/Contents/MacOS/'+{$endif}'include');
+  {$ifdef windows}
+  add_include_path(s,{$ifdef standalonetest}'D:\git\cheat-engine\Cheat Engine\bin\'+{$endif}'include\winapi');
+  {$endif}
+  add_include_path(s,{$ifdef standalonetest}'/Users/ericheijnen/Documents/GitHub/cheat-engine/Cheat Engine/bin/cheatengine-x86_64.app/Contents/MacOS/'+{$endif}'include\sys');
+  add_include_path(s,pchar(ExtractFilePath(application.exename)+'include'));
+  {$ifdef windows}
+  add_include_path(s,pchar(ExtractFilePath(application.exename)+'include\winapi'));
+  {$endif}
+  add_include_path(s,pch
