@@ -823,4 +823,149 @@ begin
 
 
         updateMinMax(currentFunction.address, minaddress, maxaddress);
-        up
+        updateMinMax(currentFunction.address, parsedSource[parsedSourceIndex].minaddress, parsedSource[parsedSourceIndex].maxaddress);
+
+
+
+        if currentFunction.valid then
+        begin
+          parsedFunctionIndex:=length(parsedsource[parsedSourceIndex].functions);
+          setlength(parsedsource[parsedSourceIndex].functions, parsedFunctionIndex+1);
+
+          parsedSource[parsedSourceIndex].functions[parsedFunctionIndex].functionname:=currentfunction.name;
+          parsedSource[parsedSourceIndex].functions[parsedFunctionIndex].functionaddress:=currentFunction.address;
+          parsedSource[parsedSourceIndex].functions[parsedFunctionIndex].functionstop:=0;
+          parsedSource[parsedSourceIndex].functions[parsedFunctionIndex].lexblocks:=[];
+          parsedSource[parsedSourceIndex].functions[parsedFunctionIndex].stackvars:=[];
+        end;
+      end;
+
+      $44: //Line number info
+      begin
+        if (parsedSourceIndex=-1) or (parsedFunctionIndex=-1) then continue;
+
+        if currentFunction.valid then
+        begin
+          ln:=stab[i].n_desc;
+          if ln>0 then
+          begin
+
+            address:=currentFunction.address+stab[i].n_value;
+
+            if (source<>nil) and (ln<=source.Count) then
+            begin
+              sl:=tstringlist.create;
+
+              sl.add(source[ln-1]);
+              source.Objects[ln-1]:=tobject(address);
+
+              //deal with some code layout preferences
+              if (ln<source.count) and (source[ln]='}') then
+              begin
+                sl.add(source[ln]);
+                source.Objects[ln]:=tobject(address);
+              end;
+
+              if (ln>1) and (trim(source[ln-1])='{') then
+              begin
+                sl.Insert(0,source[ln-2]);
+                source.Objects[ln-2]:=tobject(address);
+              end;
+
+              sl.insert(0, format('%s:%2d', [extractfilename(currentSourceFile),ln]));
+
+              addLineInfo(currentFunction.address, address, ln, sl.text, source);
+
+
+              updateMinMax(address, minaddress, maxaddress);
+              updateMinMax(address, parsedSource[parsedSourceIndex].minaddress, parsedSource[parsedSourceIndex].maxaddress);
+            end;
+          end;
+
+
+        end;
+      end;
+
+
+
+      $84: //sub source file
+      begin
+        parsedFunctionIndex:=-1;
+        parsedSourceIndex:=-1;
+
+        currentFunction.valid:=false;
+        if stab[i].n_strx>=stabstrsize then
+        begin
+          source:=nil;
+          currentSourceFile:='';
+          continue;
+        end;
+
+        currentSourceFile:=pchar(@stabstr[stab[i].n_strx]);
+        if trim(currentSourceFile)='' then continue;
+
+        for j:=0 to length(parsedsource)-1 do
+          if parsedsource[j].sourcefile=currentSourceFile then
+          begin
+            parsedSourceIndex:=j;
+            break;
+          end;
+
+        if parsedSourceIndex=-1 then
+        begin
+          parsedSourceIndex:=length(parsedsource);
+          setlength(parsedsource, parsedSourceIndex+1);
+
+          parsedsource[parsedSourceIndex].sourcefile:=currentSourceFile;
+          parsedsource[parsedSourceIndex].functions:=[];
+          parsedsource[parsedSourceIndex].minaddress:=0;
+          parsedsource[parsedSourceIndex].maxaddress:=0;
+        end;
+
+
+        if trim(currentSourceFile)='' then continue;
+
+        source:=GetSource(currentSourceFile);
+        if source=nil then
+        begin
+          source:=tstringlist.create;
+          if (stringsources<>nil) and (currentsourcefile.StartsWith('<string')) then
+          begin
+            str:='';
+            for j:=length(currentSourceFile)-1 downto 1 do
+            begin
+              if currentsourcefile[j] in ['0'..'9'] then
+                str:=currentsourcefile[j]+str
+              else
+                break;
+            end;
+
+            j:=strtoint(str);
+            if j<stringsources.Count then
+              source.Text:=stringsources[j];
+          end
+          else
+          begin
+            try
+              source.LoadFromFile(currentSourceFile);
+            except
+              freeandnil(source);
+              currentSourceFile:='';
+              continue;
+            end;
+          end;
+
+          AddSource(currentSourceFile, source);
+        end;
+      end;
+
+      $e0: //end of lex block (last address)
+      begin
+        if currentFunction.valid then
+        begin
+          address:=currentFunction.address+stab[i].n_value;
+          UpdateMinMax(address, minaddress, maxaddress);
+          if parsedSourceIndex<>-1 then
+          begin
+            UpdateMinMax(address, parsedSource[parsedSourceIndex].minaddress, parsedSource[parsedSourceIndex].maxaddress);
+            if parsedFunction
