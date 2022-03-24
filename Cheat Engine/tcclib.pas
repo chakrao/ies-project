@@ -968,4 +968,181 @@ begin
           if parsedSourceIndex<>-1 then
           begin
             UpdateMinMax(address, parsedSource[parsedSourceIndex].minaddress, parsedSource[parsedSourceIndex].maxaddress);
-            if parsedFunction
+            if parsedFunctionIndex<>-1 then
+              UpdateMinMax(address, address, parsedSource[parsedSourceIndex].functions[parsedFunctionIndex].functionstop);
+          end;
+        end;
+
+      end;
+
+    end;
+  end;
+end;
+
+procedure TSourceCodeInfo.addLineInfo(functionaddress, address: ptruint; linenr: integer; sourceline: string; sourcefile: tstrings);
+var e: TLineNumberInfo;
+begin
+  e.functionAddress:=functionaddress;
+  e.address:=address;
+  e.linenr:=linenr;
+  e.sourcecode:=strnew(pchar(sourceline));
+  e.sourcefile:=sourcefile;
+  AddressToLineNumberInfo.Add(address, e);
+
+
+
+
+end;
+
+function TSourceCodeInfo.getLineInfo(address: ptruint): PLineNumberInfo;
+begin
+  result:=AddressToLineNumberInfo.GetDataPtr(address);
+end;
+
+
+function TSourceCodeInfo.getVariableInfo(varname: string; currentaddress: ptruint; out varinfo: TLocalVariableInfo): boolean;
+var i,j,k: integer;
+begin
+  result:=false;
+  //find the function this address belongs to
+
+  //first find the sourcefile
+  for i:=0 to length(parsedsource)-1 do
+    if (currentaddress>=parsedsource[i].minaddress) and (currentaddress<=parsedsource[i].maxaddress) then
+    begin
+      //found the sourcefile for this address
+      with parsedsource[i] do
+      begin
+        for j:=0 to length(functions)-1 do
+        begin
+          if (currentaddress>=functions[j].functionaddress) and (currentaddress<=functions[j].functionstop) then
+          begin
+            with functions[j] do
+            begin
+              for k:=0 to length(stackvars)-1 do
+              begin
+                if (currentaddress>=lexblocks[stackvars[k].lexblock].startaddress) and (currentaddress<=lexblocks[stackvars[k].lexblock].stopaddress) and (stackvars[k].varname=varname) then
+                begin
+                  varinfo.name:=stackvars[k].varname;
+                  varinfo.offset:=stackvars[k].offset;
+                  varinfo.vartype:=stackvars[k].typenr;
+                  varinfo.ispointer:=stackvars[k].ispointer;
+                  exit(true);
+                end;
+              end;
+
+              for k:=0 to length(parameters)-1 do
+              begin
+                if (parameters[k].varname=varname) then
+                begin
+                  varinfo.name:=parameters[k].varname;
+                  varinfo.offset:=parameters[k].offset;
+                  varinfo.vartype:=parameters[k].typenr;
+                  varinfo.ispointer:=parameters[k].ispointer;
+                  exit(true);
+                end;
+              end;
+            end;
+
+            break;
+          end;
+        end;
+      end;
+      break;
+    end;
+end;
+
+
+procedure TSourceCodeInfo.AddSource(sourcefilename: string; sourcecode: tstrings); //sourcecode string objects passed become owned by TSourceCodeInfo and will be destroyed when it gets destroyed
+begin
+  sources.AddObject(sourcefilename, sourcecode);
+end;
+
+function TSourceCodeInfo.GetSource(sourcefilename: string): tstrings;
+var i: integer;
+begin
+  i:=sources.IndexOf(sourcefilename);
+  if i<>-1 then
+    result:=tstrings(sources.Objects[i])
+  else
+    result:=nil;
+end;
+
+procedure TSourceCodeInfo.getRange(out start: ptruint; out stop: ptruint);
+//returns the range of addresses this code encompasses
+begin
+  start:=minaddress;
+  stop:=maxaddress;
+end;
+
+procedure TSourceCodeInfo.register;
+begin
+  {$ifndef standalonetest}
+  if SourceCodeInfoCollection=nil then
+    SourceCodeInfoCollection:=TSourceCodeInfoCollection.create;
+
+  SourceCodeInfoCollection.addSourceCodeInfo(self);
+  {$endif}
+end;
+
+procedure TSourceCodeInfo.unregister;
+begin
+  {$ifndef standalonetest}
+  if SourceCodeInfoCollection<>nil then
+    SourceCodeInfoCollection.removeSourceCodeInfo(self);
+  {$endif}
+end;
+
+constructor TSourceCodeInfo.create;
+begin
+  AddressToLineNumberInfo:=TMap.Create(ituPtrSize,sizeof(TLineNumberInfo));
+  sources:=TStringList.create;
+  {$ifndef standalonetest}
+  fprocessid:=processhandler.processid;
+  {$endif}
+end;
+
+destructor TSourceCodeInfo.destroy;
+var
+  mi: TMapIterator;
+  i: integer;
+begin
+  unregister;
+
+  mi:=TMapIterator.Create(AddressToLineNumberInfo);
+  mi.First;
+  while not mi.EOM do
+  begin
+    StrDispose(PLineNumberInfo(mi.DataPtr)^.sourcecode);
+    PLineNumberInfo(mi.DataPtr)^.sourcecode:=nil;
+    mi.Next;
+  end;
+
+  mi.free;
+
+  AddressToLineNumberInfo.Free;
+  AddressToLineNumberInfo:=nil;
+
+  for i:=0 to sources.count-1 do
+    sources.Objects[i].Free;
+
+  sources.free;
+
+  if stabdata<>nil then
+    freemem(stabdata);
+  inherited destroy;
+end;
+
+
+type
+  TTC_OpenFileInfo=record
+   s: TMemoryStream;
+  end;
+
+var
+  TCC_OpenFiles: classes.TList;
+
+function TCC_OpenFileCallback(filename: pchar; openflag: integer): integer; stdcall;
+var
+  i,j: integer;
+  temp: TMemoryStream;
