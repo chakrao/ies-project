@@ -1146,3 +1146,146 @@ function TCC_OpenFileCallback(filename: pchar; openflag: integer): integer; stdc
 var
   i,j: integer;
   temp: TMemoryStream;
+
+  index: integer;
+begin
+  //7ce00000
+  //check if filename is in mainform.tablefiles
+  for i:=0 to mainform.LuaFiles.Count-1 do
+    if mainform.LuaFiles[i].name=filename then
+    begin
+      //mainform.LuaFiles;
+      temp:=TMemoryStream.Create;
+      temp.CopyFrom(mainform.LuaFiles[i].stream,0);
+      temp.position:=0;
+
+      index:=0;
+      for j:=0 to TCC_OpenFiles.Count-1 do
+        if TCC_OpenFiles[i]=nil then
+        begin
+          TCC_OpenFiles[i]:=temp;
+          exit($7ce00000+j);
+        end;
+
+      exit($7ce00000+TCC_OpenFiles.Add(temp));
+    end;
+
+  result:=-1;
+end;
+
+//TCC doesn't use seek for header files, so this is acceptable
+function TCC_ReadFileCallback(fileHandle: integer; destination: pointer; maxcharcount: integer):integer;  stdcall;
+var
+  s: tmemorystream;
+  i: integer;
+begin
+  i:=filehandle-$7ce00000;
+  if (i>=0) and (i<TCC_OpenFiles.count) then
+  begin
+    s:=tmemorystream(TCC_OpenFiles[i]);
+    i:=s.Read(destination^, min(maxcharcount, s.Size-s.Position));
+    exit(i);
+  end;
+  result:=-1;
+end;
+
+function TCC_CloseFileCallback(fileHandle: integer): integer;  stdcall;
+var
+  s: tmemorystream;
+  i: integer;
+begin
+  i:=filehandle-$7ce00000;
+  if (i>=0) and (i<TCC_OpenFiles.count) then
+  begin
+    s:=tmemorystream(TCC_OpenFiles[i]);
+    s.free;
+    TCC_OpenFiles[i]:=nil;
+    exit(0);
+  end;
+  result:=-1;
+end;
+
+constructor TTCC.create(target: TTCCTarget);
+var
+  module: HModule;
+  p: string;
+begin
+  if initDone {$ifdef windows}and (target in [x86_64, i386]){$endif} then raise exception.create('Do not create more compilers after init');
+  if cs=nil then
+    cs:=TCriticalSection.create;
+
+  {$ifdef windows}
+
+  {$ifdef cpu32}
+  module:=LoadLibrary({$ifdef standalonetest}'D:\git\cheat-engine\Cheat Engine\bin\'+{$endif}'tcc32-32.dll'); //generates 32-bit code
+  {$else}
+  case target of
+    i386:    module:=loadlibrary({$ifdef standalonetest}'D:\git\cheat-engine\Cheat Engine\bin\'+{$endif}'tcc64-32.dll'); //generates 32-bit code
+    x86_64:  module:=loadlibrary({$ifdef standalonetest}'D:\git\cheat-engine\Cheat Engine\bin\'+{$endif}'tcc64-64.dll');
+    i386_sysv: module:=loadlibrary({$ifdef standalonetest}'D:\git\cheat-engine\Cheat Engine\bin\'+{$endif}'tcc64-32-linux.dll'); //32-bit linux abi code
+    x86_64_sysv: module:=loadlibrary({$ifdef standalonetest}'D:\git\cheat-engine\Cheat Engine\bin\'+{$endif}'tcc64-64-linux.dll'); //64-bit linux
+    else
+      module:=0;
+  end;
+  {$endif}
+  {$else}
+  if target=aarch64 then
+  begin
+    p:={$ifdef standalonetest}'/Users/ericheijnen/Documents/GitHub/cheat-engine/Cheat Engine/bin/tcc/Release/'+{$endif}'libtcc_arm64.dylib';
+    module:=loadlibrary(p);
+
+    if module=0 then
+    begin
+      p:=ExtractFilePath(application.ExeName)+'libtcc_arm64.dylib';
+      module:=loadlibrary(p);
+    end;
+  end
+  else
+  begin
+    module:=loadlibrary('libtcc_x86_64.dylib');
+
+    if module=0 then
+    begin
+      p:=ExtractFilePath(application.ExeName)+'libtcc_x86_64.dylib';
+      module:=loadlibrary(p);
+    end;
+  end;
+
+  {$endif}
+
+  working:=false;
+
+  pointer(new):=GetProcAddress(module,'tcc_new');
+  pointer(parse_args):=GetProcAddress(module,'tcc_parse_args');
+  pointer(set_options):=GetProcAddress(module,'tcc_set_options');
+  pointer(set_lib_path):=GetProcAddress(module,'tcc_set_lib_path');
+  pointer(add_include_path):=GetProcAddress(module,'tcc_add_include_path');
+  pointer(set_error_func):=GetProcAddress(module,'tcc_set_error_func');
+
+  pointer(set_output_type):=GetProcAddress(module,'tcc_set_output_type');
+  pointer(set_symbol_lookup_func):=GetProcAddress(module,'tcc_set_symbol_lookup_func');
+  pointer(set_binary_writer_func):=GetProcAddress(module,'tcc_set_binary_writer_func');
+  pointer(compile_string):=GetProcAddress(module,'tcc_compile_string');
+
+  pointer(add_symbol):=GetProcAddress(module,'tcc_add_symbol');
+  pointer(add_file):=GetProcAddress(module,'tcc_add_file');
+  pointer(output_file):=GetProcAddress(module,'tcc_output_file');
+  pointer(relocate):=GetProcAddress(module,'tcc_relocate');
+  pointer(get_symbol):=GetProcAddress(module,'tcc_get_symbol');
+  pointer(get_symbols):=GetProcAddress(module,'tcc_get_symbols');
+  pointer(delete):=GetProcAddress(module,'tcc_delete');
+
+  pointer(get_stab):=GetProcAddress(module,'tcc_get_stab');
+
+  pointer(install_filehook):=GetProcAddress(module,'tcc_install_filehook');
+
+
+
+  working:=(module<>0) and
+           assigned(new) and
+           assigned(set_options) and
+           assigned(add_include_path) and
+           assigned(compile_string) and
+           assigned(output_file) and
+           assigned(delete) and
+           assigned(ge
