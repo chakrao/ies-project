@@ -1438,4 +1438,185 @@ begin
   {$ifdef windows}
   add_include_path(s,pchar(ExtractFilePath(application.exename)+'include\winapi'));
   {$endif}
-  add_include_path(s,pch
+  add_include_path(s,pchar(ExtractFilePath(application.exename)+'include\sys'));
+
+
+  if additonalIncludePaths<>nil then
+    for i:=0 to additonalIncludePaths.count-1 do
+      add_include_path(s,pchar(additonalIncludePaths[i]));
+
+
+  if textlog<>nil then set_error_func(s,textlog,@ErrorLogger);
+
+  if SystemSupportsWritableExecutableMemory then
+    params:='-nostdlib'
+  else
+    params:='-nostdlib -Wl,-section-alignment='{$ifdef windows}+'1000'{$else}+inttohex(getPageSize,1){$endif};
+
+
+
+  if nodebug=false then
+    params:='-g '+params;
+
+
+  set_options(s,pchar(params));
+  set_output_type(s,TCC_OUTPUT_MEMORY);
+
+
+{$ifndef standalonetest}
+  if targetself then
+    set_symbol_lookup_func(s,nil,@symbolLookupFunctionSelf)
+  else
+{$endif}
+    set_symbol_lookup_func(s,nil,@symbolLookupFunction);
+end;
+
+procedure ttcc.parseStabData(s: PTCCState; symbols: Tstrings; sourcecodeinfo: TSourceCodeInfo; stringsources: tstrings=nil );
+var
+  stabdatasize: integer;
+  stabdata: pointer;
+  stabsize: integer;
+  stabstrsize: integer;
+
+  stab: PCCStabEntry;
+  stabstr: pchar;
+
+begin
+  stabdatasize:=0;
+  if get_stab(s,nil, stabdatasize)=-2 then
+  begin
+    getmem(stabdata, stabdatasize*2);
+   // FillMemory(stabdata,stabdatasize, $cc);
+    try
+      stabdatasize:=stabdatasize*2;
+      if get_stab(s, stabdata, stabdatasize)=0 then
+      begin
+        //parse the stabdata and output linenumbers and sourcecode
+        stabsize:=pdword(stabdata)^;
+        stab:=pointer(ptruint(stabdata)+4);
+        stabstr:=pointer(ptruint(stabdata)+4+stabsize);
+        stabstrsize:=stabdatasize-4-stabsize;
+
+        sourcecodeinfo.stabdata:=stabdata;
+        sourcecodeinfo.stab:=stab;
+        sourcecodeinfo.stabstr:=stabstr;
+        sourcecodeinfo.stabsize:=stabsize;
+        sourcecodeinfo.stabstrsize:=stabstrsize;
+
+        //quickly parse the lines
+        sourcecodeinfo.parseLineNumbers(symbols, stringsources);
+
+
+
+      end;
+    finally
+      if sourcecodeinfo.stabdata<>stabdata then
+        freemem(stabdata); //else it's owned by sourcecodeinfo
+    end;
+  end;
+end;
+
+function ttcc.testcompileScript(script: string; var bytesize: integer; referencedSymbols: TStrings; symbols: TStrings; sourcecodeinfo: TSourceCodeInfo; textlog: tstrings=nil): boolean;
+var s: PTCCState;
+  r: pointer;
+  ms: Tmemorystream;
+
+begin
+  result:=false;
+  if not working then
+  begin
+    if textlog<>nil then textlog.add('Incorrect tcc library');
+    exit(false);
+  end;
+
+
+  cs.enter;
+  s:=new();
+  ms:=tmemorystream.create;
+  try
+    setupCompileEnvironment(s, textlog,false, sourcecodeinfo=nil);
+
+    set_binary_writer_func(s,nil,@NullWriter);
+    set_symbol_lookup_func(s,referencedSymbols, @symbolLookupFunctionTestCompile);
+
+    if compile_string(s,pchar(script))=-1 then exit(false);
+    bytesize:=relocate(s,0);
+    if bytesize<=0 then exit(false);
+
+    relocate(s,$00400000);
+
+    if symbols<>nil then
+      get_symbols(s, symbols, @symbolCallback);
+
+
+    result:=true;
+  finally
+    delete(s);
+    cs.leave;
+
+    if ms<>nil then
+      freeandnil(ms);
+  end;
+end;
+
+function ttcc.compileScript(script: string; address: ptruint; output: tstream; symbollist: TStrings; regionList: TTCCRegionList=nil; sourcecodeinfo: TSourceCodeInfo=nil; textlog: tstrings=nil; secondaryLookupList: tstrings=nil; targetself: boolean=false): boolean;
+var s: PTCCState;
+  r: pointer;
+
+  size: integer;
+  tms: TTCCMemorystream=nil;
+
+  sources: tstringlist;
+  i: integer;
+begin
+  if not working then
+  begin
+    if textlog<>nil then textlog.add('Incorrect tcc library');
+    exit(false);
+  end;
+
+  if address=0 then
+  begin
+    if textlog<>nil then textlog.add('Can not compile at address 0');
+    exit(false);
+  end;
+
+
+  cs.enter;
+  s:=new();
+  try
+    setupCompileEnvironment(s, textlog, targetself, sourcecodeinfo=nil);
+
+    if output is TTCCMemorystream then
+      tms:=TTCCMemorystream(output)
+    else
+      tms:=TTCCMemorystream.create;
+
+    tms.base:=address;
+
+    set_binary_writer_func(s,tms,@TCCMemorystreamWriter);
+
+    if secondaryLookupList<>nil then   //AA scripts can provide some extra addresses
+      set_symbol_lookup_func(s,secondaryLookupList, @symbolLookupFunction);
+
+    if compile_string(s,pchar(script))=-1 then exit(false);
+
+    if relocate(s,0)=-1 then exit(false);
+    if relocate(s,address)=-1 then exit(false);
+
+    if symbollist<>nil then
+      get_symbols(s, symbollist, @symbolCallback);
+
+    if (output is TTCCMemorystream)=false then
+    begin
+      tms.position:=0;
+      tms.SaveToStream(output);
+    end;
+
+    if regionList<>nil then
+    begin
+      for i:=0 to length(tms.protections)-1 do
+        regionList.Add(tms.protections[i]);;
+    end;
+
+    if (symboll
