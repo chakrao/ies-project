@@ -1619,4 +1619,203 @@ begin
         regionList.Add(tms.protections[i]);;
     end;
 
-    if (symboll
+    if (symbollist<>nil) and (sourcecodeinfo<>nil) then
+    begin
+      sources:=tstringlist.create;
+      sources.Add(script);
+      parseStabData(s, symbollist, sourcecodeinfo, sources);
+      sources.free;
+    end;
+
+    result:=true;
+  finally
+    delete(s);
+    cs.leave;
+
+    if (tms<>nil) and ((output is TTCCMemorystream)=false) then
+      tms.free;
+  end;
+end;
+
+function ttcc.compileScripts(scripts: tstrings; address: ptruint; output: tstream; symbollist: TStrings; regionList: TTCCRegionList=nil; sourcecodeinfo: TSourceCodeInfo=nil; textlog: tstrings=nil; targetself: boolean=false):boolean;
+var
+  s: PTCCState;
+  i: integer;
+  tms: TTCCMemorystream=nil;
+begin
+  result:=false;
+  if not working then
+  begin
+    if textlog<>nil then textlog.add('Incorrect tcc library');
+    exit(false);
+  end;
+
+  if address=0 then
+  begin
+    if textlog<>nil then textlog.add('Can not compile at address 0');
+    exit(false);
+  end;
+
+  cs.enter;
+  s:=new();
+  try
+    setupCompileEnvironment(s, textlog, targetself, sourcecodeinfo=nil);
+
+    if output is TTCCMemorystream then
+      tms:=TTCCMemorystream(output)
+    else
+      tms:=TTCCMemorystream.create;
+
+    tms.base:=address;
+
+    set_binary_writer_func(s,tms,@TCCMemorystreamWriter);
+
+
+    for i:=0 to scripts.count-1 do
+      if compile_string(s,pchar(scripts[i]))=-1 then exit(false);
+
+
+    if relocate(s,0)=-1 then exit(false);
+    if relocate(s,address)=-1 then exit(false);
+
+    //still alive, get the symbols
+    if symbollist<>nil then
+      get_symbols(s, symbollist, @symbolCallback);
+
+    if (output is TTCCMemorystream)=false then
+    begin
+      tms.position:=0;
+      tms.SaveToStream(output);
+    end;
+
+    if regionList<>nil then
+    begin
+      for i:=0 to length(tms.protections)-1 do
+        regionList.Add(tms.protections[i]);;
+    end;
+
+    if (symbollist<>nil) and (sourcecodeinfo<>nil) then
+      parseStabData(s, symbollist, sourcecodeinfo, scripts);
+
+
+    result:=true;
+  finally
+    delete(s);
+    cs.leave;
+
+    if (tms<>nil) and ((output is TTCCMemorystream)=false) then
+      tms.free;
+  end;
+
+end;
+
+
+function ttcc.compileProject(files: tstrings; address: ptruint; output: tstream; symbollist: TStrings; regionList: TTCCRegionList=nil; sourcecodeinfo: TSourceCodeInfo=nil; textlog: tstrings=nil; targetself: boolean=false):boolean;
+var
+  s: PTCCState;
+  i: integer;
+  tms: TTCCMemorystream=nil;
+begin
+  result:=false;
+  if not working then
+  begin
+    if textlog<>nil then textlog.add('Incorrect tcc library');
+    exit(false);
+  end;
+
+  if address=0 then
+  begin
+    if textlog<>nil then textlog.add('Can not compile at address 0');
+    exit(false);
+  end;
+
+  cs.enter;
+  s:=new();
+  try
+    setupCompileEnvironment(s, textlog, targetself, sourcecodeinfo=nil);
+
+    if output is TTCCMemorystream then
+      tms:=TTCCMemorystream(output)
+    else
+      tms:=TTCCMemorystream.create;
+
+    tms.base:=address;
+
+    set_binary_writer_func(s,tms,@TCCMemorystreamWriter);
+
+    for i:=0 to files.count-1 do
+      if add_file(s, pchar(files[i]))=-1 then exit(false);
+
+    if relocate(s,0)=-1 then exit(false);
+    if relocate(s,address)=-1 then exit(false);
+
+
+    //still alive, get the symbols
+    if symbollist<>nil then
+      get_symbols(s, symbollist, @symbolCallback);
+
+    if (output is TTCCMemorystream)=false then
+    begin
+      tms.position:=0;
+      tms.SaveToStream(output);
+    end;
+
+    if regionList<>nil then
+    begin
+      for i:=0 to length(tms.protections)-1 do
+        regionList.Add(tms.protections[i]);;
+    end;
+
+    if (symbollist<>nil) and (sourcecodeinfo<>nil) then
+      parseStabData(s, symbollist, sourcecodeinfo);
+
+
+
+    result:=true;
+  finally
+    delete(s);
+    cs.leave;
+
+    if (tms<>nil) and ((output is TTCCMemorystream)=false) then
+      tms.free;
+  end;
+
+end;
+
+
+function initTCCLib: boolean;
+begin
+  TCC_OpenFiles:=classes.tlist.create;
+{$ifdef windows}
+  {$ifndef standalonetest}
+  tcc32:=ttcc.create(i386);
+ {$endif}
+
+  {$ifdef cpu64}
+  tcc64:=ttcc.create(x86_64);
+  {$endif}
+{$else}
+  if MacIsArm64 then
+  begin
+    tcc32:=ttcc.create(aarch64);
+    tcc64:=ttcc.create(aarch64);
+
+    tccrosetta:=ttcc.create(x86_64);
+  end
+  else
+  begin
+    tcc32:=ttcc.create(x86_64);
+    tcc64:=ttcc.create(x86_64);
+  end;
+{$endif}
+
+  initDone:=true;
+  result:=initdone;
+end;
+
+
+initialization
+  initTCCLib;
+
+end.
+
