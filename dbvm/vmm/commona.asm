@@ -279,4 +279,67 @@ sub rsi,8
 mov rsp,rsi
 mov eax,edi
 
-jmp far [call32bit_32bitcodeadd
+jmp far [call32bit_32bitcodeaddress]
+
+call32bit_32bitcodeaddress:
+dd call32bit_32bitcode
+dw 88
+
+BITS 32
+call32bit_32bitcode:
+nop
+mov dx,0x8
+mov ss,dx
+mov es,dx
+mov ds,dx
+mov esp,esi
+nop
+nop
+push eax
+pop ebx
+nop
+call eax
+nop
+nop
+jmp 80:call32bit_64bitcode
+
+BITS 64
+call32bit_64bitcode:
+nop
+nop
+mov dx,0
+mov ds,dx
+mov es,dx
+mov ss,dx
+mov ss,dx
+
+add rsp,8
+mov rdx,[rsp]
+mov rsp,rdx
+
+
+ret
+
+
+
+;void longjmp(jmp_buf env, int val);
+global longjmp
+longjmp:
+;iretq works:
+;tempRIP ← Pop();
+;tempCS ← Pop();
+;tempEFLAGS ← Pop();
+;tempRSP ← Pop();
+;tempSS ← Pop();
+
+sub rsp,5*8
+
+mov rax,setjmpreturn
+mov [rsp+0x00],rax ;rip=setjmpreturn
+mov qword [rsp+0x08],0x50 ;cs
+mov qword [rsp+0x10],2 ;eflags
+mov rax,[rdi+0x40]
+mov [rsp+0x18],rax ;rsp
+mov qword [rsp+0x20],8 ;ss
+mov rax,rsi ;set the new return
+iretq ;using iret so nmi's can go again as well
