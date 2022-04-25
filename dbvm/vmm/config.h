@@ -169,3 +169,12 @@ _INLINE_ uint32_t RULONG(const uint8_t *s)
 {
 	return s[0] | (s[1] << 8) | (s[2] << 16) | (s[3] << 24);
 }
+#else
+/* Little endian macro's will just make the cast. */
+#define RSHORT(x) *(int16_t *)x
+#define RUSHORT(x) *(uint16_t *)x
+#define RLONG(x) *(int32_t *)x
+#define RULONG(x) *(uint32_t *)x
+#endif
+
+#endif /* CONFIG_H */
