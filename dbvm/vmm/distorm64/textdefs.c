@@ -116,4 +116,234 @@ void _FASTCALL_ str_code_sp_hb(_WString* s, unsigned int x)
 
 	if (x < 0x10) {	/* < 0x10 has a fixed length of 5 including null terminate. */
 		*(int32_t*)&s->p[s->pos] = *(int32_t*)&TextHBTable[x];
-		s->p[s->pos + sizeof(int32_t)] = 
+		s->p[s->pos + sizeof(int32_t)] = '\0';
+		s->pos += sizeof(int32_t) - 1;
+	} else { /* >= 0x10 has a fixed length of 6 including null terminate. */
+		*(int32_t*)&s->p[s->pos] = *(int32_t*)&TextHBTable[x];
+		*(int16_t*)&s->p[s->pos + sizeof(int32_t)] = *(int16_t*)(TextHBTable[x] + sizeof(int32_t));
+		s->pos += sizeof(int32_t) + sizeof(int16_t) - 1;
+	}
+}
+
+void _FASTCALL_ str_hex_sp_w(_WString* s, unsigned int x)
+{
+	int8_t* buf;
+	unsigned int t = (uint8_t)((x >> 4) & 0xf);
+
+	buf = &s->p[s->pos];
+	s->pos += 5;
+
+	buf[0] = ' ';
+	buf[1] = NIBBLE_TO_CHR;
+
+	t = x & 0xf;
+	buf[2] = NIBBLE_TO_CHR;
+
+	t = (x >> 12);
+	buf[3] = NIBBLE_TO_CHR;
+
+	t = (x >> 8) & 0xf;
+	buf[4] = NIBBLE_TO_CHR;
+
+	buf[5] = '\0';
+}
+
+void _FASTCALL_ str_code_hw(_WString* s, unsigned int x)
+{
+	int8_t* buf;
+	int i = 0;
+	unsigned int t = (uint8_t)((x >> 12) & 0xf);
+	buf = &s->p[s->pos];
+
+	buf[0] = '0';
+	buf[1] = 'x';
+	buf += 2;
+
+	if (t != 0) buf[i++] = NIBBLE_TO_CHR;
+
+	t = (x >> 8) & 0xf;
+	if (i | t) buf[i++] = NIBBLE_TO_CHR;
+
+	t = (x >> 4) & 0xf;
+	if (i | t) buf[i++] = NIBBLE_TO_CHR;
+
+	t = x & 0xf;
+	buf[i++] = NIBBLE_TO_CHR;
+
+	s->pos += i + 2;
+	buf[i] = '\0';
+}
+
+void _FASTCALL_ str_hex_sp_dw(_WString* s, uint32_t x)
+{
+	int8_t* buf;
+	unsigned int t = (uint8_t)((x >> 4) & 0xf);
+
+	buf = &s->p[s->pos];
+	s->pos += 9;
+
+	buf[0] = ' ';
+	buf[1] = NIBBLE_TO_CHR;
+
+	t = x & 0xf;
+	buf[2] = NIBBLE_TO_CHR;
+
+	t = (x >> 12) & 0xf;
+	buf[3] = NIBBLE_TO_CHR;
+
+	t = (x >> 8) & 0xf;
+	buf[4] = NIBBLE_TO_CHR;
+
+	t = (x >> 20) & 0xf;
+	buf[5] = NIBBLE_TO_CHR;
+
+	t = (x >> 16) & 0xf;
+	buf[6] = NIBBLE_TO_CHR;
+
+	t = x >> 28;
+	buf[7] = NIBBLE_TO_CHR;
+
+	t = (x >> 24) & 0xf;
+	buf[8] = NIBBLE_TO_CHR;
+
+	buf[9] = '\0';
+}
+
+void _FASTCALL_ str_code_hdw(_WString* s, uint32_t x)
+{
+	int8_t* buf;
+	int i = 0, shift = 0;
+	unsigned int t = 0;
+
+	buf = &s->p[s->pos];
+
+	buf[0] = '0';
+	buf[1] = 'x';
+	buf += 2;
+
+	for (shift = 28; shift != 0; shift -= 4) {
+		t = (x >> shift) & 0xf;
+		if (i | t) buf[i++] = NIBBLE_TO_CHR;
+	}
+	t = x & 0xf;
+	buf[i++] = NIBBLE_TO_CHR;
+
+	s->pos += i + 2;
+	buf[i] = '\0';
+}
+
+void _FASTCALL_ str_hex_sp_qw(_WString* s, uint8_t src[8])
+{
+	int8_t* buf;
+	uint32_t x = RULONG(src);
+	int t = (uint8_t)((x >> 4) & 0xf);
+
+	buf = &s->p[s->pos];
+	s->pos += 17;
+
+	buf[0] = ' ';
+	buf[1] = NIBBLE_TO_CHR;
+
+	t = x & 0xf;
+	buf[2] = NIBBLE_TO_CHR;
+
+	t = (x >> 12) & 0xf;
+	buf[3] = NIBBLE_TO_CHR;
+
+	t = (x >> 8) & 0xf;
+	buf[4] = NIBBLE_TO_CHR;
+
+	t = (x >> 20) & 0xf;
+	buf[5] = NIBBLE_TO_CHR;
+
+	t = (x >> 16) & 0xf;
+	buf[6] = NIBBLE_TO_CHR;
+
+	t = x >> 28;
+	buf[7] = NIBBLE_TO_CHR;
+
+	t = (x >> 24) & 0xf;
+	buf[8] = NIBBLE_TO_CHR;
+
+	x = RULONG(&src[sizeof(int32_t)]);
+
+	t = (uint8_t)((x >> 4) & 0xf);
+	buf[9] = NIBBLE_TO_CHR;
+
+	t = x & 0xf;
+	buf[10] = NIBBLE_TO_CHR;
+
+	t = (x >> 12) & 0xf;
+	buf[11] = NIBBLE_TO_CHR;
+
+	t = (x >> 8) & 0xf;
+	buf[12] = NIBBLE_TO_CHR;
+
+	t = (x >> 20) & 0xf;
+	buf[13] = NIBBLE_TO_CHR;
+
+	t = (x >> 16) & 0xf;
+	buf[14] = NIBBLE_TO_CHR;
+
+	t = x >> 28;
+	buf[15] = NIBBLE_TO_CHR;
+
+	t = (x >> 24) & 0xf;
+	buf[16] = NIBBLE_TO_CHR;
+
+	buf[17] = '\0';
+}
+
+void _FASTCALL_ str_code_hqw(_WString* s, uint8_t src[8])
+{
+	int8_t* buf;
+	int i = 0, shift = 0;
+	uint32_t x = RULONG(&src[sizeof(int32_t)]);
+	int t;
+
+	buf = &s->p[s->pos];
+	buf[0] = '0';
+	buf[1] = 'x';
+	buf += 2;
+
+	for (shift = 28; shift != -4; shift -= 4) {
+		t = (x >> shift) & 0xf;
+		if (i | t) buf[i++] = NIBBLE_TO_CHR;
+	}
+
+	x = RULONG(src);
+	for (shift = 28; shift != 0; shift -= 4) {
+		t = (x >> shift) & 0xf;
+		if (i | t) buf[i++] = NIBBLE_TO_CHR;
+	}
+	t = x & 0xf;
+	buf[i++] = NIBBLE_TO_CHR;
+
+	s->pos += i + 2;
+	buf[i] = '\0';
+}
+
+#ifdef SUPPORT_64BIT_OFFSET
+void _FASTCALL_ str_off64(_WString* s, OFFSET_INTEGER x)
+{
+	int8_t* buf;
+	int i = 0, shift = 0;
+	OFFSET_INTEGER t = 0;
+
+	buf = &s->p[s->pos];
+
+	buf[0] = '0';
+	buf[1] = 'x';
+	buf += 2;
+
+	for (shift = 60; shift != 0; shift -= 4) {
+		t = (x >> shift) & 0xf;
+		if (i | t) buf[i++] = NIBBLE_TO_CHR;
+	}
+	t = x & 0xf;
+	buf[i++] = NIBBLE_TO_CHR;
+
+	s->pos += i + 2;
+	buf[i] = '\0';
+}
+#endif
