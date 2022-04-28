@@ -192,3 +192,10 @@ UINT64 value: The msr value to write
 QWORD cr3towatch
 QWORD debugctrlvalueyouwantset
 QWORD addressofthestore
+
+29: ultimap_disable (VMCALL_ULTIMAP_DISABLE)
+
+
+-----
+note:
+result of 0xcedead means that the function was not implemented(yet)
