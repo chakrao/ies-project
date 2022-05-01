@@ -189,4 +189,159 @@ void ept_hideDBVMPhysicalAddresses(pcpuinfo currentcpuinfo)
 }
 
 void ept_hideDBVMPhysicalAddressesAllCPUs()
-//walk the dbvm pagetables and map each physical address found to a random address until VA BASE_VIRTUAL_ADDRESS+40
+//walk the dbvm pagetables and map each physical address found to a random address until VA BASE_VIRTUAL_ADDRESS+4096*PhysicalPageListSize;
+//todo: If for some reason this takes too long and triggers a timeout, switch to per cpu
+{
+
+  nosendchar[getAPICID()]=0;
+  sendstringf("ept_hideDBVMPhysicalAddressesAllCPUs()\n");
+
+  pcpuinfo c=firstcpuinfo;
+
+  while (c)
+  {
+    sendstringf("cpu %d:\n", c->cpunr);
+
+    ept_hideDBVMPhysicalAddresses(c);
+    c=c->next;
+  }
+
+  sendstringf("done\n");
+}
+
+
+void ept_reset_cb(QWORD address, void *data UNUSED)
+{
+  map_setEntry(CloakedPagesMap, address, NULL);
+}
+
+void ept_reset()
+/*
+ * Removes all watches/breakpoints
+ */
+{
+  int i;
+  csEnter(&eptWatchListCS);
+  for (i=0; i<eptWatchListPos; i++)
+    if (eptWatchList[i].Active)
+      ept_watch_deactivate(i);
+
+  csLeave(&eptWatchListCS);
+
+  csEnter(&ChangeRegBPListCS);
+  for (i=0; i<ChangeRegBPListPos; i++)
+    if (ChangeRegBPList[i].Active)
+      ept_cloak_removechangeregonbp(ChangeRegBPList[i].PhysicalAddress);
+
+  csLeave(&ChangeRegBPListCS);
+
+  csEnter(&CloakedPagesCS);
+
+  if (CloakedPagesMap)
+    map_foreach(CloakedPagesMap,ept_reset_cb);
+  else
+  if (CloakedPagesList)
+  {
+    while (CloakedPagesList->size)
+      ept_cloak_deactivate(CloakedPagesList->list[0].address);
+  }
+
+  csLeave(&CloakedPagesCS);
+
+}
+
+BOOL ept_handleCloakEvent(pcpuinfo currentcpuinfo, QWORD Address, QWORD AddressVA)
+/*
+ * Checks if the physical address is cloaked, if so handle it and return 1, else return 0
+ */
+{
+  int result=0;
+  QWORD BaseAddress=Address & MAXPHYADDRMASKPB;
+  PCloakedPageData cloakdata;
+
+  if ((CloakedPagesList==NULL) && (CloakedPagesMap==NULL))
+    return FALSE;
+
+  if (isAMD) //AMD marks the page as no-execute only, no read/write block
+  {
+    NP_VIOLATION_INFO nvi;
+    nvi.ErrorCode=currentcpuinfo->vmcb->EXITINFO1;
+    if (nvi.ID==0)
+      return FALSE; //not an execute pagefault. Not a cloak for AMD
+
+    if (currentcpuinfo->NP_Cloak.ActiveRegion)
+    {
+
+      cloakdata=currentcpuinfo->NP_Cloak.ActiveRegion;
+     // sendstringf("Inside a cloaked region using mode 1 (which started in %6) and an execute fault happened (CS:RIP=%x:%6)\n", currentcpuinfo->NP_Cloak.LastCloakedVirtualBase, currentcpuinfo->vmcb->cs_selector, currentcpuinfo->vmcb->RIP);
+
+      //means we exited the cloaked page (or at the page boundary)
+
+      csEnter(&CloakedPagesCS);
+      NPMode1CloakSetState(currentcpuinfo, 0); //marks all pages back as executable and the stealthed page(s) back as no execute
+      csLeave(&CloakedPagesCS);
+
+      //check if it's a page boundary
+     // QWORD currentexecbase=currentcpuinfo->vmcb->RIP & 0xffffffffffff000ULL;
+
+      if  (((currentcpuinfo->vmcb->RIP<currentcpuinfo->NP_Cloak.LastCloakedVirtualBase) &&
+          ((currentcpuinfo->vmcb->RIP+32)>=currentcpuinfo->NP_Cloak.LastCloakedVirtualBase))
+        ||
+        ((currentcpuinfo->vmcb->RIP>=currentcpuinfo->NP_Cloak.LastCloakedVirtualBase+4096) &&
+         (currentcpuinfo->vmcb->RIP<=currentcpuinfo->NP_Cloak.LastCloakedVirtualBase+4096+32)))
+      {
+        sendstringf("Pageboundary. Do a single step with the cloaked page decloaked\n");
+
+        //page boundary. Do a single step with the cloaked page executable
+        *(QWORD *)(cloakdata->npentry[currentcpuinfo->cpunr])=cloakdata->PhysicalAddressExecutable;
+        cloakdata->npentry[currentcpuinfo->cpunr]->P=1;
+        cloakdata->npentry[currentcpuinfo->cpunr]->RW=1;
+        cloakdata->npentry[currentcpuinfo->cpunr]->US=1;
+        cloakdata->npentry[currentcpuinfo->cpunr]->EXB=0;
+
+        vmx_enableSingleStepMode();
+        vmx_addSingleSteppingReasonEx(currentcpuinfo, 2,cloakdata);
+      }
+
+      currentcpuinfo->NP_Cloak.ActiveRegion=NULL;
+      ept_invalidate();
+
+
+      return TRUE;
+    }
+  }
+
+
+  csEnter(&CloakedPagesCS);
+  if (CloakedPagesMap)
+    cloakdata=map_getEntry(CloakedPagesMap, BaseAddress);
+  else
+    cloakdata=addresslist_find(CloakedPagesList, BaseAddress);
+
+  if (cloakdata)
+  {
+    csEnter(&currentcpuinfo->EPTPML4CS);
+
+
+    //it's a cloaked page
+    //sendstringf("ept_handleCloakEvent on the target(CS:RIP=%x:%6)\n", currentcpuinfo->vmcb->cs_selector, currentcpuinfo->vmcb->RIP);
+
+    if (isAMD)
+    {
+      //AMD handling
+      //swap the page and make it executable,
+      *(QWORD *)(cloakdata->npentry[currentcpuinfo->cpunr])=cloakdata->PhysicalAddressExecutable;
+      cloakdata->npentry[currentcpuinfo->cpunr]->P=1;
+      cloakdata->npentry[currentcpuinfo->cpunr]->RW=1;
+      cloakdata->npentry[currentcpuinfo->cpunr]->US=1;
+      cloakdata->npentry[currentcpuinfo->cpunr]->EXB=0;
+
+      if (cloakdata->CloakMode==0)
+      {
+        //do one step, and restore back to non-executable
+        vmx_enableSingleStepMode();
+        vmx_addSingleSteppingReasonEx(currentcpuinfo, 2,cloakdata);
+      }
+      else
+      {
+        //mark all pages as no execute except this one (and any potential still waiting to s
