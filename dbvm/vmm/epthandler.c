@@ -344,4 +344,154 @@ BOOL ept_handleCloakEvent(pcpuinfo currentcpuinfo, QWORD Address, QWORD AddressV
       }
       else
       {
-        //mark all pages as no execute except this one (and any potential still waiting to s
+        //mark all pages as no execute except this one (and any potential still waiting to step cloak events)
+        currentcpuinfo->NP_Cloak.ActiveRegion=cloakdata;
+        currentcpuinfo->NP_Cloak.LastCloakedVirtualBase=currentcpuinfo->vmcb->RIP & 0xffffffffffff000ULL;
+        NPMode1CloakSetState(currentcpuinfo, 1);
+      }
+
+    }
+    else
+    {
+      //Intel handling
+      EPT_VIOLATION_INFO evi;
+      evi.ExitQualification=vmread(vm_exit_qualification);
+
+      int isMegaJmp=0;
+      QWORD RIP;
+
+      if (!isAMD)
+        RIP=vmread(vm_guest_rip);
+
+      //todo: keep a special list for physical address regions that can see 'the truth' (e.g ntoskrnl.exe and hal.dll on exported data pointers, but anything else will see the fake pointers)
+      //todo2: inverse cloak, always shows the real data except the list of physical address regions provided
+
+      //check for megajmp edits
+      //megajmp: ff 25 00 00 00 00 <address>
+      //So, if 6 bytes before the given address is ff 25 00 00 00 00 , it's a megajmp, IF the RIP is 6 bytes before the given address (and the bytes have changed from original)
+
+      if ((AddressVA-RIP)==6)
+      {
+        //check if the bytes have been changed here
+        DWORD offset=RIP & 0xfff;
+        int size=min(14,0x1000-offset);
+
+        unsigned char *new=(unsigned char *)((QWORD)cloakdata->Executable+offset);
+        unsigned char *original=(unsigned char *)((QWORD)cloakdata->Data+offset);
+
+
+        if (new[0]==0xff) //starts with 0xff, so very likely, inspect more
+        {
+          if (memcmp(new, original, size))
+          {
+            //the memory in this range got changed, check if it's a full megajmp
+            unsigned char megajmpbytes[6]={0xff,0x25,0x00,0x00,0x00,0x00};
+
+            if (memcmp(new, megajmpbytes, min(6,size))==0)
+            {
+              sendstring("Is megajmp");
+              isMegaJmp=1;
+            }
+
+          }
+        }
+      }
+
+
+
+      //Check if this page has had a MEGAJUMP code edit, if so, check if this is a megajump and in that case on executable
+      if (evi.X) //looks like this cpu does not support execute only
+        *(QWORD *)(cloakdata->eptentry[currentcpuinfo->cpunr])=cloakdata->PhysicalAddressExecutable;
+      else
+      {
+        if (isMegaJmp==0)
+        {
+          //read/write the data
+          *(QWORD *)(cloakdata->eptentry[currentcpuinfo->cpunr])=cloakdata->PhysicalAddressData;
+        }
+        else
+        {
+          //read the executable code
+          *(QWORD *)(cloakdata->eptentry[currentcpuinfo->cpunr])=cloakdata->PhysicalAddressExecutable;
+        }
+
+      }
+      cloakdata->eptentry[currentcpuinfo->cpunr]->WA=1;
+      cloakdata->eptentry[currentcpuinfo->cpunr]->RA=1;
+      cloakdata->eptentry[currentcpuinfo->cpunr]->XA=1;
+
+      vmx_enableSingleStepMode();
+      vmx_addSingleSteppingReasonEx(currentcpuinfo, 2,cloakdata);
+
+      currentcpuinfo->eptCloak_LastOperationWasWrite=evi.W;
+      currentcpuinfo->eptCloak_LastWriteOffset=Address & 0xfff;
+    }
+
+
+
+    result=TRUE;
+
+
+
+    csLeave(&currentcpuinfo->EPTPML4CS);
+  }
+
+  //still here so not in the map (or no map used yet)
+
+  csLeave(&CloakedPagesCS);
+
+  ept_invalidate();
+
+
+  return result;
+}
+
+int ept_handleCloakEventAfterStep(pcpuinfo currentcpuinfo,  PCloakedPageData cloakdata)
+{
+  sendstringf("ept_handleCloakEventAfterStep\n");
+  //back to execute only
+  csEnter(&CloakedPagesCS);
+
+  if (currentcpuinfo->eptCloak_LastOperationWasWrite)
+  {
+    //todo: apply the write as well
+
+
+  }
+
+
+  csEnter(&currentcpuinfo->EPTPML4CS);
+
+  if (isAMD)
+  {
+    sendstringf("%d: ept_handleCloakEventAfterStep for AMD. cloakdata=%6\n", currentcpuinfo->cpunr, cloakdata);
+    sendstringf("swapping the current page back with the data page\n", cloakdata);
+
+    sendstringf("old npentry value = %6\n",*(QWORD *)(cloakdata->npentry[currentcpuinfo->cpunr]));
+
+    *(QWORD *)(cloakdata->npentry[currentcpuinfo->cpunr])=cloakdata->PhysicalAddressData; //back to the non-executable state
+    cloakdata->npentry[currentcpuinfo->cpunr]->EXB=1;
+
+    cloakdata->npentry[currentcpuinfo->cpunr]->P=1;
+    cloakdata->npentry[currentcpuinfo->cpunr]->RW=1;
+    cloakdata->npentry[currentcpuinfo->cpunr]->US=1;
+
+
+    sendstringf("new npentry value = %6\n",*(QWORD *)(cloakdata->npentry[currentcpuinfo->cpunr]));
+
+
+  }
+  else
+  {
+    *(QWORD *)(cloakdata->eptentry[currentcpuinfo->cpunr])=cloakdata->PhysicalAddressExecutable; //back to the executable state
+    cloakdata->eptentry[currentcpuinfo->cpunr]->WA=0;
+    cloakdata->eptentry[currentcpuinfo->cpunr]->RA=0;
+    if (has_EPT_ExecuteOnlySupport)
+      cloakdata->eptentry[currentcpuinfo->cpunr]->XA=1;
+    else
+      cloakdata->eptentry[currentcpuinfo->cpunr]->XA=0;
+  }
+  csLeave(&currentcpuinfo->EPTPML4CS);
+
+
+  cs
