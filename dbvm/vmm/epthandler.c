@@ -494,4 +494,161 @@ int ept_handleCloakEventAfterStep(pcpuinfo currentcpuinfo,  PCloakedPageData clo
   csLeave(&currentcpuinfo->EPTPML4CS);
 
 
-  cs
+  csLeave(&CloakedPagesCS);
+
+
+  ept_invalidate();
+
+  return 0;
+}
+
+
+int ept_cloak_activate(QWORD physicalAddress, int mode)
+{
+  int i;
+  QWORD address;
+  PCloakedPageData data;
+
+  sendstringf("ept_cloak_activate(%6,%d)\n", physicalAddress, mode);
+
+  physicalAddress=physicalAddress & MAXPHYADDRMASKPB;
+  csEnter(&CloakedPagesCS);
+
+  //first run check
+  if (CloakedPagesMap==NULL)
+  {
+    if (CloakedPagesList==NULL)
+      CloakedPagesList=addresslist_create();
+
+    if (CloakedPagesList->size>=MAXCLOAKLISTBEFORETRANFERTOMAP)
+    {
+      //convert the list to a map
+      if (CloakedPagesMap==NULL) //should be
+      {
+        CloakedPagesMap=createPhysicalMemoryMap();
+        for (i=0; i<CloakedPagesList->size; i++)
+        {
+          address=CloakedPagesList->list[i].address;
+          data=(PCloakedPageData)CloakedPagesList->list[i].data;
+
+          map_setEntry(CloakedPagesMap, address, data);
+          //just copy, no need to reactivate
+        }
+
+        addresslist_destroy(CloakedPagesList);
+        CloakedPagesList=NULL;
+      }
+    }
+  }
+
+
+  PCloakedPageData cloakdata;
+
+  if (CloakedPagesMap)
+    cloakdata=map_getEntry(CloakedPagesMap, physicalAddress);
+  else
+    cloakdata=addresslist_find(CloakedPagesList, physicalAddress);
+
+
+  if (cloakdata)
+  {
+    //already cloaked
+    csLeave(&CloakedPagesCS);
+    return 1;
+  }
+
+  //new one, allocate and fill in a cloakdata structure
+  int cpucount=getCPUCount();
+  cloakdata=malloc(sizeof(CloakedPageData)+cpucount*sizeof(PEPT_PTE));
+  zeromemory(cloakdata,sizeof(CloakedPageData)+cpucount*sizeof(PEPT_PTE));
+
+
+  //fill in the data
+  cloakdata->Executable=mapPhysicalMemoryGlobal(physicalAddress, 4096);
+  cloakdata->Data=malloc(4096);
+
+  copymem(cloakdata->Data, cloakdata->Executable, 4096);
+
+
+  cloakdata->PhysicalAddressExecutable=physicalAddress;
+  cloakdata->PhysicalAddressData=VirtualToPhysical(cloakdata->Data);
+
+  //Intel. The page is unreadable. Reads cause a fault and then get handled by a single step, executes run the modified code with no exception (fastest way possible)
+  //In case Execute but no read is not supported single step through the whole page (slow)
+  //Mode is ignored
+
+  //AMD: The page is readable but non-executable
+  //On execute the page gets swapped out with the modified one and made executable
+  //mode 0: For every address make it executable, do a single step, and then made back to non-executable (see execute watch)
+  //mode 1: All other pages will be made non-executable (511 PTE's 511 PDE, 511 PDPTE and 511 PML4's need to be made non-executable: 2044 entries )
+  //        until a npf happens.
+  //        Boundary situation: Do a single step when at an instruction that spans both pages
+  //may mode 2?:same as mode 1 but instead of adjusting 2044 entries swap the NP pointer to a pagesystem with only that one executable page. And on memory access outside map them in as usual (as non executable) unless it's a sidepage
+  //            pro: Faster after a few runs. con: eats up a ton more memory
+
+  // Downside compared to Intel: Cloaked pages can see their own page as edited
+
+  cloakdata->CloakMode=mode;
+
+
+
+  //map in the physical address descriptor for all CPU's as execute only
+  pcpuinfo currentcpuinfo=firstcpuinfo;
+
+  //lock ANY other CPU from triggering (a cpu could trigger before this routine is done)
+
+
+  sendstringf("Cloaking memory (initiated by cpu %d) \n", getcpunr());
+
+  while (currentcpuinfo)
+  {
+    int cpunr=currentcpuinfo->cpunr;
+    sendstringf("cloaking cpu %d\n", cpunr);
+
+    if (cpunr>=cpucount)
+    {
+      //'issue' with the cpucount or cpunumber
+      cpucount=cpunr*2;
+      cloakdata=realloc(cloakdata, cpucount*sizeof(PEPT_PTE));
+    }
+
+    csEnter(&currentcpuinfo->EPTPML4CS);
+
+    currentcpuinfo->eptUpdated=1;
+
+
+    QWORD PA;
+
+    if (isAMD)
+      PA=NPMapPhysicalMemory(currentcpuinfo, physicalAddress, 1);
+    else
+      PA=EPTMapPhysicalMemory(currentcpuinfo, physicalAddress, 1);
+
+    sendstringf("%d Cloak: After mapping the page as a 4KB page\n", cpunr);
+
+    cloakdata->eptentry[cpunr]=mapPhysicalMemoryGlobal(PA, sizeof(EPT_PTE));
+
+    sendstringf("%d Cloak old entry is %6\n", cpunr,  *(QWORD*)(cloakdata->eptentry[cpunr]));
+
+
+    if (isAMD)
+    {
+      //Make it non-executable, and make the data read be the fake data
+      _PTE_PAE temp;
+      temp=*((PPTE_PAE)&cloakdata->PhysicalAddressData); //read data
+
+      temp.P=1;
+      temp.RW=1;
+      temp.US=1;
+      temp.EXB=1; //disable execute
+
+      *(PPTE_PAE)(cloakdata->eptentry[cpunr])=temp;
+    }
+    else
+    {
+      //make it nonreadable
+      EPT_PTE temp=*(cloakdata->eptentry[cpunr]);
+      if (has_EPT_ExecuteOnlySupport)
+        temp.XA=1;
+      else
+      
