@@ -848,4 +848,208 @@ int ept_cloak_writeOriginal(pcpuinfo currentcpuinfo,  VMRegisters *registers, QW
   {
     void *dest=mapPhysicalMemory(cloakdata->PhysicalAddressExecutable, 4096);
 
-    sendstringf("cloakdata->PhysicalAddressExecutable=%
+    sendstringf("cloakdata->PhysicalAddressExecutable=%6\n", cloakdata->PhysicalAddressExecutable);
+    sendstringf("cloakdata->PhysicalAddressData=%6\n", cloakdata->PhysicalAddressData);
+
+
+    sendstringf("Writing to PA %6\n", cloakdata->PhysicalAddressExecutable);
+    copymem(dest,src,4096);
+    registers->rax=0;
+
+    unmapPhysicalMemory(dest,4096);
+
+  }
+  else
+    registers->rax=1;
+
+  if (isAMD)
+    currentcpuinfo->vmcb->RAX= registers->rax;
+
+  csLeave(&CloakedPagesCS);
+
+  unmapVMmemory(src,4096);
+
+
+  if (isAMD)
+  {
+    if (AMD_hasNRIPS)
+      currentcpuinfo->vmcb->RIP=currentcpuinfo->vmcb->nRIP;
+    else
+      currentcpuinfo->vmcb->RIP+=3;
+  }
+  else
+    vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+
+  return 0;
+}
+
+int ept_cloak_traceonbp_getstatus(DWORD *count, DWORD *maxcount)
+//return: 0=no trace configured. 1=trace configured but not started yet, 2=trace configured and started, 3=trace done
+{
+  int result=0;
+  *count=0;
+  *maxcount=0;
+  csEnter(&CloakedPagesCS);
+  if (TraceOnBP)
+  {
+
+    sendstringf("TraceOnBP->numberOfEntries=%d\n", TraceOnBP->numberOfEntries);
+    sendstringf("TraceOnBP->count=%d\n", TraceOnBP->count);
+    *count=TraceOnBP->numberOfEntries;
+    *maxcount=TraceOnBP->count+TraceOnBP->numberOfEntries;
+
+    sendstringf("*maxcount=%d\n", *maxcount);
+    result=1;
+
+    if (TraceOnBP->triggered)
+    {
+      result=2;
+      if (TraceOnBP->finished)
+      {
+        result=3;
+      }
+    }
+  }
+  csLeave(&CloakedPagesCS);
+
+  return result;
+}
+
+int ept_cloak_traceonbp_stoptrace() //stops it, but doesn't delete it
+//0=no trace going on
+//1=trace configured, but not triggered yet
+//2=trace was configured and already triggered, but not finished yet
+//3=trace was finished
+{
+  int result=0;
+  csEnter(&CloakedPagesCS);
+  if (TraceOnBP)
+  {
+    result=1;
+    TraceOnBP->shouldquit=1;
+
+    if (TraceOnBP->triggered==0)
+    {
+      unsigned char *executable=(unsigned char *)TraceOnBP->cloakdata->Executable;
+      executable[TraceOnBP->PhysicalAddress & 0xfff]=TraceOnBP->originalbyte;
+    }
+    else
+      result=2;
+
+    if (TraceOnBP->finished)
+    {
+      result=3;
+    }
+  }
+  csLeave(&CloakedPagesCS);
+
+  return result;
+}
+
+int ept_cloak_traceonbp_remove(int forcequit)
+{
+  if (TraceOnBP)
+  {
+    csEnter(&CloakedPagesCS);
+    if (TraceOnBP)
+    {
+      if (TraceOnBP->triggered==FALSE)
+      {
+        //still needs to restore the byte
+        unsigned char *executable=(unsigned char *)TraceOnBP->cloakdata->Executable;
+        executable[TraceOnBP->PhysicalAddress & 0xfff]=TraceOnBP->originalbyte;
+      }
+      else
+      {
+        if (TraceOnBP->finished==FALSE)
+        {
+          //trace is still going
+          TraceOnBP->shouldquit=1;
+
+          if (forcequit==0)
+          {
+            csLeave(&CloakedPagesCS);
+            return 2; //can not disable yet (tell CE to try again in a bit)
+          }
+        }
+      }
+
+      free(TraceOnBP);
+      TraceOnBP=NULL;
+
+      csLeave(&CloakedPagesCS);
+      return 1;
+    }
+
+    csLeave(&CloakedPagesCS);
+  }
+
+  return 0; //no trace to delete
+}
+
+int ept_cloak_traceonbp(QWORD physicalAddress, DWORD flags, DWORD tracecount)
+{
+  int result=1;
+  if (ept_cloak_traceonbp_remove(0)==2) return 2;
+
+  QWORD physicalBase=physicalAddress & MAXPHYADDRMASKPB;
+  ept_cloak_activate(physicalBase,0); //just making sure
+
+  sendstringf("ept_cloak_traceonbp for %6", physicalAddress);
+
+  csEnter(&CloakedPagesCS);
+
+  PCloakedPageData cloakdata;
+  if (CloakedPagesMap)
+    cloakdata=map_getEntry(CloakedPagesMap, physicalBase);
+  else
+    cloakdata=addresslist_find(CloakedPagesList, physicalBase);
+
+
+  if (cloakdata)
+  {
+    //found it.  Create an int3 bp at that spot
+    int offset=physicalAddress & 0xfff;
+    unsigned char *executable=cloakdata->Executable;
+
+    //
+
+    int entrytype=0;
+    int entrysize=sizeof(PageEventBasic);
+    int logfpu=(flags & 1);
+    int logstack=(flags & 2);
+    int logsize;
+
+    if ((logfpu==0) && (logstack==0))
+    {
+      entrytype=0;
+      entrysize=sizeof(PageEventBasic);
+    }
+    else
+    if ((logfpu==1) && (logstack==0))
+    {
+      entrytype=1;
+      entrysize=sizeof(PageEventExtended);
+    }
+    else
+    if ((logfpu==0) && (logstack==1))
+    {
+      entrytype=2;
+      entrysize=sizeof(PageEventBasicWithStack);
+    }
+    else //fpu=1 and stack=1
+    {
+      entrytype=3;
+      entrysize=sizeof(PageEventExtendedWithStack);
+    }
+
+    logsize=sizeof(TraceOnBPEntry)*2+entrysize*tracecount;
+
+    sendstringf("Going to allocate %d bytes for the log...", logsize);
+
+    TraceOnBP=malloc(logsize);
+    if (TraceOnBP)
+    {
+      zeromemory(TraceOnBP, logsize);
+      sendstringf("Success. Allocated at %6\n", TraceOnBP);
+      TraceOnBP->Phys
