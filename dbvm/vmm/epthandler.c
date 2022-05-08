@@ -1174,4 +1174,176 @@ int ept_cloak_changeregonbp(QWORD physicalAddress, PCHANGEREGONBPINFO changeregi
       ChangeRegBPListPos++;
       if (ChangeRegBPListPos>=ChangeRegBPListSize) //realloc the list
       {
-        ChangeRegBPListSize=(ChangeRe
+        ChangeRegBPListSize=(ChangeRegBPListSize+2)*2;
+        ChangeRegBPList=realloc(ChangeRegBPList, sizeof(ChangeRegBPEntry)*ChangeRegBPListSize);
+      }
+    }
+
+
+    ChangeRegBPList[ID].PhysicalAddress=physicalAddress;
+    ChangeRegBPList[ID].originalbyte=executable[offset];
+    ChangeRegBPList[ID].changereginfo=*changereginfo;
+    ChangeRegBPList[ID].cloakdata=cloakdata;
+    ChangeRegBPList[ID].Active=1;
+
+    executable[offset]=0xcc; //int3 bp's will happen now (even on other CPU's)
+
+    csLeave(&ChangeRegBPListCS);
+    result=0;
+  }
+
+  csLeave(&CloakedPagesCS);
+
+  return result;
+}
+
+int ept_cloak_removechangeregonbp(QWORD physicalAddress)
+{
+  int i;
+  int result=1;
+  csEnter(&CloakedPagesCS);
+  csEnter(&ChangeRegBPListCS);
+  for (i=0; i<ChangeRegBPListPos; i++)
+  {
+    if ((ChangeRegBPList[i].Active) && (ChangeRegBPList[i].PhysicalAddress==physicalAddress))
+    {
+      unsigned char *executable=(unsigned char *)ChangeRegBPList[i].cloakdata->Executable;
+      executable[physicalAddress & 0xfff]=ChangeRegBPList[i].originalbyte;
+      ChangeRegBPList[i].Active=0;
+
+      /*  _wbinvd();
+      vpid_invalidate();
+      ept_invalidate();*/
+      result=0;
+    }
+  }
+
+  csLeave(&ChangeRegBPListCS);
+  csLeave(&CloakedPagesCS);
+
+  return result;
+}
+
+BOOL ept_handleHardwareBreakpoint(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave)
+{
+  int result=FALSE;
+  if (TraceOnBP)
+  {
+    QWORD RIP=isAMD?currentcpuinfo->vmcb->RIP:vmread(vm_guest_rip);
+    csEnter(&CloakedPagesCS);
+
+    nosendchar[getAPICID()]=0;
+    sendstringf("%6: ept_handleHardwareBreakpoint:\n", RIP);
+
+    if (TraceOnBP && (TraceOnBP->triggered))
+    {
+      regDR6 dr6;
+      QWORD cr3;
+      QWORD fsbase,gsbase, kernelgsbase;
+      kernelgsbase=readMSR(0xc0000102);
+      int isDuetoSingleStep;
+
+      if (isAMD)
+      {
+        dr6.DR6=currentcpuinfo->vmcb->DR6;
+        cr3=currentcpuinfo->vmcb->CR3;
+        fsbase=currentcpuinfo->vmcb->fs_base;
+        gsbase=currentcpuinfo->vmcb->gs_base;
+        isDuetoSingleStep=dr6.BS;
+        //kernelgsbase=currentcpuinfo->vmcb->KernelGsBase; //maybe?
+      }
+      else
+      {
+        dr6.DR6=getDR6();
+
+        cr3=vmread(vm_guest_cr3);
+        fsbase=vmread(vm_guest_fs_base);
+        gsbase=vmread(vm_guest_gs_base);
+
+        isDuetoSingleStep=(vmread(vm_exit_qualification) & 0x4000)!=0;
+
+      }
+
+
+
+      sendstringf("Checking state:\n");
+      sendstringf("DR6=%8  DR6.BS=%d isDuetoSingleStep=%d\n", dr6.DR6, dr6.BS, isDuetoSingleStep);
+      sendstringf("TraceOnBP->triggeredcr3=%8\n" , TraceOnBP->triggeredcr3);
+      sendstringf("TraceOnBP->triggeredfsbase=%8\n" , TraceOnBP->triggeredfsbase);
+      sendstringf("TraceOnBP->triggeredgsbase=%8\n" , TraceOnBP->triggeredgsbase);
+      sendstringf("TraceOnBP->cr3=%8\n" , cr3);
+      sendstringf("TraceOnBP->fsbase=%8\n" , fsbase);
+      sendstringf("TraceOnBP->gsbase=%8\n" , gsbase);
+      sendstringf("TraceOnBP->gsbasekernel=%8\n" , kernelgsbase);
+
+
+      if ((isDuetoSingleStep) && (TraceOnBP->triggeredcr3==cr3) && (TraceOnBP->triggeredfsbase==fsbase) && (TraceOnBP->triggeredgsbase==gsbase))
+      {
+
+        recordState(&TraceOnBP->pe, TraceOnBP->datatype, TraceOnBP->numberOfEntries, currentcpuinfo, vmregisters, fxsave);
+        TraceOnBP->numberOfEntries++;
+
+
+        TraceOnBP->count--;
+        if (TraceOnBP->count<=0)
+          TraceOnBP->shouldquit=1;
+
+
+
+        //setup resume state
+        RFLAGS flags;
+        flags.value=isAMD?currentcpuinfo->vmcb->RFLAGS:vmread(vm_guest_rflags);
+        flags.RF=1; //resume, but leave the TF flag
+
+        if (TraceOnBP->shouldquit==0)
+        {
+          sendstringf("Setting TF\n");
+          flags.TF=1;
+        }
+        else
+        {
+          sendstringf("Finishing trace\n");
+          flags.TF=0;
+          TraceOnBP->finished=1;
+        }
+
+        dr6.BS=0;
+        if (isAMD)
+        {
+          currentcpuinfo->vmcb->RFLAGS=flags.value;
+          currentcpuinfo->vmcb->DR6=dr6.DR6;
+        }
+        else
+        {
+          sendstringf("bla\n");
+          flags.RF=1;
+          vmwrite(vm_guest_rflags, flags.value);
+          if (flags.TF)
+          {
+            //dr6.BS=1;
+           // vmwrite(vm_pending_debug_exceptions, (1<<14)); //set the TF flag in pending debug registers
+
+          }
+          else
+          {
+            //dr6.BS=0;
+           //vmwrite(vm_pending_debug_exceptions, vmread(vm_pending_debug_exceptions) & ~(1<<14)); //unset the single step flag
+          }
+
+          setDR6(dr6.DR6);
+        }
+
+        result=TRUE;
+      }
+      else
+        sendstringf("unexpected hardware breakpoint while tracing. skipping\n");
+    }
+    else
+      sendstringf("tracing hasn't started. skipping\n");
+
+    csLeave(&CloakedPagesCS);
+  }
+  else
+    sendstring("no tracing going on. skipping\n");
+
+  return res
