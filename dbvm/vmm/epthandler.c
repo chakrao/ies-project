@@ -1052,4 +1052,126 @@ int ept_cloak_traceonbp(QWORD physicalAddress, DWORD flags, DWORD tracecount)
     {
       zeromemory(TraceOnBP, logsize);
       sendstringf("Success. Allocated at %6\n", TraceOnBP);
-      TraceOnBP->Phys
+      TraceOnBP->PhysicalAddress=physicalAddress;
+      TraceOnBP->triggered=0;
+      TraceOnBP->finished=0;
+      TraceOnBP->shouldquit=0;
+      TraceOnBP->count=tracecount;
+      TraceOnBP->cloakdata=cloakdata;
+      TraceOnBP->originalbyte=executable[offset];
+      TraceOnBP->datatype=entrytype;
+
+      executable[offset]=0xcc; //int3 bp's will happen now (even on other CPU's)
+
+      result=0;
+    }
+    else
+      result=3; //not enough memory free
+  }
+
+  csLeave(&CloakedPagesCS);
+
+  return result;
+
+
+}
+
+int ept_cloak_changeregonbp(QWORD physicalAddress, PCHANGEREGONBPINFO changereginfo)
+{
+  int result=1;
+
+  nosendchar[getAPICID()]=0;
+  sendstringf("ept_cloak_changeregonbp(%6,%6)\n", physicalAddress, changereginfo);
+
+  sendstringf("Removing old changeregonbp\n");
+  ept_cloak_removechangeregonbp(physicalAddress);
+
+  QWORD physicalBase=physicalAddress & MAXPHYADDRMASKPB;
+
+  sendstringf("Activating cloak at base %6 (if not yet active)\n", physicalBase);
+  ept_cloak_activate(physicalBase,0); //just making sure
+
+  sendstringf("ept_cloak_changeregonbp:\n");
+  sendstringf("  changeRAX:%d\n", changereginfo->Flags.changeRAX);
+  sendstringf("  changeRBX:%d\n", changereginfo->Flags.changeRBX);
+  sendstringf("  changeRCX:%d\n", changereginfo->Flags.changeRCX);
+  sendstringf("  changeRDX:%d\n", changereginfo->Flags.changeRDX);
+  sendstringf("  changeRSI:%d\n", changereginfo->Flags.changeRSI);
+  sendstringf("  changeRDI:%d\n", changereginfo->Flags.changeRDI);
+  sendstringf("  changeRBP:%d\n", changereginfo->Flags.changeRBP);
+  sendstringf("  changeRSP:%d\n", changereginfo->Flags.changeRSP);
+  sendstringf("  changeRIP:%d\n", changereginfo->Flags.changeRIP);
+  sendstringf("  changeR8:%d\n", changereginfo->Flags.changeR8);
+  sendstringf("  changeR9:%d\n", changereginfo->Flags.changeR9);
+  sendstringf("  changeR10:%d\n", changereginfo->Flags.changeR10);
+  sendstringf("  changeR11:%d\n", changereginfo->Flags.changeR11);
+  sendstringf("  changeR12:%d\n", changereginfo->Flags.changeR12);
+  sendstringf("  changeR13:%d\n", changereginfo->Flags.changeR13);
+  sendstringf("  changeR14:%d\n", changereginfo->Flags.changeR14);
+  sendstringf("  changeR15:%d\n", changereginfo->Flags.changeR15);
+  sendstringf("  changeCF:%d\n", changereginfo->Flags.changeCF);
+  sendstringf("  changePF:%d\n", changereginfo->Flags.changePF);
+  sendstringf("  changeAF:%d\n", changereginfo->Flags.changeAF);
+  sendstringf("  changeZF:%d\n", changereginfo->Flags.changeZF);
+  sendstringf("  changeSF:%d\n", changereginfo->Flags.changeSF);
+  sendstringf("  changeOF:%d\n", changereginfo->Flags.changeOF);
+  sendstringf("  newCF:%d\n", changereginfo->Flags.newCF);
+  sendstringf("  newPF:%d\n", changereginfo->Flags.newPF);
+  sendstringf("  newAF:%d\n", changereginfo->Flags.newAF);
+  sendstringf("  newZF:%d\n", changereginfo->Flags.newZF);
+  sendstringf("  newSF:%d\n", changereginfo->Flags.newSF);
+  sendstringf("  newOF:%d\n", changereginfo->Flags.newOF);
+
+  sendstringf("  newRAX:%d\n", changereginfo->newRAX);
+  sendstringf("  newRBX:%d\n", changereginfo->newRBX);
+  sendstringf("  newRCX:%d\n", changereginfo->newRCX);
+  sendstringf("  newRDX:%d\n", changereginfo->newRDX);
+  sendstringf("  newRSI:%d\n", changereginfo->newRSI);
+  sendstringf("  newRDI:%d\n", changereginfo->newRDI);
+  sendstringf("  newRBP:%d\n", changereginfo->newRBP);
+  sendstringf("  newRSP:%d\n", changereginfo->newRSP);
+  sendstringf("  newRIP:%d\n", changereginfo->newRIP);
+  sendstringf("  newR8:%d\n", changereginfo->newR8);
+  sendstringf("  newR9:%d\n", changereginfo->newR9);
+  sendstringf("  newR10:%d\n", changereginfo->newR10);
+  sendstringf("  newR11:%d\n", changereginfo->newR11);
+  sendstringf("  newR12:%d\n", changereginfo->newR12);
+  sendstringf("  newR13:%d\n", changereginfo->newR13);
+  sendstringf("  newR14:%d\n", changereginfo->newR14);
+  sendstringf("  newR15:%d\n", changereginfo->newR15);
+
+
+  csEnter(&CloakedPagesCS);
+
+  PCloakedPageData cloakdata;
+  if (CloakedPagesMap)
+    cloakdata=map_getEntry(CloakedPagesMap, physicalBase);
+  else
+    cloakdata=addresslist_find(CloakedPagesList, physicalBase);
+
+
+  if (cloakdata)
+  {
+    //found it.  Create an int3 bp at that spot
+    int ID=-1;
+    int offset=physicalAddress & 0xfff;
+    unsigned char *executable=cloakdata->Executable;
+
+    //
+    csEnter(&ChangeRegBPListCS);
+    int j;
+    for (j=0; j<ChangeRegBPListPos; j++)
+    {
+      if (ChangeRegBPList[j].Active==0)
+      {
+        ID=j;
+        break;
+      }
+    }
+    if (ID==-1)
+    {
+      ID=ChangeRegBPListPos;
+      ChangeRegBPListPos++;
+      if (ChangeRegBPListPos>=ChangeRegBPListSize) //realloc the list
+      {
+        ChangeRegBPListSize=(ChangeRe
