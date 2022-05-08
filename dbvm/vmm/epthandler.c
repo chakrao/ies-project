@@ -651,4 +651,201 @@ int ept_cloak_activate(QWORD physicalAddress, int mode)
       if (has_EPT_ExecuteOnlySupport)
         temp.XA=1;
       else
-      
+        temp.XA=0; //going to be slow
+
+      temp.RA=0;
+      temp.WA=0;
+
+      *(cloakdata->eptentry[cpunr])=temp;
+    }
+
+    sendstringf("%d Cloak new entry is %6\n", cpunr, *(QWORD*)(cloakdata->eptentry[cpunr]));
+
+
+    _wbinvd();
+    currentcpuinfo->eptUpdated=1; //set this before unlock, so if a NP exception happens before the next vmexit is handled it knows not to remap it with full access
+
+    csLeave(&currentcpuinfo->EPTPML4CS);
+
+    currentcpuinfo=currentcpuinfo->next;
+  }
+
+  if (CloakedPagesMap)
+    map_setEntry(CloakedPagesMap, physicalAddress, (void*)cloakdata);
+  else
+    addresslist_add(CloakedPagesList, physicalAddress, (void*)cloakdata);
+
+  sendstringf("Invalidating ept\n");
+
+  ept_invalidate();
+
+  csLeave(&CloakedPagesCS);
+  return 0;
+}
+
+
+
+int ept_cloak_deactivate(QWORD physicalAddress)
+{
+  int i;
+  physicalAddress=physicalAddress & MAXPHYADDRMASKPB;
+
+  PCloakedPageData cloakdata;
+
+
+  csEnter(&CloakedPagesCS);
+
+  if (CloakedPagesMap)
+    cloakdata=map_getEntry(CloakedPagesMap, physicalAddress);
+  else
+    cloakdata=addresslist_find(CloakedPagesList, physicalAddress);
+
+  if (cloakdata)
+  {
+    //check if there is a changereg on bp
+    csEnter(&ChangeRegBPListCS);
+    for (i=0; i<ChangeRegBPListPos; i++)
+    {
+      if ((ChangeRegBPList[i].Active) && (ChangeRegBPList[i].cloakdata==cloakdata)) //delete this one first
+        ept_cloak_removechangeregonbp(ChangeRegBPList[i].PhysicalAddress);
+    }
+
+    csLeave(&ChangeRegBPListCS);
+
+
+    copymem(cloakdata->Executable, cloakdata->Data, 4096);
+    pcpuinfo currentcpuinfo=firstcpuinfo;
+    while (currentcpuinfo)
+    {
+    	if (isAMD)
+    	{
+    		_PTE_PAE temp=*((PPTE_PAE)&cloakdata->PhysicalAddressExecutable);
+    		temp.P=1;
+    		temp.RW=1;
+    		temp.US=1;
+    		temp.EXB=0;
+    		*(cloakdata->npentry[currentcpuinfo->cpunr])=temp;
+    	}
+    	else
+    	{
+    		EPT_PTE temp=*(cloakdata->eptentry[currentcpuinfo->cpunr]);
+    		temp.RA=1;
+    		temp.WA=1;
+    		temp.XA=1;
+    		*(cloakdata->eptentry[currentcpuinfo->cpunr])=temp;
+    	}
+      _wbinvd();
+      currentcpuinfo->eptUpdated=1;
+
+      unmapPhysicalMemoryGlobal(cloakdata->eptentry[currentcpuinfo->cpunr], sizeof(EPT_PTE));
+      currentcpuinfo=currentcpuinfo->next;
+    }
+
+    unmapPhysicalMemoryGlobal(cloakdata->Executable, 4096);
+
+    free(cloakdata->Data);
+    cloakdata->Data=NULL;
+
+    free(cloakdata);
+  }
+
+  if (CloakedPagesMap)
+    map_setEntry(CloakedPagesMap, physicalAddress, NULL);
+  else
+    addresslist_remove(CloakedPagesList, physicalAddress);
+
+
+
+
+  csLeave(&CloakedPagesCS);
+
+  ept_invalidate();
+
+  //if there where cloak event events pending, then next time they violate, the normal handler will make it RWX on the address it should
+  return (cloakdata!=NULL);
+}
+
+int ept_cloak_readOriginal(pcpuinfo currentcpuinfo,  VMRegisters *registers, QWORD physicalAddress, QWORD destination)
+/* Called by vmcall */
+{
+  int error;
+  physicalAddress=physicalAddress & MAXPHYADDRMASKPB;
+
+  QWORD pagefault;
+
+  void *dest=mapVMmemory(currentcpuinfo, destination, 4096,&error, &pagefault);
+
+  if (error==2)
+    return raisePagefault(currentcpuinfo, pagefault);
+
+  csEnter(&CloakedPagesCS);
+
+  PCloakedPageData cloakdata;
+
+  if (CloakedPagesMap)
+    cloakdata=map_getEntry(CloakedPagesMap, physicalAddress);
+  else
+    cloakdata=addresslist_find(CloakedPagesList, physicalAddress);
+
+  if (cloakdata)
+  {
+    void *src=mapPhysicalMemory(cloakdata->PhysicalAddressExecutable, 4096);
+    copymem(dest,src,4096);
+    registers->rax=0;
+
+    unmapPhysicalMemory(src,4096);
+  }
+  else
+  {
+    registers->rax=1;
+  }
+
+  if (isAMD)
+    currentcpuinfo->vmcb->RAX= registers->rax;
+
+  csLeave(&CloakedPagesCS);
+
+  unmapVMmemory(dest,4096);
+
+
+  if (isAMD)
+  {
+    if (AMD_hasNRIPS)
+      currentcpuinfo->vmcb->RIP=currentcpuinfo->vmcb->nRIP;
+    else
+      currentcpuinfo->vmcb->RIP+=3;
+  }
+  else
+    vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+
+  return 0;
+}
+
+int ept_cloak_writeOriginal(pcpuinfo currentcpuinfo,  VMRegisters *registers, QWORD physicalAddress, QWORD source)
+{
+  int error;
+  physicalAddress=physicalAddress & MAXPHYADDRMASKPB;
+
+  nosendchar[getAPICID()]=0;
+  sendstring("ept_cloak_writeOriginal");
+
+  QWORD pagefault;
+
+  void *src=mapVMmemory(currentcpuinfo, source, 4096,&error, &pagefault);
+
+  if (error==2)
+    return raisePagefault(currentcpuinfo, pagefault);
+
+  csEnter(&CloakedPagesCS);
+  PCloakedPageData cloakdata;
+
+  if (CloakedPagesMap)
+    cloakdata=map_getEntry(CloakedPagesMap, physicalAddress);
+  else
+    cloakdata=addresslist_find(CloakedPagesList, physicalAddress);
+
+  if (cloakdata)
+  {
+    void *dest=mapPhysicalMemory(cloakdata->PhysicalAddressExecutable, 4096);
+
+    sendstringf("cloakdata->PhysicalAddressExecutable=%
