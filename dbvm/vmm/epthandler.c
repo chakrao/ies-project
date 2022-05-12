@@ -1346,4 +1346,138 @@ BOOL ept_handleHardwareBreakpoint(pcpuinfo currentcpuinfo, VMRegisters *vmregist
   else
     sendstring("no tracing going on. skipping\n");
 
-  return res
+  return result;
+}
+
+BOOL ept_handleFrozenThread(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave, int id)
+//pre: brokenThreadListCS should be locked during this call
+{
+  int result=TRUE;
+  RFLAGS v;
+  v.value=BrokenThreadList[id].state.basic.FLAGS;
+  QWORD RIP=isAMD?currentcpuinfo->vmcb->RIP:vmread(vm_guest_rip);
+
+  nosendchar[getAPICID()]=0;
+  //sendstringf("ept_handleFrozenThread: RIP=%6\n",RIP);
+
+  BrokenThreadList[id].state.basic.Count++;//heartbeat to show it's still triggering the BP
+  if (BrokenThreadList[id].continueMethod)
+  {
+    nosendchar[getAPICID()]=0;
+    sendstringf("continueMethod is not 0\n");
+
+
+
+
+    //restore the state according to the saved state (could have been changed) and do a single step or run  (this also undoes the state used value in rax, which is good)
+    if (isAMD)
+    {
+      currentcpuinfo->vmcb->RIP=BrokenThreadList[id].state.basic.RIP;
+      currentcpuinfo->vmcb->RAX=BrokenThreadList[id].state.basic.RAX;
+      currentcpuinfo->vmcb->RSP=BrokenThreadList[id].state.basic.RSP;
+
+      v.RF=1; //tell the watch handler to skip this if it returns at the same spot again
+      currentcpuinfo->vmcb->RFLAGS=v.value;
+    }
+    else
+    {
+      vmregisters->rax=BrokenThreadList[id].state.basic.RAX;
+      vmwrite(vm_guest_rip,BrokenThreadList[id].state.basic.RIP);
+      vmwrite(vm_guest_rsp, BrokenThreadList[id].state.basic.RSP);
+
+      vmwrite(vm_guest_interruptability_state,1); //tell the watch handler to skip this if it returns at the same spot again
+    }
+    vmregisters->rbx=BrokenThreadList[id].state.basic.RBX;
+    vmregisters->rcx=BrokenThreadList[id].state.basic.RCX;
+    vmregisters->rdx=BrokenThreadList[id].state.basic.RDX;
+    vmregisters->rsi=BrokenThreadList[id].state.basic.RSI;
+    vmregisters->rdi=BrokenThreadList[id].state.basic.RDI;
+    vmregisters->rbp=BrokenThreadList[id].state.basic.RBP;
+    vmregisters->r8=BrokenThreadList[id].state.basic.R8;
+    vmregisters->r9=BrokenThreadList[id].state.basic.R9;
+    vmregisters->r10=BrokenThreadList[id].state.basic.R10;
+    vmregisters->r11=BrokenThreadList[id].state.basic.R11;
+    vmregisters->r12=BrokenThreadList[id].state.basic.R12;
+    vmregisters->r13=BrokenThreadList[id].state.basic.R13;
+    vmregisters->r14=BrokenThreadList[id].state.basic.R14;
+    vmregisters->r15=BrokenThreadList[id].state.basic.R15;
+
+    *fxsave=BrokenThreadList[id].state.fpudata;
+
+    if (BrokenThreadList[id].continueMethod==1)
+    {
+      sendstringf("This is a single step, so setting single step mode\n");
+      //set single stepping
+      vmx_enableSingleStepMode();
+      vmx_addSingleSteppingReason(currentcpuinfo, SSR_STEPANDBREAK, id); //restore rip back to int3 bp after the step
+
+      BrokenThreadList[id].watchid=-1; //set it as single stepping
+    }
+    else
+    {
+      BrokenThreadList[id].inuse=0; //continue (on purpuse)
+      BrokenThreadList[id].continueMethod=0;
+
+      sendstringf("Just continue.  It should continue at %2:%6\n",BrokenThreadList[id].state.basic.CS, BrokenThreadList[id].state.basic.RIP);
+      if (isAMD)
+      {
+        sendstringf("It will continue at %2:%6\n",(unsigned char)currentcpuinfo->vmcb->cs_selector, currentcpuinfo->vmcb->RIP);
+      }
+      else
+      {
+        sendstringf("It will continue at %2:%6\n",(unsigned char)vmread(vm_guest_cs), vmread(vm_guest_rip));
+      }
+
+
+      //do one instruction at least
+      if (isAMD)
+      {
+        if (v.IF)
+          currentcpuinfo->vmcb->INTERRUPT_SHADOW=1;
+      }
+      else
+      {
+        vmwrite(vm_guest_interruptability_state,1); //blocking by sti
+      }
+
+
+
+    }
+  }
+  else
+  {
+    //RFLAGS v2;
+    //v2.value=currentcpuinfo->vmcb->RFLAGS;
+
+    //sendstringf("%d: Still frozen at %6  CR8=%x stored: IF=%d RF=%d current: IF=%d rd=%d INTERRUPT_SHADOW=%d EFER=%x FMASK=%x\n", currentcpuinfo->cpunr, BrokenThreadList[id].state.basic.RIP, getCR8(), v.IF, v.RF, v2.IF, v2.RF, currentcpuinfo->vmcb->INTERRUPT_SHADOW,
+    //    currentcpuinfo->vmcb->EFER,
+    //    currentcpuinfo->vmcb->SFMASK);
+
+
+  }
+
+  return result;
+}
+
+BOOL ept_handleSoftwareBreakpoint(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave)
+{
+  //check if it is a cloaked instruction
+  int i;
+  int result=FALSE;
+  QWORD RIP=isAMD?currentcpuinfo->vmcb->RIP:vmread(vm_guest_rip);
+
+  nosendchar[getAPICID()]=0;
+
+
+  //convert RIP into a physical address  (note that RIP has not been decreased by 1 yet)
+
+
+  int notpaged;
+  QWORD PA=getPhysicalAddressVM(currentcpuinfo, RIP, &notpaged);
+
+ // sendstringf("ept_handleSoftwareBreakpoint. RFLAGS=%x\n", RIP, PA);
+
+  if (notpaged==0) //should be since it's a software interrupt...
+  {
+    //sendstringf("paged\n");
+  
