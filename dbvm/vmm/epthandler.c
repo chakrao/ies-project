@@ -1480,4 +1480,142 @@ BOOL ept_handleSoftwareBreakpoint(pcpuinfo currentcpuinfo, VMRegisters *vmregist
   if (notpaged==0) //should be since it's a software interrupt...
   {
     //sendstringf("paged\n");
-  
+    csEnter(&BrokenThreadListCS);
+    if (BrokenThreadList && BrokenThreadListPos)
+    {
+      int shouldHaveBeenHandled=0;
+      //sendstringf("Checking the broken threadlist");
+      for (i=0; i<BrokenThreadListPos; i++)
+      {
+        if (BrokenThreadList[i].inuse)
+        {
+          QWORD cr3;
+          QWORD rip,rax;
+
+          if (isAMD)
+          {
+            cr3=currentcpuinfo->vmcb->CR3;
+            rip=currentcpuinfo->vmcb->RIP;
+            rax=currentcpuinfo->vmcb->RAX;
+          }
+          else
+          {
+            cr3=vmread(vm_guest_cr3);
+            rip=vmread(vm_guest_rip);
+            rax=vmregisters->rax;
+          }
+
+          //rsp might be a good detection point as well
+
+
+          //warning: In windows, kernelmode gsbase changes depending on the cpu so can not be used as identifier then
+
+          //check if it's matches this thread
+          if ((cr3==BrokenThreadList[i].state.basic.CR3) && ((rip==BrokenThreadList[i].KernelModeLoop) || (rip==BrokenThreadList[i].UserModeLoop)))
+          {
+            shouldHaveBeenHandled=1;
+
+            if ((QWORD)rax!=(QWORD)i) continue; //rax should match the brokenthreadlist id
+
+            result=ept_handleFrozenThread(currentcpuinfo, vmregisters, fxsave, i);
+            break;
+          }
+        }
+      }
+
+/*
+      if ((!result) && (shouldHaveBeenHandled))
+      {
+        while (1);
+      }
+      */
+
+    }
+    csLeave(&BrokenThreadListCS);
+    if (result) return result; //it was a frozen thread
+
+
+    csEnter(&CloakedPagesCS);
+
+    //if (TraceOnBP)
+    //  sendstringf("TraceOnBP->PhysicalAddres=%6  PA=%6\n", TraceOnBP->PhysicalAddress, PA);
+
+
+    if (TraceOnBP && (TraceOnBP->PhysicalAddress==PA))
+    {
+
+      if (TraceOnBP->triggered)
+      {
+        sendstringf("already triggered\n");
+        csLeave(&CloakedPagesCS);
+        return TRUE; //try again (something else got it first and likely restored the byte)
+      }
+
+      //todo: if option is to step through interrupts use vmx_enableSingleStepMode() and just follow this cpu instead of process
+
+      //for now, just set stepping (which is visible to interrupts and pushf in that code)
+      sendstringf("setting TF\n");
+
+      RFLAGS flags;
+      flags.value=isAMD?currentcpuinfo->vmcb->RFLAGS:vmread(vm_guest_rflags);
+      flags.TF=1;
+
+
+      if (isAMD)
+        currentcpuinfo->vmcb->RFLAGS=flags.value;
+      else
+        vmwrite(vm_guest_rflags, flags.value);
+
+
+      int offset=TraceOnBP->PhysicalAddress & 0xfff;
+      unsigned char *executable=(unsigned char *)TraceOnBP->cloakdata->Executable;
+      executable[offset]=TraceOnBP->originalbyte;
+
+      //save the first state
+
+      recordState(&TraceOnBP->pe, TraceOnBP->datatype, TraceOnBP->numberOfEntries, currentcpuinfo, vmregisters, fxsave);
+      TraceOnBP->numberOfEntries++;
+      TraceOnBP->count--;
+
+
+      TraceOnBP->triggered=1;
+      TraceOnBP->triggeredcr3=isAMD?currentcpuinfo->vmcb->CR3:vmread(vm_guest_cr3);
+      TraceOnBP->triggeredgsbase=isAMD?currentcpuinfo->vmcb->gs_base:vmread(vm_guest_gs_base);
+      TraceOnBP->triggeredfsbase=isAMD?currentcpuinfo->vmcb->fs_base:vmread(vm_guest_fs_base);
+
+      sendstringf("TraceOnBP->triggeredcr3=%6\n", TraceOnBP->triggeredcr3);
+      sendstringf("TraceOnBP->triggeredfsbase=%6\n", TraceOnBP->triggeredfsbase);
+      sendstringf("TraceOnBP->triggeredgsbase=%6\n", TraceOnBP->triggeredgsbase);
+
+      csLeave(&CloakedPagesCS);
+
+      sendstringf("returning true\n");
+      sendstringf("currentcpuinfo->vmcb->InterceptExceptions=%6\n", currentcpuinfo->vmcb->InterceptExceptions);
+      return TRUE;
+    }
+
+
+
+    csEnter(&ChangeRegBPListCS);
+    for (i=0; i<ChangeRegBPListPos; i++)
+    {
+      if (ChangeRegBPList[i].PhysicalAddress==PA)
+      {
+        if (ChangeRegBPList[i].Active)
+        {
+          QWORD oldRIP=RIP;
+          //it's a match
+          //Todo: Only change if the processID matches  (todo: Add a getProcessID option provided by the OS based caller)
+          //For now, make sure that the physical page is not shared, or that the register change is compatible with different processes (e.g kernelmode only, or a Flag change)
+
+          //change regs
+
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRAX)
+          {
+            if (isAMD)
+              currentcpuinfo->vmcb->RAX=ChangeRegBPList[i].changereginfo.newRAX;
+            else
+              vmregisters->rax=ChangeRegBPList[i].changereginfo.newRAX;
+          }
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRBX) vmregisters->rbx=ChangeRegBPList[i].changereginfo.newRBX;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRCX) vmreg
