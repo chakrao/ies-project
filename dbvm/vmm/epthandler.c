@@ -1873,4 +1873,197 @@ int ept_getBrokenThreadEntryShort(int id, int *WatchID, int *Status, QWORD *CR3,
   return result;
 }
 
-int ept_getBrokenThreadEntryFull(int id
+int ept_getBrokenThreadEntryFull(int id, int *watchid, int *status, PPageEventExtended entry)
+{
+  int result=0;
+  csEnter(&BrokenThreadListCS);
+  if ((id>=0) && (id<BrokenThreadListPos))
+  {
+    if (BrokenThreadList[id].inuse)
+    {
+      //0..7:1=ok. 2=lost it
+      //8..15: continuemethod (if not 0, still waiting to precess)
+      *status=BrokenThreadList[id].inuse | (BrokenThreadList[id].continueMethod << 8);  //257=0x101 (inuse,continuemethod=step)   513=0x201  (inuse,run)
+
+      *entry=BrokenThreadList[id].state;
+      *watchid=BrokenThreadList[id].watchid;
+    }
+    else
+      result=2;
+  }
+  else
+    result=1;
+
+  csLeave(&BrokenThreadListCS);
+  return result;
+}
+
+int ept_setBrokenThreadEntryFull(int id, PPageEventExtended entry)
+{
+  int result=0;
+  csEnter(&BrokenThreadListCS);
+  if ((id>=0) && (id<BrokenThreadListPos))
+  {
+    if (BrokenThreadList[id].inuse)
+      BrokenThreadList[id].state=*entry;
+    else
+      result=2;
+  }
+  else
+    result=1;
+
+  csLeave(&BrokenThreadListCS);
+  return result;
+
+}
+
+int ept_resumeBrokenThread(int id, int continueMethod)
+{
+  int result=0;
+  sendstringf("ept_resumeBrokenThread(%d,%d)\n",id, continueMethod);
+  csEnter(&BrokenThreadListCS);
+  if ((id>=0) && (id<BrokenThreadListPos))
+  {
+    if (BrokenThreadList[id].inuse)
+    {
+      if (BrokenThreadList[id].inuse==2)
+      {
+        sendstringf("This thread was abandoned. Releasing it's spot\n");
+
+        //just release it
+        BrokenThreadList[id].inuse=0;
+        result=4;
+      }
+      else
+      {
+        if (BrokenThreadList[id].continueMethod==0)
+        {
+          sendstringf("Setting broken thread %d to continueMethod %d\n", id, continueMethod);
+          BrokenThreadList[id].continueMethod=continueMethod;
+          BrokenThreadList[id].watchid=-1;
+        }
+        else
+        {
+          sendstringf("already set to continue\n");
+          result=3; //already set to continue
+        }
+      }
+    }
+    else
+    {
+      sendstringf("ID (%d) not in use\n", id);
+      result=2; //not in use
+    }
+  }
+  else
+  {
+    sendstringf("ID (%d) out of range\n", id);
+    result=1; //out of range
+  }
+
+  csLeave(&BrokenThreadListCS);
+
+  return result;
+}
+
+
+
+int ept_handleSoftwareBreakpointAfterStep(pcpuinfo currentcpuinfo UNUSED,  int ID)
+{
+  int result=0;
+  csEnter(&CloakedPagesCS);
+  csEnter(&ChangeRegBPListCS);
+  if (ChangeRegBPList[ID].Active)//Just hope that you didn't quickly delete and then register a whole new breakpoint, as this will fuck you up
+  {
+
+    QWORD PA=ChangeRegBPList[ID].PhysicalAddress;
+    QWORD PABase=PA & MAXPHYADDRMASKPB;
+    int offset=PA-PABase;
+
+    unsigned char *executable=(unsigned char*)ChangeRegBPList[ID].cloakdata->Executable;
+    executable[offset]=0xcc; //set the breakpoint back
+    result=0;
+  }
+  //else it got deleted before the step finished or total memory corruption that blanked out several memory regions
+
+  csLeave(&ChangeRegBPListCS);
+  csLeave(&CloakedPagesCS);
+
+  return result;
+}
+
+
+
+/*
+ * WATCH
+ */
+
+
+int getFreeWatchID()
+/*
+ * scan through the watches for an unused spot, if not found, reallocate the list
+ * pre: The watchlistCS has been locked
+ */
+{
+  int i,j;
+  sendstringf("+getFreeWatchID\n");
+  for (i=0; i<eptWatchListPos; i++)
+  {
+    if (eptWatchList[i].Active==0)
+    {
+      sendstringf("Found a non active entry at index %d\n", i);
+      return i;
+    }
+  }
+
+  //still here
+  if (eptWatchListPos<eptWatchListSize)
+  {
+    sendstringf("eptWatchListPos(%d)<eptWatchListSize(%d)\n", eptWatchListPos, eptWatchListSize);
+    return eptWatchListPos++;
+  }
+
+  sendstringf("Reallocating the list\n");
+
+  //still here, realloc
+  i=eptWatchListSize;
+  eptWatchListSize=(eptWatchListSize+2)*2;
+  eptWatchList=realloc(eptWatchList, eptWatchListSize*sizeof(EPTWatchEntry));
+
+  for (j=i; j<eptWatchListSize; j++)
+    eptWatchList[j].Active=0;
+
+  eptWatchListPos++;
+
+  return i;
+}
+
+void saveStack(pcpuinfo currentcpuinfo, unsigned char *stack) //stack is 4096 bytes
+{
+  int error;
+  QWORD pagefaultaddress;
+  int size=4096;
+  QWORD rsp=isAMD?currentcpuinfo->vmcb->RSP:vmread(vm_guest_rsp);
+
+
+
+  zeromemory(stack, 4096);
+  //copy it but don't care about pagefaults (if there is a pagefault I 'could' trigger a pf and then wait and try again, but fuck it, it's not 'that' important
+  unsigned char *gueststack=(unsigned char *)mapVMmemoryEx(currentcpuinfo, rsp, 4096, &error, &pagefaultaddress, 1);
+
+  if (error)
+  {
+    if (error==2)
+      size=pagefaultaddress-rsp;
+    else
+      return;
+  }
+
+  copymem(stack, gueststack, size);
+  unmapVMmemory(gueststack, size);
+}
+
+void fillPageEventBasic(PageEventBasic *peb, VMRegisters *registers)
+{
+
+  peb->GSBASE_KERNEL=readMSR(IA32_GS_BASE_KERNEL_MSR)
