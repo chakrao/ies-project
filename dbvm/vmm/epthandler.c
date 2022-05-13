@@ -1618,4 +1618,98 @@ BOOL ept_handleSoftwareBreakpoint(pcpuinfo currentcpuinfo, VMRegisters *vmregist
               vmregisters->rax=ChangeRegBPList[i].changereginfo.newRAX;
           }
           if (ChangeRegBPList[i].changereginfo.Flags.changeRBX) vmregisters->rbx=ChangeRegBPList[i].changereginfo.newRBX;
-          if (ChangeRegBPList[i].changereginfo.Flags.changeRCX) vmreg
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRCX) vmregisters->rcx=ChangeRegBPList[i].changereginfo.newRCX;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRDX) vmregisters->rdx=ChangeRegBPList[i].changereginfo.newRDX;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRSI) vmregisters->rsi=ChangeRegBPList[i].changereginfo.newRSI;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRDI) vmregisters->rdi=ChangeRegBPList[i].changereginfo.newRDI;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRBP) vmregisters->rbp=ChangeRegBPList[i].changereginfo.newRBP;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRSP)
+          {
+            if (isAMD)
+              currentcpuinfo->vmcb->RSP=ChangeRegBPList[i].changereginfo.newRSP;
+            else
+              vmwrite(vm_guest_rsp, ChangeRegBPList[i].changereginfo.newRSP);
+          }
+          if (ChangeRegBPList[i].changereginfo.Flags.changeRIP)
+          {
+            if (isAMD)
+              currentcpuinfo->vmcb->RIP=ChangeRegBPList[i].changereginfo.newRIP;
+            else
+              vmwrite(vm_guest_rip, ChangeRegBPList[i].changereginfo.newRIP);
+          }
+          if (ChangeRegBPList[i].changereginfo.Flags.changeR8)  vmregisters->r8=ChangeRegBPList[i].changereginfo.newR8;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeR9)  vmregisters->r9=ChangeRegBPList[i].changereginfo.newR9;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeR10) vmregisters->r10=ChangeRegBPList[i].changereginfo.newR10;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeR11) vmregisters->r11=ChangeRegBPList[i].changereginfo.newR11;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeR12) vmregisters->r12=ChangeRegBPList[i].changereginfo.newR12;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeR13) vmregisters->r13=ChangeRegBPList[i].changereginfo.newR13;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeR14) vmregisters->r14=ChangeRegBPList[i].changereginfo.newR14;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeR15) vmregisters->r15=ChangeRegBPList[i].changereginfo.newR15;
+
+          if (ChangeRegBPList[i].changereginfo.changeFP)
+          {
+            int r;
+            for (r=0; r<8; r++)
+              if (ChangeRegBPList[i].changereginfo.changeFP & (1<<r))
+              {
+                copymem((void*)((QWORD)(&fxsave->FP_MM0)+10*r), (void*)((QWORD)(&fxsave->FP_MM0)+10*r),10);
+              }
+
+          }
+
+
+          if (ChangeRegBPList[i].changereginfo.changeXMM)
+          {
+            int r;
+            for (r=0; r<15; r++)
+            {
+              BYTE mask=(ChangeRegBPList[i].changereginfo.changeXMM >> (4*r)) & 0xf;
+              if (mask)
+              {
+                DWORD *destparts=(DWORD *)((QWORD)(&fxsave->XMM0)+16*r);
+                DWORD *sourceparts=(DWORD *)((QWORD)(&ChangeRegBPList[i].changereginfo.newXMM0)+16*r);
+                int p;
+
+                for (p=0; p<4; p++)
+                {
+                  if (mask & (1 << p))
+                    destparts[p]=sourceparts[p];
+                }
+              }
+            }
+
+          }
+
+
+
+          RFLAGS flags;
+          flags.value=isAMD?currentcpuinfo->vmcb->RFLAGS:vmread(vm_guest_rflags);
+          if (ChangeRegBPList[i].changereginfo.Flags.changeCF) flags.CF=ChangeRegBPList[i].changereginfo.Flags.newCF;
+          if (ChangeRegBPList[i].changereginfo.Flags.changePF) flags.PF=ChangeRegBPList[i].changereginfo.Flags.newPF;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeAF) flags.AF=ChangeRegBPList[i].changereginfo.Flags.newAF;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeZF) flags.ZF=ChangeRegBPList[i].changereginfo.Flags.newZF;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeSF) flags.SF=ChangeRegBPList[i].changereginfo.Flags.newSF;
+          if (ChangeRegBPList[i].changereginfo.Flags.changeOF) flags.OF=ChangeRegBPList[i].changereginfo.Flags.newOF;
+          if (isAMD)
+            currentcpuinfo->vmcb->RFLAGS=flags.value;
+          else
+            vmwrite(vm_guest_rflags, flags.value);
+
+
+          //continue:
+          if ((ChangeRegBPList[i].changereginfo.Flags.changeRIP==0) || (ChangeRegBPList[i].changereginfo.newRIP==oldRIP))
+          {
+            //RIP did not change
+
+            //restore the original byte
+            int offset=ChangeRegBPList[i].PhysicalAddress & 0xfff;
+
+
+            unsigned char *executable=(unsigned char *)ChangeRegBPList[i].cloakdata->Executable;
+            executable[offset]=ChangeRegBPList[i].originalbyte;
+
+            //setup single step mode
+            vmx_enableSingleStepMode();
+            vmx_addSingleSteppingReason(currentcpuinfo, 3,i); //change reg on bp, restore int3 bp
+
+       
