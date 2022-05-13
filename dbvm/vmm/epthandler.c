@@ -1712,4 +1712,165 @@ BOOL ept_handleSoftwareBreakpoint(pcpuinfo currentcpuinfo, VMRegisters *vmregist
             vmx_enableSingleStepMode();
             vmx_addSingleSteppingReason(currentcpuinfo, 3,i); //change reg on bp, restore int3 bp
 
-       
+            //no interrupts for one instruction (no other interrupts are pending, it was an int3 that caused this)
+            if (isAMD)
+            {
+              //
+              currentcpuinfo->vmcb->INTERRUPT_SHADOW=1;
+            }
+            else
+            {
+              vmwrite(vm_guest_interruptability_state,2);
+            }
+
+            /* on systems with no exec only support, this means there will be 2 single step reasons.
+             * One for the breakpoint restore, and one to set the read disable back
+             */
+
+          }
+          result=TRUE;
+          break;
+        }
+        else
+        {
+          //probably a stale breakpoint event that was waiting for the spinlock (what are the changes that there was a 0xcc at the exact same spot a previous bp was set)
+          //try again
+          //todo: keep a try again counter
+          result=TRUE;
+        }
+      }
+    }
+
+    csLeave(&ChangeRegBPListCS);
+    csLeave(&CloakedPagesCS);
+  }
+  else
+    sendstringf("Unreadable memory address for an int3 bp....\n");
+
+  return result;
+}
+
+int ept_handleStepAndBreak(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave, int brokenthreadid)
+{
+
+  //first check if you can break here. If not, goodbye (todo:step till you can)
+  nosendchar[getAPICID()]=0;
+  sendstringf("ept_handleStepAndBreak\n");
+  DWORD CR8=getCR8();
+  RFLAGS flags;
+  flags.value=isAMD?currentcpuinfo->vmcb->RFLAGS:vmread(vm_guest_rflags);
+
+
+  if ((CR8==0) && (flags.IF)) //if interruptable with no mask (on windows called passive mode) (not 100% if on win32, but who uses that...)
+  {
+    int kernelmode=0;
+    if (isAMD)
+    {
+      Segment_Attribs csattrib;
+      csattrib.SegmentAttrib=currentcpuinfo->vmcb->cs_attrib;
+      kernelmode=csattrib.DPL==0;
+    }
+    else
+    {
+      Access_Rights csar;
+      csar.AccessRights=vmread(vm_guest_cs_access_rights);
+      kernelmode=csar.DPL==0;
+    }
+
+    csEnter(&BrokenThreadListCS);
+
+    if (isAMD) //normally this gets reset after the single step handler. But it needs to be reset here already
+    {
+      flags.TF=currentcpuinfo->singleStepping.PreviousTFState;
+      currentcpuinfo->vmcb->RFLAGS=flags.value;
+    }
+
+
+    QWORD newRIP=0;
+
+    if ((brokenthreadid<0) || (brokenthreadid>=BrokenThreadListPos))
+      while (1);
+
+
+    if (BrokenThreadList[brokenthreadid].continueMethod==1) //single step
+      newRIP=kernelmode?BrokenThreadList[brokenthreadid].KernelModeLoop:BrokenThreadList[brokenthreadid].UserModeLoop; //anything else, will be a run
+
+    if (newRIP) //e.g if no kernelmode is provided, skip kernelmode
+    {
+      //save the current state
+      fillPageEventBasic(&BrokenThreadList[brokenthreadid].state.basic, vmregisters);
+      BrokenThreadList[brokenthreadid].state.fpudata=*fxsave;
+
+      //adjust RIP and RAX  (rip points to the parking spot, RAX contains the specific brokenthreadid (gets undone on resume anyhow)
+      vmregisters->rax=brokenthreadid;
+      if (isAMD)
+      {
+        currentcpuinfo->vmcb->RIP=newRIP;
+        currentcpuinfo->vmcb->RAX=brokenthreadid;
+      }
+      else
+        vmwrite(vm_guest_rip, newRIP);
+
+      BrokenThreadList[brokenthreadid].continueMethod=0;
+    }
+    else
+    {
+      //delete
+      BrokenThreadList[brokenthreadid].inuse=2; //mark it as lost
+      BrokenThreadList[brokenthreadid].continueMethod=0;
+    }
+
+    csLeave(&BrokenThreadListCS);
+  }
+  else
+  {
+    csEnter(&BrokenThreadListCS);
+    sendstringf("Can not be broken due to interrupt state. Deleting stepping mode\n");
+    BrokenThreadList[brokenthreadid].inuse=2; //lost
+    BrokenThreadList[brokenthreadid].continueMethod=0;
+    csLeave(&BrokenThreadListCS);
+
+
+    //else can't be broken here. bye bye
+  }
+
+  return 0;
+}
+
+int ept_getBrokenThreadListCount(void)
+{
+  return BrokenThreadListPos;
+}
+
+
+
+int ept_getBrokenThreadEntryShort(int id, int *WatchID, int *Status, QWORD *CR3, QWORD *FSBASE, QWORD *GSBASE, QWORD *GSBASE_KERNEL, DWORD *CS, QWORD *RIP, QWORD *heartbeat)
+{
+  int result=0;
+  csEnter(&BrokenThreadListCS);
+  if ((id>=0) && (id<BrokenThreadListPos))
+  {
+    if (BrokenThreadList[id].inuse)
+    {
+      *WatchID=BrokenThreadList[id].watchid;
+      *Status=BrokenThreadList[id].inuse | (BrokenThreadList[id].continueMethod << 8);
+
+      *CR3=BrokenThreadList[id].state.basic.CR3;
+      *FSBASE=BrokenThreadList[id].state.basic.FSBASE;
+      *GSBASE=BrokenThreadList[id].state.basic.GSBASE;
+      *GSBASE_KERNEL=BrokenThreadList[id].state.basic.GSBASE_KERNEL;
+      *CS=BrokenThreadList[id].state.basic.CS;
+      *RIP=BrokenThreadList[id].state.basic.RIP;
+      *heartbeat=BrokenThreadList[id].state.basic.Count;
+    }
+    else
+      result=2;
+  }
+  else
+    result=1;
+
+  csLeave(&BrokenThreadListCS);
+  return result;
+}
+
+int ept_getBrokenThreadEntryFull(int id
