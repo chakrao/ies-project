@@ -2409,4 +2409,153 @@ BOOL ept_handleWatchEvent(pcpuinfo currentcpuinfo, VMRegisters *registers, PFXSA
 
     if (isAMD)
     {
-      sendstringf("CR8=%6 IF=%d RF=%d\n", CR8,fl
+      sendstringf("CR8=%6 IF=%d RF=%d\n", CR8,flags.IF,flags.RF);
+      canBreak=canBreak && (flags.RF==0); //on AMD I use the TF flag to skip over dbvmbp watches
+    }
+    else
+    {
+      is=vmread(vm_guest_interruptability_state);
+      sendstringf("CR8=%6 IF=%d RF=%d Interruptibility state=%d\n", CR8,flags.IF,flags.RF, is);
+      canBreak=canBreak && ((is & (1<<0))==0); //on Intel I use the block by sti interruptability state to flag a skip (probably can't use the pop ss as it's used by the single step handler. But should test)
+    }
+
+    sendstringf("canBreak=%d\n", canBreak);
+
+    if (canBreak)
+    {
+      int kernelmode=0;
+      if (isAMD)
+      {
+        Segment_Attribs csattrib;
+        csattrib.SegmentAttrib=currentcpuinfo->vmcb->cs_attrib;
+        kernelmode=csattrib.DPL==0;
+      }
+      else
+      {
+        Access_Rights csar;
+        csar.AccessRights=vmread(vm_guest_cs_access_rights);
+        kernelmode=csar.DPL==0;
+      }
+
+      QWORD newRIP=kernelmode?eptWatchList[ID].LoopKernelMode:eptWatchList[ID].LoopUserMode;
+
+      if (newRIP) //e.g if no kernelmode is provided, skip kernelmode (needed for read/write watches as those will also see CE. Just trigger a COW please...)
+      {
+
+        //nosendchar[getAPICID()]=0;
+
+        lastSeenEPTWatch.skipped=-1;
+        csLeave(&eptWatchListCS);
+
+
+        sendstringf("EPTO_DBVMBP: Interruptable state. 'Breaking' this code (Saving the state and setting it to RIP %6 )\n", newRIP);
+
+        //save this thread's data in a structure so that when the int3 keepalive happens dbvm knows to skip it
+        BrokenThreadEntry e;
+        e.inuse=1;
+        e.continueMethod=0;
+        e.watchid=ID;
+        e.UserModeLoop=eptWatchList[ID].LoopUserMode;
+        e.KernelModeLoop=eptWatchList[ID].LoopKernelMode;
+
+        fillPageEventBasic(&e.state.basic, registers);
+        e.state.fpudata=*fxsave;
+
+        if (isAMD)
+          currentcpuinfo->vmcb->RIP=newRIP;
+        else
+          vmwrite(vm_guest_rip, newRIP);
+
+
+        csEnter(&BrokenThreadListCS);
+        if (BrokenThreadList==NULL)
+        {
+          //allocate the list
+          BrokenThreadList=malloc(sizeof(BrokenThreadEntry)*8);
+          BrokenThreadListSize=8;
+          BrokenThreadListPos=0;
+        }
+
+        if (BrokenThreadListPos>=BrokenThreadListSize) //list full
+        {
+          void *oldaddress=(void *)BrokenThreadList;
+          BrokenThreadList=(BrokenThreadEntry *)realloc(BrokenThreadList, BrokenThreadListSize+sizeof(BrokenThreadEntry)*32); //add 32
+          BrokenThreadListSize+=32;
+        }
+
+        //find an unused spot, else add to the end
+        for (i=0; i<BrokenThreadListPos; i++)
+        {
+          if (BrokenThreadList[i].inuse==0)
+          {
+            BrokenThreadList[i]=e;
+            if (isAMD)
+              currentcpuinfo->vmcb->RAX=i; //rax was already saved in the pageeventbasic structure. Use rax as brokenthreadlist id
+            else
+              registers->rax=i;
+
+            csLeave(&BrokenThreadListCS);
+            return TRUE; //no need to log it or continue
+          }
+        }
+
+        //still here, so add it to the end
+        BrokenThreadList[BrokenThreadListPos]=e;
+        if (isAMD)
+          currentcpuinfo->vmcb->RAX=BrokenThreadListPos;
+        else
+          registers->rax=BrokenThreadListPos;
+
+        BrokenThreadListPos++;
+        csLeave(&BrokenThreadListCS);
+
+        return TRUE; //no need to log it or continue
+      }
+    }
+    else
+    {
+      sendstring("Not breaking this\n");
+    }
+
+  }
+
+
+  //run once
+
+  sendstringf("%d Making page fully accessible\n", currentcpuinfo->cpunr);
+
+  if (isAMD)
+  {
+    npte->EXB=0;  //execute allow
+    npte->P=1;    //read allow
+    npte->RW=1;   //write allow
+  }
+  else
+  {
+    currentcpuinfo->eptWatchList[ID]->XA=1; //execute allow
+    currentcpuinfo->eptWatchList[ID]->RA=1; //read allow
+    currentcpuinfo->eptWatchList[ID]->WA=1; //write allow
+  }
+  sendstringf("Page is accessible. Doing single step\n");
+
+  vmx_enableSingleStepMode();
+  vmx_addSingleSteppingReason(currentcpuinfo, SSR_HANDLEWATCH, ID);
+
+  if (eptWatchList[ID].Options & EPTO_DBVMBP)
+  {
+    sendstringf("%d: Returning from ept_handleevent\n", currentcpuinfo->cpunr);
+    csLeave(&eptWatchListCS);
+    return TRUE;
+  }
+
+  /*todo:
+  if ((eptWatchList[ID].Options & EPTO_DBVMBP) && (PhysicalAddress>=eptWatchList[ID].PhysicalAddress) && (PhysicalAddress<eptWatchList[ID].PhysicalAddress+eptWatchList[ID].Size))
+  {
+    //still happened? And kernelloop/userloop is valid? Then it's a step until interruptable
+  }
+  */
+
+  if ((eptWatchList[ID].Options & EPTO_INTERRUPT) && (PhysicalAddress>=eptWatchList[ID].PhysicalAddress) && (PhysicalAddress<eptWatchList[ID].PhysicalAddress+eptWatchList[ID].Size))
+  {
+    //This is the specific address that was being requested
+    lastSeenEPTWatch.skipped=1; //it's an interrupt
