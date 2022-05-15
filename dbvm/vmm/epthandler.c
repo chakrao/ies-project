@@ -2558,4 +2558,137 @@ BOOL ept_handleWatchEvent(pcpuinfo currentcpuinfo, VMRegisters *registers, PFXSA
   if ((eptWatchList[ID].Options & EPTO_INTERRUPT) && (PhysicalAddress>=eptWatchList[ID].PhysicalAddress) && (PhysicalAddress<eptWatchList[ID].PhysicalAddress+eptWatchList[ID].Size))
   {
     //This is the specific address that was being requested
-    lastSeenEPTWatch.skipped=1; //it's an interrupt
+    lastSeenEPTWatch.skipped=1; //it's an interrupt triggering one (rare)
+    currentcpuinfo->BPAfterStep=1;
+    csLeave(&eptWatchListCS);
+    return TRUE; //no need to log it
+  }
+
+  //save this state?
+  if ((isAMD==0) && (eptWatchList[ID].Type!=EPTW_EXECUTE) && (evi.R==0) && (evi.X==1))
+  {
+    sendstringf("This was an execute operation and no read. No need to log\n", ID);
+    lastSeenEPTWatch.skipped=2;
+    csLeave(&eptWatchListCS);
+    return TRUE; //execute operation (this cpu doesn't support execute only)
+  }
+
+  if (eptWatchList[ID].CopyInProgress) //a copy operation is in progress
+  {
+    lastSeenEPTWatch.skipped=3; //copy was in progress.
+    eptWatchList[ID].Log->missedEntries++;
+    sendstringf("This watchlist is currently being copied, not logging this\n");
+    csLeave(&eptWatchListCS);
+    return TRUE;
+  }
+
+  if (((eptWatchList[ID].Options & EPTO_LOG_ALL)==0) &&
+     (
+      (PhysicalAddress<eptWatchList[ID].PhysicalAddress) ||
+      (PhysicalAddress>=eptWatchList[ID].PhysicalAddress+eptWatchList[ID].Size)
+      ))
+  {
+    QWORD RIP=isAMD?currentcpuinfo->vmcb->RIP:vmread(vm_guest_rip);
+    lastSeenEPTWatch.skipped=4; //not a perfect physical address match
+    sendstringf("%d: Not logging all and the physical address(%6) is not in the exact range (%p-%p)\n", currentcpuinfo->cpunr, PhysicalAddress, eptWatchList[ID].PhysicalAddress, eptWatchList[ID].PhysicalAddress+eptWatchList[ID].Size);
+    sendstringf("RIP was %6\n", RIP);
+    csLeave(&eptWatchListCS);
+    return TRUE; //no need to log it
+  }
+
+  lastSeenEPTWatchVerySure=lastSeenEPTWatch;
+
+
+
+  //scan if this RIP is already in the list
+
+  switch (eptWatchList[ID].Log->entryType)
+  {
+    case 0: logentrysize=sizeof(PageEventBasic); break;
+    case 1: logentrysize=sizeof(PageEventExtended); break;
+    case 2: logentrysize=sizeof(PageEventBasicWithStack); break;
+    case 3: logentrysize=sizeof(PageEventExtendedWithStack); break;
+  }
+
+  sendstringf("Want to log this. Type=%d EntrySize=%d\n", eptWatchList[ID].Log->entryType, logentrysize);
+
+  for (i=0; (DWORD)i<eptWatchList[ID].Log->numberOfEntries; i++)
+  {
+    PageEventBasic *peb=(PageEventBasic *)((QWORD)(&eptWatchList[ID].Log->pe.basic[0])+i*logentrysize);
+    //every type starts with a PageEventBasic
+
+    if (peb->RIP==RIP)
+    {
+      sendstringf("This RIP is already logged");
+      //it's already in the list
+      if ((eptWatchList[ID].Options & EPTO_MULTIPLERIP)==0)
+      {
+        sendstringf(" and EPTO_MULTIPLERIP is 0.  Not logging (just increase count)\n");
+        peb->Count++;
+        csLeave(&eptWatchListCS);
+
+        lastSeenEPTWatch.skipped=5;
+        lastSeenEPTWatchVerySure.skipped=5; //already logged
+        return TRUE; //no extra RIP's
+      }
+      else
+        sendstringf(" but EPTO_MULTIPLERIP is 1, so checking register states\n");
+
+      //still here, so multiple RIP's are ok. check if it matches the other registers
+      if (isAMD)
+        registers->rax=currentcpuinfo->vmcb->RAX;
+
+      if (
+          (peb->RSP==RSP) &&
+          (peb->RBP==registers->rbp) &&
+          (peb->RAX==registers->rax) &&
+          (peb->RBX==registers->rbx) &&
+          (peb->RCX==registers->rcx) &&
+          (peb->RDX==registers->rdx) &&
+          (peb->RSI==registers->rsi) &&
+          (peb->RDI==registers->rdi) &&
+          (peb->R8==registers->r8) &&
+          (peb->R9==registers->r9) &&
+          (peb->R10==registers->r10) &&
+          (peb->R11==registers->r11) &&
+          (peb->R12==registers->r12) &&
+          (peb->R13==registers->r13) &&
+          (peb->R14==registers->r14) &&
+          (peb->R15==registers->r15)
+        )
+      {
+        sendstringf("  The registers match the state so skipping the log. (Just increase count)\n");
+        peb->Count++;
+        csLeave(&eptWatchListCS);
+
+        lastSeenEPTWatch.skipped=6;
+        lastSeenEPTWatchVerySure.skipped=6; //already logged and not different
+
+        return TRUE; //already in the list
+      }
+
+    }
+
+  }
+
+  //still here, so not in the list
+  sendstringf("Checks out ok. Not yet in the list\n");
+
+  if (eptWatchList[ID].Log->numberOfEntries>=eptWatchList[ID].Log->maxNumberOfEntries)
+  {
+
+    sendstringf("List is full.  (%d / %d) ", eptWatchList[ID].Log->numberOfEntries, eptWatchList[ID].Log->maxNumberOfEntries);
+    if ((eptWatchList[ID].Options & EPTO_GROW_WHENFULL)==0)
+    {
+      sendstringf(". Discarding event\n");
+      eptWatchList[ID].Log->missedEntries++;
+      csLeave(&eptWatchListCS);
+      lastSeenEPTWatch.skipped=7;
+      lastSeenEPTWatchVerySure.skipped=7; //list full
+      return TRUE; //can't add more
+    }
+
+    //reallocate the buffer
+
+    int newmax=eptWatchList[ID].Log->numberOfEntries*2;
+    PPageEventListDescriptor temp=realloc(eptWatchList[ID].Log, si
