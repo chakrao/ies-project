@@ -2066,4 +2066,169 @@ void saveStack(pcpuinfo currentcpuinfo, unsigned char *stack) //stack is 4096 by
 void fillPageEventBasic(PageEventBasic *peb, VMRegisters *registers)
 {
 
-  peb->GSBASE_KERNEL=readMSR(IA32_GS_BASE_KERNEL_MSR)
+  peb->GSBASE_KERNEL=readMSR(IA32_GS_BASE_KERNEL_MSR);
+  if (isAMD)
+  {
+    pcpuinfo c=getcpuinfo();
+
+    peb->VirtualAddress=0;
+    peb->PhysicalAddress=c->vmcb->EXITINFO2;
+    peb->CR3=c->vmcb->CR3;
+    peb->FSBASE=c->vmcb->fs_base;
+    peb->GSBASE=c->vmcb->gs_base;
+
+    peb->FLAGS=c->vmcb->RFLAGS;
+    peb->RAX=c->vmcb->RAX;
+    peb->RBX=registers->rbx;
+    peb->RCX=registers->rcx;
+    peb->RDX=registers->rdx;
+    peb->RSI=registers->rsi;
+    peb->RDI=registers->rdi;
+    peb->R8=registers->r8;
+    peb->R9=registers->r9;
+    peb->R10=registers->r10;
+    peb->R11=registers->r11;
+    peb->R12=registers->r12;
+    peb->R13=registers->r13;
+    peb->R14=registers->r14;
+    peb->R15=registers->r15;
+    peb->RBP=registers->rbp;
+    peb->RSP=c->vmcb->RSP;
+    peb->RIP=c->vmcb->RIP;
+    peb->DR0=getDR0();
+    peb->DR1=getDR1();
+    peb->DR2=getDR2();
+    peb->DR3=getDR3();
+    peb->DR6=c->vmcb->DR6;
+    peb->DR7=c->vmcb->DR7;
+    peb->CS=c->vmcb->cs_selector;
+    peb->DS=c->vmcb->ds_selector;
+    peb->ES=c->vmcb->es_selector;
+    peb->SS=c->vmcb->ss_selector;
+    peb->FS=c->vmcb->fs_selector;
+    peb->GS=c->vmcb->gs_selector;
+
+  }
+  else
+  {
+
+    peb->VirtualAddress=vmread(vm_guest_linear_address);
+    peb->PhysicalAddress=vmread(vm_guest_physical_address);
+    peb->CR3=vmread(vm_guest_cr3);
+    peb->FSBASE=vmread(vm_guest_fs_base);
+    peb->GSBASE=vmread(vm_guest_gs_base);
+    peb->FLAGS=vmread(vm_guest_rflags);
+    peb->RAX=registers->rax;
+    peb->RBX=registers->rbx;
+    peb->RCX=registers->rcx;
+    peb->RDX=registers->rdx;
+    peb->RSI=registers->rsi;
+    peb->RDI=registers->rdi;
+    peb->R8=registers->r8;
+    peb->R9=registers->r9;
+    peb->R10=registers->r10;
+    peb->R11=registers->r11;
+    peb->R12=registers->r12;
+    peb->R13=registers->r13;
+    peb->R14=registers->r14;
+    peb->R15=registers->r15;
+    peb->RBP=registers->rbp;
+    peb->RSP=vmread(vm_guest_rsp);
+    peb->RIP=vmread(vm_guest_rip);
+
+    peb->DR0=getDR0();
+    peb->DR1=getDR1();
+    peb->DR2=getDR2();
+    peb->DR3=getDR3();
+
+    peb->DR6=getDR6();
+    peb->DR7=vmread(vm_guest_dr7);
+    peb->CS=vmread(vm_guest_cs);
+    peb->DS=vmread(vm_guest_ds);
+    peb->ES=vmread(vm_guest_es);
+    peb->SS=vmread(vm_guest_ss);
+    peb->FS=vmread(vm_guest_fs);
+    peb->GS=vmread(vm_guest_gs);
+  }
+  peb->Count=0;
+}
+
+void recordState(void *liststart, int datatype, int currentEntryNr, pcpuinfo currentcpuinfo, VMRegisters *vmregisters, PFXSAVE64 fxsave)
+{
+
+  sendstringf("recordState(%p, %d, %d, %p, %p, %p)",liststart, datatype, currentEntryNr, currentcpuinfo, vmregisters, fxsave);
+  int logentrysize=0;
+  switch (datatype)
+  {
+    case PE_BASIC:
+      logentrysize=sizeof(PageEventBasic);
+      PageEventBasic *peb=(PageEventBasic *)((QWORD)(liststart)+currentEntryNr*logentrysize);
+      fillPageEventBasic(peb, vmregisters); //physical and linear are ignored if a tracer log
+      break;
+
+    case PE_EXTENDED:
+      logentrysize=sizeof(PageEventExtended);
+      PageEventExtended *pee=(PageEventExtended *)((QWORD)(liststart)+currentEntryNr*logentrysize);
+      fillPageEventBasic((PageEventBasic*)pee, vmregisters);
+      pee->fpudata=*fxsave;
+      break;
+
+    case PE_BASICSTACK:
+      logentrysize=sizeof(PageEventBasicWithStack);
+      PageEventBasicWithStack *pebws=(PageEventBasicWithStack *)((QWORD)(liststart)+currentEntryNr*logentrysize);
+      fillPageEventBasic((PageEventBasic*)pebws, vmregisters);
+      saveStack(currentcpuinfo, pebws->stack);
+      break;
+
+    case PE_EXTENDEDSTACK:
+      logentrysize=sizeof(PageEventExtendedWithStack);
+      PageEventExtendedWithStack *peews=(PageEventExtendedWithStack *)((QWORD)(liststart)+currentEntryNr*logentrysize);
+      fillPageEventBasic((PageEventBasic*)peews, vmregisters);
+      saveStack(currentcpuinfo, peews->stack);
+      peews->fpudata=*fxsave;
+      break;
+  }
+  if (datatype<0)
+    return;
+}
+
+
+
+int ept_isWatchIDPerfectMatch(QWORD address, int ID)
+{
+  return ((eptWatchList[ID].Active) &&
+          (
+             (address>=eptWatchList[ID].PhysicalAddress) &&
+             (address<eptWatchList[ID].PhysicalAddress+eptWatchList[ID].Size)
+           )
+          );
+}
+
+int ept_isWatchIDMatch(QWORD address, int ID)
+/*
+ * pre: address is already page aligned
+ */
+{
+  return ((eptWatchList[ID].Active) && ((eptWatchList[ID].PhysicalAddress & 0xfffffffffffff000ULL) == address));
+}
+
+int ept_getWatchID(QWORD address)
+/*
+ * returns -1 if not in a page being watched
+ * Note that there can be multiple active on the same page
+ */
+{
+  int i;
+  //sendstringf("ept_getWatchID(%6)\n", address);
+  address=address & 0xfffffffffffff000ULL;
+  for (i=0; i<eptWatchListPos; i++)
+    if (ept_isWatchIDMatch(address, i))
+      return i;
+
+  return -1;
+}
+
+
+
+
+BO
