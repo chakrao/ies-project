@@ -2231,4 +2231,182 @@ int ept_getWatchID(QWORD address)
 
 
 
-BO
+BOOL ept_handleWatchEvent(pcpuinfo currentcpuinfo, VMRegisters *registers, PFXSAVE64 fxsave, QWORD PhysicalAddress)
+//Used by Intel and AMD
+{
+  EPT_VIOLATION_INFO evi;
+  NP_VIOLATION_INFO nvi;
+
+  int ID;
+  int logentrysize;
+  int i;
+
+  if (eptWatchListPos==0)
+    return FALSE;
+
+  if (isAMD)
+  {
+
+
+    nvi.ErrorCode=currentcpuinfo->vmcb->EXITINFO1;
+    if (nvi.ID)
+    {
+      //instruction fetch.  Apparently, PA is not exact and on a 16 byte radius or worse
+      sendstringf("ept_handleWatchEvent execute (ID) on AMD.  RIP=%6 PA=%6\n", currentcpuinfo->vmcb->RIP, PhysicalAddress);
+
+      PhysicalAddress=(PhysicalAddress & 0xfffffffffffff000ULL) | (currentcpuinfo->vmcb->RIP & 0xfff);
+
+      sendstringf("changed PhysicalAddress to %6\n", PhysicalAddress);
+
+
+
+    }
+  }
+  else
+  {
+    evi.ExitQualification=vmread(vm_exit_qualification);
+
+  }
+
+  csEnter(&eptWatchListCS);
+
+  ID=ept_getWatchID(PhysicalAddress);
+
+
+  if (ID==-1)
+  {
+    csLeave(&eptWatchListCS);
+    return FALSE;
+  }
+
+  if (isAMD)
+    lastSeenEPTWatch.data=nvi.ErrorCode;
+
+  else
+    lastSeenEPTWatch.data=evi.ExitQualification;
+
+  lastSeenEPTWatch.physicalAddress=PhysicalAddress;
+  lastSeenEPTWatch.initialID=ID;
+
+
+  QWORD RIP;
+  QWORD RSP;
+
+  sendstring("EPT/NP event and there is a watchlist entry\n");
+  sendstringf("ept_getWatchID returned %d\n", ID);
+
+
+  if (isAMD)
+  {
+    RIP=currentcpuinfo->vmcb->RIP;
+    RSP=currentcpuinfo->vmcb->RSP;
+  }
+  else
+  {
+    RIP=vmread(vm_guest_rip);
+    RSP=vmread(vm_guest_rsp);
+  }
+
+  lastSeenEPTWatch.skipped=-1;
+  lastSeenEPTWatch.rip=RIP;
+
+  QWORD PhysicalAddressBase=PhysicalAddress & 0xfffffffffffff000ULL;
+
+
+
+  //nosendchar[getAPICID()]=0;
+  sendstringf("Handling something that resembles watch ID %d\n", ID);
+
+
+  //figure out which access it is really (in case of multiple on the same page)
+
+  for (i=ID; i<eptWatchListPos; i++)
+  {
+    if (ept_isWatchIDMatch(PhysicalAddressBase, i))
+    {
+      if (eptWatchList[ID].Type==EPTW_WRITE)
+      {
+        //must be a write operation error
+        if (((!isAMD) && (evi.W) && (evi.WasWritable==0)) || (isAMD && nvi.W))  //write operation and writable was 0
+        {
+          ID=i;
+
+          if (ept_isWatchIDPerfectMatch(PhysicalAddress, i))
+            break;
+        }
+      }
+      else if (eptWatchList[ID].Type==EPTW_READWRITE)
+      {
+        //must be a read or write operation
+        if ((isAMD && nvi.P==0) || ((!isAMD) && (((evi.W) && (evi.WasWritable==0)) || ((evi.R) && (evi.WasReadable==0)))) ) //write operation and writable was 0 or read and readable was 0
+        {
+          ID=i;
+          if (ept_isWatchIDPerfectMatch(PhysicalAddress, i))
+            break;
+        }
+      }
+      else
+      {
+          if ((isAMD && nvi.ID) || ((!isAMD) && (evi.X) && (evi.WasExecutable==0))) //execute operation and executable was 0
+          {
+            ID=i;
+
+            if (ept_isWatchIDPerfectMatch(PhysicalAddress, i))
+              break;
+          }
+      }
+    }
+  }
+
+
+  //nosendchar[getAPICID()]=0;
+
+  lastSeenEPTWatch.actualID=ID;
+  sendstringf("%d: handling watch ID %d\n", currentcpuinfo->cpunr, ID);
+  sendstringf("%d: RIP=%6\n", currentcpuinfo->cpunr, currentcpuinfo->vmcb->RIP);
+
+
+  //todo: release the eptWatchListCS and obtain only the log
+
+  //ID is now set to the most logical watch(usually there is no conflicts, and even if there is, no biggie. But still)
+
+  PPTE_PAE npte;
+  PEPT_PTE epte;
+
+  lastSeenEPTWatch.cacheIssue=0;
+  if (isAMD)
+  {
+    npte=(PPTE_PAE)currentcpuinfo->eptWatchList[ID];
+    if ((npte->EXB==0) && (npte->P) && (npte->RW))
+    {
+      sendstringf("This entry was already marked with full access (check caches) (AMD)\n");
+      lastSeenEPTWatch.cacheIssue=1;
+    }
+  }
+  else
+  {
+    epte=currentcpuinfo->eptWatchList[ID];
+    if ((epte->XA) && (epte->RA) && (epte->WA))
+    {
+      sendstringf("This entry was already marked with full access (check caches)\n");
+      lastSeenEPTWatch.cacheIssue=1;
+    }
+  }
+
+
+  if ((eptWatchList[ID].Options & EPTO_DBVMBP) && (PhysicalAddress>=eptWatchList[ID].PhysicalAddress) && (PhysicalAddress<eptWatchList[ID].PhysicalAddress+eptWatchList[ID].Size))
+  {
+    nosendchar[getAPICID()]=0;
+    sendstringf("%d: EPTO_DBVMBP hit (RIP=%6)\n", currentcpuinfo->cpunr, isAMD?currentcpuinfo->vmcb->RIP:vmread(vm_guest_rip));
+    //This is the specific address that was being requested
+    //if the current state has interrupts disabled or masked (cr8<>0) then skip (todo: step until it is)
+
+    DWORD CR8=getCR8();
+    RFLAGS flags;
+    flags.value=isAMD?currentcpuinfo->vmcb->RFLAGS:vmread(vm_guest_rflags);
+    int is;
+    int canBreak=(CR8==0) && (flags.IF); //interruptable with no mask (on windows called passive mode)
+
+    if (isAMD)
+    {
+      sendstringf("CR8=%6 IF=%d RF=%d\n", CR8,fl
