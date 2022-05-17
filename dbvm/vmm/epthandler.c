@@ -2691,4 +2691,190 @@ BOOL ept_handleWatchEvent(pcpuinfo currentcpuinfo, VMRegisters *registers, PFXSA
     //reallocate the buffer
 
     int newmax=eptWatchList[ID].Log->numberOfEntries*2;
-    PPageEventListDescriptor temp=realloc(eptWatchList[ID].Log, si
+    PPageEventListDescriptor temp=realloc(eptWatchList[ID].Log, sizeof(PageEventListDescriptor)+logentrysize*newmax);
+    if (temp!=NULL)
+    {
+      sendstringf(" so growing it\n");
+      eptWatchList[ID].Log=temp;
+      eptWatchList[ID].Log->numberOfEntries=newmax;
+    }
+    else
+    {
+      sendstringf(" and out of memory (fuuuuu)\n");
+
+      eptWatchList[ID].Options=eptWatchList[ID].Options & (~EPTO_GROW_WHENFULL); //stop trying
+      eptWatchList[ID].Log->missedEntries++;
+      csLeave(&eptWatchListCS);
+
+      lastSeenEPTWatch.skipped=8; //list full and out of memory
+      lastSeenEPTWatchVerySure.skipped=8;
+      return TRUE; //can't add more
+    }
+
+  }
+
+  //still here, so not in the list, and still room
+  //add it
+
+
+
+  i=eptWatchList[ID].Log->numberOfEntries;
+  switch (eptWatchList[ID].Log->entryType)
+  {
+    case PE_BASIC:
+    {
+      fillPageEventBasic(&eptWatchList[ID].Log->pe.basic[i], registers);
+      break;
+    }
+
+    case PE_EXTENDED:
+    {
+      fillPageEventBasic(&eptWatchList[ID].Log->pe.extended[i].basic, registers);
+      eptWatchList[ID].Log->pe.extended[i].fpudata=*fxsave;
+      break;
+    }
+
+    case PE_BASICSTACK:
+    {
+      fillPageEventBasic(&eptWatchList[ID].Log->pe.basics[i].basic, registers);
+      saveStack(currentcpuinfo, eptWatchList[ID].Log->pe.basics[i].stack);
+      break;
+    }
+
+    case PE_EXTENDEDSTACK:
+    {
+      fillPageEventBasic(&eptWatchList[ID].Log->pe.extendeds[i].basic, registers);
+      eptWatchList[ID].Log->pe.extendeds[i].fpudata=*fxsave;
+      saveStack(currentcpuinfo, eptWatchList[ID].Log->pe.extendeds[i].stack);
+      break;
+    }
+  }
+
+  eptWatchList[ID].Log->numberOfEntries++;
+
+  lastSeenEPTWatch.skipped=0;
+  lastSeenEPTWatchVerySure.skipped=0; //got added to the list
+
+  sendstringf("Added it to the list. numberOfEntries for ID %d is now %d\n", ID, eptWatchList[ID].Log->numberOfEntries);
+
+  csLeave(&eptWatchListCS);
+
+  return TRUE;
+
+}
+
+int ept_handleWatchEventAfterStep(pcpuinfo currentcpuinfo,  int ID)
+{
+  sendstringf("%d ept_handleWatchEventAfterStep %d  Type=%d\n", currentcpuinfo->cpunr, ID, eptWatchList[ID].Type);
+
+  if (isAMD)
+    sendstringf("%d CS:RIP=%x:%6\n", currentcpuinfo->cpunr, currentcpuinfo->vmcb->cs_selector, currentcpuinfo->vmcb->RIP);
+
+  if (ID>eptWatchListPos)
+  {
+    sendstring("Invalid ID\n");
+    return 0;
+  }
+
+
+  if (eptWatchList[ID].Active==0)
+  {
+    sendstring("Inactive ID\n");
+    return 0;
+  }
+
+
+
+
+  switch (eptWatchList[ID].Type)
+  {
+  	  case EPTW_WRITE:
+  	  {
+  	    sendstringf("Write type. So making it unwritable\n");
+
+  	    if (isAMD)
+  	    {
+  	      PPTE_PAE pte;
+  	      pte=(PPTE_PAE)currentcpuinfo->eptWatchList[ID];
+  	      if (pte)
+  	      {
+            UINT64 oldvalue=*(UINT64 *)pte;
+            pte->RW=0;
+
+            UINT64 newvalue=*(UINT64 *)pte;
+
+            sendstringf("%6 -> %6\n", oldvalue, newvalue);
+  	      }
+
+  	    }
+  	    else
+  	      currentcpuinfo->eptWatchList[ID]->WA=0;
+  		  break;
+  	  }
+
+  	  case EPTW_READWRITE:
+  	  {
+  	    sendstringf("read type. So making it unreadable\n");
+  	    if (isAMD)
+  	    {
+  	      PPTE_PAE pte;
+  	      pte=(PPTE_PAE)currentcpuinfo->eptWatchList[ID];
+  	      pte->P=0;
+  	    }
+  	    else
+  	    {
+          currentcpuinfo->eptWatchList[ID]->RA=0;
+          currentcpuinfo->eptWatchList[ID]->WA=0;
+          if (has_EPT_ExecuteOnlySupport)
+            currentcpuinfo->eptWatchList[ID]->XA=1;
+          else
+            currentcpuinfo->eptWatchList[ID]->XA=0;
+  	    }
+
+  		  break;
+  	  }
+
+  	  case EPTW_EXECUTE:
+  	  {
+
+  	    sendstringf("%d: execute type. So making it non-executable\n", currentcpuinfo->cpunr);
+        if (isAMD)
+        {
+          PPTE_PAE pte;
+          pte=(PPTE_PAE)currentcpuinfo->eptWatchList[ID];
+          pte->EXB=1;
+        }
+        else
+          currentcpuinfo->eptWatchList[ID]->XA=0;
+
+  		  break;
+  	  }
+  }
+
+  //todo: If enabled , and the watch actually got hit, trigger a DBG interrupt
+  //      Keep in mind that CE reading memory may also trigger access interrupts so those need to be
+  //      ignored by the driver
+
+
+  if (currentcpuinfo->BPAfterStep)
+  {
+    if (isAMD)
+    {
+      sendstringf("AMD: BP after STEP\n");
+      currentcpuinfo->vmcb->inject_Type=3; //exception
+      currentcpuinfo->vmcb->inject_Vector=int1redirection;
+      currentcpuinfo->vmcb->inject_Valid=1;
+      currentcpuinfo->vmcb->inject_EV=0;
+    }
+    else
+    {
+      if (int1redirection_idtbypass)
+      {
+        regDR7 dr7;
+        //disable GD bit before int1
+        dr7.DR7=vmread(vm_guest_dr7);
+        dr7.GD=0;
+        vmwrite(vm_guest_dr7,dr7.DR7);
+
+        emulateExceptionInterrupt(currentcpuinfo, NULL, int1redirection_idtbypass_cs, int1redirection_idtbypass_rip, 0, 0, 0);
+  
