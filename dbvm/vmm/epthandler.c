@@ -3263,4 +3263,169 @@ VMSTATUS ept_watch_retrievelog(int ID, QWORD results, DWORD *resultSize, DWORD *
     sendstringf("Error during map (%d)\n", error);
     if (error==2)
     {
-      sendstringf("Pagefault at a
+      sendstringf("Pagefault at address %x\n", pagefaultaddress);
+      blocksize=pagefaultaddress-destinationaddress;
+      sendstringf("blocksize=%d\n", blocksize);
+    }
+    else
+    {
+      sendstringf("Not a pagefault\n");
+      if (isAMD)
+      {
+        if (AMD_hasNRIPS)
+          getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+        else
+          getcpuinfo()->vmcb->RIP+=3;
+      }
+      else
+        vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+      *errorcode=0x1000+error; //map error
+      csLeave(&eptWatchListCS);
+      return VM_OK;
+    }
+  }
+
+
+
+  if (blocksize)
+  {
+    //sendstringf("Copying to destination\n");
+    copymem(destination, source, blocksize);
+    unmapVMmemory(destination, blocksize);
+#ifdef MEMORYCHECK
+    //mark log as 0xce
+    QWORD a,b;
+
+    b=(QWORD)eptWatchList[ID].Log+sizeof(PageEventListDescriptor);
+    int x;
+    for (x=0; x<blocksize; x++)
+    {
+      a=(QWORD)source+x;
+      if (a>=b)
+        source[x]=0xce;
+    }
+#endif
+
+
+
+    *offset=(*offset)+blocksize;
+  }
+
+  if (error==2)
+  {
+    sendstringf("Raising the pagefault\n");
+    csLeave(&eptWatchListCS);
+    return raisePagefault(getcpuinfo(), pagefaultaddress);
+  }
+
+ //sendstringf("new *offset=%d", *offset);
+  //sendstringf("sizeneeded=%d", sizeneeded);
+
+  if ((*offset)>=sizeneeded)
+  {
+    //once all data has been copied
+   // sendstringf("All data has been copied\n");
+    eptWatchList[ID].Log->numberOfEntries=0;
+    eptWatchList[ID].CopyInProgress=0;
+
+    *resultSize=*offset;
+
+   // sendstringf("Going to the next instruction\n");
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=0;
+  }
+  else
+  {
+    //sendstringf("not everything copied yet. Rerun\n");
+
+  }
+
+  csLeave(&eptWatchListCS);
+  return VM_OK;
+}
+
+
+int ept_watch_activate(QWORD PhysicalAddress, int Size, int Type, DWORD Options, int MaxEntryCount, int *outID, QWORD OptionalField1, QWORD OptionalField2)
+{
+  int result=0;
+  sendstringf("+ ept_watch_activate(%6, %d, %d, %x, %d, %6, %6,%6)\n", PhysicalAddress, Size, Options, MaxEntryCount, outID, OptionalField1, OptionalField2);
+// ept_watch_activate(00000004030190d8, 8, 1, 20, 8390248, 0000000000000000, 0000000000000000,0000008000800668)
+
+  if ((MaxEntryCount==0) && (((EPTO_INTERRUPT|EPTO_DBVMBP) & Options)==0) )
+  {
+    sendstringf("MaxEntryCount=0\n");
+    return 1;
+  }
+  else
+    sendstringf("MaxEntryCount=%d (this is ok)\n", MaxEntryCount);
+
+  csEnter(&eptWatchListCS);
+
+  int ID=getFreeWatchID();
+  int structtype=(Options >> 2) & 3;
+  int structsize;
+
+
+
+  sendstringf("getFreeWatchID() returned %d .  eptWatchListPos=%d\n", ID, eptWatchListPos);
+  switch (structtype)
+  {
+    case 0: structsize=sizeof(PageEventBasic); break;             //EPTO_SAVE_XSAVE=0 and EPTO_SAVE_STACK=0
+    case 1: structsize=sizeof(PageEventExtended); break;          //EPTO_SAVE_XSAVE=1 and EPTO_SAVE_STACK=0
+    case 2: structsize=sizeof(PageEventBasicWithStack); break;    //EPTO_SAVE_XSAVE=0 and EPTO_SAVE_STACK=1
+    case 3: structsize=sizeof(PageEventExtendedWithStack); break; //EPTO_SAVE_XSAVE=1 and EPTO_SAVE_STACK=1
+  }
+
+  //make sure it doesn't pass a page boundary
+  //todo: recursively spawn more watches if needed
+
+  if (((PhysicalAddress+Size) & 0xfffffffffffff000ULL) > (PhysicalAddress & 0xfffffffffffff000ULL))
+    eptWatchList[ID].Size=0x1000-(PhysicalAddress & 0xfff);
+  else
+    eptWatchList[ID].Size=Size;
+
+  eptWatchList[ID].PhysicalAddress=PhysicalAddress;
+  eptWatchList[ID].Type=Type;
+  if (Options & EPTO_DBVMBP)
+  {
+    eptWatchList[ID].LoopUserMode=OptionalField1;
+    eptWatchList[ID].LoopKernelMode=OptionalField2;
+  }
+
+
+  eptWatchList[ID].Log=malloc(sizeof(PageEventListDescriptor)*2+structsize*MaxEntryCount); //*2 because i'm not sure how the alignment of the final entry goes
+  zeromemory(eptWatchList[ID].Log, sizeof(PageEventListDescriptor)*2+structsize*MaxEntryCount);
+
+
+  eptWatchList[ID].Log->ID=ID;
+  eptWatchList[ID].Log->entryType=structtype;
+  eptWatchList[ID].Log->numberOfEntries=0;
+  eptWatchList[ID].Log->maxNumberOfEntries=MaxEntryCount;
+  eptWatchList[ID].Log->missedEntries=0;
+
+  eptWatchList[ID].Options=Options;
+  sendstringf("Configured ept watch. Activating ID %d\n", ID);
+
+  eptWatchList[ID].Active=1;
+
+  //for each CPU mark this page as non writable/readable
+  pcpuinfo currentcpuinfo=getcpuinfo();
+  pcpuinfo c=firstcpuinfo;
+  while (c)
+  {
+    QWORD PA_PTE;
+
+    sendstringf("Setting watch for CPU %d\n", c->cpunr);
+
+    csEnter(&c->EPTPML4CS);
+
+#ifdef USENMIFORWAIT
+    if ((c
