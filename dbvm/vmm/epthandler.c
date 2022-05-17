@@ -2877,4 +2877,197 @@ int ept_handleWatchEventAfterStep(pcpuinfo currentcpuinfo,  int ID)
         vmwrite(vm_guest_dr7,dr7.DR7);
 
         emulateExceptionInterrupt(currentcpuinfo, NULL, int1redirection_idtbypass_cs, int1redirection_idtbypass_rip, 0, 0, 0);
-  
+      }
+      else
+      {
+        vmwrite(vm_pending_debug_exceptions,0x4000); //for OS'es without the need for int1 redirects
+      }
+    }
+
+    currentcpuinfo->BPAfterStep=0;
+    currentcpuinfo->BPCausedByDBVM=1;
+
+  }
+
+  sendstring("Calling ept_invalidate\n");
+
+  ept_invalidate();
+  return 0;
+}
+
+
+
+VMSTATUS ept_traceonbp_retrievelog(QWORD results, DWORD *resultSize, DWORD *offset, QWORD *errorcode)
+//same as ept_watch_retrievelog, but there's only only one list
+{
+
+  //sendstringf("ept_watch_retrievelog(ID=%d)\n", ID);
+
+  sendstring("ept_traceonbp_retrievelog\n");
+
+  csEnter(&CloakedPagesCS);
+
+  DWORD sizeneeded=8;
+  int maxid=TraceOnBP->numberOfEntries;
+
+  switch (TraceOnBP->datatype)
+  {
+    case PE_BASIC:
+      sizeneeded+=(QWORD)(&TraceOnBP->pe.basic[maxid])-(QWORD)(&TraceOnBP->datatype);
+      break;
+
+    case PE_EXTENDED:
+      sizeneeded+=(QWORD)(&TraceOnBP->pe.extended[maxid])-(QWORD)(&TraceOnBP->datatype);
+      break;
+
+    case 2:
+      sizeneeded+=(QWORD)(&TraceOnBP->pe.basics[maxid])-(QWORD)(&TraceOnBP->datatype);
+      break;
+
+    case 3:
+      sizeneeded+=(QWORD)(&TraceOnBP->pe.extendeds[maxid])-(QWORD)(&TraceOnBP->datatype);
+      break;
+  }
+
+  sendstringf("sizeneeded=%d  *resultSize=%d\n", sizeneeded, *resultSize);
+
+
+  if ((*resultSize) < sizeneeded)
+  {
+    sendstringf("Too small\n");
+    *resultSize=sizeneeded;
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=2; //invalid size
+    csLeave(&CloakedPagesCS);
+    return VM_OK;
+  }
+
+
+
+  if (results==0)
+  {
+    sendstringf("results==0\n");
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=4; //results==0
+    csLeave(&CloakedPagesCS);
+    return VM_OK;
+  }
+
+  if ((*offset)>sizeneeded)
+  {
+    sendstringf("(*offset)>sizeneeded\n");
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=6; //offset is too high
+    csLeave(&CloakedPagesCS);
+    return VM_OK;
+  }
+
+
+
+  int sizeleft=sizeneeded-(*offset); //decrease bytes left by bytes already copied
+  sendstringf("*offset=%d\n", *offset);
+  sendstringf("sizeleft=%d\n", sizeleft);
+
+  int error;
+  QWORD pagefaultaddress;
+  QWORD destinationaddress=results+(*offset);
+  int blocksize=sizeleft;
+  if (blocksize>16*4096)
+    blocksize=16*4096;
+
+
+  sendstringf("TraceOnBP->datatype=%d\n",TraceOnBP->datatype);
+  sendstringf("TraceOnBP->numberOfEntries=%d\n",TraceOnBP->numberOfEntries);
+
+  unsigned char *source=(unsigned char *)(QWORD)(&TraceOnBP->datatype)+(*offset);
+  unsigned char *destination=mapVMmemoryEx(NULL, destinationaddress, blocksize, &error, &pagefaultaddress,1);
+
+
+  if (error)
+  {
+    sendstringf("Error during map (%d)\n", error);
+    if (error==2)
+    {
+      sendstringf("Pagefault at address %x\n", pagefaultaddress);
+      blocksize=pagefaultaddress-destinationaddress;
+      sendstringf("blocksize=%d\n", blocksize);
+    }
+    else
+    {
+      sendstringf("Not a pagefault\n");
+      if (isAMD)
+      {
+        if (AMD_hasNRIPS)
+          getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+        else
+          getcpuinfo()->vmcb->RIP+=3;
+      }
+      else
+        vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+      *errorcode=0x1000+error; //map error
+      csLeave(&CloakedPagesCS);
+      return VM_OK;
+    }
+  }
+
+
+
+  if (blocksize)
+  {
+    //sendstringf("Copying to destination\n");
+    copymem(destination, source, blocksize);
+    unmapVMmemory(destination, blocksize);
+
+    *offset=(*offset)+blocksize;
+  }
+
+  if (error==2)
+  {
+    sendstringf("Raising the pagefault\n");
+    csLeave(&CloakedPagesCS);
+    return raisePagefault(getcpuinfo(), pagefaultaddress);
+  }
+
+
+  if ((*offset)>=sizeneeded)
+  {
+    //once all data has been copied
+    sendstringf("All data has been copied\n");
+    *resultSize=*offset;
+
+   // sendstringf("Going to the next instruction\n");
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+
+    *er
