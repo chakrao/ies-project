@@ -3070,4 +3070,197 @@ VMSTATUS ept_traceonbp_retrievelog(QWORD results, DWORD *resultSize, DWORD *offs
     else
       vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
 
-    *er
+    *errorcode=0;
+  }
+  else
+  {
+    sendstringf("not everything copied yet. Rerun\n");
+
+  }
+
+  csLeave(&CloakedPagesCS);
+  return VM_OK;
+}
+
+VMSTATUS ept_watch_retrievelog(int ID, QWORD results, DWORD *resultSize, DWORD *offset, QWORD *errorcode)
+/*
+ * Retrieves the collected log
+ * offset is the offset from what point the log should continue copying (works like a rep xxx instruction)
+ */
+{
+  if (ID>=eptWatchListPos) //out of range
+  {
+    sendstringf("Invalid ID\n");
+
+
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+
+    *errorcode=1; //invalid ID
+    return VM_OK;
+  }
+
+  csEnter(&eptWatchListCS);
+
+  if (eptWatchList[ID].Active==0) //not active
+  {
+    sendstringf("Inactive ID\n");
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=3; //inactive ID
+
+    csLeave(&eptWatchListCS);
+    return VM_OK;
+  }
+
+
+ // int entrysize=0;
+  DWORD sizeneeded=sizeof(PageEventListDescriptor);
+  int maxid=eptWatchList[ID].Log->numberOfEntries;
+
+  switch (eptWatchList[ID].Log->entryType)
+  {
+    case 0:
+      sizeneeded+=(QWORD)(&eptWatchList[ID].Log->pe.basic[maxid])-(QWORD)(&eptWatchList[ID].Log->pe.basic[0]);
+      break;
+
+    case 1:
+      sizeneeded+=(QWORD)(&eptWatchList[ID].Log->pe.extended[maxid])-(QWORD)(&eptWatchList[ID].Log->pe.extended[0]);
+      break;
+
+    case 2:
+      sizeneeded+=(QWORD)(&eptWatchList[ID].Log->pe.basics[maxid])-(QWORD)(&eptWatchList[ID].Log->pe.basics[0]);
+      break;
+
+    case 3:
+      sizeneeded+=(QWORD)(&eptWatchList[ID].Log->pe.extendeds[maxid])-(QWORD)(&eptWatchList[ID].Log->pe.extendeds[0]);
+      break;
+  }
+
+  if ((*resultSize) < sizeneeded)
+  {
+    sendstringf("Too small\n");
+    *resultSize=sizeneeded;
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=2; //invalid size
+    csLeave(&eptWatchListCS);
+    return VM_OK;
+  }
+
+
+
+  if (results==0)
+  {
+    sendstringf("results==0\n");
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=4; //results==0
+    csLeave(&eptWatchListCS);
+    return VM_OK;
+  }
+
+#ifdef MEMORYCHECKNOLOGRETRIEVAL
+  //skip
+  if (isAMD)
+  {
+    if (AMD_hasNRIPS)
+      getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+    else
+      getcpuinfo()->vmcb->RIP+=3;
+  }
+  else
+    vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+  *resultSize=0;
+  *errorcode=0; //results==0
+  csLeave(&eptWatchListCS);
+  return VM_OK;
+#endif
+
+  if ((*offset) && (eptWatchList[ID].CopyInProgress==0))
+  {
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=5; //offset set but not copyinprogress
+    csLeave(&eptWatchListCS);
+    return VM_OK;
+  }
+
+  if ((*offset)>sizeneeded)
+  {
+    if (isAMD)
+    {
+      if (AMD_hasNRIPS)
+        getcpuinfo()->vmcb->RIP=getcpuinfo()->vmcb->nRIP;
+      else
+        getcpuinfo()->vmcb->RIP+=3;
+    }
+    else
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+    *errorcode=6; //offset is too high
+    csLeave(&eptWatchListCS);
+    return VM_OK;
+  }
+
+
+
+  int sizeleft=sizeneeded-(*offset); //decrease bytes left by bytes already copied
+
+ // sendstringf("*offset=%d\n", *offset);
+  //sendstringf("sizeleft=%d\n", sizeleft);
+  eptWatchList[ID].CopyInProgress=1;
+
+  int error;
+  QWORD pagefaultaddress;
+  QWORD destinationaddress=results+(*offset);
+  int blocksize=sizeleft;
+  if (blocksize>16*4096)
+    blocksize=16*4096;
+
+  //sendstringf("destinationaddress=%6\n", destinationaddress);
+
+  unsigned char *source=(unsigned char *)(((QWORD)eptWatchList[ID].Log)+(*offset));
+  unsigned char *destination=mapVMmemoryEx(NULL, destinationaddress, blocksize, &error, &pagefaultaddress,1);
+
+
+  if (error)
+  {
+    sendstringf("Error during map (%d)\n", error);
+    if (error==2)
+    {
+      sendstringf("Pagefault at a
