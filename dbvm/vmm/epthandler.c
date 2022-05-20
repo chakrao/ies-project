@@ -3639,4 +3639,197 @@ int ept_watch_deactivate(int ID)
         {
 
           EPT_PTE temp=*(c->eptWatchList[ID]);
-          if 
+          if (eptWatchList[ID].Type==EPTW_WRITE)
+          {
+            sendstringf("  This was a write entry. Making it writable\n");
+            temp.WA=1;
+          }
+          else if (eptWatchList[ID].Type==EPTW_READWRITE)
+          {
+            sendstringf("  This was an access entry. Making it readable and writable");
+            temp.RA=1;
+            temp.WA=1;
+            if (has_EPT_ExecuteOnlySupport==0)
+            {
+              sendstringf(" and executable as this cpu does not support execute only pages\n");
+              temp.XA=1;
+            }
+          }
+          else
+          {
+              sendstringf("  This was an execute entry. Making it executable");
+              temp.XA=1;
+          }
+
+
+
+          *(c->eptWatchList[ID])=temp;
+        }
+
+        _wbinvd();
+        c->eptUpdated=1;
+
+        unmapPhysicalMemoryGlobal(c->eptWatchList[ID], sizeof(EPT_PTE));
+        c->eptWatchList[ID]=NULL;
+
+
+      }
+
+#ifdef USENMIFORWAIT
+      if ((canExitOnNMI) && (c!=currentcpuinfo))
+        c->WaitTillDone=0;
+#endif
+
+
+      csLeave(&c->EPTPML4CS);
+      c=c->next;
+    }
+
+    getcpuinfo()->LastVMCallDebugPos=7;
+
+    ept_invalidate();
+  }
+  else
+  {
+    sendstringf("  hasAnotherOne is set\n");
+  }
+
+  getcpuinfo()->LastVMCallDebugPos=8;
+  eptWatchList[ID].Active=0;
+  free(eptWatchList[ID].Log);
+  eptWatchList[ID].Log=NULL;
+
+  getcpuinfo()->LastVMCallDebugPos=9;
+  csLeave(&eptWatchListCS);
+
+  getcpuinfo()->LastVMCallDebugPos=10;
+  return 0;
+}
+
+
+int MTC_RPS(int mt1, int mt2)
+{
+  //memory type cache rock paper scissors
+  if (mt1==mt2)
+    return mt1;
+
+  if ((mt1==MTC_UC) || (mt2==MTC_UC))
+      return MTC_UC;
+
+  if (((mt1==MTC_WT) && (mt2==MTC_WB)) || ((mt2==MTC_WT) && (mt1==MTC_WB)) )
+    return MTC_WT;
+
+  if ((mt1==MTC_WP) || (mt2==MTC_WP))
+    return MTC_WP;
+
+  if ((mt1==MTC_WB) || (mt2!=MTC_WB))
+    return mt2;
+  else
+    return min(mt1,mt2);
+}
+
+typedef struct _MEMRANGE
+{
+  QWORD startaddress;
+  QWORD size;
+  int memtype;
+} MEMRANGE, *PMEMRANGE;
+
+criticalSection memoryrangesCS={.name="memoryrangesCS", .debuglevel=2};
+MEMRANGE *memoryranges;
+int memoryrangesLength;
+int memoryrangesPos;
+
+void getMTRRMapInfo(QWORD startaddress, QWORD size, int *fullmap, int *memtype)
+/*
+ * pre: startaddress is aligned on the boundary you wish to map
+ *
+ * post: fullmap is 1 if the size can be fully mapped without conflicts (border crossings)
+ */
+{
+  //note: the list is sorted
+  QWORD starta=startaddress;
+  QWORD stopa=startaddress+size-1;
+  int i;
+
+  *memtype=MTRRDefType.TYPE; //if not found, this is the result (usually uncached)
+  *fullmap=1;
+
+ // sendstringf("getMTRRMapInfo(%6, %x)\n", startaddress, size);
+
+
+  //csEnter(&memoryrangesCS); //currently addToMemoryRanges is only called BEFORE ept exceptions happen. So this cs is not neede
+  for (i=0; i<memoryrangesPos; i++)
+  {
+    QWORD startb,stopb;
+    startb=memoryranges[i].startaddress;
+    stopb=memoryranges[i].startaddress+memoryranges[i].size-1;
+
+    if ((starta <= stopb) && (startb <= stopa))
+    {
+      //overlap, check the details
+      if ((starta>=startb) && (stopa<=stopb)) //falls completely within the region, so can be fully mapped.
+        *memtype=memoryranges[i].memtype;//set the memory type
+      else
+        *fullmap=0; //mark as not fully mappable, go one level lower
+
+      return;
+    }
+
+    if (stopa<startb) //reached a startaddress higher than my stopaddress, which means every other item will be as well
+      return;
+  }
+  //csLeave(&memoryrangesCS);
+}
+
+
+
+void addToMemoryRanges(QWORD address, QWORD size, int type)
+/*
+ * pre: memoryrangesCS lock has been aquired
+ */
+{
+  if (size==0) return;
+
+  //add memory for a new entry
+  if (memoryrangesPos==memoryrangesLength)
+  {
+    sendstringf("addToMemoryRanges realloc\n");
+    memoryranges=realloc2(memoryranges, memoryrangesLength*sizeof(MEMRANGE), 2*memoryrangesLength*sizeof(MEMRANGE));
+    memoryrangesLength=memoryrangesLength*2;
+  }
+
+  memoryranges[memoryrangesPos].startaddress=address;
+  memoryranges[memoryrangesPos].size=size;
+  memoryranges[memoryrangesPos].memtype=type;
+
+  memoryrangesPos++;
+}
+
+void sanitizeMemoryRegions()
+{
+  //find overlapping regions and calculate the best memtype
+  //----------------------------------------------------------
+  //|
+  //|
+  int i=0,j;
+
+
+
+  for (i=0; i<memoryrangesPos; i++)
+  {
+    QWORD starta=memoryranges[i].startaddress;
+    QWORD stopa=memoryranges[i].startaddress+memoryranges[i].size-1;
+
+    if (memoryranges[i].size==0)
+      continue;
+
+    if (i>100)
+    {
+      while (1)
+      {
+        outportb(0x80,0x10);
+        sendstringf("It's OVER");
+        outportb(0x80,0x00);
+        sendstringf(" 100!!!!!!\n");
+   
