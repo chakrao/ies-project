@@ -3428,4 +3428,215 @@ int ept_watch_activate(QWORD PhysicalAddress, int Size, int Type, DWORD Options,
     csEnter(&c->EPTPML4CS);
 
 #ifdef USENMIFORWAIT
-    if ((c
+    if ((canExitOnNMI) && (c!=currentcpuinfo))
+    {
+      c->WaitingTillDone=0;
+      c->WaitTillDone=1;
+      apic_sendWaitInterrupt(c->apicid-1);
+      while (c->WaitingTillDone==0) _pause();
+    }
+#endif
+
+
+    if (isAMD)
+    {
+      PA_PTE=NPMapPhysicalMemory(c, PhysicalAddress, 1);
+      sendstringf("PA_PTE=%6\n", PA_PTE);
+    }
+    else
+      PA_PTE=EPTMapPhysicalMemory(c, PhysicalAddress, 1);
+
+
+    if (c->eptWatchListLength<eptWatchListSize) //realloc
+      c->eptWatchList=realloc(c->eptWatchList, eptWatchListSize*sizeof(EPT_PTE));
+
+    c->eptWatchList[ID]=mapPhysicalMemoryGlobal(PA_PTE, sizeof(EPT_PTE)); //can use global as it's not a quick map/unmap procedure
+
+
+
+    if (isAMD)
+    {
+      //AMD NP
+      _PTE_PAE temp=*(_PTE_PAE *)c->eptWatchList[ID];
+      sendstringf("Old page value was %6\n", *(QWORD *)c->eptWatchList[ID]);
+
+      if (Type==EPTW_WRITE)
+      {
+        temp.RW=0;
+      }
+      else
+      if (Type==EPTW_READWRITE)
+      {
+        temp.P=0; //not present, ANY access, including execute
+      }
+      else
+      if (Type==EPTW_EXECUTE)
+      {
+        temp.EXB=1; //no execute flag
+      }
+      *(c->eptWatchList[ID])=*(EPT_PTE *)&temp;
+      sendstringf("New page value is %6\n", *(QWORD *)c->eptWatchList[ID]);
+    }
+    else
+    {
+
+      //Intel EPT
+      EPT_PTE temp=*(c->eptWatchList[ID]); //using temp in case the cpu doesn't support a XA of 1 with an RA of 0
+
+      if (Type==EPTW_WRITE) //Writes
+        temp.WA=0;
+      else
+      if (Type==EPTW_READWRITE) //read and writes
+      {
+        if (has_EPT_ExecuteOnlySupport)
+          temp.XA=1;
+        else
+          temp.XA=0;
+        temp.WA=0;
+        temp.RA=0;
+      }
+
+      if (Type==EPTW_EXECUTE) //executes
+      {
+        temp.XA=0;
+      }
+      *(c->eptWatchList[ID])=temp;
+
+    }
+
+    _wbinvd();
+    c->eptUpdated=1;
+
+#ifdef USENMIFORWAIT
+    if (canExitOnNMI && (c!=currentcpuinfo))
+      c->WaitTillDone=0;
+#endif
+
+    csLeave(&c->EPTPML4CS);
+
+    c=c->next;
+  }
+
+  //test if needed:  SetPageToWriteThrough(currentcpuinfo->eptwatchlist[ID].EPTEntry);
+  //check out 28.3.3.4  (might not be needed due to vmexit, but do check anyhow)
+  //yes, is needed
+  //EPTINV
+
+
+
+  //everything ok, return success:
+
+  sendstringf("Passing ID(%d) to the caller\n", ID);
+  *outID=ID;
+
+
+  csLeave(&eptWatchListCS);
+
+  sendstringf("Invalidating pages\n");
+  ept_invalidate();
+
+  return result;
+}
+
+int ept_watch_deactivate(int ID)
+/*
+ * disable a watch
+ * It's possible that a watch event is triggered between now and the end of this function.
+ * That will result in a ept_violation event, which causes it to not see that there is a watch event for this
+ * As a result, that DBVM thread will try to map the physical address , and if it's already mapped, set it to full access
+ * In short: it's gonna be ok
+ */
+{
+  int i;
+  int hasAnotherOne=0;
+  sendstringf("ept_watch_deactivate(%d)", ID);
+
+  getcpuinfo()->LastVMCallDebugPos=1;
+
+  csEnter(&eptWatchListCS);
+
+
+
+  if (ID>=eptWatchListPos)
+  {
+    getcpuinfo()->LastVMCallDebugPos=2;
+    sendstringf("  Invalid entry\n");
+    csLeave(&eptWatchListCS);
+    return 1;
+  }
+
+  getcpuinfo()->LastVMCallDebugPos=3;
+
+  if (eptWatchList[ID].Active==0)
+  {
+    getcpuinfo()->LastVMCallDebugPos=4;
+    sendstringf("  Inactive entry\n");
+    csLeave(&eptWatchListCS);
+    return 2;
+  }
+
+  getcpuinfo()->LastVMCallDebugPos=5;
+
+  QWORD PhysicalBase=eptWatchList[ID].PhysicalAddress & 0xfffffffffffff000ULL;
+
+  for (i=0; i<eptWatchListPos; i++)
+  {
+    if ((i!=ID) && ept_isWatchIDMatch(PhysicalBase, i))
+    {
+      //matches
+      if (eptWatchList[i].Type==eptWatchList[ID].Type) //don't undo
+        hasAnotherOne=1;
+    }
+  }
+
+  getcpuinfo()->LastVMCallDebugPos=6;
+
+  if (hasAnotherOne==0)
+  {
+    pcpuinfo c=firstcpuinfo;
+    pcpuinfo currentcpuinfo=getcpuinfo();
+
+
+    while (c)
+    {
+      //undo
+      csEnter(&c->EPTPML4CS);
+#ifdef USENMIFORWAIT
+      if (canExitOnNMI && (c!=currentcpuinfo))
+      {
+        c->WaitingTillDone=0;
+        c->WaitTillDone=1;
+        apic_sendWaitInterrupt(c->apicid-1);
+        while (c->WaitingTillDone==0) _pause();
+      }
+#endif
+
+
+
+      if ((c->eptWatchList) && (ID<c->eptWatchListLength) && (c->eptWatchList[ID]))
+      {
+        if (isAMD)
+        {
+          _PTE_PAE temp=*(PPTE_PAE)(c->eptWatchList[ID]);
+          if (eptWatchList[ID].Type==EPTW_WRITE)
+          {
+            temp.RW=1; //back to writable
+          }
+          else if (eptWatchList[ID].Type==EPTW_READWRITE)
+          {
+            temp.P=1;
+            temp.RW=1;
+            temp.EXB=0;
+          }
+          else
+          {
+            temp.EXB=0;
+          }
+
+          *(PPTE_PAE)(c->eptWatchList[ID])=temp;
+        }
+        else
+        {
+
+          EPT_PTE temp=*(c->eptWatchList[ID]);
+          if 
