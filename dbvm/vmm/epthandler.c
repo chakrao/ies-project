@@ -4008,4 +4008,178 @@ void initMemTypeRanges()
     QWORD FIX16K_80000=readMSR(IA32_MTRR_FIX16K_80000);
     QWORD FIX16K_A0000=readMSR(IA32_MTRR_FIX16K_A0000);
     QWORD FIX4K_C0000 =readMSR(IA32_MTRR_FIX4K_C0000);
-   
+    QWORD FIX4K_C8000 =readMSR(IA32_MTRR_FIX4K_C8000);
+    QWORD FIX4K_D0000 =readMSR(IA32_MTRR_FIX4K_D0000);
+    QWORD FIX4K_D8000 =readMSR(IA32_MTRR_FIX4K_D8000);
+    QWORD FIX4K_E0000 =readMSR(IA32_MTRR_FIX4K_E0000);
+    QWORD FIX4K_E8000 =readMSR(IA32_MTRR_FIX4K_E8000);
+    QWORD FIX4K_F0000 =readMSR(IA32_MTRR_FIX4K_F0000);
+    QWORD FIX4K_F8000 =readMSR(IA32_MTRR_FIX4K_F8000);
+    //check the fixed range mtrs
+
+    while (startaddress+size<0x100000)
+    {
+      QWORD types;
+      int type;
+      int sizeinc=0;
+
+      switch (startaddress+size)
+      {
+        case 0 ... 0x7ffff:
+        {
+          types=FIX64K_00000;
+          int index=(startaddress+size) >> 16;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=64*1024;
+          break;
+        }
+
+        case 0x80000 ... 0x9ffff:
+        {
+          types=FIX16K_80000;
+          int index=((startaddress+size)-0x80000) >> 14;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=16*1024;
+          break;
+        }
+
+        case 0xa0000 ... 0xbffff:
+        {
+          types=FIX16K_A0000;
+          int index=((startaddress+size)-0xa0000) >> 14;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=16*1024;
+          break;
+        }
+
+        case 0xc0000 ... 0xc7fff:
+        {
+          types=FIX4K_C0000;
+          int index=((startaddress+size)-0xc0000) >> 12;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=4*1024;
+          break;
+        }
+
+        case 0xc8000 ... 0xcffff:
+        {
+          types=FIX4K_C8000;
+          int index=((startaddress+size)-0xc8000) >> 12;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=4*1024;
+          break;
+        }
+
+        case 0xd0000 ... 0xd7fff:
+        {
+          types=FIX4K_D0000;
+          int index=((startaddress+size)-0xd0000) >> 12;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=4*1024;
+          break;
+        }
+
+        case 0xd8000 ... 0xdffff:
+        {
+          types=FIX4K_D8000;
+          int index=((startaddress+size)-0xd8000) >> 12;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=4*1024;
+          break;
+        }
+
+        case 0xe0000 ... 0xe7fff:
+        {
+          types=FIX4K_E0000;
+          int index=((startaddress+size)-0xe0000) >> 12;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=4*1024;
+          break;
+        }
+
+        case 0xe8000 ... 0xeffff:
+        {
+          types=FIX4K_E8000;
+          int index=((startaddress+size)-0xe8000) >> 12;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=4*1024;
+          break;
+        }
+
+        case 0xf0000 ... 0xf7fff:
+        {
+          types=FIX4K_F0000;
+          int index=((startaddress+size)-0xf0000) >> 12;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=4*1024;
+          break;
+        }
+
+        case 0xf8000 ... 0xfffff:
+        {
+          types=FIX4K_F8000;
+          int index=((startaddress+size)-0xf8000) >> 12;
+          type=(types >> (index*8)) & 0xf;
+          sizeinc=4*1024;
+          break;
+        }
+      }
+
+      sendstringf("Checking fixed mtrr %6 - %6 : %d      (%6)\n", startaddress+size, startaddress+size+sizeinc-1, memtype, types);
+
+      if (memtype==-1)
+        memtype=type;
+
+      if (type==memtype) //same type, continue
+        size+=sizeinc;
+      else //type changed
+      {
+        sendstringf("  -Adding %6 - %6 as type %d\n", startaddress, startaddress+size-1,memtype);
+        addToMemoryRanges(startaddress, size, memtype);
+
+        //start a new region
+        startaddress=startaddress+size;
+        size=sizeinc;
+        memtype=type;
+      }
+    }
+
+    if (size) //last region needs to be added as well
+    {
+      sendstringf("  -Adding %6 - %6 as type %d\n", startaddress, startaddress+size-1,memtype);
+      addToMemoryRanges(startaddress, size, memtype);
+    }
+  }
+
+  //check the var fields
+
+  sendstringf("Checking var mtrrs\n");
+  for (i=0; i<MTRRCapabilities.VCNT; i++)
+  {
+    QWORD base=readMSR(IA32_MTRR_PHYSBASE0+i*2);
+    QWORD mask=readMSR(IA32_MTRR_PHYSMASK0+i*2);
+
+    sendstringf("Base=%6 Mask=%6\n", base, mask);
+
+    int memtype=base & 0xff;
+
+    if (mask & (1<<11))// && (memtype!=MTRRDefType.TYPE)) //valid
+    {
+      // Address_Within_Range AND PhysMask = PhysBase AND PhysMask
+
+      //strip of useless bits
+      base=base & MAXPHYADDRMASKPB;
+      mask=mask & MAXPHYADDRMASKPB;
+
+
+
+      //find the highest 0 bit in the mask to find the region (this allows for the shitty “discontinuous” ranges)
+      int j;
+
+      for (j=MAXPHYADDR-1; j>12; j--)
+      {
+        if ((mask & ((QWORD)1<<j))==0)
+        {
+          QWORD size=((QWORD)1<<(j+1)); //the last bit with 1
+
+          sendstringf("    var mttr %d: %6 - %6  %d\n", i, base,base+size-1
