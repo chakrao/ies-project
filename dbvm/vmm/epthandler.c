@@ -4182,4 +4182,179 @@ void initMemTypeRanges()
         {
           QWORD size=((QWORD)1<<(j+1)); //the last bit with 1
 
-          sendstringf("    var mttr %d: %6 - %6  %d\n", i, base,base+size-1
+          sendstringf("    var mttr %d: %6 - %6  %d\n", i, base,base+size-1, memtype);
+
+          addToMemoryRanges(base, size, memtype);
+          break;
+        }
+      }
+    }
+  }
+
+  for (i=0; i<memoryrangesPos; i++)
+  {
+    QWORD address=memoryranges[i].startaddress;
+    QWORD size=memoryranges[i].size;
+
+    sendstringf("Memoryrange %d: %6 -> %6 : %d\n", i, address, address+size, memoryranges[i].memtype);
+  }
+
+  sanitizeMemoryRegions();
+
+  sendstringf("\n\n\nAfter sanitization:\n");
+  for (i=0; i<memoryrangesPos; i++)
+  {
+    QWORD address=memoryranges[i].startaddress;
+    QWORD size=memoryranges[i].size;
+
+    sendstringf("Memoryrange %d: %6 -> %6 : %d\n", i, address, address+size, memoryranges[i].memtype);
+  }
+
+  csLeave(&memoryrangesCS);
+}
+
+
+
+int remapMTRRTypes(QWORD address UNUSED, QWORD size UNUSED, int type UNUSED)
+{
+  //called by the MSR write handler when MTRR registers get changed
+  initMemTypeRanges();
+
+  return 1;
+}
+
+int handleMSRWrite_MTRR(void)
+//called when an MTRR msr is written. Figures out what regions have been modified
+{
+  initMemTypeRanges();
+  return 1;
+}
+
+
+QWORD EPTMapPhysicalMemory(pcpuinfo currentcpuinfo, QWORD physicalAddress, int forcesmallpage)
+/*
+ * Maps the physical address into the EPT map.
+ * Returns the physical address of the EPT entry describing this page
+ */
+{
+  int pml4index;
+  int pagedirptrindex;
+  int pagedirindex;
+  int pagetableindex;
+  QWORD PA;
+  VirtualAddressToIndexes(physicalAddress, &pml4index, &pagedirptrindex, &pagedirindex, &pagetableindex);
+
+
+  PEPT_PML4E pml4=NULL;
+  PEPT_PDPTE pagedirptr=NULL;
+  PEPT_PDE pagedir=NULL;
+  PEPT_PTE pagetable=NULL;
+
+  csEnter(&currentcpuinfo->EPTPML4CS);
+
+  if (currentcpuinfo->eptUpdated)
+    ept_invalidate();
+
+
+  pml4=mapPhysicalMemory(currentcpuinfo->EPTPML4, 4096);
+#ifdef EPTINTEGRITY
+  checkpage((PEPT_PTE)pml4);
+#endif
+
+  if (pml4[pml4index].RA==0)
+  {
+    sendstringf("allocating pagedirptr\n");
+    //allocate a pagedirptr table
+    void *temp=malloc2(4096);
+    zeromemory(temp,4096);
+    *(QWORD*)(&pml4[pml4index])=VirtualToPhysical(temp) & MAXPHYADDRMASKPB;
+    pml4[pml4index].RA=1;
+    pml4[pml4index].WA=1;
+    pml4[pml4index].XA=1;
+
+#ifdef EPTINTEGRITY
+    checkpage((PEPT_PTE)temp);
+#endif
+  }
+
+  PA=(*(QWORD*)(&pml4[pml4index])) & MAXPHYADDRMASKPB;
+  pagedirptr=mapPhysicalMemory(PA, 4096);
+#ifdef EPTINTEGRITY
+  checkpage((PEPT_PTE)pagedirptr);
+#endif
+
+  PA+=8*pagedirptrindex;
+
+  if (pml4)
+  {
+#ifdef EPTINTEGRITY
+    checkpage((PEPT_PTE)pml4);
+#endif
+    unmapPhysicalMemory(pml4, 4096);
+    pml4=NULL;
+  }
+
+  if (forcesmallpage && pagedirptr[pagedirptrindex].RA && (pagedirptr[pagedirptrindex].BIG)) //it's a big page, so the physical address points to the actual memory. Clear everything
+    *(QWORD *)&pagedirptr[pagedirptrindex]=0;
+
+  if (pagedirptr[pagedirptrindex].RA==0)
+  {
+    //check if there is a MTRR in this 1GB range that doesn't set the MTRRDefType.TYPE, if not, map as 1GB using deftype
+    if (has_EPT_1GBsupport && (forcesmallpage==0))
+    {
+      QWORD GuestAddress1GBAlign=(physicalAddress & 0xFFFFFFFFC0000000ULL) & MAXPHYADDRMASKPB;
+      int fullmap, memtype;
+      getMTRRMapInfo(GuestAddress1GBAlign,0x40000000, &fullmap, &memtype);
+
+      if (fullmap)
+      {
+        //map as a 1GB page
+        sendstringf("mapping %6 as a 1GB page with memtype %d\n", GuestAddress1GBAlign, memtype);
+        *(QWORD*)(&pagedirptr[pagedirptrindex])=GuestAddress1GBAlign;
+        pagedirptr[pagedirptrindex].RA=1;
+        pagedirptr[pagedirptrindex].WA=1;
+        pagedirptr[pagedirptrindex].XA=1;
+        pagedirptr[pagedirptrindex].BIG=1;
+        pagedirptr[pagedirptrindex].MEMTYPE=memtype;
+#ifdef EPTINTEGRITY
+        checkpage((PEPT_PTE)pagedirptr);
+#endif
+        unmapPhysicalMemory(pagedirptr, 4096);
+
+        csLeave(&currentcpuinfo->EPTPML4CS);
+        return PA;
+      }
+    }
+
+    //still here, try a pagedir
+    void *temp=malloc2(4096);
+    zeromemory(temp,4096);
+    *(QWORD*)(&pagedirptr[pagedirptrindex])=VirtualToPhysical(temp) & MAXPHYADDRMASKPB;
+    pagedirptr[pagedirptrindex].RA=1;
+    pagedirptr[pagedirptrindex].WA=1;
+    pagedirptr[pagedirptrindex].XA=1;
+  }
+
+  PA=(*(QWORD*)(&pagedirptr[pagedirptrindex])) & MAXPHYADDRMASKPB;
+  pagedir=mapPhysicalMemory(PA, 4096);
+
+#ifdef EPTINTEGRITY
+  checkpage((PEPT_PTE)pagedir);
+#endif
+
+  PA+=8*pagedirindex;
+
+  if (pagedirptr)
+  {
+#ifdef EPTINTEGRITY
+    checkpage((PEPT_PTE)pagedirptr);
+#endif
+    unmapPhysicalMemory(pagedirptr, 4096);
+    pagedirptr=NULL;
+  }
+
+  if (forcesmallpage && pagedir[pagedirindex].RA && (pagedir[pagedirindex].BIG)) //it's a big page, so the physical address points to the actual memory. Clear everything
+    *(QWORD *)&pagedir[pagedirindex]=0;
+
+
+  if (pagedir[pagedirindex].
