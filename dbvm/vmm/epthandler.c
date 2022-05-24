@@ -3832,4 +3832,180 @@ void sanitizeMemoryRegions()
         sendstringf("It's OVER");
         outportb(0x80,0x00);
         sendstringf(" 100!!!!!!\n");
+      }
+
+    }
+
+    sendstringf("Checking %d (%6 - %6):%d for overlap\n", i, starta, stopa, memoryranges[i].memtype);
+
+    j=i+1;
+    while (j<memoryrangesPos)
+    {
+      if (j==i) continue;
+      if (memoryranges[j].size==0)
+        continue;
+
+      if (j>100)
+      {
+        while (1)
+        {
+          outportb(0x80,0x11);
+          sendstringf("It's OVER");
+          outportb(0x80,0x10);
+          sendstringf(" 100 again!!!!!!\n");
+        }
+      }
+
+
+      QWORD startb=memoryranges[j].startaddress;
+      QWORD stopb=memoryranges[j].startaddress+memoryranges[j].size-1;
+
+      if ((starta <= stopb) && (startb <= stopa))
+      {
+        //3 parts: left, overlap, right.  Left and right can be 0 width
+        MEMRANGE left;
+        MEMRANGE overlap;
+        MEMRANGE right;
+        left.size=0;
+        left.memtype=0;
+        left.startaddress=0;
+
+        right.size=0;
+        right.memtype=0;
+        right.startaddress=0;
+
+        //overlaps
+        QWORD newstart;
+        QWORD newstop;
+
+        sendstringf("  Overlaps with %d (%6 - %6):%d\n", j, startb, stopb, memoryranges[j].memtype);
+
+        //left:
+        newstart=minq(starta,startb);
+        newstop=maxq(starta,startb);
+
+        left.startaddress=newstart;
+        left.size=newstop-newstart;
+        left.memtype=starta<startb?memoryranges[i].memtype:memoryranges[j].memtype;
+
+        //right:
+        newstart=minq(stopa,stopb)+1;
+        newstop=maxq(stopa,stopb)+1;
+
+        sendstringf("    debug: right: newstart=%6 newstop=%6\n", newstart, newstop);
+
+        right.startaddress=newstart;
+        right.size=newstop-newstart;
+        right.memtype=stopb<stopa?memoryranges[i].memtype:memoryranges[j].memtype;
+
+        overlap.startaddress=left.startaddress+left.size;
+        overlap.size=right.startaddress-overlap.startaddress;
+        overlap.memtype=MTC_RPS(memoryranges[i].memtype, memoryranges[j].memtype);
+
+
+        if (left.size)
+        {
+          addToMemoryRanges(left.startaddress, left.size, left.memtype);
+          sendstringf("    Left becomes (%6 - %6):%d\n", left.startaddress, left.startaddress+left.size-1, left.memtype);
+        }
+        else
+          sendstringf("    Left is empty\n");
+
+
+        if (right.size)
+        {
+          addToMemoryRanges(right.startaddress, right.size, right.memtype);
+          sendstringf("    Right becomes (%6 - %6):%d\n", right.startaddress, right.startaddress+right.size-1, right.memtype);
+        }
+        else
+          sendstringf("    Right is empty\n");
+
+        //adjust the current entry
+        memoryranges[i].startaddress=overlap.startaddress;
+        memoryranges[i].size=overlap.size;
+        memoryranges[i].memtype=overlap.memtype;
+        sendstringf("    This becomes (%6 - %6):%d\n", memoryranges[i].startaddress, memoryranges[i].startaddress+memoryranges[i].size-1, memoryranges[i].memtype);
+
+        starta = memoryranges[i].startaddress;
+        stopa = memoryranges[i].startaddress + memoryranges[i].size - 1;
+
+
+        //mark as handled
+        int k;
+        for (k=j; k<memoryrangesPos-1; k++)
+          memoryranges[k]=memoryranges[k+1];
+
+        memoryrangesPos--;
+
+        continue;
+      }
+      j++;
+    }
+  }
+
+  //now that the list has been sanitized delete entries with the same type as the default (not before)
+  i=0;
+  while (i<memoryrangesPos)
+  {
+    if (memoryranges[i].memtype==MTRRDefType.TYPE)
+    {
+      for (j=i; j<memoryrangesPos-1; j++)
+        memoryranges[j]=memoryranges[j+1];
+
+      memoryrangesPos--;
+      continue;
+    }
+    i++;
+  }
+
+
+  //sort the list
+  for (i=0; i<memoryrangesPos; i++)
+  {
+    for (j=i; j<memoryrangesPos; j++)
+    {
+      if (memoryranges[j].startaddress<memoryranges[i].startaddress)
+      {
+        //swap
+        MEMRANGE temp=memoryranges[i];
+        memoryranges[i]=memoryranges[j];
+        memoryranges[j]=temp;
+      }
+    }
+  }
+}
+
+
+void initMemTypeRanges()
+//builds an array of memory ranges and their cache
+{
+  int i;
+  if (memoryrangesPos)
+    return; //already initialized
+
+  csEnter(&memoryrangesCS);
+
+  memoryrangesPos=0;
+
+  if (memoryranges==NULL)
+  {
+    memoryrangesLength=32;
+    memoryranges=malloc2(sizeof(MEMRANGE)*memoryrangesLength);
+  }
+
+  sendstringf("Memory ranges:\n");
+
+
+  QWORD startaddress=0;
+  QWORD size=0;
+  int memtype=-1;
+
+  if ((MTRRCapabilities.FIX && MTRRDefType.FE))
+  {
+    sendstringf("Using Fixed MTRRs\n");
+
+    QWORD FIX64K_00000=readMSR(IA32_MTRR_FIX64K_00000);  //0606060606060606
+    QWORD FIX16K_80000=readMSR(IA32_MTRR_FIX16K_80000);
+    QWORD FIX16K_A0000=readMSR(IA32_MTRR_FIX16K_A0000);
+    QWORD FIX4K_C0000 =readMSR(IA32_MTRR_FIX4K_C0000);
    
