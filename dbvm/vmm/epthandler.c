@@ -4515,4 +4515,35 @@ VMSTATUS handleEPTMisconfig(pcpuinfo currentcpuinfo UNUSED, VMRegisters *vmregis
   if (idtvectorinfo.valid)
   {
     //handle this EPT event and reinject the interrupt
-    VMEntry_interrup
+    VMEntry_interruption_information newintinfo;
+    newintinfo.interruption_information=0;
+
+    newintinfo.interruptvector=idtvectorinfo.interruptvector;
+    newintinfo.type=idtvectorinfo.type;
+    newintinfo.haserrorcode=idtvectorinfo.haserrorcode;
+    newintinfo.valid=idtvectorinfo.valid; //should be 1...
+    vmwrite(vm_entry_exceptionerrorcode, vmread(vm_idtvector_error)); //entry errorcode
+    vmwrite(vm_entry_interruptioninfo, newintinfo.interruption_information); //entry info field
+    vmwrite(0x401a, vmread(vm_exit_instructionlength)); //entry instruction length
+    return VM_OK;
+  }
+
+  /*
+  QWORD GuestAddress=vmread(vm_guest_physical_address);
+  QWORD EPTAddress=EPTMapPhysicalMemory(currentcpuinfo, GuestAddress, 0);
+
+  if (EPTAddress)
+  {
+    sendstringf("handleEPTMisconfig(%x) : %6\n",GuestAddress, EPTAddress);
+  }
+  else
+  {
+    sendstringf("handleEPTMisconfig(%x) : fuck\n", GuestAddress);
+  }*/
+
+  return 0; //try again
+  //while (1) outportb(0x80,0xe0);
+
+  return VM_ERROR;
+}
+
