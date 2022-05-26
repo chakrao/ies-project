@@ -4357,4 +4357,162 @@ QWORD EPTMapPhysicalMemory(pcpuinfo currentcpuinfo, QWORD physicalAddress, int f
     *(QWORD *)&pagedir[pagedirindex]=0;
 
 
-  if (pagedir[pagedirindex].
+  if (pagedir[pagedirindex].RA==0)
+  {
+    if (has_EPT_2MBSupport && (forcesmallpage==0))
+    {
+      QWORD GuestAddress2MBAlign=(physicalAddress & 0xFFFFFFFFFFE00000ULL) & MAXPHYADDRMASKPB;
+      int memtype, fullmap;
+      getMTRRMapInfo(GuestAddress2MBAlign,0x200000, &fullmap, &memtype);
+
+      if (fullmap)
+      {
+        sendstringf("mapping %6 as a 2MB page with memtype %d\n", GuestAddress2MBAlign, memtype);
+        *(QWORD*)(&pagedir[pagedirindex])=GuestAddress2MBAlign & MAXPHYADDRMASKPB;
+        pagedir[pagedirindex].RA=1;
+        pagedir[pagedirindex].WA=1;
+        pagedir[pagedirindex].XA=1;
+        pagedir[pagedirindex].BIG=1;
+        pagedir[pagedirindex].MEMTYPE=memtype;
+#ifdef EPTINTEGRITY
+        checkpage((PEPT_PTE)pagedir);
+#endif
+        unmapPhysicalMemory(pagedir, 4096);
+
+        csLeave(&currentcpuinfo->EPTPML4CS);
+        return PA;
+      }
+    }
+
+    //still here, try a pagetable
+    void *temp=malloc2(4096);
+    zeromemory(temp,4096);
+    *(QWORD*)(&pagedir[pagedirindex])=VirtualToPhysical(temp) & MAXPHYADDRMASKPB;
+    pagedir[pagedirindex].RA=1;
+    pagedir[pagedirindex].WA=1;
+    pagedir[pagedirindex].XA=1;
+  }
+
+  //still here, so not mapped as a pagedir entry
+  PA=(*(QWORD*)(&pagedir[pagedirindex])) & MAXPHYADDRMASKPB;
+  pagetable=mapPhysicalMemory(PA, 4096);
+#ifdef EPTINTEGRITY
+  checkpage((PEPT_PTE)pagetable);
+#endif
+
+  PA+=8*pagetableindex;
+
+  if (pagedir)
+  {
+#ifdef EPTINTEGRITY
+    checkpage((PEPT_PTE)pagedir);
+#endif
+    unmapPhysicalMemory(pagedir,4096);
+    pagedir=NULL;
+  }
+
+  if (pagetable[pagetableindex].RA==0)
+  {
+    int memtype, fullmap;
+    getMTRRMapInfo(physicalAddress & MAXPHYADDRMASKPB,0x1000, &fullmap, &memtype);
+    if (!fullmap)
+    {
+      nosendchar[getAPICID()]=0;
+      sendstring("Assertion Fail: fullmap is false for a 1 page range");
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      while (1) outportb(0x80,0xc3);
+    }
+
+   //memtype=0;
+
+    //sendstringf("mapping %6 as a 4KB page with memtype %d\n", physicalAddress & MAXPHYADDRMASKPB, memtype);
+    *(QWORD*)(&pagetable[pagetableindex])=physicalAddress & MAXPHYADDRMASKPB;
+    pagetable[pagetableindex].RA=1;
+    pagetable[pagetableindex].WA=1;
+    pagetable[pagetableindex].XA=1;
+    pagetable[pagetableindex].MEMTYPE=memtype;
+  }
+  else
+  {
+    //else already mapped
+    //sendstringf("This physical address (%6) was already mapped\n", physicalAddress);
+
+    //change it to full access
+    pagetable[pagetableindex].RA=1;
+    pagetable[pagetableindex].WA=1;
+    pagetable[pagetableindex].XA=1;
+  }
+#ifdef EPTINTEGRITY
+  checkpage((PEPT_PTE)pagetable);
+#endif
+  unmapPhysicalMemory(pagetable,4096);
+
+  csLeave(&currentcpuinfo->EPTPML4CS);
+
+  return PA;
+}
+
+VMSTATUS handleEPTViolation(pcpuinfo currentcpuinfo, VMRegisters *vmregisters UNUSED, PFXSAVE64 fxsave UNUSED)
+{
+  //EPT_VIOLATION_INFO vi;
+  sendstring("handleEPTViolation\n");
+
+
+  VMExit_idt_vector_information idtvectorinfo;
+  idtvectorinfo.idtvector_info=vmread(vm_idtvector_information);
+
+  if (idtvectorinfo.valid)
+  {
+    //handle this EPT event and reinject the interrupt
+    VMEntry_interruption_information newintinfo;
+    newintinfo.interruption_information=0;
+
+    newintinfo.interruptvector=idtvectorinfo.interruptvector;
+    newintinfo.type=idtvectorinfo.type;
+    newintinfo.haserrorcode=idtvectorinfo.haserrorcode;
+    newintinfo.valid=idtvectorinfo.valid; //should be 1...
+    vmwrite(vm_entry_exceptionerrorcode, vmread(vm_idtvector_error)); //entry errorcode
+    vmwrite(vm_entry_interruptioninfo, newintinfo.interruption_information); //entry info field
+    vmwrite(vm_entry_instructionlength, vmread(vm_exit_instructionlength)); //entry instruction length
+  }
+  else
+  {
+    //problem: on intel this will set RF to 1.  So the handleWatchEvent cannot distinguish a resuming dbvmbp
+    //solution: use a "skip next watchevent" for this cpu
+  }
+
+ //vi.ExitQualification=vmread(vm_exit_qualification);
+
+  QWORD GuestAddress=vmread(vm_guest_physical_address);
+  QWORD GuestAddressVA=vmread(vm_guest_linear_address);
+
+
+  if (ept_handleWatchEvent(currentcpuinfo, vmregisters, fxsave, GuestAddress))
+    return 0;
+
+
+
+  //check for cloak
+  if (ept_handleCloakEvent(currentcpuinfo, GuestAddress, GuestAddressVA))
+    return 0;
+
+  //still here, so not a watch or cloak
+  sendstringf("Mapping %6\n", GuestAddress);
+  EPTMapPhysicalMemory(currentcpuinfo, GuestAddress, 0);
+
+  return 0;
+
+}
+
+VMSTATUS handleEPTMisconfig(pcpuinfo currentcpuinfo UNUSED, VMRegisters *vmregisters UNUSED)
+{
+  nosendchar[getAPICID()]=0;
+  sendstring("handleEPTMisconfig\n");
+  //could have been a timing misconfig, try again
+
+  VMExit_idt_vector_information idtvectorinfo;
+  idtvectorinfo.idtvector_info=vmread(vm_idtvector_information);
+  if (idtvectorinfo.valid)
+  {
+    //handle this EPT event and reinject the interrupt
+    VMEntry_interrup
