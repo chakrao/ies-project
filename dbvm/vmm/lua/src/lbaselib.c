@@ -263,4 +263,153 @@ static int luaB_ipairs (lua_State *L) {
   lua_pushvalue(L, 1);  /* state */
   lua_pushinteger(L, 0);  /* initial value */
   return 3;
-#end
+#endif
+}
+
+
+static int load_aux (lua_State *L, int status, int envidx) {
+  if (status == LUA_OK) {
+    if (envidx != 0) {  /* 'env' parameter? */
+      lua_pushvalue(L, envidx);  /* environment for loaded function */
+      if (!lua_setupvalue(L, -2, 1))  /* set it as 1st upvalue */
+        lua_pop(L, 1);  /* remove 'env' if not used by previous call */
+    }
+    return 1;
+  }
+  else {  /* error (message is on top of the stack) */
+    lua_pushnil(L);
+    lua_insert(L, -2);  /* put before error message */
+    return 2;  /* return nil plus error message */
+  }
+}
+
+
+static int luaB_loadfile (lua_State *L) {
+  const char *fname = luaL_optstring(L, 1, NULL);
+  const char *mode = luaL_optstring(L, 2, NULL);
+  int env = (!lua_isnone(L, 3) ? 3 : 0);  /* 'env' index or 0 if no 'env' */
+  int status = luaL_loadfilex(L, fname, mode);
+  return load_aux(L, status, env);
+}
+
+
+/*
+** {======================================================
+** Generic Read function
+** =======================================================
+*/
+
+
+/*
+** reserved slot, above all arguments, to hold a copy of the returned
+** string to avoid it being collected while parsed. 'load' has four
+** optional arguments (chunk, source name, mode, and environment).
+*/
+#define RESERVEDSLOT	5
+
+
+/*
+** Reader for generic 'load' function: 'lua_load' uses the
+** stack for internal stuff, so the reader cannot change the
+** stack top. Instead, it keeps its resulting string in a
+** reserved slot inside the stack.
+*/
+static const char *generic_reader (lua_State *L, void *ud, size_t *size) {
+  (void)(ud);  /* not used */
+  luaL_checkstack(L, 2, "too many nested functions");
+  lua_pushvalue(L, 1);  /* get function */
+  lua_call(L, 0, 1);  /* call it */
+  if (lua_isnil(L, -1)) {
+    lua_pop(L, 1);  /* pop result */
+    *size = 0;
+    return NULL;
+  }
+  else if (!lua_isstring(L, -1))
+    luaL_error(L, "reader function must return a string");
+  lua_replace(L, RESERVEDSLOT);  /* save string in reserved slot */
+  return lua_tolstring(L, RESERVEDSLOT, size);
+}
+
+
+static int luaB_load (lua_State *L) {
+  int status;
+  size_t l;
+  const char *s = lua_tolstring(L, 1, &l);
+  const char *mode = luaL_optstring(L, 3, "bt");
+  int env = (!lua_isnone(L, 4) ? 4 : 0);  /* 'env' index or 0 if no 'env' */
+  if (s != NULL) {  /* loading a string? */
+    const char *chunkname = luaL_optstring(L, 2, s);
+    status = luaL_loadbufferx(L, s, l, chunkname, mode);
+  }
+  else {  /* loading from a reader function */
+    const char *chunkname = luaL_optstring(L, 2, "=(load)");
+    luaL_checktype(L, 1, LUA_TFUNCTION);
+    lua_settop(L, RESERVEDSLOT);  /* create reserved slot */
+    status = lua_load(L, generic_reader, NULL, chunkname, mode);
+  }
+  return load_aux(L, status, env);
+}
+
+/* }====================================================== */
+
+
+static int dofilecont (lua_State *L, int d1, lua_KContext d2) {
+  (void)d1;  (void)d2;  /* only to match 'lua_Kfunction' prototype */
+  return lua_gettop(L) - 1;
+}
+
+
+static int luaB_dofile (lua_State *L) {
+  const char *fname = luaL_optstring(L, 1, NULL);
+  lua_settop(L, 1);
+  if (luaL_loadfile(L, fname) != LUA_OK)
+    return lua_error(L);
+  lua_callk(L, 0, LUA_MULTRET, 0, dofilecont);
+  return dofilecont(L, 0, 0);
+}
+
+
+static int luaB_assert (lua_State *L) {
+  if (lua_toboolean(L, 1))  /* condition is true? */
+    return lua_gettop(L);  /* return all arguments */
+  else {  /* error */
+    luaL_checkany(L, 1);  /* there must be a condition */
+    lua_remove(L, 1);  /* remove it */
+    lua_pushliteral(L, "assertion failed!");  /* default message */
+    lua_settop(L, 1);  /* leave only message (default if no other one) */
+    return luaB_error(L);  /* call 'error' */
+  }
+}
+
+
+static int luaB_select (lua_State *L) {
+  int n = lua_gettop(L);
+  if (lua_type(L, 1) == LUA_TSTRING && *lua_tostring(L, 1) == '#') {
+    lua_pushinteger(L, n-1);
+    return 1;
+  }
+  else {
+    lua_Integer i = luaL_checkinteger(L, 1);
+    if (i < 0) i = n + i;
+    else if (i > n) i = n;
+    luaL_argcheck(L, 1 <= i, 1, "index out of range");
+    return n - (int)i;
+  }
+}
+
+
+/*
+** Continuation function for 'pcall' and 'xpcall'. Both functions
+** already pushed a 'true' before doing the call, so in case of success
+** 'finishpcall' only has to return everything in the stack minus
+** 'extra' values (where 'extra' is exactly the number of items to be
+** ignored).
+*/
+static int finishpcall (lua_State *L, int status, lua_KContext extra) {
+  if (status != LUA_OK && status != LUA_YIELD) {  /* error? */
+    lua_pushboolean(L, 0);  /* first result (false) */
+    lua_pushvalue(L, -2);  /* error message */
+    return 2;  /* return false, msg */
+  }
+  else
+    return lua_gettop(
