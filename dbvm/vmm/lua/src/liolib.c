@@ -255,4 +255,190 @@ static void opencheck (lua_State *L, const char *fname, const char *mode) {
 
 static int io_open (lua_State *L) {
   const char *filename = luaL_checkstring(L, 1);
-  const char *mode = 
+  const char *mode = luaL_optstring(L, 2, "r");
+  LStream *p = newfile(L);
+  const char *md = mode;  /* to traverse/check mode */
+  luaL_argcheck(L, l_checkmode(md), 2, "invalid mode");
+  p->f = fopen(filename, mode);
+  return (p->f == NULL) ? luaL_fileresult(L, 0, filename) : 1;
+}
+
+
+/*
+** function to close 'popen' files
+*/
+static int io_pclose (lua_State *L) {
+  LStream *p = tolstream(L);
+  return luaL_execresult(L, l_pclose(L, p->f));
+}
+
+
+static int io_popen (lua_State *L) {
+  const char *filename = luaL_checkstring(L, 1);
+  const char *mode = luaL_optstring(L, 2, "r");
+  LStream *p = newprefile(L);
+  p->f = l_popen(L, filename, mode);
+  p->closef = &io_pclose;
+  return (p->f == NULL) ? luaL_fileresult(L, 0, filename) : 1;
+}
+
+
+static int io_tmpfile (lua_State *L) {
+  LStream *p = newfile(L);
+  p->f = tmpfile();
+  return (p->f == NULL) ? luaL_fileresult(L, 0, NULL) : 1;
+}
+
+
+static FILE *getiofile (lua_State *L, const char *findex) {
+  LStream *p;
+  lua_getfield(L, LUA_REGISTRYINDEX, findex);
+  p = (LStream *)lua_touserdata(L, -1);
+  if (isclosed(p))
+    luaL_error(L, "standard %s file is closed", findex + IOPREF_LEN);
+  return p->f;
+}
+
+
+static int g_iofile (lua_State *L, const char *f, const char *mode) {
+  if (!lua_isnoneornil(L, 1)) {
+    const char *filename = lua_tostring(L, 1);
+    if (filename)
+      opencheck(L, filename, mode);
+    else {
+      tofile(L);  /* check that it's a valid file handle */
+      lua_pushvalue(L, 1);
+    }
+    lua_setfield(L, LUA_REGISTRYINDEX, f);
+  }
+  /* return current value */
+  lua_getfield(L, LUA_REGISTRYINDEX, f);
+  return 1;
+}
+
+
+static int io_input (lua_State *L) {
+  return g_iofile(L, IO_INPUT, "r");
+}
+
+
+static int io_output (lua_State *L) {
+  return g_iofile(L, IO_OUTPUT, "w");
+}
+
+
+static int io_readline (lua_State *L);
+
+
+/*
+** maximum number of arguments to 'f:lines'/'io.lines' (it + 3 must fit
+** in the limit for upvalues of a closure)
+*/
+#define MAXARGLINE	250
+
+static void aux_lines (lua_State *L, int toclose) {
+  int n = lua_gettop(L) - 1;  /* number of arguments to read */
+  luaL_argcheck(L, n <= MAXARGLINE, MAXARGLINE + 2, "too many arguments");
+  lua_pushinteger(L, n);  /* number of arguments to read */
+  lua_pushboolean(L, toclose);  /* close/not close file when finished */
+  lua_rotate(L, 2, 2);  /* move 'n' and 'toclose' to their positions */
+  lua_pushcclosure(L, io_readline, 3 + n);
+}
+
+
+static int f_lines (lua_State *L) {
+  tofile(L);  /* check that it's a valid file handle */
+  aux_lines(L, 0);
+  return 1;
+}
+
+
+static int io_lines (lua_State *L) {
+  int toclose;
+  if (lua_isnone(L, 1)) lua_pushnil(L);  /* at least one argument */
+  if (lua_isnil(L, 1)) {  /* no file name? */
+    lua_getfield(L, LUA_REGISTRYINDEX, IO_INPUT);  /* get default input */
+    lua_replace(L, 1);  /* put it at index 1 */
+    tofile(L);  /* check that it's a valid file handle */
+    toclose = 0;  /* do not close it after iteration */
+  }
+  else {  /* open a new file */
+    const char *filename = luaL_checkstring(L, 1);
+    opencheck(L, filename, "r");
+    lua_replace(L, 1);  /* put file at index 1 */
+    toclose = 1;  /* close it after iteration */
+  }
+  aux_lines(L, toclose);
+  return 1;
+}
+
+
+/*
+** {======================================================
+** READ
+** =======================================================
+*/
+
+
+/* maximum length of a numeral */
+#if !defined (L_MAXLENNUM)
+#define L_MAXLENNUM     200
+#endif
+
+
+/* auxiliary structure used by 'read_number' */
+typedef struct {
+  FILE *f;  /* file being read */
+  int c;  /* current character (look ahead) */
+  int n;  /* number of elements in buffer 'buff' */
+  char buff[L_MAXLENNUM + 1];  /* +1 for ending '\0' */
+} RN;
+
+
+/*
+** Add current char to buffer (if not out of space) and read next one
+*/
+static int nextc (RN *rn) {
+  if (rn->n >= L_MAXLENNUM) {  /* buffer overflow? */
+    rn->buff[0] = '\0';  /* invalidate result */
+    return 0;  /* fail */
+  }
+  else {
+    rn->buff[rn->n++] = rn->c;  /* save current char */
+    rn->c = l_getc(rn->f);  /* read next one */
+    return 1;
+  }
+}
+
+
+/*
+** Accept current char if it is in 'set' (of size 2)
+*/
+static int test2 (RN *rn, const char *set) {
+  if (rn->c == set[0] || rn->c == set[1])
+    return nextc(rn);
+  else return 0;
+}
+
+
+/*
+** Read a sequence of (hex)digits
+*/
+static int readdigits (RN *rn, int hex) {
+  int count = 0;
+  while ((hex ? isxdigit(rn->c) : isdigit(rn->c)) && nextc(rn))
+    count++;
+  return count;
+}
+
+
+/*
+** Read a number: first reads a valid prefix of a numeral into a buffer.
+** Then it calls 'lua_stringtonumber' to check whether the format is
+** correct and to convert it to a Lua number
+*/
+static int read_number (lua_State *L, FILE *f) {
+  RN rn;
+  int count = 0;
+  int hex = 0;
+  char de
