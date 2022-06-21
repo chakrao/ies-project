@@ -481,4 +481,85 @@ static int llex (LexState *ls, SemInfo *seminfo) {
       case '>': {
         next(ls);
         if (check_next1(ls, '=')) return TK_GE;
-        el
+        else if (check_next1(ls, '>')) return TK_SHR;
+        else return '>';
+      }
+      case '/': {
+        next(ls);
+        if (check_next1(ls, '/')) return TK_IDIV;
+        else return '/';
+      }
+      case '~': {
+        next(ls);
+        if (check_next1(ls, '=')) return TK_NE;
+        else return '~';
+      }
+      case ':': {
+        next(ls);
+        if (check_next1(ls, ':')) return TK_DBCOLON;
+        else return ':';
+      }
+      case '"': case '\'': {  /* short literal strings */
+        read_string(ls, ls->current, seminfo);
+        return TK_STRING;
+      }
+      case '.': {  /* '.', '..', '...', or number */
+        save_and_next(ls);
+        if (check_next1(ls, '.')) {
+          if (check_next1(ls, '.'))
+            return TK_DOTS;   /* '...' */
+          else return TK_CONCAT;   /* '..' */
+        }
+        else if (!lisdigit(ls->current)) return '.';
+        else return read_numeral(ls, seminfo);
+      }
+      case '0': case '1': case '2': case '3': case '4':
+      case '5': case '6': case '7': case '8': case '9': {
+        return read_numeral(ls, seminfo);
+      }
+      case EOZ: {
+        return TK_EOS;
+      }
+      default: {
+        if (lislalpha(ls->current)) {  /* identifier or reserved word? */
+          TString *ts;
+          do {
+            save_and_next(ls);
+          } while (lislalnum(ls->current));
+          ts = luaX_newstring(ls, luaZ_buffer(ls->buff),
+                                  luaZ_bufflen(ls->buff));
+          seminfo->ts = ts;
+          if (isreserved(ts))  /* reserved word? */
+            return ts->extra - 1 + FIRST_RESERVED;
+          else {
+            return TK_NAME;
+          }
+        }
+        else {  /* single-char tokens (+ - / ...) */
+          int c = ls->current;
+          next(ls);
+          return c;
+        }
+      }
+    }
+  }
+}
+
+
+void luaX_next (LexState *ls) {
+  ls->lastline = ls->linenumber;
+  if (ls->lookahead.token != TK_EOS) {  /* is there a look-ahead token? */
+    ls->t = ls->lookahead;  /* use this one */
+    ls->lookahead.token = TK_EOS;  /* and discharge it */
+  }
+  else
+    ls->t.token = llex(ls, &ls->t.seminfo);  /* read next token */
+}
+
+
+int luaX_lookahead (LexState *ls) {
+  lua_assert(ls->lookahead.token == TK_EOS);
+  ls->lookahead.token = llex(ls, &ls->lookahead.seminfo);
+  return ls->lookahead.token;
+}
+
