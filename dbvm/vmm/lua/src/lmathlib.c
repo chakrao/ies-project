@@ -86,4 +86,182 @@ static int math_toint (lua_State *L) {
   if (valid)
     lua_pushinteger(L, n);
   else {
-    luaL_check
+    luaL_checkany(L, 1);
+    lua_pushnil(L);  /* value is not convertible to integer */
+  }
+  return 1;
+}
+
+
+static void pushnumint (lua_State *L, lua_Number d) {
+  lua_Integer n;
+  if (lua_numbertointeger(d, &n))  /* does 'd' fit in an integer? */
+    lua_pushinteger(L, n);  /* result is integer */
+  else
+    lua_pushnumber(L, d);  /* result is float */
+}
+
+
+static int math_floor (lua_State *L) {
+  if (lua_isinteger(L, 1))
+    lua_settop(L, 1);  /* integer is its own floor */
+  else {
+    lua_Number d = l_mathop(floor)(luaL_checknumber(L, 1));
+    pushnumint(L, d);
+  }
+  return 1;
+}
+
+
+static int math_ceil (lua_State *L) {
+  if (lua_isinteger(L, 1))
+    lua_settop(L, 1);  /* integer is its own ceil */
+  else {
+    lua_Number d = l_mathop(ceil)(luaL_checknumber(L, 1));
+    pushnumint(L, d);
+  }
+  return 1;
+}
+
+
+static int math_fmod (lua_State *L) {
+  if (lua_isinteger(L, 1) && lua_isinteger(L, 2)) {
+    lua_Integer d = lua_tointeger(L, 2);
+    if ((lua_Unsigned)d + 1u <= 1u) {  /* special cases: -1 or 0 */
+      luaL_argcheck(L, d != 0, 2, "zero");
+      lua_pushinteger(L, 0);  /* avoid overflow with 0x80000... / -1 */
+    }
+    else
+      lua_pushinteger(L, lua_tointeger(L, 1) % d);
+  }
+  else
+    lua_pushnumber(L, l_mathop(fmod)(luaL_checknumber(L, 1),
+                                     luaL_checknumber(L, 2)));
+  return 1;
+}
+
+
+/*
+** next function does not use 'modf', avoiding problems with 'double*'
+** (which is not compatible with 'float*') when lua_Number is not
+** 'double'.
+*/
+static int math_modf (lua_State *L) {
+  if (lua_isinteger(L ,1)) {
+    lua_settop(L, 1);  /* number is its own integer part */
+    lua_pushnumber(L, 0);  /* no fractional part */
+  }
+  else {
+    lua_Number n = luaL_checknumber(L, 1);
+    /* integer part (rounds toward zero) */
+    lua_Number ip = (n < 0) ? l_mathop(ceil)(n) : l_mathop(floor)(n);
+    pushnumint(L, ip);
+    /* fractional part (test needed for inf/-inf) */
+    lua_pushnumber(L, (n == ip) ? l_mathop(0.0) : (n - ip));
+  }
+  return 2;
+}
+
+
+static int math_sqrt (lua_State *L) {
+  lua_pushnumber(L, l_mathop(sqrt)(luaL_checknumber(L, 1)));
+  return 1;
+}
+
+
+static int math_ult (lua_State *L) {
+  lua_Integer a = luaL_checkinteger(L, 1);
+  lua_Integer b = luaL_checkinteger(L, 2);
+  lua_pushboolean(L, (lua_Unsigned)a < (lua_Unsigned)b);
+  return 1;
+}
+
+static int math_log (lua_State *L) {
+  lua_Number x = luaL_checknumber(L, 1);
+  lua_Number res;
+  if (lua_isnoneornil(L, 2))
+    res = l_mathop(log)(x);
+  else {
+    lua_Number base = luaL_checknumber(L, 2);
+#if !defined(LUA_USE_C89)
+    if (base == l_mathop(2.0))
+      res = l_mathop(log2)(x); else
+#endif
+    if (base == l_mathop(10.0))
+      res = l_mathop(log10)(x);
+    else
+      res = l_mathop(log)(x)/l_mathop(log)(base);
+  }
+  lua_pushnumber(L, res);
+  return 1;
+}
+
+static int math_exp (lua_State *L) {
+  lua_pushnumber(L, l_mathop(exp)(luaL_checknumber(L, 1)));
+  return 1;
+}
+
+static int math_deg (lua_State *L) {
+  lua_pushnumber(L, luaL_checknumber(L, 1) * (l_mathop(180.0) / PI));
+  return 1;
+}
+
+static int math_rad (lua_State *L) {
+  lua_pushnumber(L, luaL_checknumber(L, 1) * (PI / l_mathop(180.0)));
+  return 1;
+}
+
+
+static int math_min (lua_State *L) {
+  int n = lua_gettop(L);  /* number of arguments */
+  int imin = 1;  /* index of current minimum value */
+  int i;
+  luaL_argcheck(L, n >= 1, 1, "value expected");
+  for (i = 2; i <= n; i++) {
+    if (lua_compare(L, i, imin, LUA_OPLT))
+      imin = i;
+  }
+  lua_pushvalue(L, imin);
+  return 1;
+}
+
+
+static int math_max (lua_State *L) {
+  int n = lua_gettop(L);  /* number of arguments */
+  int imax = 1;  /* index of current maximum value */
+  int i;
+  luaL_argcheck(L, n >= 1, 1, "value expected");
+  for (i = 2; i <= n; i++) {
+    if (lua_compare(L, imax, i, LUA_OPLT))
+      imax = i;
+  }
+  lua_pushvalue(L, imax);
+  return 1;
+}
+
+/*
+** This function uses 'double' (instead of 'lua_Number') to ensure that
+** all bits from 'l_rand' can be represented, and that 'RANDMAX + 1.0'
+** will keep full precision (ensuring that 'r' is always less than 1.0.)
+*/
+static int math_random (lua_State *L) {
+  lua_Integer low, up;
+  double r = (double)l_rand() * (1.0 / ((double)L_RANDMAX + 1.0));
+  switch (lua_gettop(L)) {  /* check number of arguments */
+    case 0: {  /* no arguments */
+      lua_pushnumber(L, (lua_Number)r);  /* Number between 0 and 1 */
+      return 1;
+    }
+    case 1: {  /* only upper limit */
+      low = 1;
+      up = luaL_checkinteger(L, 1);
+      break;
+    }
+    case 2: {  /* lower and upper limits */
+      low = luaL_checkinteger(L, 1);
+      up = luaL_checkinteger(L, 2);
+      break;
+    }
+    default: return luaL_error(L, "wrong number of arguments");
+  }
+  /* random integ
