@@ -264,4 +264,147 @@ static int math_random (lua_State *L) {
     }
     default: return luaL_error(L, "wrong number of arguments");
   }
-  /* random integ
+  /* random integer in the interval [low, up] */
+  luaL_argcheck(L, low <= up, 1, "interval is empty");
+  luaL_argcheck(L, low >= 0 || up <= LUA_MAXINTEGER + low, 1,
+                   "interval too large");
+  r *= (double)(up - low) + 1.0;
+  lua_pushinteger(L, (lua_Integer)r + low);
+  return 1;
+}
+
+
+static int math_randomseed (lua_State *L) {
+  l_srand((unsigned int)(lua_Integer)luaL_checknumber(L, 1));
+  (void)l_rand(); /* discard first value to avoid undesirable correlations */
+  return 0;
+}
+
+
+static int math_type (lua_State *L) {
+  if (lua_type(L, 1) == LUA_TNUMBER) {
+      if (lua_isinteger(L, 1))
+        lua_pushliteral(L, "integer");
+      else
+        lua_pushliteral(L, "float");
+  }
+  else {
+    luaL_checkany(L, 1);
+    lua_pushnil(L);
+  }
+  return 1;
+}
+
+
+/*
+** {==================================================================
+** Deprecated functions (for compatibility only)
+** ===================================================================
+*/
+#if defined(LUA_COMPAT_MATHLIB)
+
+static int math_cosh (lua_State *L) {
+  lua_pushnumber(L, l_mathop(cosh)(luaL_checknumber(L, 1)));
+  return 1;
+}
+
+static int math_sinh (lua_State *L) {
+  lua_pushnumber(L, l_mathop(sinh)(luaL_checknumber(L, 1)));
+  return 1;
+}
+
+static int math_tanh (lua_State *L) {
+  lua_pushnumber(L, l_mathop(tanh)(luaL_checknumber(L, 1)));
+  return 1;
+}
+
+static int math_pow (lua_State *L) {
+  lua_Number x = luaL_checknumber(L, 1);
+  lua_Number y = luaL_checknumber(L, 2);
+  lua_pushnumber(L, l_mathop(pow)(x, y));
+  return 1;
+}
+
+static int math_frexp (lua_State *L) {
+  int e;
+  lua_pushnumber(L, l_mathop(frexp)(luaL_checknumber(L, 1), &e));
+  lua_pushinteger(L, e);
+  return 2;
+}
+
+static int math_ldexp (lua_State *L) {
+  lua_Number x = luaL_checknumber(L, 1);
+  int ep = (int)luaL_checkinteger(L, 2);
+  lua_pushnumber(L, l_mathop(ldexp)(x, ep));
+  return 1;
+}
+
+static int math_log10 (lua_State *L) {
+  lua_pushnumber(L, l_mathop(log10)(luaL_checknumber(L, 1)));
+  return 1;
+}
+
+#endif
+/* }================================================================== */
+
+
+
+static const luaL_Reg mathlib[] = {
+  {"abs",   math_abs},
+  {"acos",  math_acos},
+  {"asin",  math_asin},
+  {"atan",  math_atan},
+  {"ceil",  math_ceil},
+  {"cos",   math_cos},
+  {"deg",   math_deg},
+  {"exp",   math_exp},
+  {"tointeger", math_toint},
+  {"floor", math_floor},
+  {"fmod",   math_fmod},
+  {"ult",   math_ult},
+  {"log",   math_log},
+  {"max",   math_max},
+  {"min",   math_min},
+  {"modf",   math_modf},
+  {"rad",   math_rad},
+  {"random",     math_random},
+  {"randomseed", math_randomseed},
+  {"sin",   math_sin},
+  {"sqrt",  math_sqrt},
+  {"tan",   math_tan},
+  {"type", math_type},
+#if defined(LUA_COMPAT_MATHLIB)
+  {"atan2", math_atan},
+  {"cosh",   math_cosh},
+  {"sinh",   math_sinh},
+  {"tanh",   math_tanh},
+  {"pow",   math_pow},
+  {"frexp", math_frexp},
+  {"ldexp", math_ldexp},
+  {"log10", math_log10},
+#endif
+  /* placeholders */
+  {"pi", NULL},
+  {"huge", NULL},
+  {"maxinteger", NULL},
+  {"mininteger", NULL},
+  {NULL, NULL}
+};
+
+
+/*
+** Open math library
+*/
+LUAMOD_API int luaopen_math (lua_State *L) {
+  luaL_newlib(L, mathlib);
+  lua_pushnumber(L, PI);
+  lua_setfield(L, -2, "pi");
+  lua_pushnumber(L, (lua_Number)HUGE_VAL);
+  lua_setfield(L, -2, "huge");
+  lua_pushinteger(L, LUA_MAXINTEGER);
+  lua_setfield(L, -2, "maxinteger");
+  lua_pushinteger(L, LUA_MININTEGER);
+  lua_setfield(L, -2, "mininteger");
+  return 1;
+}
+
