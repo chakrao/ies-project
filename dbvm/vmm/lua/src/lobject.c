@@ -437,4 +437,89 @@ const char *luaO_pushvfstring (lua_State *L, const char *fmt, va_list argp) {
         break;
       }
       case 'p': {  /* a pointer */
-        char buff[4*sizeof(void *) + 
+        char buff[4*sizeof(void *) + 8]; /* should be enough space for a '%p' */
+        void *p = va_arg(argp, void *);
+        int l = lua_pointer2str(buff, sizeof(buff), p);
+        pushstr(L, buff, l);
+        break;
+      }
+      case 'U': {  /* an 'int' as a UTF-8 sequence */
+        char buff[UTF8BUFFSZ];
+        int l = luaO_utf8esc(buff, cast(long, va_arg(argp, long)));
+        pushstr(L, buff + UTF8BUFFSZ - l, l);
+        break;
+      }
+      case '%': {
+        pushstr(L, "%", 1);
+        break;
+      }
+      default: {
+        luaG_runerror(L, "invalid option '%%%c' to 'lua_pushfstring'",
+                         *(e + 1));
+      }
+    }
+    n += 2;
+    fmt = e+2;
+  }
+  luaD_checkstack(L, 1);
+  pushstr(L, fmt, strlen(fmt));
+  if (n > 0) luaV_concat(L, n + 1);
+  return svalue(L->top - 1);
+}
+
+
+const char *luaO_pushfstring (lua_State *L, const char *fmt, ...) {
+  const char *msg;
+  va_list argp;
+  va_start(argp, fmt);
+  msg = luaO_pushvfstring(L, fmt, argp);
+  va_end(argp);
+  return msg;
+}
+
+
+/* number of chars of a literal string without the ending \0 */
+#define LL(x)	(sizeof(x)/sizeof(char) - 1)
+
+#define RETS	"..."
+#define PRE	"[string \""
+#define POS	"\"]"
+
+#define addstr(a,b,l)	( memcpy(a,b,(l) * sizeof(char)), a += (l) )
+
+void luaO_chunkid (char *out, const char *source, size_t bufflen) {
+  size_t l = strlen(source);
+  if (*source == '=') {  /* 'literal' source */
+    if (l <= bufflen)  /* small enough? */
+      memcpy(out, source + 1, l * sizeof(char));
+    else {  /* truncate it */
+      addstr(out, source + 1, bufflen - 1);
+      *out = '\0';
+    }
+  }
+  else if (*source == '@') {  /* file name */
+    if (l <= bufflen)  /* small enough? */
+      memcpy(out, source + 1, l * sizeof(char));
+    else {  /* add '...' before rest of name */
+      addstr(out, RETS, LL(RETS));
+      bufflen -= LL(RETS);
+      memcpy(out, source + 1 + l - bufflen, bufflen * sizeof(char));
+    }
+  }
+  else {  /* string; format as [string "source"] */
+    const char *nl = strchr(source, '\n');  /* find first new line (if any) */
+    addstr(out, PRE, LL(PRE));  /* add prefix */
+    bufflen -= LL(PRE RETS POS) + 1;  /* save space for prefix+suffix+'\0' */
+    if (l < bufflen && nl == NULL) {  /* small one-line source? */
+      addstr(out, source, l);  /* keep it */
+    }
+    else {
+      if (nl != NULL) l = nl - source;  /* stop at first newline */
+      if (l > bufflen) l = bufflen;
+      addstr(out, source, l);
+      addstr(out, RETS, LL(RETS));
+    }
+    memcpy(out, POS, (LL(POS) + 1) * sizeof(char));
+  }
+}
+
