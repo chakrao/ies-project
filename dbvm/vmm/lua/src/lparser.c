@@ -375,4 +375,172 @@ static int findlabel (LexState *ls, int g) {
           (bl->upval || dyd->label.n > bl->firstlabel))
         luaK_patchclose(ls->fs, gt->pc, lb->nactvar);
       closegoto(ls, g, lb);  /* close it */
-      ret
+      return 1;
+    }
+  }
+  return 0;  /* label not found; cannot close goto */
+}
+
+
+static int newlabelentry (LexState *ls, Labellist *l, TString *name,
+                          int line, int pc) {
+  int n = l->n;
+  luaM_growvector(ls->L, l->arr, n, l->size,
+                  Labeldesc, SHRT_MAX, "labels/gotos");
+  l->arr[n].name = name;
+  l->arr[n].line = line;
+  l->arr[n].nactvar = ls->fs->nactvar;
+  l->arr[n].pc = pc;
+  l->n = n + 1;
+  return n;
+}
+
+
+/*
+** check whether new label 'lb' matches any pending gotos in current
+** block; solves forward jumps
+*/
+static void findgotos (LexState *ls, Labeldesc *lb) {
+  Labellist *gl = &ls->dyd->gt;
+  int i = ls->fs->bl->firstgoto;
+  while (i < gl->n) {
+    if (eqstr(gl->arr[i].name, lb->name))
+      closegoto(ls, i, lb);
+    else
+      i++;
+  }
+}
+
+
+/*
+** export pending gotos to outer level, to check them against
+** outer labels; if the block being exited has upvalues, and
+** the goto exits the scope of any variable (which can be the
+** upvalue), close those variables being exited.
+*/
+static void movegotosout (FuncState *fs, BlockCnt *bl) {
+  int i = bl->firstgoto;
+  Labellist *gl = &fs->ls->dyd->gt;
+  /* correct pending gotos to current block and try to close it
+     with visible labels */
+  while (i < gl->n) {
+    Labeldesc *gt = &gl->arr[i];
+    if (gt->nactvar > bl->nactvar) {
+      if (bl->upval)
+        luaK_patchclose(fs, gt->pc, bl->nactvar);
+      gt->nactvar = bl->nactvar;
+    }
+    if (!findlabel(fs->ls, i))
+      i++;  /* move to next one */
+  }
+}
+
+
+static void enterblock (FuncState *fs, BlockCnt *bl, lu_byte isloop) {
+  bl->isloop = isloop;
+  bl->nactvar = fs->nactvar;
+  bl->firstlabel = fs->ls->dyd->label.n;
+  bl->firstgoto = fs->ls->dyd->gt.n;
+  bl->upval = 0;
+  bl->previous = fs->bl;
+  fs->bl = bl;
+  lua_assert(fs->freereg == fs->nactvar);
+}
+
+
+/*
+** create a label named 'break' to resolve break statements
+*/
+static void breaklabel (LexState *ls) {
+  TString *n = luaS_new(ls->L, "break");
+  int l = newlabelentry(ls, &ls->dyd->label, n, 0, ls->fs->pc);
+  findgotos(ls, &ls->dyd->label.arr[l]);
+}
+
+/*
+** generates an error for an undefined 'goto'; choose appropriate
+** message when label name is a reserved word (which can only be 'break')
+*/
+static l_noret undefgoto (LexState *ls, Labeldesc *gt) {
+  const char *msg = isreserved(gt->name)
+                    ? "<%s> at line %d not inside a loop"
+                    : "no visible label '%s' for <goto> at line %d";
+  msg = luaO_pushfstring(ls->L, msg, getstr(gt->name), gt->line);
+  semerror(ls, msg);
+}
+
+
+static void leaveblock (FuncState *fs) {
+  BlockCnt *bl = fs->bl;
+  LexState *ls = fs->ls;
+  if (bl->previous && bl->upval) {
+    /* create a 'jump to here' to close upvalues */
+    int j = luaK_jump(fs);
+    luaK_patchclose(fs, j, bl->nactvar);
+    luaK_patchtohere(fs, j);
+  }
+  if (bl->isloop)
+    breaklabel(ls);  /* close pending breaks */
+  fs->bl = bl->previous;
+  removevars(fs, bl->nactvar);
+  lua_assert(bl->nactvar == fs->nactvar);
+  fs->freereg = fs->nactvar;  /* free registers */
+  ls->dyd->label.n = bl->firstlabel;  /* remove local labels */
+  if (bl->previous)  /* inner block? */
+    movegotosout(fs, bl);  /* update pending gotos to outer block */
+  else if (bl->firstgoto < ls->dyd->gt.n)  /* pending gotos in outer block? */
+    undefgoto(ls, &ls->dyd->gt.arr[bl->firstgoto]);  /* error */
+}
+
+
+/*
+** adds a new prototype into list of prototypes
+*/
+static Proto *addprototype (LexState *ls) {
+  Proto *clp;
+  lua_State *L = ls->L;
+  FuncState *fs = ls->fs;
+  Proto *f = fs->f;  /* prototype of current function */
+  if (fs->np >= f->sizep) {
+    int oldsize = f->sizep;
+    luaM_growvector(L, f->p, fs->np, f->sizep, Proto *, MAXARG_Bx, "functions");
+    while (oldsize < f->sizep)
+      f->p[oldsize++] = NULL;
+  }
+  f->p[fs->np++] = clp = luaF_newproto(L);
+  luaC_objbarrier(L, f, clp);
+  return clp;
+}
+
+
+/*
+** codes instruction to create new closure in parent function.
+** The OP_CLOSURE instruction must use the last available register,
+** so that, if it invokes the GC, the GC knows which registers
+** are in use at that time.
+*/
+static void codeclosure (LexState *ls, expdesc *v) {
+  FuncState *fs = ls->fs->prev;
+  init_exp(v, VRELOCABLE, luaK_codeABx(fs, OP_CLOSURE, 0, fs->np - 1));
+  luaK_exp2nextreg(fs, v);  /* fix it at the last register */
+}
+
+
+static void open_func (LexState *ls, FuncState *fs, BlockCnt *bl) {
+  Proto *f;
+  fs->prev = ls->fs;  /* linked list of funcstates */
+  fs->ls = ls;
+  ls->fs = fs;
+  fs->pc = 0;
+  fs->lasttarget = 0;
+  fs->jpc = NO_JUMP;
+  fs->freereg = 0;
+  fs->nk = 0;
+  fs->np = 0;
+  fs->nups = 0;
+  fs->nlocvars = 0;
+  fs->nactvar = 0;
+  fs->firstlocal = ls->dyd->actvar.n;
+  fs->bl = NULL;
+  f = fs->f;
+  
