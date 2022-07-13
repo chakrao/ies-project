@@ -543,4 +543,182 @@ static void open_func (LexState *ls, FuncState *fs, BlockCnt *bl) {
   fs->firstlocal = ls->dyd->actvar.n;
   fs->bl = NULL;
   f = fs->f;
-  
+  f->source = ls->source;
+  f->maxstacksize = 2;  /* registers 0/1 are always valid */
+  enterblock(fs, bl, 0);
+}
+
+
+static void close_func (LexState *ls) {
+  lua_State *L = ls->L;
+  FuncState *fs = ls->fs;
+  Proto *f = fs->f;
+  luaK_ret(fs, 0, 0);  /* final return */
+  leaveblock(fs);
+  luaM_reallocvector(L, f->code, f->sizecode, fs->pc, Instruction);
+  f->sizecode = fs->pc;
+  luaM_reallocvector(L, f->lineinfo, f->sizelineinfo, fs->pc, int);
+  f->sizelineinfo = fs->pc;
+  luaM_reallocvector(L, f->k, f->sizek, fs->nk, TValue);
+  f->sizek = fs->nk;
+  luaM_reallocvector(L, f->p, f->sizep, fs->np, Proto *);
+  f->sizep = fs->np;
+  luaM_reallocvector(L, f->locvars, f->sizelocvars, fs->nlocvars, LocVar);
+  f->sizelocvars = fs->nlocvars;
+  luaM_reallocvector(L, f->upvalues, f->sizeupvalues, fs->nups, Upvaldesc);
+  f->sizeupvalues = fs->nups;
+  lua_assert(fs->bl == NULL);
+  ls->fs = fs->prev;
+  luaC_checkGC(L);
+}
+
+
+
+/*============================================================*/
+/* GRAMMAR RULES */
+/*============================================================*/
+
+
+/*
+** check whether current token is in the follow set of a block.
+** 'until' closes syntactical blocks, but do not close scope,
+** so it is handled in separate.
+*/
+static int block_follow (LexState *ls, int withuntil) {
+  switch (ls->t.token) {
+    case TK_ELSE: case TK_ELSEIF:
+    case TK_END: case TK_EOS:
+      return 1;
+    case TK_UNTIL: return withuntil;
+    default: return 0;
+  }
+}
+
+
+static void statlist (LexState *ls) {
+  /* statlist -> { stat [';'] } */
+  while (!block_follow(ls, 1)) {
+    if (ls->t.token == TK_RETURN) {
+      statement(ls);
+      return;  /* 'return' must be last statement */
+    }
+    statement(ls);
+  }
+}
+
+
+static void fieldsel (LexState *ls, expdesc *v) {
+  /* fieldsel -> ['.' | ':'] NAME */
+  FuncState *fs = ls->fs;
+  expdesc key;
+  luaK_exp2anyregup(fs, v);
+  luaX_next(ls);  /* skip the dot or colon */
+  checkname(ls, &key);
+  luaK_indexed(fs, v, &key);
+}
+
+
+static void yindex (LexState *ls, expdesc *v) {
+  /* index -> '[' expr ']' */
+  luaX_next(ls);  /* skip the '[' */
+  expr(ls, v);
+  luaK_exp2val(ls->fs, v);
+  checknext(ls, ']');
+}
+
+
+/*
+** {======================================================================
+** Rules for Constructors
+** =======================================================================
+*/
+
+
+struct ConsControl {
+  expdesc v;  /* last list item read */
+  expdesc *t;  /* table descriptor */
+  int nh;  /* total number of 'record' elements */
+  int na;  /* total number of array elements */
+  int tostore;  /* number of array elements pending to be stored */
+};
+
+
+static void recfield (LexState *ls, struct ConsControl *cc) {
+  /* recfield -> (NAME | '['exp1']') = exp1 */
+  FuncState *fs = ls->fs;
+  int reg = ls->fs->freereg;
+  expdesc key, val;
+  int rkkey;
+  if (ls->t.token == TK_NAME) {
+    checklimit(fs, cc->nh, MAX_INT, "items in a constructor");
+    checkname(ls, &key);
+  }
+  else  /* ls->t.token == '[' */
+    yindex(ls, &key);
+  cc->nh++;
+  checknext(ls, '=');
+  rkkey = luaK_exp2RK(fs, &key);
+  expr(ls, &val);
+  luaK_codeABC(fs, OP_SETTABLE, cc->t->u.info, rkkey, luaK_exp2RK(fs, &val));
+  fs->freereg = reg;  /* free registers */
+}
+
+
+static void closelistfield (FuncState *fs, struct ConsControl *cc) {
+  if (cc->v.k == VVOID) return;  /* there is no list item */
+  luaK_exp2nextreg(fs, &cc->v);
+  cc->v.k = VVOID;
+  if (cc->tostore == LFIELDS_PER_FLUSH) {
+    luaK_setlist(fs, cc->t->u.info, cc->na, cc->tostore);  /* flush */
+    cc->tostore = 0;  /* no more items pending */
+  }
+}
+
+
+static void lastlistfield (FuncState *fs, struct ConsControl *cc) {
+  if (cc->tostore == 0) return;
+  if (hasmultret(cc->v.k)) {
+    luaK_setmultret(fs, &cc->v);
+    luaK_setlist(fs, cc->t->u.info, cc->na, LUA_MULTRET);
+    cc->na--;  /* do not count last expression (unknown number of elements) */
+  }
+  else {
+    if (cc->v.k != VVOID)
+      luaK_exp2nextreg(fs, &cc->v);
+    luaK_setlist(fs, cc->t->u.info, cc->na, cc->tostore);
+  }
+}
+
+
+static void listfield (LexState *ls, struct ConsControl *cc) {
+  /* listfield -> exp */
+  expr(ls, &cc->v);
+  checklimit(ls->fs, cc->na, MAX_INT, "items in a constructor");
+  cc->na++;
+  cc->tostore++;
+}
+
+
+static void field (LexState *ls, struct ConsControl *cc) {
+  /* field -> listfield | recfield */
+  switch(ls->t.token) {
+    case TK_NAME: {  /* may be 'listfield' or 'recfield' */
+      if (luaX_lookahead(ls) != '=')  /* expression? */
+        listfield(ls, cc);
+      else
+        recfield(ls, cc);
+      break;
+    }
+    case '[': {
+      recfield(ls, cc);
+      break;
+    }
+    default: {
+      listfield(ls, cc);
+      break;
+    }
+  }
+}
+
+
+static void constructor (LexState *ls, expdesc *t)
