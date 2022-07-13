@@ -892,4 +892,178 @@ static void primaryexp (LexState *ls, expdesc *v) {
 
 static void suffixedexp (LexState *ls, expdesc *v) {
   /* suffixedexp ->
-       primaryexp { '.' NAME | '[' exp ']' | ':' NAME funca
+       primaryexp { '.' NAME | '[' exp ']' | ':' NAME funcargs | funcargs } */
+  FuncState *fs = ls->fs;
+  int line = ls->linenumber;
+  primaryexp(ls, v);
+  for (;;) {
+    switch (ls->t.token) {
+      case '.': {  /* fieldsel */
+        fieldsel(ls, v);
+        break;
+      }
+      case '[': {  /* '[' exp1 ']' */
+        expdesc key;
+        luaK_exp2anyregup(fs, v);
+        yindex(ls, &key);
+        luaK_indexed(fs, v, &key);
+        break;
+      }
+      case ':': {  /* ':' NAME funcargs */
+        expdesc key;
+        luaX_next(ls);
+        checkname(ls, &key);
+        luaK_self(fs, v, &key);
+        funcargs(ls, v, line);
+        break;
+      }
+      case '(': case TK_STRING: case '{': {  /* funcargs */
+        luaK_exp2nextreg(fs, v);
+        funcargs(ls, v, line);
+        break;
+      }
+      default: return;
+    }
+  }
+}
+
+
+static void simpleexp (LexState *ls, expdesc *v) {
+  /* simpleexp -> FLT | INT | STRING | NIL | TRUE | FALSE | ... |
+                  constructor | FUNCTION body | suffixedexp */
+  switch (ls->t.token) {
+    case TK_FLT: {
+      init_exp(v, VKFLT, 0);
+      v->u.nval = ls->t.seminfo.r;
+      break;
+    }
+    case TK_INT: {
+      init_exp(v, VKINT, 0);
+      v->u.ival = ls->t.seminfo.i;
+      break;
+    }
+    case TK_STRING: {
+      codestring(ls, v, ls->t.seminfo.ts);
+      break;
+    }
+    case TK_NIL: {
+      init_exp(v, VNIL, 0);
+      break;
+    }
+    case TK_TRUE: {
+      init_exp(v, VTRUE, 0);
+      break;
+    }
+    case TK_FALSE: {
+      init_exp(v, VFALSE, 0);
+      break;
+    }
+    case TK_DOTS: {  /* vararg */
+      FuncState *fs = ls->fs;
+      check_condition(ls, fs->f->is_vararg,
+                      "cannot use '...' outside a vararg function");
+      init_exp(v, VVARARG, luaK_codeABC(fs, OP_VARARG, 0, 1, 0));
+      break;
+    }
+    case '{': {  /* constructor */
+      constructor(ls, v);
+      return;
+    }
+    case TK_FUNCTION: {
+      luaX_next(ls);
+      body(ls, v, 0, ls->linenumber);
+      return;
+    }
+    default: {
+      suffixedexp(ls, v);
+      return;
+    }
+  }
+  luaX_next(ls);
+}
+
+
+static UnOpr getunopr (int op) {
+  switch (op) {
+    case TK_NOT: return OPR_NOT;
+    case '-': return OPR_MINUS;
+    case '~': return OPR_BNOT;
+    case '#': return OPR_LEN;
+    default: return OPR_NOUNOPR;
+  }
+}
+
+
+static BinOpr getbinopr (int op) {
+  switch (op) {
+    case '+': return OPR_ADD;
+    case '-': return OPR_SUB;
+    case '*': return OPR_MUL;
+    case '%': return OPR_MOD;
+    case '^': return OPR_POW;
+    case '/': return OPR_DIV;
+    case TK_IDIV: return OPR_IDIV;
+    case '&': return OPR_BAND;
+    case '|': return OPR_BOR;
+    case '~': return OPR_BXOR;
+    case TK_SHL: return OPR_SHL;
+    case TK_SHR: return OPR_SHR;
+    case TK_CONCAT: return OPR_CONCAT;
+    case TK_NE: return OPR_NE;
+    case TK_EQ: return OPR_EQ;
+    case '<': return OPR_LT;
+    case TK_LE: return OPR_LE;
+    case '>': return OPR_GT;
+    case TK_GE: return OPR_GE;
+    case TK_AND: return OPR_AND;
+    case TK_OR: return OPR_OR;
+    default: return OPR_NOBINOPR;
+  }
+}
+
+
+static const struct {
+  lu_byte left;  /* left priority for each binary operator */
+  lu_byte right; /* right priority */
+} priority[] = {  /* ORDER OPR */
+   {10, 10}, {10, 10},           /* '+' '-' */
+   {11, 11}, {11, 11},           /* '*' '%' */
+   {14, 13},                  /* '^' (right associative) */
+   {11, 11}, {11, 11},           /* '/' '//' */
+   {6, 6}, {4, 4}, {5, 5},   /* '&' '|' '~' */
+   {7, 7}, {7, 7},           /* '<<' '>>' */
+   {9, 8},                   /* '..' (right associative) */
+   {3, 3}, {3, 3}, {3, 3},   /* ==, <, <= */
+   {3, 3}, {3, 3}, {3, 3},   /* ~=, >, >= */
+   {2, 2}, {1, 1}            /* and, or */
+};
+
+#define UNARY_PRIORITY	12  /* priority for unary operators */
+
+
+/*
+** subexpr -> (simpleexp | unop subexpr) { binop subexpr }
+** where 'binop' is any binary operator with a priority higher than 'limit'
+*/
+static BinOpr subexpr (LexState *ls, expdesc *v, int limit) {
+  BinOpr op;
+  UnOpr uop;
+  enterlevel(ls);
+  uop = getunopr(ls->t.token);
+  if (uop != OPR_NOUNOPR) {
+    int line = ls->linenumber;
+    luaX_next(ls);
+    subexpr(ls, v, UNARY_PRIORITY);
+    luaK_prefix(ls->fs, uop, v, line);
+  }
+  else simpleexp(ls, v);
+  /* expand while operators have priorities higher than 'limit' */
+  op = getbinopr(ls->t.token);
+  while (op != OPR_NOBINOPR && priority[op].left > limit) {
+    expdesc v2;
+    BinOpr nextop;
+    int line = ls->linenumber;
+    luaX_next(ls);
+    luaK_infix(ls->fs, op, v);
+    /* read sub-expression with higher priority */
+    nextop = subexpr(ls, 
