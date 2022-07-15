@@ -1066,4 +1066,165 @@ static BinOpr subexpr (LexState *ls, expdesc *v, int limit) {
     luaX_next(ls);
     luaK_infix(ls->fs, op, v);
     /* read sub-expression with higher priority */
-    nextop = subexpr(ls, 
+    nextop = subexpr(ls, &v2, priority[op].right);
+    luaK_posfix(ls->fs, op, v, &v2, line);
+    op = nextop;
+  }
+  leavelevel(ls);
+  return op;  /* return first untreated operator */
+}
+
+
+static void expr (LexState *ls, expdesc *v) {
+  subexpr(ls, v, 0);
+}
+
+/* }==================================================================== */
+
+
+
+/*
+** {======================================================================
+** Rules for Statements
+** =======================================================================
+*/
+
+
+static void block (LexState *ls) {
+  /* block -> statlist */
+  FuncState *fs = ls->fs;
+  BlockCnt bl;
+  enterblock(fs, &bl, 0);
+  statlist(ls);
+  leaveblock(fs);
+}
+
+
+/*
+** structure to chain all variables in the left-hand side of an
+** assignment
+*/
+struct LHS_assign {
+  struct LHS_assign *prev;
+  expdesc v;  /* variable (global, local, upvalue, or indexed) */
+};
+
+
+/*
+** check whether, in an assignment to an upvalue/local variable, the
+** upvalue/local variable is begin used in a previous assignment to a
+** table. If so, save original upvalue/local value in a safe place and
+** use this safe copy in the previous assignment.
+*/
+static void check_conflict (LexState *ls, struct LHS_assign *lh, expdesc *v) {
+  FuncState *fs = ls->fs;
+  int extra = fs->freereg;  /* eventual position to save local variable */
+  int conflict = 0;
+  for (; lh; lh = lh->prev) {  /* check all previous assignments */
+    if (lh->v.k == VINDEXED) {  /* assigning to a table? */
+      /* table is the upvalue/local being assigned now? */
+      if (lh->v.u.ind.vt == v->k && lh->v.u.ind.t == v->u.info) {
+        conflict = 1;
+        lh->v.u.ind.vt = VLOCAL;
+        lh->v.u.ind.t = extra;  /* previous assignment will use safe copy */
+      }
+      /* index is the local being assigned? (index cannot be upvalue) */
+      if (v->k == VLOCAL && lh->v.u.ind.idx == v->u.info) {
+        conflict = 1;
+        lh->v.u.ind.idx = extra;  /* previous assignment will use safe copy */
+      }
+    }
+  }
+  if (conflict) {
+    /* copy upvalue/local value to a temporary (in position 'extra') */
+    OpCode op = (v->k == VLOCAL) ? OP_MOVE : OP_GETUPVAL;
+    luaK_codeABC(fs, op, extra, v->u.info, 0);
+    luaK_reserveregs(fs, 1);
+  }
+}
+
+
+static void assignment (LexState *ls, struct LHS_assign *lh, int nvars) {
+  expdesc e;
+  check_condition(ls, vkisvar(lh->v.k), "syntax error");
+  if (testnext(ls, ',')) {  /* assignment -> ',' suffixedexp assignment */
+    struct LHS_assign nv;
+    nv.prev = lh;
+    suffixedexp(ls, &nv.v);
+    if (nv.v.k != VINDEXED)
+      check_conflict(ls, lh, &nv.v);
+    checklimit(ls->fs, nvars + ls->L->nCcalls, LUAI_MAXCCALLS,
+                    "C levels");
+    assignment(ls, &nv, nvars+1);
+  }
+  else {  /* assignment -> '=' explist */
+    int nexps;
+    checknext(ls, '=');
+    nexps = explist(ls, &e);
+    if (nexps != nvars)
+      adjust_assign(ls, nvars, nexps, &e);
+    else {
+      luaK_setoneret(ls->fs, &e);  /* close last expression */
+      luaK_storevar(ls->fs, &lh->v, &e);
+      return;  /* avoid default */
+    }
+  }
+  init_exp(&e, VNONRELOC, ls->fs->freereg-1);  /* default assignment */
+  luaK_storevar(ls->fs, &lh->v, &e);
+}
+
+
+static int cond (LexState *ls) {
+  /* cond -> exp */
+  expdesc v;
+  expr(ls, &v);  /* read condition */
+  if (v.k == VNIL) v.k = VFALSE;  /* 'falses' are all equal here */
+  luaK_goiftrue(ls->fs, &v);
+  return v.f;
+}
+
+
+static void gotostat (LexState *ls, int pc) {
+  int line = ls->linenumber;
+  TString *label;
+  int g;
+  if (testnext(ls, TK_GOTO))
+    label = str_checkname(ls);
+  else {
+    luaX_next(ls);  /* skip break */
+    label = luaS_new(ls->L, "break");
+  }
+  g = newlabelentry(ls, &ls->dyd->gt, label, line, pc);
+  findlabel(ls, g);  /* close it if label already defined */
+}
+
+
+/* check for repeated labels on the same block */
+static void checkrepeated (FuncState *fs, Labellist *ll, TString *label) {
+  int i;
+  for (i = fs->bl->firstlabel; i < ll->n; i++) {
+    if (eqstr(label, ll->arr[i].name)) {
+      const char *msg = luaO_pushfstring(fs->ls->L,
+                          "label '%s' already defined on line %d",
+                          getstr(label), ll->arr[i].line);
+      semerror(fs->ls, msg);
+    }
+  }
+}
+
+
+/* skip no-op statements */
+static void skipnoopstat (LexState *ls) {
+  while (ls->t.token == ';' || ls->t.token == TK_DBCOLON)
+    statement(ls);
+}
+
+
+static void labelstat (LexState *ls, TString *label, int line) {
+  /* label -> '::' NAME '::' */
+  FuncState *fs = ls->fs;
+  Labellist *ll = &ls->dyd->label;
+  int l;  /* index of new label being created */
+  checkrepeated(fs, ll, label);  /* check for repeated labels */
+  checknext(ls, TK_DBCOLON);  /* skip double colon */
+  /* create new entry for this label *
