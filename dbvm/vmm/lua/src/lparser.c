@@ -1380,4 +1380,159 @@ static void forstat (LexState *ls, int line) {
 
 
 static void test_then_block (LexState *ls, int *escapelist) {
-  /* test_then_block ->
+  /* test_then_block -> [IF | ELSEIF] cond THEN block */
+  BlockCnt bl;
+  FuncState *fs = ls->fs;
+  expdesc v;
+  int jf;  /* instruction to skip 'then' code (if condition is false) */
+  luaX_next(ls);  /* skip IF or ELSEIF */
+  expr(ls, &v);  /* read condition */
+  checknext(ls, TK_THEN);
+  if (ls->t.token == TK_GOTO || ls->t.token == TK_BREAK) {
+    luaK_goiffalse(ls->fs, &v);  /* will jump to label if condition is true */
+    enterblock(fs, &bl, 0);  /* must enter block before 'goto' */
+    gotostat(ls, v.t);  /* handle goto/break */
+    while (testnext(ls, ';')) {}  /* skip colons */
+    if (block_follow(ls, 0)) {  /* 'goto' is the entire block? */
+      leaveblock(fs);
+      return;  /* and that is it */
+    }
+    else  /* must skip over 'then' part if condition is false */
+      jf = luaK_jump(fs);
+  }
+  else {  /* regular case (not goto/break) */
+    luaK_goiftrue(ls->fs, &v);  /* skip over block if condition is false */
+    enterblock(fs, &bl, 0);
+    jf = v.f;
+  }
+  statlist(ls);  /* 'then' part */
+  leaveblock(fs);
+  if (ls->t.token == TK_ELSE ||
+      ls->t.token == TK_ELSEIF)  /* followed by 'else'/'elseif'? */
+    luaK_concat(fs, escapelist, luaK_jump(fs));  /* must jump over it */
+  luaK_patchtohere(fs, jf);
+}
+
+
+static void ifstat (LexState *ls, int line) {
+  /* ifstat -> IF cond THEN block {ELSEIF cond THEN block} [ELSE block] END */
+  FuncState *fs = ls->fs;
+  int escapelist = NO_JUMP;  /* exit list for finished parts */
+  test_then_block(ls, &escapelist);  /* IF cond THEN block */
+  while (ls->t.token == TK_ELSEIF)
+    test_then_block(ls, &escapelist);  /* ELSEIF cond THEN block */
+  if (testnext(ls, TK_ELSE))
+    block(ls);  /* 'else' part */
+  check_match(ls, TK_END, TK_IF, line);
+  luaK_patchtohere(fs, escapelist);  /* patch escape list to 'if' end */
+}
+
+
+static void localfunc (LexState *ls) {
+  expdesc b;
+  FuncState *fs = ls->fs;
+  new_localvar(ls, str_checkname(ls));  /* new local variable */
+  adjustlocalvars(ls, 1);  /* enter its scope */
+  body(ls, &b, 0, ls->linenumber);  /* function created in next register */
+  /* debug information will only see the variable after this point! */
+  getlocvar(fs, b.u.info)->startpc = fs->pc;
+}
+
+
+static void localstat (LexState *ls) {
+  /* stat -> LOCAL NAME {',' NAME} ['=' explist] */
+  int nvars = 0;
+  int nexps;
+  expdesc e;
+  do {
+    new_localvar(ls, str_checkname(ls));
+    nvars++;
+  } while (testnext(ls, ','));
+  if (testnext(ls, '='))
+    nexps = explist(ls, &e);
+  else {
+    e.k = VVOID;
+    nexps = 0;
+  }
+  adjust_assign(ls, nvars, nexps, &e);
+  adjustlocalvars(ls, nvars);
+}
+
+
+static int funcname (LexState *ls, expdesc *v) {
+  /* funcname -> NAME {fieldsel} [':' NAME] */
+  int ismethod = 0;
+  singlevar(ls, v);
+  while (ls->t.token == '.')
+    fieldsel(ls, v);
+  if (ls->t.token == ':') {
+    ismethod = 1;
+    fieldsel(ls, v);
+  }
+  return ismethod;
+}
+
+
+static void funcstat (LexState *ls, int line) {
+  /* funcstat -> FUNCTION funcname body */
+  int ismethod;
+  expdesc v, b;
+  luaX_next(ls);  /* skip FUNCTION */
+  ismethod = funcname(ls, &v);
+  body(ls, &b, ismethod, line);
+  luaK_storevar(ls->fs, &v, &b);
+  luaK_fixline(ls->fs, line);  /* definition "happens" in the first line */
+}
+
+
+static void exprstat (LexState *ls) {
+  /* stat -> func | assignment */
+  FuncState *fs = ls->fs;
+  struct LHS_assign v;
+  suffixedexp(ls, &v.v);
+  if (ls->t.token == '=' || ls->t.token == ',') { /* stat -> assignment ? */
+    v.prev = NULL;
+    assignment(ls, &v, 1);
+  }
+  else {  /* stat -> func */
+    check_condition(ls, v.v.k == VCALL, "syntax error");
+    SETARG_C(getinstruction(fs, &v.v), 1);  /* call statement uses no results */
+  }
+}
+
+
+static void retstat (LexState *ls) {
+  /* stat -> RETURN [explist] [';'] */
+  FuncState *fs = ls->fs;
+  expdesc e;
+  int first, nret;  /* registers with returned values */
+  if (block_follow(ls, 1) || ls->t.token == ';')
+    first = nret = 0;  /* return no values */
+  else {
+    nret = explist(ls, &e);  /* optional return values */
+    if (hasmultret(e.k)) {
+      luaK_setmultret(fs, &e);
+      if (e.k == VCALL && nret == 1) {  /* tail call? */
+        SET_OPCODE(getinstruction(fs,&e), OP_TAILCALL);
+        lua_assert(GETARG_A(getinstruction(fs,&e)) == fs->nactvar);
+      }
+      first = fs->nactvar;
+      nret = LUA_MULTRET;  /* return all values */
+    }
+    else {
+      if (nret == 1)  /* only one single value? */
+        first = luaK_exp2anyreg(fs, &e);
+      else {
+        luaK_exp2nextreg(fs, &e);  /* values must go to the stack */
+        first = fs->nactvar;  /* return all active values */
+        lua_assert(nret == fs->freereg - first);
+      }
+    }
+  }
+  luaK_ret(fs, first, nret);
+  testnext(ls, ';');  /* skip optional semicolon */
+}
+
+
+static void statement (LexState *ls) {
+  int
