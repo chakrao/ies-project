@@ -413,4 +413,38 @@ static int sort (lua_State *L) {
   if (n > 1) {  /* non-trivial interval? */
     luaL_argcheck(L, n < INT_MAX, 1, "array too big");
     if (!lua_isnoneornil(L, 2))  /* is there a 2nd argument? */
-      luaL
+      luaL_checktype(L, 2, LUA_TFUNCTION);  /* must be a function */
+    lua_settop(L, 2);  /* make sure there are two arguments */
+    auxsort(L, 1, (IdxT)n, 0);
+  }
+  return 0;
+}
+
+/* }====================================================== */
+
+
+static const luaL_Reg tab_funcs[] = {
+  {"concat", tconcat},
+#if defined(LUA_COMPAT_MAXN)
+  {"maxn", maxn},
+#endif
+  {"insert", tinsert},
+  {"pack", pack},
+  {"unpack", unpack},
+  {"remove", tremove},
+  {"move", tmove},
+  {"sort", sort},
+  {NULL, NULL}
+};
+
+
+LUAMOD_API int luaopen_table (lua_State *L) {
+  luaL_newlib(L, tab_funcs);
+#if defined(LUA_COMPAT_UNPACK)
+  /* _G.unpack = table.unpack */
+  lua_getfield(L, -1, "unpack");
+  lua_setglobal(L, "unpack");
+#endif
+  return 1;
+}
+
