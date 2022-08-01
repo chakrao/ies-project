@@ -408,3 +408,160 @@ static void doREPL (lua_State *L) {
   progname = NULL;  /* no 'progname' on errors in interactive mode */
   while ((status = loadline(L)) != -1) {
     if (status == LUA_OK)
+      status = docall(L, 0, LUA_MULTRET);
+    if (status == LUA_OK) l_print(L);
+    else report(L, status);
+  }
+  lua_settop(L, 0);  /* clear stack */
+  lua_writeline();
+  progname = oldprogname;
+}
+
+
+/*
+** Push on the stack the contents of table 'arg' from 1 to #arg
+*/
+static int pushargs (lua_State *L) {
+  int i, n;
+  if (lua_getglobal(L, "arg") != LUA_TTABLE)
+    luaL_error(L, "'arg' is not a table");
+  n = (int)luaL_len(L, -1);
+  luaL_checkstack(L, n + 3, "too many arguments to script");
+  for (i = 1; i <= n; i++)
+    lua_rawgeti(L, -i, i);
+  lua_remove(L, -i);  /* remove table from the stack */
+  return n;
+}
+
+
+static int handle_script (lua_State *L, char **argv) {
+  int status;
+  const char *fname = argv[0];
+  if (strcmp(fname, "-") == 0 && strcmp(argv[-1], "--") != 0)
+    fname = NULL;  /* stdin */
+  status = luaL_loadfile(L, fname);
+  if (status == LUA_OK) {
+    int n = pushargs(L);  /* push arguments to script */
+    status = docall(L, n, LUA_MULTRET);
+  }
+  return report(L, status);
+}
+
+
+
+/* bits of various argument indicators in 'args' */
+#define has_error	1	/* bad option */
+#define has_i		2	/* -i */
+#define has_v		4	/* -v */
+#define has_e		8	/* -e */
+#define has_E		16	/* -E */
+
+/*
+** Traverses all arguments from 'argv', returning a mask with those
+** needed before running any Lua code (or an error code if it finds
+** any invalid argument). 'first' returns the first not-handled argument
+** (either the script name or a bad argument in case of error).
+*/
+static int collectargs (char **argv, int *first) {
+  int args = 0;
+  int i;
+  for (i = 1; argv[i] != NULL; i++) {
+    *first = i;
+    if (argv[i][0] != '-')  /* not an option? */
+        return args;  /* stop handling options */
+    switch (argv[i][1]) {  /* else check option */
+      case '-':  /* '--' */
+        if (argv[i][2] != '\0')  /* extra characters after '--'? */
+          return has_error;  /* invalid option */
+        *first = i + 1;
+        return args;
+      case '\0':  /* '-' */
+        return args;  /* script "name" is '-' */
+      case 'E':
+        if (argv[i][2] != '\0')  /* extra characters after 1st? */
+          return has_error;  /* invalid option */
+        args |= has_E;
+        break;
+      case 'i':
+        args |= has_i;  /* (-i implies -v) *//* FALLTHROUGH */
+      case 'v':
+        if (argv[i][2] != '\0')  /* extra characters after 1st? */
+          return has_error;  /* invalid option */
+        args |= has_v;
+        break;
+      case 'e':
+        args |= has_e;  /* FALLTHROUGH */
+      case 'l':  /* both options need an argument */
+        if (argv[i][2] == '\0') {  /* no concatenated argument? */
+          i++;  /* try next 'argv' */
+          if (argv[i] == NULL || argv[i][0] == '-')
+            return has_error;  /* no next argument or it is another option */
+        }
+        break;
+      default:  /* invalid option */
+        return has_error;
+    }
+  }
+  *first = i;  /* no script name */
+  return args;
+}
+
+
+/*
+** Processes options 'e' and 'l', which involve running Lua code.
+** Returns 0 if some code raises an error.
+*/
+static int runargs (lua_State *L, char **argv, int n) {
+  int i;
+  for (i = 1; i < n; i++) {
+    int option = argv[i][1];
+    lua_assert(argv[i][0] == '-');  /* already checked */
+    if (option == 'e' || option == 'l') {
+      int status;
+      const char *extra = argv[i] + 2;  /* both options need an argument */
+      if (*extra == '\0') extra = argv[++i];
+      lua_assert(extra != NULL);
+      status = (option == 'e')
+               ? dostring(L, extra, "=(command line)")
+               : dolibrary(L, extra);
+      if (status != LUA_OK) return 0;
+    }
+  }
+  return 1;
+}
+
+
+
+static int handle_luainit (lua_State *L) {
+  const char *name = "=" LUA_INITVARVERSION;
+  const char *init = getenv(name + 1);
+  if (init == NULL) {
+    name = "=" LUA_INIT_VAR;
+    init = getenv(name + 1);  /* try alternative name */
+  }
+  if (init == NULL) return LUA_OK;
+  else if (init[0] == '@')
+    return dofile(L, init+1);
+  else
+    return dostring(L, init, name);
+}
+
+
+/*
+** Main body of stand-alone interpreter (to be called in protected mode).
+** Reads the options and handles them all.
+*/
+static int pmain (lua_State *L) {
+  int argc = (int)lua_tointeger(L, 1);
+  char **argv = (char **)lua_touserdata(L, 2);
+  int script;
+  int args = collectargs(argv, &script);
+  luaL_checkversion(L);  /* check that interpreter has correct version */
+  if (argv[0] && argv[0][0]) progname = argv[0];
+  if (args == has_error) {  /* bad arg? */
+    print_usage(argv[script]);  /* 'script' has index of bad arg. */
+    return 0;
+  }
+  if (args & has_v)  /* option '-v'? */
+    print_version();
+  if (args & has_
