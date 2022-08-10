@@ -377,4 +377,170 @@ void vmm_entry(void)
 
   //initialize
 
-  sendstring("Welcome to Dark Byte\'s Virtual Machine Manager\n\r")
+  sendstring("Welcome to Dark Byte\'s Virtual Machine Manager\n\r");
+  sendstringf("pagedirlvl4=%6\n\r",(unsigned long long)pagedirlvl4);
+
+  sendstring("Initializing MM\n\r");
+  InitializeMM((QWORD)pagedirlvl4+4096);
+  sendstring("Initialized MM\n\r");
+  /*
+   * POST INIT
+   */
+
+
+  cpucount=1;
+  cpuinfo=malloc2(sizeof(tcpuinfo)<4096?4096:sizeof(tcpuinfo));
+  sendstringf("allocated cpuinfo at %6\n\r", cpuinfo);
+  zeromemory(cpuinfo,sizeof(tcpuinfo));
+  cpuinfo->active=1;
+  cpuinfo->cpunr=0;
+  cpuinfo->apicid=getAPICID();
+  cpuinfo->isboot=1;
+  cpuinfo->self=cpuinfo;
+
+
+
+  setupFSBase((void*)cpuinfo);
+
+
+  //debug info
+  firstcpuinfo=cpuinfo;
+  lastaddedcpuinfo=cpuinfo;
+
+#if DISPLAYDEBUG==1
+  initialize_displaydebuglogs();
+#endif
+
+
+  sendstringf("initialized cpuinfo at %6\n\r", cpuinfo);
+
+
+  //IA32_APIC_BASE=(unsigned long long)readMSR(0x1b);
+
+  IA32_APIC_BASE=(QWORD)mapPhysicalMemory((unsigned long long)readMSR(0x1b) & 0xfffffffffffff000ULL, 4096);
+  sendstringf("IA32_APIC_BASE=%6\n\r",IA32_APIC_BASE);
+
+  APIC_ID=IA32_APIC_BASE+APIC_ID_OFFSET;
+  APIC_SVR=IA32_APIC_BASE+APIC_SVR_OFFSET;
+
+  SetPageToWriteThrough((void*)IA32_APIC_BASE);
+
+
+
+
+
+  displayline("IA32_APIC_BASE=%6\n\r",IA32_APIC_BASE);
+  sendstringf("IA32_APIC_BASE=%6\n\r",IA32_APIC_BASE);
+  sendstringf("\tLocal APIC base=%6\n\r",IA32_APIC_BASE & 0xfffff000);
+  sendstringf("\tAPIC global enable/disable=%d\n\r",(IA32_APIC_BASE >> 11) & 1);
+  sendstringf("\tBSP=%d\n\r",(IA32_APIC_BASE >> 8) & 1);
+
+  a=1;
+  _cpuid(&a,&b,&c,&d);
+  displayline("CPUID.1: %8, %8, %8, %8\n",a,b,c,d);
+
+  cpu_stepping=a & 0xf;
+  cpu_model=(a >> 4) & 0xf;
+  cpu_familyID=(a >> 8) & 0xf;
+  cpu_type=(a >> 12) & 0x3;
+  cpu_ext_modelID=(a >> 16) & 0xf;
+  cpu_ext_familyID=(a >> 20) & 0xff;
+
+
+  cpu_model=cpu_model + (cpu_ext_modelID << 4);
+  cpu_familyID=cpu_familyID + (cpu_ext_familyID << 4);
+
+
+ // if (0)
+  if (1) //((d & (1<<28))>0) //this doesn't work in vmware, so find a different method
+  {
+    QWORD entrypage=0x30000;
+    unsigned long long initialcount;
+    unsigned int foundcpus;
+    sendstring("Multi processor supported\n\r");
+    sendstring("Launching application cpu's\n");
+
+
+    //displaystring("Multi processor supported\n");
+    displayline("Launching other cpu cores if present\n");
+    sendstring("Starting other cpu's\n\r");
+
+
+    APStartsInSIPI=1;
+
+    if ((needtospawnApplicationProcessors>1) || (needtospawnApplicationProcessors<0))
+    {
+      sendstringf("memory corruption\n");
+      volatile int debug=1;
+      while (debug) ;
+    }
+
+    if (loadedOS)
+    {
+      sendstringf("mapping loadedOS (%6)...\n", loadedOS);
+
+      POriginalState original=(POriginalState)mapPhysicalMemory(loadedOS, sizeof(OriginalState));
+      sendstringf("Success. It has been mapped at virtual address %6\n",original);
+
+      entrypage=original->APEntryPage;
+
+      sendstringf("original->cpucount=%d\n", original->cpucount);
+      if (original->cpucount>1000)
+      {
+        nosendchar[getAPICID()]=0;
+        sendstringf("More than 1000 cpu\'s are currently not supported\n");
+        ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+        while (1);
+      }
+
+      if (original->cpucount)
+      {
+        needtospawnApplicationProcessors=0;
+        foundcpus=original->cpucount;
+        APStartsInSIPI=0; //AP should start according to the original state
+      }
+
+      if (original->FrameBufferBase)
+      {
+        DDFrameBufferBase=original->FrameBufferBase;
+        DDFrameBufferSize=original->FrameBufferSize;
+        DDHorizontalResolution=original->HorizontalResolution;
+        DDVerticalResolution=original->VerticalResolution;
+        DDPixelsPerScanLine=original->PixelsPerScanLine;
+
+        if (DDFrameBufferBase)
+        {
+          /*
+          char c=0;
+          sendstring("Before mapping of the framebuffer\n");
+          while (c==0)
+          {
+            c=waitforchar();
+          }
+          sendstring("Mapping framebuffer\n");*/
+
+          //DDFrameBuffer=mapPhysicalMemoryGlobal(0x90000000, 8294400);
+          //DDFrameBuffer=(unsigned char *)mapPhysicalMemory(0x90000000, 8294400);
+
+
+          DDFrameBuffer=(unsigned char *)mapPhysicalMemoryGlobal(DDFrameBufferBase, DDFrameBufferSize);
+          if (DDFrameBuffer==NULL)
+          {
+            sendstring("Failure mapping memory");
+          }
+          else
+          {
+
+
+
+         /* SetPageToWriteThrough(DDFrameBuffer);*/
+            ddDrawRectangle(0,0,DDHorizontalResolution, DDVerticalResolution,0x00ff00);
+        /*    ddDrawRectangle(0,0,100,100,0xff00ff);
+            ddDrawRectangle(DDHorizontalResolution-100,0,100,100,0xff0000);
+            ddDrawRectangle(0,DDVerticalResolution-100,100,100,0x0000ff);
+            ddDrawRectangle(DDHorizontalResolution-100,DDVerticalResolution-100,100,100,0xffffff);*/
+
+/*
+            unsigned int pi;
+            for (pi=0; pi<DDFrameBufferSize; pi++)
+ 
