@@ -543,4 +543,168 @@ void vmm_entry(void)
 /*
             unsigned int pi;
             for (pi=0; pi<DDFrameBufferSize; pi++)
- 
+            {
+              DDFrameBuffer[pi]=0x30;
+            }*/
+          }
+
+        }
+      }
+
+
+      //while (1) ;
+      unmapPhysicalMemory(original, sizeof(OriginalState));
+    }
+
+    if (needtospawnApplicationProcessors) //e.g UEFI boot with missing mpsupport
+    {
+      sendstringf("needtospawnApplicationProcessors!=0\n");
+#ifndef NOMP
+
+      BOOT_ID=apic_getBootID();
+
+      //setup some info so that the AP cpu can find  this
+      APBootVar_CR3=getCR3();
+
+      void *GDTbase=(void *)getGDTbase();
+      int GDTsize=getGDTsize();
+      APBootVar_Size=GDTsize;
+
+      if (GDTsize>192)
+      {
+        sendstringf("Update the AP boot GDT section to be bigger than 192 bytes");
+      }
+      memcpy(APBootVar_GDT, GDTbase, GDTsize);
+
+      APBootVar_GDT[2 ]=0x00cf9b000000ffffULL;  //24: 32-bit code
+      APBootVar_GDT[2 ]|=(entrypage >> 8) << 24;
+      //with 0x5e000 or it with 0x05e0
+
+      sendstringf("vmmentrycount before launch=%d\n", vmmentrycount);
+      foundcpus=initAPcpus(entrypage);
+
+      sendstringf("foundcpus=%d cpucount=%d. Waiting till cpucount==foundcpus, or timeout\n",foundcpus, cpucount);
+
+      QWORD timeout=2000000000ULL;
+
+      for (i=0; i<3; i++)
+      {
+        initialcount=_rdtsc();
+        while ((_rdtsc()-initialcount) < timeout)
+        {
+          //sendstringf("cpucount=%d foundcpus=%d\n\r", cpucount, foundcpus);
+
+          if (vmmentrycount>=foundcpus)
+            break;
+
+          _pause();
+        }
+        displayline(".");
+        if (vmmentrycount>=foundcpus)
+          break;
+      }
+
+      if (i>=3)
+        displayline("Timeout\n");
+      else
+        displayline("\n");
+
+    }
+    else
+      AP_Launch=1; //no need to let the others wait. the launcher will decide when to load
+
+    displayline("Wait done. Cpu's found : %d (expected %d)\n",vmmentrycount, foundcpus);
+    sendstringf("vmmentrycount after launch=%d\n", vmmentrycount);
+
+    //the other CPU's should now be waiting in the spinlock at the start of dbvm
+#endif
+  }
+
+  //copy GDT and IDT to VMM memory
+  GDT_BASE=malloc(4096);
+  GDT_SIZE=4096; //getGDTsize();
+
+  if (GDT_BASE==NULL)
+  {
+    nosendchar[getAPICID()]=0;
+    sendstring("Memory allocation failed\n");
+    ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+    while (1) outportb(0x80,0xc8);
+  }
+
+  sendstringf("Allocated GDT_BASE %6\n", GDT_BASE);
+
+  {
+    void *GDTbase=(void *)getGDTbase();
+    int GDTsize=getGDTsize();
+
+    sendstringf("getGDTbase=%p, getGDTsize=%d\n",GDTbase,GDTsize );
+
+    copymem(GDT_BASE,GDTbase,GDTsize);
+  }
+  sendstringf("Allocated and copied GDT to %x\n\r",(UINT64)GDT_BASE);
+  setGDT((UINT64)GDT_BASE, 4096);
+
+  {
+    //set the GDT to the way I like it (loaders could fuck this up)
+    QWORD *g=(QWORD *)GDT_BASE;
+    g[0 ]=0;            //0 :
+    g[1 ]=0x00cf92000000ffffULL;  //8 : 32-bit data
+    g[2 ]=0x00cf96000000ffffULL;  //16: test, stack, failed, unused
+    g[3 ]=0x00cf9b000000ffffULL;  //24: 32-bit code
+    g[4 ]=0x00009a000000ffffULL;  //32: 16-bit code
+    g[5 ]=0x000092000000ffffULL;  //40: 16-bit data
+    g[6 ]=0x00009a030000ffffULL;  //48: 16-bit code, starting at 0x30000
+    g[7 ]=0;            //56: 32-bit task
+    g[8 ]=0;            //64: 64-bit task
+    g[9 ]=0;            //72:  ^   ^   ^
+    g[10]=0x00af9b000000ffffULL;  //80: 64-bit code
+    g[11]=0x00cf9b000000ffffULL;  //88: 32-bit code compat mode
+    g[12]=0;            //96: 64-bit tss descriptor (2)
+    g[13]=0;            //104: ^   ^   ^
+  }
+
+  //now replace the old IDT with a new one
+  intvector=malloc(sizeof(INT_VECTOR)*256);
+  zeromemory(intvector,sizeof(INT_VECTOR)*256);
+  sendstringf("Allocated intvector at %6\n\r",(unsigned long long)intvector);
+
+  setints();
+  sendstring("after setints()\n");
+
+  i=0;
+  setDR0((QWORD)((volatile void *)&&BPTest));
+  setDR6(0xffff0ff0);
+  setDR7(getDR7() | (1<<0));
+  displayline("Going to execute test breakpoint\n");
+
+  cpuinfo->OnInterrupt.RSP=getRSP();
+  cpuinfo->OnInterrupt.RBP=getRBP();
+  cpuinfo->OnInterrupt.RIP=(QWORD)((volatile void *)&&AfterBPTest);
+  asm volatile ("": : :"memory");
+BPTest:
+  i=1;
+  sendstring("<<---------------WRONG!!! BPTest got executed...(ok if a jtag debugger is present)\n");
+  asm volatile ("": : :"memory");
+AfterBPTest:
+  if (i==0)
+    sendstringf("BPTest success.  dr6=%6\n", getDR6());
+  else
+    sendstring(":(\n");
+
+  cpuinfo->OnInterrupt.RSP=0;
+  cpuinfo->OnInterrupt.RBP=0;
+  cpuinfo->OnInterrupt.RIP=0;
+
+  try
+  {
+    sendstring("Trying memory access BP\n");
+
+    regDR7 dr7;
+    dr7.DR7=getDR7();
+
+    dr7.L1=1;
+    dr7.G1=1;
+    dr7.RW1=3;
+    dr7.LEN1=3;
+
