@@ -708,3 +708,185 @@ AfterBPTest:
     dr7.RW1=3;
     dr7.LEN1=3;
 
+    setDR7(dr7.DR7);
+    setDR1((QWORD)((volatile void *)&debugtestvar));
+
+    setDR6(0xffffffff);
+    sendstringf("Before access DR6=%6\n",getDR6());
+    asm volatile ("": : :"memory");
+    debugtestvar=0;
+    debugtestvar=890;
+    asm volatile ("": : :"memory");
+
+    sendstringf("Memory access BP failure\n DR1=%6 DR7=%6", getDR1(), getDR7());
+
+  }
+  except
+  {
+    sendstringf("Except block success.  dr6=%6\n", getDR6());
+  }
+  tryend
+
+
+
+
+  sendstringf("Letting the first AP cpu go through\n");
+  startNextCPU();
+
+
+
+  fakeARD=malloc(4096);
+  fakeARD[0].Type=255;
+  sendstringf("Allocated fakeARD at %6\n",(unsigned long long)fakeARD);
+  sendstringf("That is physical address %6\n", VirtualToPhysical(fakeARD));
+
+
+  if (!loadedOS)
+  {
+    sendstring("Copying ARD from 80000 to ARD location");
+    copymem((void *)fakeARD,(void *)0x80000,4096); //that should be enough
+  }
+
+  //ARD Setup
+  //The ARD is used for old boot mechanisms. This way DBVM can tell the guest which physical pages are 'reserved' by the system and should not be used/overwritten
+  //In loadedOS mode DBVM makes use of built-in memory allocation systems so not needed
+
+  sendstring("Calling initARDcount()\n");
+  initARDcount();
+  sendstring("Calling sendARD()\n");
+  sendARD();
+
+  sendstring("after sendARD()\n");
+
+
+
+  // alloc VirtualMachineTSS_V8086
+  VirtualMachineTSS_V8086=malloc(3*4096);
+  zeromemory(VirtualMachineTSS_V8086,3*4096);
+
+  RealmodeRing0Stack=malloc(4096); //(not even 1 KB used, but let's waste some mem)
+
+
+  //configure ffpage
+
+  //create a page filled with 0xff (for faking non present memory access)
+  ffpage=malloc(4096);
+  for (i=0; i<4096; i++)
+    ffpage[i]=0xce;
+
+  sendstringf("Physical address of ffpage=%6\n\r",(UINT64)VirtualToPhysical(ffpage));
+
+
+  //create a pagetable with only 0xff (2MB 0xff)
+  ffpagetable=malloc(4096);
+  zeromemory(ffpagetable,4096);
+  for (i=0; i<4096/8; i++)
+  {
+    *(QWORD*)(&ffpagetable[i])=VirtualToPhysical(ffpage);
+    ffpagetable[i].P=1;
+    ffpagetable[i].RW=0;
+  }
+
+  sendstringf("Physical address of ffpagetable=%6\n\r",(UINT64)VirtualToPhysical((void *)ffpagetable));
+
+  //create a pagedir where all entries point to the ffpagetable
+  ffpagedir=malloc(4096);
+  zeromemory(ffpagedir,4096);
+  for (i=0; i<4096/8; i++)
+  {
+    *(QWORD*)(&ffpagedir[i])=VirtualToPhysical((void *)ffpagetable);
+    ffpagedir[i].P=1;
+    ffpagedir[i].RW=0;
+    ffpagedir[i].PS=0;
+  }
+
+  sendstringf("Physical address of ffpagedir=%6\n\r",(UINT64)VirtualToPhysical((void *)ffpagedir));
+
+  __asm("mov %cr3,%rax\n  mov %rax,%cr3\n");
+
+  displayline("emulated virtual memory has been configured\n");
+
+  displayline("Paging:\n");
+  displayline("0x00000000 is at %6\n", (UINT64)VirtualToPhysical((void *)0));
+  displayline("0x00200000 is at %6\n", (UINT64)VirtualToPhysical((void *)0x00200000));
+  displayline("0x00400000 is at %6\n", (UINT64)VirtualToPhysical((void *)0x00400000));
+  displayline("0x00600000 is at %6\n", (UINT64)VirtualToPhysical((void *)0x00600000));
+
+
+
+  //setup nonpagedEmulationPagedir
+
+
+  displayline("Calling hascpuid()\n");
+	if (hascpuid())
+	{
+		char *t;
+		a=0;
+		b=0;
+		c=0;
+		d=0;
+		_cpuid(&a,&b,&c,&d);
+		sendstringf("Your comp supports cpuid! (%d , %x %x %x )\n\r",a,b,d,c);
+
+		t=(char *)&b;
+		sendstringf("Max basicid=%x\n\r",a);
+		sendstringf("%c%c%c%c",t[0],t[1],t[2],t[3]);
+
+
+		t=(char *)&d;
+		sendstringf("%c%c%c%c",t[0],t[1],t[2],t[3]);
+
+
+		t=(char *)&c;
+		sendstringf("%c%c%c%c\n\r",t[0],t[1],t[2],t[3]);
+
+
+
+    if ((b==0x68747541) && (d==0x69746e65) && (c==0x444d4163))
+    {
+      isAMD=1;
+      vmcall_instr=vmcall_amd;
+      AMD_hasDecodeAssists=0;
+      sendstring("This is an AMD system. going to use the AMD virtualization tech\n\r");
+    }
+    else
+    {
+      isAMD=0;
+      vmcall_instr=vmcall_intel;
+    }
+
+    //a=0x80000000; _cpuid(&a,&b,&c,&d);
+    //if (!(a & 0x80000000))
+    {
+      unsigned int j;
+
+     // sendstring("\n\r\n\rBranch string=");
+      displayline("Branch string=");
+
+      for (j=0x80000002; j<=0x80000004; j++)
+      {
+        a=j;
+        _cpuid(&a,&b,&c,&d);
+
+        t=(char *)&a;
+        for (k=0; k<4; k++)
+          if (t[k]<32)
+            t[k]=' ';
+        //sendstringf("%c%c%c%c",t[0],t[1],t[2],t[3]);
+        displayline("%c%c%c%c",t[0],t[1],t[2],t[3]);
+
+        t=(char *)&b;
+        for (k=0; k<4; k++)
+          if (t[k]<32)
+            t[k]=' ';
+        //sendstringf("%c%c%c%c",t[0],t[1],t[2],t[3]);
+        displayline("%c%c%c%c",t[0],t[1],t[2],t[3]);
+
+        t=(char *)&c;
+        for (k=0; k<4; k++)
+          if (t[k]<32)
+            t[k]=' ';
+      //  sendstringf("%c%c%c%c",t[0],t[1],t[2],t[3]);
+        displayline("%c%c%c%c",t[0],t[1],t[2],t[3]);
+
+        t
