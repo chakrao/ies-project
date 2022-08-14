@@ -889,4 +889,209 @@ AfterBPTest:
       //  sendstringf("%c%c%c%c",t[0],t[1],t[2],t[3]);
         displayline("%c%c%c%c",t[0],t[1],t[2],t[3]);
 
-        t
+        t=(char *)&d;
+        for (k=0; k<4; k++)
+          if (t[k]<32)
+            t[k]=' ';
+     //   sendstringf("%c%c%c%c",t[0],t[1],t[2],t[3]);
+        displayline("%c%c%c%c",t[0],t[1],t[2],t[3]);
+      }
+    //  sendstringf("\n\r");
+      displayline(" \n");
+
+    }
+
+
+	}
+	else
+  {
+		sendstring("Your crappy comp doesn\'t support cpuid\n\r");
+    displayline("Your system does not support CPUID\n");
+  }
+
+  cpuinfo->TSbase=0;
+  cpuinfo->TSlimit=0xffff;
+  cpuinfo->TSsegment=0;
+  cpuinfo->TSaccessRights=0x8b;
+
+  sendstringf("Setting up idttable and jumptable\n\r");
+
+  jumptable=malloc(4096);
+  idttable32=malloc(4096);
+
+  sendstringf("jumptable allocated at %x (%6)\n\r",(UINT64)jumptable, VirtualToPhysical(jumptable));
+  sendstringf("idttable32 allocated at %x (%6)\n\r",(UINT64)idttable32, VirtualToPhysical(idttable32));
+
+  //fill jumptable and IDT
+  PINT_VECTOR32 idt32=(PINT_VECTOR32)idttable32;
+  UINT64 pa=VirtualToPhysical(jumptable);
+  UINT64 inthandler32address=(UINT64)VirtualToPhysical(&inthandler_32);
+
+  unsigned char *jumptablepc;
+  jumptablepc=(unsigned char *)jumptable;
+  for (i=0; i<256; i++, pa+=10)
+  {
+    //push i
+    jumptablepc[i*10]=0x68; //push
+    *(DWORD *)&jumptablepc[i*10+1]=i;
+
+    //jmp inthandler_32
+    jumptablepc[i*10+5]=0xe9;
+    *(DWORD *)(&jumptablepc[i*10+6])=inthandler32address-(pa+10); //from (current offset+5(including push 7)) to inthandler_32
+    idt32[i].bAccess=0x8e;
+    idt32[i].bUnused=0;
+    idt32[i].wHighOffset=pa >> 16;
+    idt32[i].wLowOffset=pa & 0xffff;
+    idt32[i].wSelector=24;
+
+    //sendstringf("idt32[%x]=%x\n\r",i, *(UINT64*)&idt32[i]);
+  }
+
+  sendstring("setting up gdt entry at offset 0x64 as virtual8086 task\n\r");
+  PGDT_ENTRY currentgdt=(PGDT_ENTRY)getGDTbase();
+
+
+  sendstringf("currentgdt is %x (limit=%x)\n\r",(UINT64)currentgdt, getGDTsize());
+  ULONG length=(ULONG)sizeof(TSS)+32+8192+1;
+
+
+  currentgdt[8].Limit0_15=length;
+  currentgdt[8].Base0_23=(QWORD)VirtualMachineTSS_V8086;
+  currentgdt[8].Type=0x9;
+  currentgdt[8].NotSystem=0;
+  currentgdt[8].DPL=3;
+  currentgdt[8].P=1;
+  currentgdt[8].Limit16_19=length >> 16;
+  currentgdt[8].AVL=1;
+  currentgdt[8].L=0;
+  currentgdt[8].B_D=0;
+  currentgdt[8].G=0;
+  currentgdt[8].Base24_31=(QWORD)VirtualMachineTSS_V8086 >> 24;
+  *(QWORD*)&currentgdt[9]=((QWORD)VirtualMachineTSS_V8086) >> 32;
+
+  //setup GDT for realmode jump
+  currentgdt[4].Base0_23=0x20000;
+
+
+  //if (!loadedOS)
+  {
+    sendstringf("Setting up 64-bit TS and TSS\n\r");
+
+    TSS64 *temp=malloc(4096);
+
+    sendstringf("temp allocated at %x\n", temp);
+    ownTSS=temp;
+    zeromemory(temp,4096);
+    currentgdt=(PGDT_ENTRY)(getGDTbase()+96);
+
+    currentgdt[0].Limit0_15=4096;
+    currentgdt[0].Base0_23=(UINT64)temp;
+    currentgdt[0].Type=0x9;
+    currentgdt[0].NotSystem=0;
+    currentgdt[0].DPL=0;
+    currentgdt[0].P=1;
+    currentgdt[0].Limit16_19=4096 >> 16;
+    currentgdt[0].AVL=1;
+    currentgdt[0].L=0;
+    currentgdt[0].B_D=0;
+    currentgdt[0].G=0;
+    currentgdt[0].Base24_31=((UINT64)temp) >> 24;
+    *(QWORD*)&currentgdt[1]=((UINT64)temp) >> 32;
+
+    temp->IST1=(QWORD)malloc(8192)+8192-0x10; //panic stack
+
+    loadTaskRegister(96);
+  }
+
+  displayline("Generating debug information\n\r");
+  originalVMMcrc=generateCRC((void*)vmxloop,0x2a000);
+
+
+  displayline("Virtual machine manager loaded\n");
+
+
+
+
+#ifdef DEBUG
+  displayline("Entering menu system\n");
+#else
+  displayline("Skipping menu system and autostarting VM\n");
+#endif
+
+  {
+    //mark the region between 0 to 0x00400000 as readonly, if you need to write, map it
+    PPDPTE_PAE pml4entry;
+    PPDPTE_PAE pagedirpointerentry;
+    PPDE_PAE pagedirentry;
+    PPTE_PAE pagetableentry;
+
+    VirtualAddressToPageEntries(0, &pml4entry, &pagedirpointerentry, &pagedirentry, &pagetableentry);
+    pagedirentry[0].RW=0;
+    pagedirentry[1].RW=0;
+  }
+
+#if DISPLAYDEBUG==0
+  if (needtospawnApplicationProcessors)
+#endif
+    textmemory=(QWORD)mapPhysicalMemory(0xb8000, 4096); //at least enough for 80*25*2
+
+
+  InitExports();
+
+  setDR6(0xffff0ff0);
+
+  //outportb(0x80,0x10);
+
+  menu2();
+  return;
+}
+
+//#pragma GCC push_options
+//#pragma GCC optimize ("O0")
+int testexception(void)
+{
+
+  volatile int result=2;
+
+
+  bochsbp();
+
+  __asm("nop");
+  __asm("nop");
+  __asm("nop");
+
+  result=readMSRSafe(553);
+
+  //nothing happened
+  //result=0;
+  displayline("result=%d\n", result);
+
+
+  return result;
+}
+
+void vmcalltest(void)
+{
+  int dbvmversion;
+  dbvmversion=0;
+
+  try
+  {
+    dbvmversion=vmcalltest_asm();
+    sendstringf("dbvm is loaded. Version %x\n", dbvmversion);
+  }
+  except
+  {
+    sendstringf("dbvm is not loaded\n");
+  }
+  tryend
+}
+
+
+//#pragma GCC pop_options
+
+
+void apentryvmx()
+{
+  nosendchar[getAPICID()]=0;
+ // sendstringf("Hello from %d", g
