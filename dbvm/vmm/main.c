@@ -1094,4 +1094,197 @@ void vmcalltest(void)
 void apentryvmx()
 {
   nosendchar[getAPICID()]=0;
- // sendstringf("Hello from %d", g
+ // sendstringf("Hello from %d", getAPICID());
+
+  while (1)
+  {
+   // sendchar("-");
+    QWORD eax,ebx,ecx,edx;
+    _cpuid(&eax,&ebx,&ecx,&edx);
+
+
+  }
+
+}
+
+void reboot(int skipAPTerminationWait)
+{
+  {
+    //remapping pagetable entry 0 to 0x00400000 so it's writabe (was marked unwritable after entry)
+    PPDPTE_PAE pml4entry;
+    PPDPTE_PAE pagedirpointerentry;
+    PPDE_PAE pagedirentry;
+    PPTE_PAE pagetableentry;
+
+    VirtualAddressToPageEntries(0, &pml4entry, &pagedirpointerentry, &pagedirentry, &pagetableentry);
+    pagedirentry[0].RW=1;
+    pagedirentry[1].RW=1;
+    asm volatile ("": : :"memory");
+  }
+
+  //Disable the AP cpu's as on a normal reboot, the memory they are looping in will first be zeroed out (it picks the same memory block)
+  AP_Terminate=1; //tells the AP cpu's to stop
+
+  if (skipAPTerminationWait==0) //can be skipped if ran by vmlaunch (the other cpu's will stay active as they are in wait-for-sipi mode)
+  {
+    startNextCPU(); //just make sure there is none waiting
+
+    int stillactive=1;
+    while (stillactive)
+    {
+      pcpuinfo c=firstcpuinfo->next;
+      stillactive=0;
+      while (c)
+      {
+        if ((c->vmxsetup==0) && (c->active)) //not configured to be a VMX, and still active
+          stillactive=1;
+
+        c=c->next;
+      }
+    }
+  }
+
+  UINT64 gdtaddress=getGDTbase();  //0x40002 contains the address of the GDT table
+
+  sendstring("Copying gdt to low memory\n\r");
+  copymem((void *)0x50000,(void *)(UINT64)gdtaddress,128); //copy gdt to 0x50000
+
+  sendstring("copying movetoreal to 0x2000\n\r");
+  copymem((void *)0x20000,(void *)(UINT64)&movetoreal,(UINT64)&vmxstartup_end-(UINT64)&movetoreal);
+
+
+  sendstring("Calling quickboot\n\r");
+
+  if (skipAPTerminationWait==0xcedead) //PSOD
+    *(unsigned char *)0x7c0e=0xff;
+  else
+    *(unsigned char *)0x7c0e=bootdisk;
+
+
+
+  quickboot();
+  sendstring("WTF?\n\r");
+}
+
+
+#ifdef DEBUG
+#define SHOWFIRSTMENU 1
+int showfirstmenu=1;
+#else
+#define SHOWFIRSTMENU 0
+int showfirstmenu=0;
+#endif
+
+void menu2(void)
+{
+  unsigned char key;
+
+
+
+
+
+  sendstringf("loadedOS=%6\n",loadedOS);
+
+
+  //*(BYTE *)0x7c0e=0x80;
+  bootdisk=0x80;
+  while (1)
+  {
+    clearScreen();
+    currentdisplayline=0;
+
+    {
+    	vmcb x;
+    	int offset;
+
+    	offset=(QWORD)&x.DR6-(QWORD)&x;
+
+
+        	displayline("DR6=%x\n", offset);
+
+
+    }
+
+    displayline("Welcome to the DBVM interactive menu\n\n");
+    displayline("These are your options:\n");
+    displayline("0: Start virtualization\n");
+    displayline("1: Keyboard test\n");
+    displayline("2: Set disk to startup from (currently %2)\n",bootdisk);
+    displayline("3: Disassembler test\n");
+    displayline("4: Interrupt test\n");
+    displayline("5: Breakpoint test\n");
+    displayline("6: Set Redirects with dbvm (only if dbvm is already loaded)\n");
+    displayline("7: cr3 fuck test\n");
+    displayline("8: PCI enum test (finds db's serial port)\n");
+    displayline("9: test input\n");
+    displayline("a: test branch profiling\n");
+    displayline("b: boot without vm (test state vm would set)\n");
+    displayline("v: control register test\n");
+    displayline("e: efer test\n");
+    displayline("o: out of memory test\n");
+    displayline("n: NMI Test\n");
+
+    if (getDBVMVersion())
+    {
+      displayline("w: DBVM write watch test\n");
+      displayline("r: DBVM write read/write test\n");
+      displayline("x: DBVM write execute test\n");
+      displayline("c: DBVM cloak test\n");
+      displayline("m: DBVM changeregonbp test\n");
+    }
+
+
+    key=0;
+    while (!key)
+    {
+
+      if ((!loadedOS) || (showfirstmenu))
+      {
+#ifdef DELAYEDSERIAL
+        if (!useserial)
+          key='0';
+        else
+#endif
+        if (loadedOS)
+          key=waitforchar();
+        else
+          key=kbd_getchar();
+      }
+      else
+        key='0';
+
+      while (IntHandlerDebug) ;
+
+      if (key)
+      {
+        char temps[16];
+        displayline("%c\n", key);
+
+        switch (key)
+        {
+          case '0':
+            clearScreen();
+            menu();
+            break;
+
+          case '1':
+            displayline("kdbstatus=%2\n",kbd_getstatus());
+            displayline("kdb_getoutputport=%2\n",kdb_getoutputport());
+            displayline("kdb_getinputport=%2\n",kdb_getinputport());
+            displayline("kdb_getcommandbyte=%2\n",kdb_getcommandbyte());
+            break;
+
+          case '2':
+            displayline("Set the new drive: ");
+            readstringc(temps,2,16);
+            temps[15]=0;
+
+            bootdisk=atoi2(temps,16,NULL);
+            displayline("\nNew drive=%2 \n",bootdisk);
+            break;
+
+          case '3': //disassemblerr
+            {
+              _DecodedInst disassembled[22];
+              unsigned int i;
+  
