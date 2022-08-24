@@ -1287,4 +1287,167 @@ void menu2(void)
             {
               _DecodedInst disassembled[22];
               unsigned int i;
+              unsigned int used=0;
+              distorm_decode((UINT64)&menu2,(unsigned char*)menu2, 256, Decode64Bits, disassembled, 22, &used);
+
+              if (used)
+              {
+                for (i=0; i<used; i++)
+                {
+                  displayline("%x : %s - %s %s\n",
+                    disassembled[i].offset,
+                    disassembled[i].instructionHex.p,
+                    disassembled[i].mnemonic.p,
+                    disassembled[i].operands.p);
+                }
+
+              }
+              else
+              {
+                displayline("Failure...\n");
+              }
+
+
+            }
+            break;
+
+          case '4':
+          {
+            __asm("sti"); //enable interrupts
+            break;
+          }
+
+          case '5':
+          {
+            UINT64 rflags;
+            pcpuinfo i=getcpuinfo();
+
+            ClearDR6OnInterrupt=1;
+
+
+
+            try
+            {
+              displayline("Doing an int3 bp\n");
+              int3bptest();
+              displayline("Failure to int3 break\n");
+            }
+            except
+            {
+              displayline("caught level 1 int3 :%d\n", lastexception);
+            }
+            tryend
+
+            try
+            {
+              displayline("Doing an int3 bp 2\n");
+              int3bptest();
+              displayline("Failure to int3 break 2\n");
+            }
+            except
+            {
+              displayline("caught level 1 int 3 2:%d\n", lastexception);
+            }
+            tryend
+
+
+            displayline("testing multilevel try/except\n");
+            try
+            {
+              displayline("inside try. Entering 2nd try\n");
+              try
+              {
+                displayline("inside 2nd try. calling int3bptest\n");
+                int3bptest();
+                displayline("int3bptest in level 2 failed to get caught\n");
+              }
+              except
+              {
+                displayline("caught level 2 int3:%d\n", lastexception);
+              }
+              tryend
+
+              int3bptest();
+              displayline("Failure to int3 break\n");
+            }
+            except
+            {
+              displayline("caught level 1 int3:%d\n", lastexception);
+            }
+            tryend
+
+            displayline("Setting the GD flag");
+
+            i->OnInterrupt.RSP=getRSP();
+            i->OnInterrupt.RBP=getRBP();
+            i->OnInterrupt.RIP=(QWORD)((volatile void *)&&afterGDtest);
+            asm volatile ("": : :"memory");
+            setDR6(0xffffffff);
+            setDR7(getDR7() | (1<<13));
+            asm volatile ("": : :"memory");
+            setDR3(0x12345678);
+
+            sendstringf("Failure to break on GD");
+
+            asm volatile ("": : :"memory");
+afterGDtest:
+
+            //RF
+            sendstringf("After GD test. DR6=%6\n", getDR6());
+
+
+            displayline("Setting an execute breakpoint\n\r");
+            setDR0((QWORD)getCR0);
+            setDR6(0xffff0ff0);
+            setDR7(getDR7() | (1<<0));
+            displayline("Going to execute it\n");
+
+            i->OnInterrupt.RSP=getRSP();
+            i->OnInterrupt.RBP=getRBP();
+            i->OnInterrupt.RIP=(QWORD)((volatile void *)&&afterEXBPtest);
+            asm volatile ("": : :"memory");
+            getCR0();
+
+            sendstringf("Failure to break on execute\n");
+            asm volatile ("": : :"memory");
+afterEXBPtest:
+
+            displayline("Setting a RW breakpoint\n\r");
+            setDR0((QWORD)&isAP);
+            setDR6(0xffff0ff0);
+            setDR7(getDR7() | (3<<18) | (3<<16) | (1<<0));
+            displayline("Going to write to that breakpoint\n");
+
+            i->OnInterrupt.RSP=getRSP();
+            i->OnInterrupt.RBP=getRBP();
+            i->OnInterrupt.RIP=(QWORD)((volatile void *)&&afterWRBPtest);
+            asm volatile ("": : :"memory");
+
+            isAP++;
+            asm volatile ("": : :"memory");
+            sendstringf("Failure to break on write. %d\n", isAP);
+afterWRBPtest:
+            asm volatile ("": : :"memory");
+            displayline("done writing\n");
+
+
+            displayline("Setting the single step flag (this will give unhandled exceptions)\n\r");
+            rflags=getRFLAGS(); //NO RF
+            setRFLAGS(rflags | (1<<8));
+
+            setRFLAGS(rflags & (~(1<<8))); //unset
+
+            ClearDR6OnInterrupt=0;
+
+
+            break;
+          }
+
+          case '6':
+          {
+            displayline("Setting the redirects. #UD Interrupt will fire if dbvm is not loaded (and crash)");
+            vmcall_setintredirects();
+
+            break;
+
   
