@@ -1450,4 +1450,215 @@ afterWRBPtest:
 
             break;
 
-  
+          }
+
+          case '7':
+          {
+            QWORD cr3=getCR3();
+            displayline("CR3 was %6\n", cr3);
+
+            cr3=cr3&0xfffffffffffff000ULL;
+            setCR3(cr3);
+            setCR4(getCR4() | CR4_PCIDE);
+
+            cr3=cr3 | 2;
+            setCR3(cr3);
+
+            cr3=getCR3();
+            displayline("CR3 is %6\n", cr3);
+
+            cr3=cr3 | 0x8000000000000000ULL;
+            setCR3(cr3);
+            cr3=getCR3();
+            displayline("CR3 is %6\n", cr3);
+
+            break;
+          }
+
+          case '8':
+          {
+            //pci enum test
+            pciConfigEnumPci();
+            break;
+          }
+
+          case '9':
+          {
+            {
+              char temps[17];
+              UINT64 address;
+              int size;
+              int err2,err3;
+
+              sendstring("\nAddress:");
+              readstring(temps,16,16);
+              address=atoi2(temps,16,&err2);
+
+              sendstring("\nNumber of bytes:");
+              readstring(temps,16,16);
+              size=atoi2(temps,10,&err3);
+
+              {
+                _DecodedInst disassembled[22];
+                unsigned int i;
+                unsigned int used=0;
+                distorm_decode((UINT64)address,(unsigned char*)address, size, Decode64Bits, disassembled, 22, &used);
+
+                if (used)
+                {
+                  for (i=0; i<used; i++)
+                  {
+                    displayline("%x : %s - %s %s\n",
+                      disassembled[i].offset,
+                      disassembled[i].instructionHex.p,
+                      disassembled[i].mnemonic.p,
+                      disassembled[i].operands.p);
+                  }
+
+                }
+                else
+                {
+                  displayline("Failure...\n");
+                }
+              }
+
+            }
+
+            break;
+          }
+
+          case 'a':
+          {
+            testBranchPrediction();
+            break;
+          }
+
+          case 'b':
+          {
+            reboot(0);
+            displayline("WTF?\n");
+            break;
+          }
+
+          case 'e':
+          {
+            QWORD old=readMSR(EFER_MSR);
+            QWORD new;
+
+            sendstringf("old=%6\n", old);
+
+            new=old ^ (1<<11);
+            new=new & (~(1<<10));
+            sendstringf("new1=%6\n", new);
+            writeMSR(EFER_MSR, new);
+
+            new=readMSR(EFER_MSR);
+            sendstringf("new2=%6\n", new);
+            break;
+          }
+
+          case 'o':
+          {
+            int count;
+            void *mem;
+
+            while (1)
+            {
+              mem=malloc2(4096);
+              if (mem==NULL)
+              {
+                sendstringf("alloc fail\n");
+                while (1);
+              }
+              count++;
+              if (count%10==0)
+              {
+                sendstringf("count=%d\n", count);
+              }
+
+            }
+
+
+            break;
+          }
+
+          case 'v':
+          {
+            QWORD cr0=getCR0();
+            sendstringf("CR0=%x\n", cr0);
+
+            sendstring("Flipping WP\n");
+
+            cr0=cr0 ^ CR0_WP;
+            setCR0(cr0);
+            cr0=getCR0();
+            sendstringf("CR0=%x\n", cr0);
+
+            sendstring("Flipping NE\n");
+            cr0=cr0 ^ CR0_NE;
+            setCR0(cr0);
+            cr0=getCR0();
+            sendstringf("CR0=%x\n", cr0);
+
+            sendstring("Flipping NE again \n");
+            cr0=cr0 ^ CR0_NE;
+            setCR0(cr0);
+            cr0=getCR0();
+            sendstringf("CR0=%x\n", cr0);
+
+            QWORD cr4=getCR4();
+            sendstringf("CR4=%x\n", cr4);
+
+            sendstring("Flipping CR4_OSXSAVE\n");
+
+            cr4=cr4 ^ CR4_OSXSAVE;
+            setCR4(cr4);
+            cr4=getCR4();
+            sendstringf("CR4=%x\n", cr4);
+
+            sendstring("Flipping CR4_VMXE\n");
+
+            cr4=cr4 ^ CR4_VMXE;
+            setCR4(cr4);
+            cr4=getCR4();
+            sendstringf("CR4=%x\n", cr4);
+
+            sendstring("Flipping CR4_VMXE again\n");
+
+            cr4=cr4 ^ CR4_VMXE;
+            setCR4(cr4);
+            cr4=getCR4();
+            sendstringf("CR4=%x\n", cr4);
+
+
+
+            break;
+          }
+
+          case 'w':
+          {
+            dbvm_watch_writes_test();
+            break;
+          }
+
+          case 'r':
+          {
+            dbvm_watch_reads_test();
+            break;
+          }
+
+          case 'x':
+          {
+            dbvm_watch_execute_test();
+            break;
+          }
+
+          case 'c':
+          {
+            dbvm_cloak_test();
+            break;
+          }
+
+          case 'm':
+          {
+      
