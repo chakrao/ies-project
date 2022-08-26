@@ -1661,4 +1661,209 @@ afterWRBPtest:
 
           case 'm':
           {
-      
+            dbvm_changeregonbp_test();
+            break;
+          }
+
+
+
+
+          default:
+            key=0;
+            break;
+        }
+
+
+
+        if (key)
+        {
+          displayline("Press any key to return to the menu\n");
+          if (loadedOS)
+            key=waitforchar();
+          else
+            key=kbd_getchar();
+
+        }
+      }
+    }
+
+		resync();
+	}
+}
+
+
+#if (defined SERIALPORT) && (SERIALPORT != 0)
+//obsolete, part of lauxlib again
+void *lalloc (void *ud, void *ptr, size_t osize, size_t nsize) {
+  (void)ud;
+  (void)osize;
+  if (nsize == 0) {
+    free(ptr);
+    return NULL;
+  }
+  else
+    return realloc(ptr, nsize);
+}
+#endif
+
+
+void menu(void)
+{
+  //outportb(0x80,0x11);
+  displayline("menu\n\r"); //debug to find out why the vm completely freezes when SERIALPORT==0
+
+  sendstring("menu\n\r");
+
+  displayline("After sendstring\n");
+
+  int i,j;
+
+  nosendchar[getAPICID()]=0; //force that it gets send
+
+  while (1)
+  {
+    char command;
+    QWORD mem;
+    QWORD pages;
+    mem=getTotalFreeMemory(&pages);
+    sendstring("\n\r\n\rWelcome to Dark Byte\'s virtual machine monitor\n\r");
+
+
+    sendstringf("Memory free: %d Bytes (Pages: %d) ", (int)mem, (int)pages);
+    sendstring("\n\r^^^^^^^^^^^^^^^^^^^^^^^Menu 1^^^^^^^^^^^^^^^^^^\n\r");
+    sendstring("Press 0 to run the VM\n\r");
+    sendstring("Press 1 to display the fake memory map\n\r");
+    sendstring("Press 2 to display the virtual memory of the VMM\n\r");
+    sendstring("Press 3 to display the physical memory of this system\n\r");
+    sendstring("Press 4 to display the virtual memory of the Virtual Machine\n\r");
+    sendstring("Press 5 to raise int 1 by software\n\r");
+    sendstring("Press 6 to run some testcode in the 2nd core (assuming there is one)\n\r");
+    sendstring("Press 7 to test some crap\n\r");
+    sendstring("Press 8 to execute testcode()\n\r");
+    sendstring("Press 9 to restart\n\r");
+    sendstring("Press M to test the memorymanager\n\r");
+#if (defined SERIALPORT) && (SERIALPORT != 0)
+    sendstring("Press L for Lua\n\r");
+#endif
+    sendstring("Your command:");
+
+
+#ifndef DEBUG
+    if (autostart || loadedOS)
+    {
+      autostart=0;
+      command='0';
+    }
+    else
+#endif
+    {
+      displayline("Waiting for serial port command:\n");
+      sendstring("waiting for command:");
+
+#ifdef DELAYEDSERIAL
+      if (!useserial)
+        command='0';
+      else
+#endif
+      if (loadedOS)
+      {
+        command='0';
+//        command=waitforchar();
+
+      }
+      else
+      {
+#if (defined SERIALPORT) && (SERIALPORT != 0)
+        command=waitforchar();
+#else
+        command='0';
+#endif
+
+      }
+    }
+
+
+
+    displayline("Checking command %d ",command);
+
+    sendchar(command);
+
+    displayline("After sendchar\n");
+    sendstring("\n\r");
+
+    displayline("...");
+
+    switch (command)
+    {
+
+      case  '0' : //run virtual machine
+      {
+        displayline("Starting the virtual machine\n");
+
+        if ((!loadedOS) || (needtospawnApplicationProcessors))
+        {
+
+          if (cpucount>0) //!isAMD for now during tests
+          {
+            displayline("Sending other CPU cores into VMX wait mode\n");
+            sendstring("BootCPU: Sending all AP's the command to start the VMX code\n\r");
+
+            AP_Launch=1;
+            int allsetup=0;
+            pcpuinfo c;
+            while (allsetup==0)
+            {
+              c=firstcpuinfo->next;
+              allsetup=1;
+              while (c)
+              {
+                if (c->vmxsetup==0)
+                {
+                  allsetup=0;
+                  resync();
+                  break;
+                }
+
+                c=c->next;
+              }
+            }
+            //wait till the other cpu's are started
+            sendstring("BOOT CORE: Other cpu's finished setting up, now start the boot cpu\n\r");
+          }
+
+
+          displayline("Calling startvmx for main core\n");
+        }
+
+        //while (1) _pause(); //debug so I only see AP cpu's
+        //outportb(0x80,0x12);
+
+        startvmx(getcpuinfo());
+        sendstring("BootCPU: Back from startvmx\n\r");
+        break;
+      }
+
+      case  '1' : //display fake mem map
+        sendARD();
+        break;
+
+
+      case  '2' : //display vmm mem
+        {
+          char temps[17];
+          unsigned long long StartAddress;
+          unsigned int nrofbytes;
+
+          sendstring("Startaddress:");
+          readstring(temps,16,16);
+          sendstring("\n\r");
+          sendstringf("temps=%s \n\r",temps);
+          StartAddress=atoi2(temps,16,NULL);
+
+
+          sendstring("Number of bytes:");
+          readstring(temps,8,8);
+          sendstring("\n\r");
+          nrofbytes=atoi2(temps,10,NULL);
+
+          sendstringf("Going to show the memory region %6 to %6 (physical=%6)\n\r",StartAddress,StartAddress+nrof
