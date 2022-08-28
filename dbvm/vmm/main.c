@@ -2084,4 +2084,185 @@ void startvmx(pcpuinfo currentcpuinfo)
 
   displayline("cpu %d: startvmx:\n",currentcpuinfo->cpunr);
 #ifdef DEBUG
-  sendstringf("currentcpuinfo=%6  (cpunr=%d)\n\r",(UINT64)curren
+  sendstringf("currentcpuinfo=%6  (cpunr=%d)\n\r",(UINT64)currentcpuinfo, currentcpuinfo->cpunr);
+  sendstringf("ESP=%6\n\r",entryrsp);
+  sendstringf("APICID=%d\n\r",getAPICID());
+#endif
+
+
+
+
+  // setup the vmx environment and run it
+  if (hascpuid())
+  {
+
+    unsigned char ext_fam_id;
+    unsigned char ext_model_id;
+    unsigned char proc_type;
+    unsigned char family_id;
+    unsigned char model;
+    unsigned char stepping_id;
+
+    a=1;
+    _cpuid(&a,&b,&d,&c);
+
+
+    stepping_id= a & 0xf; //4
+    model=(a >> 4) & 0xf; //4
+    family_id=(a >> 8) & 0xf; //4
+    proc_type=(a >> 12) & 0x3; //2
+    //2
+    ext_model_id=(a >> 16 ) & 0xf; //4
+    ext_fam_id=(a >> 20 ) & 0xff;
+
+    sendstringf("Version Information=%x : \n\r",a);
+    sendstringf("\tstepping_id=%d\n\r",stepping_id);
+    sendstringf("\tmodel=%d\n\r",model);
+    sendstringf("\tfamily_id=%d\n\r",family_id);
+    sendstringf("\tproc_type=%d\n\r",proc_type);
+    sendstringf("\text_model_id=%d\n\r",ext_model_id);
+    sendstringf("\text_fam_id=%d\n\r",ext_fam_id);
+
+
+
+    sendstringf("Brand Index/CLFLUSH/Maxnrcores/Init APIC=%x :\n",b);
+    {
+      unsigned char brand_index;
+      unsigned char CLFLUSH_line_size;
+      unsigned char max_logical_cpu;
+      unsigned char initial_APIC;
+
+      brand_index=b & 0xff; //4
+      CLFLUSH_line_size=(b >> 8) & 0xff;
+      max_logical_cpu=(b >> 16) & 0xff;
+      initial_APIC=(b >> 24) & 0xff;
+
+      sendstringf("\tBrand Index=%d\n\r",brand_index);
+      sendstringf("\tCLFLUSH line size=%d\n\r",CLFLUSH_line_size);
+      sendstringf("\tMaximum logical cpu\'s=%d\n\r",max_logical_cpu);
+      sendstringf("\tinitial APIC=%d\n\r",initial_APIC);
+    }
+
+   // PSOD("Line 2149: PSOD Test");
+
+    if (isAMD)
+    {
+      sendstring("AMD virtualization handling\n\r");
+
+
+
+      UINT64 a=0x80000001;
+      UINT64 b,c,d;
+
+      _cpuid(&a,&b,&c,&d);
+
+      if (c & (1<<2)) //SVM bit in cpuid
+      {
+    	  sendstring("SVM supported\n");
+
+    	  a=0x8000000a;
+    	  _cpuid(&a,&b,&c,&d);
+
+    	  displayline("cpuid: 0x8000000a:\n");
+    	  displayline("EAX=%8\n", a);
+    	  displayline("EBX=%8\n", b);
+    	  displayline("ECX=%8\n", c);
+    	  displayline("EDX=%8\n", d);
+
+
+    	  AMD_hasDecodeAssists=(d & (1<<7))>0;
+    	  AMD_hasNRIPS=(d & (1<<3))>0;
+    	  sendstringf("AMD_hasDecodeAssists=%d\n", AMD_hasDecodeAssists);
+
+    	  UINT64 VM_CR=readMSR(0xc0010114); //VM_CR MSR
+    	  sendstringf("VM_CR=%6\n", VM_CR);
+
+    	  if ((VM_CR & (1<<4))==0)
+    	  {
+    		  UINT64 efer;
+    		  sendstring("SVM is available\n");
+
+
+
+    		  currentcpuinfo->vmcb=malloc(4096);
+    		  //SetPageToWriteThrough((UINT64)currentcpuinfo->vmcb); //test. I doubt it's needed since no cpu touches another's vmcb
+
+    		  sendstringf("Have set vmcb at %x to WriteThrough caching protection\n", currentcpuinfo->vmcb);
+
+    		  zeromemory(currentcpuinfo->vmcb, 4096);
+
+    		  currentcpuinfo->vmcb_PA=(UINT64)VirtualToPhysical((void *)currentcpuinfo->vmcb);
+
+          sendstring("Setting SVME bit in EFER\n");
+          efer=readMSR(EFER_MSR);
+
+          sendstringf("EFER was %6\n", efer);
+          efer=efer | (1 << 12);
+          sendstringf("EFER will become %6\n", efer);
+
+
+          writeMSR(EFER_MSR, efer);
+
+
+
+
+          UINT64 VM_HSAVE_PA_MSR_VALUE=readMSR(VM_HSAVE_PA_MSR); //VM_HSAVE_PA MSR
+          sendstringf("VM_HSAVE_PA_MSR was %6\n", VM_HSAVE_PA_MSR_VALUE);
+
+          currentcpuinfo->vmcb_host=malloc(8192);
+          zeromemory(currentcpuinfo->vmcb_host,8192);
+        //  bochsbp();
+          writeMSR(VM_HSAVE_PA_MSR, (UINT64)VirtualToPhysical(currentcpuinfo->vmcb_host));
+
+          sendstringf("VM_HSAVE_PA_MSR is %6\n", (UINT64)readMSR(VM_HSAVE_PA_MSR));
+
+    		  setupVMX(currentcpuinfo);
+
+
+          /*if (!isAP)
+            clearScreen();*/
+
+
+          launchVMX(currentcpuinfo);
+
+          nosendchar[getAPICID()]=0;
+          sendstring("launchVMX returned. Meh\n");
+          while (1) outportb(0x80,0xc9);
+
+
+    	  }
+    	  else
+    	  {
+    		  sendstring("SVM has been disabled\n");
+    	  }
+
+
+      }
+      else
+      {
+    	  sendstring("This cpu does not support SVM\n");
+    	  sendstringf("cpuid: 0x80000001:\n");
+    	  sendstringf("EAX=%8\n", a);
+    	  sendstringf("EBX=%8\n", b);
+    	  sendstringf("ECX=%8\n", c);
+    	  sendstringf("EDX=%8\n", d);
+
+      }
+
+
+
+    }
+    else
+    {
+
+      if ((d >> 5) & 1)
+      {
+
+        volatile UINT64 IA32_FEATURE_CONTROL;
+
+
+        displayline("%d:System check successful. INTEL-VT is supported\n", currentcpuinfo->cpunr);
+        sendstring("!!!!!!!!!!!!!!This system supports VMX!!!!!!!!!!!!!!\n\r");
+
+        displayline("Going to call IA32_FEATURE_CONTROL=readMSR(0x3a)\n");
+        IA32_FEATURE_CONTROL=readMSR(IA32_FEATUR
