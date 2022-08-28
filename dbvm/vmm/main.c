@@ -1866,4 +1866,222 @@ void menu(void)
           sendstring("\n\r");
           nrofbytes=atoi2(temps,10,NULL);
 
-          sendstringf("Going to show the memory region %6 to %6 (physical=%6)\n\r",StartAddress,StartAddress+nrof
+          sendstringf("Going to show the memory region %6 to %6 (physical=%6)\n\r",StartAddress,StartAddress+nrofbytes,VirtualToPhysical((void *)StartAddress));
+
+          for (i=0; (unsigned int)i<nrofbytes; i+=16)
+          {
+            sendstringf("%8 : ",StartAddress+i);
+            for (j=i; (j<(i+16)) && ((unsigned)j<nrofbytes); j++)
+              sendstringf("%2 ",(unsigned char)*(unsigned char *)(StartAddress+j));
+
+            if ((unsigned)(i+16)>nrofbytes)
+            {
+              // Get the cursor to the right spot
+              int currentcol=11+3*(nrofbytes-i);
+              int wantedcol=11+3*16;
+              for (j=0; j<(wantedcol-currentcol); j++)
+                sendstring(" ");
+            }
+
+            for (j=i; j<(i+16) && ((unsigned)j<nrofbytes); j++)
+            {
+              unsigned char tempc=*(unsigned char *)(StartAddress+j);
+              if (tempc<32)
+                tempc='.';
+
+              sendstringf("%c",tempc);
+            }
+
+            sendstring("\n\r");
+          }
+
+          break;
+        }
+
+
+
+      case  '3' : //display physical memory
+        //use one page (mapped at 0x80000000, 4mb) to display the memory
+        {
+          displayPhysicalMemory();
+        }
+        break;
+
+
+      case  '4' : //display vm memory (virtual)
+				{
+				  sendstringf("obsolete\n");
+
+				}
+        break;
+
+
+      case  '5' :
+        asm("int $5\n");
+        break;
+
+
+      case  '6' : //run 2nd core testapp
+        {
+          /*
+          unsigned int a,b,c,d;
+          a=1;
+          _cpuid(&a,&b,&c,&d);
+          sendstringf("cpuid:1: eax=%8, ebx=%8, ecx=%8, edx=%8, \n\r",a,b,c,d);
+          if ((d & (1<<28))>0)
+          {
+            sendstring("Multi processor supported\n\r");
+            sendstringf("logical processor per package: %d \n\r",(d >> 16) & 0xff);
+
+            BOOT_ID=apic_getBootID();
+            sendstringf("BOOT_ID=%8\n\r",BOOT_ID);
+
+            sendstringf("APIC_SVR=%8\n\r",APIC_SVR);
+
+
+            cpucount=1;
+            apic_enableSVR();
+            while (cpucount==1)
+            {
+              a=1;
+              _cpuid(&a,&b,&c,&d); //serializing instruction
+            }
+
+          }
+          else
+            sendstring("No multi processor support\n");
+
+
+          */
+
+          break;
+        }
+
+      case  '7':
+        {
+          int error;
+          UINT64 pf;
+
+          void *address=mapVMmemory(getcpuinfo(), 0xc0000ULL, 16, &error, &pf);
+          sendstringf("address=%6\n", address);
+
+          if (error==0)
+          {
+            sendstringf("*address=%2\n", *(char *)address);
+            unmapPhysicalMemory(address,16);
+          }
+          else
+            sendstringf("error=%d  (pf=%6)\n", error, pf);
+
+
+
+
+
+
+          break;
+          //
+
+
+
+        }
+
+			case  '8':
+				{
+          break;
+        }
+
+        case	'9':
+        {
+          reboot(0);
+
+          break;
+				}
+
+        case 'm':
+        {
+          mmtest();
+          break;
+        }
+
+
+#if (defined SERIALPORT) && (SERIALPORT != 0)
+        case 'l':
+        {
+          sendstring("Entering lua console:");
+          enterLuaConsole();
+          break;
+        }
+#endif
+
+
+
+        case 'v':
+        {
+          sendstring("Trying vmcall\n");
+          vmcalltest();
+          break;
+        }
+
+        case 'z':
+        {
+          QWORD old=getCR4();
+          sendstringf("testing cr4 value\n");
+          setCR4(0x370678);
+          sendstringf("pass 1 %8\n", getCR4());
+          setCR4(0x372678);
+          sendstringf("pass 2 %8\n", getCR4());
+          setCR4(old);
+          sendstringf("done\n");
+          break;
+        }
+
+       /*
+      case  'i':
+        showstate();
+        break;
+
+      case  't':
+        {
+          ULONG xxx=MapPhysicalMemory(0xfb000000, 0xfb000000);
+          sendstringf("xxx=%8\n\r",xxx);
+          testcode();
+          break;
+        }
+
+      case  'c' :
+      {
+        unsigned int crc=generateCRC((unsigned char *)(e), 0x007fffff-(e));
+        unsigned int idtcrc=generateCRC((unsigned char *)0, 0x400);
+        unsigned int vmmcrc=generateCRC((unsigned char *)0x00400000, getGDTbase() - 0x00400000);
+        sendstringf("stack crc=%8\n\r",crc);
+        sendstringf("idt crc=%8\n\r",idtcrc);
+        sendstringf("vmm crc=%8\n\r",vmmcrc);
+        break;
+      }
+      */
+
+      default :
+        sendstring("That is not a valid option\n\r");
+        break;
+
+    }
+
+
+  }
+
+}
+
+
+void startvmx(pcpuinfo currentcpuinfo)
+{
+#ifdef DEBUG
+  UINT64 entryrsp=getRSP();
+#endif
+
+  UINT64 a,b,c,d;
+ // outportb(0x80,0x13);
+
+
+  displayline("cpu %d: startvmx:\n",currentcpuinfo->cpunr);
+#ifdef DEBUG
+  sendstringf("currentcpuinfo=%6  (cpunr=%d)\n\r",(UINT64)curren
