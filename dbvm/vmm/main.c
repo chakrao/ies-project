@@ -2265,4 +2265,119 @@ void startvmx(pcpuinfo currentcpuinfo)
         sendstring("!!!!!!!!!!!!!!This system supports VMX!!!!!!!!!!!!!!\n\r");
 
         displayline("Going to call IA32_FEATURE_CONTROL=readMSR(0x3a)\n");
-        IA32_FEATURE_CONTROL=readMSR(IA32_FEATUR
+        IA32_FEATURE_CONTROL=readMSR(IA32_FEATURE_CONTROL_MSR);
+        displayline("IA32_FEATURE_CONTROL=%6\n\r",IA32_FEATURE_CONTROL);
+
+
+        if (IA32_FEATURE_CONTROL & FEATURE_CONTROL_LOCK)
+        {
+          displayline("IA32_FEATURE_CONTROL is locked (value=%6). (Disabled in bios?)\n\r",IA32_FEATURE_CONTROL);
+          if (!(IA32_FEATURE_CONTROL & FEATURE_CONTROL_VMXON ))
+          {
+            displayline("Bit 2 (VMX) is also disabled. VMX is not possible. Reboot!\n");
+            return;
+          }
+          else
+            sendstring("VMXON was already enabled in the feature control MSR\n");
+        }
+        else
+        {
+          sendstring("Not locked yet\n");
+
+          IA32_FEATURE_CONTROL=IA32_FEATURE_CONTROL | FEATURE_CONTROL_VMXON | FEATURE_CONTROL_LOCK;
+
+          displayline("setting IA32_FEATURE_CONTROL to %6\n\r",IA32_FEATURE_CONTROL);
+
+          writeMSR(IA32_FEATURE_CONTROL_MSR,IA32_FEATURE_CONTROL);
+          IA32_FEATURE_CONTROL=readMSR(IA32_FEATURE_CONTROL_MSR);
+          displayline("IA32_FEATURE_CONTROL is now %6\n\r",IA32_FEATURE_CONTROL);
+        }
+
+
+        sendstring("Gathering VMX info\n\r");
+  			//gather info
+        IA32_VMX_BASIC.IA32_VMX_BASIC=readMSR(0x480);
+
+        IA32_VMX_CR0_FIXED0=readMSR(IA32_VMX_CR0_FIXED0_MSR);
+        IA32_VMX_CR0_FIXED1=readMSR(IA32_VMX_CR0_FIXED1_MSR);
+        IA32_VMX_CR4_FIXED0=readMSR(IA32_VMX_CR4_FIXED0_MSR);
+        IA32_VMX_CR4_FIXED1=readMSR(IA32_VMX_CR4_FIXED1_MSR);
+
+
+        sendstring("Setting CR4\n\r");
+
+
+  			setCR4(getCR4() | CR4_VMXE);
+
+        if (currentcpuinfo->vmxon_region==NULL)
+          currentcpuinfo->vmxon_region=malloc(4096);
+
+        sendstringf("Allocated vmxon_region at %6 (%6)\n\r",(UINT64)currentcpuinfo->vmxon_region,(UINT64)VirtualToPhysical(currentcpuinfo->vmxon_region));
+
+        if (currentcpuinfo->vmxon_region==NULL)
+        {
+          nosendchar[getAPICID()]=0;
+          sendstringf(">>>>>>>>>>>>>>>>>>>>vmxon allocation has failed<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+          ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+          while (1) outportb(0x80,0xca);
+        }
+
+        zeromemory(currentcpuinfo->vmxon_region,4096);
+  			*(ULONG *)currentcpuinfo->vmxon_region=IA32_VMX_BASIC.rev_id;
+
+        if (currentcpuinfo->vmcs_region==NULL)
+          currentcpuinfo->vmcs_region=malloc(4096);
+
+        sendstringf("Allocated vmcs_region at %6 (%6)\n\r",currentcpuinfo->vmcs_region,VirtualToPhysical(currentcpuinfo->vmcs_region));
+
+        if (currentcpuinfo->vmcs_region==NULL)
+        {
+          nosendchar[getAPICID()]=0;
+          ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+          sendstringf(">>>>>>>>>>>>>>>>>>>>vmcs_region allocation has failed<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+          while (1) outportb(0x80,0xcb);
+        }
+
+
+
+        zeromemory(currentcpuinfo->vmcs_region,4096);
+        *(ULONG *)currentcpuinfo->vmcs_region=IA32_VMX_BASIC.rev_id;
+
+        currentcpuinfo->vmcs_regionPA=VirtualToPhysical(currentcpuinfo->vmcs_region);
+
+        displayline("revision id=%d\n\r",IA32_VMX_BASIC.rev_id);
+
+        displayline("IA32_FEATURE_CONTROL=%6\n\r",IA32_FEATURE_CONTROL);
+        displayline("IA32_VMX_CR0_FIXED0=%6 IA32_VMX_CR0_FIXED1=%6\n\r",IA32_VMX_CR0_FIXED0,IA32_VMX_CR0_FIXED1);
+        displayline("IA32_VMX_CR4_FIXED0=%6 IA32_VMX_CR4_FIXED1=%6\n\r",IA32_VMX_CR4_FIXED0,IA32_VMX_CR4_FIXED1);
+
+
+        displayline("CR0=%6  (Should be %6)\n\r",(UINT64)getCR0(),((UINT64)getCR0() | (UINT64)IA32_VMX_CR0_FIXED0) & (UINT64)IA32_VMX_CR0_FIXED1);
+        displayline("CR4=%6  (Should be %6)\n\r",(UINT64)getCR4(),((UINT64)getCR4() | (UINT64)IA32_VMX_CR4_FIXED0) & (UINT64)IA32_VMX_CR4_FIXED1);
+
+        setCR0(((UINT64)getCR0() | (UINT64)IA32_VMX_CR0_FIXED0) & (UINT64)IA32_VMX_CR0_FIXED1);
+        setCR4(((UINT64)getCR4() | (UINT64)IA32_VMX_CR4_FIXED0) & (UINT64)IA32_VMX_CR4_FIXED1);
+
+
+        displayline("vmxon_region=%6\n\r",VirtualToPhysical(currentcpuinfo->vmxon_region));
+
+        displayline("%d:Checks successfull. Going to call vmxon\n",currentcpuinfo->cpunr);
+
+  		  if (vmxon(VirtualToPhysical(currentcpuinfo->vmxon_region))==0)
+  	  	{
+  		    sendstring("vmxon success\n\r");
+          displayline("%d: vmxon success\n",currentcpuinfo->cpunr);
+
+          displayline("%d: calling vmclear\n",currentcpuinfo->cpunr);
+
+          if (vmclear(VirtualToPhysical(currentcpuinfo->vmcs_region))==0)
+          {
+            displayline("%d: calling vmptrld\n",currentcpuinfo->cpunr);
+
+            if (vmptrld(VirtualToPhysical(currentcpuinfo->vmcs_region))==0)
+            {
+
+              displayline("%d: vmptrld successful. Calling setupVMX\n", currentcpuinfo->cpunr);
+
+              sendstringf("%d: Calling setupVMX with currentcpuinfo %6\n\r",currentcpuinfo->cpunr ,(UINT64)currentcpuinfo);
+              setupVMX(cu
