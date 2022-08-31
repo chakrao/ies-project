@@ -2380,4 +2380,93 @@ void startvmx(pcpuinfo currentcpuinfo)
               displayline("%d: vmptrld successful. Calling setupVMX\n", currentcpuinfo->cpunr);
 
               sendstringf("%d: Calling setupVMX with currentcpuinfo %6\n\r",currentcpuinfo->cpunr ,(UINT64)currentcpuinfo);
-              setupVMX(cu
+              setupVMX(currentcpuinfo);
+
+              displayline("%d: Virtual Machine configuration successful. Launching...\n",currentcpuinfo->cpunr);
+
+
+              /*if (currentcpuinfo->cpunr==0)
+                while (1);*/
+
+              if (!isAP)
+                clearScreen();
+
+              //vmptrld(VirtualToPhysical(currentcpuinfo->vmcs_region));
+             // vmptrld(VirtualToPhysical(currentcpuinfo->vmcs_region));
+              //vmptrld(VirtualToPhysical(currentcpuinfo->vmcs_region));
+
+              launchVMX(currentcpuinfo);
+
+              ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+
+              displayline("Exit from launchVMX, if you see this, something horrible has happened\n");
+              sendstring("Exit from launchVMX\n\r");
+
+            }
+            else
+            {
+              sendstring("vmptrld failed\n\r");
+
+              displayline("vmptrld failure:");
+              displayline(getVMInstructionErrorString());
+              displayline(" \n");
+
+
+            }
+          }
+          else
+          {
+            sendstring("vmclear failed\n\r");
+
+
+            displayline("vmclear failure:");
+            displayline(getVMInstructionErrorString());
+            displayline(" \n");
+
+          }
+          sendstringf("Calling vmxoff() (rsp=%x)\n\r", getRSP());
+
+  				vmxoff();
+  				sendstring("still here so vmxoff succeeded\n\r");
+
+  			}
+        else
+        {
+          displayline("vmxon failure\n");
+          sendstring("vmxon failed\n\r");
+        }
+
+
+
+      }
+      else
+      {
+        displayline("Fatal error: Your system does not support intel-VT!!!!\n");
+        displayline("Remove the disk, reboot, and go look for a better cpu\n");
+        sendstring("!!!!!!!!!!!!!!Your system is crap, it does NOT support VMX!!!!!!!!!!!!!!\n\r");
+        sendstringf("cpuid(1):\n");
+        sendstringf("EAX=%8\n", a);
+        sendstringf("EBX=%8\n", b);
+        sendstringf("ECX=%8\n", c);
+        sendstringf("EDX=%8\n", d);
+
+      }
+    }
+
+
+  }
+  else
+  {
+    sendstring("This fucking retarded system doesn'\t even have cpuid. Should I fry it ?\n\r");
+    displayline("Your system doesn\'t even support CPUID, therefore it probably won\'t support Virtualization either\n");
+  }
+
+#ifdef DEBUG
+  sendstringf("End of startvmx (entryrsp=%6, returnrsp=%6)\n\r",entryrsp,getRSP());
+#endif
+
+  ddDrawRectangle(0,DDVerticalResolution-100,100,100,0x00ffff);
+
+  if (currentcpuinfo->cpunr==0)
+    displayline("bye...\n");
+}
