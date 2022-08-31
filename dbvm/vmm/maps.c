@@ -112,4 +112,21 @@ void map_iterate(PMapData mapdata, QWORD baseaddress, int level, MAPCALLBACK cb)
   int addresspart = level * 9;
 
 
-  for (i = 
+  for (i = 0; i < 512; i++)
+  {
+    if (mapdata[i].Map)
+    {
+      QWORD newaddress = baseaddress + (QWORD)((QWORD)i << addresspart);
+
+      if (level==0)
+        cb(newaddress, mapdata[i].Data);
+      else
+        map_iterate(mapdata[i].Map, newaddress, level - 1, cb);
+    }
+  }
+}
+
+void map_foreach(PMapInfo map, MAPCALLBACK cb)
+{
+  map_iterate(map->top, 0, map->maxlevel, cb);
+}
