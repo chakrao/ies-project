@@ -411,4 +411,204 @@ int mmFindMapPositionForSize(pcpuinfo cpuinfo, int size)
       zeromemory((void*)(((QWORD)pagetable+4096) & 0xfffffffffffff000ULL), 4096);
     }
 
-    
+    cpuinfo->mappagetables=pagetable;
+  }
+
+  pos=-1;
+  for (i=0; i<1024; i++)
+  {
+    if (pagetable[i].P==0)
+    {
+      int j=i+1;
+      int needed=pagecount-1;
+      while (needed)
+      {
+        if (pagetable[j].P)
+          break;
+
+        needed--;
+        j++;
+
+        if (j>=1024)
+          return -1;
+      }
+
+      if (needed==0)
+      {
+        pos=i;
+        break;
+      }
+    }
+  }
+
+  return pos;
+}
+
+volatile int FreezeOnMapAllocFail=1;
+
+
+void mapPhysicalAddressToVirtualAddress(QWORD PhysicalAddress, QWORD VirtualAddress)
+{
+  VirtualAddress=0xfffffffffffff000ULL;
+  PhysicalAddress=PhysicalAddress & MAXPHYADDRMASKPB;
+  PPTE_PAE pageentry=(PPTE_PAE)getPageTableEntryForAddressEx((void *)VirtualAddress,1);
+  *(QWORD*)pageentry=PhysicalAddress;
+  pageentry->P=1;
+  pageentry->RW=1;
+  pageentry->US=1;
+  asm volatile ("": : :"memory");
+  _invlpg(VirtualAddress);
+  asm volatile ("": : :"memory");
+}
+
+QWORD mmFindGlobalMapAddressForSize(int size)
+{
+  int pagecount=size / 4096;
+  if (size & 0xfff)
+    pagecount++;
+
+  PPTE_PAE pages;
+  QWORD currentVirtualAddress=GLOBALMAPPEDMEMORY;
+
+  //find a global page not used yet. Every 2MB call getPageTableEntryForAddressEx to make sure the pagetable is present
+  while (currentVirtualAddress<MAPPEDMEMORY)
+  {
+    pages=(PPTE_PAE)getPageTableEntryForAddressEx((void *)currentVirtualAddress,1);
+    //scan this page for pagecount number of pages
+    int i;
+    for (i=0; i<512; i++)
+    {
+      if (pages[i].P==0)
+      {
+        //scan for i to pagecount and make sure it's all 0
+        //make sure that all pagetables between i and pagecount are present
+        int j;
+        int used=0;
+
+        for (j=i+512; j<i+pagecount; j+=512)
+          getPageTableEntryForAddressEx((void*)(currentVirtualAddress+4096*j),1);
+
+        //now scan
+
+        for (j=i; j<i+pagecount; j++)
+        {
+          if (pages[j].P)
+          {
+            used=1;
+            break;
+          }
+        }
+        if (used==0)
+          return currentVirtualAddress+4096*i;
+      }
+    }
+    currentVirtualAddress+=2*1024*1024; //next 2MB
+  }
+  
+  return 0;
+}
+
+void* mapPhysicalMemoryGlobal(QWORD PhysicalAddress, int size) //heavy operation
+{
+  int i;
+  unsigned int offset=PhysicalAddress & 0xfff;
+  int totalsize=size+offset;
+  int pagecount=totalsize / 4096;
+  if (totalsize & 0xfff)
+      pagecount++;
+
+  PPTE_PAE pages;
+  QWORD VirtualAddress;
+  csEnter(&GlobalMapCS);
+
+
+  VirtualAddress=mmFindGlobalMapAddressForSize(totalsize);
+  if (VirtualAddress)
+  {
+    pages=(PPTE_PAE)getPageTableEntryForAddress((void *)VirtualAddress);
+    for (i=0; i<pagecount; i++)
+    {
+      *(QWORD*)&pages[i]=(PhysicalAddress+(4096*i)) & MAXPHYADDRMASKPB;
+      pages[i].P=1;
+      pages[i].RW=1;
+      pages[i].US=1;
+      asm volatile ("": : :"memory");
+      _invlpg(VirtualAddress+i*4096);
+      asm volatile ("": : :"memory");
+    }
+  }
+
+  _wbinvd();
+  csLeave(&GlobalMapCS);
+
+  return (void*)VirtualAddress+offset;
+}
+
+void* mapPhysicalMemoryAddresses(QWORD *addresses, int count)
+/*
+ * Maps the given physical addresses in the order given
+ * addresses is an array of 4KB aligned physical memory addresses
+ */
+{
+  int i;
+  pcpuinfo c=getcpuinfo();
+  QWORD VirtualAddressBase=MAPPEDMEMORY+c->cpunr*0x400000;
+  int pos=mmFindMapPositionForSize(c, count*4096);
+  if (pos==-1)
+  {
+    nosendchar[getAPICID()]=0;
+    sendstring("mapPhysicalMemoryAddresses: Out of virtual memory to map region.  Check the size and make sure you unmap as well\n");
+    while (FreezeOnMapAllocFail)
+    {
+      outportb(0x80,2);
+    }
+    return NULL;
+  }
+
+  for (i=0; i<count; i++)
+  {
+    *(QWORD*)&c->mappagetables[pos+i]=addresses[i] & MAXPHYADDRMASKPB;
+    c->mappagetables[pos+i].P=1;
+    c->mappagetables[pos+i].RW=1;
+    c->mappagetables[pos+i].US=1;
+
+    asm volatile ("": : :"memory");
+    _invlpg(VirtualAddressBase+(pos+i)*4096);
+    asm volatile ("": : :"memory");
+  }
+
+  return (void *)(VirtualAddressBase+pos*4096);
+}
+
+void* mapPhysicalMemory(QWORD PhysicalAddress, int size)
+{
+  //find a free virtual address in the range assigned to this cpu
+  int i,pos;
+  unsigned int offset=PhysicalAddress & 0xfff;
+  int totalsize=size+offset;
+  int pagecount=totalsize / 4096;
+  if (totalsize & 0xfff)
+      pagecount++;
+
+  pcpuinfo c=getcpuinfo();
+
+  QWORD VirtualAddressBase=(QWORD)getMappedMemoryBase();  //MAPPEDMEMORY+c->cpunr*0x400000;
+
+
+
+  //find non-present pages
+  pos=mmFindMapPositionForSize(c, totalsize);
+
+  if (pos==-1)
+  {
+    nosendchar[getAPICID()]=0;
+    sendstring("mapPhysicalMemory: Out of virtual memory to map region.  Check the size and make sure you unmap as well\n");
+    while (FreezeOnMapAllocFail)
+    {
+      outportb(0x80,0x02);
+    }
+    return NULL;
+  }
+
+
+  //0
