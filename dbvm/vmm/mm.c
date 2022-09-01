@@ -209,4 +209,206 @@ void* mapMemory(void *destination, void *source, int size)
     PPDE_PAE destinationpte=getPageTableEntryForAddressEx(destination,1);
     PPDE_PAE sourcepte=getPageTableEntryForAddress(source);
 
-    *
+    *destinationpte=*sourcepte;
+
+    source+=4096;
+    destination+=4096;
+
+    _invlpg((QWORD)destination);
+  }
+
+  return result;
+}
+
+int getFreePML4Index(void)
+{
+  int i;
+  for (i=511; i>1; i--)
+  {
+    if (pml4table[i].P==0)
+      return i;
+  }
+
+  return -1;
+}
+
+void unmapAddressAtPML4(PPTE_PAE base)
+{
+  int index=((QWORD)base >> 39) & 0x1ff;
+  pml4table[index].P=0;
+  _wbinvd();
+}
+
+PPTE_PAE mapAddressAtPML4(QWORD address)
+{
+  static criticalSection CS={.name="static mapAddressAtPML4 CS", .debuglevel=2};
+  int index;
+
+  csEnter(&CS);
+
+  sendstringf("mapAddressAtPML4(%6)\n", address);
+
+  index=getFreePML4Index();
+
+  if (index==-1)
+  {
+    sendstring("No PML4 entries free\n");
+    csLeave(&CS);
+    return NULL;
+  }
+
+  *(QWORD*)(&pml4table[index])=address;
+  pml4table[index].P=1;
+  pml4table[index].RW=1;
+  asm volatile ("": : :"memory");
+  csLeave(&CS);
+
+
+  QWORD result=((QWORD)index << 39);
+  if (result>=0x800000000000ULL) //sign extend
+    result|=0xffff000000000000ULL;
+
+  _invlpg(result);
+
+  _wbinvd();
+
+  return (PPTE_PAE)result;
+}
+
+void VirtualAddressToPageEntries(QWORD address, PPDPTE_PAE *pml4entry, PPDPTE_PAE *pagedirpointerentry, PPDE_PAE *pagedirentry, PPTE_PAE *pagetableentry)
+{
+  QWORD PTE=address;
+  PTE=PTE & 0x0000ffffffffffffULL;
+  PTE=PTE >> 12;
+  PTE=PTE * 8;
+  PTE=PTE+0xffffff8000000000ULL;
+  *pagetableentry=(PPTE_PAE)PTE;
+  asm volatile ("": : :"memory");
+
+  //*pagetableentry = (PPTE_PAE)((((QWORD)address & 0x0000ffffffffffffull) >> 12)*8) + 0xfffff80000000000ULL;
+
+  QWORD PDE=PTE;
+  PDE=PDE & 0x0000ffffffffffffULL;
+  PDE=PDE >> 12;
+  PDE=PDE * 8;
+  PDE=PDE+0xffffff8000000000ULL;
+  *pagedirentry = (PPDE_PAE)PDE;
+  asm volatile ("": : :"memory");
+
+
+  //*pagedirentry = (PPDE_PAE)((((QWORD)*pagetableentry & 0x0000ffffffffffffull )>> 12)*8) + 0xfffff80000000000ULL;
+
+  QWORD PDPTR=PDE;
+  PDPTR=PDPTR & 0x0000ffffffffffffULL;
+  PDPTR=PDPTR >> 12;
+  PDPTR=PDPTR * 8;
+  PDPTR=PDPTR+0xffffff8000000000ULL;
+  *pagedirpointerentry=(PPDPTE_PAE)PDPTR;
+  asm volatile ("": : :"memory");
+
+  //*pagedirpointerentry = (PPDPTE_PAE)((((QWORD)*pagedirentry & 0x0000ffffffffffffull )>> 12)*8) + 0xfffff80000000000ULL;
+
+  QWORD PML4=PDPTR;
+  PML4=PML4 & 0x0000ffffffffffffULL;
+  PML4=PML4 >> 12;
+  PML4=PML4 * 8;
+  PML4=PML4+0xffffff8000000000ULL;
+  *pml4entry=(PPDPTE_PAE)PML4;
+  asm volatile ("": : :"memory");
+}
+
+void VirtualAddressToIndexes(QWORD address, int *pml4index, int *pagedirptrindex, int *pagedirindex, int *pagetableindex)
+/*
+ * Returns the indexes for the given address  (ia32e)
+ */
+{
+  *pml4index=(address >> 39) & 0x1ff;
+  *pagedirptrindex=(address >> 30) & 0x1ff;
+  *pagedirindex=(address >> 21) & 0x1ff;
+  *pagetableindex=(address >> 12) & 0x1ff;
+}
+
+
+
+void *getMappedMemoryBase()
+/*
+ * Returns the virtual address where this cpu's mapped regions are located
+ */
+{
+  return (void *)(MAPPEDMEMORY+getcpunr()*0x400000);
+}
+
+int mmFindMapPositionForSize(pcpuinfo cpuinfo, int size)
+{
+
+  if (size==0)
+    return -1;
+
+  int pagecount=size / 4096;
+  int i,pos;
+  if (size % 4096)
+    pagecount++;
+
+
+  //get the pagedir entries (2) for this cpu (1024 entries)
+  //allocate if needed
+  PPTE_PAE pagetable=cpuinfo->mappagetables;
+
+
+  if (pagetable==NULL)
+  {
+    PPDPTE_PAE pml4, pdptr;
+    PPDE_PAE pagedir;
+
+    VirtualAddressToPageEntries((QWORD)getMappedMemoryBase(),&pml4, &pdptr, &pagedir, &pagetable);
+    if (pml4->P==0)
+    {
+      *(QWORD *)pml4=VirtualToPhysical(malloc2(4096));
+      pml4->P=1;
+      pml4->US=1;
+      pml4->RW=1;
+
+      asm volatile ("": : :"memory");
+      _invlpg((QWORD)pdptr);
+      asm volatile ("": : :"memory");
+      zeromemory((void*)((QWORD)pdptr & 0xfffffffffffff000ULL), 4096);
+    }
+
+    if (pdptr->P==0)
+    {
+      *(QWORD *)pdptr=VirtualToPhysical(malloc2(4096));
+      pdptr->P=1;
+      pdptr->US=1;
+      pdptr->RW=1;
+
+      asm volatile ("": : :"memory");
+      _invlpg((QWORD)pagedir);
+      asm volatile ("": : :"memory");
+      zeromemory((void*)((QWORD)pagedir & 0xfffffffffffff000ULL), 4096);
+    }
+
+    if (pagedir[0].P==0)
+    {
+      *(QWORD*)&pagedir[0]=VirtualToPhysical(malloc2(4096));
+      pagedir[0].P=1;
+      pagedir[0].US=1;
+      pagedir[0].RW=1;
+      asm volatile ("": : :"memory");
+      _invlpg((QWORD)pagetable);
+      asm volatile ("": : :"memory");
+      zeromemory((void*)((QWORD)pagetable & 0xfffffffffffff000ULL), 4096);
+    }
+
+    if (pagedir[1].P==0)
+    {
+      *(QWORD*)&pagedir[1]=VirtualToPhysical(malloc2(4096));
+      pagedir[1].P=1;
+      pagedir[1].US=1;
+      pagedir[1].RW=1;
+      asm volatile ("": : :"memory");
+      _invlpg((QWORD)pagetable+4096);
+      asm volatile ("": : :"memory");
+      zeromemory((void*)(((QWORD)pagetable+4096) & 0xfffffffffffff000ULL), 4096);
+    }
+
+    
