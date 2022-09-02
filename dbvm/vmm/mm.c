@@ -611,4 +611,187 @@ void* mapPhysicalMemory(QWORD PhysicalAddress, int size)
   }
 
 
-  //0
+  //0 everything from bit MAXPHYADDR to 63
+  PhysicalAddress=PhysicalAddress & MAXPHYADDRMASKPB;
+
+
+  //map at pos
+  for (i=0; i<pagecount; i++)
+  {
+    *(QWORD*)&c->mappagetables[pos+i]=PhysicalAddress;
+    c->mappagetables[pos+i].P=1;
+    c->mappagetables[pos+i].RW=1;
+    c->mappagetables[pos+i].US=1;
+
+    PhysicalAddress+=4096;
+    asm volatile ("": : :"memory");
+    _invlpg(VirtualAddressBase+(pos+i)*4096);
+    asm volatile ("": : :"memory");
+  }
+
+  asm volatile ("": : :"memory");
+
+
+  return (void *)(VirtualAddressBase+pos*4096+offset);
+}
+
+void unmapPhysicalMemoryGlobal(void *virtualaddress, int size)
+{
+
+
+  if (((QWORD)virtualaddress>=GLOBALMAPPEDMEMORY) && ((QWORD)virtualaddress+size<MAPPEDMEMORY))
+  {
+    QWORD base=(QWORD)virtualaddress & 0xfffffffffffff000ULL;;
+    unsigned int offset=(QWORD)virtualaddress & 0xfff;
+    int totalsize=size+offset;
+    int pagecount=totalsize / 4096;
+    if (totalsize & 0xfff)
+        pagecount++;
+
+    csEnter(&GlobalMapCS);
+    PPTE_PAE pages=(PPTE_PAE)getPageTableEntryForAddress(virtualaddress);
+
+    int i;
+    for (i=0; i<pagecount; i++)
+    {
+      pages[i].P=0;
+      asm volatile ("": : :"memory");
+      _invlpg((QWORD)base+i*4096);
+      asm volatile ("": : :"memory");
+    }
+
+    _wbinvd();
+    csLeave(&GlobalMapCS);
+  }
+  else
+  {
+    nosendchar[getAPICID()]=0;
+    sendstringf("invalid global address (%6) given to unmapPhysicalMemoryGlobal\n",virtualaddress);
+    ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+    while (1) outportb(0x80,0x01);
+  }
+
+
+}
+
+void unmapPhysicalMemory(void *virtualaddress, int size)
+{
+  pcpuinfo c=getcpuinfo();
+
+  unsigned int offset=(QWORD)virtualaddress & 0xfff;
+  int totalsize=size+offset;
+  int pagecount=totalsize / 4096;
+  if (totalsize & 0xfff)
+      pagecount++;
+
+
+
+  int pos=(((QWORD)virtualaddress & 0xfffffffffffff000ULL)-(MAPPEDMEMORY+(c->cpunr*0x400000)))/4096;
+
+  if ((pos<0) || (pos>1024))
+  {
+    nosendchar[getAPICID()]=0;
+    sendstringf("%d: invalid address given to unmapPhysicalMemory (%6)\n",c->cpunr, virtualaddress);
+    ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+    while (1) outportb(0x80,0xce);
+  }
+
+  int i;
+  QWORD MappedBase=(QWORD)getMappedMemoryBase();
+  for (i=pos; i<pos+pagecount; i++)
+  {
+    c->mappagetables[i].P=0;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)MappedBase+4096*i);
+    asm volatile ("": : :"memory");
+  }
+
+}
+
+
+
+void markPageAsNotReadable(void *address)
+/*
+ * Marks the page as not accessible. (This makes the physical page unusable)
+ * should only be done on full pages that have been allocated
+ */
+{
+  int index=((QWORD)address-BASE_VIRTUAL_ADDRESS) / 4096;
+  if ((index>0) && (index<PhysicalPageListSize))
+      AllocationInfoList[index].BitMask=0xffffffffffffffff; //just in case it wasn't allocated...
+
+  PPDE_PAE pagedescriptor=getPageTableEntryForAddress(address);
+  if (pagedescriptor)
+  {
+    pagedescriptor->P=0;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)address);
+    asm volatile ("": : :"memory");
+  }
+}
+
+void markPageAsReadOnly(void *address)
+{
+  PPDE_PAE pagedescriptor=getPageTableEntryForAddress(address);
+  if (pagedescriptor)
+  {
+    pagedescriptor->RW=0;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)address);
+    asm volatile ("": : :"memory");
+  }
+}
+
+void markPageAsWritable(void *address)
+{
+  //marks a virtual page that was set as read only back to writable
+  PPDE_PAE pagedescriptor=getPageTableEntryForAddress(address);
+  if (pagedescriptor)
+  {
+    pagedescriptor->RW=1;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)address);
+    asm volatile ("": : :"memory");
+  }
+}
+
+void SetPageToWriteThrough(void *address)
+{
+  PPDE_PAE pagedescriptor=getPageTableEntryForAddress(address);
+  if (pagedescriptor)
+  {
+    pagedescriptor->PWT=1;
+    pagedescriptor->PCD=1;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)address);
+    asm volatile ("": : :"memory");
+  }
+}
+
+void *addPhysicalPageToDBVM(QWORD address, int inuse)
+/*
+ * Adds a physical page to the physicalPage List.
+ * they will be mapped as virtual addresses at 0x1000000000 and beyond
+ *
+ * pre: the AllocCS must be owned by the current thread
+ */
+{
+  UINT64 VirtualAddress=BASE_VIRTUAL_ADDRESS+4096*PhysicalPageListSize;
+
+  PPDPTE_PAE pml4entry;
+  PPDPTE_PAE pagedirptrentry;
+  PPDE_PAE pagedirentry;
+  PPTE_PAE pagetableentry;
+
+  VirtualAddressToPageEntries(VirtualAddress, &pml4entry, &pagedirptrentry, &pagedirentry, &pagetableentry);
+
+  if (pml4entry->P==0)
+  {
+    //make this page the new pagedirptr entry
+    *(QWORD *)pml4entry=address;
+    pml4entry->P=1;
+    pml4entry->RW=1;
+    pml4entry->US=1;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)pagedirptrentry);
+    asm volatile ("": : :"mem
