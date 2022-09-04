@@ -794,4 +794,187 @@ void *addPhysicalPageToDBVM(QWORD address, int inuse)
     pml4entry->US=1;
     asm volatile ("": : :"memory");
     _invlpg((QWORD)pagedirptrentry);
-    asm volatile ("": : :"mem
+    asm volatile ("": : :"memory");
+    zeromemory((void*)((QWORD)pagedirptrentry & 0xfffffffffffff000ULL), 4096);
+    return NULL;
+  }
+
+  if (pagedirptrentry->P==0)
+  {
+    *(QWORD *)pagedirptrentry=address;
+    pagedirptrentry->P=1;
+    pagedirptrentry->RW=1;
+    pagedirptrentry->US=1;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)pagedirentry);
+    asm volatile ("": : :"memory");
+    zeromemory((void*)((QWORD)pagedirentry & 0xfffffffffffff000ULL), 4096);
+    return NULL;
+  }
+
+  if (pagedirentry->P==0)
+  {
+    *(QWORD *)pagedirentry=address;
+    pagedirentry->P=1;
+    pagedirentry->RW=1;
+    pagedirentry->US=1;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)pagetableentry);
+    asm volatile ("": : :"memory");
+    zeromemory((void*)((QWORD)pagetableentry & 0xfffffffffffff000ULL), 4096);
+    return NULL;
+  }
+
+  if (pagetableentry->P)
+  {
+    nosendchar[getAPICID()]=0;
+    sendstringf("!Assertion failure! Virtual address %6 was already present (PhysicalPageListSize=%d)\n", VirtualAddress, PhysicalPageListSize);
+    ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+    while (1) outportb(0x80,0xcf);
+  }
+
+  *(QWORD *)pagetableentry=address;
+  pagetableentry->P=1;
+  pagetableentry->RW=1;
+  pagetableentry->US=1;
+  asm volatile ("": : :"memory");
+  _invlpg(VirtualAddress);
+  asm volatile ("": : :"memory");
+  zeromemory((void*)VirtualAddress, 4096);
+
+
+  //now mark these 4096 bytes as available to the memory manager
+  if (!inuse)
+    AllocationInfoList[PhysicalPageListSize].BitMask=0;
+  else
+    AllocationInfoList[PhysicalPageListSize].BitMask=0xffffffffffffffffULL;
+
+  PhysicalPageListSize++;
+
+  if (PhysicalPageListSize>=PhysicalPageListMaxSize)
+  {
+    //reallocate the list
+    int i;
+    void *oldlist=AllocationInfoList;
+    int oldsize=sizeof(PageAllocationInfo)*PhysicalPageListMaxSize;
+
+    AllocationInfoList=realloc2(oldlist, oldsize, sizeof(PageAllocationInfo)*PhysicalPageListMaxSize*2);
+    PhysicalPageListMaxSize=PhysicalPageListMaxSize*2;
+    for (i=PhysicalPageListSize; i<PhysicalPageListMaxSize; i++)
+      AllocationInfoList[i].BitMask=0xffffffffffffffffULL;
+
+    free2(oldlist, oldsize); //realloc2 can't actually free it (still uses the old list) so free it here
+  }
+
+  return (void *)VirtualAddress;
+}
+
+void* addPhysicalPagesToDBVM(QWORD address, int count, int inuse)
+{
+  int i;
+  void* result=NULL;
+  address=address & 0xfffffffffffff000ULL; //sanitize
+
+  csEnter(&AllocCS);
+  for (i=0; i<count; i++)
+  {
+    void* va=addPhysicalPageToDBVM(address+i*4096, inuse);
+    if (i==0)
+      result=va;
+  }
+  csLeave(&AllocCS);
+
+  return result;
+}
+
+void mmAddPhysicalPageListToDBVM(QWORD *pagelist, int count, int inuse)
+{
+  int i;
+  csEnter(&AllocCS);
+  for (i=0; i<count; i++)
+    addPhysicalPageToDBVM(pagelist[i], inuse);
+  csLeave(&AllocCS);
+}
+
+QWORD getTotalFreeMemory(QWORD *FullPages)
+//scans the allocationinfolist for the total number of 0's, and full 4KB blocks
+{
+  QWORD pages=0;
+  QWORD total=0;
+  int i;
+  csEnter(&AllocCS);
+  for (i=0; i<PhysicalPageListSize; i++)
+  {
+    if (AllocationInfoList[i].BitMask==0)
+    {
+      pages++;
+      total+=4096;
+    }
+    else
+      total+=(64-popcnt(AllocationInfoList[i].BitMask))*64;
+  }
+
+  csLeave(&AllocCS);
+
+  if (FullPages)
+    *FullPages=pages;
+
+  return total;
+}
+
+
+
+int mmIsFreePage(void* address)
+{
+
+  UINT64 offset=(UINT64)address-BASE_VIRTUAL_ADDRESS;
+  int index=offset >> 12;
+  int result=0;
+
+  csEnter(&AllocCS);
+  result=AllocationInfoList[index].BitMask==0;
+  csLeave(&AllocCS);
+
+  return result;
+}
+
+
+void *malloc2(unsigned int size)
+//scans the allocationinfolist for at least a specific number of subsequent 0-bits
+//this version of malloc does not keep a list of alloc sizes, so use free2 and realloc2 for these
+{
+  UINT64 bitmask=0;
+  int bitcount=size / 64;
+  if (size % 64)
+    bitcount++;
+
+  if (bitcount==0)
+    return NULL;
+
+  if (bitcount<56) //64-8, if bigger the 8 bit shift would cause loss of data, or the bits would not be checked anyhow
+  {
+    //build a bitmask  ((2^bitcount)-1 will resul in the bitmask we need
+
+    //todo: optimizations like indexes where empty blocks are
+
+    int i;
+    bitmask=(1ULL<<bitcount) - 1;
+
+    //now shift it through the list. If value & bitmask returns anything else than 0, then it's in use
+    //todo: use those new string scan cpu functions
+
+    csEnter(&AllocCS);
+
+    unsigned char *list=(unsigned char*)AllocationInfoList;
+
+    i=0;
+    while (i<(int)(PhysicalPageListSize*sizeof(PageAllocationInfo)-8))
+    {
+      if (list[i]!=0xff) //if it's not completely full
+      {
+        UINT64 currentbm=bitmask;
+        UINT64 p=*(UINT64*)&(list[i]);
+        int j;
+        for (j=0; j<8; j++)
+        {
+         
