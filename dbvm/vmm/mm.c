@@ -977,4 +977,226 @@ void *malloc2(unsigned int size)
         int j;
         for (j=0; j<8; j++)
         {
-         
+          if (p & currentbm)
+            currentbm=currentbm << 1;
+          else
+          {
+            //found a block
+            //calculate the virtual address and mark it as used (or it with the bitmask)
+            *(UINT64*)&(list[i]) |= currentbm;
+            asm volatile ("": : :"memory");
+            csLeave(&AllocCS);
+            return (void *)((UINT64)(BASE_VIRTUAL_ADDRESS+i*(4096/8)+(j*64)));
+          }
+        }
+      }
+
+      i++;
+    }
+
+    csLeave(&AllocCS);
+  }
+  else
+  {
+    //just find a full 0 entry and go from there
+    int i;
+    int minpagecount=size / 4096;
+    if (size & 0xfff)
+      minpagecount++;
+
+    csEnter(&AllocCS);
+    for (i=0; i<PhysicalPageListSize; i++)
+    {
+      int j;
+
+      if (AllocationInfoList[i].BitMask==0) //found a free 4K block, check if the neighbors are free
+      {
+        int usable=1;
+        int sizeleft=size-4096;
+
+        for (j=i+1; usable && (sizeleft>0) ; j++)
+        {
+          if (AllocationInfoList[j].BitMask) //if not 0
+          {
+            usable=0;
+
+            if ((j==i+minpagecount-1) && (sizeleft<4096)) //if this is the last page, and the last page is not a full 4096 then
+            {
+              //check if the first few blocks can fit
+              bitcount=sizeleft / 64;
+              if (sizeleft % 64)
+                bitcount++;
+
+              bitmask=(1ULL<<bitcount) - 1;
+
+              if ((bitmask & AllocationInfoList[i].BitMask)==0) //it is usable,the first parts of this page are not used
+              {
+                usable=1;
+              }
+            }
+
+            break;
+          }
+          else
+          {
+            sizeleft-=4096;
+          }
+        }
+
+        if (usable)
+        {
+          //mark it all as allocated
+          int x=i;
+          while (size>=4096)
+          {
+            AllocationInfoList[x].BitMask=0xffffffffffffffffULL;
+            size-=4096;
+            x++;
+          }
+
+          //last part of the range if it doesn't fill a full page
+          if (size)
+          {
+            bitcount=size / 64;
+            if (size % 64)
+              bitcount++;
+            if (bitcount)
+              bitmask=(1ULL << bitcount) - 1;
+            else
+              bitmask=0;
+
+
+            *(UINT64*)&(AllocationInfoList[x]) |= bitmask;
+          }
+          asm volatile ("": : :"memory");
+
+          csLeave(&AllocCS);
+
+          return (void *)(BASE_VIRTUAL_ADDRESS+i*4096);
+        }
+      }
+    }
+
+    csLeave(&AllocCS);
+
+  }
+
+  nosendchar[getAPICID()]=0;
+  sendstring("OUT OF MEMORY\n");
+
+#ifdef DEBUG
+  while (1)
+  {
+    sendstring("OUT OF MEMORY\n");
+
+  }
+
+#endif
+  return NULL; //still here so no memory allocated
+}
+
+void free2(void *address, unsigned int size)
+{
+  //unset the bits
+
+  UINT64 bitmask;
+  int bitcount;
+  bitcount=size / 64;
+  if (size % 64)
+    bitcount++;
+
+  csEnter(&AllocCS);
+
+  if (bitcount)
+  {
+    UINT64 offset=(UINT64)address-BASE_VIRTUAL_ADDRESS;
+    int index=offset >> 12;
+
+    while (bitcount>=64) //size of 64+ are aligned on a page boundary so no need to bitfuck
+    {
+      AllocationInfoList[index].BitMask=0;
+      bitcount-=64;
+      index++;
+    }
+
+    if (bitcount)
+    {
+      //still some bits left (or started out with being a small chunk
+      int bitoffset=(offset & 0xfff) / 64;
+      int i;
+      bitmask=(1ULL<<bitcount)-1;
+
+      //shift the bitmask to the start of the allocation (only for small allocs where bitoffset is not 0)
+      bitmask=bitmask << bitoffset;
+
+      bitmask=~bitmask; //invert the bitmask  (so 000011110000 turns into 111100001111)
+
+
+      AllocationInfoList[index].BitMask&=bitmask;
+    }
+  }
+
+  csLeave(&AllocCS);
+}
+
+void *realloc2(void *oldaddress, unsigned int oldsize, unsigned int newsize)
+{
+
+  void *newaddress=malloc2(newsize);
+
+  if (newaddress) //copy the contents of the old block to the new block
+  {
+    copymem(newaddress, oldaddress, min(oldsize,newsize));
+    free2(oldaddress, oldsize);
+  }
+
+  return newaddress;
+}
+
+int findClosestAllocRegion(UINT64 address)
+/*
+ * Find the closest point in the alloc list (allocCS must already have been obtained)
+ */
+{
+  int low=0;
+  int high=AllocListPos-1;
+  int mid;
+
+  while (low <= high)
+  {
+    int diff = high - low;
+
+    mid = low + diff / 2;
+
+    if (address == AllocList[mid].base)
+    {
+      return mid;
+    }
+    else
+      if (address>AllocList[mid].base)
+        low = mid + 1;
+      else
+        high = mid - 1;
+  }
+
+  return low;
+}
+
+void *realloc(void *old, size_t size)
+{
+  if (old==NULL)
+    return malloc(size);
+
+  if (size==0)
+    return NULL;
+
+  csEnter(&AllocCS);
+  int i=findClosestAllocRegion((UINT64)old);
+  if ((i<AllocListPos) && (AllocList[i].size) && (AllocList[i].base==(UINT64)old) )
+  {
+    int j;
+    int oldsize=AllocList[i].size;
+
+    //allocate size
+    void *result=malloc(size);
+    asm volatil
