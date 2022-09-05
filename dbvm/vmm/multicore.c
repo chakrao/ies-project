@@ -444,3 +444,80 @@ unsigned int initAPcpus(DWORD entrypage)
 		      mpcpu=(PMPCONFCPU)p;
 		      displayline("CPU entry at %8\n",p);
 		      displayline("Local APICID=%d\n",mpcpu->LocalAPICID);
+		      displayline("Local APICID version=%d\n",mpcpu->LocalAPICVersion);
+		      displayline("CPU Enabled=%d\n",mpcpu->CPUEnabledBit);
+		      displayline("CPU Bootstrap Processor=%d\n",mpcpu->CPUBootstrapProcessorBit);
+		      displayline("CPU Signature=%8\n",mpcpu->CPUSignature);
+		      displayline("CPU Feature Flags=%8\n",mpcpu->CPUFeatureFlags);
+
+		      if (mpcpu->CPUEnabledBit)
+		      {
+		        found++;
+		        if (hasHT) //quick assumption, could be wrong but it's the closest I can guess without acpi
+		          found++;
+		      }
+
+		      p+=20;
+		      break;
+
+		    case 1:
+		      //displayline("BUS entry at %8\n",p);
+		      p+=8;
+		      break;
+
+		    case 2:
+		      //displayline("IO APIC entry at %8\n",p);
+		      p+=8;
+		      break;
+
+		    case 3:
+		      //displayline("IO interrupt assignment entry at %8\n",p);
+		      p+=8;
+		      break;
+
+		    case 4:
+		      //displayline("Local interrupt assignment entry at %8\n",p);
+		      p+=8;
+		      break;
+
+		    default:
+		      //displayline("error\n");
+		      p+=8;
+		      break;
+		  }
+
+		  i++;
+		}
+	  displayline("before initcpus. found=%d\n\r", found);
+
+	  if (found>1)
+	  {
+      void *LAPIC=mapPhysicalMemory(mpc->AddressofLocalAPIC, 4096);
+
+      SetPageToWriteThrough(LAPIC);
+      asm volatile ("": : :"memory");
+      initcpus((QWORD)LAPIC, entrypage);
+
+      asm volatile ("": : :"memory");
+
+	    unmapPhysicalMemory(LAPIC, 4096);
+/*
+      int i;
+	    while (1)
+	    {
+	      i++;
+	      if (i%29==0)
+	        sendstringf("i=%d\n",i);
+
+	    }*/
+	  }
+
+
+
+
+	}
+
+	displayline("before return. found=%d\n\r", found);
+	return (found?found:1);
+}
+
