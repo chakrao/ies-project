@@ -1390,4 +1390,200 @@ void InitializeMM(UINT64 FirstFreeVirtualAddress)
   {
     zeromemory((void*)FirstFreeVirtualAddress, 4096);
     QWORD pagetablePA=VirtualToPhysical((void *)FirstFreeVirtualAddress);
+    FirstFreeVirtualAddress+=4096;
+
+    *(QWORD *)pagedirentry=pagetablePA;
+    pagedirentry->P=1;
+    pagedirentry->RW=1;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)pagetableentry);
+  }
+
+  if (pagetableentry->P==0)
+  {
+    zeromemory((void*)FirstFreeVirtualAddress, 4096);
+    QWORD AllocationInfoListPA=VirtualToPhysical((void *)FirstFreeVirtualAddress);
+    FirstFreeVirtualAddress+=4096;
+
+    *(QWORD *)pagetableentry=AllocationInfoListPA;
+    pagetableentry->P=1;
+    pagetableentry->RW=1;
+    asm volatile ("": : :"memory");
+    _invlpg(BASE_VIRTUAL_ADDRESS);
+  }
+
+  //entry 0x1000000000 contains 1 page (4096 bytes)
+  //it has reserved bitmaps for 64 pages  (64*8=512 bytes)
+  //the first entry should therefore mark the first 512 bytes as allocated according to the bitmap rules
+  //(should be one entry long)
+
+  //one bit represents 64-bytes in a page (so min alloc granularity is 64-bytes)
+  sendstring("Configuring AllocationInfoList\n");
+  int i;
+
+  AllocationInfoList=(PageAllocationInfo *)BASE_VIRTUAL_ADDRESS;
+
+  AllocationInfoList[0].BitMask=0x00000000000000ffULL;
+  for (i=1; i<PhysicalPageListMaxSize; i++)
+    AllocationInfoList[i].BitMask=0xffffffffffffffffULL;
+
+  TotalAvailable=4096-512;
+
+  //use VirtualToPhysical for every page
+
+  UINT64 currentaddress=FirstFreeVirtualAddress;
+  while (currentaddress<0x007fffff)
+  {
+    addPhysicalPageToDBVM(VirtualToPhysical((void *)currentaddress),0);
+    currentaddress+=4096;
+  }
+
+  sendstringf("extramemorysize=%d\n",extramemorysize);
+
+  if (extramemory && extramemorysize) //this is contiguous memory originally intended for allocs
+  {
+    if (contiguousmemoryPA==0) //no dedicated contiguous memory specified. Nibble some of the extra memory
+    {
+      int contiguousSize=extramemorysize>8?8:extramemorysize;
+
+      extramemory-=contiguousSize;
+      contiguousMemory=addPhysicalPagesToDBVM(extramemory, contiguousmemorysize, 1);
+      contiguousMemoryPagesFree=contiguousmemorysize;
+
+    }
+    addPhysicalPagesToDBVM(extramemory, extramemorysize,0);
+  }
+
+  sendstringf("contiguousmemorysize=%d\n",contiguousmemorysize);
+  if (contiguousmemoryPA)
+  {
+    contiguousMemory=addPhysicalPagesToDBVM(contiguousmemoryPA, contiguousmemorysize, 1);
+    contiguousMemoryPagesFree=contiguousmemorysize;
+  }
+
+
+  sendstringf("InitializeMM finished\n");
+  //todo: add indexes to free memory blocks
+
+  //use VMCALL_ADD_PHYSICAL_MEMORY for more
+}
+
+PPDE_PAE getPageTableEntryForAddressEx(void *address, int allocateIfNotPresent)
+{
+  PPDPTE_PAE pml4, pdptr;
+  PPDE_PAE pagedir;
+  PPTE_PAE pagetable;
+  VirtualAddressToPageEntries((QWORD)address, &pml4, &pdptr, &pagedir, &pagetable);
+
+  if (pml4->P==0)
+  {
+    if (allocateIfNotPresent)
+    {
+      void *temp=malloc2(4096);
+      zeromemory(temp,4096);
+      *(QWORD *)pml4=VirtualToPhysical(temp);
+      pml4->RW=1;
+      pml4->P=1;
+      asm volatile ("": : :"memory");
+      _invlpg((QWORD)pdptr);
+    }
+    else
+      return NULL;
+  }
+
+  if (pdptr->P==0)
+  {
+    if (allocateIfNotPresent)
+    {
+      void *temp=malloc2(4096);
+      zeromemory(temp,4096);
+      *(QWORD *)pdptr=VirtualToPhysical(temp);
+      pdptr->RW=1;
+      pdptr->P=1;
+      asm volatile ("": : :"memory");
+      _invlpg((QWORD)pagedir);
+    }
+    else
+      return NULL;
+  }
+
+  if (pagedir->P==0)
+  {
+    if (allocateIfNotPresent)
+    {
+      void *temp=malloc2(4096);
+      zeromemory(temp,4096);
+      *(QWORD *)pagedir=VirtualToPhysical(temp);
+      pagedir->RW=1;
+      pagedir->P=1;
+      asm volatile ("": : :"memory");
+      _invlpg((QWORD)pagetable);
+    }
+    else
+      return NULL;
+  }
+
+  if (pagedir->PS==1)
+    return pagedir;
+  else
+    return (PPDE_PAE)pagetable;
+}
+
+PPDE_PAE getPageTableEntryForAddress(void *address)
+/*
+ * Gets the pagetable or pagedir entry describing this virtual address
+ */
+{
+  return getPageTableEntryForAddressEx(address,0);
+}
+
+
+UINT64 VirtualToPhysical(void* address)
+{
+  PPDE_PAE pagedescriptor=getPageTableEntryForAddress(address);
+
+  if (pagedescriptor==NULL)
+    return 0xFFFFFFFFFFFFFFFFULL;
+
+  UINT64 r;
+
+
+  if (pagedescriptor->PS)
+  {
+    r=*(UINT64 *)pagedescriptor & 0xffffffffffe00000ULL;
+    r=r | ((UINT64)address & 0x1fffff);
+  }
+  else
+  {
+    r=*(UINT64 *)pagedescriptor & 0xfffffffffffff000ULL;
+    r=r | ((UINT64)address & 0xfff);
+  }
+
+  return r;
+}
+
+void mmtest(void)
+{
+  int i,i2,size,oldsize;
+  unsigned char *s[64];
+
+  //s=malloc(sizeof(unsigned char*)*64);
+  zeromemory(s,sizeof(unsigned char*)*64);
+
+
+  sendstringf("Testing normal malloc\n");
+  for (i=0; i<64; i++)
+  {
+    size=i*3;
+    s[i]=malloc(size);
+    for (i2=0; i2<size; i2++)
+      s[i][i2]=i;
+  }
+
+  for (i=0; i<64; i++)
+  {
+    size=i*3;
+    for (i2=0; i2<size; i2++)
+      if (s[i][i2]!=i)
+      {
    
