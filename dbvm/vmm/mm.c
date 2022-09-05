@@ -1586,4 +1586,149 @@ void mmtest(void)
     for (i2=0; i2<size; i2++)
       if (s[i][i2]!=i)
       {
-   
+        sendstringf("Error in mallocs. %d\n", i);
+        return;
+      }
+  }
+
+  sendstringf("Normal malloc success\n");
+  sendstringf("Testing realloc\n");
+
+  for (i=0; i<64; i++)
+  {
+    unsigned char *olds=s[i];
+    oldsize=i*3;
+    asm volatile ("": : :"memory");
+    size=i*4;
+    asm volatile ("": : :"memory");
+
+    s[i]=realloc(s[i],size);
+    asm volatile ("": : :"memory");
+
+    for (i2=0; i2<oldsize; i2++)
+    {
+
+      if (s[i][i2]!=i)
+      {
+        sendstringf("Error in realloc part1 s[%d][%d] was %d while it should be %d (olds=%p)\n",i,i2,s[i][i2],i,olds);
+
+        return;
+      }
+    }
+
+    for (i2=oldsize; i2<size; i2++)
+      s[i][i2]=i;
+  }
+
+  for (i=0; i<64; i++)
+  {
+    size=i*4;
+    for (i2=0; i2<size; i2++)
+      if (s[i][i2]!=i)
+      {
+
+        sendstringf("Error in realloc part2 %d\n", i);
+        return;
+      }
+  }
+
+  sendstringf("Reallocs success\n");
+  sendstringf("Testing free and realloc with 0\n");
+  for (i=0;i<64; i+=2)
+  {
+    free(s[i]);
+    s[i]=NULL;
+  }
+
+  for (i=0;i<64; i+=2)
+  {
+    size=i*4;
+    s[i]=realloc(s[i],size);
+    for (i2=0; i2<size; i2++)
+      s[i][i2]=i;
+  }
+
+  for (i=0; i<64; i++)
+  {
+    size=i*4;
+    for (i2=0; i2<size; i2++)
+      if (s[i][i2]!=i)
+      {
+        jtagbp();
+        sendstringf("Error in free/realloc(0). %d\n", i);
+        return;
+      }
+  }
+
+  sendstringf("Also OK\n");
+}
+
+void mmEnumAllPageEntries(MMENUMPAGESCALLBACK callbackfunction, int selfonly, void *context)
+//walks all DBVM pagetables and calls the callbackfunction for each entry
+{
+  QWORD pml4index;
+  QWORD pagedirptrindex;
+  QWORD pagedirindex;
+  QWORD pagetableindex;
+
+
+  QWORD LastAddedPhysicalMemory=BASE_VIRTUAL_ADDRESS+4096*PhysicalPageListSize;
+
+  for (pml4index=0; pml4index<512; pml4index++)
+  {
+    if (pml4table[pml4index].P)
+    {
+      QWORD s1=pml4index << 9;
+      for (pagedirptrindex=s1;  pagedirptrindex<s1+512; pagedirptrindex++)
+      {
+        if (pagedirptrtables[pagedirptrindex].P) //DBVM does not use 1GB pages for virtual memory (yet)
+        {
+          QWORD s3=(pagedirptrindex << 9);
+          for (pagedirindex=s3; pagedirindex<s3+512; pagedirindex++)
+          {
+            if (pagedirtables[pagedirindex].P)
+            {
+              QWORD VirtualAddress;
+              QWORD PhysicalAddress;
+              if (pagedirtables[pagedirindex].PS) //UEFI could have mapped it as 2MB pages
+              {
+                VirtualAddress=IndexesToVirtualAddress(pml4index, pagedirptrindex, pagedirindex, 0);
+                if (VirtualAddress & ((QWORD)1<<47))
+                  VirtualAddress|=0xffff000000000000;
+
+
+                if ((selfonly==0) || (((VirtualAddress>=0x00400000) && (VirtualAddress<LastAddedPhysicalMemory)) ) )
+                {
+                  PhysicalAddress=*(QWORD*)(&pagedirtables[pagedirindex]) & MAXPHYADDRMASKPB;
+                  callbackfunction(VirtualAddress, PhysicalAddress, 2*1024*1024, (PPTE_PAE)&pagedirtables[pagedirindex], context);
+                }
+              }
+              else
+              {
+                QWORD s4=((QWORD)pagedirindex << 9);
+
+                for (pagetableindex=s4; pagetableindex<s4+512; pagetableindex++)
+                {
+                  if (pagetables[pagetableindex].P)
+                  {
+                    VirtualAddress=IndexesToVirtualAddress(pml4index, pagedirptrindex, pagedirindex, pagetableindex);
+                    if (VirtualAddress & ((QWORD)1<<47))
+                      VirtualAddress|=0xffff000000000000;
+
+                    if ((selfonly==0) || (((VirtualAddress>=0x00400000) && (VirtualAddress<LastAddedPhysicalMemory)) ) )
+                    {
+                      PhysicalAddress=*(QWORD*)(&pagetables[pagetableindex]) & MAXPHYADDRMASKPB;
+                      callbackfunction(VirtualAddress, PhysicalAddress, 4096, (PPTE_PAE)&pagetables[pagetableindex], context);
+                    }
+                  }
+                }
+              }
+
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
