@@ -1199,4 +1199,195 @@ void *realloc(void *old, size_t size)
 
     //allocate size
     void *result=malloc(size);
-    asm volatil
+    asm volatile ("": : :"memory");
+    //memset(result,0xff,size);
+    asm volatile ("": : :"memory");
+
+    //copy from old to result (oldsize bytes)
+    copymem(result, old, min(size,oldsize));
+    asm volatile ("": : :"memory");
+
+    unsigned char *x,*y;
+    x=old;
+    y=result;
+    for (j=0; j<min(oldsize,size); j++)
+    {
+      if (x[j]!=y[j])
+      {
+        sendstring("realloc failed\n");
+        jtagbp();
+      }
+
+    }
+
+    free(old);
+    asm volatile ("": : :"memory");
+
+    csLeave(&AllocCS);
+    return result;
+  }
+  else
+  {
+    nosendchar[getAPICID()]=0;
+    sendstringf("realloc error\n");
+    ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+    while (1) outportb(0x80,0xd1);
+  }
+}
+
+void free(void *address)
+{
+  if (address)
+  {
+    csEnter(&AllocCS);
+    int i=findClosestAllocRegion((UINT64)address);
+    if ((i<AllocListPos) && (AllocList[i].size) && (AllocList[i].base==(UINT64)address) )
+    {
+      int size=AllocList[i].size;
+
+
+      //memset(address,0xfe, size);
+      free2(address, size);
+
+      AllocList[i].size=0;
+
+    }
+    csLeave(&AllocCS);
+  }
+
+
+
+}
+
+void *malloc(size_t size)
+{
+  //if (size<4096)  size=4096;
+
+  UINT64 result=(UINT64)malloc2(size);
+
+  if (result)
+  {
+    //add this alloc to the list
+
+    csEnter(&AllocCS);
+    if (AllocList==NULL)
+    {
+      //allocate the initial list
+      AllocList=malloc2(sizeof(MemlistItem2)*64);
+      AllocListMax=64;
+      AllocListPos=1;
+      AllocList[0].base=result;
+      AllocList[0].size=size;
+    }
+    else
+    {
+      int insertpoint=findClosestAllocRegion(result);
+
+      if (insertpoint<AllocListPos)
+      {
+        //shift may be needed
+        if (AllocList[insertpoint].size==0)
+        {
+          AllocList[insertpoint].base=result;
+          AllocList[insertpoint].size=size;
+          csLeave(&AllocCS);
+
+          return (void *)result;
+        }
+
+        //shift
+        int i;
+        for (i=AllocListPos; i>insertpoint; i--)
+          AllocList[i]=AllocList[i-1];
+      }
+
+      //set insertpoint to this alloc
+      AllocList[insertpoint].base=result;
+      AllocList[insertpoint].size=size;
+
+      AllocListPos++;
+
+      if (AllocListPos>=AllocListMax)
+      {
+        //reallocate the list
+        AllocList=realloc2(AllocList, AllocListMax*sizeof(MemlistItem2), AllocListMax*sizeof(MemlistItem2)*2);
+        AllocListMax=AllocListMax*2;
+      }
+    }
+
+    csLeave(&AllocCS);
+  }
+
+  return (void *)result;
+}
+
+
+void InitializeMM(UINT64 FirstFreeVirtualAddress)
+{
+  int pml4index;
+  int pagedirptrindex;
+  int pagedirindex;
+  int pagetableindex;
+
+  PPDPTE_PAE pml4entry;
+  PPDPTE_PAE pagedirpointerentry;
+  PPDE_PAE pagedirentry;
+  PPTE_PAE pagetableentry;
+
+  FirstFreeVirtualAddress=FirstFreeVirtualAddress & 0xfffffffffffff000ULL;
+
+
+  sendstringf("Mapping the CR3 value at 0xffffff8000000000");
+  VirtualAddressToIndexes(0xffffff8000000000ULL, &pml4index, &pagedirptrindex, &pagedirindex, &pagetableindex);
+
+  if (pagedirlvl4[pml4index].P) //pml4index should be 511
+  {
+    nosendchar[getAPICID()]=0;
+    sendstring("Assertion failed. pagedirlvl4[pml4index].P is not 0. It should be\n");
+    ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+    while (1) outportb(0x80,0xd1);
+  }
+  *(QWORD*)(&pagedirlvl4[pml4index])=getCR3();
+  pagedirlvl4[pml4index].P=1;
+  pagedirlvl4[pml4index].RW=1;
+  asm volatile ("": : :"memory");
+  _invlpg(0xffffff8000000000ULL);
+  //now I have access to all the paging info
+
+
+  sendstring("Allocating the AllocationInfoList\n");
+  //allocate memory for AllocationInfoList and map it at BASE_VIRTUAL_ADDRESS
+  VirtualAddressToPageEntries(BASE_VIRTUAL_ADDRESS, &pml4entry, &pagedirpointerentry, &pagedirentry, &pagetableentry);
+
+  if (pml4entry->P==0)
+  {
+    //no pml4 entry (Normally not possible by my design, but could be BASE_VIRTUAL_ADDRESS has been edited by someone)
+    zeromemory((void*)FirstFreeVirtualAddress, 4096);
+    QWORD pagedirptrPA=VirtualToPhysical((void *)FirstFreeVirtualAddress);
+    FirstFreeVirtualAddress+=4096;
+
+    *(QWORD *)pml4entry=pagedirptrPA;
+    pml4entry->P=1;
+    pml4entry->RW=1;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)pagedirpointerentry);
+  }
+
+  if (pagedirpointerentry->P==0)
+  {
+    zeromemory((void*)FirstFreeVirtualAddress, 4096);
+    QWORD pagedirPA=VirtualToPhysical((void *)FirstFreeVirtualAddress);
+    FirstFreeVirtualAddress+=4096;
+
+    *(QWORD *)pagedirpointerentry=pagedirPA;
+    pagedirpointerentry->P=1;
+    pagedirpointerentry->RW=1;
+    asm volatile ("": : :"memory");
+    _invlpg((QWORD)pagedirentry);
+  }
+
+  if (pagedirentry->P==0)
+  {
+    zeromemory((void*)FirstFreeVirtualAddress, 4096);
+    QWORD pagetablePA=VirtualToPhysical((void *)FirstFreeVirtualAddress);
+   
