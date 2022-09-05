@@ -152,4 +152,166 @@ QWORD NPMapPhysicalMemory(pcpuinfo currentcpuinfo, QWORD physicalAddress, int fo
   int pagetableindex;
   int swappedguesttables;
   int madepresent=0;
-  VirtualAddressToIndexes(physicalAddress, &pml4index, &pagedirptrindex, &pagedirindex, &pag
+  VirtualAddressToIndexes(physicalAddress, &pml4index, &pagedirptrindex, &pagedirindex, &pagetableindex);
+
+  if (getcpuinfo()!=currentcpuinfo)
+  {
+    //swap the guest table
+    *(QWORD*)(&pml4table[510])=currentcpuinfo->vmcb->N_CR3;
+    pml4table[510].P=1;
+    pml4table[510].RW=1;
+    madepresent=1;
+    swappedguesttables=1;
+    setCR3(getCR3());
+  }
+
+ // sendstringf("pml4index=%d\n", pml4index);
+ // sendstringf("pagedirptrindex=%d\n", pagedirptrindex);
+ // sendstringf("pagedirindex=%d\n", pagedirindex);
+ // sendstringf("pagetableindex=%d\n", pagetableindex);
+
+
+  UINT64 PageDirPtrIndexFull=(pml4index << 9)+pagedirptrindex;
+  UINT64 PageDirIndexFull=(PageDirPtrIndexFull << 9)+pagedirindex;
+  UINT64 PageTableIndexFull=(PageDirIndexFull << 9)+pagetableindex;
+
+
+ // sendstringf("PageDirPtrIndexFull=%d\n", PageDirPtrIndexFull);
+ // sendstringf("PageDirIndexFull=%d\n", PageDirIndexFull);
+ // sendstringf("PageTableIndexFull=%d\n", PageTableIndexFull);
+
+ // sendstringf("sizeof(_PTE_PAE)=%d\n", sizeof(_PTE_PAE));
+ // sendstringf("sizeof(_PDE_PAE)=%d\n", sizeof(_PDE_PAE));
+ // sendstringf("sizeof(_PDPTE_PAE_BS)=%d\n", sizeof(_PDPTE_PAE_BS));
+
+
+  PPML4 pml4=NULL;
+  PPDPTE_PAE_BS pagedirptr=NULL;
+  PPDE_PAE pagedir=NULL;
+  PPTE_PAE pagetable=NULL;
+
+  QWORD pap;
+
+  csEnter(&currentcpuinfo->EPTPML4CS);
+
+  pml4=(PPML4)&np_pml4table[pml4index];
+  if (swappedguesttables)
+    _invlpg((QWORD)pml4);
+
+
+  if (pml4->P==0)
+  {
+    //sendstringf("allocating pagedirptr\n");
+    //allocate a pagedirptr table
+    void *temp=malloc2(4096);
+    zeromemory(temp,4096);
+    *(QWORD*)pml4=VirtualToPhysical(temp) & MAXPHYADDRMASKPB;
+    pml4->P=1;
+    pml4->RW=1;
+    pml4->US=1;
+    madepresent=1;
+  }
+
+
+  pagedirptr=(PPDPTE_PAE_BS)&np_pagedirptrtables[PageDirPtrIndexFull];  //mapPhysicalMemory(PA, 4096);
+  if (madepresent)
+    _invlpg((QWORD)pagedirptr);
+
+  if (forcesmallpage && pagedirptr->P && (pagedirptr->PS)) //it's a big page, so the physical address points to the actual memory. Clear everything
+    *(QWORD *)pagedirptr=0;
+
+  if (pagedirptr->P==0)
+  {
+
+    if (has_NP_1GBsupport && (forcesmallpage==0))      //unmapPhysicalMemory(pagedirptr, 4096);
+    {
+      QWORD GuestAddress1GBAlign=(physicalAddress & 0xFFFFFFFFC0000000ULL) & MAXPHYADDRMASKPB;
+
+     // sendstringf("mapping %6 as a 1GB page\n", GuestAddress1GBAlign);
+      *(QWORD*)(pagedirptr)=GuestAddress1GBAlign;
+      pagedirptr->P=1;
+      pagedirptr->RW=1;
+      pagedirptr->US=1;
+      pagedirptr->PS=1;
+
+      csLeave(&currentcpuinfo->EPTPML4CS);
+
+      pap=VirtualToPhysical((void*)pagedir);
+      if (swappedguesttables)
+      {
+        //restore
+        *(QWORD*)(&pml4table[510])=getcpuinfo()->vmcb->N_CR3;
+        pml4table[510].P=1;
+        pml4table[510].RW=1;
+      }
+      return pap;
+    }
+
+    //still here, try a pagedir
+    void *temp=malloc2(4096);
+    zeromemory(temp,4096);
+    *(QWORD*)pagedirptr=VirtualToPhysical(temp) & MAXPHYADDRMASKPB;
+    pagedirptr->P=1;
+    pagedirptr->RW=1;
+    pagedirptr->US=1;
+    madepresent=1;
+  }
+
+  pagedir=(PPDE_PAE)&np_pagedirtables[PageDirIndexFull]; // mapPhysicalMemory(PA, 4096);
+  if (madepresent)
+    _invlpg((QWORD)pagedir);
+
+  //sendstringf("pagedir is %6 \n", pagedir);
+
+  if (forcesmallpage && pagedir->P && (pagedir->PS)) //it's a big page, so the physical address points to the actual memory. Clear everything
+    *(QWORD *)pagedir=0;
+
+  if (pagedir->P==0)
+  {
+    if (has_NP_2MBsupport && (forcesmallpage==0))
+    {
+      QWORD GuestAddress2MBAlign=(physicalAddress & 0xFFFFFFFFFFE00000ULL) & MAXPHYADDRMASKPB;
+
+     // sendstringf("mapping %6 as a 2MB page\n", GuestAddress2MBAlign);
+      *(QWORD*)pagedir=GuestAddress2MBAlign & MAXPHYADDRMASKPB;
+      pagedir->P=1;
+      pagedir->RW=1;
+      pagedir->US=1;
+      pagedir->PS=1;
+      csLeave(&currentcpuinfo->EPTPML4CS);
+
+      pap=VirtualToPhysical((void*)pagedir);
+      if (swappedguesttables)
+      {
+        //restore
+        *(QWORD*)(&pml4table[510])=getcpuinfo()->vmcb->N_CR3;
+        pml4table[510].P=1;
+        pml4table[510].RW=1;
+      }
+      return pap;
+
+    }
+    //else
+    //  sendstringf("Can't map as 2MB. has_NP_2MBsupport=%d and forcesmallpage=%d \n", has_NP_2MBsupport, forcesmallpage );
+
+    //still here, try a pagetable
+    void *temp=malloc2(4096);
+    zeromemory(temp,4096);
+    *(QWORD*)pagedir=VirtualToPhysical(temp) & MAXPHYADDRMASKPB;
+    pagedir->P=1;
+    pagedir->RW=1;
+    pagedir->US=1;
+    madepresent=1;
+  }
+
+  //still here, so not mapped as a pagedir entry
+  pagetable=&np_pagetables[PageTableIndexFull]; // mapPhysicalMemory(PA, 4096);
+  if (madepresent)
+    _invlpg((QWORD)pagetable);
+
+  if (pagetable->P==0)
+  {
+    //sendstringf("mapping %6 as a 4KB page\n", physicalAddress & MAXPHYADDRMASKPB);
+    *(QWORD*)pagetable=physicalAddress & MAXPHYADDRMASKPB;
+    pagetable->P=1;
+    page
