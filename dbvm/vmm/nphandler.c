@@ -314,4 +314,99 @@ QWORD NPMapPhysicalMemory(pcpuinfo currentcpuinfo, QWORD physicalAddress, int fo
     //sendstringf("mapping %6 as a 4KB page\n", physicalAddress & MAXPHYADDRMASKPB);
     *(QWORD*)pagetable=physicalAddress & MAXPHYADDRMASKPB;
     pagetable->P=1;
-    page
+    pagetable->RW=1;
+    pagetable->US=1;
+    pagetable->EXB=0;
+  }
+  else
+  {
+    //else already mapped
+    sendstringf("This physical address (%6) was already mapped\n", physicalAddress);
+
+
+
+    //weird issue. change it to full access to prevent a full system crash
+    PCloakedPageData cloakdata;
+    if (CloakedPagesMap)
+      cloakdata=map_getEntry(CloakedPagesMap, physicalAddress & MAXPHYADDRMASKPB);
+    else
+      cloakdata=addresslist_find(CloakedPagesList, physicalAddress & MAXPHYADDRMASKPB);
+
+
+
+    if (cloakdata==NULL)
+    {
+
+      if (currentcpuinfo->eptUpdated==0) //if it's not due to a pending EPT update then make it accessible (just to prevent issues)
+      {
+        nosendchar[getAPICID()]=0;
+        sendstringf("%d(%d): Not cloaked and the memorymap isn't updating. Restoring\n", getcpunr(), currentcpuinfo->cpunr);
+        *(QWORD*)pagetable=physicalAddress & MAXPHYADDRMASKPB;
+        pagetable->P=1;
+        pagetable->RW=1;
+        pagetable->US=1;
+        pagetable->EXB=0;
+      }
+    }
+  }
+
+  csLeave(&currentcpuinfo->EPTPML4CS);
+
+  pap=VirtualToPhysical((void*)pagetable);
+
+ // sendstringf("pagetable entry=%6\n  PA pagetable entry=%6\n", pagetable, pap);
+
+ // sendstringf("The QWORD at %6 is %6\n", pagetable, *(QWORD*)pagetable);
+
+  if (swappedguesttables)
+  {
+    //restore
+    *(QWORD*)(&pml4table[510])=getcpuinfo()->vmcb->N_CR3;
+    pml4table[510].P=1;
+    pml4table[510].RW=1;
+    setCR3(getCR3()); //flush the TLB
+  }
+
+  return pap;
+}
+
+
+
+VMSTATUS handleNestedPagingFault(pcpuinfo currentcpuinfo, VMRegisters *vmregisters UNUSED, PFXSAVE64 fxsave UNUSED)
+{
+  //handle the paging event
+
+  nosendchar[getAPICID()]=1;
+  QWORD PhysicalAddress=currentcpuinfo->vmcb->EXITINFO2;
+  QWORD ErrorInfo=currentcpuinfo->vmcb->EXITINFO1;
+
+  //sendstringf("%x:%6 handleNestedPagingFault. PA=%6 (Code %x)\n", currentcpuinfo->vmcb->cs_selector, currentcpuinfo->vmcb->RIP,  PhysicalAddress, ErrorInfo);
+  //sendstringf("EXITINTINFO=%x\n", currentcpuinfo->vmcb->EXITINTINFO);
+  //sendstringf("CR2=%6 vCR2=%6\n", getCR2(), currentcpuinfo->vmcb->CR2);
+
+  if (ept_handleWatchEvent(currentcpuinfo, vmregisters, fxsave, PhysicalAddress))
+    return 0;
+
+  //check for cloak
+
+
+  if (ept_handleCloakEvent(currentcpuinfo, PhysicalAddress, 0))
+    return 0;
+
+
+  //map this physical address
+  NPMapPhysicalMemory(currentcpuinfo, PhysicalAddress, 0);
+
+  PEXITINTINFO eii=(PEXITINTINFO)&currentcpuinfo->vmcb->EXITINTINFO;
+
+
+  if (eii->Valid)
+  {
+    //sendstringf("Retriggering interrupt %d\n", eii->Vector);
+    currentcpuinfo->vmcb->EVENTINJ=currentcpuinfo->vmcb->EXITINTINFO;
+  }
+
+  currentcpuinfo->vmcb->VMCB_CLEAN_BITS&=~(1 << 4);
+
+  return VM_OK;
+}
