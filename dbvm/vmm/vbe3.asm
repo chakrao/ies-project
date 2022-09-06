@@ -181,4 +181,42 @@ ret
 
 ;int VBEcall_SaveRestoreState(BYTE operationmode,WORD stateflags, WORD dataselector)
 global VBEcall_SaveRestoreState
-VBEcall_SaveResto
+VBEcall_SaveRestoreState:
+push rbx
+push rcx
+
+mov ax,0x4f04
+mov bx,di
+mov cx,si
+mov si,dx
+mov es,si
+xor di,di
+xor bx,bx
+call doVBE
+
+mov si,8
+mov es,si
+pop rcx
+mov [rcx],bx
+pop rbx
+ret
+
+global VBEcall_ResetStart
+VBEcall_ResetStart:
+mov ax,0x4f07
+
+push rbx
+push rcx
+push rdx
+xor rbx,rbx
+xor rcx,rcx
+xor rdx,rdx
+
+mov bl,2
+
+call doVBE
+
+pop rdx
+pop rcx
+pop rbx
+ret
