@@ -267,4 +267,76 @@ typedef struct
   QWORD results;
   QWORD resultsize;
   QWORD copied;
-} __attribute__((__packed__)) VMCALL_CLOAK
+} __attribute__((__packed__)) VMCALL_CLOAK_TRACEONBP_READLOG_PARAM, *PVMCALL_CLOAK_TRACEONBP_READLOG_PARAM;
+
+
+
+
+
+typedef struct
+{
+  VMCALL_BASIC vmcall;
+  QWORD physicalAddress;
+} __attribute__((__packed__)) VMCALL_CLOAK_REMOVECHANGEREG_PARAM, *PVMCALL_CLOAK_REMOVECHANGEREG_PARAM;
+
+
+typedef struct
+{
+  VMCALL_BASIC vmcall;
+  QWORD physicalAddress;
+  QWORD list;
+  int listsize;
+} __attribute__((__packed__)) VMCALL_WATCH_GETLIST_PARAM, *PVMCALL_WATCH_GETLIST_PARAM;
+
+typedef struct
+{
+  VMCALL_BASIC vmcall;
+  QWORD destination;
+} __attribute__((__packed__)) VMCALL_LOGCR3_STOP_PARAM, *PVMCALL_LOGCR3_STOP_PARAM;
+
+
+typedef struct
+{
+  VMCALL_BASIC vmcall;
+  int type; //0=pre, 1=post
+
+
+  QWORD virtualAddress;
+  unsigned int bytesize;
+  QWORD internalAddress; //caller must set this to 0
+  unsigned int bytescopied;
+
+} __attribute__((__packed__)) VMCALL_REGISTER_PLUGIN_PARAM, *PVMCALL_REGISTER_PLUGIN_PARAM;
+
+typedef struct
+{
+  VMCALL_BASIC vmcall;
+  QWORD PhysicalPages[0];
+} __attribute__((__packed__)) VMCALL_ADD_MEMORY_PARAM, *PVMCALL_ADD_MEMORY_PARAM;
+
+#ifdef STATISTICS
+typedef struct
+{
+  VMCALL_BASIC vmcall;
+  int eventcounter[56];
+  int globaleventcounter[56];
+} __attribute__((__packed__)) VMCALL_GET_STATISTICS_PARAM, *PVMCALL_GET_STATISTICS_PARAM;
+#endif
+
+
+
+typedef struct
+{
+  VMCALL_BASIC vmcall;
+  int enabled;
+  int timeout;
+} __attribute__((__packed__)) VMCALL_SETTSCADJUST_PARAM, *PVMCALL_SETTSCADJUST_PARAM;
+
+typedef struct
+{
+  VMCALL_BASIC vmcall;
+  double speedhackspeed;
+} __attribute__((__packed__)) VMCALL_SETSPEEDHACK_PARAM, *PVMCALL_SETSPEEDHACK_PARAM;
+
+
+#endif /* VMM_VMCALLSTRUCTS_H_ */
