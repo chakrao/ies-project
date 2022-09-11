@@ -254,4 +254,100 @@ VMSTATUS handleInvalidEntryState(pcpuinfo currentcpuinfo,VMRegisters *vmregister
           if ((limit & 0xFFF00000) && (ar.G==0)) while (1) outportb(0x80,0xf0);
         }
 
-        ar.AccessRights=vmread(vm_guest_fs_access_right
+        ar.AccessRights=vmread(vm_guest_fs_access_rights);
+        if (!ar.unusable)
+        {
+          if ((ar.Segment_type & 1)==0) while (1) outportb(0x80,0xe7); //segment register was usable but not accessed
+          if ((ar.Segment_type & (1<<3)) && (((ar.Segment_type & (1<<1))==0))) while (1) outportb(0x80,0xe7); //code segment but type is unreadable
+          if (ar.S==0) while (1) outportb(0x80,0xe8);
+          if (ar.P==0) while (1) outportb(0x80,0xed);
+          if (ar.reserved || ar.reserved_2) while (1) outportb(0x80,0xee);
+
+          limit=(QWORD)vmread(vm_guest_fs_limit);
+          if (((limit & 0xfff)!=0xfff) && (ar.G!=0)) while (1) outportb(0x80,0xef);
+          if ((limit & 0xFFF00000) && (ar.G==0)) while (1) outportb(0x80,0xf0);
+        }
+
+        ar.AccessRights=vmread(vm_guest_gs_access_rights);
+        if (!ar.unusable)
+        {
+          if ((ar.Segment_type & 1)==0) while (1) outportb(0x80,0xe7); //segment register was usable but not accessed
+          if ((ar.Segment_type & (1<<3)) && (((ar.Segment_type & (1<<1))==0))) while (1) outportb(0x80,0xe7); //code segment but type is unreadable
+          if (ar.S==0) while (1) outportb(0x80,0xe8);
+          if (ar.P==0) while (1) outportb(0x80,0xed);
+          if (ar.reserved || ar.reserved_2) while (1) outportb(0x80,0xee);
+
+          limit=(QWORD)vmread(vm_guest_gs_limit);
+          if (((limit & 0xfff)!=0xfff) && (ar.G!=0)) while (1) outportb(0x80,0xef);
+          if ((limit & 0xFFF00000) && (ar.G==0)) while (1) outportb(0x80,0xf0);
+        }
+
+
+        ar.AccessRights=vmread(vm_guest_tr_access_rights);
+        if ((ar.Segment_type!=3) && (ar.Segment_type!=11)) while (1) outportb(0x80,0xf1);
+        if (ar.S!=0) while (1) outportb(0x80,0xf2);
+        if (ar.P!=1) while (1) outportb(0x80,0xf3);
+        if (ar.reserved || ar.reserved_2) while (1) outportb(0x80,0xf4);
+        limit=(QWORD)vmread(vm_guest_tr_limit);
+        if (((limit & 0xfff)!=0xfff) && (ar.G!=0)) while (1) outportb(0x80,0xf5);
+        if ((limit & 0xFFF00000) && (ar.G==0)) while (1) outportb(0x80,0xf6);
+        if (ar.unusable)  while (1) outportb(0x80,0xf7);
+
+        ar.AccessRights=vmread(vm_guest_ldtr_access_rights);
+        if (ar.unusable==0)
+        {
+          if (ar.Segment_type!=2) while (1) outportb(0x80,0xf8);
+          if (ar.S!=0) while (1) outportb(0x80,0xf9);
+          if (ar.P!=1) while (1) outportb(0x80,0xfa);
+          limit=(QWORD)vmread(vm_guest_ldtr_access_rights);
+          if (((limit & 0xfff)!=0xfff) && (ar.G!=0)) while (1) outportb(0x80,0xfb);
+          if ((limit & 0xFFF00000) && (ar.G==0)) while (1) outportb(0x80,0xfc);
+        }
+
+        if (vmread(vm_guest_idt_limit)>65536) while (1) outportb(0x80,0xfd);
+
+        if (vmread(vm_guest_rip)>(QWORD)0xffffffff) while (1) outportb(0x80,0xfe);
+
+        QWORD rf=vmread(vm_guest_rflags);
+        if (((rf & (1<<1))==0) || (rf & (1<<3)) || (rf & (1<<5)) || (rf & (1<<15)) || (rf & 0xFFFFFFFFFFC00000ULL) )  while (1) outportb(0x80,0xff);
+
+        int activitystate=vmread(vm_guest_activity_state);
+
+
+
+        int interruptability_state=vmread(vm_guest_interruptability_state);
+        if (activitystate>3) while (1) outportb(0x80,0x10);
+        if ((activitystate==1) && (ss.DPL!=0)) while (1) outportb(0x80,0x11);  //hlt and dpl>0
+
+
+        if ((interruptability_state & 3) && (activitystate!=0)) while (1) outportb(0x80,0x12); //not active and block by sti or ss
+
+        VMEntry_interruption_information ii;
+        ii.interruption_information=vmread(vm_entry_interruptioninfo);
+        if (ii.valid) while (1) outportb(0x80,0x13); //not gonna deal with this right now
+
+        if (interruptability_state & 0xFFFFFFE0) while (1) outportb(0x80,0x14); //invalid bits set
+        if ((interruptability_state & 3)==3) while (1) outportb(0x80,0x15); //blocking by sti AND ss
+
+        if ((rflags.IF==0) && (interruptability_state & 1))  while (1) outportb(0x80,0x16); //block by sti not possible
+
+        if (interruptability_state & (1<<2)) while (1) outportb(0x80,0x17); //no blocking by smi
+
+        cr0=(QWORD)vmread(vm_guest_cr0);
+        QWORD cr0fixed0=(QWORD)readMSR(0x486);
+        QWORD cr0fixed1=(QWORD)readMSR(0x487);
+
+        cr0fixed0&=(QWORD)0xFFFFFFFF7FFFFFFE;//unrestricted so pg and pe can be 0
+        if ((cr0 & cr0fixed0)!=cr0fixed0) while (1) outportb(0x80,0x18);
+        if ((cr0 & cr0fixed1)!=cr0) while (1) outportb(0x80,0x19);
+
+        if ((cr0 & (1<<29)) && ((cr0 & (1<<30))==0))  while (1) outportb(0x80,0x19); //NW==1, CD==0
+
+
+        QWORD cr4=(QWORD)vmread(vm_guest_cr4);
+        QWORD cr4fixed0=(QWORD)readMSR(0x488);
+        QWORD cr4fixed1=(QWORD)readMSR(0x489);
+
+        if ((cr4 & cr4fixed0)!=cr4fixed0) while (1) outportb(0x80,0x20);
+        if ((cr4 & cr4fixed1)!=cr4) while (1) outportb(0x80,0x21);
+
