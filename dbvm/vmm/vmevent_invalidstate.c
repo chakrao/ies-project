@@ -133,4 +133,125 @@ VMSTATUS handleInvalidEntryState(pcpuinfo currentcpuinfo,VMRegisters *vmregister
 
 
     //emulateRealMode failed
-    if (ISREALMODE(currentcpuinfo)) //still realmode ? (most likely, but possible it isn't anymor
+    if (ISREALMODE(currentcpuinfo)) //still realmode ? (most likely, but possible it isn't anymore once enough has been emulated)
+    {
+      if (hasUnrestrictedSupport)
+      {
+
+
+
+
+
+
+        QWORD cr0=vmread(vm_guest_cr0);
+        if (cr0 & CR0_PG)
+        {
+          sendstringf("paging on in realmode\n");
+          while (1) outportb(0x80,0xe0); //paging on in realmode
+        }
+
+        if (cr0 & CR0_PE)
+        {
+          sendstringf("protected mode in realmode\n");
+          while (1) outportb(0x80,0xe0); //protected mode in realmode
+        }
+
+        if (vmread(vm_entry_controls) & VMENTRYC_IA32E_MODE_GUEST)
+        {
+          sendstringf("ia32e mode entry in realmode\n");
+          while (1) outportb(0x80,0xe1); //ia32e mode entry in realmode
+        }
+
+        RFLAGS rflags;
+        rflags.value=(QWORD)vmread(vm_guest_rflags);
+        if (rflags.VM) while (1) outportb(0x80,0xe2);
+        if (rflags.VIF) while (1) outportb(0x80,0xe2);
+        if (rflags.VIP) while (1) outportb(0x80,0xe2);
+        if (vmread(vm_guest_tr) & (1 << 2)) while (1) outportb(0x80,0xe3); //tri.ti flag must be 0
+
+        Access_Rights ar;
+        Access_Rights ss;
+        QWORD limit;
+        ss.AccessRights=vmread(vm_guest_ss_access_rights);
+        ar.AccessRights=vmread(vm_guest_ldtr_access_rights);
+        if ((!ar.unusable) && (vmread(vm_guest_ldtr) & (1<<2))) while (1) outportb(0x80,0xe4); //if ldtr is usable, TI flag must be 0
+
+        ar.AccessRights=vmread(vm_guest_cs_access_rights);
+        switch (ar.Segment_type)
+        {
+          case 3:
+          case 9:
+          case 11:
+          case 13:
+          case 15:
+            break;
+
+          default:
+            while (1) outportb(0x80,0xe5); //cs access right type must be 3,9,11,13 or 15
+        }
+        if (ar.S==0) while (1) outportb(0x80,0xe8);
+        if (ar.P==0) while (1) outportb(0x80,0xed);
+        if (ar.reserved || ar.reserved_2) while (1) outportb(0x80,0xee);
+        if ((ar.Segment_type==3) && (ar.DPL!=0)) while (1) outportb(0x80,0xe9);
+        if (((ar.Segment_type==9) || (ar.Segment_type==11)) && (ar.DPL!=ss.DPL)) while (1) outportb(0x80,0xea);
+        if (((ar.Segment_type==13) || (ar.Segment_type==15)) && (ar.DPL>ss.DPL)) while (1) outportb(0x80,0xeb);
+
+        limit=(QWORD)vmread(vm_guest_cs_limit);
+        if (((limit & 0xfff)!=0xfff) && (ar.G!=0)) while (1) outportb(0x80,0xef);
+        if ((limit & 0xFFF00000) && (ar.G==0)) while (1) outportb(0x80,0xf0);
+
+
+
+        if (!ss.unusable)
+        {
+          switch (ss.Segment_type)
+          {
+            case 3:
+            case 7:
+              break;
+
+            default:
+              while (1) outportb(0x80,0xe6); //ss access right type must be 3 or 7
+          }
+
+          if (ss.S==0) while (1) outportb(0x80,0xe8);
+          if (ss.P==0) while (1) outportb(0x80,0xed);
+          if (ss.reserved || ss.reserved_2) while (1) outportb(0x80,0xee);
+          if (ss.DPL!=0) while (1) outportb(0x80,0xec);
+
+          limit=(QWORD)vmread(vm_guest_ss_limit);
+          if (((limit & 0xfff)!=0xfff) && (ss.G!=0)) while (1) outportb(0x80,0xef);
+          if ((limit & 0xFFF00000) && (ss.G==0)) while (1) outportb(0x80,0xf0);
+
+
+        }
+
+        ar.AccessRights=vmread(vm_guest_ds_access_rights);
+        if (!ar.unusable)
+        {
+          if ((ar.Segment_type & 1)==0) while (1) outportb(0x80,0xe7); //segment register was usable but not accessed
+          if ((ar.Segment_type & (1<<3)) && (((ar.Segment_type & (1<<1))==0))) while (1) outportb(0x80,0xe7); //code segment but type is unreadable
+          if (ar.S==0) while (1) outportb(0x80,0xe8);
+          if (ar.P==0) while (1) outportb(0x80,0xed);
+          if (ar.reserved || ar.reserved_2) while (1) outportb(0x80,0xee);
+
+          limit=(QWORD)vmread(vm_guest_ds_limit);
+          if (((limit & 0xfff)!=0xfff) && (ar.G!=0)) while (1) outportb(0x80,0xef);
+          if ((limit & 0xFFF00000) && (ar.G==0)) while (1) outportb(0x80,0xf0);
+        }
+
+        ar.AccessRights=vmread(vm_guest_es_access_rights);
+        if (!ar.unusable)
+        {
+          if ((ar.Segment_type & 1)==0) while (1) outportb(0x80,0xe7); //segment register was usable but not accessed
+          if ((ar.Segment_type & (1<<3)) && (((ar.Segment_type & (1<<1))==0))) while (1) outportb(0x80,0xe7); //code segment but type is unreadable
+          if (ar.S==0) while (1) outportb(0x80,0xe8);
+          if (ar.P==0) while (1) outportb(0x80,0xed);
+          if (ar.reserved || ar.reserved_2) while (1) outportb(0x80,0xee);
+
+          limit=(QWORD)vmread(vm_guest_es_limit);
+          if (((limit & 0xfff)!=0xfff) && (ar.G!=0)) while (1) outportb(0x80,0xef);
+          if ((limit & 0xFFF00000) && (ar.G==0)) while (1) outportb(0x80,0xf0);
+        }
+
+        ar.AccessRights=vmread(vm_guest_fs_access_right
