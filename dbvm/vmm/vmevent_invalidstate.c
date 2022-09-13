@@ -351,3 +351,113 @@ VMSTATUS handleInvalidEntryState(pcpuinfo currentcpuinfo,VMRegisters *vmregister
         if ((cr4 & cr4fixed0)!=cr4fixed0) while (1) outportb(0x80,0x20);
         if ((cr4 & cr4fixed1)!=cr4) while (1) outportb(0x80,0x21);
 
+
+        if (cr4 & (1<<23))  while (1) outportb(0x80,0x22);
+
+        if (cr4 & (1<<17)) while (1) outportb(0x80,0x26);
+        if ((cr4 & (1<<13))==0) while (1) outportb(0x80,0x27);
+
+        if (vmread(vm_pending_debug_exceptions)) while (1) outportb(0x80,0x23);
+
+        if ((QWORD)vmread(vm_vmcs_link_pointer) != (QWORD)0xffffffffffffffffULL) while (1) outportb(0x80,0x24);
+
+        if ((QWORD)vmread(vm_guest_IA32_DEBUGCTL))  while (1) outportb(0x80,0x25);
+
+
+        //add check for efer.lme/lma and ie32emode
+
+
+        if (activitystate==3)
+        {
+          QWORD secproc=(QWORD)vmread(vm_execution_controls_cpu_secondary);
+          if ((secproc & (1<<7))==0) while (1) outportb(0x80,0x27); //not in unrestricted more
+          if ((secproc & (1<<1))==0) while (1) outportb(0x80,0x28); //ept off
+
+
+          while (1) outportb(0x80,0x26);
+        }
+
+
+        while (1)
+        {
+          if (rflags.IF==1)
+            outportb(0x80,0x00);
+          else
+          {
+            if (currentcpuinfo->cpunr==0)
+              outportb(0x80,0x01);
+            else
+              outportb(0x80,vmread(vm_guest_rip)); //0x02);
+          }
+        }
+
+      }
+      else
+      {
+        Access_Rights reg_rmaccessrights,reg_traccessrights;
+        RFLAGS guestrflags;
+        DWORD gdtbase, idtbase;
+        guestrflags.value=0;
+
+        gdtbase=VirtualToPhysical((void *)getGDTbase());
+        idtbase=VirtualToPhysical(idttable32);
+
+        sendstring("Still in realmode, enabling VMx86 mode if not already in it and fixing possible other bugs\n\r");
+        //set taskregister to realmode tr
+        //set GDT and IDT to my own (so a 32-bit interrupt is possible)
+        vmwrite(vm_guest_gdtr_base, gdtbase);
+        vmwrite(vm_guest_gdt_limit, getGDTsize());
+        vmwrite(vm_guest_idtr_base, idtbase);
+        vmwrite(vm_guest_idt_limit, 256*8);
+        setupTSS8086();
+        vmwrite(vm_guest_tr_base,(UINT64)VirtualToPhysical(VirtualMachineTSS_V8086)); //tr base
+        vmwrite(vm_guest_tr_limit,(ULONG)sizeof(TSS)+32+8192+1); //tr limit
+        vmwrite(vm_guest_tr,64); //the tss o
+
+  #ifdef DEBUG
+        UINT64 idtbase2, gdtbase2;
+        gdtbase2=vmread(vm_guest_gdtr_base);
+        idtbase2=vmread(vm_guest_idtr_base);
+
+        sendstringf("Set vm_guest_gdtr_base to %6 while I wanted to set it to %6\n\r",gdtbase2, gdtbase);
+        sendstringf("Set vm_guest_idtr_base to %6 while I wanted to set it to %6\n\r",idtbase2, idtbase);
+  #endif
+
+
+        reg_rmaccessrights.AccessRights=0;
+        reg_rmaccessrights.Segment_type=3;
+        reg_rmaccessrights.S=1;
+        reg_rmaccessrights.DPL=3;
+        reg_rmaccessrights.P=1;
+        reg_rmaccessrights.G=0;
+        reg_rmaccessrights.D_B=0;
+
+        reg_traccessrights.AccessRights=0;
+        reg_traccessrights.Segment_type=11; //11=32-bit 3=16-bit
+        reg_traccessrights.S=0;
+        reg_traccessrights.DPL=0;
+        reg_traccessrights.P=1;
+        reg_traccessrights.G=0;
+        reg_traccessrights.D_B=1;
+        vmwrite(vm_guest_es_access_rights,(ULONG)reg_rmaccessrights.AccessRights); //es access rights
+        vmwrite(vm_guest_cs_access_rights,(ULONG)reg_rmaccessrights.AccessRights); //cs access rights
+        vmwrite(vm_guest_ss_access_rights,(ULONG)reg_rmaccessrights.AccessRights); //ss access rights
+        vmwrite(vm_guest_ds_access_rights,(ULONG)reg_rmaccessrights.AccessRights); //ds access rights
+        vmwrite(vm_guest_fs_access_rights,(ULONG)reg_rmaccessrights.AccessRights); //fs access rights
+        vmwrite(vm_guest_gs_access_rights,(ULONG)reg_rmaccessrights.AccessRights); //gs access rights
+        vmwrite(vm_guest_ldtr_access_rights,(ULONG)(1<<16)); //ldtr access rights (bit 16 is unusable bit
+        vmwrite(vm_guest_tr_access_rights,(ULONG)reg_traccessrights.AccessRights); //tr access rights
+
+        vmwrite(vm_guest_es,(ULONG)vmread(vm_guest_es_base) >> 4); //es selector
+        vmwrite(vm_guest_cs,(ULONG)vmread(vm_guest_cs_base) >> 4); //cs selector
+        vmwrite(vm_guest_ss,(ULONG)vmread(vm_guest_ss_base) >> 4); //ss selector
+        vmwrite(vm_guest_ds,(ULONG)vmread(vm_guest_ds_base) >> 4); //ds selector
+        vmwrite(vm_guest_fs,(ULONG)vmread(vm_guest_fs_base) >> 4); //fs selector
+        vmwrite(vm_guest_gs,(ULONG)vmread(vm_guest_gs_base) >> 4); //gs selector
+        vmwrite(vm_guest_ldtr,(ULONG)0); //ldtr selector
+        vmwrite(vm_guest_tr,(ULONG)0); //tr selector
+
+        vmwrite(vm_guest_es_limit,(ULONG)0xffff); //es limit
+        vmwrite(vm_guest_cs_limit,(ULONG)0xffff); //cs limit
+        vmwrite(vm_guest_ss_limit,(ULONG)0xffff); //ss limit
+        vmwrite(
