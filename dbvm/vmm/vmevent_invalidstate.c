@@ -607,4 +607,63 @@ VMSTATUS handleInvalidEntryState(pcpuinfo currentcpuinfo,VMRegisters *vmregister
       sendstringf("SS(%x).rpl != CS(%x).rpl\n",segment,segment2);
       segment=(segment & 0xfffc) | (segment2 & 3);
       sendstringf("Setting SS to %x\n",segment);
-      
+      vmwrite(vm_guest_ss, segment);
+
+      //also set ss.dpl so ss.rpl
+      tempAR.AccessRights=vmread(vm_guest_ss_access_rights);
+      tempAR.DPL=(segment & 3);
+      vmwrite(vm_guest_ss_access_rights, tempAR.AccessRights);
+      handled=1;
+    }
+
+    //check if CR0 and CR4 have bits set or unset that are not allowed
+    UINT64 oldcr0,newcr0;
+    UINT64 oldcr4,newcr4;
+
+    oldcr0=vmread(vm_guest_cr0);
+    oldcr4=vmread(vm_guest_cr4);
+
+    newcr0=(oldcr0 | (UINT64)IA32_VMX_CR0_FIXED0) & (UINT64)IA32_VMX_CR0_FIXED1;
+
+    if (newcr0!=oldcr0)
+    {
+      sendstringf("old CR0 was %6 new CR0 is %6\n",oldcr0,newcr0);
+
+      vmwrite(vm_guest_cr0, newcr0);
+      handled=1;
+    }
+
+    newcr4=(oldcr4 | (UINT64)IA32_VMX_CR4_FIXED0) & (UINT64)IA32_VMX_CR4_FIXED1;
+    if (newcr4!=oldcr4)
+    {
+      sendstringf("old CR4 was %6 new CR4 is %6\n",oldcr4,newcr4);
+      vmwrite(vm_guest_cr4, newcr4);
+      handled=1;
+    }
+
+    //setCR4(((UINT64)getCR4() | (UINT64)IA32_VMX_CR4_FIXED0) & (UINT64)IA32_VMX_CR4_FIXED1);
+
+
+
+
+    if (handled==1)
+    {
+      //set RF flag
+      UINT64 rflags=vmread(vm_guest_rflags);
+      PRFLAGS prflags=(PRFLAGS)&rflags;
+      prflags->RF=1;
+      vmwrite(vm_guest_rflags,rflags);
+    }
+    //make sure
+
+
+
+    return (handled==0);
+
+  }
+
+  outportb(0x80,0xcc);
+  while (1);
+  return 0;
+}
+
