@@ -460,4 +460,151 @@ VMSTATUS handleInvalidEntryState(pcpuinfo currentcpuinfo,VMRegisters *vmregister
         vmwrite(vm_guest_es_limit,(ULONG)0xffff); //es limit
         vmwrite(vm_guest_cs_limit,(ULONG)0xffff); //cs limit
         vmwrite(vm_guest_ss_limit,(ULONG)0xffff); //ss limit
-        vmwrite(
+        vmwrite(vm_guest_ds_limit,(ULONG)0xffff); //ds limit
+        vmwrite(vm_guest_fs_limit,(ULONG)0xffff); //fs limit
+        vmwrite(vm_guest_gs_limit,(ULONG)0xffff); //gs limit
+
+
+        //make sure VM flag is set appropriatly for vm mode
+        guestrflags.value=vmread(vm_guest_rflags);
+        guestrflags.IOPL=3;
+        guestrflags.VM=1;
+  //      pguesteflags->v
+        //currentcpuinfo->hasIF=pguesteflags->IF;
+        vmwrite(vm_guest_rflags,guestrflags.value);
+      }
+
+      return VM_OK;
+    }
+  }
+  else
+  {
+    WORD segment,segment2;
+    Access_Rights tempAR;
+    int handled=0;
+
+
+    while (1)
+      outportb(0x80,0xf0);
+
+
+
+    sendstring("Not in realmode and in an invalid entry state\n");
+    sendstring("Emulating instruction\n");
+    handled=emulateProtectedMode(currentcpuinfo, vmregisters);
+
+    if (handled)
+      return VM_OK; //no error
+
+
+    sendstring("Emulation failed, trying to force state to be valid\n");
+    //try to figure out what could be the problem
+    //segments must be ACCESSED (damn bochs)
+    tempAR.AccessRights=vmread(vm_guest_cs_access_rights);
+    if ((tempAR.Segment_type & 1)==0)
+    {
+      sendstringf("Code segment was usable but not accessed (Let me guess, it's Bochs?)\n");
+      tempAR.Segment_type=tempAR.Segment_type | 1;
+      vmwrite(vm_guest_cs_access_rights, tempAR.AccessRights);
+      handled=1;
+    }
+
+    tempAR.AccessRights=vmread(vm_guest_ds_access_rights);
+    if ((tempAR.unusable==0) && ((tempAR.Segment_type & 1)==0))
+    {
+      sendstringf("DS segment was usable but not accessed\n");
+      tempAR.Segment_type=tempAR.Segment_type | 1;
+      vmwrite(vm_guest_ds_access_rights, tempAR.AccessRights);
+      handled=1;
+    }
+
+    tempAR.AccessRights=vmread(vm_guest_es_access_rights);
+    if ((tempAR.unusable==0) && ((tempAR.Segment_type & 1)==0))
+    {
+      sendstringf("ES segment was usable but not accessed\n");
+      tempAR.Segment_type=tempAR.Segment_type | 1;
+      vmwrite(vm_guest_es_access_rights, tempAR.AccessRights);
+      handled=1;
+    }
+
+    tempAR.AccessRights=vmread(vm_guest_fs_access_rights);
+    if ((tempAR.unusable==0) && ((tempAR.Segment_type & 1)==0))
+    {
+      sendstringf("FS segment was usable but not accessed\n");
+      tempAR.Segment_type=tempAR.Segment_type | 1;
+      vmwrite(vm_guest_fs_access_rights, tempAR.AccessRights);
+      handled=1;
+    }
+
+    tempAR.AccessRights=vmread(vm_guest_gs_access_rights);
+    if ((tempAR.unusable==0) && ((tempAR.Segment_type & 1)==0))
+    {
+      sendstringf("GS segment was usable but not accessed\n");
+      tempAR.Segment_type=tempAR.Segment_type | 1;
+      vmwrite(vm_guest_gs_access_rights, tempAR.AccessRights);
+      handled=1;
+    }
+
+    /*
+    //check if the current cs.rpl = cs.dpl
+    tempAR.AccessRights=vmread(vm_guest_cs_access_rights);
+    segment=vmread(vm_guest_cs);
+    if ( (segment & 3) != tempAR.DPL )
+    {
+      sendstringf("CS: %x is an invalid value for a dpl of %d\n",segment,tempAR.DPL);
+      segment=(segment & 0xfffc) | tempAR.DPL;
+      vmwrite(vm_guest_cs,segment);
+      handled=1;
+    }
+
+    tempAR.AccessRights=vmread(vm_guest_ds_access_rights);
+    segment=vmread(vm_guest_ds);
+    if ( (segment & 3) != tempAR.DPL )
+    {
+      sendstringf("DS: %x is an invalid value for a dpl of %d\n",segment,tempAR.DPL);
+      segment=(segment & 0xfffc) | tempAR.DPL;
+      vmwrite(vm_guest_ds,segment);
+      handled=1;
+    }
+
+    tempAR.AccessRights=vmread(vm_guest_es_access_rights);
+    segment=vmread(vm_guest_es);
+    if ( (segment & 3) != tempAR.DPL )
+    {
+      sendstringf("ES: %x is an invalid value for a dpl of %d\n",segment,tempAR.DPL);
+      segment=(segment & 0xfffc) | tempAR.DPL;
+      vmwrite(vm_guest_es,segment);
+      handled=1;
+    }
+
+    tempAR.AccessRights=vmread(vm_guest_fs_access_rights);
+    segment=vmread(vm_guest_fs);
+    if ( (segment & 3) != tempAR.DPL )
+    {
+      sendstringf("FS: %x is an invalid value for a dpl of %d\n",segment,tempAR.DPL);
+      segment=(segment & 0xfffc) | tempAR.DPL;
+      vmwrite(vm_guest_fs,segment);
+      handled=1;
+    }
+
+    tempAR.AccessRights=vmread(vm_guest_gs_access_rights);
+    segment=vmread(vm_guest_gs);
+    if ( (segment & 3) != tempAR.DPL )
+    {
+      sendstringf("GS: %x is an invalid value for a dpl of %d\n",segment,tempAR.DPL);
+      segment=(segment & 0xfffc) | tempAR.DPL;
+      vmwrite(vm_guest_gs,segment);
+      handled=1;
+    }
+    */
+
+    //check if SS.rpl == CS.rpl
+    segment=vmread(vm_guest_ss);
+    segment2=vmread(vm_guest_cs);
+
+    if ((segment & 3) != (segment2 & 3))
+    {
+      sendstringf("SS(%x).rpl != CS(%x).rpl\n",segment,segment2);
+      segment=(segment & 0xfffc) | (segment2 & 3);
+      sendstringf("Setting SS to %x\n",segment);
+      
