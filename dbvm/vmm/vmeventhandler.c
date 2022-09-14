@@ -3308,3 +3308,1401 @@ int handleInterruptRealMode(pcpuinfo currentcpuinfo, VMRegisters *vmregisters)
 
 
       }
+
+    }
+    else
+      issoftware=0;
+
+    //emulate the call to this int
+
+
+
+    //read the idt and figure out where the interrupt is
+    if ((idtvectorinfo.interruptvector==0x15) && issoftware )  //bios function call
+    {
+      int r=handleRealModeInt0x15(currentcpuinfo, vmregisters, issoftware);
+
+      if (r==0)
+        return r;
+    }
+
+    //still here so not a hooked routine
+
+    //set eip to the next instruction if it was a software interrupt
+
+    vmwrite(vm_guest_rip, vmread(vm_guest_rip)+issoftware);
+
+    //and emulate the interrupt
+    return emulateRMinterrupt(currentcpuinfo, vmregisters, idtvectorinfo.interruptvector);
+  }
+  else
+  {
+    //a normal exception happened. Most common:gpf  Try to emulate this instruction manually (happens with 'special case' instructions
+    emulateRealMode(currentcpuinfo, vmregisters);
+    //this might result in an invalud state, but the next vmresume iteration will then deal with that based on the state
+    return 0;
+  }
+}
+
+int handleInterruptProtectedMode(pcpuinfo currentcpuinfo, VMRegisters *vmregisters)
+{
+  //UINT64 fakeCR0=vmread(vm_cr0_fakeread); //guestCR0
+  //UINT64 fakeCR4=vmread(0x6006);
+
+  //ULONG interrorcode,idtvectorerrorcode;
+  VMExit_interruption_information intinfo;
+  VMExit_idt_vector_information idtvectorinfo;
+  //VMEntry_interruption_information entry_intinfo;
+  int doublefault=0;
+  int isFault=1;
+
+  intinfo.interruption_information=vmread(vm_exit_interruptioninfo);
+  //interrorcode=vmread(vm_exit_interruptionerror);
+  idtvectorinfo.idtvector_info=vmread(vm_idtvector_information);
+  //idtvectorerrorcode=vmread(0x440a);
+
+
+  //protected mode int handling
+  sendstring("protected mode interrupt handling\n\r");
+
+
+  if (intinfo.interruptvector==1)
+  {
+	//emulate the breakpoint interrupt
+    regDR7 dr7;
+    dr7.DR7=vmread(vm_guest_dr7);
+
+    regDR6 dr6;
+    int orig=nosendchar[getAPICID()];
+
+
+    isFault=0; //isDebugFault(vmread(vm_exit_qualification), dr7.DR7);
+
+    nosendchar[getAPICID()]=0;
+    sendstring("Interrupt 1:\n");
+
+    dr6.DR6=getDR6();
+
+    regDR6 dr6_exit_qualification;
+    dr6_exit_qualification.DR6=vmread(vm_exit_qualification);
+
+
+    //The documentation says about the exit qualification: Any of these bits may be set even if its corresponding enabling bit in DR7 is not set.
+    //The documentation also says for dr6: They may or may not be set if the breakpoint is not enabled by the Ln or the Gn flags in register DR7.
+    //therefore, just passing them 1 on 1
+
+    //also: Certain debug exceptions may clear bits 0-3. The remaining contents of the DR6 register are never cleared by the processor.
+    dr6.DR6&= ~(0xf); //zero the b0 to b3 flags
+
+    /*
+    RFLAGS rflags;
+    rflags.value = vmread(vm_guest_rflags);
+    if(rflags.TF)
+    {
+      sendstring("TF is 1");
+      dr6.DR6 |= dr6_exit_qualification.DR6 & 0x600f; //the 4 b0-b3 flags, BS and BD
+    }
+    else
+    {
+      sendstring("TF is 0");
+      dr6.DR6 |= dr6_exit_qualification.DR6 & 0x200f; //the 4 b0-b3 flags, BD
+    }
+    */
+
+    dr6.DR6 |= dr6_exit_qualification.DR6 & 0x600f; //the 4 b0-b3 flags, BS and BD
+    dr6.RTM=~dr6_exit_qualification.RTM;
+    //if ((dr6_exit_qualification.RTM)==0) dr6.RTM=1; //if this is 0, set RTM to 1
+
+    setDR6(dr6.DR6);
+
+    if (currentcpuinfo->Ultimap.Active)
+      ultimap_handleDB(currentcpuinfo);
+    else
+      vmwrite(vm_guest_IA32_DEBUGCTL, vmread(vm_guest_IA32_DEBUGCTL) & ~1); //disable the LBR bit ( if it isn't already disabled)
+
+
+    //set GD to 0
+    dr7.GD=0;
+    vmwrite(vm_guest_dr7,dr7.DR7);
+
+    nosendchar[getAPICID()]=orig;
+
+
+    //interrupt redirection for int 1
+    if (int1redirection_idtbypass==0)
+    {
+      //simple int1 redirection, or not even a different int
+      sendstring("Normal\n\r");
+      intinfo.interruptvector=int1redirection;
+      currentcpuinfo->int1happened=(int1redirection!=1); //only set if redirection to something else than 1
+    }
+    else
+    {
+      int r;
+      //emulate the interrupt completly, bypassing the idt vector and use what's given in
+      //int14redirection_idtbypass_cs and int14redirection_idtbypass_rip
+
+
+
+
+      nosendchar[getAPICID()]=1; //I believe this works
+      r=emulateExceptionInterrupt(currentcpuinfo, vmregisters,
+          int1redirection_idtbypass_cs, int1redirection_idtbypass_rip,
+          intinfo.haserrorcode, vmread(vm_exit_interruptionerror), isFault);
+
+      nosendchar[getAPICID()]=orig;
+
+      if (r==0)
+        return 0;
+
+      //else failure to handle it
+
+    }
+  }
+  else
+  if (intinfo.interruptvector == 3)
+  {
+
+	  //software bp
+      nosendchar[getAPICID()]=0;
+      sendstring("Int3 bp\n");
+
+      sendvmstate(currentcpuinfo, vmregisters);
+
+      isFault=0;
+      if (int3redirection_idtbypass == 0)
+      {
+        //simple int3 redirection, or not even a different int
+        sendstring("Normal\n\r");
+        intinfo.interruptvector=int3redirection;
+        currentcpuinfo->int3happened=(int3redirection!=3); //only set if redirection to something else than 3
+      }
+      else
+      {
+        nosendchar[getAPICID()]=0;
+        sendstring("int 3\n");
+
+        vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength)); //adjust this automatically (probably 1)
+
+        int r=emulateExceptionInterrupt(currentcpuinfo, vmregisters,
+            int3redirection_idtbypass_cs, int3redirection_idtbypass_rip,
+            intinfo.haserrorcode, vmread(vm_exit_interruptionerror), 0);
+
+        if (r==0)
+          return 0;
+      }
+  }
+  else
+  if (intinfo.interruptvector == 14)
+  {
+      //check if the IgnorePageFaults feature is enabled and if it's a non instruction fetch bp
+      if ((currentcpuinfo->IgnorePageFaults.Active) && (vmread(vm_exit_interruptionerror) <=0xf ) )//NO instructiob fetch
+      {
+        currentcpuinfo->IgnorePageFaults.LastIgnoredPageFault=vmread(vm_exit_qualification);
+        vmwrite(vm_guest_rip, vmread(vm_guest_rip)+vmread(vm_exit_instructionlength)); //set eip to the next instruction
+        return 0;
+      }
+
+      setCR2(vmread(vm_exit_qualification));
+
+      if (int14redirection_idtbypass == 0)
+      {
+        //simple int14 redirection, or not even a different int
+        sendstring("Normal\n\r");
+        intinfo.interruptvector=int14redirection;
+        currentcpuinfo->int14happened=(int14redirection!=14); //only set if redirection to something else than 14
+      }
+      else
+      {
+        int r;
+
+        if (intinfo.haserrorcode==0)
+        {
+          nosendchar[getAPICID()]=0;
+          sendstring("int 14 without errorcode\n");
+        }
+
+        if (idtvectorinfo.valid)
+        {
+          nosendchar[getAPICID()]=0;
+          sendstring("int 14 from an IDT\n");
+        }
+
+        if (idtvectorinfo.type!=0)
+        {
+          nosendchar[getAPICID()]=0;
+          sendstringf("int 14 type is %d instead of 3\n", idtvectorinfo.type);
+        }
+
+
+
+        sendstring("Interrupt 14:");
+
+        r=1;
+        if (intinfo.haserrorcode)
+        {
+          int errorcode=vmread(vm_exit_interruptionerror);
+          if ((errorcode & 0x15)==0x15)
+          {
+            //if it happens because of the NX bit
+            nosendchar[getAPICID()]=0;
+
+            sendstringf("Errorcode=%x\n", vmread(vm_exit_interruptionerror));
+            sendstringf("CR2=%x\n", vmread(vm_exit_qualification));
+
+            r=emulateExceptionInterrupt(currentcpuinfo, vmregisters,
+                int14redirection_idtbypass_cs, int14redirection_idtbypass_rip,
+                intinfo.haserrorcode, errorcode, 1);
+          }
+
+
+        }
+
+
+
+        if (r==0) //it got handled?
+        {
+          sendstring("r==0, returning\n");
+          return 0; //yes
+        }
+
+        intinfo.interruptvector=int14redirection;
+        currentcpuinfo->int14happened=(int14redirection!=14);
+      }
+   }
+
+
+  //do some double fault checking.
+  sendstringf("idtvectorinfo.valid=%d\n\r",idtvectorinfo.valid);
+  sendstringf("idtvectorinfo.type=%d\n\r",idtvectorinfo.type);
+  sendstringf("idtvectorinfo.interruptvector=%d\n\r",idtvectorinfo.interruptvector);
+
+  sendstringf("intinfo.valid=%d\n\r",intinfo.valid);
+  sendstringf("intinfo.type=%d\n\r",intinfo.type);
+  sendstringf("intinfo.interruptvector=%d\n\r",intinfo.interruptvector);
+
+  if (idtvectorinfo.valid)
+  {
+    nosendchar[getAPICID()]=0;
+    sendstring("idtvectorinfo is VALID\n");
+    sendstringf("idtvectorinfo.type=%d\n",idtvectorinfo.type);
+    //this interrupt is the result of a previous interrupt
+
+    if (idtvectorinfo.type==3)
+    {
+      sendstring("idtvectorinfo.type==3\n");
+      if (idtvectorinfo.interruptvector==8)
+      {
+        nosendchar[getAPICID()]=0;
+        sendstring("TRIPPLEFAULT TRIPPLEFAULT!!! OMGWTF?\n");
+        sendvmstate(currentcpuinfo, vmregisters);
+        displayPreviousStates();
+        ShowCurrentInstructions(currentcpuinfo);
+
+
+
+        while (1)
+        {
+          outportb(0x80,0xd6);
+          ddDrawRectangle(0,DDVerticalResolution-100,100,100,_rdtsc() & 0xffffff);
+        }
+
+      }
+
+      doublefault=1;
+      //now try to disprove that it is a doublefault
+      if (isBenignInterrupt(idtvectorinfo.interruptvector))
+      {
+        sendstring("idtvector is benign\n");
+        doublefault=0;
+      }
+      else
+      if (isBenignInterrupt(intinfo.interruptvector))
+      {
+        sendstring("intvector is benign");
+        doublefault=0;
+      }
+
+
+      if (intinfo.interruptvector==14)
+      {
+        sendstring("intvector is 14");
+        if (isContributoryInterrupt(idtvectorinfo.interruptvector))
+        {
+          sendstring("idtvector is contributory\n");
+          doublefault=0;
+        }
+      }
+
+      if (doublefault)
+      {
+        //one last chance
+        doublefault=0;
+
+        sendstring("Likely a doublefault\n");
+
+        if ((isContributoryInterrupt(idtvectorinfo.interruptvector)) &&
+            (isContributoryInterrupt(intinfo.interruptvector)))
+        {
+          //both are contributory exceptions
+          sendstring("BOTH are contributory\n");
+          doublefault=1; //too bad
+        }
+
+        if (idtvectorinfo.interruptvector==14)
+        {
+          //idt indicated a pagefault
+          sendstring("idtvector=14\n");
+
+          if (isContributoryInterrupt(intinfo.interruptvector))
+          {
+            sendstring("is contributory\n");
+            doublefault=1;
+          }
+
+          if (intinfo.interruptvector==14)
+          {
+            sendstring("intvector=14\n");
+            doublefault=1;
+          }
+
+        }
+
+      }
+    }
+    else
+    {
+      //else not a hardware exception to no doublefault
+
+    }
+
+
+  }
+
+
+
+
+  //normal handling
+
+  VMEntry_interruption_information newintinfo;
+  newintinfo.interruption_information=0;
+  //send event to guest
+
+
+  if (doublefault)
+  {
+    //int originalnosendchar=nosendchar[getAPICID()];
+
+    nosendchar[getAPICID()]=0;
+
+    //pass the doublefault int to the guest
+    newintinfo.interruptvector=8; //DF
+    newintinfo.type=3; //hardware
+    newintinfo.haserrorcode=1; //errorcode
+    newintinfo.valid=1;
+    vmwrite(vm_entry_exceptionerrorcode, 0); //entry errorcode
+
+    sendstring("DOUBLEFAULT RAISED\n\r");
+  }
+  else
+  {
+    //pass the original int to the guest
+    sendstring("Passing original interrupt to guest\n");
+    newintinfo.interruptvector=intinfo.interruptvector;
+    newintinfo.type=intinfo.type;
+    newintinfo.haserrorcode=intinfo.haserrorcode;
+    newintinfo.valid=intinfo.valid; //should be 1...
+    vmwrite(vm_entry_exceptionerrorcode, vmread(vm_exit_interruptionerror)); //entry errorcode
+
+    if (newintinfo.type==0)
+      return 0;
+  }
+
+  //nosendchar[getAPICID()]=0;
+  sendstringf("CS:EIP=0x%x:0x%x",vmread(vm_guest_cs),vmread(vm_guest_rip));
+
+  sendstringf("newintinfo.interruptvector=%d\n\r",newintinfo.interruptvector);
+  sendstringf("newintinfo.type=%d\n\r",newintinfo.type);
+  sendstringf("newintinfo.haserrorcode=%d\n\r",newintinfo.haserrorcode);
+  if (newintinfo.haserrorcode)
+  {
+    sendstringf("newintinfo.errorcode=%x\n\r",vmread(0x4018));
+  }
+
+  sendstringf("newintinfo.valid=%d\n\r",newintinfo.valid);
+
+  if (newintinfo.type!=5)
+  {
+    vmwrite(vm_entry_interruptioninfo, newintinfo.interruption_information); //entry info field
+    vmwrite(0x401a, vmread(vm_exit_instructionlength)); //entry instruction length
+  }
+  else
+  {
+    //int1
+    vmwrite(vm_pending_debug_exceptions, vmread(vm_pending_debug_exceptions) | (1<<14) );
+    vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+  }
+
+
+
+  if (isFault)
+  {
+    //set RF flag
+    UINT64 rflags=vmread(vm_guest_rflags);
+    PRFLAGS prflags=(PRFLAGS)&rflags;
+    prflags->RF=1;
+    vmwrite(vm_guest_rflags,rflags);
+  }
+
+  sendstringf("Protected mode interrupt handled\n\r");
+  return 0;
+}
+
+BOOL handleHardwareBreakpoint(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave)
+{
+  //handle specialized software breakpoints
+  sendstringf("Hardware breakpoint\n");
+  if (hasEPTsupport || hasNPsupport)
+  {
+    if (ept_handleHardwareBreakpoint(currentcpuinfo, vmregisters, fxsave))
+      return TRUE;
+  }
+
+  //future hardware reakpoint handlers here
+
+  //still here
+  return FALSE; //unhandled
+}
+
+BOOL handleSoftwareBreakpoint(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave)
+{
+  //handle specialized software breakpoints
+  nosendchar[getAPICID()]=0;
+  //sendstringf("Software breakpoint\n");
+  if (hasEPTsupport || hasNPsupport)
+  {
+    if (ept_handleSoftwareBreakpoint(currentcpuinfo, vmregisters, fxsave))
+    {
+      //sendstring("handleSoftwareBreakpoint: ept_handleSoftwareBreakpoint handled it. Returning TRUE\n");
+      return TRUE;
+    }
+  }
+
+  //future software breakpoint handlers here
+
+
+  //still here
+  nosendchar[getAPICID()]=0;
+  sendstringf("Unhandled Software breakpoint\n");
+  return FALSE; //unhandled
+}
+
+VMSTATUS handleInterrupt(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave) //nightmare function. Needs rewrite
+{
+ // int origsc;
+
+
+
+  UINT64 fakeCR0=(vmread(vm_guest_cr0) & (~vmread(vm_cr0_guest_host_mask))) | (vmread(vm_cr0_read_shadow) & vmread(vm_cr0_guest_host_mask)); //   vmread(vm_cr0_read_shadow); //guestCR0
+  //UINT64 fakeCR4=vmread(0x6006);
+
+  //ULONG interrorcode,idtvectorerrorcode;
+  VMExit_interruption_information intinfo;
+  //VMExit_idt_vector_information idtvectorinfo;
+  //VMEntry_interruption_information enstry_intinfo;
+  //int doublefault=0;
+
+  intinfo.interruption_information=vmread(vm_exit_interruptioninfo);
+
+  if ((intinfo.interruptvector==1) && (intinfo.type==itHardwareException))
+  {
+    if (handleHardwareBreakpoint(currentcpuinfo, vmregisters, fxsave))
+      return VM_OK;
+  }
+
+
+  if ((intinfo.interruptvector==3) && (intinfo.type==itSoftwareException))
+  {
+    if (handleSoftwareBreakpoint(currentcpuinfo, vmregisters, fxsave))
+      return VM_OK;
+  }
+
+
+
+
+ // interrorcode=vmread(vm_exit_interruptionerror);
+  //idtvectorinfo.idtvector_info=vmread(vm_idtvector_information);
+  //idtvectorerrorcode=vmread(0x440a);
+
+  //check if according to the guest protected mode is enabled or not
+  if ((fakeCR0 & 1)==0)
+    return handleInterruptRealMode(currentcpuinfo, vmregisters);     //nope, so we're in real mode emulation
+  else
+    return handleInterruptProtectedMode(currentcpuinfo, vmregisters);
+}
+
+
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
+int handleXSETBV(pcpuinfo currentcpuinfo, VMRegisters *vmregisters)
+{
+  unsigned long long value=((unsigned long long)vmregisters->rdx << 32)+vmregisters->rax;
+  int success=0;
+
+  sendstring("handleXSETBV\n\r");
+
+  currentcpuinfo->LastInterrupt=0;
+  currentcpuinfo->OnInterrupt.RIP=(QWORD)((volatile void *)(&&InterruptFired)); //set interrupt location
+  currentcpuinfo->OnInterrupt.RSP=getRSP();
+
+
+  if (vmread(vm_guest_cr4) & CR4_OSXSAVE)
+  {
+    sendstring("Guest has OSXSAVE enabled\n\r");
+    setCR4(getCR4() | CR4_OSXSAVE);
+  }
+  else
+  {
+    sendstring("Guest doesn't have OSXSAVE enabled\n\r");
+    setCR4(getCR4() & (~CR4_OSXSAVE));
+  }
+
+  sendstring("Calling _xsetbv\n");
+
+  _xsetbv(vmregisters->rcx, value);
+
+  sendstring("Returned without exception\n");
+  success=1;
+
+InterruptFired:
+  currentcpuinfo->OnInterrupt.RIP=0;
+
+  if (!success)
+  {
+    sendstringf("Exception happened. Interrupt=%d\n\r", currentcpuinfo->LastInterrupt);
+    if (currentcpuinfo->LastInterrupt==13)
+      raiseGeneralProtectionFault(0);
+
+    if (currentcpuinfo->LastInterrupt==6)
+      raiseInvalidOpcodeException(currentcpuinfo);
+
+
+
+  }
+  else
+  {
+    vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+  }
+  return 0;
+}
+
+
+
+
+int handleSingleStep(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave)
+{
+  //handle the reasons one by one. (Used by AMD as well)
+  sendstringf("%d: handleSingleStep.  currentcpuinfo->singleStepping.ReasonsPos=%d\n", currentcpuinfo->cpunr, currentcpuinfo->singleStepping.ReasonsPos);
+
+
+  while (currentcpuinfo->singleStepping.ReasonsPos)
+  {
+    int i=currentcpuinfo->singleStepping.ReasonsPos-1;
+    int r=0;
+    sendstringf("%d:  ID %d Reason %d\n", currentcpuinfo->cpunr, i, currentcpuinfo->singleStepping.Reasons[i].Reason);
+
+    switch (currentcpuinfo->singleStepping.Reasons[i].Reason)
+    {
+      case SSR_HANDLEWATCH: r=ept_handleWatchEventAfterStep(currentcpuinfo, currentcpuinfo->singleStepping.Reasons[i].ID); break;
+      case SSR_HANDLECLOAK: r=ept_handleCloakEventAfterStep(currentcpuinfo, (PCloakedPageData)currentcpuinfo->singleStepping.Reasons[i].Data); break;
+      case SSR_HANDLESOFTWAREBREAKPOINT: r=ept_handleSoftwareBreakpointAfterStep(currentcpuinfo, currentcpuinfo->singleStepping.Reasons[i].ID); break;
+      //todo: case SSR_STEPTILLINTERUPTABLE: return singleStepTillInteruptable
+      case SSR_STEPANDBREAK: r=ept_handleStepAndBreak(currentcpuinfo, vmregisters, fxsave, currentcpuinfo->singleStepping.Reasons[i].ID); break;
+      default:
+      {
+        nosendchar[getAPICID()]=0;
+
+        sendstringf("singleStepping memory corruption\n");
+        r=1;
+      }
+
+    }
+
+    if (r)
+    {
+      nosendchar[getAPICID()]=0;
+      sendstringf("handleSingleStep: r=%d\n",r);
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      while (1) outportb(0x80,0xd7);
+    }
+    currentcpuinfo->singleStepping.ReasonsPos--;
+  }
+
+  sendstring("vmx_disableSingleStepMode\n");
+  vmx_disableSingleStepMode();
+
+  sendstringf("return from handleSingleStep.  currentcpuinfo->singleStepping.ReasonsPos=%d\n", currentcpuinfo->singleStepping.ReasonsPos);
+
+  return 0;
+}
+
+void speedhack_setspeed(double speed)
+{
+  if (TSCHooked)
+  {
+    QWORD currentTime=_rdtsc();
+
+    QWORD initialoffset=(currentTime-speedhackInitialTime)*speedhackSpeed+speedhackInitialOffset;
+    speedhackInitialTime=currentTime;
+
+    if (initialoffset<lowestTSC)
+      initialoffset=lowestTSC+1000;
+
+    lowestTSC=initialoffset;
+    speedhackInitialOffset=initialoffset;
+    speedhackSpeed=speed;
+
+    useSpeedhack=1; //once used it's always on
+  }
+}
+
+
+int handle_rdtsc(pcpuinfo currentcpuinfo, VMRegisters *vmregisters)
+{
+  QWORD t;
+  QWORD lTSC=lowestTSC;
+  QWORD realtime;
+
+
+  if (lTSC<currentcpuinfo->lowestTSC)
+    lTSC=currentcpuinfo->lowestTSC;
+
+
+  realtime=_rdtsc();
+  //csEnter(&TSCCS);
+
+
+  if (currentcpuinfo->lowestTSC==0)
+    currentcpuinfo->lowestTSC=realtime;
+
+
+
+  //speedhack:
+  if (useSpeedhack) //(useSpeedhack)
+  {
+    t=(realtime-speedhackInitialTime)*speedhackSpeed+speedhackInitialOffset;
+   // t=globalTSC+s;
+  }
+  else
+    t=realtime; //speedhack disabled ATM globalTSC+s;
+
+  if (lTSC==0)
+    lTSC=t;
+
+  if (t<lTSC)
+  {
+    lTSC=t; //overflow happened... (bp here)
+
+  }
+
+
+  if (adjustTimestampCounters)
+  {
+    if ((realtime-currentcpuinfo->lastTSCTouch)<(QWORD)adjustTimestampCounterTimeout) //todo: and not a forbidden RIP
+    {
+
+      int off=20+(realtime & 0xf);
+
+
+      t=currentcpuinfo->lowestTSC+off;
+      //t=lTSC+off;
+
+      //writeMSR(0x838, readMSR(0x838));
+
+      //lockedQwordIncrement(&lowestTSC,off);
+      currentcpuinfo->lowestTSC=t;
+
+    }
+    else
+    {
+      if (lowestTSC<t)
+        lowestTSC=t;
+      currentcpuinfo->lowestTSC=t;
+    }
+  }
+
+  if (isAMD)
+    currentcpuinfo->vmcb->RAX = t & 0xffffffff;
+  else
+    vmregisters->rax=t & 0xffffffff;
+
+  vmregisters->rdx=t >> 32;
+
+  if (lowestTSC<t)
+    lowestTSC=t;
+
+
+  if (isAMD)
+  {
+    if (AMD_hasNRIPS)
+    {
+      currentcpuinfo->vmcb->RIP=currentcpuinfo->vmcb->nRIP;
+    }
+    else
+    {
+      int i,error;
+      UINT64 pagefaultaddress;
+
+     // sendstringf("DB:1:currentcpuinfo->AvailableVirtualAddress=%6\n", currentcpuinfo->AvailableVirtualAddress);
+
+      unsigned char *bytes=(unsigned char *)mapVMmemory(currentcpuinfo, currentcpuinfo->vmcb->cs_base+currentcpuinfo->vmcb->RIP, 15, &error, &pagefaultaddress);
+      if (!bytes)
+          bytes=mapVMmemory(currentcpuinfo, currentcpuinfo->vmcb->cs_base+currentcpuinfo->vmcb->RIP, pagefaultaddress-currentcpuinfo->vmcb->cs_base+currentcpuinfo->vmcb->RIP, &error, &pagefaultaddress);
+
+      for (i=0; i<15; i++)
+      {
+        sendstringf("%x ", bytes[i]);
+        if (bytes[i]==0x0f)
+        {
+          sendstringf("%x ", bytes[i+1]);
+          sendstringf("%x ", bytes[i+2]);
+          sendstringf("%x ", bytes[i+3]);
+          currentcpuinfo->vmcb->RIP+=i+2;
+          break;
+        }
+      }
+
+      unmapVMmemory(bytes,15);
+    }
+
+  }
+  else
+  {
+    vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+
+    RFLAGS flags;
+    flags.value=vmread(vm_guest_rflags);
+
+    if (flags.TF==1)
+      vmwrite(vm_pending_debug_exceptions,0x4000);
+  }
+
+  return 0;
+}
+
+
+#pragma GCC pop_options
+
+
+int handleVMEvent_internal(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave)
+{
+  int result;
+  int exit_reason=currentcpuinfo->guest_error?currentcpuinfo->guest_error:vmread(vm_exit_reason) & 0x7fffffff;
+
+
+#ifdef STATISTICS
+  if (exit_reason<=55)
+    currentcpuinfo->eventcounter[exit_reason]++;
+#endif
+
+  if (currentcpuinfo->eptUpdated==1)
+  {
+    currentcpuinfo->eptUpdated=0;
+    ept_invalidate();
+  }
+
+
+  if (hasUnrestrictedSupport && canToggleCR3Exit)
+    currentcpuinfo->guestCR3=vmread(vm_guest_cr3); //for code that needs it
+
+
+
+  switch (exit_reason) //exit reason
+  {
+    case 0: //interrupt
+    {
+      int result;
+
+      result=handleInterrupt(currentcpuinfo, vmregisters, fxsave);
+
+      //sendstringf("handleInterrupt returned %d", result);
+
+      return result;
+    }
+
+
+    case 1: //
+    {
+      sendstring("received external interrupt\n\r");
+      if (vmread(vm_guest_activity_state)==1)
+      {
+        sendstring("In HLT mode so become active and disable external event watching\n\r");
+        vmwrite(vm_execution_controls_pin,vmread(0x4000) & 0xFFFFFFFE); //disable external event watching
+
+
+        vmwrite(vm_guest_activity_state,(ULONG)0); //HLT mode off
+        while (1) outportb(0x80,0xd8);
+
+
+
+        if (ISREALMODE(currentcpuinfo))
+        {
+          sendstring("Guest is in realmode so go back to realmode\n\r");
+          returnToRealmode(currentcpuinfo);
+        }
+
+
+
+
+        return 0;
+      }
+      else
+      {
+        sendstringf("External event received but not in HLT state\n\r");
+        result=handleInterrupt(currentcpuinfo, vmregisters, fxsave);
+        return result;
+
+        //
+       // return 1;
+      }
+
+    }
+
+
+    case 2: //tripple fault
+    {
+
+      nosendchar[getAPICID()]=0;
+      sendstring("A TRIPPLE FAULT HAPPENED. NORMALLY THE SYSTEM WOULD REBOOT NOW\n\r");
+
+
+      while (1) outportb(0x80,0xd7);
+
+      return 1;
+    }
+
+    case 3: //INIT SIGNAL
+    {
+      //enter wait-for-sipi mode
+
+
+      sendstring("Received an INIT signal\n\r"); //should enter wait-for-sipi mode
+      handleINIT(currentcpuinfo, vmregisters);
+      return VM_OK; //ignore?
+    }
+
+    case vm_exit_sipi: //SIPI
+    {
+      if (currentcpuinfo->vmxdata.insideVMXRootMode==1) //don't handle it
+        return 0;
+      else
+        return handleSIPI();
+    }
+
+
+    case 5: //I/O system-management interrupt (SMI)
+    {
+      sendstring("I/O system-management interrupt (SMI)\n\r");
+      return 1;
+    }
+
+    case 6: //other SMI
+    {
+      sendstring("An SMI arrived and caused an SMM VM exit (see Section 24.16.2) but not immediately after retirement of an I/O instruction.\n\r");
+      return 1;
+    }
+
+    case 7: //interrupt window
+    {
+      if ((currentcpuinfo->singleStepping.ReasonsPos) && (currentcpuinfo->singleStepping.Method==2))
+      {
+        sendstring("Interrupt window event... And I am in single stepping mode\n");
+
+        return handleSingleStep(currentcpuinfo, vmregisters, fxsave);
+      }
+      else
+      {
+        nosendchar[getAPICID()]=0;
+        sendstring("Interrupt window event... I did NOT ask for this\n\r");
+        sendstringf("vm_execution_controls_cpu=%6\n", vmread(vm_execution_controls_cpu));
+
+#ifndef DEBUG
+        ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+        while (1) outportb(0x80,0xd8);
+#endif
+      }
+      return 0; //ignore for now
+    }
+
+    case 8: //NMI window
+    {
+      sendstring("NMI Window");
+      if (currentcpuinfo->NMIOccured)
+        raiseNMI();
+
+
+      vmx_disableNMIWindowExiting(); //vmwrite(vm_guest_interruptability_state,2); for some single stepping fun
+
+      return 0;
+    }
+
+    case 9:
+    {
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      while (1) outportb(0x80,0xd9);
+      return handleTaskswitch(currentcpuinfo, vmregisters);
+    }
+
+    case 10: //CPUID
+    {
+      result=handleCPUID(vmregisters);
+
+      return result;
+    }
+
+    case 11:
+    {
+      //currently not supported
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      //while (1);
+
+      sendstring("GETSEC\n\r");
+      raiseInvalidOpcodeException(currentcpuinfo);
+      return 0;
+    }
+
+    case 12: //HLT
+    {
+      result=handleHLT(currentcpuinfo);
+
+
+      return result;
+    }
+
+    case 13: //INVD
+    {
+      nosendchar[getAPICID()]=0;
+      sendstring("INVD called\n\r");
+
+      vmwrite(vm_guest_rip,vmread(vm_guest_rip)+vmread(vm_exit_instructionlength));
+      _wbinvd();
+      //_invd();
+      return 0;
+    }
+
+    case 14: //INVLPG
+    {
+
+      sendstring("Calling handleINVLPG(currentcpuinfo)\n\r");
+      result = handleINVLPG(currentcpuinfo);
+
+
+      sendstringf("Returned from handleINVLPG : %d\n\r",result);
+      return result;
+
+
+
+    }
+
+
+    case 15: //RDPMC
+    {
+      sendstring("RDPMC called\n\r");
+      return 1;
+    }
+
+    case 16: //RDTSC
+    {
+      //TSCOffset+=rdtscTime;
+      //lockedQwordIncrement(&TSCOffset, rdtscTime);
+      int r;
+
+
+
+      r=handle_rdtsc(currentcpuinfo, vmregisters);
+      currentcpuinfo->lastTSCTouch=_rdtsc();
+      return r;
+    }
+
+    case 17: //RSM
+    {
+      sendstring("RSM called\n\r");
+      return 1;
+    }
+
+
+    case 18: //VMCALL
+    {
+
+      nosendchar[getAPICID()]=0;
+      //sendstring("vmcall\n");
+
+      result = handleVMCall(currentcpuinfo, vmregisters);
+
+      //sendstringf("Returned from handleVMCall, result=%d\n\r",result);
+      return result;
+    }
+
+    case 19 ... 27 : //VMX instruction called
+    case 0xce00: //special exit reasons (vmresume/vmlaunch failures)
+    case 0xce01:
+    {
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      //while (1);
+
+      //jtagbp
+
+      sendstring("VMX instruction called...\n\r");
+      return handleIntelVMXInstruction(currentcpuinfo, vmregisters);
+      //return raiseInvalidOpcodeException(currentcpuinfo);
+    }
+
+
+    case 28: //Control register access
+    {
+      int result;
+
+      result=handleCRaccess(currentcpuinfo, vmregisters);
+
+
+      return result;
+    }
+
+    case 29: //Debug register access
+    {
+      sendstring("The debug registers got accesses\n\r");
+      //interesting
+      return 1;
+    }
+
+    case 30: //IO instruction
+    {
+
+      result=handleIOAccess(vmregisters);
+
+
+      return result;
+    }
+
+    case 31: //RDMSR
+    {
+      result=handleRDMSR(currentcpuinfo, vmregisters);
+
+
+      return result;
+    }
+
+
+  case 32: //WRMSR
+    {
+      result=handleWRMSR(currentcpuinfo, vmregisters);
+      return result;
+    }
+
+  case 33: //inv. guest
+    {
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      sendstringf("VM-Entry failure due to invalid guest\n\r");
+      result=handleInvalidEntryState(currentcpuinfo, vmregisters);
+
+      if (result)
+      {
+        nosendchar[getAPICID()]=0;
+        sendstringf("Unhandled invalid state\n");
+        sendvmstate(currentcpuinfo, vmregisters);
+      }
+
+
+
+      return result;
+
+    }
+
+    case 34: //inv. MSR
+    {
+      sendstringf("VM-Entry failure due to MSR loading\n\r");
+      return 1;
+    }
+
+    case 36: //MWAIT
+    {
+      sendstringf("MWAIT occured and mwait exiting=1\n\r");
+      return 1;
+    }
+
+
+    case vm_exit_monitor_trap_flag:
+    {
+      if ((currentcpuinfo->singleStepping.ReasonsPos) && (currentcpuinfo->singleStepping.Method==1))
+        return handleSingleStep(currentcpuinfo, vmregisters, fxsave);
+
+      nosendchar[getAPICID()]=0;
+      sendstring("(Un)expected monitor trap flag\n\r");
+#ifndef DEBUG
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      while (1) outportb(0x80,0xda);
+#else
+      return handleSingleStep(currentcpuinfo, vmregisters, fxsave);
+      //return 0;
+#endif
+
+
+    }
+
+    case 39: //MONITOR
+    {
+      sendstringf("MONITOR occured and MONITOR Exiting=1\n\r");
+      return 1;
+    }
+
+    case 40: //PAUSE
+    {
+      sendstringf("PAUSE occured and PAUSE Exiting=1\n\r");
+      return 1;
+    }
+
+    case 41: //machine check error
+    {
+      sendstring("MACHINE CHECK ERROR!!!!!!!!!!!!!!!!!!!!!!!!1\n\r");
+      return 1;
+    }
+
+    case 43: //TPR below threshold
+    {
+      sendstring("TPR below threshold and TPR threshold set\n\r");
+      return 1;
+    }
+
+    case 44: //APIC_access
+    {
+      sendstring("APIC access\n\r");
+      return 1;
+    }
+
+    case 45: //Virtualized EOI
+    {
+      sendstring("Virtualized EOI\n\r");
+      return 1;
+    }
+
+    case 46:
+    {
+      sendstring("GDT/IDT access\n\r");
+      return 1;
+    }
+
+    case 47:
+    {
+      sendstring("LDTR/TR access\n\r");
+      return 1;
+    }
+
+    case 48:
+    {
+
+      int r;
+
+
+      sendstring("EPT violation\n\r");
+      r=handleEPTViolation(currentcpuinfo, vmregisters, (PFXSAVE64)fxsave);
+
+      ept_invalidate();
+
+
+      return r;
+    }
+
+    case 49:
+    {
+      sendstring("EPT misconfig\n\r");
+      return handleEPTMisconfig(currentcpuinfo, vmregisters);
+    }
+
+    case 50:
+    {
+      sendstring("INVEPT\n\r");
+      return handleIntelVMXInstruction(currentcpuinfo, vmregisters);
+
+      //return 1;
+    }
+
+    case 51:
+    {
+      QWORD t;
+      //RDTSCP
+      //TSCOffset+=rdtscpTime;
+      //lockedQwordIncrement(&TSCOffset, rdtscpTime);
+
+      //if (currentcpuinfo->cpunr!=0)
+      //todo: Calibrate at start to find the system rdtscp calls and don't touch those
+
+      //IS
+      //  currentcpuinfo->lastTSCTouch=_rdtsc();
+
+     // t=_rdtsc();
+     // currentcpuinfo->lowestTSC=t;
+     // lowestTSC=t;
+
+      //vmregisters->rax=t & 0xffffffff;
+      //vmregisters->rdx=t >> 32;
+
+
+      int r=handle_rdtsc(currentcpuinfo, vmregisters);
+      currentcpuinfo->lastTSCTouch=_rdtsc();
+
+      vmregisters->rcx=readMSR(IA32_TSC_AUX_MSR);
+      return r;
+    }
+
+    case vm_exit_vmx_preemptiontimer_reachedzero:
+    {
+      //IA32_VMX_MISC.IA32_VMX_MISC=readMSR(0x485);
+
+
+      nosendchar[getAPICID()]=0;
+      //sendstringf("%d: %x:%6 (vmm rsp=%6 , freemem=%x)\n", currentcpuinfo->cpunr, vmread(vm_guest_cs),vmread(vm_guest_rip), getRSP(), maxAllocatableMemory());
+
+      vmwrite(vm_preemption_timer_value,10000);
+
+      ddDrawRectangle(0,0,100,100,_rdtsc());
+      return 0;
+    }
+
+    case vm_exit_invvpid:
+    {
+      sendstring("INVVPID\n\r");
+      return handleIntelVMXInstruction(currentcpuinfo, vmregisters);
+
+#ifdef DEBUG
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      while (1) outportb(0x80,0xdb);
+#endif
+     // return 1;
+    }
+
+    case vm_exit_invpcid:
+    {
+      ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+      while(1);
+      return 1;
+    }
+
+    case 54:
+    {
+      sendstring("WBINVD\n\r");
+      return 1;
+    }
+
+    case 55:
+    {
+      sendstring("XSETBV\n\r");
+      return handleXSETBV(currentcpuinfo, vmregisters);
+    }
+
+    default:
+    {
+      sendstring("The OMGWTF event happened. Please bury your head in the sand to avoid the nuclear blast\n\r");
+      return 1;
+    }
+
+  }
+
+  return 1;
+}
+
+int reached7c00=0;
+int counter;
+
+criticalSection bla;
+
+int handleVMEvent(pcpuinfo currentcpuinfo, VMRegisters *vmregisters, FXSAVE64 *fxsave)
+{
+
+ // if (currentcpuinfo->cpunr)
+ //   outportb(0x80,exit_reason);
+  int result;
+  VMExit_idt_vector_information idtvectorinfo;
+
+
+  currentcpuinfo->lastExitReason=vmread(vm_exit_reason);
+  if (currentcpuinfo->vmxdata.runningvmx)
+  {
+    int show=1;
+    int r;
+    int er=vmread(vm_exit_reason) & 0xff;
+    currentcpuinfo->lastExitWasWithRunningVMX=1;
+
+    //debug code:
+    //check if I should handle it, if not
+    nosendchar[getAPICID()]=0;
+
+
+
+
+    switch (er)
+    {
+      case vm_exit_cpuid:
+      case vm_exit_io_access:
+      case vm_exit_externalinterupt:
+      case vm_exit_interrupt_window:
+      case vm_exit_apic_access:
+      case vm_exit_mwait:
+      case vm_exit_monitor:
+      case vm_exit_ept_violation:
+      case vm_exit_ept_misconfiguration:
+      case vm_exit_vmx_preemptiontimer_reachedzero:
+        show=0;
+        break;
+    }
+
+    counter++;
+    if (counter % 8192==0)
+      show=1; //show anyhow to show it's alive
+
+
+
+    if (show)
+      sendstringf("%d:%x:%6: event=%d (%s)  esi=%6 edi=%6 ecx=%6\n", currentcpuinfo->cpunr, vmread(vm_guest_cs), vmread(vm_guest_rip),  vmread(vm_exit_reason), getVMExitReassonString(), vmregisters->rsi, vmregisters->rdi, vmregisters->rcx);
+
+   // csEnter(&bla);
+    r=emulateVMExit(currentcpuinfo, vmregisters); //after this
+   // csLeave(&bla);
+
+    if (currentcpuinfo->vmxdata.runningvmx)
+    {
+      sendstringf("handleByGuest did not handle it...\n");
+      while(1);
+    }
+
+    return r;
+  }
+
+  currentcpuinfo->lastExitWasWithRunningVMX=0;
+
+  idtvectorinfo.idtvector_info=vmread(vm_idtvector_information);
+
+
+
+ // csEnter(&bla);
+  result=handleVMEvent_internal(currentcpuinfo, vmregisters, fxsave);
+ // csLeave(&bla);
+
+  if (idtvectorinfo.valid)
+  {
+    VMExit_interruption_information intinfo;
+    intinfo.interruption_information=vmread(vm_entry_interruptioninfo);
+
+    if ((intinfo.valid==0) || (intinfo.interruptvector!=idtvectorinfo.interruptvector) )
+    {
+      nosendchar[getAPICID()]=0;
+      sendstringf("Here's one reason why you're crashing.  A pending interrupt never got respawned.  (Was supposed to spawn int %d) \n",intinfo.interruptvector);
+      while (1);
+
+    }
+  }
+
+
+
+
+  return result;
+}
