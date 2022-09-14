@@ -3275,3 +3275,465 @@ int handleInterruptProtectedMode(pcpuinfo currentcpuinfo, VMRegisters *vmregiste
 
   //do some double fault checking.
   sendstringf("idtvectorinfo.valid=%d\n\r",idtvectorinfo.valid);
+  sendstringf("idtvectorinfo.type=%d\n\r",idtvectorinfo.type);
+  sendstringf("idtvectorinfo.interruptvector=%d\n\r",idtvectorinfo.interruptvector);
+
+  sendstringf("intinfo.valid=%d\n\r",intinfo.valid);
+  sendstringf("intinfo.type=%d\n\r",intinfo.type);
+  sendstringf("intinfo.interruptvector=%d\n\r",intinfo.interruptvector);
+
+  if (idtvectorinfo.valid)
+  {
+    sendstring("idtvectorinfo is VALID\n");
+    sendstringf("idtvectorinfo.type=%d\n",idtvectorinfo.type);
+    //this interrupt is the result of a previous interrupt
+
+    if (idtvectorinfo.type==3)
+    {
+      sendstring("idtvectorinfo.type==3\n");
+      if (idtvectorinfo.interruptvector==8)
+      {
+        nosendchar[getAPICID()]=0;
+        sendstring("TRIPPLEFAULT TRIPPLEFAULT!!! OMGWTF?\n");
+        while (1) ;
+
+      }
+
+      doublefault=1;
+      //now try to disprove that it is a doublefault
+      if (isBenignInterrupt(idtvectorinfo.interruptvector))
+      {
+        sendstring("idtvector is benign\n");
+        doublefault=0;
+      }
+      else
+      if (isBenignInterrupt(intinfo.interruptvector))
+      {
+        sendstring("intvector is benign");
+        doublefault=0;
+      }
+
+
+      if (intinfo.interruptvector==14)
+      {
+        sendstring("intvector is 14");
+        if (isContributoryInterrupt(idtvectorinfo.interruptvector))
+        {
+          sendstring("idtvector is contributory\n");
+          doublefault=0;
+        }
+      }
+
+      if (doublefault)
+      {
+        //one last chance
+        doublefault=0;
+
+        sendstring("Likely a doublefault\n");
+
+        if ((isContributoryInterrupt(idtvectorinfo.interruptvector)) &&
+            (isContributoryInterrupt(intinfo.interruptvector)))
+        {
+          //both are contributory exceptions
+          sendstring("BOTH are contributory\n");
+          doublefault=1; //too bad
+        }
+
+        if (idtvectorinfo.interruptvector==14)
+        {
+          //idt indicated a pagefault
+          sendstring("idtvector=14\n");
+
+          if (isContributoryInterrupt(intinfo.interruptvector))
+          {
+            sendstring("is contributory\n");
+            doublefault=1;
+          }
+
+          if (intinfo.interruptvector==14)
+          {
+            sendstring("intvector=14\n");
+            doublefault=1;
+          }
+
+        }
+
+      }
+    }
+    else
+    {
+      //else not a hardware exception to no doublefault
+
+    }
+
+
+  }
+
+
+
+
+  //normal handling
+
+  VMEntry_interruption_information newintinfo;
+  newintinfo.interruption_information=0;
+  //send event to guest
+
+
+  if (doublefault)
+  {
+    int originalnosendchar=nosendchar[getAPICID()];
+
+    nosendchar[getAPICID()]=0;
+
+    //pass the doublefault int to the guest
+    newintinfo.interruptvector=8; //DF
+    newintinfo.type=3; //hardware
+    newintinfo.haserrorcode=1; //errorcode
+    newintinfo.valid=1;
+    vmwrite(0x4018, 0); //entry errorcode
+
+    sendstring("DOUBLEFAULT RAISED\n\r");
+  }
+  else
+  {
+    //pass the original int to the guest
+    newintinfo.interruptvector=intinfo.interruptvector;
+    newintinfo.type=intinfo.type;
+    newintinfo.haserrorcode=intinfo.haserrorcode;
+    newintinfo.valid=intinfo.valid; //should be 1...
+    vmwrite(0x4018, vmread(vm_exit_interruptionerror)); //entry errorcode
+  }
+
+  //nosendchar[getAPICID()]=0;
+  sendstringf("CS:EIP=0x%x:0x%x",vmread(vm_guest_cs),vmread(vm_guest_rip));
+
+  sendstringf("newintinfo.interruptvector=%d\n\r",newintinfo.interruptvector);
+  sendstringf("newintinfo.type=%d\n\r",newintinfo.type);
+  sendstringf("newintinfo.haserrorcode=%d\n\r",newintinfo.haserrorcode);
+  if (newintinfo.haserrorcode)
+  {
+    sendstringf("newintinfo.errorcode=%x\n\r",vmread(0x4018));
+  }
+
+  sendstringf("newintinfo.valid=%d\n\r",newintinfo.valid);
+
+  vmwrite(0x4016, newintinfo.interruption_information); //entry info field
+  vmwrite(0x401a, vmread(vm_exit_instructionlength)); //entry instruction length
+
+  {
+    //set RF flag
+    UINT64 rflags=vmread(vm_guest_rflags);
+    PRFLAGS prflags=(PRFLAGS)&rflags;
+    prflags->RF=1;
+    vmwrite(vm_guest_rflags,rflags);
+  }
+
+  sendstringf("Protected mode interrupt handled\n\r");
+  return 0;
+}
+
+int handleInterrupt(pcpuinfo currentcpuinfo, VMRegisters *vmregisters) //nightmare function. Needs rewrite
+{
+  int origsc;
+
+  UINT64 fakeCR0=vmread(vm_cr0_fakeread); //guestCR0
+  //UINT64 fakeCR4=vmread(0x6006);
+
+  ULONG interrorcode,idtvectorerrorcode;
+  VMExit_interruption_information intinfo;
+  VMExit_idt_vector_information idtvectorinfo;
+  //VMEntry_interruption_information entry_intinfo;
+  int doublefault=0;
+
+  intinfo.interruption_information=vmread(vm_exit_interruptioninfo);
+  interrorcode=vmread(vm_exit_interruptionerror);
+  idtvectorinfo.idtvector_info=vmread(vm_idtvector_information);
+  idtvectorerrorcode=vmread(0x440a);
+
+  //check if according to the guest protected mode is enabled or not
+  if ((fakeCR0 & 1)==0)
+    return handleInterruptRealMode(currentcpuinfo, vmregisters);     //nope, so we're in real mode emulation
+  else
+    return handleInterruptProtectedMode(currentcpuinfo, vmregisters);
+
+  return 1;
+}
+
+
+
+
+
+int handleVMEvent(pcpuinfo currentcpuinfo, VMRegisters *vmregisters)
+{
+  int result;
+
+
+
+
+  switch (vmread(vm_exit_reason) & 0x7fffffff) //exit reason
+  {
+    case 0: //interrupt
+    {
+      int result;
+
+      result=handleInterrupt(currentcpuinfo, vmregisters);
+
+      return result;
+    }
+
+
+    case 1: //
+		{
+      sendstring("received external interrupt\n\r");
+      if (vmread(0x4826)==1)
+      {
+        sendstring("In HLT mode so become active and disable externel event watching\n\r");
+        vmwrite(vm_execution_controls_pin,vmread(0x4000) & 0xFFFFFFFE); //disable external event watching
+
+
+        vmwrite(0x4826,(ULONG)0); //HLT mode off
+
+        if (ISREALMODE)
+        {
+          sendstring("Guest is in realmode so go back to realmode\n\r");
+          returnToRealmode(currentcpuinfo);
+        }
+
+
+
+
+        return 0;
+      }
+      else
+      {
+        sendstringf("External event received but not in HLT state\n\r");
+        return 1;
+      }
+
+		}
+
+
+		case 2: //tripple fault
+		{
+			sendstring("A TRIPPLE FAULT HAPPENED. NORMALLY THE SYSTEM WOULD REBOOT NOW\n\r");
+			return 1;
+		}
+
+		case 3: //INIT SIGNAL
+		{
+			sendstring("Received a INIT signal\n\r");
+			return 0; //ignore?
+		}
+
+		case vm_exit_sipi: //SIPI
+		{
+			return handleSIPI();
+		}
+
+
+		case 5: //I/O system-management interrupt (SMI)
+		{
+			sendstring("I/O system-management interrupt (SMI)\n\r");
+			return 1;
+		}
+
+		case 6: //other SMI
+		{
+			sendstring("An SMI arrived and caused an SMM VM exit (see Section 24.16.2) but not immediately after retirement of an I/O instruction.\n\r");
+			return 1;
+		}
+
+		case 7: //interrupt window
+		{
+			sendstring("Interrupt window event\n\r");
+			return 1;
+		}
+
+    case 9:
+      return handleTaskswitch(currentcpuinfo, vmregisters);
+
+		case 10: //CPUID
+    {
+		  result=handleCPUID(vmregisters);
+
+      return result;
+    }
+
+		case 12: //HLT
+    {
+      result=handleHLT(currentcpuinfo);
+
+
+      return result;
+    }
+
+		case 13: //INVD
+		{
+      nosendchar[getAPICID()]=0;
+			sendstring("INVD called\n\r");
+			return 1;
+		}
+
+		case 14: //INVLPG
+    {
+
+      sendstring("Calling handleINVLPG(currentcpuinfo)\n\r");
+      result = handleINVLPG(currentcpuinfo);
+
+
+      sendstringf("Returned from handleINVLPG : %d\n\r",result);
+      return result;
+
+
+
+    }
+
+
+		case 15: //RDPMC
+		{
+			sendstring("RDPMC called\n\r");
+			return 1;
+		}
+
+		case 16: //RDTSC
+		{
+			sendstring("RDTSC called\n\r");
+			return 1;
+		}
+
+		case 17: //RSM
+		{
+			sendstring("RSM called\n\r");
+			return 1;
+		}
+
+
+    case 18: //VMCALL
+    {
+      result = handleVMCall(currentcpuinfo, vmregisters);
+
+
+      sendstringf("Returned from handleVMCall, result=%d\n\r",result);
+      return result;
+    }
+
+		case 20 ... 27 : //VMX instruction called
+		{
+			sendstring("VMX instruction called...\n\r");
+			return 1;
+		}
+
+
+    case 28: //Control register access
+    {
+      int result;
+
+      result=handleCRaccess(currentcpuinfo, vmregisters);
+
+
+      return result;
+    }
+
+		case 29: //Debug register access
+		{
+			sendstring("The debug registers got accesses\n\r");
+			return 1;
+		}
+
+		case 30: //IO instruction
+    {
+
+      result=handleIOAccess(vmregisters);
+
+
+      return result;
+    }
+
+		case 31: //RDMSR
+    {
+			result=handleRDMSR(currentcpuinfo, vmregisters);
+
+
+      return result;
+    }
+
+
+		case 32: //WRMSR
+    {
+      result=handleWRMSR(currentcpuinfo, vmregisters);
+
+      return result;
+    }
+
+		case 33: //inv. guest
+		{
+			sendstringf("VM-Entry failure due to invalid guest\n\r");
+      result=handleInvalidEntryState(currentcpuinfo, vmregisters);
+
+      if (result)
+      {
+        nosendchar[getAPICID()]=0;
+        sendstringf("Unhandled invalid state\n");
+        sendvmstate(currentcpuinfo, vmregisters);
+      }
+
+      return result;
+
+		}
+
+		case 34: //inv. MSR
+		{
+			sendstringf("VM-Entry failure due to MSR loading\n\r");
+			return 1;
+		}
+
+		case 36: //MWAIT
+		{
+			sendstringf("MWAIT occured and mwait exiting=1\n\r");
+			return 1;
+		}
+
+		case 39: //MONITOR
+		{
+			sendstringf("MONITOR occured and MONITOR Exiting=1\n\r");
+			return 1;
+		}
+
+		case 40: //PAUSE
+		{
+			sendstringf("PAUSE occured and PAUSE Exiting=1\n\r");
+			return 1;
+		}
+
+		case 41: //machine check error
+		{
+			sendstring("MACHINE CHECK ERROR!!!!!!!!!!!!!!!!!!!!!!!!1\n\r");
+			return 1;
+		}
+
+		case 43: //TPR below threshold
+		{
+      sendstring("TPR below threshold and TPR threshold set\n\r");
+			return 1;
+		}
+
+		case vm_exit_vmx_preemptiontimer_reachedzero:
+		{
+		  IA32_VMX_MISC.IA32_VMX_MISC=readMSR(0x485);
+
+		  nosendchar[getAPICID()]=0;
+		  //sendstringf("%d: %x:%6 (vmm rsp=%6 , freemem=%x)\n", currentcpuinfo->cpunr, vmread(vm_guest_cs),vmread(vm_guest_rip), getRSP(), maxAllocatableMemory());
+		  vmwrite(vm_preemption_timer_value,IA32_VMX_MISC.vmx_premption_timer_tsc_relation*10000000);
+		  return 0;
+		}
+
+		default:
+		{
+			sendstring("The OMGWTF event happened. Please burry your head in the sand to avoid the nuclear blast\n\r");
+		  return 1;
+		}
+
+  }
+
+  return 1;
+}
