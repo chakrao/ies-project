@@ -562,4 +562,367 @@ pushfq   ;8
 
 push rax ;16
 push rbx ;24
-push rcx ;
+push rcx ;32
+push rdx ;40
+push rdi ;48
+push rsi ;56
+push rbp ;64
+push r8  ;72
+push r9  ;80
+push r10 ;88
+push r11 ;96
+push r12 ;112
+push r13 ;120
+push r14 ;128
+push r15 ;136
+
+mov rax,0x6c14
+vmwrite rax,rsp ;host_esp
+
+mov rax,0x6c16
+mov rdx,vmxloop_vmexit
+vmwrite rax,rdx  ;host_eip
+
+cmp rsi,0
+je notloadedOS
+
+osoffload:
+;xchg bx,bx
+mov rax,[rsi]
+mov rbx,[rsi+0x08]
+mov rcx,[rsi+0x10]
+mov rdx,[rsi+0x18]
+mov rdi,[rsi+0x28]
+mov rbp,[rsi+0x30]
+mov r8,[rsi+0x40]
+mov r9,[rsi+0x48]
+mov r10,[rsi+0x50]
+mov r11,[rsi+0x58]
+mov r12,[rsi+0x60]
+mov r13,[rsi+0x68]
+mov r14,[rsi+0x70]
+mov r15,[rsi+0x78]
+
+mov rsi,[rsi+0x20]
+
+jmp aftersetup
+
+notloadedOS:
+xor rax,rax
+mov rbx,rax
+mov rcx,rax
+mov rdx,rax
+mov rdi,rax
+mov rsi,1 ;for the skipAPTerminationWait parameter for reboot
+mov rbp,rax
+mov r8, rax
+mov r9, rax
+mov r10,rax
+mov r11,rax
+mov r12,rax
+mov r13,rax
+mov r14,rax
+mov r15,rax
+
+aftersetup:
+vmlaunch
+;just continued through, restore state
+
+%ifdef JTAG
+db 0xf1 ;jtag breakpoint
+%endif
+
+nop
+nop ;just making sure as for some reason kvm's gdb continues here, instead of the previous instruction
+nop
+
+pop r15 ;128
+pop r14
+pop r13
+pop r12
+pop r11
+pop r10
+pop r9
+pop r8
+pop rbp
+pop rsi
+pop rdi
+pop rdx
+pop rcx
+pop rbx
+pop rax ;8
+
+jc vmxloop_fullerr
+jz vmxloop_halferr
+jmp vmxloop_weirderr
+
+
+vmxloop_fullerr:
+mov eax,1
+popfq ;(esp-0)
+ret
+
+vmxloop_halferr:
+mov eax,2
+popfq ;(esp-0)
+ret
+
+vmxloop_weirderr:
+mov eax,3
+popfq ;(esp-0)
+ret
+
+align 16
+vmxloop_vmexit:
+;cli
+;ok, this should be executed
+
+;cmp dword [fs:0x14],0
+;je isbootcpu
+
+
+
+;isbootcpu:
+
+;save registers
+
+;db 0xf1
+
+
+sub rsp,15*8
+
+mov [rsp+14*8],rax
+mov [rsp+11*8],rdx
+
+
+mov [rsp],r15
+mov [rsp+1*8],r14
+mov [rsp+2*8],r13
+mov [rsp+3*8],r12
+mov [rsp+4*8],r11
+mov [rsp+5*8],r10
+mov [rsp+6*8],r9
+mov [rsp+7*8],r8
+mov [rsp+8*8],rbp
+mov [rsp+9*8],rsi
+mov [rsp+10*8],rdi
+mov [rsp+12*8],rcx
+mov [rsp+13*8],rbx
+
+
+;set host into a 'valid' state
+mov rbp,rsp
+
+
+fucker:
+mov rdi,[rbp+128+ 72] ; param1:currentcpuinfo (rdi of the original host registers, so past the guest registers, inside the host save state)
+mov rsi,rbp ; param2: pointer to the guest registers (stored on stack)
+
+cmp rdi,0
+jne notfucker
+
+;xchg bx,bx
+wbinvd
+
+mov rbx,0x681e  ;RIP
+vmread rax,rbx
+
+mov rbx,0x6808  ;CS
+vmread rbx,rbx
+
+
+
+mov rdi,[rsp+128+ 72] ; param1:currentcpuinfo (rdi of the original host registers, so past the guest registers, inside the host save state)
+mov rsi,rsp ; param2: pointer to the guest registers (stored on stack)
+
+
+notfucker:
+;sub rbp,8
+
+;xchg bx,bx ;boxhs bp
+
+and rsp,-0x10 ;0xfffffffffffffff0;
+sub rsp,512
+db 0x48
+fxsave [rsp]
+mov rdx,rsp ;param 3, pointer to fxsave
+
+sub rsp,32
+
+;xchg bx,bx
+
+call vmexit
+
+add rsp,32
+db 0x48
+fxrstor [rsp]
+
+
+mov rsp,rbp
+
+cmp ax,0xce00
+je vmxloop_guestlaunch
+
+cmp ax,0xce01
+je vmxloop_guestresume
+
+cmp al,1  ;returnvalue of 1 = quit vmx
+jae vmxloop_exitvm
+
+
+;returned 0, so
+
+;restore vmx registers (esp-36)
+pop r15
+pop r14
+pop r13
+pop r12
+pop r11
+pop r10
+pop r9
+pop r8
+pop rbp
+pop rsi
+pop rdi
+pop rdx
+pop rcx
+pop rbx
+pop rax
+
+;and resume
+vmresume
+
+;never executed unless on error
+;restore state of vmm
+
+
+pop r15
+pop r14
+pop r13
+pop r12
+pop r11
+pop r10
+pop r9
+pop r8
+pop rbp
+pop rsi
+pop rdi
+pop rdx
+pop rcx
+pop rbx
+pop rax ;skip rax, rax contains the result
+popfq ;restore flags (esp)
+mov rax,3
+ret
+
+vmxloop_guestlaunch:
+;restore vmx registers (esp-36)
+pop r15
+pop r14
+pop r13
+pop r12
+pop r11
+pop r10
+pop r9
+pop r8
+pop rbp
+pop rsi
+pop rdi
+pop rdx
+pop rcx
+pop rbx
+pop rax
+
+vmlaunch
+
+
+;db 0xf1 ;debug
+
+;never executed unless on error
+;restore state of vmm
+
+
+mov dword [fs:0x10],0xce00 ;exitreason 0xce00
+jmp vmxloop_vmexit
+
+vmxloop_guestresume:
+;restore vmx registers (esp-36)
+pop r15
+pop r14
+pop r13
+pop r12
+pop r11
+pop r10
+pop r9
+pop r8
+pop rbp
+pop rsi
+pop rdi
+pop rdx
+pop rcx
+pop rbx
+pop rax
+
+vmresume
+
+db 0xf1 ;debug
+
+;never executed unless on error
+mov dword [fs:0x10],0xce01 ;exitreason 0xce01  (resume fail)
+jmp vmxloop_vmexit
+
+vmxloop_exitvm:  ;(esp-68)
+;user quit or couldn't be handled
+xor eax,eax  ;0, so ok
+
+
+
+vmxloop_exit: ;(esp)
+add rsp,120  ;128=eax=eflags=error, 136=ebx=eflags, 120=
+pop r15
+pop r14
+pop r13
+pop r12
+pop r11
+pop r10
+pop r9
+pop r8
+pop rbp
+pop rsi
+pop rdi
+pop rdx
+pop rcx
+pop rbx
+add rsp,8 ;;skip rax, rax contains the result
+popfq ;restore flags (esp)
+ret
+
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;---------------------;
+;void setRFLAGS(void);
+;---------------------;
+global setRFLAGS
+setRFLAGS:
+push rdi
+popfq
+ret
+;---------------------;
+;ULONG getRFLAGS(void);
+;---------------------;
+global getRFLAGS
+getRFLAGS:
+pushfq
+pop rax
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;-----------------------------------;
+;void setIDT(UINT64 base, WORD size);
+;-------------
