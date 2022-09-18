@@ -1283,4 +1283,393 @@ db 0xcc
 db 0xcc
 
 ;------------------------------------;
-;v
+;void xsetbv(ULONG xcr, UINT64 value);
+;------------------------------------;
+global _xsetbv
+_xsetbv:
+push rcx
+push rax
+push rdx
+mov ecx,edi
+mov eax,esi
+mov rdx,rsi
+shr rdx,32
+
+xsetbv
+
+pop rdx
+pop rax
+pop rcx
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+
+;----------------;
+;int3bptest(void);
+;----------------;
+global int3bptest
+int3bptest:
+nop
+nop
+db 0x66
+db 0x67
+db 0xcc
+nop
+nop
+ret
+
+;-------------------;
+;void testcode(int x);
+;-------------------;
+global testcode
+testcode:
+mov rax,rdi
+nop
+nop
+nop
+cmp rax,rdi
+jne testcode_end
+nop
+nop
+testcode_end:
+nop
+nop
+nop
+
+;popad
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+
+
+global hascpuid
+;------------------;
+;int hascpuid(void);
+;------------------;
+hascpuid:
+push rdx
+
+pushfq
+pop rax
+mov rdx,rax
+
+xor rax,1000000000000000000000b
+push rax
+popfq
+pushfq
+pop rax
+cmp rax,rdx
+pop rdx
+
+je hascpuid_no ;same as original (unchanged)
+mov rax,1
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+hascpuid_no:
+xor rax,rax
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global stopautomation
+;-------------------------;
+;void stopautomation(void);
+;-------------------------;
+stopautomation:
+mov rax,0xcececece
+VMCALL
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+
+global cLIDT
+;----------------------;
+;cLIDT(void *idtloader);
+;----------------------;
+cLIDT:
+;rdi contains the address of the new idt descriptor
+lidt [rdi]
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global getCR0
+;------------;
+;ULONG getCR0(void);
+;------------;
+getCR0:
+mov rax,cr0
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setCR0
+;--------------------;
+;setCR0(ULONG newcr0);
+;--------------------;
+setCR0:
+mov cr0,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+
+
+
+global getCR2
+;------------;
+;UINT64 getCR2(void);
+;------------;
+getCR2:
+mov rax,cr2
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setCR2
+;--------------------;
+;setCR2(UINT64 newcr2);
+;--------------------;
+setCR2:
+mov cr2,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setCR3
+;------------;
+;setCR3(UINT64 newcr3);
+;------------;
+setCR3:
+mov cr3,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global getCR3
+;------------;
+;ULONG getCR3(void);
+;------------;
+getCR3:
+mov rax,cr3
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global getCR4
+;------------------;
+;ULONG getCR4(void);
+;------------------;
+getCR4:
+mov rax,cr4
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setCR4
+;--------------------;
+;setCR4(ULONG newcr4);
+;--------------------;
+setCR4:
+mov cr4,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setCR8
+;--------------------;
+;setCR8(QWORD newcr8);
+;--------------------;
+setCR8:
+mov cr8,rdi
+ret
+
+global getCR8
+getCR8:
+mov rax,cr8
+ret
+
+
+global getDR0
+;------------------;
+;ULONG getDR0(void);
+;------------------;
+getDR0:
+mov rax,dr0
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+
+global setDR0
+;--------------------;
+;setDR0(ULONG newdr0);
+;--------------------;
+setDR0:
+mov dr0,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+
+global getDR1
+;------------------;
+;ULONG getDR1(void);
+;------------------;
+getDR1:
+mov rax,dr1
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setDR1
+;--------------------;
+;setDR1(ULONG newdr1);
+;--------------------;
+setDR1:
+mov dr1,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global getDR2
+;------------------;
+;ULONG getDR2(void);
+;------------------;
+getDR2:
+mov rax,dr2
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setDR2
+;--------------------;
+;setDR2(ULONG newdr2);
+;--------------------;
+setDR2:
+mov dr2,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global getDR3
+;------------------;
+;ULONG getDR3(void);
+;------------------;
+getDR3:
+mov rax,dr3
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setDR3
+;--------------------;
+;setDR3(ULONG newdr3);
+;--------------------;
+setDR3:
+mov dr3,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global getDR6
+;------------------;
+;ULONG getDR6(void);
+;------------------;
+getDR6:
+mov rax,dr6
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setDR6
+;--------------------;
+;setDR6(UINT64 newdr6);
+;--------------------;
+setDR6:
+mov dr6,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global getDR7
+;------------------;
+;ULONG getDR7(void);
+;------------------;
+getDR7:
+mov rax,dr7
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global setDR7
+;--------------------;
+;setDR7(UINT64 newdr7);
+;--------------------;
+setDR7:
+mov dr7,rdi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global _invpcid
+;--------------------------;
+;_invlpg(int type, 128data);
+;--------------------------;
+_invpcid:
+db 0x66,0x0f,0x38,0x82,0x3e ;invpcid rdi,[rsi]
+ret
+
+global _invept
+;--------------------------;
+;_invept(int type, 128data);  type must be either 1(local for specific ept pointer) or 2(global for all vpids)
+;--------------------------;
+_invept:
+invept rdi,[rsi]
+ret
+
+
+global _invept2
+;---------------------------;
+;_invept2(int type, 128data);  type must be either 1(local for specific ept pointer) or 2(global for all vpids)
+;---------------------------;
+_invept2:
+invept rdi,[rsi]
+jc _invept2_err1
+jz _invept2_err2
+xor rax,rax
+ret
+
+_invept2_err1:
+mov eax,
