@@ -925,4 +925,362 @@ db 0xcc
 
 ;-----------------------------------;
 ;void setIDT(UINT64 base, WORD size);
-;-------------
+;-----------------------------------;
+setIDT:
+push rbp
+mov rbp,rsp
+sub rbp,20
+
+mov [rbp],si
+mov [rbp+2],rdi
+lidt [rbp]
+
+pop rbp
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+;-----------------------------------;
+;void setGDT(UINT64 base, WORD size);
+;-----------------------------------;
+setGDT:
+push rbp
+mov rbp,rsp
+sub rbp,20
+
+mov [rbp],si
+mov [rbp+2],rdi
+lgdt [rbp]
+
+pop rbp
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;----------------------;
+;WORD getGDTsize(void);
+;----------------------;
+getGDTsize:
+push rbp
+mov rbp,rsp
+sub rbp,20
+sgdt [rbp]
+xor ax,ax
+mov ax,[rbp]
+pop rbp
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;----------------------;
+;WORD getIDTsize(void);
+;----------------------;
+getIDTsize:
+push rbp
+mov rbp,rsp
+sub rbp,20
+sidt [rbp]
+xor ax,ax
+mov ax,[rbp]
+pop rbp
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;----------------------;
+;QWORD getGDTbase(void);
+;----------------------;
+getGDTbase:
+push rbp
+mov rbp,rsp
+sub rbp,20
+sgdt [rbp]
+mov rax,[rbp+2]
+pop rbp
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;----------------------;
+;QWORD getIDTbase(void);
+;----------------------;
+getIDTbase:
+push rbp
+mov rbp,rsp
+sub rbp,20
+sidt [rbp]
+mov rax,[rbp+2]
+pop rbp
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;--------------------------;
+;WORD getTaskRegister(void);
+;--------------------------;
+GLOBAL getTaskRegister
+getTaskRegister:
+str ax
+ret
+
+;-------------------------------------;
+;void loadTaskRegister(ULONG selector);
+;-------------------------------------;
+GLOBAL loadTaskRegister
+loadTaskRegister:
+mov ax,di
+ltr ax
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+;---------------------------;
+;UINT64 _vmread(ULONG index);
+;---------------------------;
+align 16,db 0xcc
+_vmread:
+vmread rax,rdi
+ret
+
+;---------------------------------------;
+;int _vmread2(ULONG index, QWORD *value);
+;---------------------------------------;
+_vmread2:
+vmread rax,rdi
+jc _vmread2_err1
+jz _vmread2_err2
+mov qword [rsi],rax
+xor rax,rax
+ret
+
+_vmread2_err1:
+mov eax,1
+ret
+
+_vmread2_err2:
+mov eax,2
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;---------------------------------------;
+;void _vmwrite(ULONG index,UINT64 value);
+;---------------------------------------;
+align 16,db 0xcc
+_vmwrite:
+vmwrite rdi,rsi
+jc _vmwrite_err1
+jz _vmwrite_err2
+xor eax,eax
+ret
+
+_vmwrite_err1:
+mov eax,1
+ret
+
+_vmwrite_err2:
+mov eax,2
+ret
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+;---------------------------------------;
+;int _vmwrite2(ULONG index, QWORD value);
+;---------------------------------------;
+_vmwrite2:
+jmp _vmwrite
+
+;---------------------------------------;
+;int vmclear(unsigned long long address);
+;---------------------------------------;
+_vmclear:
+push rdi
+vmclear [rsp]
+pop rdi
+jc vmclear_err
+jz vmclear_err2
+xor rax,rax
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+vmclear_err:
+mov rax,1
+ret
+
+vmclear_err2:
+mov rax,2
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+
+;---------------------------;
+;int vmptrst(QWORD *address);
+;---------------------------;
+_vmptrst:
+vmptrst [rdi]
+ret
+
+
+;-------------------------------------;
+;int vmptrld(PHYSICAL_ADDRESS address);
+;-------------------------------------;
+_vmptrld:
+push rdi
+vmptrld [rsp]
+pop rdi
+jc vmptrld_err
+jz vmptrld_err2
+
+xor rax,rax
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+vmptrld_err:
+mov rax,1
+ret
+
+vmptrld_err2:
+mov rax,2
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+;-----------------------------------;
+;int vmxon(PHYSICAL_ADDRESS address);
+;-----------------------------------;
+_vmxon:
+push rdi
+vmxon [rsp]				 ;vmxon [eax]
+pop rdi
+
+jc vmxon_err
+xor rax,rax
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+vmxon_err:
+mov rax,1
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+;-----------------;
+;void vmxoff(void);
+;-----------------;
+_vmxoff:
+vmxoff
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+;------------------;
+;int vmlaunch(void);
+;------------------;
+_vmlaunch:
+;setup the launch registers
+mov eax,0
+mov ebx,0
+mov ecx,0
+mov edx,0xf00
+mov edi,0
+mov esi,0
+vmlaunch
+jc vmlaunch_err
+jz vmlaunch_err_half
+xor eax,eax
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+vmlaunch_err:
+mov eax,1
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+vmlaunch_err_half:
+mov eax,2
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+;-------------------;
+;void vmresume(void);
+;-------------------;
+_vmresume:
+vmresume
+ret ;not really needed...
+db 0xcc
+db 0xcc
+db 0xcc
+
+;-------------------------------------;
+;unsigned long long readMSR(ULONG msr);
+;-------------------------------------;
+global readMSR
+readMSR:
+xchg ecx,edi
+rdmsr ;return goes into edx:eax , which just so happens to be the needed value
+shl rdx,32
+add rax,rdx
+xchg ecx,edi
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+;-------------------------------------;
+;unsigned long long writeMSR(ULONG msr, unsigned long long newvalue);
+;-------------------------------------;
+global writeMSR
+writeMSR:
+
+push rcx
+push rax
+push rdx
+mov ecx,edi
+mov eax,esi
+mov rdx,rsi
+shr rdx,32
+
+wrmsr
+pop rdx
+pop rax
+pop rcx
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+;------------------------------------;
+;v
