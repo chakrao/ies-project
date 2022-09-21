@@ -1672,4 +1672,330 @@ xor rax,rax
 ret
 
 _invept2_err1:
-mov eax,
+mov eax,1
+ret
+
+_invept2_err2:
+mov eax,2
+ret
+
+
+
+global _invvpid
+;--------------------------;
+;_invvpid(int type, 128data);  type must be either 0(specific linear address for specific vpid) 1(local for specific vpid) or 2(global for all vpids)
+;--------------------------;
+_invvpid:
+invvpid rdi,[rsi]
+ret
+
+global _invvpid2
+;----------------------------;
+;_invvpid2(int type, 128data);  type must be either 0(specific linear address for specific vpid) 1(local for specific vpid) or 2(global for all vpids)
+;----------------------------;
+_invvpid2:
+invvpid rdi,[rsi]
+jc _vmread2_err1
+jz _vmread2_err2
+xor rax,rax
+ret
+
+_invvpid2_err1:
+mov eax,1
+ret
+
+_invvpid2_err2:
+mov eax,2
+ret
+
+
+
+
+global _invlpg
+;-----------------------;
+;_invlpg(UINT64 address);
+;-----------------------;
+_invlpg:
+invlpg [rdi]
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global _wbinvd
+_wbinvd:
+wbinvd
+ret
+
+global _invd
+_invd:
+invd
+ret
+
+global _rdtsc
+;-------------------------------;
+;unsigned long long _rdtsc(void);
+;-------------------------------;
+_rdtsc:
+rdtsc
+shl rdx,32
+add rax,rdx
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+global _pause
+;-------------------------------;
+;void _pause(void);
+;-------------------------------;
+_pause:
+nop
+nop
+nop
+pause
+nop
+nop
+nop
+ret
+db 0xcc
+db 0xcc
+db 0xcc
+
+
+
+%macro	_inthandler	1
+global inthandler%1
+inthandler%1:
+;xchg bx,bx
+cli ;is probably already done, but just to be sure
+
+;db 0xf1 ; jtag break
+
+push %1
+jmp inthandlerx
+db 0xcc
+db 0xcc
+db 0xcc
+%endmacro
+
+
+inthandlerx: ;called by the _inthandler macro after it has set it's int nr
+push rax ;8
+push rbx ;16
+push rcx ;24
+push rdx ;32
+push rdi ;
+push rsi ;
+push rbp ;
+push r8  ;64
+push r9  ;
+push r10 ;
+push r11 ;
+push r12 ;
+push r13 ;
+push r14 ;
+push r15 ;128
+
+mov rsi,[rsp+120] ;param2 (intnr)
+mov rdi,rsp ;param1 (stack)
+
+mov rbp,rsp
+and rsp,-0x10; 0xfffffffffffffff0
+sub rsp,32
+
+call cinthandler
+
+mov rsp,rbp
+
+
+pop r15
+pop r14
+pop r13
+pop r12
+pop r11
+pop r10
+pop r9
+pop r8
+pop rbp
+pop rsi
+pop rdi
+pop rdx
+pop rcx
+pop rbx
+
+cmp rax,0
+pop rax
+je inthandlerx_noerrorcode
+
+;errocode
+add rsp,16 ;undo push (intnr) and errorcode
+jmp inthandlerx_exit
+
+inthandlerx_noerrorcode:
+add rsp,8  ;undo push (intnr)
+
+inthandlerx_exit:
+iretq
+
+
+
+db 0xcc
+db 0xcc
+db 0xcc
+
+_inthandler 0
+_inthandler 1
+_inthandler 2
+_inthandler 3
+_inthandler 4
+_inthandler 5
+_inthandler 6
+_inthandler 7
+_inthandler 8
+_inthandler 9
+_inthandler 10
+_inthandler 11
+_inthandler 12
+_inthandler 13
+_inthandler 14
+_inthandler 15
+_inthandler 16
+_inthandler 17
+_inthandler 18
+_inthandler 19
+_inthandler 20
+_inthandler 21
+_inthandler 22
+_inthandler 23
+_inthandler 24
+_inthandler 25
+_inthandler 26
+_inthandler 27
+_inthandler 28
+_inthandler 29
+_inthandler 30
+_inthandler 31
+_inthandler 32
+_inthandler 33
+_inthandler 34
+_inthandler 35
+_inthandler 36
+_inthandler 37
+_inthandler 38
+_inthandler 39
+_inthandler 40
+_inthandler 41
+_inthandler 42
+_inthandler 43
+_inthandler 44
+_inthandler 45
+_inthandler 46
+_inthandler 47
+_inthandler 48
+_inthandler 49
+_inthandler 50
+_inthandler 51
+_inthandler 52
+_inthandler 53
+_inthandler 54
+_inthandler 55
+_inthandler 56
+_inthandler 57
+_inthandler 58
+_inthandler 59
+_inthandler 60
+_inthandler 61
+_inthandler 62
+_inthandler 63
+_inthandler 64
+_inthandler 65
+_inthandler 66
+_inthandler 67
+_inthandler 68
+_inthandler 69
+_inthandler 70
+_inthandler 71
+_inthandler 72
+_inthandler 73
+_inthandler 74
+_inthandler 75
+_inthandler 76
+_inthandler 77
+_inthandler 78
+_inthandler 79
+_inthandler 80
+_inthandler 81
+_inthandler 82
+_inthandler 83
+_inthandler 84
+_inthandler 85
+_inthandler 86
+_inthandler 87
+_inthandler 88
+_inthandler 89
+_inthandler 90
+_inthandler 91
+_inthandler 92
+_inthandler 93
+_inthandler 94
+_inthandler 95
+_inthandler 96
+_inthandler 97
+_inthandler 98
+_inthandler 99
+_inthandler 100
+_inthandler 101
+_inthandler 102
+_inthandler 103
+_inthandler 104
+_inthandler 105
+_inthandler 106
+_inthandler 107
+_inthandler 108
+_inthandler 109
+_inthandler 110
+_inthandler 111
+_inthandler 112
+_inthandler 113
+_inthandler 114
+_inthandler 115
+_inthandler 116
+_inthandler 117
+_inthandler 118
+_inthandler 119
+_inthandler 120
+_inthandler 121
+_inthandler 122
+_inthandler 123
+_inthandler 124
+_inthandler 125
+_inthandler 126
+_inthandler 127
+_inthandler 128
+_inthandler 129
+_inthandler 130
+_inthandler 131
+_inthandler 132
+_inthandler 133
+_inthandler 134
+_inthandler 135
+_inthandler 136
+_inthandler 137
+_inthandler 138
+_inthandler 139
+_inthandler 140
+_inthandler 141
+_inthandler 142
+_inthandler 143
+_inthandler 144
+_inthandler 145
+_inthandler 146
+_inthandler 147
+_inthandler 148
+_inthandler 149
+_inthandler 150
+_inthandler 151
+_inthandler 152
+_inthandler 153
+_inthandl
