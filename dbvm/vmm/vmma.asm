@@ -2330,4 +2330,433 @@ add eax,ebx
 
 ;eax now contains the stack address in realmode
 mov bx,[ebp+8]
-mov [
+mov [eax],bx ;save ip
+mov bx,[ebp+0xc]
+mov [eax+2],bx ;save cs
+mov bx,[ebp+0x10]
+mov [eax+4],bx ;save eflags
+
+
+;change return link
+mov eax,[ebp+4] ;eax gets the intnr
+mov bx,word [eax*4]   ;ip
+mov ax,word [eax*4+2] ;cs
+mov [ebp+0x8],bx
+mov [ebp+0xc],ax
+pop ds
+pop eax
+pop ebx
+popfd
+pop ebp
+add esp,4 ;get rid of push intnr
+iret
+
+bits 16
+global realmodetest
+realmodetest:
+
+xor eax,eax
+mov cr0,eax
+mov cr3,eax
+mov cr4,eax
+
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+xor esi,esi
+xor edi,edi
+xor ebp,ebp
+xor esp,esp
+
+
+
+
+
+mov ax,0xb800
+mov ds,ax
+mov byte [ds:0],'5'
+mov byte [ds:1],15
+
+jmp 0:(0x2000+realmodetest_b-virtual8086entry32bit)
+realmodetest_b:
+
+mov ax,0xb800
+mov ds,ax
+mov byte [ds:0],'6'
+mov byte [ds:1],15
+
+
+mov ax,0x8000
+mov ds,ax
+mov es,ax
+mov word [0],0x400   ;  256*4
+mov dword [2],0
+lidt [0x0]
+
+mov word [0],0   ;  0
+mov dword [2],0
+lgdt [0x0]
+
+
+nop
+nop
+nop
+xor ax,ax
+mov ds,ax
+mov es,ax
+mov fs,ax
+mov gs,ax
+mov ax,0x4000
+mov ss,ax
+mov sp,0xff00
+nop
+nop
+nop
+cli
+nop
+
+mov ax,0xb800
+mov ds,ax
+mov byte [ds:0],'7'
+mov byte [ds:1],15
+
+;call 0xc000:0000
+
+
+
+mov ah,0
+mov al,3
+int 10h
+
+
+mov ax,0xb800
+mov ds,ax
+mov byte [ds:0],'8'
+mov byte [ds:1],15
+
+;at 80x25 now
+
+showpsod:
+xchg bx,bx
+cld
+mov ax,0b800h
+mov si,0
+mov di,0
+mov ds,ax
+mov es,ax
+mov cx,(80*25)
+mov ax,05000h  ;pink background, black text
+rep stosw
+
+;write the message (stored at 40000h)
+
+mov ax,06000h
+mov ds,ax
+mov si,0
+mov di,0
+
+psod_loop:
+cmp byte [ds:si],0
+je psod_lock ;reached end
+
+cmp byte [ds:si],10
+je _newline
+
+cmp byte [ds:si],13
+je _newline
+
+jmp nonewline
+
+_newline:
+xor dx,dx
+add di,80*2
+mov ax,di
+mov cx,80*2
+div cx
+sub di,dx
+
+add si,1
+jmp psod_loop
+
+
+;newline
+
+nonewline:
+mov al,[ds:si]
+mov [es:di],al
+
+add si,1
+add di,2
+
+jmp psod_loop
+
+
+psod_lock:
+jmp psod_lock
+
+
+
+bits 64
+
+;--------------------;
+;void infloop(void);
+;--------------------;
+global infloop
+infloop:
+nop
+nop
+xchg bx,bx
+cpuid
+nop
+;hlt
+nop
+nop
+xchg bx,bx ;should never happen
+nop
+jmp infloop
+
+
+
+;--------------------;
+;void quickboot(void);
+;--------------------;
+global quickboot
+quickboot:
+;quickboot is called by the virtual machine as initial boot startup
+call clearScreen
+
+xor rax,rax
+mov dr7,rax
+mov dr6,rax
+mov dr0,rax
+mov dr1,rax
+mov dr2,rax
+mov dr3,rax
+
+xor edx,edx
+mov ecx,0xc0000100 ;IA32_FS_BASE_MSR
+wrmsr
+
+
+;set the upper bits
+mov rax,[0x7100]
+mov rbx,[0x7108]
+mov rcx,[0x7110]
+mov rdx,[0x7118]
+mov rsi,[0x7120]
+mov rdi,[0x7128]
+mov rbp,[0x7130]
+mov r8, [0x7138]
+mov r9, [0x7140]
+mov r10,[0x7148]
+mov r11,[0x7150]
+mov r12,[0x7158]
+mov r13,[0x7160]
+mov r14,[0x7168]
+mov r15,[0x7170]
+
+
+
+;nop
+;nop
+;xchg bx,bx
+;mov eax,0
+;push 0x197
+;popfq
+;cpuid
+;nop
+;nop
+
+;disable cpuid bit
+push rax
+pushfq
+pop rax
+and rax,0xFFDFF32A
+or rax,0x80
+push rax
+popfq
+pop rax
+
+
+mov word [0x40000],0x80
+mov dword [0x40002],0x50000
+mov dword [0x40006],0
+lgdt [0x40000]
+
+jmp far [movetorealstart]
+
+movetorealstart:
+dd 0x00020000
+dw 24
+
+global movetoreal
+global movetoreal_end
+bits 32
+movetoreal: ;this gets moved to 0x00020000
+nop
+nop
+mov eax,cr0
+mov ebx,cr4
+nop
+mov cr4,ebx
+mov cr0,eax
+
+mov ax,8
+mov ds,ax
+mov es,ax
+mov fs,ax
+mov gs,ax
+mov ss,ax
+mov esp,0x5000
+mov eax,0
+cpuid
+
+
+
+;disable paging
+mov eax,cr0
+and eax,0x7FFFFFFF
+mov cr0,eax
+
+xor eax,eax
+cpuid
+xor eax,eax
+
+mov cr3,eax
+
+;unset IA32_EFER_LME to 0 (disable 64 bits)
+mov ecx,0xc0000080
+rdmsr
+and eax,0xFFFFFEFF
+wrmsr
+nop
+
+
+
+;mov byte [0x1dead],2
+nop
+nop
+
+;go to 16 bit
+jmp 32:0x0000+(real16-movetoreal)
+
+global real16
+real16:
+bits 16
+nop
+
+;setup datasegment, just for the fun of it
+mov ax,40
+mov ds,ax
+mov es,ax
+mov fs,ax
+mov gs,ax
+mov ss,ax
+
+xor eax,eax
+mov cr0,eax
+nop
+
+jmp realmode
+
+global realmode
+realmode:
+mov ax,0x8000
+mov ss,ax
+mov sp,0xfffe
+
+mov bx,ds
+mov cx,cs
+
+mov eax,cr3
+mov cr3,eax
+
+mov ax,ds
+mov dx,cs
+
+
+rmstart:
+call rmbegin
+rmbegin:
+pop bp
+
+
+pushf
+push 0x2000
+push vmxstartup-movetoreal
+iret
+
+
+rmmarker:
+dw 0x0000+(vmxstartup-movetoreal)
+dw 0x2000
+
+;still 16 bits here
+;---------------------;
+;void vmxstartup(void);
+;---------------------;
+global vmxstartup
+global vmxstartup_end
+vmxstartup:
+nop
+
+mov ax,0x8000
+mov ds,ax
+mov es,ax
+mov word [0],0x3ff   ;  256*4
+mov dword [2],0
+lidt [0x0]
+
+mov word [0],0   ;  0
+mov dword [2],0
+lgdt [0x0]
+
+;xchg bx,bx
+nop
+mov ecx,0xc0000080 ;test to see how it handles an efer write
+xor eax,eax
+xor edx,edx
+wrmsr
+
+nop
+;xchg bx,bx
+nop
+
+;mov ecx,0xc0010117 ;cause an exit
+;rdmsr
+
+
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+xor ebp,ebp
+xor edi,edi
+xor esi,esi
+mov cr4,eax
+nop
+nop
+nop
+
+mov ax,0x1234
+mov eax,CR0
+
+mov bx,0x2345
+mov ebx,CR0
+
+vm_basicinit:
+;xchg bx,bx
+
+xor ax,ax
+mov ds,ax
+mov es,ax
+mov fs,ax
+mov gs,ax
+mov ax,0x7000
+mov ss,ax
+mov sp,0x8000
+
+mov eax,[0x7dfa] ;restore cr0 with the stored value of cr0
+mov cr0,eax
+;jmp 0:0x7c
