@@ -1998,4 +1998,336 @@ _inthandler 150
 _inthandler 151
 _inthandler 152
 _inthandler 153
-_inthandl
+_inthandler 154
+_inthandler 155
+_inthandler 156
+_inthandler 157
+_inthandler 158
+_inthandler 159
+_inthandler 160
+_inthandler 161
+_inthandler 162
+_inthandler 163
+_inthandler 164
+_inthandler 165
+_inthandler 166
+_inthandler 167
+_inthandler 168
+_inthandler 169
+_inthandler 170
+_inthandler 171
+_inthandler 172
+_inthandler 173
+_inthandler 174
+_inthandler 175
+_inthandler 176
+_inthandler 177
+_inthandler 178
+_inthandler 179
+_inthandler 180
+_inthandler 181
+_inthandler 182
+_inthandler 183
+_inthandler 184
+_inthandler 185
+_inthandler 186
+_inthandler 187
+_inthandler 188
+_inthandler 189
+_inthandler 190
+_inthandler 191
+_inthandler 192
+_inthandler 193
+_inthandler 194
+_inthandler 195
+_inthandler 196
+_inthandler 197
+_inthandler 198
+_inthandler 199
+_inthandler 200
+_inthandler 201
+_inthandler 202
+_inthandler 203
+_inthandler 204
+_inthandler 205
+_inthandler 206
+_inthandler 207
+_inthandler 208
+_inthandler 209
+_inthandler 210
+_inthandler 211
+_inthandler 212
+_inthandler 213
+_inthandler 214
+_inthandler 215
+_inthandler 216
+_inthandler 217
+_inthandler 218
+_inthandler 219
+_inthandler 220
+_inthandler 221
+_inthandler 222
+_inthandler 223
+_inthandler 224
+_inthandler 225
+_inthandler 226
+_inthandler 227
+_inthandler 228
+_inthandler 229
+_inthandler 230
+_inthandler 231
+_inthandler 232
+_inthandler 233
+_inthandler 234
+_inthandler 235
+_inthandler 236
+_inthandler 237
+_inthandler 238
+_inthandler 239
+_inthandler 240
+_inthandler 241
+_inthandler 242
+_inthandler 243
+_inthandler 244
+_inthandler 245
+_inthandler 246
+_inthandler 247
+_inthandler 248
+_inthandler 249
+_inthandler 250
+_inthandler 251
+_inthandler 252
+_inthandler 253
+_inthandler 254
+_inthandler 255
+
+tester:
+mov al,1
+lp:
+mov byte [0x0b8000],'Y'
+mov byte [0x0b8001],al
+inc al
+mov byte [0x0b8002],'o'
+mov byte [0x0b8003],al
+inc al
+mov byte [0x0b8004],'u'
+mov byte [0x0b8005],al
+inc al
+mov byte [0x0b8006],' '
+mov byte [0x0b8007],al
+inc al
+mov byte [0x0b8008],'R'
+mov byte [0x0b8009],al
+inc al
+mov byte [0x0b800a],'o'
+mov byte [0x0b800b],al
+inc al
+mov byte [0x0b800c],'c'
+mov byte [0x0b800d],al
+inc al
+mov byte [0x0b800e],'k'
+mov byte [0x0b800f],al
+inc al
+jmp lp
+
+
+;---------------------;
+;void changetask(void);
+;---------------------;
+global changetask
+changetask:
+nop
+nop
+bits 32
+call 64:0
+bits 64
+nop
+nop
+
+ret
+
+;-------------------;
+;void tasktest(void);
+;-------------------;
+global tasktest
+tasktest:
+pushfq
+pop rax
+and rax,0x10000
+cmp rax,0x10000
+je tasktest_RF
+
+mov byte [0xb8000],'B';
+mov byte [0xb8002],'L';
+mov byte [0xb8004],'A';
+jmp tasktest_return
+
+tasktest_RF:
+mov byte [0xb8000],'R';
+mov byte [0xb8002],'F';
+mov byte [0xb8004],'1';
+
+tasktest_return:
+nop
+nop
+nop
+nop
+nop
+iret
+nop
+nop
+jmp tasktest
+
+
+bits 64
+global virtual8086_start
+;----------------------------;
+;void virtual8086_start(void);
+;----------------------------;
+virtual8086_start:
+;called from 64-bit, so still in 64-bit mode
+
+
+
+jmp far [moveto32bitstart]
+
+global moveto32bitstart
+moveto32bitstart:
+dd 0x2000
+dw 24
+
+bits 32
+global virtual8086entry32bit
+virtual8086entry32bit:
+;this gets moved to 0x2000
+
+
+mov byte [0xb8000],'1';
+mov byte [0xb8001],15;
+
+;disable paging
+mov eax,cr0
+and eax,0x7FFFFFFF
+mov cr0,eax
+
+xor eax,eax
+mov cr3,eax
+
+mov byte [0xb8000],'2';
+mov byte [0xb8001],15;
+
+
+
+;unset IA32_EFER_LME to 0 (disable 64 bits)
+mov ecx,0xc0000080
+rdmsr
+and eax,0xFFFFFEFF
+wrmsr
+
+
+mov eax,cr4
+or eax,1
+mov cr4,eax
+
+mov byte [0xb8000],'3';
+mov byte [0xb8001],15;
+
+
+;xchg bx,bx
+mov word [0x40000],0x4f
+mov eax,[0x3004]
+mov dword [0x40002],eax
+lgdt [0x40000]
+
+
+mov byte [0xb8000],'4';
+mov byte [0xb8001],15;
+
+
+
+;xchg bx,bx
+;xor eax,eax
+;mov cr0,eax
+jmp (4*8):(0x2000+entry16-virtual8086entry32bit)
+
+bits 16
+
+entry16:
+xor eax,eax
+mov cr0,eax
+jmp 0:(0x2000+realmodetest-virtual8086entry32bit)
+
+
+;mov eax,[0x3000]
+;mov cr3,eax
+;mov eax,cr0
+;or eax,0x80000000 ;enable paging
+;mov cr0,eax
+;jmp virtual8086entry32bit2
+
+;virtual8086entry32bit2:
+
+bits 32
+nop
+mov ax,8
+mov ds,ax
+mov es,ax
+mov fs,ax
+mov gs,ax
+mov ss,ax
+
+;mov byte [0xdead],1
+
+mov word [0x40008],256*8
+mov eax,[0x3008] ;idt table
+mov dword [0x4000a],eax
+lidt [0x40008]
+
+mov ax,56
+ltr ax
+nop
+nop
+nop
+jmp 64:0
+
+notcrashed:
+jmp notcrashed
+
+;global idttable32
+;idttable32:
+;times 256*8 db 0   ; Make space
+
+
+global inthandler_32
+inthandler_32:
+;protected mode interrupt
+push ebp
+mov ebp,esp
+
+;ebp+0x0=old ebp
+;ebp+0x4=intnr
+;ebp+0x8=eip
+;ebp+0xc=cs
+;ebp+0x10=eflags
+;ebp+0x14=esp
+;ebp+0x18=ss
+pushfd
+push ebx
+push eax
+push ds
+mov ax,8
+mov ds,ax
+
+;save state in realmode stack
+sub word [ebp+0x14],6 ;decrease stack with 6 (3 pushes)
+
+xor eax,eax
+xor ebx,ebx
+mov ax,[ebp+0x18] ;ss
+mov bx,[ebp+0x14] ;sp
+shl eax,4
+add eax,ebx
+
+;eax now contains the stack address in realmode
+mov bx,[ebp+8]
+mov [
