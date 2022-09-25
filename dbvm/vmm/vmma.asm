@@ -3224,4 +3224,165 @@ add cx,48
 call printchar
 pop cx
 
-mov si,(str_newlin
+mov si,(str_newline-movetoreal)
+call printstring
+pop si
+ret
+
+;cursor:
+display_x:
+db 0
+
+display_y:
+db 0
+
+str_alive:
+db "I am alive!",13,0
+
+str_settingup:
+db "Setting things up",13,0
+
+str_launching:
+db "Launching OS",13,0
+
+str_failedtoload1:
+db "Failed to read from the given boot disk",13,0
+
+str_fail:
+db "Failure at point ",0
+
+str_newline:
+db 13,0
+
+
+str_givingup:
+db "Failure to launch. Time to reboot",13,0
+
+global vmxstartup_end
+vmxstartup_end:
+
+
+global realmode_inthooks
+realmode_inthooks:
+
+;;---------------------------realmode int hooks---------------------------;;
+;For launchtime running in unrestricted mode
+;alternatively, I could edit the EPT
+
+global realmode_inthook_new12
+realmode_inthook_new12:
+nop
+;db 0xf1
+nop
+push bp
+call getip
+getip:
+pop bp
+
+
+
+mov ax,[cs:bp+realmode_inthook_conventional_memsize-getip]
+pop bp
+
+;clear CF flag if it's set
+push bp
+mov bp,sp
+;bp+0=old bp
+;bp+2=rip
+;bp+4=cs
+;bp+6=rflags
+and word [bp+6],0xFFFE
+pop bp
+iret
+
+jmp realmode_inthook_jmp_to_original12
+
+global realmode_inthook_new15
+realmode_inthook_new15:
+nop
+pushf
+nop
+;db 0xf1
+nop
+nop
+cmp ah,0x88
+je realmode_inthook_new15_88
+
+cmp ax,0xe801
+je calldbvm
+
+cmp ax,0xe820
+je calldbvm
+
+popf
+;not a dbvm hooked situation
+jmp realmode_inthook_jmp_to_original15
+calldbvm:
+popf
+
+global realmode_inthook_calladdress
+realmode_inthook_calladdress:
+vmcall
+;still here so it got handled
+jc realmode_inthook_return_cf1
+
+;cf=0
+;clear CF flag if it's set
+push bp
+mov bp,sp
+and word [bp+6],0xFFFE
+pop bp
+iret
+
+realmode_inthook_return_cf1:
+;cf=1
+push bp
+mov bp,sp
+or word [bp+6],0x1
+pop bp
+iret
+
+realmode_inthook_new15_88:
+mov ax,0xfc00  ;64MB
+
+;clear CF flag if it's set
+push bp
+mov bp,sp
+and word [bp+6],0xFFFE
+pop bp
+
+iret
+
+
+
+global realmode_inthook_original12
+realmode_inthook_jmp_to_original12:
+db 0xea
+realmode_inthook_original12:
+dd 0
+
+global realmode_inthook_original15
+realmode_inthook_jmp_to_original15:
+db 0xea
+realmode_inthook_original15:
+dd 0
+
+global realmode_inthook_conventional_memsize
+realmode_inthook_conventional_memsize:
+dw 0
+
+global realmode_inthooks_end
+realmode_inthooks_end:
+
+
+dd 0x00ce1337
+db 0x90
+db 0x90
+db 0x90
+
+db 0xea
+db 0xce
+db 0xce
+db 0xaa
+db 0xbb
+
