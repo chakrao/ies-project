@@ -2759,4 +2759,469 @@ mov sp,0x8000
 
 mov eax,[0x7dfa] ;restore cr0 with the stored value of cr0
 mov cr0,eax
-;jmp 0:0x7c
+;jmp 0:0x7c00
+
+mov ax,0x2000
+mov ds,ax
+mov si,(str_alive-movetoreal)
+call sendstring16
+xor ax,ax
+mov ds,ax
+
+nop
+;db 0xf1
+nop
+nop
+cld
+sti
+nop
+
+;loopafterint:
+nop
+;cpuid
+nop
+;jmp loopafterint
+
+mov ax,3
+int 0x10
+
+push ds
+mov ax,0x2000
+mov ds,ax
+mov si,(str_alive-movetoreal)
+call printstring
+
+mov si,(str_settingup-movetoreal)
+call printstring
+
+mov si,(str_launching-movetoreal)
+call printstring
+
+pop ds
+
+mov byte [0x7c00],1
+
+;loopy:
+;jmp loopy
+
+hwtest:
+nop
+nop
+nop
+
+;mov byte [0x7c0e],0x80
+
+mov ax,0x3000
+mov es,ax
+
+mov ax,0 ;reset disk
+mov dl,[0x7c0e]
+clc
+int 0x13
+nop
+nop
+jnc pass1
+
+mov cl,1
+call printerror
+
+jmp notok
+
+pass1:
+nop
+nop
+mov ax,0
+mov dl,[0x7c0e]
+clc
+int 0x13
+jnc pass2
+
+mov cl,2
+call printerror
+
+
+jmp notok
+
+pass2:
+nop
+nop
+nop
+mov ax,0x0201
+mov bx,0x8000
+mov ch,0
+mov cl,0x1
+mov dl,[0x7c0e] ;dl contains hd
+mov dh,0
+clc
+int 0x13
+jnc pass3
+
+mov cl,3
+call printerror
+
+jmp notok
+
+pass3:
+mov ax,0x0201
+mov bx,0x8000
+mov ch,0
+mov cl,0x2
+mov dh,0
+mov dl,[0x7c0e]
+clc
+int 0x13
+jnc pass4
+
+mov cl,4
+call printerror
+
+jmp notok
+
+pass4:
+mov ax,0
+clc
+int 0x13
+jnc pass5
+
+mov cl,5
+call printerror
+
+jmp notok
+
+pass5:
+mov ax,0x0201
+mov bx,0x8000
+mov ch,0
+mov cl,0x3
+mov dh,0
+mov dl,[0x7c0e]
+clc
+int 0x13
+jnc pass6
+
+mov cl,6
+call printerror
+
+jmp notok
+
+pass6:
+readagain2: ;final read
+
+xor ax,ax
+mov es,ax
+
+sti
+mov ax,0x0201
+mov bx,0x7c00 ;;final actual read
+mov ch,0
+mov cl,0x1
+mov dh,0
+mov dl,[0x7c0e]
+push dx
+clc
+int 0x13
+pop dx
+jnc pass7
+
+mov cl,7
+call printerror
+
+jmp notok
+nop
+nop
+
+pass7:
+jmp readok
+
+notok:
+sti
+
+mov si,(str_givingup-movetoreal)
+call printstring
+
+notok_loop:
+sti
+mov ax,0xb800
+mov ds,ax
+mov byte [0],'X'
+mov byte [1],025h
+mov byte [2],'X'
+mov byte [3],025h
+mov byte [4],'X'
+mov byte [5],025h
+mov byte [6],'X'
+mov byte [7],025h
+nop
+nop
+cpuid
+nop
+nop
+jmp notok_loop
+
+
+notok2:
+sti
+xor ax,ax
+mov ds,ax
+cmp byte [0x48d],0
+je hmm
+
+
+mov ax,0xb800
+mov ds,ax
+mov byte [0],'F';
+mov byte [1],4;
+mov byte [2],'U';
+mov byte [3],4;
+mov byte [4],'C';
+mov byte [5],4;
+mov byte [6],'K';
+mov byte [7],4;
+
+jmp notok2
+
+hmm:
+sti
+mov ax,0xb800
+mov ds,ax
+mov byte [0],'H';
+mov byte [1],4;
+mov byte [2],'M';
+mov byte [3],4;
+mov byte [4],'M';
+mov byte [5],4;
+mov byte [6],'M';
+mov byte [7],4;
+jmp hmm
+
+
+
+bt_test:
+nop
+nop
+cpuid
+nop
+nop
+jmp bt_test
+
+readok:
+mov ax,0xb800
+mov ds,ax
+mov byte [0],'B';
+mov byte [1],6;
+mov byte [2],'O';
+mov byte [3],6;
+mov byte [4],'O';
+mov byte [5],6;
+mov byte [6],'T';
+mov byte [7],6;
+
+;jmp readok
+
+
+
+xor ax,ax
+mov ds,ax
+
+xor di,di
+mov ss,ax
+mov sp,0xfffe
+
+;setup initial vars (excluding dl whith is set)
+mov ax,[0x7022]
+mov ss,ax
+
+mov ax,[0x7026]
+mov es,ax
+
+mov ax,[0x7028]
+mov fs,ax
+
+mov ax,[0x702a]
+mov gs,ax
+
+mov eax,[0x700c] ;edx
+mov al,dl ;save dl
+mov edx,eax
+
+
+
+mov eax,[0x7000]
+mov ebx,[0x7004]
+mov ecx,[0x7008]
+mov esi,[0x7010]
+mov edi,[0x7014]
+mov ebp,[0x7018]
+mov esp,[0x701c]
+
+lgdt [0x7030] ;restore gdt
+
+push word [0x702c] ;restore eflags
+popf
+
+push ax
+mov ax,[0x7024]
+mov ds,ax
+pop ax
+
+
+beforeboot:
+xchg bx,bx
+;jmp beforeboot
+;int 19h
+
+jmp 0x0000:0x7c00
+
+;test^^^^
+global bochswaitforsipiloop
+bochswaitforsipiloop:
+nop
+cpuid
+nop
+jmp bochswaitforsipiloop
+
+sendstring16:
+;ds:si=pointer to string
+mov cl,[si]
+call send16
+
+inc si
+cmp byte [si],0
+jne sendstring16
+ret
+
+
+send16:
+
+;param cl=byte to send
+push ax
+push dx
+
+waitforready:
+%ifdef SERIALPORT
+%if SERIALPORT != 0
+mov dx,SERIALPORT+5 ;3fdh
+in al,dx
+and al,0x20
+cmp al,0x20
+jne waitforready
+
+mov dx,SERIALPORT ;0x3f8
+mov al,cl
+out dx,al
+%endif
+%endif
+
+pop dx
+pop ax
+ret
+
+printstring:
+;ds:si points to string
+push ax
+push cx
+
+printstring_loop:
+mov cl,[si]
+call printchar
+
+inc si
+cmp byte [si],0
+jne printstring_loop
+
+pop cx
+pop ax
+ret
+
+printchar:
+cmp cl,13
+jne notnewline
+
+call newline
+ret
+
+
+notnewline:
+push es
+push ax
+push bx
+;get the display buffer offset
+
+mov ax,0xb800
+mov es,ax
+
+mov al,80 ;line
+mul byte [display_y-movetoreal]  ;multiply 80 with the value in display_y
+
+xor bx,bx
+mov bl,byte [display_x-movetoreal]
+add ax,bx
+shl ax,1
+
+push di
+mov di,ax
+mov [es:di],cl
+mov byte [es:di+1],7
+pop di
+
+inc byte [display_x-movetoreal]
+cmp byte [display_x-movetoreal],80
+jb printchar_exit
+
+call newline
+
+printchar_exit:
+call updatecursorpos
+pop bx
+pop ax
+pop es
+ret
+
+newline:
+mov byte [display_x-movetoreal],0
+inc byte [display_y-movetoreal]
+
+cmp byte [display_y-movetoreal],25
+jb newline_exit
+
+mov ax,0x601 ;scroll 1 line
+mov bh,7
+mov cx,0
+mov dl,79
+mov dh,24
+int 0x10
+
+dec byte [display_y-movetoreal]
+
+newline_exit:
+call updatecursorpos
+
+ret
+
+updatecursorpos:
+push ax
+push bx
+push dx
+mov ax,0x200
+mov bh,0
+mov dl,[display_x-movetoreal]
+mov dh,[display_y-movetoreal]
+int 0x10
+
+pop dx
+pop bx
+pop ax
+ret
+
+printerror:
+;cl contains the error number (0..9)
+push si
+mov si,(str_fail-movetoreal)
+call printstring
+
+push cx
+add cx,48
+call printchar
+pop cx
+
+mov si,(str_newlin
