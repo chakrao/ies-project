@@ -2331,3 +2331,561 @@ void CheckGuest(void)
 
 	//22.3.1.2:
 	sendstringf("checking 22.3.1.2\n\r");
+	sendstringf("guestrflags=%x\n\r",guestrflags);
+	if ((guestrflags & (1<<17))>0)
+	{
+		sendstringf("v8086 mode\n\r");
+		v8086=1;
+	}
+
+
+
+	if (guest_tr.TI==1)
+		sendstringf("Error: TR has the TI bit set\n\r");
+
+	if ((guest_accessrights_ldtr.unusable==0) && (guest_ldtr.TI==1))
+		sendstringf("Error: LDTR is usable and LDTR has the TI bit set\n\r");
+
+	if (v8086==0)
+	{
+		if (( guest_cs.RPL != guest_ss.RPL ))
+			sendstringf("Error: the RPL of ss does not matych the RPL of cs and not in virtual 8086 mode\n\r");
+
+		if ((guest_accessrights_cs.Segment_type & (1 << 0)) == 0)
+			sendstringf("Error: CS is not accessed\n\r");
+
+		if ((guest_accessrights_cs.Segment_type & (1<<3)) == 0)
+			sendstringf("Error: CS is no codesegment\n\r");
+
+		if (guest_accessrights_cs.S!=1)
+			sendstringf("Error: S is not 1 for cs\n\r");
+
+		if (guest_accessrights_cs.P!=1)
+			sendstringf("Error: P is not 1 for cs\n\r");
+
+		if (guest_accessrights_cs.reserved!=0)
+			sendstringf("Error: reserved (8 to 11) is not 0 for cs\n\r");
+
+		if (guest_accessrights_cs.G==0)
+			sendstringf("Error: cs.G==0\n\r");
+
+
+		if (((guest_accessrights_cs.Segment_type>=8) && (guest_accessrights_cs.Segment_type<=11)) && (guest_accessrights_cs.DPL != guest_cs.RPL ))
+			sendstringf("Error: CS: Codesegment is nonconforming and DPL does not match RPL\n\r");
+
+		if (((guest_accessrights_cs.Segment_type>=13) && (guest_accessrights_cs.Segment_type<=15)) && (guest_accessrights_cs.DPL > guest_cs.RPL ))
+			sendstringf("Error: CS: Codesegment is conforming and DPL is bigger than RPL\n\r");
+
+		if (guest_accessrights_ss.unusable==0)
+		{
+			if (!((guest_accessrights_ss.Segment_type == 3) || (guest_accessrights_ss.Segment_type == 7) ))
+				sendstringf("Error: SS type is not 3 or 7\n\r");
+
+			if (guest_accessrights_ss.S!=1)
+				sendstringf("Error: S is not 1 for ss\n\r");
+
+			if (guest_accessrights_ss.P!=1)
+				sendstringf("Error: P is not 1 for ss\n\r");
+
+			if (guest_accessrights_ss.reserved!=0)
+				sendstringf("Error: reserved (8 to 11) is not 0 for ss\n\r");
+
+			if (guest_accessrights_ss.G==0)
+				sendstringf("Error: ss.G==0\n\r");
+		}
+
+		if (guest_accessrights_ds.unusable==0)
+		{
+			if ((guest_accessrights_ds.Segment_type & 1)!=1)
+				sendstringf("Error: DS type is not accessed\n\r");
+
+			if (((guest_accessrights_ds.Segment_type & (1 << 3))>0) && ((guest_accessrights_ds.Segment_type & (1 << 1))==0))
+				sendstringf("Error: DS has a code segment set but is not readable\n\r");
+
+			if (guest_accessrights_ds.S!=1)
+				sendstringf("Error: S is not 1 for ds\n\r");
+
+			if (guest_accessrights_ds.P!=1)
+				sendstringf("Error: P is not 1 for ds\n\r");
+
+			if (guest_accessrights_ds.reserved!=0)
+				sendstringf("Error: reserved (8 to 11) is not 0 for ds\n\r");
+
+			if (guest_accessrights_ds.G==0)
+				sendstringf("Error: ds.G==0\n\r");
+		}
+
+		if (guest_accessrights_es.unusable==0)
+		{
+			if ((guest_accessrights_es.Segment_type & 1)!=1)
+				sendstringf("Error: es type is not accessed\n\r");
+
+			if (((guest_accessrights_es.Segment_type & (1 << 3))>0) && ((guest_accessrights_es.Segment_type & (1 << 1))==0))
+				sendstringf("Error: es has a code segment set but is not readable\n\r");
+
+			if (guest_accessrights_es.S!=1)
+				sendstringf("Error: S is not 1 for es\n\r");
+
+			if (guest_accessrights_es.P!=1)
+				sendstringf("Error: P is not 1 for es\n\r");
+
+			if (guest_accessrights_es.reserved!=0)
+				sendstringf("Error: reserved (8 to 11) is not 0 for es\n\r");
+
+			if (guest_accessrights_es.G==0)
+				sendstringf("Error: es.G==0\n\r");
+
+		}
+
+		if (guest_accessrights_fs.unusable==0)
+		{
+			if ((guest_accessrights_fs.Segment_type & 1)!=1)
+				sendstringf("Error: fs type is not accessed\n\r");
+
+			if (((guest_accessrights_fs.Segment_type & (1 << 3))>0) && ((guest_accessrights_fs.Segment_type & (1 << 1))==0))
+				sendstringf("Error: fs has a code segment set but is not readable\n\r");
+
+			if (guest_accessrights_fs.S!=1)
+				sendstringf("Error: S is not 1 for fs\n\r");
+
+			if (guest_accessrights_fs.P!=1)
+				sendstringf("Error: P is not 1 for fs\n\r");
+
+			if (guest_accessrights_fs.reserved!=0)
+				sendstringf("Error: reserved (8 to 11) is not 0 for fs\n\r");
+
+			if (guest_accessrights_fs.G==0)
+				sendstringf("Error: fs.G==0\n\r");
+		}
+
+		if (guest_accessrights_gs.unusable==0)
+		{
+			sendstringf("GS is USABLE!\n\r");
+			if ((guest_accessrights_gs.Segment_type & 1)!=1)
+				sendstringf("Error: gs type is not accessed\n\r");
+
+			if (((guest_accessrights_gs.Segment_type & (1 << 3))>0) && ((guest_accessrights_gs.Segment_type & (1 << 1))==0))
+				sendstringf("Error: gs has a code segment set but is not readable\n\r");
+
+			if (guest_accessrights_gs.S!=1)
+				sendstringf("Error: S is not 1 for gs\n\r");
+
+			if (guest_accessrights_gs.P!=1)
+				sendstringf("Error: P is not 1 for gs\n\r");
+
+			if (guest_accessrights_gs.reserved!=0)
+				sendstringf("Error: reserved (8 to 11) is not 0 for gs\n\r");
+
+			if (guest_accessrights_gs.G==0)
+				sendstringf("Error: gs.G==0\n\r");
+		}
+	}
+	else
+	{
+		if (guest_accessrights_cs.AccessRights!=0xf3)
+			sendstringf("CS accessrights are not 0xf3\n\r");
+
+		if (guest_accessrights_ss.AccessRights!=0xf3)
+			sendstringf("SS accessrights are not 0xf3\n\r");
+
+		if (guest_accessrights_ds.AccessRights!=0xf3)
+			sendstringf("DS accessrights are not 0xf3\n\r");
+
+		if (guest_accessrights_es.AccessRights!=0xf3)
+			sendstringf("ES accessrights are not 0xf3\n\r");
+
+		if (guest_accessrights_fs.AccessRights!=0xf3)
+			sendstringf("FS accessrights are not 0xf3\n\r");
+
+		if (guest_accessrights_gs.AccessRights!=0xf3)
+			sendstringf("GS accessrights are not 0xf3\n\r");
+
+
+	}
+
+
+
+	if (guest_accessrights_tr.unusable==0)
+	{
+
+		if (v8086==0)
+		{
+			if ((guest_accessrights_tr.Segment_type !=11))
+				sendstringf("Error: TR type is not 11\n\r");
+		}
+		else
+		{
+			if ((guest_accessrights_tr.Segment_type !=3) && (guest_accessrights_tr.Segment_type !=11))
+				sendstringf("Error: TR type is not 3 or 11\n\r");
+		}
+
+		if (guest_accessrights_tr.S!=0)
+			sendstringf("Error: S is not 0 for tr\n\r");
+
+		if (guest_accessrights_tr.P!=1)
+			sendstringf("Error: P is not 1 for tr\n\r");
+
+		if (guest_accessrights_tr.reserved!=0)
+			sendstringf("Error: reserved (8 to 11) is not 0 for tr\n\r");
+
+		if (guest_accessrights_tr.G==1)
+			sendstringf("Error: tr.G==1\n\r");
+	}
+
+
+	if ((v8086==1) && (guestCSlimit>0xffff))
+		sendstringf("CS limit > 0xffff and in virtual 8086 mode\n\r");
+
+	if ((v8086==1) && (guestSSlimit>0xffff))
+		sendstringf("SS limit > 0xffff and in virtual 8086 mode\n\r");
+
+	if ((v8086==1) && (guestDSlimit>0xffff))
+		sendstringf("DS limit > 0xffff and in virtual 8086 mode\n\r");
+
+	if ((v8086==1) && (guestESlimit>0xffff))
+		sendstringf("ES limit > 0xffff and in virtual 8086 mode\n\r");
+
+	if ((v8086==1) && (guestFSlimit>0xffff))
+		sendstringf("FS limit > 0xffff and in virtual 8086 mode\n\r");
+
+	if ((v8086==1) && (guestGSlimit>0xffff))
+		sendstringf("GS limit > 0xffff and in virtual 8086 mode\n\r");
+
+	if (guestIDTlimit>0xffff)
+		sendstringf("IDT limit beyond 0xffff\n\r");
+
+	if (guestGDTlimit>0xffff)
+		sendstringf("GDT limit beyond 0xffff\n\r");
+
+
+	sendstringf("check done\n\r");
+}
+
+
+*/
+
+void displayVMmemory(pcpuinfo currentcpuinfo)
+{
+  char temps[17];
+  UINT64 StartAddress;
+  int nrofbytes;
+  int i,j;
+  unsigned char buf[17];
+  int err=0;
+#ifdef DEBUG
+
+  int notpaged=0;
+#endif
+
+  sendstring("Startaddress:");
+  readstring(temps,16,17);
+  sendstring("\n\r");
+  StartAddress=atoi2(temps,16,&err);
+
+  sendstringf("%6(%s) has physical address %6\n\r",StartAddress,temps, getPhysicalAddressVM(currentcpuinfo, StartAddress, &notpaged));
+
+  if (err)
+  {
+    sendstringf("err=%d\n");
+  }
+
+
+  sendstring("Number of bytes:");
+  readstring(temps,8,8);
+  sendstring("\n\r");
+  nrofbytes=atoi2(temps,10,NULL);
+
+
+  //if virtual machine check 0-00200000
+  //else check pagetables
+  for (i=0; i<nrofbytes; i+=16)
+  {
+
+    if (ReadVMMemory(currentcpuinfo, StartAddress+i,buf,16)==0)
+    {
+      sendstringf("Read error\n\r");
+      return;
+    }
+
+    sendstringf("%6 : ",StartAddress+i);
+    for (j=i; j<(i+16) && (j<nrofbytes); j++)
+      sendstringf("%2 ",buf[j%16]);
+
+    if ((i+16)>nrofbytes)
+    {
+      // Get the cursor to the right spot
+      int currentcol=11+3*(nrofbytes-i);
+      int wantedcol=11+3*16;
+      for (j=0; j<(wantedcol-currentcol); j++)
+        sendstring(" ");
+    }
+
+    for (j=i; j<(i+16) && (j<nrofbytes); j++)
+    {
+      unsigned char tempc=buf[j%16];
+      if (tempc<32)
+        tempc='.';
+
+      sendstringf("%c",tempc);
+    }
+
+    sendstring("\n\r");
+  }
+
+}
+
+void ShowPendingInterrupts()
+{
+  int i,j;
+
+//0=0-31
+//1=32-63
+  for (i=0; i<8; i++)
+  {
+    DWORD v=ReadAPICRegister(0x20+i);
+    if (v!=0)
+    {
+      int startint=i*32;
+      for (j=0; j<32; j++)
+      {
+        if (v & (1<<j))
+          sendstringf("%2 ", startint+j);
+      }
+    }
+  }
+}
+
+void ShowCurrentInstruction(pcpuinfo currentcpuinfo)
+{
+  unsigned char buf[60];
+  int is64bit=IS64BITCODE(currentcpuinfo);
+  QWORD address;
+
+  if (isAMD)
+  {
+    if (is64bit)
+      address=currentcpuinfo->vmcb->RIP;
+    else
+      address=currentcpuinfo->vmcb->cs_base+currentcpuinfo->vmcb->RIP;
+  }
+  else
+  {
+    if (is64bit)
+      address=vmread(vm_guest_rip);
+    else
+      address=vmread(vm_guest_cs_base)+vmread(vm_guest_rip);
+  }
+
+  //sendstringf("ShowCurrentInstruction for %6\n", address);
+
+
+  int br=ReadVMMemory(currentcpuinfo, address, buf, 60);
+ // sendstringf("br=%d\n",br);
+
+  if (br)
+  {
+
+    _DecodedInst disassembled[22];
+    _DecodeType dt=Decode16Bits;
+    Access_Rights cs_accessright;
+    unsigned int used=0;
+
+    //find out in which context the system is operating
+    if (isAMD)
+    {
+      Segment_Attribs csa;
+      csa.SegmentAttrib=currentcpuinfo->vmcb->cs_attrib;
+      cs_accessright.D_B=csa.D_B;
+    }
+    else
+      cs_accessright.AccessRights=vmread(vm_guest_cs_access_rights);
+
+    if (cs_accessright.D_B==0)
+      dt=Decode16Bits;
+    else
+      dt=Decode32Bits;
+
+    if (IS64BITPAGING(currentcpuinfo))
+      dt=Decode32Bits;
+
+    if (IS64BITCODE(currentcpuinfo))
+      dt=Decode64Bits;
+
+    if (ISREALMODE(currentcpuinfo))
+      dt=Decode16Bits;
+
+
+    distorm_decode(address,buf, 60, dt, disassembled, 22, &used);
+    if (used)
+    {
+      sendstringf("%6 : %s - %s %s\n\r",
+                    disassembled[0].offset,
+                    disassembled[0].instructionHex.p,
+                    disassembled[0].mnemonic.p,
+                    disassembled[0].operands.p);
+
+    }
+
+
+  }
+  else
+  {
+    sendstring("Unreadable memory\n");
+  }
+}
+
+void ShowCurrentInstructions(pcpuinfo currentcpuinfo)
+{
+#define BUFSIZE 120
+  unsigned char buf[BUFSIZE];
+  int     readable;
+  int     is64bit=IS64BITCODE(currentcpuinfo);
+  UINT64 address;
+
+  if (isAMD)
+  {
+    if (is64bit)
+      address=currentcpuinfo->vmcb->RIP;
+    else
+      address=currentcpuinfo->vmcb->cs_base+currentcpuinfo->vmcb->RIP;
+  }
+  else
+  {
+    if (is64bit)
+      address=vmread(vm_guest_rip);
+    else
+      address=vmread(vm_guest_cs_base)+vmread(vm_guest_rip);
+  }
+
+  int bytesinfront=BUFSIZE / 2;
+  UINT64 startaddress=address-bytesinfront;
+
+  readable=ReadVMMemory(currentcpuinfo, startaddress,buf,BUFSIZE);
+
+  while (!readable) //try till bytesinfront=0
+  {
+    startaddress=address-bytesinfront;
+    readable=ReadVMMemory(currentcpuinfo, startaddress,buf,BUFSIZE);
+    if (!readable)
+    {
+      if (bytesinfront==0)
+      {
+        //failed at even 0
+        sendstringf("%6 is unreadable\n\r",address);
+        break;
+      }
+      bytesinfront=bytesinfront / 2;
+    }
+  }
+
+  if (readable)
+  {
+    //disassemble
+    _DecodedInst disassembled[BUFSIZE/2];
+    _DecodeType dt=Decode16Bits;
+    Access_Rights cs_accessright;
+    unsigned int i;
+    unsigned int used=0;
+
+    //find out in which context the system is operating
+
+    if (isAMD)
+    {
+      Segment_Attribs csa;
+      csa.SegmentAttrib=currentcpuinfo->vmcb->cs_attrib;
+      cs_accessright.D_B=csa.D_B;
+    }
+    else
+      cs_accessright.AccessRights=vmread(vm_guest_cs_access_rights);
+
+    if (cs_accessright.D_B==0)
+      dt=Decode16Bits;
+    else
+      dt=Decode32Bits;
+
+    if (IS64BITPAGING(currentcpuinfo))
+      dt=Decode32Bits;
+
+    if (IS64BITCODE(currentcpuinfo))
+      dt=Decode64Bits;
+
+    if (ISREALMODE(currentcpuinfo))
+      dt=Decode16Bits;
+
+
+    distorm_decode64(startaddress,buf, BUFSIZE, dt, disassembled, BUFSIZE / 2, &used);
+
+    if (used)
+    {
+      for (i=0; i<used; i++)
+      {
+        if (disassembled[i].offset==address)
+        {
+          sendstring(">>");
+        }
+
+        sendstringf("%6 : %s - %s %s\n\r",
+              disassembled[i].offset,
+              disassembled[i].instructionHex.p,
+              disassembled[i].mnemonic.p,
+              disassembled[i].operands.p);
+      }
+    }
+    else
+    {
+    	sendstring("Disassemble failed\n\r");
+    }
+
+
+
+  }
+}
+
+void displayPhysicalMemory(void)
+{
+  unsigned int i;
+  char temps[17];
+  UINT64 StartAddress;
+  unsigned int nrofbytes;
+
+  sendstring("Startaddress:");
+  readstring(temps,16,17);
+  sendstring("\n\r");
+  temps[16]=0;
+  StartAddress=atoi2(temps,16,NULL);
+  sendstringf("Startaddress=%6\n\r",StartAddress);
+
+
+  sendstring("Number of bytes:");
+  readstring(temps,8,17);
+  sendstring("\n\r");
+  nrofbytes=atoi2(temps,10,NULL);
+
+  sendstringf("Going to show the memory region %6 to %6 \n\r",StartAddress,StartAddress+nrofbytes);
+
+  unsigned char *memory=(unsigned char *)mapPhysicalMemory(StartAddress, nrofbytes);
+  for (i=0; i<nrofbytes; i+=16)
+  {
+    int j;
+    unsigned char bt;
+    sendstringf("%6 : ",StartAddress+i);
+    for (j=0; j<16; j++)
+    {
+      bt=memory[i+j];
+      sendstringf("%2 ",bt);
+    }
+
+    sendstring("  ");
+
+    for (j=0; j<16; j++)
+    {
+      bt=memory[i+j];
+      if ((bt<32) || (bt>0x80) )
+        bt='.';
+      sendstringf("%c",bt);
+    }
+
+    sendstring("\n\r");
+  }
+  unmapPhysicalMemory(memory, nrofbytes);
+}
