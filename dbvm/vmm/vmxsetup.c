@@ -205,4 +205,150 @@ void setupVMX_AMD(pcpuinfo currentcpuinfo)
 
   currentcpuinfo->vmcb->EFER=0x1500 | (1<<8) | (1<<10);
 
-  reg_traccessrights.SegmentAttr
+  reg_traccessrights.SegmentAttrib=0;
+  reg_traccessrights.Segment_type=11; //11=32-bit 3=16-bit
+  reg_traccessrights.S=0;
+  reg_traccessrights.DPL=0;
+  reg_traccessrights.P=1;
+  reg_traccessrights.G=0;
+  reg_traccessrights.D_B=1;
+
+  reg_csaccessrights.SegmentAttrib=0;
+  reg_csaccessrights.Segment_type=11;
+  reg_csaccessrights.S=1;
+  reg_csaccessrights.DPL=0;
+  reg_csaccessrights.P=1;
+  reg_csaccessrights.L=1;
+  reg_csaccessrights.G=0;
+  reg_csaccessrights.D_B=0;
+
+  currentcpuinfo->vmcb->CR4=getCR4();
+  currentcpuinfo->vmcb->CR3=getCR3();
+  currentcpuinfo->vmcb->CR0=getCR0();
+
+
+  currentcpuinfo->guestCR3=getCR3();
+  currentcpuinfo->guestCR0=getCR0();
+  currentcpuinfo->hasIF=0;
+
+  currentcpuinfo->vmcb->gdtr_base=getGDTbase();
+  currentcpuinfo->vmcb->idtr_base=getIDTbase();
+
+  currentcpuinfo->vmcb->gdtr_limit=0x58;
+  currentcpuinfo->vmcb->idtr_limit=8*256;
+
+  currentcpuinfo->vmcb->cs_selector=80;
+  //currentcpuinfo->vmcb->cs_limit=0;//0xffffffff;
+  //currentcpuinfo->vmcb->ss_limit=0;//0xffffffff;
+  currentcpuinfo->vmcb->cs_attrib=(WORD)reg_csaccessrights.SegmentAttrib;
+
+  currentcpuinfo->vmcb->ds_selector=8;
+  currentcpuinfo->vmcb->es_selector=8;
+  currentcpuinfo->vmcb->ss_selector=8;
+  currentcpuinfo->vmcb->fs_selector=8;
+  currentcpuinfo->vmcb->gs_selector=8;
+  currentcpuinfo->vmcb->ldtr_selector=0;
+  currentcpuinfo->vmcb->tr_selector=64;
+
+  sendstringf("cs_attrib(%x)  set to %x\n", ((UINT64)&currentcpuinfo->vmcb->cs_attrib-(UINT64)currentcpuinfo->vmcb), currentcpuinfo->vmcb->cs_attrib);
+  sendstringf("gdtr_limit(%x)  set to %x\n", ((UINT64)&currentcpuinfo->vmcb->gdtr_limit-(UINT64)currentcpuinfo->vmcb), currentcpuinfo->vmcb->gdtr_limit);
+
+
+
+
+/*
+  currentcpuinfo->vmcb->tr_limit=(UINT64)sizeof(TSS)+32+8192+1;
+  currentcpuinfo->vmcb->tr_base=(UINT64)mainTSS;
+  currentcpuinfo->vmcb->tr_attrib=(WORD)reg_traccessrights.SegmentAttrib;*/
+
+  currentcpuinfo->vmcb->DR7=0x400;
+
+  currentcpuinfo->vmcb->RSP=((UINT64)malloc(4096))+0x1000-0x28;
+  currentcpuinfo->vmcb->RFLAGS=getRFLAGS();
+
+  if (currentcpuinfo->cpunr==0)
+    currentcpuinfo->vmcb->RIP=(UINT64)reboot;
+  else
+    currentcpuinfo->vmcb->RIP=(UINT64)apentryvmx;
+
+
+  if (!loadedOS)
+    currentcpuinfo->vmcb->InterceptINT=1; //break on software interrupts (int 0x15 in realmode to tell the os not to mess with stuff)
+
+  currentcpuinfo->vmcb->InterceptShutdown=1; //in case of a severe error
+  currentcpuinfo->vmcb->InterceptVMMCALL=1;
+  currentcpuinfo->vmcb->MSR_PROT=1; //some msr's need to be protected
+
+  currentcpuinfo->vmcb->InterceptExceptions=(1<<1) | (1<<3);// | (1<<14); //intercept int1, 3 and 14
+
+ // currentcpuinfo->vmcb->InterceptINTR=1;
+ // currentcpuinfo->vmcb->InterceptDR0_15Write=(1<<6); //dr6 so I can see what changed
+
+
+
+  /*
+   if (currentcpuinfo->cpunr)
+   {
+     currentcpuinfo->vmcb->InterceptINIT=1; //cpu init (init-sipi-sipi. I need to implement a virtual apic to suppot boot
+     currentcpuinfo->vmcb->InterceptCPUID=1;
+     currentcpuinfo->vmcb->InterceptExceptions=0xffffffff;
+     currentcpuinfo->vmcb->InstructionIntercept2=0xffffffff;
+
+     setCR8(15);
+   }*/
+
+
+  if (MSRBitmap==NULL)
+  {
+    int i;
+    //allocate a MSR bitmap
+    MSRBitmap=allocateContiguousMemory(2); //
+
+    if (MSRBitmap==NULL)
+    {
+      sendstringf("allocateContiguousMemory failed. MSRBitmap=NULL\n");
+      while(1);
+    }
+    //fill with 1's (the msr's that have a 1 do not cause an intercept)
+
+    //bochsbp();
+    for (i=0; i<4096*2; i++)
+      MSRBitmap[i]=0;
+
+    //Must protect 0xc0010117 (MSRPM_BASE_PA)
+    MSRBitmap[0x1000+(0x0117*2)/8]|=3 << ((0x0117*2) % 8);
+
+    MSRBitmap[0x1000+(0x0115*2)/8]|=3 << ((0x0115*2) % 8);
+
+    //also 0xc0000080 (EFER)
+    //if (hideEFER)
+    MSRBitmap[0x800+(0x80*2)/8]|=3 << ((0x80*2) % 8);
+  }
+  currentcpuinfo->vmcb->MSRPM_BASE_PA=VirtualToPhysical((void *)MSRBitmap);
+
+  currentcpuinfo->guest_VM_HSAVE_PA=0;
+
+
+  globals_have_been_configured=1;
+
+  SaveExtraHostState(currentcpuinfo->vmcb_PA); //save some of MSR's that are needed (init did touch the segment registers so those need to be overridden if loadedOS)
+
+
+  if (loadedOS)
+  {
+    POriginalState originalstate=(POriginalState)mapPhysicalMemory(loadedOS, sizeof(OriginalState));;
+    PGDT_ENTRY gdt=NULL,ldt=NULL;
+    ULONG ldtselector=originalstate->ldt;
+    int notpaged;
+
+
+    sendstringf("Setting up guest based on loadedOS settings\n");
+
+
+    sendstringf("originalstate=%6\n", originalstate);
+    sendstringf("originalstate->cpucount(%x)=%d\n",&originalstate->cpucount, originalstate->cpucount);
+    sendstringf("originalstate->cr0=%6\n",originalstate->cr0);
+    sendstringf("originalstate->cr2=%6\n",originalstate->cr2);
+    sendstringf("originalstate->cr3=%6\n",originalstate->cr3);
+    sendstringf("originalstate->cr4=%6\n",originalstate->cr4);
+    sendstringf("originalstate->rip(%x)=%6\n",&origina
