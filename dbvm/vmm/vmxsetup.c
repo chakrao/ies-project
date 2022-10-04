@@ -351,4 +351,95 @@ void setupVMX_AMD(pcpuinfo currentcpuinfo)
     sendstringf("originalstate->cr2=%6\n",originalstate->cr2);
     sendstringf("originalstate->cr3=%6\n",originalstate->cr3);
     sendstringf("originalstate->cr4=%6\n",originalstate->cr4);
-    sendstringf("originalstate->rip(%x)=%6\n",&origina
+    sendstringf("originalstate->rip(%x)=%6\n",&originalstate->rip, originalstate->rip);
+    sendstringf("originalstate->cs=%x\n",originalstate->cs);
+    sendstringf("originalstate->ss=%x\n",originalstate->ss);
+    sendstringf("originalstate->ds=%x\n",originalstate->ds);
+    sendstringf("originalstate->es=%x\n",originalstate->es);
+    sendstringf("originalstate->fs=%x\n",originalstate->fs);
+    sendstringf("originalstate->gs=%x\n",originalstate->gs);
+    sendstringf("originalstate->ldt=%x\n",originalstate->ldt);
+    sendstringf("originalstate->tr=%x\n",originalstate->tr);
+
+    sendstringf("originalstate->dr7(%x)=%6\n",&originalstate->dr7, originalstate->dr7);
+    sendstringf("originalstate->gdtbase=%6\n",originalstate->gdtbase);
+    sendstringf("originalstate->gdtlimit=%x\n",originalstate->gdtlimit);
+    sendstringf("originalstate->idtbase=%6\n",originalstate->idtbase);
+    sendstringf("originalstate->idtlimit=%x\n",originalstate->idtlimit);
+    sendstringf("originalstate->originalLME=%x\n",originalstate->originalLME);
+    sendstringf("originalstate->rflags=%6\n",originalstate->rflags);
+
+    sendstringf("originalstate->rax=%6\n",originalstate->rax);
+    sendstringf("originalstate->rbx=%6\n",originalstate->rbx);
+    sendstringf("originalstate->rcx=%6\n",originalstate->rcx);
+    sendstringf("originalstate->rdx=%6\n",originalstate->rdx);
+    sendstringf("originalstate->rsi=%6\n",originalstate->rsi);
+    sendstringf("originalstate->rdi=%6\n",originalstate->rdi);
+    sendstringf("originalstate->rbp=%6\n",originalstate->rbp);
+    sendstringf("originalstate->rsp=%6\n",originalstate->rsp);
+    sendstringf("originalstate->r8=%6\n",originalstate->r8);
+    sendstringf("originalstate->r9=%6\n",originalstate->r9);
+    sendstringf("originalstate->r10=%6\n",originalstate->r10);
+    sendstringf("originalstate->r11=%6\n",originalstate->r11);
+    sendstringf("originalstate->r12=%6\n",originalstate->r12);
+    sendstringf("originalstate->r13=%6\n",originalstate->r13);
+    sendstringf("originalstate->r14=%6\n",originalstate->r14);
+    sendstringf("originalstate->r15=%6\n",originalstate->r15);
+
+    sendstringf("originalstate->fsbase=%6\n",originalstate->fsbase);
+    sendstringf("originalstate->gsbase=%6\n",originalstate->gsbase);
+
+    currentcpuinfo->vmcb->CR4=originalstate->cr4;
+    currentcpuinfo->vmcb->CR3=originalstate->cr3;
+    currentcpuinfo->vmcb->CR0=originalstate->cr0;
+    currentcpuinfo->vmcb->RFLAGS=originalstate->rflags;
+
+    currentcpuinfo->efer=originalstate->originalEFER;
+    currentcpuinfo->vmcb->EFER=currentcpuinfo->efer | (1<<12);
+
+
+    currentcpuinfo->vmcb->gdtr_base=(UINT64)originalstate->gdtbase;
+    currentcpuinfo->vmcb->gdtr_limit=(UINT64)originalstate->gdtlimit;
+
+    currentcpuinfo->vmcb->idtr_base=(UINT64)originalstate->idtbase;
+    currentcpuinfo->vmcb->idtr_limit=(UINT64)originalstate->idtlimit;
+
+
+    //gdt MUST be paged in
+    gdt=(PGDT_ENTRY)(UINT64)mapPhysicalMemory(getPhysicalAddressVM(currentcpuinfo, originalstate->gdtbase, &notpaged), originalstate->gdtlimit);
+
+
+    ULONG ldtlimit;
+    if ((UINT64)originalstate->ldt)
+    {
+      UINT64 ldtbase; //should be 0 in 64bit
+
+
+      sendstring("ldt is valid, so getting the information\n\r");
+
+      ldtbase=(gdt[(ldtselector >> 3)].Base24_31 << 24) + gdt[(ldtselector >> 3)].Base0_23;
+      ldtlimit=(gdt[(ldtselector >> 3)].Limit16_19 << 16) + gdt[(ldtselector >> 3)].Limit0_15;
+      ldt=(PGDT_ENTRY)(UINT64)mapPhysicalMemory(getPhysicalAddressVM(currentcpuinfo, ldtbase, &notpaged), ldtlimit);
+    }
+
+    currentcpuinfo->vmcb->es_selector=originalstate->es;
+    currentcpuinfo->vmcb->es_attrib=convertSegmentAccessRightsToSegmentAttrib(originalstate->es_AccessRights);
+    currentcpuinfo->vmcb->es_limit=originalstate->es_Limit;
+
+    currentcpuinfo->vmcb->cs_selector=originalstate->cs;
+    currentcpuinfo->vmcb->cs_attrib=convertSegmentAccessRightsToSegmentAttrib(originalstate->cs_AccessRights);
+    currentcpuinfo->vmcb->cs_limit=originalstate->cs_Limit;
+
+    currentcpuinfo->vmcb->ss_selector=originalstate->ss;
+    currentcpuinfo->vmcb->ss_attrib=convertSegmentAccessRightsToSegmentAttrib(originalstate->ss_AccessRights);
+    currentcpuinfo->vmcb->ss_limit=originalstate->ss_Limit;
+
+    currentcpuinfo->vmcb->ds_selector=originalstate->ds;
+    currentcpuinfo->vmcb->ds_attrib=convertSegmentAccessRightsToSegmentAttrib(originalstate->ds_AccessRights);
+    currentcpuinfo->vmcb->ds_limit=originalstate->ds_Limit;
+
+    currentcpuinfo->vmcb->fs_selector=originalstate->fs;
+    currentcpuinfo->vmcb->fs_attrib=convertSegmentAccessRightsToSegmentAttrib(originalstate->fs_AccessRights);
+    currentcpuinfo->vmcb->fs_limit=originalstate->fs_Limit;
+
+    cu
