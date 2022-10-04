@@ -442,4 +442,139 @@ void setupVMX_AMD(pcpuinfo currentcpuinfo)
     currentcpuinfo->vmcb->fs_attrib=convertSegmentAccessRightsToSegmentAttrib(originalstate->fs_AccessRights);
     currentcpuinfo->vmcb->fs_limit=originalstate->fs_Limit;
 
-    cu
+    currentcpuinfo->vmcb->gs_selector=originalstate->gs;
+    currentcpuinfo->vmcb->gs_attrib=convertSegmentAccessRightsToSegmentAttrib(originalstate->gs_AccessRights);
+    currentcpuinfo->vmcb->gs_limit=originalstate->gs_Limit;
+
+    currentcpuinfo->vmcb->ldtr_selector=originalstate->ldt;
+    currentcpuinfo->vmcb->tr_selector=originalstate->tr;
+
+    if (originalstate->originalLME)
+    {
+      //64-bit
+      currentcpuinfo->vmcb->cs_base=0;
+      currentcpuinfo->vmcb->ss_base=0;
+      currentcpuinfo->vmcb->ds_base=0;
+      currentcpuinfo->vmcb->es_base=0;
+      currentcpuinfo->vmcb->fs_base=originalstate->fsbase;
+      currentcpuinfo->vmcb->gs_base=originalstate->gsbase;
+      currentcpuinfo->vmcb->tr_base=getSegmentBaseEx(gdt,ldt,originalstate->tr, 1);      
+    }
+    else
+    {
+      //32-bit
+      currentcpuinfo->vmcb->cs_base=getSegmentBase(gdt, ldt, originalstate->cs);
+      currentcpuinfo->vmcb->ss_base=getSegmentBase(gdt, ldt, originalstate->ss);
+      currentcpuinfo->vmcb->ds_base=getSegmentBase(gdt, ldt, originalstate->ds);
+      currentcpuinfo->vmcb->es_base=getSegmentBase(gdt, ldt, originalstate->es);
+      currentcpuinfo->vmcb->fs_base=getSegmentBase(gdt, ldt, originalstate->fs);
+      currentcpuinfo->vmcb->gs_base=getSegmentBase(gdt, ldt, originalstate->gs);
+      currentcpuinfo->vmcb->tr_base=getSegmentBase(gdt, ldt, originalstate->tr);
+    }
+    currentcpuinfo->vmcb->ldtr_limit=getSegmentLimit(gdt, ldt, originalstate->ldt);
+    if (originalstate->tr==0)
+      currentcpuinfo->vmcb->tr_limit=0xffff;
+    else
+      currentcpuinfo->vmcb->tr_limit=getSegmentLimit(gdt, ldt, originalstate->tr);
+
+    currentcpuinfo->vmcb->ldtr_base=getSegmentBase(gdt, ldt, originalstate->ldt);
+    currentcpuinfo->vmcb->ldtr_attrib=getSegmentAttrib(gdt,ldt,originalstate->ldt);
+
+    if (originalstate->tr)
+      currentcpuinfo->vmcb->tr_attrib=getSegmentAttrib(gdt,ldt,originalstate->tr);
+    else
+      currentcpuinfo->vmcb->tr_attrib=0x8b;
+
+    currentcpuinfo->vmcb->SYSENTER_CS=(UINT64)readMSR(IA32_SYSENTER_CS_MSR); //current msr
+    currentcpuinfo->vmcb->SYSENTER_ESP=(UINT64)readMSR(IA32_SYSENTER_ESP_MSR);
+    currentcpuinfo->vmcb->SYSENTER_EIP=(UINT64)readMSR(IA32_SYSENTER_EIP_MSR);
+
+    currentcpuinfo->actual_sysenter_CS=currentcpuinfo->vmcb->SYSENTER_CS;
+    currentcpuinfo->actual_sysenter_ESP=currentcpuinfo->vmcb->SYSENTER_ESP;
+    currentcpuinfo->actual_sysenter_EIP=currentcpuinfo->vmcb->SYSENTER_EIP;
+
+    currentcpuinfo->vmcb->DR7=originalstate->dr7;
+
+    if (originalstate->originalLME)
+    {
+      //64-bit
+      currentcpuinfo->vmcb->RSP=originalstate->rsp;
+      currentcpuinfo->vmcb->RAX=originalstate->rax;
+      currentcpuinfo->vmcb->RIP=originalstate->rip;
+
+    }
+    else
+    {
+      //32-bit (make sure unused bits are 0)
+      currentcpuinfo->vmcb->RSP=(ULONG)originalstate->rsp;
+      currentcpuinfo->vmcb->RAX=(ULONG)originalstate->rax;
+      currentcpuinfo->vmcb->RIP=(ULONG)originalstate->rip;
+    }
+
+
+
+    if (gdt)
+      unmapPhysicalMemory(gdt, originalstate->gdtlimit);
+
+    if (ldt)
+      unmapPhysicalMemory(ldt, ldtlimit);
+
+    if (originalstate)
+      unmapPhysicalMemory(originalstate, sizeof(OriginalState));
+  }
+  else
+  {
+    //no loadedinfo
+    /*
+
+    if (currentcpuinfo->cpunr)
+    {
+      UINT64 a,b,c,d;
+
+
+      currentcpuinfo->vmcb->CR0=0x10;
+      currentcpuinfo->vmcb->CR2=0;
+      currentcpuinfo->vmcb->CR3=0;
+      currentcpuinfo->vmcb->RFLAGS=2;
+      currentcpuinfo->vmcb->EFER=0x1000;
+      currentcpuinfo->vmcb->RIP=0;
+
+
+      Segment_Attribs attrib;
+      attrib.G=0;
+      attrib.D_B=0;
+      attrib.L=0;
+      attrib.P=1;
+      attrib.DPL=0;
+
+      //cs:
+      attrib.S=1;
+      attrib.Segment_type=0b1010;
+      currentcpuinfo->vmcb->cs_attrib=attrib.SegmentAttrib;
+      currentcpuinfo->vmcb->cs_selector=0x1000;
+      currentcpuinfo->vmcb->cs_base=0x10000;
+      currentcpuinfo->vmcb->cs_limit=0xffff;
+      {
+      PPDPTE_PAE pml4entry;
+      PPDPTE_PAE pagedirpointerentry;
+      PPDE_PAE pagedirentry;
+      PPTE_PAE pagetableentry;
+
+      VirtualAddressToPageEntries(0, &pml4entry, &pagedirpointerentry, &pagedirentry, &pagetableentry);
+      pagedirentry[0].RW=1;
+      pagedirentry[1].RW=1;
+      asm volatile ("": : :"memory");
+    }
+      *(unsigned char *)0x10000=0xf4; //hlt
+
+      //data
+      attrib.S=1;
+      attrib.Segment_type=0b0010;
+      currentcpuinfo->vmcb->ss_attrib=attrib.SegmentAttrib;
+      currentcpuinfo->vmcb->ss_selector=0;
+      currentcpuinfo->vmcb->ss_base=0;
+      currentcpuinfo->vmcb->ss_limit=0xffff;
+
+      currentcpuinfo->vmcb->ds_attrib=attrib.SegmentAttrib;
+      currentcpuinfo->vmcb->ds_selector=0;
+      currentcpu
