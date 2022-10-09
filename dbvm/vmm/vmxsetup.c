@@ -752,4 +752,157 @@ int vmx_addSingleSteppingReasonEx(pcpuinfo currentcpuinfo, int reason, void *dat
     sendstringf("Multiple single stepping reasons\n");
   }
 
-  currentcpuinfo->singleStepping.Reasons[currentcpuinfo->singleStepping.ReasonsPos].Reaso
+  currentcpuinfo->singleStepping.Reasons[currentcpuinfo->singleStepping.ReasonsPos].Reason=reason;
+  currentcpuinfo->singleStepping.Reasons[currentcpuinfo->singleStepping.ReasonsPos].Data=data;
+  currentcpuinfo->singleStepping.ReasonsPos++;
+
+  return currentcpuinfo->singleStepping.ReasonsPos-1;
+
+}
+
+int vmx_addSingleSteppingReason(pcpuinfo currentcpuinfo, int reason, int ID)
+{
+  if (currentcpuinfo->singleStepping.ReasonsPos>=currentcpuinfo->singleStepping.ReasonsLength) //realloc
+  {
+    currentcpuinfo->singleStepping.ReasonsLength=(currentcpuinfo->singleStepping.ReasonsLength+2)*2;
+    currentcpuinfo->singleStepping.Reasons=realloc(currentcpuinfo->singleStepping.Reasons, currentcpuinfo->singleStepping.ReasonsLength * sizeof(SingleStepReason));
+  }
+
+  //always add to the end
+  if (currentcpuinfo->singleStepping.ReasonsPos>=1)
+  {
+    sendstringf("Multiple single stepping reasons\n");
+  }
+
+  currentcpuinfo->singleStepping.Reasons[currentcpuinfo->singleStepping.ReasonsPos].Reason=reason;
+  currentcpuinfo->singleStepping.Reasons[currentcpuinfo->singleStepping.ReasonsPos].ID=ID;
+  currentcpuinfo->singleStepping.ReasonsPos++;
+
+  return currentcpuinfo->singleStepping.ReasonsPos-1;
+}
+
+int vmx_enableSingleStepMode(void)
+{
+  pcpuinfo c=getcpuinfo();
+  //sendstringf("%d Enabling single step mode\n", c->cpunr);
+
+
+  if (isAMD)
+  {
+   // sendstringf("%d CS:RIP=%x:%6 RCX=%d\n", c->cpunr, c->vmcb->cs_selector, c->vmcb->RIP);
+
+    //break on external interrupts and exceptions
+    c->vmcb->InterceptVINTR=1;
+    c->vmcb->InterceptINTR=1;
+    c->vmcb->InterceptExceptions=0x0000ffff;
+
+    //perhaps enable INTERRUPT_SHADOW?
+
+    //mark the intercepts as changed
+    //sendstringf("b c->vmcb->VMCB_CLEAN_BITS=%6\n",c->vmcb->VMCB_CLEAN_BITS);
+    c->vmcb->VMCB_CLEAN_BITS&=~(1<<0);
+    c->vmcb->VMCB_CLEAN_BITS=0;
+   //sendstringf("a c->vmcb->VMCB_CLEAN_BITS=%6\n",c->vmcb->VMCB_CLEAN_BITS);
+
+    RFLAGS v;
+    v.value=c->vmcb->RFLAGS;
+
+    if (c->singleStepping.ReasonsPos==0) //first one
+      c->singleStepping.PreviousTFState=v.TF;
+
+    v.TF=1; //single step mode
+    v.RF=1;
+    if (v.IF)
+      c->vmcb->INTERRUPT_SHADOW=1;
+
+    //todo: intercept pushf/popf/iret and the original RF flag state (though for a single step that should have no effect
+
+    c->vmcb->RFLAGS=v.value;
+    c->singleStepping.Method=3; //Trap flag
+
+    //turn of syscall, and when syscall is executed, capture the UD, re-enable it, but change the flags mask to keep the TF enabled, and the step after that adjust R11 so that the TF is gone and restore the flags mask.  Then continue as usual;
+    if (c->singleStepping.ReasonsPos==0)
+    {
+      c->singleStepping.PreviousEFER=c->vmcb->EFER;
+      c->singleStepping.PreviousFMASK=c->vmcb->SFMASK;
+      c->singleStepping.LastInstructionWasSyscall=0;
+
+      c->vmcb->EFER&=0xfffffffffffffffeULL;
+      c->vmcb->VMCB_CLEAN_BITS&=~(1<< 5); //efer got changed
+    }
+
+
+    return 1;
+
+  }
+  else
+  {
+    sendstring("\n");
+
+   /* if ((vmread(vm_entry_interruptioninfo) >> 31)==0)
+      vmwrite(vm_guest_interruptability_state,2); //execute at least one instruction
+    else
+      sendstringf("Not setting the interruptability state\n");*/
+
+    if (vmx_enableProcBasedFeature(PBEF_MONITOR_TRAP_FLAG))
+    {
+      sendstring("Using the monitor trap flag\n");
+      c->singleStepping.Method=1;
+      return 1;
+    }
+    else
+    {
+      c->singleStepping.Method=2;
+      if (vmx_enableProcBasedFeature(PBEF_INTERRUPT_WINDOW_EXITING))
+      {
+        if ((vmread(vm_entry_interruptioninfo) >> 31)==0) //if no interrupt pending
+          vmwrite(vm_guest_interruptability_state,2); //execute at least one instruction
+        //else go to that interrupt that is pending and then stop
+
+        sendstring("Using the interrupt window\n");
+        return 1;
+      }
+    }
+  }
+
+  return 0;
+}
+
+int vmx_disableSingleStepMode(void)
+{
+  int r=0;
+  pcpuinfo c=getcpuinfo();
+
+  sendstringf("%d Disabling single step mode\n", c->cpunr);
+
+  if (isAMD)
+  {
+    //shouldn't be needed but do it anyhow
+
+    sendstringf("%d RFLAGS was %x\n", c->cpunr, c->vmcb->RFLAGS);
+
+
+    RFLAGS v;
+    v.value=c->vmcb->RFLAGS;
+    v.TF=c->singleStepping.PreviousTFState;  // 0; //single step mode
+
+    c->vmcb->RFLAGS=v.value;
+    sendstringf("%d RFLAGS is %x\n", c->cpunr, c->vmcb->RFLAGS);
+
+
+
+    c->singleStepping.Method=0;
+
+    c->vmcb->InterceptVINTR=0;
+    c->vmcb->InterceptINTR=0;
+    c->vmcb->InterceptExceptions=(1<<1) | (1<<3); // todo: load current exceptions hooks
+
+
+    //mark the intercepts as changed
+    sendstringf("b c->vmcb->VMCB_CLEAN_BITS=%6\n",c->vmcb->VMCB_CLEAN_BITS);
+    c->vmcb->VMCB_CLEAN_BITS&=~(1<<0);
+    c->vmcb->VMCB_CLEAN_BITS=0;
+    sendstringf("a c->vmcb->VMCB_CLEAN_BITS=%6\n",c->vmcb->VMCB_CLEAN_BITS);
+
+    c->vmcb->EFER=c->singleStepping.PreviousEFER;
+ 
