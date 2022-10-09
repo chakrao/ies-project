@@ -577,4 +577,179 @@ void setupVMX_AMD(pcpuinfo currentcpuinfo)
 
       currentcpuinfo->vmcb->ds_attrib=attrib.SegmentAttrib;
       currentcpuinfo->vmcb->ds_selector=0;
-      currentcpu
+      currentcpuinfo->vmcb->ds_base=0;
+      currentcpuinfo->vmcb->ds_limit=0xffff;
+
+      currentcpuinfo->vmcb->es_attrib=attrib.SegmentAttrib;
+      currentcpuinfo->vmcb->es_selector=0;
+      currentcpuinfo->vmcb->es_base=0;
+      currentcpuinfo->vmcb->es_limit=0xffff;
+
+      currentcpuinfo->vmcb->fs_attrib=attrib.SegmentAttrib;
+      currentcpuinfo->vmcb->fs_selector=0;
+      currentcpuinfo->vmcb->fs_base=0;
+      currentcpuinfo->vmcb->fs_limit=0xffff;
+
+      currentcpuinfo->vmcb->gs_attrib=attrib.SegmentAttrib;
+      currentcpuinfo->vmcb->gs_selector=0;
+      currentcpuinfo->vmcb->gs_base=0;
+      currentcpuinfo->vmcb->gs_limit=0xffff;
+
+      //ldtr:
+      attrib.S=0;
+      attrib.Segment_type=0b0010;
+      currentcpuinfo->vmcb->ldtr_attrib=attrib.SegmentAttrib;
+      currentcpuinfo->vmcb->ldtr_selector=0;
+      currentcpuinfo->vmcb->ldtr_base=0;
+      currentcpuinfo->vmcb->ldtr_limit=0xffff;
+
+      //tr:
+      attrib.S=0;
+      attrib.Segment_type=0b0011;
+      currentcpuinfo->vmcb->tr_attrib=attrib.SegmentAttrib;
+      currentcpuinfo->vmcb->tr_selector=0;
+      currentcpuinfo->vmcb->tr_base=0;
+      currentcpuinfo->vmcb->tr_limit=0xffff;
+
+
+      currentcpuinfo->vmcb->gdtr_base=0;
+      currentcpuinfo->vmcb->gdtr_limit=0xffff;
+
+      currentcpuinfo->vmcb->idtr_base=0;
+      currentcpuinfo->vmcb->idtr_limit=0xffff;
+
+
+      a=1;
+      _cpuid(&a,&b,&c,&d);
+
+      currentcpuinfo->vmcb->RAX=0;
+      currentcpuinfo->vmcb->RSP=0;
+
+
+      setDR0(0);
+      setDR1(0);
+      setDR2(0);
+      setDR3(0);
+
+      currentcpuinfo->vmcb->DR6=0xffff0ff0;
+      currentcpuinfo->vmcb->DR7=0x400;
+
+      currentcpuinfo->vmcb->VMCB_CLEAN_BITS=0;
+    }*/
+  }
+
+
+
+
+
+  sendstringf("Configured cpu %d\n", currentcpuinfo->cpunr);
+  currentcpuinfo->vmxsetup=1;
+  csLeave(&setupVMX_lock);
+
+}
+
+
+int vmx_enableProcBasedFeature(DWORD PBF)
+{
+  if (((IA32_VMX_PROCBASED_CTLS >> 32) & PBF) == PBF) //can it be set
+  {
+    vmwrite(vm_execution_controls_cpu, vmread(vm_execution_controls_cpu) | PBF);
+    return 1;
+  }
+  else
+    return 0;
+}
+
+int vmx_disableProcBasedFeature(DWORD PBF)
+{
+  QWORD PBCTLS=IA32_VMX_PROCBASED_CTLS;
+
+  if (IA32_VMX_BASIC.default1canbe0)
+    PBCTLS=readMSR(IA32_VMX_TRUE_PROCBASED_CTLS_MSR);
+
+
+  if (PBCTLS & PBF) //can it be set to 0
+    return 0; //nope
+  else
+  {
+    vmwrite(vm_execution_controls_cpu, vmread(vm_execution_controls_cpu) & (~PBF));
+    return 1;
+  }
+}
+
+int vmx_enablePinBasedFeature(DWORD PINBF)
+{
+  if (((IA32_VMX_PINBASED_CTLS >> 32) & PINBF) == PINBF) //can it be set
+  {
+    vmwrite(vm_execution_controls_pin, vmread(vm_execution_controls_pin) | PINBF);
+    return 1;
+  }
+  else
+    return 0;
+}
+
+int vmx_disablePinBasedFeature(DWORD PINBF)
+{
+  QWORD PINBCTLS=IA32_VMX_PINBASED_CTLS;
+
+  if (IA32_VMX_BASIC.default1canbe0)
+    PINBCTLS=readMSR(IA32_VMX_TRUE_PINBASED_CTLS_MSR);
+
+
+  if (PINBCTLS & PINBF) //can it be set to 0
+    return 0; //nope
+  else
+  {
+    vmwrite(vm_execution_controls_pin, vmread(vm_execution_controls_pin) & (~PINBF));
+    return 1;
+  }
+}
+
+int vmx_enableNMIWindowExiting(void)
+{
+  if (vmx_enableProcBasedFeature(PBEF_NMI_WINDOW_EXITING))
+  {
+    //PBEF_NMI_WINDOW_EXITING can be set
+    //"If the “virtual NMIs” VM-execution control is 0, the “NMI-window exiting” VM-execution control must be 0."
+    //so virtual NMIs must be 1 as well
+    if (vmx_enablePinBasedFeature(PINBEF_VIRTUAL_NMIS))
+    {
+      //"If the “NMI exiting” VM-execution control is 0, the “virtual NMIs” VM-execution control must be 0"
+      //so also enable NMI exiting
+      if (vmx_enablePinBasedFeature(PINBEF_NMI_EXITING))
+        return 1;
+
+      vmx_disablePinBasedFeature(PINBEF_VIRTUAL_NMIS);
+    }
+
+    vmx_disableProcBasedFeature(PBEF_NMI_WINDOW_EXITING);
+  }
+
+  return 0;
+}
+
+int vmx_disableNMIWindowExiting(void)
+{
+  int a,b,c;
+  a=vmx_disableProcBasedFeature(PBEF_NMI_WINDOW_EXITING);
+  b=vmx_disablePinBasedFeature(PINBEF_VIRTUAL_NMIS);
+  c=vmx_disablePinBasedFeature(PINBEF_NMI_EXITING);
+
+  return (a+b+c==3);
+}
+
+int vmx_addSingleSteppingReasonEx(pcpuinfo currentcpuinfo, int reason, void *data)
+{
+  if (currentcpuinfo->singleStepping.ReasonsPos>=currentcpuinfo->singleStepping.ReasonsLength) //realloc
+  {
+    currentcpuinfo->singleStepping.ReasonsLength=(currentcpuinfo->singleStepping.ReasonsLength+2)*2;
+    currentcpuinfo->singleStepping.Reasons=realloc(currentcpuinfo->singleStepping.Reasons, currentcpuinfo->singleStepping.ReasonsLength * sizeof(SingleStepReason));
+  }
+
+  //always add to the end
+  if (currentcpuinfo->singleStepping.ReasonsPos>=1)
+  {
+    sendstringf("Multiple single stepping reasons\n");
+  }
+
+  currentcpuinfo->singleStepping.Reasons[currentcpuinfo->singleStepping.ReasonsPos].Reaso
