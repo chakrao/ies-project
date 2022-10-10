@@ -905,4 +905,170 @@ int vmx_disableSingleStepMode(void)
     sendstringf("a c->vmcb->VMCB_CLEAN_BITS=%6\n",c->vmcb->VMCB_CLEAN_BITS);
 
     c->vmcb->EFER=c->singleStepping.PreviousEFER;
- 
+    c->vmcb->SFMASK=c->singleStepping.PreviousFMASK;
+    c->singleStepping.LastInstructionWasSyscall=0;
+
+    c->vmcb->VMCB_CLEAN_BITS&=~(1<< 5); //efer
+
+    return 1;
+  }
+  else
+  {
+    if (c->singleStepping.Method==1)
+      r=vmx_disableProcBasedFeature(PBEF_MONITOR_TRAP_FLAG);
+
+    if (c->singleStepping.Method==2)
+      r=vmx_disableProcBasedFeature(PBEF_INTERRUPT_WINDOW_EXITING);
+  }
+  return r;
+}
+
+//stealthedit:
+//mark page as execute, but not as read/write
+//on read/write undo change, set TF, run, wait till int1/first vm exit(what about ints? Enable external int exiting), unset TF, redo change, run
+
+//on systems with no exec only
+//alt1: mark as read/write but not exec. on ept exit change RIP to adjusted copy
+//alt2: mark as no access. on ept exit set TF
+int setupEPT(pcpuinfo currentcpuinfo)
+{
+  //check for Secondary Processor-Based VM-Execution Controls
+  QWORD IA32_VMX_PROCBASED_CTLS=readMSR(IA32_VMX_PROCBASED_CTLS_MSR);
+
+  sendstring("setupEPT\n");
+
+  hasEPTsupport=0;
+  //return 0; //<-------------DEBUG
+
+  if (IA32_VMX_PROCBASED_CTLS >> 63)
+  {
+    //secondary procbased controls
+    QWORD IA32_VMX_SECONDARY_PROCBASED_CTLS=readMSR(IA32_VMX_PROCBASED_CTLS2_MSR); //allowed1/allowed0
+    DWORD old_vm_execution_controls_cpu=vmread(vm_execution_controls_cpu);
+    DWORD new_vm_execution_controls_cpu=old_vm_execution_controls_cpu | SECONDARY_EXECUTION_CONTROLS;
+
+    sendstringf("old_vm_execution_controls_cpu=%x  Want to set it to %6\n",old_vm_execution_controls_cpu, new_vm_execution_controls_cpu);
+    vmwrite(vm_execution_controls_cpu, new_vm_execution_controls_cpu); //activate secondary controls
+
+
+    DWORD current_vm_execution_controls_cpu=vmread(vm_execution_controls_cpu);
+    sendstringf("new_vm_execution_controls_cpu=%x\n",current_vm_execution_controls_cpu);
+
+
+
+
+    if (current_vm_execution_controls_cpu != new_vm_execution_controls_cpu)
+    {
+      sendstringf("Meh...\n");
+      while(1);
+    }
+
+
+
+
+    sendstringf("IA32_VMX_SECONDARY_PROCBASED_CTLS=%6\n", IA32_VMX_SECONDARY_PROCBASED_CTLS);
+
+    if ((IA32_VMX_SECONDARY_PROCBASED_CTLS>>32) & SPBEF_ENABLE_EPT)
+    {
+      DWORD secondarycontrols=vmread(vm_execution_controls_cpu_secondary);
+
+      sendstringf("SPBEF_ENABLE_EPT can be set\n");
+      secondarycontrols=secondarycontrols | SPBEF_ENABLE_EPT;
+
+      if ((IA32_VMX_SECONDARY_PROCBASED_CTLS>>32) & SPBEF_ENABLE_VPID)
+      {
+    	  sendstringf("SPBEF_ENABLE_VPID can also be set\n");
+    	  secondarycontrols=secondarycontrols | SPBEF_ENABLE_VPID;
+    	  vmwrite(vm_vpid,1); //vpid
+
+    	  hasVPIDSupport=1;
+      }
+
+      vmwrite(vm_execution_controls_cpu_secondary, secondarycontrols);
+
+      //setup the EPT ptr
+
+      PEPT_PML4E pml4map=malloc2(4096);
+      if (pml4map==NULL)
+      {
+        sendstringf("failure allocating pml4map");
+        return 0;
+      }
+      else
+        zeromemory(pml4map,4096);
+
+      QWORD pml4mapPA=VirtualToPhysical(pml4map);
+      currentcpuinfo->EPTPML4=pml4mapPA;
+
+      sendstringf("pml4map is at %6\n", pml4mapPA);
+
+
+      TIA32_VMX_VPID_EPT_CAP eptinfo;
+      eptinfo.IA32_VMX_VPID_EPT_CAP=readMSR(IA32_VMX_EPT_VPID_CAP_MSR);
+
+      QWORD eptp=pml4mapPA;
+      PEPTP x=(PEPTP)&eptp;
+      x->PAGEWALKLENGTH=3;
+
+      if (eptinfo.EPT_writeBackSupport)
+        x->MEMTYPE=6;
+      else
+        x->MEMTYPE=0;
+
+
+      vmwrite(vm_eptpointer, eptp);  //and set the EPTP field
+
+
+      has_EPT_1GBsupport=eptinfo.EPT_1GBSupport;
+      has_EPT_2MBSupport=eptinfo.EPT_2MBSupport;
+      has_EPT_ExecuteOnlySupport=eptinfo.EPT_executeOnlySupport;
+
+      has_EPT_INVEPTSingleContext=eptinfo.EPT_INVEPTSingleContext;
+      has_EPT_INVEPTAllContext=eptinfo.EPT_INVEPTAllContext;
+
+      has_VPID_INVVPIDIndividualAddress=eptinfo.VPID_INVVPIDIndividualAddress;
+      has_VPID_INVVPIDSingleContext=eptinfo.VPID_INVVPIDSingleContext;
+      has_VPID_INVVPIDAllContext=eptinfo.VPID_INVVPIDAllContext;
+      has_VPID_INVVPIDSingleContextRetainingGlobals=eptinfo.VPID_INVVPIDAllContext;
+
+      //eptinfo
+
+      QWORD rax=1,rbx=0,rcx=0,rdx=0;
+      _cpuid(&rax, &rbx, &rcx, &rdx);
+
+      if (rdx & (1 << 12))
+      {
+        hasMTRRsupport=1;
+
+        MTRRCapabilities.Value=readMSR(IA32_MTRRCAP_MSR);
+        MTRRDefType.Value=readMSR(IA32_MTRR_DEF_TYPE_MSR);
+
+        //setup callbacks for MTRR msr edits
+
+        /*
+        vmx_setMSRWriteExit(IA32_MTRR_PHYSBASE0);
+        vmx_setMSRWriteExit(IA32_MTRR_PHYSBASE1);
+        */
+
+        initMemTypeRanges();
+      }
+
+
+      return 1;
+    }
+    else
+      sendstring("That means that SPBEF_ENABLE_EPT(bit 1) can not be set\n");
+
+  }
+  else
+  {
+    sendstring("This cpu does not support secondary procbased controls\n");
+  }
+
+  return 0;
+}
+
+void setup8086WaitForSIPI(pcpuinfo currentcpuinfo, int setupvmcontrols)
+{
+  //8086 entry (wait-for-sipi)
+  Access_Rights re
