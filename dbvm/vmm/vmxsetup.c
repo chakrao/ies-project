@@ -1577,4 +1577,162 @@ void setupVMX(pcpuinfo currentcpuinfo)
 
 
     vmx_setMSRReadExit(0xc0000080);
-    vmx_set
+    vmx_setMSRWriteExit(0xc0000080);
+
+    //break on IA32_FEATURE_CONTROL_MSR read and write
+    vmx_setMSRReadExit(IA32_FEATURE_CONTROL_MSR);
+    vmx_setMSRWriteExit(IA32_FEATURE_CONTROL_MSR);
+
+
+
+
+
+    /* todo perhaps
+    //break on writes to mttr msr's
+    for (i=0x200; i<0x20f; i++)
+       MSRBitmap[1024+i/8]=1 << (i % 8);
+
+    MSRBitmap[1024+0x250/8]=1 << (0x250 % 8);
+    MSRBitmap[1024+0x258/8]=1 << (0x258 % 8);
+    MSRBitmap[1024+0x259/8]=1 << (0x259 % 8);
+
+    for (i=0x268; i<0x26f; i++)
+       MSRBitmap[1024+i/8]=1 << (i % 8);
+
+    MSRBitmap[1024+0x277/8]=1 << (0x277 % 8);
+    MSRBitmap[1024+0x2ff/8]=1 << (0x2ff % 8);
+    */
+  }
+
+  SetPageToWriteThrough((void *)MSRBitmap); //for future updates
+
+
+  if (IOBitmap==NULL)
+  {
+    //configure IOBitmap
+    sendstring("Allocating IOBitmap\n\r");
+    IOBitmap=malloc(4096*2);
+    zeromemory(IOBitmap,4096*2);
+
+    #ifdef DEBUG
+      #if (defined SERIALPORT) && (SERIALPORT != 0)
+
+    //IOBitmap[0x7f]=0xff;
+    //IOBitmap[22]=0xff;
+    //IOBitmap[29]=0xff;
+    /*
+    IOBitmap[SERIALPORT / 8]|= 1 << (SERIALPORT % 8);
+    IOBitmap[(SERIALPORT+1) / 8]|= 1 << ((SERIALPORT+1) % 8);
+    IOBitmap[(SERIALPORT+2) / 8]|= 1 << ((SERIALPORT+2) % 8);
+    IOBitmap[(SERIALPORT+3) / 8]|= 1 << ((SERIALPORT+3) % 8);
+    IOBitmap[(SERIALPORT+4) / 8]|= 1 << ((SERIALPORT+4) % 8);
+    IOBitmap[(SERIALPORT+5) / 8]|= 1 << ((SERIALPORT+5) % 8);
+    IOBitmap[(SERIALPORT+6) / 8]|= 1 << ((SERIALPORT+6) % 8);
+    IOBitmap[(SERIALPORT+7) / 8]|= 1 << ((SERIALPORT+7) % 8);
+    */
+      #endif
+    #endif
+  }
+
+  //sendstring("Setting up realmode paging\n"); //also for loadedOS in case of some weird event
+  //setupRealModePaging(currentcpuinfo);
+
+
+  if (globals_have_been_configured==0)
+  {
+    sendstringf("before setupTSS8086. rsp=%6\n\r",getRSP());
+    setupTSS8086();
+    sendstringf("after setupTSS8086. rsp=%6\n\r",getRSP());
+
+    sendstringf("Before configuring global VMX capability vars (%6)\n\r",getRSP());
+    IA32_VMX_BASIC.IA32_VMX_BASIC=readMSR(0x480);
+    IA32_VMX_PINBASED_CTLS=readMSR(IA32_VMX_PINBASED_CTLS_MSR);
+    IA32_VMX_PROCBASED_CTLS=readMSR(0x482);
+    if (IA32_VMX_PROCBASED_CTLS >> 63)
+    {
+      sendstringf("Has secondary procbased_ctls\n");
+      IA32_VMX_SECONDARY_PROCBASED_CTLS=readMSR(0x48b);
+    }
+    else
+    {
+      sendstringf("Doesn't have secondary procbased_ctls\n");
+    }
+
+    IA32_VMX_EXIT_CTLS=readMSR(0x483);
+    IA32_VMX_ENTRY_CTLS=readMSR(0x484);
+    IA32_VMX_MISC.IA32_VMX_MISC=readMSR(0x485);
+    sendstringf("After configuring global VMX capability vars (%6)\n\r",getRSP());
+
+
+#ifdef DEBUG
+    //setup fake comport:
+    setCursorPos(0,1);
+    zeromemory(&fakecom1,sizeof(fakecom1));
+    fakecom1.Interrupt_Identification_Register=1; //no interrupt pending
+#endif
+  }
+
+  sendstringf("after \"if (globals_have_been_configured==0)\" rsp=%6\n\r",getRSP());
+
+
+
+  if (currentcpuinfo->cpunr==0)
+  {
+    displayline("IA32_VMX_BASIC=%6\n\r",IA32_VMX_BASIC.IA32_VMX_BASIC);
+    displayline("IA32_VMX_PINBASED_CTLS=%6\n\r",IA32_VMX_PINBASED_CTLS);
+    displayline("IA32_VMX_PROCBASED_CTLS=%6\n\r",IA32_VMX_PROCBASED_CTLS);
+    displayline("IA32_VMX_SECONDARY_PROCBASED_CTLS=%6\n\r",IA32_VMX_SECONDARY_PROCBASED_CTLS);
+    displayline("IA32_VMX_EXIT_CTLS=%6\n\r",IA32_VMX_EXIT_CTLS);
+    displayline("IA32_VMX_ENTRY_CTLS=%6\n\r",IA32_VMX_ENTRY_CTLS);
+    displayline("IA32_VMX_MISC=%6\n\r",IA32_VMX_MISC.IA32_VMX_MISC);
+  }
+
+  //compatibility mode with newer cpus that have 0 settings for features that I expect are 1 (for cpu's that didn't have the TRUE feature)
+  if ((IA32_VMX_PINBASED_CTLS >> 32) & (1<<1))
+    IA32_VMX_PINBASED_CTLS|=(1<<1);
+
+  if ((IA32_VMX_PINBASED_CTLS >> 32) & (1<<2))
+    IA32_VMX_PINBASED_CTLS|=(1<<2);
+
+  if ((IA32_VMX_PINBASED_CTLS >> 32) & (1<<4))
+    IA32_VMX_PINBASED_CTLS|=(1<<4);
+
+
+  //proc based : 1, 4-6, 8, 13-16, 26
+  if ((IA32_VMX_PROCBASED_CTLS >> 32) & (1<<1)) //1: CAN be on->MUST be one
+    IA32_VMX_PROCBASED_CTLS|=(1<<1);
+  else
+  {
+    sendstring("Fail1\n");
+  }
+
+  if (((IA32_VMX_PROCBASED_CTLS >> 32) & (7<<4)) ==(7<<4)) //4-6: CAN be on->MUST be one
+      IA32_VMX_PROCBASED_CTLS|=(7<<4);
+  else
+  {
+      sendstring("Fail2\n");
+  }
+
+  if ((IA32_VMX_PROCBASED_CTLS >> 32) & (1<<8)) //8
+    IA32_VMX_PROCBASED_CTLS|=(1<<8);
+  else
+  {
+    sendstring("Fail3\n");
+  }
+
+  if (((IA32_VMX_PROCBASED_CTLS >> 32) & (0xf<<13)) ==(0xf<<13)) //13,14,15,16
+      IA32_VMX_PROCBASED_CTLS|=(0xf<<13);
+  else
+  {
+    sendstring("Fail4\n");
+  }
+
+  if ((IA32_VMX_PROCBASED_CTLS >> 32) & (1<<26))
+    IA32_VMX_PROCBASED_CTLS|=(1<<26);
+  else
+  {
+    sendstring("Fail5\n");
+  }
+
+
+  se
