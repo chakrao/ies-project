@@ -1373,4 +1373,208 @@ void vmx_removeMSRReadExit(DWORD msrValue)
 {
   if (isAMD)
   {
-    if (msrValue<=0x
+    if (msrValue<=0x1fff)
+    {
+      MSRBitmap[(msrValue*2)/8]&=~(1 << ((msrValue*2) % 8));
+      return;
+    }
+
+    if ((msrValue>=0xc0000000) && (msrValue<=0xc0001fff))
+    {
+      msrValue=msrValue-0xc0000000;
+      MSRBitmap[0x800+(msrValue*2)/8]&=~(1 << ((msrValue*2) % 8));
+      return;
+    }
+
+    if ((msrValue>=0xc0010000) && (msrValue<=0xc0011fff))
+    {
+      msrValue=msrValue-0xc0010000;
+      MSRBitmap[0x800+(msrValue*2)/8]&=~(1 << ((msrValue*2) % 8));
+      return;
+    }
+  }
+  else
+  {
+    if (msrValue<0xc0000000)
+      MSRBitmap[msrValue/8]&=~(1 << (msrValue % 8));
+    else
+    {
+      msrValue=msrValue-0xc0000000;
+      MSRBitmap[1024+msrValue/8]&=~(1 << (msrValue % 8));
+    }
+  }
+}
+
+void vmx_setMSRWriteExit(DWORD msrValue)
+{
+  if (isAMD)
+  {
+    if (msrValue<=0x1fff)
+    {
+      MSRBitmap[(msrValue*2)/8]|=2 << ((msrValue*2) % 8);
+      return;
+    }
+
+    if ((msrValue>=0xc0000000) && (msrValue<=0xc0001fff))
+    {
+      msrValue=msrValue-0xc0000000;
+      MSRBitmap[0x800+(msrValue*2)/8]|=2 << ((msrValue*2) % 8);
+      return;
+    }
+
+    if ((msrValue>=0xc0010000) && (msrValue<=0xc0011fff))
+    {
+      msrValue=msrValue-0xc0010000;
+      MSRBitmap[0x800+(msrValue*2)/8]|=2 << ((msrValue*2) % 8);
+      return;
+    }
+  }
+  else
+  {
+    if (msrValue<0xc0000000)
+      MSRBitmap[2048+msrValue/8]|=1 << (msrValue % 8);
+    else
+    {
+      msrValue=msrValue-0xc0000000;
+      MSRBitmap[3072+msrValue/8]|=1 << (msrValue % 8);
+    }
+  }
+}
+
+void vmx_removeMSRWriteExit(DWORD msrValue)
+{
+  if (isAMD)
+  {
+    if (msrValue<=0x1fff)
+    {
+      MSRBitmap[(msrValue*2)/8]&=~(2 << ((msrValue*2) % 8));
+      return;
+    }
+
+    if ((msrValue>=0xc0000000) && (msrValue<=0xc0001fff))
+    {
+      msrValue=msrValue-0xc0000000;
+      MSRBitmap[0x800+(msrValue*2)/8]&=~(2 << ((msrValue*2) % 8));
+      return;
+    }
+
+    if ((msrValue>=0xc0010000) && (msrValue<=0xc0011fff))
+    {
+      msrValue=msrValue-0xc0010000;
+      MSRBitmap[0x800+(msrValue*2)/8]&=~(2 << ((msrValue*2) % 8));
+      return;
+    }
+  }
+  else
+  {
+    if (msrValue<0xc0000000)
+      MSRBitmap[2048+msrValue/8]&=~(1 << (msrValue % 8));
+    else
+    {
+      msrValue=msrValue-0xc0000000;
+      MSRBitmap[3072+msrValue/8]&=~(1 << (msrValue % 8));
+    }
+  }
+}
+
+
+void vmx_enableTSCHook(pcpuinfo currentcpuinfo)
+{
+  if (isAMD)
+  {
+    currentcpuinfo->vmcb->InterceptRDTSC=1;
+    currentcpuinfo->vmcb->InterceptRDTSCP=1;
+  }
+  else
+  {
+    if ((readMSR(IA32_VMX_PROCBASED_CTLS_MSR)>>32) & RDTSC_EXITING)
+      vmwrite(vm_execution_controls_cpu, vmread(vm_execution_controls_cpu) | RDTSC_EXITING);
+
+
+
+  }
+
+  vmx_setMSRReadExit(IA32_TIME_STAMP_COUNTER);
+  vmx_setMSRWriteExit(IA32_TIME_STAMP_COUNTER);
+  vmx_setMSRWriteExit(IA32_TSC_ADJUST);
+
+
+  TSCHooked=1;
+}
+
+void vmx_disableTSCHook(pcpuinfo currentcpuinfo)
+{
+  if (useSpeedhack==0)
+  {
+    if (isAMD)
+    {
+      currentcpuinfo->vmcb->InterceptRDTSC=0;
+    }
+    else
+    {
+      if ((readMSR(IA32_VMX_PROCBASED_CTLS_MSR)>>32) & RDTSC_EXITING)
+        vmwrite(vm_execution_controls_cpu, vmread(vm_execution_controls_cpu) & (QWORD)~(QWORD)RDTSC_EXITING);
+    }
+
+    vmx_removeMSRReadExit(IA32_TIME_STAMP_COUNTER);
+    vmx_removeMSRWriteExit(IA32_TIME_STAMP_COUNTER);
+    vmx_removeMSRWriteExit(IA32_TSC_ADJUST);
+
+    TSCHooked=0;
+  }
+}
+
+void setupVMX(pcpuinfo currentcpuinfo)
+{
+
+  Access_Rights reg_csaccessrights,reg_traccessrights;
+
+  reg_traccessrights.AccessRights=0;
+  reg_traccessrights.Segment_type=11; //11=32-bit 3=16-bit
+  reg_traccessrights.S=0;
+  reg_traccessrights.DPL=0;
+  reg_traccessrights.P=1;
+  reg_traccessrights.G=0;
+  reg_traccessrights.D_B=1;
+
+
+  csEnter(&setupVMX_lock);
+
+  char *eptcsname=malloc(32);
+  snprintf(eptcsname,64,"EPTPML4CS %d", currentcpuinfo->cpunr);
+
+  currentcpuinfo->EPTPML4CS.name=eptcsname;
+
+
+//  currentcpuinfo->AvailableVirtualAddress=(UINT64)(currentcpuinfo->cpunr+16) << 28;
+
+  if (isAMD)
+    return setupVMX_AMD(currentcpuinfo);
+
+
+  if (MSRBitmap==NULL)
+  {
+    //setp the MSR bitmap (I'd like to know when a 64<->32 bit switch happens)
+    MSRBitmap=malloc(4096);
+    zeromemory(MSRBitmap,4096);
+
+    //MSRBitmap layout:
+    //0000-1023: Read bitmap for low MSRs
+    //1024-2047: read bitmap for high  MSRs
+    //2048-3071: write bitmap for low MSRs
+    //3072-4095: Write bitmap for high MSRs
+
+    //set it to break on msr's handling sysenter
+    //read for sysenter
+
+    vmx_setMSRReadExit(0x174);
+    vmx_setMSRReadExit(0x175);
+    vmx_setMSRReadExit(0x176);
+
+    vmx_setMSRWriteExit(0x174);
+    vmx_setMSRWriteExit(0x175);
+    vmx_setMSRWriteExit(0x176);
+
+
+    vmx_setMSRReadExit(0xc0000080);
+    vmx_set
