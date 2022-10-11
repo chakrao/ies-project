@@ -1071,4 +1071,152 @@ int setupEPT(pcpuinfo currentcpuinfo)
 void setup8086WaitForSIPI(pcpuinfo currentcpuinfo, int setupvmcontrols)
 {
   //8086 entry (wait-for-sipi)
-  Access_Rights re
+  Access_Rights reg_csaccessrights,reg_segaccessrights;
+  DWORD gdtbase, idtbase;
+
+  sendstringf("entering sleepmode for ap cpu\n");
+
+  //todo: use unrestricted mode if possible
+
+  if (hasUnrestrictedSupport)
+  { //ring0 segments
+    reg_csaccessrights.AccessRights=0;
+    reg_csaccessrights.Segment_type=11;
+    reg_csaccessrights.S=1;
+    reg_csaccessrights.DPL=0;
+    reg_csaccessrights.P=1;
+    reg_csaccessrights.G=0;
+    reg_csaccessrights.D_B=0;
+    reg_csaccessrights.L=0;
+    reg_csaccessrights.unusable=0;
+
+    reg_segaccessrights.AccessRights=0;
+    reg_segaccessrights.Segment_type=3;
+    reg_segaccessrights.S=1;
+    reg_segaccessrights.DPL=0;
+    reg_segaccessrights.P=1;
+    reg_segaccessrights.G=0;
+    reg_segaccessrights.D_B=0;
+    reg_segaccessrights.unusable=0;
+
+  }
+  else
+  {
+    gdtbase=VirtualToPhysical((void *)getGDTbase());
+    idtbase=VirtualToPhysical(idttable32);
+
+    reg_csaccessrights.AccessRights=0;
+    reg_csaccessrights.Segment_type=3;
+    reg_csaccessrights.S=1;
+    reg_csaccessrights.DPL=3;
+    reg_csaccessrights.P=1;
+    reg_csaccessrights.G=0;
+    reg_csaccessrights.D_B=0;
+    reg_csaccessrights.unusable=0;
+
+    reg_segaccessrights=reg_csaccessrights;
+  }
+
+  currentcpuinfo->guestCR3=0;
+  currentcpuinfo->guestCR0=0;
+  currentcpuinfo->hasIF=0;
+
+
+  if (setupvmcontrols) //not needed when receiving an INIT, and todo: shouldn't be needed anymore as the cpu is already running
+  {
+    DWORD new_vm_execution_controls_cpu=vmread(vm_execution_controls_cpu) | (UINT64)IA32_VMX_PROCBASED_CTLS | USE_IO_BITMAPS | USE_MSR_BITMAPS;
+
+    if ((IA32_VMX_PROCBASED_CTLS >> 32) & (1<<31)) //secondary procbased ctl support
+      new_vm_execution_controls_cpu=new_vm_execution_controls_cpu | (1<<31);
+
+
+    vmwrite(vm_execution_controls_cpu, new_vm_execution_controls_cpu);
+    if ((new_vm_execution_controls_cpu >> 31) & 1)
+    {
+      //it has a secondary entry
+      //enable rdtscp
+      QWORD secondarycpu=vmread(vm_execution_controls_cpu_secondary);
+
+
+      if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_RDTSCP) //can it enable rdtscp ?
+      {
+        sendstringf("Enabling rdtscp\n");
+        secondarycpu|=SPBEF_ENABLE_RDTSCP;
+      }
+
+
+
+      if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_XSAVES) //can it enable XSAVES ?
+      {
+        sendstringf("Enabling xsaves\n");
+        secondarycpu|=SPBEF_ENABLE_XSAVES;
+      }
+
+      if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_INVPCID) //can it enable INVPCID ?
+      {
+        sendstringf("Enabling INVPCID\n");
+        secondarycpu|=SPBEF_ENABLE_INVPCID;
+      }
+
+      if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_USER_WAIT_AND_PAUSE) //can it enable XSAVES ?
+      {
+        sendstringf("Enabling xsaves\n");
+        secondarycpu|=SPBEF_USER_WAIT_AND_PAUSE;
+      }
+
+      vmwrite(vm_execution_controls_cpu_secondary, secondarycpu);
+
+    }
+
+
+
+    vmwrite(vm_entry_controls,vmread(vm_entry_controls) | (UINT64)IA32_VMX_ENTRY_CTLS ); //32bit/16bit init
+
+    vmwrite(vm_cr0_read_shadow,0x10); //cr0 read shadow
+    vmwrite(vm_cr4_read_shadow,(UINT64)0); //cr4 read shadow
+    vmwrite(vm_cr3_targetvalue0,(UINT64)0xffffffffffffffffULL); //cr3-target value 0
+  }
+
+
+
+
+
+  if (hasUnrestrictedSupport)
+  {
+    vmwrite(vm_guest_cr3, 0);
+    vmwrite(vm_guest_cr0, 0x10 | (IA32_VMX_CR0_FIXED0 & 0xFFFFFFFF7FFFFFFEULL)); //no pg, or PE
+    vmwrite(vm_guest_cr4, IA32_VMX_CR4_FIXED0);
+
+    vmwrite(vm_guest_gdtr_base, 0);
+    vmwrite(vm_guest_gdt_limit, 0xffff);
+    vmwrite(vm_guest_idtr_base, 0);
+    vmwrite(vm_guest_idt_limit, 0xffff);
+  }
+  else
+  {
+    vmwrite(vm_guest_cr0,(UINT64)IA32_VMX_CR0_FIXED0 | CR0_WP); //guest cr0
+    vmwrite(vm_guest_cr4,(UINT64)IA32_VMX_CR4_FIXED0 | CR4_VME | CR4_PSE | CR4_PAE); //guest cr4
+    vmwrite(vm_guest_gdtr_base, gdtbase);
+    vmwrite(vm_guest_gdt_limit, getGDTsize());
+    vmwrite(vm_guest_idtr_base, idtbase);
+    vmwrite(vm_guest_idt_limit, 256*8);
+
+  }
+
+
+
+
+  vmwrite(vm_guest_es,(UINT64)0); //es selector
+  vmwrite(vm_guest_es_limit,(UINT64)0xffff); //es limit
+  vmwrite(vm_guest_es_base,(UINT64)0); //es base
+  vmwrite(vm_guest_es_access_rights,(UINT64)reg_segaccessrights.AccessRights); //es access rights
+
+  vmwrite(vm_guest_ss,(UINT64)0); //ss selector
+   vmwrite(vm_guest_ss_limit,(UINT64)0xffff); //ss limit
+   vmwrite(vm_guest_ss_base,(UINT64)0); //ss base
+   vmwrite(vm_guest_ss_access_rights,(UINT64)reg_segaccessrights.AccessRights); //ss access rights
+
+   vmwrite(vm_guest_ds,(UINT64)0); //ds selector
+   vmwrite(vm_guest_ds_limit,(UINT64)0xffff); //ds limit
+   vmwrite(vm_guest_ds_base,(UINT64)0); //ds base
+   vmwrite(vm_guest_ds_access_rights,(UINT64)reg_segacc
