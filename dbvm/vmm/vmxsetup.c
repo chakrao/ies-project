@@ -1219,4 +1219,158 @@ void setup8086WaitForSIPI(pcpuinfo currentcpuinfo, int setupvmcontrols)
    vmwrite(vm_guest_ds,(UINT64)0); //ds selector
    vmwrite(vm_guest_ds_limit,(UINT64)0xffff); //ds limit
    vmwrite(vm_guest_ds_base,(UINT64)0); //ds base
-   vmwrite(vm_guest_ds_access_rights,(UINT64)reg_segacc
+   vmwrite(vm_guest_ds_access_rights,(UINT64)reg_segaccessrights.AccessRights); //ds access rights
+
+   vmwrite(vm_guest_fs,(UINT64)0); //fs selector
+   vmwrite(vm_guest_fs_limit,(UINT64)0xffff); //fs limit
+   vmwrite(vm_guest_fs_base,(UINT64)0); //fs base
+   vmwrite(vm_guest_fs_access_rights,(UINT64)reg_segaccessrights.AccessRights); //fs access rights
+
+   vmwrite(vm_guest_gs,(UINT64)0); //gs selector
+   vmwrite(vm_guest_gs_limit,(UINT64)0xffff); //gs limit
+   vmwrite(vm_guest_gs_base,(UINT64)0); //gs base
+   vmwrite(vm_guest_gs_access_rights,(UINT64)reg_segaccessrights.AccessRights); //gs access rights
+
+
+  vmwrite(vm_guest_cs,(UINT64)0); //cs selector
+  vmwrite(vm_guest_cs_limit,(UINT64)0xffff); //cs limit
+  if (hasUnrestrictedSupport)
+    vmwrite(vm_guest_cs_base,(UINT64)0xffff0000); //cs base
+  else
+    vmwrite(vm_guest_cs_base,(UINT64)0xf0000); //cs base
+  vmwrite(vm_guest_cs_access_rights,(UINT64)reg_segaccessrights/*reg_csaccessrights*/.AccessRights); //cs access rights
+
+
+  vmwrite(vm_guest_ldtr,(UINT64)0); //ldtr selector
+  if (hasUnrestrictedSupport)
+    vmwrite(vm_guest_ldtr_limit,(UINT64)0xffff); //ldtr limit
+  else
+    vmwrite(vm_guest_ldtr_limit,(UINT64)0); //ldtr limit
+  vmwrite(vm_guest_ldtr_base,(UINT64)0); //ldtr base
+  if (hasUnrestrictedSupport)
+    vmwrite(vm_guest_ldtr_access_rights,0x82); //ldtr access rights
+  else
+    vmwrite(vm_guest_ldtr_access_rights,(UINT64)(1<<16)); //ldtr access rights (bit 16 is unusable bit)
+
+  vmwrite(vm_guest_tr,0); //the tss selector
+
+  if (hasUnrestrictedSupport)
+    vmwrite(vm_guest_tr_limit,0xffff); //tr limit
+  else
+    vmwrite(vm_guest_tr_limit,(ULONG)sizeof(TSS)+32+8192+1); //tr limit
+
+  if (hasUnrestrictedSupport)
+    vmwrite(vm_guest_tr_base,0); //tr basebase
+  else
+    vmwrite(vm_guest_tr_base,(UINT64)VirtualToPhysical(VirtualMachineTSS_V8086)); //tr basebase
+
+  vmwrite(vm_guest_tr_access_rights,0x8b); //tr access rights
+
+
+
+  currentcpuinfo->efer=0;
+  vmwrite(vm_entry_controls, vmread(vm_entry_controls) & (~VMENTRYC_IA32E_MODE_GUEST));
+  vmwrite(vm_guest_IA32_EFER, vmread(vm_guest_IA32_EFER) & ~(1<<8)); //disable EFER.LME
+  vmwrite(vm_guest_IA32_EFER, vmread(vm_guest_IA32_EFER) & ~(1<<10)); //disable EFER.LMA
+
+
+
+
+
+
+
+
+  currentcpuinfo->RealMode.IDTBase=0;
+  currentcpuinfo->RealMode.GDTBase=0;
+  currentcpuinfo->RealMode.IDTLimit=0x400;
+  currentcpuinfo->RealMode.GDTBase=0;
+
+  vmwrite(vm_guest_IA32_SYSENTER_CS,(UINT64)0);
+  vmwrite(vm_guest_IA32_SYSENTER_ESP,(UINT64)0);
+  vmwrite(vm_guest_IA32_SYSENTER_EIP,(UINT64)0);
+
+  vmwrite(vm_guest_dr7,(UINT64)0x400); //dr7
+
+  RFLAGS guestrflags;
+
+
+  vmwrite(vm_guest_rsp,(UINT64)0); //rsp
+  vmwrite(vm_guest_rip,(UINT64)0); //rip //should never be executed
+
+  guestrflags.value=0;
+  guestrflags.reserved1=1;
+  if (hasUnrestrictedSupport==0)
+  {
+    guestrflags.IOPL=3;
+    guestrflags.VM=1;
+
+    setupNonPagedPaging(currentcpuinfo);
+  }
+  else
+  {
+    vmwrite(vm_guest_cr3,0);
+  }
+
+
+
+
+  vmwrite(vm_guest_rflags,guestrflags.value ); //rflag
+  vmwrite(vm_guest_activity_state,(UINT64)3); //guest activity state, wait for sipi
+}
+
+void vmx_setMSRReadExit(DWORD msrValue)
+{
+  if (isAMD)
+  {
+    /*
+    The MSR permissions bitmap consists of four separate bit vectors of 16
+Kbits (2 Kbytes) each. Each 16 Kbit vector controls guest access to a defined range of 8K MSRs. Each
+MSR is covered by two bits defining the guest read and write access permissions. The lsb of the two
+bits controls read access to the MSR and the msb controls write access. A value of 1 indicates that the
+operation is intercepted. The four separate bit vectors must be packed together and located in two
+contiguous physical pages of memory. If the MSR_PROT intercept is active any attempt to read or
+write an MSR not covered by the MSRPM will automatically cause an intercept.
+
+MSRPM Byte Offset   MSR Range
+000h–7FFh           0000_0000h–0000_1FFFh
+800h–FFFh           C000_0000h–C000_1FFFh
+1000h–17FFh         C001_0000h–C001_1FFFh
+1800h–1FFFh         Reserved
+     */
+    if (msrValue<=0x1fff)
+    {
+      MSRBitmap[(msrValue*2)/8]|=1 << ((msrValue*2) % 8);
+      return;
+    }
+
+    if ((msrValue>=0xc0000000) && (msrValue<=0xc0001fff))
+    {
+      msrValue=msrValue-0xc0000000;
+      MSRBitmap[0x800+(msrValue*2)/8]|=1 << ((msrValue*2) % 8);
+      return;
+    }
+
+    if ((msrValue>=0xc0010000) && (msrValue<=0xc0011fff))
+    {
+      msrValue=msrValue-0xc0010000;
+      MSRBitmap[0x800+(msrValue*2)/8]|=1 << ((msrValue*2) % 8);
+      return;
+    }
+  }
+  else
+  {
+    if (msrValue<0xc0000000)
+      MSRBitmap[msrValue/8]|=1 << (msrValue % 8);
+    else
+    {
+      msrValue=msrValue-0xc0000000;
+      MSRBitmap[1024+msrValue/8]|=1 << (msrValue % 8);
+    }
+  }
+}
+
+void vmx_removeMSRReadExit(DWORD msrValue)
+{
+  if (isAMD)
+  {
+    if (msrValue<=0x
