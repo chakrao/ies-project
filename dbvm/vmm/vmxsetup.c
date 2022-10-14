@@ -1997,4 +1997,122 @@ void setupVMX(pcpuinfo currentcpuinfo)
       sendstringf("originalstate->ds=%x\n",originalstate->ds);
       sendstringf("originalstate->es=%x\n",originalstate->es);
       sendstringf("originalstate->fs=%x\n",originalstate->fs);
-      sendstringf("originalstate->gs=%x\n",origi
+      sendstringf("originalstate->gs=%x\n",originalstate->gs);
+      sendstringf("originalstate->ldt=%x\n",originalstate->ldt);
+      sendstringf("originalstate->tr=%x\n",originalstate->tr);
+
+      sendstringf("originalstate->dr7=%6\n",originalstate->dr7);
+      sendstringf("originalstate->gdtbase=%6\n",originalstate->gdtbase);
+      sendstringf("originalstate->gdtlimit=%x\n",originalstate->gdtlimit);
+      sendstringf("originalstate->idtbase=%6\n",originalstate->idtbase);
+      sendstringf("originalstate->idtlimit=%x\n",originalstate->idtlimit);
+      sendstringf("originalstate->originalLME=%x\n",originalstate->originalLME);
+      sendstringf("originalstate->rflags=%6\n",originalstate->rflags);
+
+      sendstringf("originalstate->rax=%6\n",originalstate->rax);
+      sendstringf("originalstate->rbx=%6\n",originalstate->rbx);
+      sendstringf("originalstate->rcx=%6\n",originalstate->rcx);
+      sendstringf("originalstate->rdx=%6\n",originalstate->rdx);
+      sendstringf("originalstate->rsi=%6\n",originalstate->rsi);
+      sendstringf("originalstate->rdi=%6\n",originalstate->rdi);
+      sendstringf("originalstate->rbp=%6\n",originalstate->rbp);
+      sendstringf("originalstate->rsp=%6\n",originalstate->rsp);
+      sendstringf("originalstate->r8=%6\n",originalstate->r8);
+      sendstringf("originalstate->r9=%6\n",originalstate->r9);
+      sendstringf("originalstate->r10=%6\n",originalstate->r10);
+      sendstringf("originalstate->r11=%6\n",originalstate->r11);
+      sendstringf("originalstate->r12=%6\n",originalstate->r12);
+      sendstringf("originalstate->r13=%6\n",originalstate->r13);
+      sendstringf("originalstate->r14=%6\n",originalstate->r14);
+      sendstringf("originalstate->r15=%6\n",originalstate->r15);
+
+
+
+
+      currentcpuinfo->guestCR3=originalstate->cr3;
+      currentcpuinfo->guestCR0=originalstate->cr0;
+
+      rflags.value=originalstate->rflags;
+      currentcpuinfo->hasIF=rflags.IF;
+
+
+
+      DWORD new_vm_execution_controls_cpu=vmread(vm_execution_controls_cpu) | (DWORD)IA32_VMX_PROCBASED_CTLS | USE_IO_BITMAPS | USE_MSR_BITMAPS;
+
+      if (IA32_VMX_PROCBASED_CTLS & INVLPG_EXITING) //NEEDS to set INVLPG_EXITING
+        new_vm_execution_controls_cpu|=INVLPG_EXITING;
+
+
+      if ((IA32_VMX_PROCBASED_CTLS >> 32) & (1<<31)) //secondary procbased ctl support
+        new_vm_execution_controls_cpu=new_vm_execution_controls_cpu | (1<<31);
+
+
+
+
+
+      vmwrite(vm_execution_controls_cpu, new_vm_execution_controls_cpu); //processor-based vm-execution controls
+      sendstringf("Set vm_execution_controls_cpu to %8 (became %8)\n", new_vm_execution_controls_cpu, (DWORD)vmread(vm_execution_controls_cpu));
+
+      if ((new_vm_execution_controls_cpu >> 31) & 1)
+      {
+        //it has a secondary entry
+        //enable rdtscp
+        QWORD secondarycpu=vmread(vm_execution_controls_cpu_secondary);
+
+
+        if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_RDTSCP) //can it enable rdtscp ?
+        {
+          sendstringf("Enabling rdtscp\n");
+          secondarycpu|=SPBEF_ENABLE_RDTSCP;
+        }
+
+
+
+        if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_XSAVES) //can it enable XSAVES ?
+        {
+          sendstringf("Enabling xsaves\n");
+          secondarycpu|=SPBEF_ENABLE_XSAVES;
+        }
+
+        if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_INVPCID) //can it enable INVPCID ?
+        {
+          sendstringf("Enabling INVPCID\n");
+          secondarycpu|=SPBEF_ENABLE_INVPCID;
+        }
+
+        vmwrite(vm_execution_controls_cpu_secondary, secondarycpu);
+
+      }
+
+
+
+      currentcpuinfo->efer=originalstate->originalEFER;
+
+      if (hasUnrestrictedSupport)
+        vmwrite(vm_guest_IA32_EFER, originalstate->originalEFER);
+
+
+      DWORD new_vm_entry_controls=vmread(vm_entry_controls);
+
+      if (originalstate->originalLME)
+      {
+        sendstringf("guest is 64bit\n");
+        currentcpuinfo->efer|=(1<<8) | (1<<10);
+        new_vm_entry_controls=new_vm_entry_controls | (DWORD)IA32_VMX_ENTRY_CTLS | VMENTRYC_RESTORE_DEBUG_CONTROLS | VMENTRYC_IA32E_MODE_GUEST; //64-bit mode
+      }
+      else
+        new_vm_entry_controls=new_vm_entry_controls | (DWORD)IA32_VMX_ENTRY_CTLS | VMENTRYC_RESTORE_DEBUG_CONTROLS;
+
+      //new_vm_entry_controls=new_vm_entry_controls & (QWORD)~(QWORD)RESTORE_DEBUG_CONTROLS; //debug: Test with debug saving off
+
+
+      vmwrite(vm_entry_controls, new_vm_entry_controls);
+      sendstringf("Set vm_entry_controls to %8 (became %8)\n", new_vm_entry_controls, (DWORD)vmread(vm_entry_controls));
+
+
+
+      if (hasUnrestrictedSupport)
+      {
+        //if my assumption is correct only the bits masking the guest/host mask will be read from this
+        vmwrite(vm_cr0_read_shadow,originalstate->cr0 & vmread(vm_cr0_guest_host_mask)); //cr0 read shadow
+        vmwrite(vm_cr4_read_shadow,originalstate->cr4 & vmread(vm_c
