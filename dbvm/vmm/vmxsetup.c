@@ -1870,4 +1870,131 @@ void setupVMX(pcpuinfo currentcpuinfo)
       //can be 1
       sendstringf("Enabling unrestricted guest\n");
       hasUnrestrictedSupport=1;
-      vmwrite(vm_execution_controls_cpu_seco
+      vmwrite(vm_execution_controls_cpu_secondary, vmread(vm_execution_controls_cpu_secondary) | SPBEF_ENABLE_UNRESTRICTED);
+
+      //set load IA32_EFER vmentry control (should be possible, but check anyhow)
+
+
+      vmwrite(vm_entry_controls, vmread(vm_entry_controls) | VMENTRYC_LOAD_IA32_EFER );
+      vmwrite(vm_exit_controls, vmread(vm_exit_controls) | VMEXITC_SAVE_IA32_EFER );
+      vmwrite(vm_exit_controls, vmread(vm_exit_controls) | VMEXITC_LOAD_IA32_EFER );
+
+      vmwrite(vm_host_IA32_EFER, readMSR(EFER_MSR));
+
+      //should be able to work without having to watch the EFER msr (undo those bits)
+      MSRBitmap[1024+0x80/8]&=~(1 << (0x80 % 8)); //read
+      MSRBitmap[3072+0x80/8]&=~(1 << (0x80 % 8)); //write
+
+      //vmwrite(vm_cr0_guest_host_mask,(UINT64)IA32_VMX_CR0_FIXED0 & 0xFFFFFFFF7FFFFFFEULL); //cr0 guest/host mask 1=guest owned
+      vmwrite(vm_cr0_guest_host_mask,(UINT64)0xFFFFFFFF7FFFFFFEULL);
+      vmwrite(vm_cr4_guest_host_mask,(UINT64)IA32_VMX_CR4_FIXED0); //same with cr4 but do guard the VMX bit
+
+
+      //needs less interrupt hooks
+#ifdef USENMIFORWAIT      
+      vmwrite(vm_exception_bitmap,  (1<<1) | (1<<2) | (1<<3)); //int1 bp, int3 bp
+#else
+      vmwrite(vm_exception_bitmap,  (1<<1) | (1<<3)); //int1 bp, int3 bp
+#endif
+
+      //todo: check if it can do with less cr3 exits  (can turn that on at runtime)
+      //check the primary procbased capabilities if it can be set to 0
+
+      sendstringf("Checking if it supports CR3 access exit to 0\n");
+
+
+      QWORD procbasedcapabilities;
+      if (readMSR(IA32_VMX_BASIC_MSR) & ((QWORD)1<<55))
+        procbasedcapabilities=readMSR(IA32_VMX_TRUE_PROCBASED_CTLS_MSR);
+      else
+        procbasedcapabilities=readMSR(IA32_VMX_PROCBASED_CTLS_MSR);
+
+      sendstringf("procbasedcapabilities=%6\n", procbasedcapabilities);
+
+      canToggleCR3Exit=((procbasedcapabilities & (PPBEF_CR3LOAD_EXITING | PPBEF_CR3STORE_EXITING))==0); //0 means it can be set to 0
+
+      sendstringf("canToggleCR3Exit=%d\n", canToggleCR3Exit);
+
+      if (canToggleCR3Exit) //turn of cr3 exits
+        IA32_VMX_PROCBASED_CTLS = IA32_VMX_PROCBASED_CTLS & (QWORD)(~(PPBEF_CR3LOAD_EXITING | PPBEF_CR3STORE_EXITING));
+
+
+      if ((IA32_VMX_SECONDARY_PROCBASED_CTLS>>32) & SPBEF_ENABLE_VMCS_SHADOWING )
+      {
+        sendstringf("Supports VMCS shadowing\n");
+
+        hasVMCSShadowingSupport=1;
+
+        if (VMREADBitmap==NULL)
+        {
+          VMREADBitmap=malloc2(4096);
+          VMWRITEBitmap=malloc2(4096);
+
+          //corresponding VMREAD bit is in bit position x & 7 of the byte at physical address addr | (x » 3).
+          zeromemory(VMREADBitmap, 4096);
+          zeromemory(VMWRITEBitmap, 4096);
+
+
+          //example: VMREADBitmap[0x800 >> 3]|=(1 << (0x800 & 7));
+
+
+        }
+
+        vmwrite(vm_vmread_bitmap_address, VirtualToPhysical(VMREADBitmap));
+        vmwrite(vm_vmwrite_bitmap_address, VirtualToPhysical(VMWRITEBitmap));
+
+      }
+    }
+    else
+    {
+      sendstringf("Unrestricted guest is not supported\n");
+      hasUnrestrictedSupport=0;
+    }
+  }
+
+
+#ifdef USENMIFORWAIT
+  canExitOnNMI=vmx_enablePinBasedFeature(PINBEF_NMI_EXITING);
+#endif
+
+  //vmx_enablePinBasedFeature(EXTERNAL_INTERRUPT_EXITING);
+
+
+
+
+
+  //----------------GUEST SETUP----------------
+ //UINT64 oldloadedos=loadedOS;
+
+  //TODO: Split up into functions
+
+
+  if (loadedOS)
+  {
+    sendstring("loadedos is set\n");
+    sendstringf("APStartsInSIPI=%d\n", APStartsInSIPI);
+    sendstringf("currentcpuinfo->cpunr=%d\n", currentcpuinfo->cpunr);
+
+    if ((APStartsInSIPI==0) || (currentcpuinfo->cpunr==0))
+    {
+      //set osstate, for both boot and app cpu's (if APStartsInSIPI=0)
+      POriginalState originalstate=(POriginalState)mapPhysicalMemory(loadedOS,sizeof(OriginalState));
+      PGDT_ENTRY gdt=NULL,ldt=NULL;
+      ULONG ldtselector=originalstate->ldt;
+      int notpaged;
+      RFLAGS rflags;
+
+      sendstringf("Setting up guest based on loadedOS settings\n");
+
+      sendstringf("originalstate->cpucount=%d\n",originalstate->cpucount);
+      sendstringf("originalstate->cr0=%6\n",originalstate->cr0);
+      sendstringf("originalstate->cr2=%6\n",originalstate->cr2);
+      sendstringf("originalstate->cr3=%6\n",originalstate->cr3);
+      sendstringf("originalstate->cr4=%6\n",originalstate->cr4);
+      sendstringf("originalstate->rip=%6\n",originalstate->rip);
+      sendstringf("originalstate->cs=%x\n",originalstate->cs);
+      sendstringf("originalstate->ss=%x\n",originalstate->ss);
+      sendstringf("originalstate->ds=%x\n",originalstate->ds);
+      sendstringf("originalstate->es=%x\n",originalstate->es);
+      sendstringf("originalstate->fs=%x\n",originalstate->fs);
+      sendstringf("originalstate->gs=%x\n",origi
