@@ -1735,4 +1735,139 @@ void setupVMX(pcpuinfo currentcpuinfo)
   }
 
 
-  se
+  sendstringf("%d: Initializing vmcs region for launch\n\r",currentcpuinfo->cpunr);
+
+
+  //32-bit control fields
+  vmwrite(vm_execution_controls_pin,(ULONG)IA32_VMX_PINBASED_CTLS); //pin-based VM-execution controls
+
+
+  sendstringf("Set vm_execution_controls_pin to %8 (became %8)\n", (ULONG)IA32_VMX_PINBASED_CTLS, (DWORD)vmread(vm_execution_controls_pin));
+
+
+#if DISPLAYDEBUG==1
+  //check if the system supports preemption, and if so, enable it
+  {
+    ULONG usablepinbasedBits=(IA32_VMX_PINBASED_CTLS >> 32);
+    if (usablepinbasedBits & ACTIVATE_VMX_PREEMPTION_TIMER)
+    {
+      displayline("Preemption is possible\n");
+      vmwrite(vm_execution_controls_pin,vmread(vm_execution_controls_pin) | ACTIVATE_VMX_PREEMPTION_TIMER);
+      vmwrite(vm_preemption_timer_value,10000);
+    }
+  }
+#endif
+
+
+  globalTSC=_rdtsc();
+
+
+
+
+  vmwrite(vm_exception_bitmap,(UINT64)0xffff); //exception bitmap (0xffff=0-15 0xffffffff=0-31)
+ // vmwrite(vm_exception_bitmap,(1<<1) | (1<<3) | (1<<14));
+
+
+  vmwrite(0x4006,(UINT64)0); //page fault error-code mask
+  vmwrite(0x4008,(UINT64)0); //page fault error-code match
+  vmwrite(0x400a,(UINT64)1); //cr3-target count
+
+  DWORD new_vm_exit_controls=(DWORD)IA32_VMX_EXIT_CTLS;
+
+  sendstringf("IA32_VMX_EXIT_CTLS=%6\n", IA32_VMX_EXIT_CTLS);
+
+
+  if ((IA32_VMX_EXIT_CTLS >> 32) & VMEXITC_HOST_ADDRESS_SPACE_SIZE)
+    new_vm_exit_controls|=VMEXITC_HOST_ADDRESS_SPACE_SIZE;
+  else
+  {
+    sendstring("<<<<<<WARNING: This system does not support HOST_ADDRESS_SPACE_SIZE>>>>>>\n");
+  }
+
+
+
+  if ((IA32_VMX_EXIT_CTLS >> 32) & VMEXITC_ACKNOWLEDGE_INTERRUPT_ON_EXIT)
+    new_vm_exit_controls|=VMEXITC_ACKNOWLEDGE_INTERRUPT_ON_EXIT;
+  else
+  {
+    sendstring("<<<<<<WARNING: This system does not support acknowledge interrupt on exit>>>>>>\n");
+  }
+
+
+  if ((IA32_VMX_EXIT_CTLS >> 32) & VMEXITC_SAVE_DEBUG_CONTROLS)
+    new_vm_exit_controls|=VMEXITC_SAVE_DEBUG_CONTROLS;
+  else
+  {
+    sendstring("<<<<<<WARNING: This system does not support saving debug controls>>>>>>\n");
+  }
+
+  //new_vm_exit_controls=new_vm_exit_controls & (QWORD)~(QWORD)SAVE_DEBUG_CONTROLS; //debug: Test with debug saving off
+
+
+
+
+  vmwrite(vm_exit_controls, new_vm_exit_controls); //vm-exit controls , Host address-space size = 1
+
+  sendstringf("Set vm_exit_controls to %8 (became %8)\n", new_vm_exit_controls, (DWORD)vmread(vm_exit_controls));
+
+
+  vmwrite(0x400e,(UINT64)0); //vm-exit msr-store count
+  vmwrite(0x4010,(UINT64)0); //vm-exit msr-load count
+
+
+  vmwrite(0x4014,(UINT64)0); //vm-entry msr-load count
+  vmwrite(vm_entry_interruptioninfo,(UINT64)0); //vm-entry interruption-information field
+  vmwrite(0x4018,(UINT64)0); //vm-entry exception error code
+  vmwrite(0x401a,(UINT64)0); //vm-entry instruction length
+  vmwrite(0x401c,(UINT64)0); //TPR threshold
+
+
+  //64-bit control fields
+  vmwrite(vm_iobitmap_a,(UINT64)VirtualToPhysical((void *)IOBitmap)); //IO Bitmap A
+  vmwrite(vm_iobitmap_b,(UINT64)VirtualToPhysical((void *)&(IOBitmap[4096]))); //IO Bitmap B
+  vmwrite(0x2004,(UINT64)VirtualToPhysical((void *)MSRBitmap)); //MSR bitmap
+  vmwrite(0x2006,(UINT64)0xffffffffffffffff); //VM-Exit MSR store address(physical)
+  vmwrite(0x2008,(UINT64)0xffffffffffffffff); //VM-Exit MSR-Load address
+  vmwrite(0x200a,(UINT64)0xffffffffffffffff); //VM-Entry MSR-Load address
+  vmwrite(0x200c,(UINT64)0xffffffffffffffff); //Executive-VMCS pointer
+  vmwrite(0x2010,(UINT64)0); //TSC offset
+  vmwrite(0x2012,(UINT64)0xffffffffffffffff); //Virtual-APIC page address
+
+
+
+  //natural width control fields
+  vmwrite(0x6000,(UINT64)0xffffffffffffffff); //cr0 guest/host mask
+  vmwrite(0x6002,(UINT64)0xffffffffffffffff); //cr4 guest/host mask
+
+
+  vmwrite(0x600a,(UINT64)0); //cr3-target value 1
+  vmwrite(0x600c,(UINT64)0); //cr3-target value 2
+  vmwrite(0x600e,(UINT64)0); //cr3-target value 3
+
+
+  {
+    QWORD a=7,b=0,c=0,d=0;
+    _cpuid(&a,&b,&c,&d);
+
+    hasCETSupport=c & (1 << 7);
+  }
+
+
+
+
+  //if useEPT  (the user might want to save that memory)
+  hasEPTsupport=setupEPT(currentcpuinfo); //needed for unrestricted guest and could be useful for other things (like protecting the memory of DBVM)
+
+
+  if (hasEPTsupport)
+  {
+    //try setting unrestricted guest
+    if ( ((IA32_VMX_SECONDARY_PROCBASED_CTLS>>32) & SPBEF_ENABLE_UNRESTRICTED ) &&
+         ((readMSR(IA32_VMX_ENTRY_CTLS_MSR) >> 32) & VMENTRYC_LOAD_IA32_EFER) &&
+         ((readMSR(IA32_VMX_EXIT_CTLS_MSR) >> 32) & VMEXITC_SAVE_IA32_EFER) &&
+         ((readMSR(IA32_VMX_EXIT_CTLS_MSR) >> 32) & VMEXITC_LOAD_IA32_EFER) )
+    {
+      //can be 1
+      sendstringf("Enabling unrestricted guest\n");
+      hasUnrestrictedSupport=1;
+      vmwrite(vm_execution_controls_cpu_seco
