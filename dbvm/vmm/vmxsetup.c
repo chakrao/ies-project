@@ -2115,4 +2115,110 @@ void setupVMX(pcpuinfo currentcpuinfo)
       {
         //if my assumption is correct only the bits masking the guest/host mask will be read from this
         vmwrite(vm_cr0_read_shadow,originalstate->cr0 & vmread(vm_cr0_guest_host_mask)); //cr0 read shadow
-        vmwrite(vm_cr4_read_shadow,originalstate->cr4 & vmread(vm_c
+        vmwrite(vm_cr4_read_shadow,originalstate->cr4 & vmread(vm_cr4_guest_host_mask)); //cr4 read shadow
+      }
+      else
+      {
+        vmwrite(vm_cr0_read_shadow,originalstate->cr0); //cr0 read shadow
+        vmwrite(vm_cr4_read_shadow,originalstate->cr4); //cr4 read shadow
+      }
+      vmwrite(vm_cr3_targetvalue0,0xffffffffffffffffULL); //cr3-target value 0
+
+      currentcpuinfo->guestCR0=originalstate->cr0;
+      currentcpuinfo->guestCR3=originalstate->cr3;
+
+      vmwrite(vm_guest_cr0, (ULONG)IA32_VMX_CR0_FIXED0 | originalstate->cr0);
+      vmwrite(vm_guest_cr3, originalstate->cr3);
+      vmwrite(vm_guest_cr4, (ULONG)IA32_VMX_CR4_FIXED0 | originalstate->cr4);
+
+      if (vmread(vm_guest_cr0)!=((ULONG)IA32_VMX_CR0_FIXED0 | originalstate->cr0))
+      {
+        sendstringf("vm_guest_cr0 = %6\n", vmread(vm_guest_cr0));
+        while (1);
+      }
+
+      vmwrite(vm_guest_gdtr_base, (UINT64)originalstate->gdtbase);
+      vmwrite(vm_guest_gdt_limit, (UINT64)originalstate->gdtlimit);
+      vmwrite(vm_guest_idtr_base, (UINT64)originalstate->idtbase);
+      vmwrite(vm_guest_idt_limit, (UINT64)originalstate->idtlimit);
+
+
+      //gdt MUST be paged in
+      gdt=(PGDT_ENTRY)(UINT64)mapPhysicalMemory(getPhysicalAddressVM(currentcpuinfo, originalstate->gdtbase, &notpaged), originalstate->gdtlimit);
+
+      ULONG ldtlimit;
+      if ((UINT64)originalstate->ldt)
+      {
+        UINT64 ldtbase; //should be 0 in 64bit
+
+
+        sendstring("ldt is valid, so getting the information\n\r");
+
+        ldtbase=(gdt[(ldtselector >> 3)].Base24_31 << 24) + gdt[(ldtselector >> 3)].Base0_23;
+        ldtlimit=(gdt[(ldtselector >> 3)].Limit16_19 << 16) + gdt[(ldtselector >> 3)].Limit0_15;
+        ldt=(PGDT_ENTRY)(UINT64)mapPhysicalMemory(getPhysicalAddressVM(currentcpuinfo, ldtbase, &notpaged), ldtlimit);
+      }
+
+
+      vmwrite(vm_guest_es,(UINT64)originalstate->es); //es selector
+      vmwrite(vm_guest_es_access_rights,originalstate->es_AccessRights);
+      vmwrite(vm_guest_es_limit,originalstate->es_Limit);
+
+      vmwrite(vm_guest_cs,(UINT64)originalstate->cs); //cs selector
+      vmwrite(vm_guest_cs_access_rights,originalstate->cs_AccessRights);
+      vmwrite(vm_guest_cs_limit,originalstate->cs_Limit);
+
+      vmwrite(vm_guest_ss,(UINT64)originalstate->ss); //ss selector
+      vmwrite(vm_guest_ss_access_rights,originalstate->ss_AccessRights);
+      vmwrite(vm_guest_ss_limit,originalstate->ss_Limit);
+
+      vmwrite(vm_guest_ds,(UINT64)originalstate->ds); //ds selector
+      vmwrite(vm_guest_ds_access_rights,originalstate->ds_AccessRights);
+      vmwrite(vm_guest_ds_limit,originalstate->ds_Limit);
+
+      vmwrite(vm_guest_fs,(UINT64)originalstate->fs); //fs selector
+      vmwrite(vm_guest_fs_access_rights,originalstate->fs_AccessRights);
+      vmwrite(vm_guest_fs_limit,originalstate->fs_Limit);
+
+      vmwrite(vm_guest_gs,(UINT64)originalstate->gs); //gs selector
+      vmwrite(vm_guest_gs_access_rights,originalstate->gs_AccessRights);
+      vmwrite(vm_guest_gs_limit,originalstate->gs_Limit);
+
+      vmwrite(vm_guest_ldtr,(UINT64)originalstate->ldt); //ldtr selector
+      vmwrite(vm_guest_tr,(UINT64)originalstate->tr); //tr selector
+
+
+      if (originalstate->originalLME)
+      {
+        sendstringf("64-bit\n");
+        vmwrite(vm_guest_cs_base,0);
+        vmwrite(vm_guest_ss_base,0);
+        vmwrite(vm_guest_ds_base,0);
+        vmwrite(vm_guest_es_base,0);
+        vmwrite(vm_guest_fs_base,originalstate->fsbase);
+        vmwrite(vm_guest_gs_base,originalstate->gsbase);
+
+        sendstringf("originalstate->fsbase=%6\n", originalstate->fsbase);
+        sendstringf("originalstate->gsbase=%6\n", originalstate->gsbase);
+        sendstringf("Have set fs base to %6 and gs base to %6\n",vmread(vm_guest_fs_base),vmread(vm_guest_gs_base));
+
+        vmwrite(vm_guest_tr_base,getSegmentBaseEx(gdt,ldt,originalstate->tr, 1));
+      }
+      else
+      {
+        sendstringf("32-bit\n");
+        vmwrite(vm_guest_cs_base,getSegmentBase(gdt,ldt,originalstate->cs));
+        vmwrite(vm_guest_ss_base,getSegmentBase(gdt,ldt,originalstate->ss));
+        vmwrite(vm_guest_ds_base,getSegmentBase(gdt,ldt,originalstate->ds));
+        vmwrite(vm_guest_es_base,getSegmentBase(gdt,ldt,originalstate->es));
+        vmwrite(vm_guest_fs_base,getSegmentBase(gdt,ldt,originalstate->fs));
+        vmwrite(vm_guest_gs_base,getSegmentBase(gdt,ldt,originalstate->gs));
+        vmwrite(vm_guest_tr_base,getSegmentBase(gdt,ldt,originalstate->tr));
+      }
+
+
+      vmwrite(vm_guest_ldtr_limit,getSegmentLimit(gdt,ldt,originalstate->ldt));
+      if (originalstate->tr==0)
+        vmwrite(vm_guest_tr_limit,0xffff);
+      else
+        vmwrite(vm_guest_tr_limit,getSegmentLimit(gdt,ldt
