@@ -2221,4 +2221,151 @@ void setupVMX(pcpuinfo currentcpuinfo)
       if (originalstate->tr==0)
         vmwrite(vm_guest_tr_limit,0xffff);
       else
-        vmwrite(vm_guest_tr_limit,getSegmentLimit(gdt,ldt
+        vmwrite(vm_guest_tr_limit,getSegmentLimit(gdt,ldt,originalstate->tr));
+
+      vmwrite(vm_guest_ldtr_base,getSegmentBase(gdt,ldt,originalstate->ldt));
+      vmwrite(vm_guest_ldtr_access_rights,getSegmentAccessRights(gdt,ldt,originalstate->ldt));
+
+      if (originalstate->tr)
+        vmwrite(vm_guest_tr_access_rights,getSegmentAccessRights(gdt,ldt,originalstate->tr));
+      else
+        vmwrite(vm_guest_tr_access_rights,0x8b);
+
+      vmwrite(vm_guest_IA32_SYSENTER_CS,(UINT64)readMSR(IA32_SYSENTER_CS_MSR));
+      vmwrite(vm_guest_IA32_SYSENTER_ESP,(UINT64)readMSR(IA32_SYSENTER_ESP_MSR));
+      vmwrite(vm_guest_IA32_SYSENTER_EIP,(UINT64)readMSR(IA32_SYSENTER_EIP_MSR));
+
+      currentcpuinfo->actual_sysenter_CS=vmread(vm_guest_IA32_SYSENTER_CS);
+      currentcpuinfo->actual_sysenter_ESP=vmread(vm_guest_IA32_SYSENTER_ESP);
+      currentcpuinfo->actual_sysenter_EIP=vmread(vm_guest_IA32_SYSENTER_EIP);
+
+
+
+      vmwrite(vm_guest_dr7,(UINT64)originalstate->dr7); //dr7
+      vmwrite(vm_guest_activity_state,(UINT64)0); //normal activity state
+      if (originalstate->originalLME)
+      {
+        vmwrite(vm_guest_rsp,(UINT64)originalstate->rsp); //rsp
+        vmwrite(vm_guest_rip,(UINT64)originalstate->rip); //rip
+      }
+      else
+      {
+        //force 32-bit
+        vmwrite(vm_guest_rsp,(ULONG)originalstate->rsp); //rsp
+        vmwrite(vm_guest_rip,(ULONG)originalstate->rip); //rip
+      }
+      vmwrite(vm_guest_rflags,(UINT64)(UINT64)originalstate->rflags); //rflags
+
+
+
+      if (gdt)
+        unmapPhysicalMemory(gdt, originalstate->gdtlimit);
+
+      if (ldt)
+        unmapPhysicalMemory(ldt, ldtlimit);
+
+      if (originalstate)
+        unmapPhysicalMemory(originalstate, sizeof(OriginalState));
+    }
+    else
+    {
+      setup8086WaitForSIPI(currentcpuinfo, 1);
+    }
+
+
+  }
+  else
+  {
+    sendstringf("booted of a disk, without UEFI, load os manually");
+
+
+    if (currentcpuinfo->cpunr==0)
+    {
+      //not loaded from OS and first cpu
+      sendstringf("manually load for cpu 0\n"); //setup so it runs
+      //entry to start from almost same as vmm exec state
+      reg_csaccessrights.AccessRights=0;
+      reg_csaccessrights.Segment_type=11;
+      reg_csaccessrights.S=1;
+      reg_csaccessrights.DPL=0;
+      reg_csaccessrights.P=1;
+      reg_csaccessrights.L=1;
+      reg_csaccessrights.G=0;
+      reg_csaccessrights.D_B=0;
+
+      currentcpuinfo->guestCR3=getCR3();
+      currentcpuinfo->guestCR0=getCR0();
+      currentcpuinfo->hasIF=0;
+
+
+
+
+      DWORD new_vm_execution_controls_cpu=vmread(vm_execution_controls_cpu) | (DWORD)IA32_VMX_PROCBASED_CTLS;
+
+
+      if ((IA32_VMX_PROCBASED_CTLS >> 32) & HLT_EXITING)
+        new_vm_execution_controls_cpu|=HLT_EXITING;
+      else
+      {
+        sendstring("<<<<<<WARNING: This system does not support HLT_EXITING>>>>>>\n");
+      }
+
+      if (IA32_VMX_PROCBASED_CTLS & INVLPG_EXITING) //NEEDS to set INVLPG_EXITING
+        new_vm_execution_controls_cpu|=INVLPG_EXITING;
+
+      /*
+      if ((IA32_VMX_PROCBASED_CTLS >> 32) & USE_IO_BITMAPS)
+        new_vm_execution_controls_cpu|=USE_IO_BITMAPS;
+      else
+        sendstring("<<<<<<WARNING: This system does not support USE_IO_BITMAPS>>>>>>\n");*/
+
+      if ((IA32_VMX_PROCBASED_CTLS >> 32) & USE_MSR_BITMAPS)
+        new_vm_execution_controls_cpu|=USE_MSR_BITMAPS;
+      else
+      {
+        sendstring("<<<<<<WARNING: This system does not support USE_MSR_BITMAPS>>>>>>\n");
+      }
+
+
+      if ((IA32_VMX_PROCBASED_CTLS >> 32) & (1<<31)) //secondary procbased ctl support
+        new_vm_execution_controls_cpu=new_vm_execution_controls_cpu | (1<<31);
+
+      vmwrite(vm_execution_controls_cpu, new_vm_execution_controls_cpu); //processor-based vm-execution controls
+      sendstringf("Set vm_execution_controls_cpu to %8 (became %8)\n", new_vm_execution_controls_cpu, (DWORD)vmread(vm_execution_controls_cpu));
+
+      if ((new_vm_execution_controls_cpu >> 31) & 1)
+      {
+        //it has a secondary entry
+        QWORD secondarycpu=vmread(vm_execution_controls_cpu_secondary);
+
+
+        if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_RDTSCP) //can it enable rdtscp ?
+        {
+          sendstringf("Enabling rdtscp\n");
+          secondarycpu|=SPBEF_ENABLE_RDTSCP;
+        }
+
+
+
+        if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_XSAVES) //can it enable XSAVES ?
+        {
+          sendstringf("Enabling xsaves\n");
+          secondarycpu|=SPBEF_ENABLE_XSAVES;
+        }
+
+        if ((IA32_VMX_SECONDARY_PROCBASED_CTLS >> 32) & SPBEF_ENABLE_INVPCID) //can it enable INVPCID ?
+        {
+          sendstringf("Enabling INVPCID\n");
+          secondarycpu|=SPBEF_ENABLE_INVPCID;
+        }
+
+        vmwrite(vm_execution_controls_cpu_secondary, secondarycpu);
+
+      }
+
+
+
+
+      DWORD new_vm_entry_controls=vmread(vm_entry_controls) |  (DWORD)IA32_VMX_ENTRY_CTLS;
+
+      if ((IA32_VMX_ENTRY_CTLS >> 32) & VMENTRYC_IA32E_MODE
