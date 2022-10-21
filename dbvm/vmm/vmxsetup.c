@@ -2368,4 +2368,111 @@ void setupVMX(pcpuinfo currentcpuinfo)
 
       DWORD new_vm_entry_controls=vmread(vm_entry_controls) |  (DWORD)IA32_VMX_ENTRY_CTLS;
 
-      if ((IA32_VMX_ENTRY_CTLS >> 32) & VMENTRYC_IA32E_MODE
+      if ((IA32_VMX_ENTRY_CTLS >> 32) & VMENTRYC_IA32E_MODE_GUEST)
+        new_vm_entry_controls|=VMENTRYC_IA32E_MODE_GUEST;
+      else
+      {
+        sendstring("<<<<<<WARNING: This system does not support IA32E_MODE_GUEST>>>>>>\n");
+      }
+
+      if ((IA32_VMX_ENTRY_CTLS >> 32) & VMENTRYC_RESTORE_DEBUG_CONTROLS)
+        new_vm_entry_controls|=VMENTRYC_RESTORE_DEBUG_CONTROLS;
+      else
+      {
+        sendstring("<<<<<<WARNING: This system does not support the RESTORE_DEBUG_CONTROLS vm_entry control option>>>>>>\n");
+      }
+
+
+      vmwrite(vm_entry_controls,new_vm_entry_controls); //vm-entry controls   bit9: ia-32e mode guest is guest controlled
+      sendstringf("Set vm_entry_controls to %8 (became %8)\n", new_vm_entry_controls, (DWORD)vmread(vm_entry_controls));
+
+
+
+
+      vmwrite(vm_cr0_read_shadow,(UINT64)getCR0()); //cr0 read shadow
+      vmwrite(vm_cr4_read_shadow,(UINT64)getCR4()); //cr4 read shadow
+      vmwrite(vm_cr3_targetvalue0,(UINT64)getCR3()); //cr3-target value 0
+
+      vmwrite(vm_guest_gdtr_base,(UINT64)getGDTbase()); //gdtr base
+      vmwrite(vm_guest_idtr_base,(UINT64)getIDTbase()); //idtr base
+      vmwrite(vm_guest_gdt_limit,(UINT64)88); //gdtr limit
+      vmwrite(vm_guest_idt_limit,(UINT64)8*256); //idtr limit
+
+
+      vmwrite(vm_guest_cr0,getCR0()); //guest cr0
+      vmwrite(vm_guest_cr3,getCR3()); //cr3
+      vmwrite(vm_guest_cr4,getCR4() |(UINT64)IA32_VMX_CR4_FIXED0 | 1 | (1 << 4) | ( 1 << 5) | (1<<0)); //guest cr4
+
+      vmwrite(vm_guest_es,(UINT64)8); //es selector
+      vmwrite(vm_guest_cs,(UINT64)80); //cs selector
+      vmwrite(vm_guest_ss,(UINT64)8); //ss selector
+      vmwrite(vm_guest_ds,(UINT64)8); //ds selector
+      vmwrite(vm_guest_fs,(UINT64)8); //fs selector
+      vmwrite(vm_guest_gs,(UINT64)8); //gs selector
+      vmwrite(vm_guest_ldtr,(UINT64)0); //ldtr selector
+      vmwrite(vm_guest_tr,(UINT64)64); //tr selector
+
+      vmwrite(vm_guest_es_limit,(UINT64)0); //es limit
+      vmwrite(vm_guest_cs_limit,(UINT64)0); //cs limit
+      vmwrite(vm_guest_ss_limit,(UINT64)0); //ss limit
+      vmwrite(vm_guest_ds_limit,(UINT64)0); //ds limit
+      vmwrite(vm_guest_fs_limit,(UINT64)0); //fs limit
+      vmwrite(vm_guest_gs_limit,(UINT64)0); //gs limit
+      vmwrite(vm_guest_ldtr_limit,(UINT64)0); //ldtr limit
+      vmwrite(vm_guest_tr_limit,(UINT64)sizeof(TSS)+32+8192+1); //tr limit
+
+      vmwrite(vm_guest_es_base,(UINT64)0); //es base
+      vmwrite(vm_guest_cs_base,(UINT64)0); //cs base
+      vmwrite(vm_guest_ss_base,(UINT64)0); //ss base
+      vmwrite(vm_guest_ds_base,(UINT64)0); //ds base
+      vmwrite(vm_guest_fs_base,(UINT64)0); //fs base
+      vmwrite(vm_guest_gs_base,(UINT64)0); //gs base
+      vmwrite(vm_guest_ldtr_base,(UINT64)0); //ldtr base
+      vmwrite(vm_guest_tr_base,(UINT64)mainTSS); //tr base
+
+      vmwrite(vm_guest_es_access_rights,(UINT64)(1<<16)); //es access rights
+      vmwrite(vm_guest_cs_access_rights,(UINT64)reg_csaccessrights.AccessRights); //cs access rights
+      vmwrite(vm_guest_ss_access_rights,(UINT64)(1<<16)); //ss access rights
+      vmwrite(vm_guest_ds_access_rights,(UINT64)(1<<16)); //ds access rights
+      vmwrite(vm_guest_fs_access_rights,(UINT64)(1<<16)); //fs access rights
+      vmwrite(vm_guest_gs_access_rights,(UINT64)(1<<16)); //gs access rights
+      vmwrite(vm_guest_ldtr_access_rights,(UINT64)(1<<16)); //ldtr access rights (bit 16 is unusable bit
+      vmwrite(vm_guest_tr_access_rights,(UINT64)reg_traccessrights.AccessRights); //tr access rights
+
+      vmwrite(vm_guest_IA32_SYSENTER_CS,(UINT64)0);
+      vmwrite(vm_guest_IA32_SYSENTER_ESP,(UINT64)0);
+      vmwrite(vm_guest_IA32_SYSENTER_EIP,(UINT64)0);
+
+      vmwrite(vm_guest_dr7,(UINT64)0x400); //dr7
+
+      vmwrite(vm_guest_activity_state,(UINT64)0); //guest activity state, normal
+      //vmwrite(vm_guest_rsp,(UINT64)0x8fffc); //rsp
+      vmwrite(vm_guest_rsp,((UINT64)malloc(4096))+0x1000-0x28); //rsp, 32 bytes scratch and 8 bytes for return value (so unaligned)
+      vmwrite(vm_guest_rip,(UINT64)reboot); //rip
+      vmwrite(vm_guest_rflags,(UINT64)getRFLAGS()); //rflags
+
+
+      if (hasUnrestrictedSupport)
+      {
+        vmwrite(vm_guest_IA32_EFER, readMSR(EFER_MSR));
+        vmwrite(vm_guest_tr,0);
+        vmwrite(vm_guest_tr_limit,0);
+        vmwrite(vm_guest_tr_base, 0);
+        vmwrite(vm_guest_tr_access_rights,0x8b);
+
+        //map a low memory address for the inthook
+        QWORD size=(QWORD)&realmode_inthooks_end-(QWORD)&realmode_inthooks;
+        if (size<=0x800)
+          size=0x800;
+        else
+        {
+          size+=0x800;
+          size=size & 0xFFFFFFFFFFFFF800ULL;
+        }
+
+
+        QWORD hookaddress;
+        int i,lowregion=-1;
+        for (i=0; fakeARD[i].Type != 255; i++)
+        {
+          if ((fakeARD[i].Bas
