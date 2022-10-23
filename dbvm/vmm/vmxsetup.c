@@ -2475,4 +2475,140 @@ void setupVMX(pcpuinfo currentcpuinfo)
         int i,lowregion=-1;
         for (i=0; fakeARD[i].Type != 255; i++)
         {
-          if ((fakeARD[i].Bas
+          if ((fakeARD[i].BaseAddrHigh==0) && (fakeARD[i].BaseAddrLow<(0x100000-size)) && (fakeARD[i].Type==1))
+          {
+            lowregion=i;
+          }
+        }
+
+        if (lowregion==-1)
+        {
+          nosendchar[getAPICID()]=0;
+          sendstringf("No low region:\n");
+          sendARD();
+          ddDrawRectangle(0,DDVerticalResolution-100,100,100,0xff0000);
+          while (1) outportb(0x80,0xde);
+        }
+
+
+        hookaddress=fakeARD[lowregion].BaseAddrLow+((QWORD)(fakeARD[lowregion].LengthHigh)<<32)+fakeARD[lowregion].LengthLow;
+        if (hookaddress>=0x100000)
+        {
+          //buggy ARD
+          fakeARD_InsertRange(0x98000,size, 2);
+        }
+        else
+        {
+          hookaddress=hookaddress-0x800;
+          fakeARD_InsertRange(hookaddress,size, 2);
+        }
+
+        //copy inthooks to hookaddress
+
+        RMIDT *idt=mapPhysicalMemory(0, 0x3ff); //map the realmode IDT
+        //store the original interrupt addresses (within the realmode_inthooks block)
+        realmode_inthook_original12=*(DWORD*)&idt[0x12];
+        realmode_inthook_original15=*(DWORD*)&idt[0x15];
+
+        realmode_inthook_conventional_memsize=fakeARD_getConventionalMemory() / 1024;
+
+
+        void *mappedhookaddress=mapPhysicalMemory(hookaddress, size);
+
+        copymem(mappedhookaddress, realmode_inthooks, (QWORD)realmode_inthooks_end-(QWORD)realmode_inthooks);
+        unmapPhysicalMemory(mappedhookaddress,size);
+
+
+        //adjust relative addresses
+        QWORD new12=hookaddress+(QWORD)realmode_inthook_new12-(QWORD)realmode_inthooks;
+        QWORD new15=hookaddress+(QWORD)realmode_inthook_new15-(QWORD)realmode_inthooks;
+
+        realmode_inthook_calladdressPA=hookaddress+(QWORD)realmode_inthook_calladdress-(QWORD)realmode_inthooks;
+
+        sendstringf("new12=%8\n", new12);
+        sendstringf("new15=%6\n", new15);
+
+        //adjust int 0x12 and 0x15 to point to their realmode_inthook counterpart
+        idt[0x12].segment=((new12 & 0xfff00) >> 4);
+        idt[0x12].offset=(new12 & 0x000ff);
+
+        idt[0x15].segment=((new15 & 0xfff00) >> 4);
+        idt[0x15].offset=(new15 & 0x000ff);
+
+
+        unmapPhysicalMemory(idt, 0x3ff);
+
+        //setup realmode_inthook_conventional_memsize
+
+
+        //vmwrite(vm_execution_controls_pin, vmread(vm_execution_controls_pin) | EXTERNAL_INTERRUPT_EXITING);
+
+        //vmwrite(vm_exit_controls, vmread(vm_exit_controls) & (~(1<<15)));
+        //Earlier i've set HLT exiting to 1, now i've changed my mind
+        QWORD Real_IA32_VMX_PROCBASED_CTLS=IA32_VMX_PROCBASED_CTLS;
+
+        if (IA32_VMX_BASIC.default1canbe0)
+          Real_IA32_VMX_PROCBASED_CTLS=readMSR(IA32_VMX_TRUE_PROCBASED_CTLS_MSR);
+
+        if ((Real_IA32_VMX_PROCBASED_CTLS & HLT_EXITING)==0) //can be 0
+        {
+          sendstring("Disable HLT exiting\n");
+          vmwrite(vm_execution_controls_cpu, vmread(vm_execution_controls_cpu) & (~HLT_EXITING));
+        }
+      }
+    }
+    else
+    {
+      //8086 entry (todo: make obsolete)
+      setup8086WaitForSIPI(currentcpuinfo, 1);
+    }
+  }
+
+
+  vmwrite(0x2800,(UINT64)0xffffffffffffffff); //VMCS link pointer (low)
+  vmwrite(0x2802,(UINT64)0); //IA32_DEBUGCTL (low)
+
+  vmwrite(vm_guest_interruptability_state,(UINT64)0); //interruptibility state
+
+
+
+
+  vmwrite(0x4828,(UINT64)0); //smbase
+
+
+  vmwrite(0x6822,(UINT64)0); //pending debug exceptions
+
+  //----------------HOST----------------
+  //host 16-bit:
+  sendstringf("Guest is setup to start at %x:%6\n",vmread(vm_guest_cs),vmread(vm_guest_rip));
+  sendstring("host setup\n\r");
+  vmwrite(vm_host_es,(UINT64)8); //es selector
+  vmwrite(vm_host_cs,(UINT64)80); //cs selector
+  vmwrite(vm_host_ss,(UINT64)8); //ss selector
+  vmwrite(vm_host_ds,(UINT64)8); //ds selector
+  vmwrite(vm_host_fs,(UINT64)8); //fs selector
+  vmwrite(vm_host_gs,(UINT64)8); //gs selector
+  vmwrite(vm_host_tr,(UINT64)96); //tr selector
+
+  vmwrite(vm_host_IA32_SYSENTER_CS,(UINT64)readMSR(IA32_SYSENTER_CS_MSR));  //IA32_SYSENTER_CS
+  vmwrite(vm_host_IA32_SYSENTER_ESP,(UINT64)readMSR(IA32_SYSENTER_ESP_MSR)); //sysenter_esp
+  vmwrite(vm_host_IA32_SYSENTER_EIP,(UINT64)readMSR(IA32_SYSENTER_EIP_MSR)); //sysenter_eip
+
+
+
+  vmwrite(vm_host_cr0,(UINT64)getCR0()); //cr0
+  vmwrite(vm_host_cr3,(UINT64)getCR3()); //cr3
+  vmwrite(vm_host_cr4,(UINT64)getCR4()); //cr4
+  vmwrite(vm_host_fs_base,(UINT64)readMSR(0xc0000100));  //fs base
+  vmwrite(vm_host_gs_base,(UINT64)readMSR(0xc0000101));  //gs base
+  vmwrite(vm_host_tr_base,(UINT64)ownTSS);  //tr base
+  vmwrite(vm_host_gdtr_base,(UINT64)getGDTbase()); //gdtr base
+  vmwrite(vm_host_idtr_base,(UINT64)getIDTbase()); //idt base
+
+  sendstring("Finished configuring\n\r");
+
+
+  globals_have_been_configured=1;
+  currentcpuinfo->vmxsetup=1;
+
+  csLe
