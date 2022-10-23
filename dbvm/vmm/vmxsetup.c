@@ -2611,4 +2611,5 @@ void setupVMX(pcpuinfo currentcpuinfo)
   globals_have_been_configured=1;
   currentcpuinfo->vmxsetup=1;
 
-  csLe
+  csLeave(&setupVMX_lock);
+}
