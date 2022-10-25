@@ -236,4 +236,147 @@ LUA_API int (lua_gc) (lua_State *L, int what, int data);
 
 LUA_API int   (lua_error) (lua_State *L);
 
-LUA_API int   (lua_next) (lu
+LUA_API int   (lua_next) (lua_State *L, int idx);
+
+LUA_API void  (lua_concat) (lua_State *L, int n);
+
+LUA_API lua_Alloc (lua_getallocf) (lua_State *L, void **ud);
+LUA_API void lua_setallocf (lua_State *L, lua_Alloc f, void *ud);
+
+
+
+/* 
+** ===============================================================
+** some useful macros
+** ===============================================================
+*/
+
+#define lua_pop(L,n)		lua_settop(L, -(n)-1)
+
+#define lua_newtable(L)		lua_createtable(L, 0, 0)
+
+#define lua_register(L,n,f) (lua_pushcfunction(L, (f)), lua_setglobal(L, (n)))
+
+#define lua_pushcfunction(L,f)	lua_pushcclosure(L, (f), 0)
+
+#define lua_strlen(L,i)		lua_objlen(L, (i))
+
+#define lua_isfunction(L,n)	(lua_type(L, (n)) == LUA_TFUNCTION)
+#define lua_istable(L,n)	(lua_type(L, (n)) == LUA_TTABLE)
+#define lua_islightuserdata(L,n)	(lua_type(L, (n)) == LUA_TLIGHTUSERDATA)
+#define lua_isnil(L,n)		(lua_type(L, (n)) == LUA_TNIL)
+#define lua_isboolean(L,n)	(lua_type(L, (n)) == LUA_TBOOLEAN)
+#define lua_isthread(L,n)	(lua_type(L, (n)) == LUA_TTHREAD)
+#define lua_isnone(L,n)		(lua_type(L, (n)) == LUA_TNONE)
+#define lua_isnoneornil(L, n)	(lua_type(L, (n)) <= 0)
+
+#define lua_pushliteral(L, s)	\
+	lua_pushlstring(L, "" s, (sizeof(s)/sizeof(char))-1)
+
+#define lua_setglobal(L,s)	lua_setfield(L, LUA_GLOBALSINDEX, (s))
+#define lua_getglobal(L,s)	lua_getfield(L, LUA_GLOBALSINDEX, (s))
+
+#define lua_tostring(L,i)	lua_tolstring(L, (i), NULL)
+
+
+
+/*
+** compatibility macros and functions
+*/
+
+#define lua_open()	luaL_newstate()
+
+#define lua_getregistry(L)	lua_pushvalue(L, LUA_REGISTRYINDEX)
+
+#define lua_getgccount(L)	lua_gc(L, LUA_GCCOUNT, 0)
+
+#define lua_Chunkreader		lua_Reader
+#define lua_Chunkwriter		lua_Writer
+
+
+/* hack */
+LUA_API void lua_setlevel	(lua_State *from, lua_State *to);
+
+
+/*
+** {======================================================================
+** Debug API
+** =======================================================================
+*/
+
+
+/*
+** Event codes
+*/
+#define LUA_HOOKCALL	0
+#define LUA_HOOKRET	1
+#define LUA_HOOKLINE	2
+#define LUA_HOOKCOUNT	3
+#define LUA_HOOKTAILRET 4
+
+
+/*
+** Event masks
+*/
+#define LUA_MASKCALL	(1 << LUA_HOOKCALL)
+#define LUA_MASKRET	(1 << LUA_HOOKRET)
+#define LUA_MASKLINE	(1 << LUA_HOOKLINE)
+#define LUA_MASKCOUNT	(1 << LUA_HOOKCOUNT)
+
+typedef struct lua_Debug lua_Debug;  /* activation record */
+
+
+/* Functions to be called by the debuger in specific events */
+typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
+
+
+LUA_API int lua_getstack (lua_State *L, int level, lua_Debug *ar);
+LUA_API int lua_getinfo (lua_State *L, const char *what, lua_Debug *ar);
+LUA_API const char *lua_getlocal (lua_State *L, const lua_Debug *ar, int n);
+LUA_API const char *lua_setlocal (lua_State *L, const lua_Debug *ar, int n);
+LUA_API const char *lua_getupvalue (lua_State *L, int funcindex, int n);
+LUA_API const char *lua_setupvalue (lua_State *L, int funcindex, int n);
+
+LUA_API int lua_sethook (lua_State *L, lua_Hook func, int mask, int count);
+LUA_API lua_Hook lua_gethook (lua_State *L);
+LUA_API int lua_gethookmask (lua_State *L);
+LUA_API int lua_gethookcount (lua_State *L);
+
+
+struct lua_Debug {
+  int event;
+  const char *name;	/* (n) */
+  const char *namewhat;	/* (n) `global', `local', `field', `method' */
+  const char *what;	/* (S) `Lua', `C', `main', `tail' */
+  const char *source;	/* (S) */
+  int currentline;	/* (l) */
+  int nups;		/* (u) number of upvalues */
+  int linedefined;	/* (S) */
+  int lastlinedefined;	/* (S) */
+  char short_src[LUA_IDSIZE]; /* (S) */
+  /* private part */
+  int i_ci;  /* active function */
+};
+
+/* }====================================================================== */
+
+
+/******************************************************************************
+* Copyright (C) 1994-2008 Lua.org, PUC-Rio.  All rights reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining
+* a copy of this software and associated documentation files (the
+* "Software"), to deal in the Software without restriction, including
+* without limitation the rights to use, copy, modify, merge, publish,
+* distribute, sublicense, and/or sell copies of the Software, and to
+* permit persons to whom the Software is furnished to do so, subject to
+* the following conditions:
+*
+* The above copyright notice and this permission notice shall be
+* included in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF C
