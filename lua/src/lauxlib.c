@@ -203,3 +203,166 @@ LUALIB_API lua_Integer luaL_optinteger (lua_State *L, int narg,
 #ifdef LNUM_COMPLEX
 LUALIB_API lua_Complex luaL_checkcomplex (lua_State *L, int narg) {
   lua_Complex c = lua_tocomplex(L, narg);
+  if (c == 0 && !lua_isnumber(L, narg))  /* avoid extra test when c is not 0 */
+    tag_error(L, narg, LUA_TNUMBER);
+  return c;
+}
+#endif
+
+
+LUALIB_API int luaL_getmetafield (lua_State *L, int obj, const char *event) {
+  if (!lua_getmetatable(L, obj))  /* no metatable? */
+    return 0;
+  lua_pushstring(L, event);
+  lua_rawget(L, -2);
+  if (lua_isnil(L, -1)) {
+    lua_pop(L, 2);  /* remove metatable and metafield */
+    return 0;
+  }
+  else {
+    lua_remove(L, -2);  /* remove only metatable */
+    return 1;
+  }
+}
+
+
+LUALIB_API int luaL_callmeta (lua_State *L, int obj, const char *event) {
+  obj = abs_index(L, obj);
+  if (!luaL_getmetafield(L, obj, event))  /* no metafield? */
+    return 0;
+  lua_pushvalue(L, obj);
+  lua_call(L, 1, 1);
+  return 1;
+}
+
+
+LUALIB_API void (luaL_register) (lua_State *L, const char *libname,
+                                const luaL_Reg *l) {
+  luaI_openlib(L, libname, l, 0);
+}
+
+
+static int libsize (const luaL_Reg *l) {
+  int size = 0;
+  for (; l->name; l++) size++;
+  return size;
+}
+
+
+LUALIB_API void luaI_openlib (lua_State *L, const char *libname,
+                              const luaL_Reg *l, int nup) {
+  if (libname) {
+    int size = libsize(l);
+    /* check whether lib already exists */
+    luaL_findtable(L, LUA_REGISTRYINDEX, "_LOADED", 1);
+    lua_getfield(L, -1, libname);  /* get _LOADED[libname] */
+    if (!lua_istable(L, -1)) {  /* not found? */
+      lua_pop(L, 1);  /* remove previous result */
+      /* try global variable (and create one if it does not exist) */
+      if (luaL_findtable(L, LUA_GLOBALSINDEX, libname, size) != NULL)
+        luaL_error(L, "name conflict for module " LUA_QS, libname);
+      lua_pushvalue(L, -1);
+      lua_setfield(L, -3, libname);  /* _LOADED[libname] = new table */
+    }
+    lua_remove(L, -2);  /* remove _LOADED table */
+    lua_insert(L, -(nup+1));  /* move library table to below upvalues */
+  }
+  for (; l->name; l++) {
+    int i;
+    for (i=0; i<nup; i++)  /* copy upvalues to the top */
+      lua_pushvalue(L, -nup);
+    lua_pushcclosure(L, l->func, nup);
+    lua_setfield(L, -(nup+2), l->name);
+  }
+  lua_pop(L, nup);  /* remove upvalues */
+}
+
+
+
+/*
+** {======================================================
+** getn-setn: size for arrays
+** =======================================================
+*/
+
+#if defined(LUA_COMPAT_GETN)
+
+static int checkint (lua_State *L, int topop) {
+  int n = (lua_type(L, -1) == LUA_TNUMBER) ? lua_tointeger(L, -1) : -1;
+  lua_pop(L, topop);
+  return n;
+}
+
+
+static void getsizes (lua_State *L) {
+  lua_getfield(L, LUA_REGISTRYINDEX, "LUA_SIZES");
+  if (lua_isnil(L, -1)) {  /* no `size' table? */
+    lua_pop(L, 1);  /* remove nil */
+    lua_newtable(L);  /* create it */
+    lua_pushvalue(L, -1);  /* `size' will be its own metatable */
+    lua_setmetatable(L, -2);
+    lua_pushliteral(L, "kv");
+    lua_setfield(L, -2, "__mode");  /* metatable(N).__mode = "kv" */
+    lua_pushvalue(L, -1);
+    lua_setfield(L, LUA_REGISTRYINDEX, "LUA_SIZES");  /* store in register */
+  }
+}
+
+
+LUALIB_API void luaL_setn (lua_State *L, int t, int n) {
+  t = abs_index(L, t);
+  lua_pushliteral(L, "n");
+  lua_rawget(L, t);
+  if (checkint(L, 1) >= 0) {  /* is there a numeric field `n'? */
+    lua_pushliteral(L, "n");  /* use it */
+    lua_pushinteger(L, n);
+    lua_rawset(L, t);
+  }
+  else {  /* use `sizes' */
+    getsizes(L);
+    lua_pushvalue(L, t);
+    lua_pushinteger(L, n);
+    lua_rawset(L, -3);  /* sizes[t] = n */
+    lua_pop(L, 1);  /* remove `sizes' */
+  }
+}
+
+
+LUALIB_API int luaL_getn (lua_State *L, int t) {
+  int n;
+  t = abs_index(L, t);
+  lua_pushliteral(L, "n");  /* try t.n */
+  lua_rawget(L, t);
+  if ((n = checkint(L, 1)) >= 0) return n;
+  getsizes(L);  /* else try sizes[t] */
+  lua_pushvalue(L, t);
+  lua_rawget(L, -2);
+  if ((n = checkint(L, 2)) >= 0) return n;
+  return (int)lua_objlen(L, t);
+}
+
+#endif
+
+/* }====================================================== */
+
+
+
+LUALIB_API const char *luaL_gsub (lua_State *L, const char *s, const char *p,
+                                                               const char *r) {
+  const char *wild;
+  size_t l = strlen(p);
+  luaL_Buffer b;
+  luaL_buffinit(L, &b);
+  while ((wild = strstr(s, p)) != NULL) {
+    luaL_addlstring(&b, s, wild - s);  /* push prefix */
+    luaL_addstring(&b, r);  /* push replacement in place of pattern */
+    s = wild + l;  /* continue after `p' */
+  }
+  luaL_addstring(&b, s);  /* push last suffix */
+  luaL_pushresult(&b);
+  return lua_tostring(L, -1);
+}
+
+
+LUALIB_API const char *luaL_findtable (lua_State *L, int idx,
+                           
