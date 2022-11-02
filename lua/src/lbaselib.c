@@ -385,4 +385,171 @@ static int luaB_select (lua_State *L) {
 static int luaB_pcall (lua_State *L) {
   int status;
   luaL_checkany(L, 1);
-  status = lua_pcall
+  status = lua_pcall(L, lua_gettop(L) - 1, LUA_MULTRET, 0);
+  lua_pushboolean(L, (status == 0));
+  lua_insert(L, 1);
+  return lua_gettop(L);  /* return status + all results */
+}
+
+
+static int luaB_xpcall (lua_State *L) {
+  int status;
+  luaL_checkany(L, 2);
+  lua_settop(L, 2);
+  lua_insert(L, 1);  /* put error function under function to be called */
+  status = lua_pcall(L, 0, LUA_MULTRET, 1);
+  lua_pushboolean(L, (status == 0));
+  lua_replace(L, 1);
+  return lua_gettop(L);  /* return status + all results */
+}
+
+
+static int luaB_tostring (lua_State *L) {
+  luaL_checkany(L, 1);
+  if (luaL_callmeta(L, 1, "__tostring"))  /* is there a metafield? */
+    return 1;  /* use its value */
+  switch (lua_type(L, 1)) {
+    case LUA_TNUMBER:
+      lua_pushstring(L, lua_tostring(L, 1));
+      break;
+    case LUA_TSTRING:
+      lua_pushvalue(L, 1);
+      break;
+    case LUA_TBOOLEAN:
+      lua_pushstring(L, (lua_toboolean(L, 1) ? "true" : "false"));
+      break;
+    case LUA_TNIL:
+      lua_pushliteral(L, "nil");
+      break;
+    default:
+      lua_pushfstring(L, "%s: %p", luaL_typename(L, 1), lua_topointer(L, 1));
+      break;
+  }
+  return 1;
+}
+
+
+static int luaB_newproxy (lua_State *L) {
+  lua_settop(L, 1);
+  lua_newuserdata(L, 0);  /* create proxy */
+  if (lua_toboolean(L, 1) == 0)
+    return 1;  /* no metatable */
+  else if (lua_isboolean(L, 1)) {
+    lua_newtable(L);  /* create a new metatable `m' ... */
+    lua_pushvalue(L, -1);  /* ... and mark `m' as a valid metatable */
+    lua_pushboolean(L, 1);
+    lua_rawset(L, lua_upvalueindex(1));  /* weaktable[m] = true */
+  }
+  else {
+    int validproxy = 0;  /* to check if weaktable[metatable(u)] == true */
+    if (lua_getmetatable(L, 1)) {
+      lua_rawget(L, lua_upvalueindex(1));
+      validproxy = lua_toboolean(L, -1);
+      lua_pop(L, 1);  /* remove value */
+    }
+    luaL_argcheck(L, validproxy, 1, "boolean or proxy expected");
+    lua_getmetatable(L, 1);  /* metatable is valid; get it */
+  }
+  lua_setmetatable(L, 2);
+  return 1;
+}
+
+
+static const luaL_Reg base_funcs[] = {
+  {"assert", luaB_assert},
+  {"collectgarbage", luaB_collectgarbage},
+  {"dofile", luaB_dofile},
+  {"error", luaB_error},
+  {"gcinfo", luaB_gcinfo},
+  {"getfenv", luaB_getfenv},
+  {"getmetatable", luaB_getmetatable},
+  {"loadfile", luaB_loadfile},
+  {"load", luaB_load},
+  {"loadstring", luaB_loadstring},
+  {"next", luaB_next},
+  {"pcall", luaB_pcall},
+  {"print", luaB_print},
+  {"rawequal", luaB_rawequal},
+  {"rawget", luaB_rawget},
+  {"rawset", luaB_rawset},
+  {"select", luaB_select},
+  {"setfenv", luaB_setfenv},
+  {"setmetatable", luaB_setmetatable},
+  {"tonumber", luaB_tonumber},
+  {"tostring", luaB_tostring},
+  {"type", luaB_type},
+  {"unpack", luaB_unpack},
+  {"xpcall", luaB_xpcall},
+  {NULL, NULL}
+};
+
+
+/*
+** {======================================================
+** Coroutine library
+** =======================================================
+*/
+
+#define CO_RUN	0	/* running */
+#define CO_SUS	1	/* suspended */
+#define CO_NOR	2	/* 'normal' (it resumed another coroutine) */
+#define CO_DEAD	3
+
+static const char *const statnames[] =
+    {"running", "suspended", "normal", "dead"};
+
+static int costatus (lua_State *L, lua_State *co) {
+  if (L == co) return CO_RUN;
+  switch (lua_status(co)) {
+    case LUA_YIELD:
+      return CO_SUS;
+    case 0: {
+      lua_Debug ar;
+      if (lua_getstack(co, 0, &ar) > 0)  /* does it have frames? */
+        return CO_NOR;  /* it is running */
+      else if (lua_gettop(co) == 0)
+          return CO_DEAD;
+      else
+        return CO_SUS;  /* initial state */
+    }
+    default:  /* some error occured */
+      return CO_DEAD;
+  }
+}
+
+
+static int luaB_costatus (lua_State *L) {
+  lua_State *co = lua_tothread(L, 1);
+  luaL_argcheck(L, co, 1, "coroutine expected");
+  lua_pushstring(L, statnames[costatus(L, co)]);
+  return 1;
+}
+
+
+static int auxresume (lua_State *L, lua_State *co, int narg) {
+  int status = costatus(L, co);
+  if (!lua_checkstack(co, narg))
+    luaL_error(L, "too many arguments to resume");
+  if (status != CO_SUS) {
+    lua_pushfstring(L, "cannot resume %s coroutine", statnames[status]);
+    return -1;  /* error flag */
+  }
+  lua_xmove(L, co, narg);
+  lua_setlevel(L, co);
+  status = lua_resume(co, narg);
+  if (status == 0 || status == LUA_YIELD) {
+    int nres = lua_gettop(co);
+    if (!lua_checkstack(L, nres + 1))
+      luaL_error(L, "too many results to resume");
+    lua_xmove(co, L, nres);  /* move yielded values */
+    return nres;
+  }
+  else {
+    lua_xmove(co, L, 1);  /* move error message */
+    return -1;  /* error flag */
+  }
+}
+
+
+static int luaB_coresume (lua_State *L) {
+  lua_S
