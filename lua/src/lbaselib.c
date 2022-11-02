@@ -552,4 +552,115 @@ static int auxresume (lua_State *L, lua_State *co, int narg) {
 
 
 static int luaB_coresume (lua_State *L) {
-  lua_S
+  lua_State *co = lua_tothread(L, 1);
+  int r;
+  luaL_argcheck(L, co, 1, "coroutine expected");
+  r = auxresume(L, co, lua_gettop(L) - 1);
+  if (r < 0) {
+    lua_pushboolean(L, 0);
+    lua_insert(L, -2);
+    return 2;  /* return false + error message */
+  }
+  else {
+    lua_pushboolean(L, 1);
+    lua_insert(L, -(r + 1));
+    return r + 1;  /* return true + `resume' returns */
+  }
+}
+
+
+static int luaB_auxwrap (lua_State *L) {
+  lua_State *co = lua_tothread(L, lua_upvalueindex(1));
+  int r = auxresume(L, co, lua_gettop(L));
+  if (r < 0) {
+    if (lua_isstring(L, -1)) {  /* error object is a string? */
+      luaL_where(L, 1);  /* add extra info */
+      lua_insert(L, -2);
+      lua_concat(L, 2);
+    }
+    lua_error(L);  /* propagate error */
+  }
+  return r;
+}
+
+
+static int luaB_cocreate (lua_State *L) {
+  lua_State *NL = lua_newthread(L);
+  luaL_argcheck(L, lua_isfunction(L, 1) && !lua_iscfunction(L, 1), 1,
+    "Lua function expected");
+  lua_pushvalue(L, 1);  /* move function to top */
+  lua_xmove(L, NL, 1);  /* move function from L to NL */
+  return 1;
+}
+
+
+static int luaB_cowrap (lua_State *L) {
+  luaB_cocreate(L);
+  lua_pushcclosure(L, luaB_auxwrap, 1);
+  return 1;
+}
+
+
+static int luaB_yield (lua_State *L) {
+  return lua_yield(L, lua_gettop(L));
+}
+
+
+static int luaB_corunning (lua_State *L) {
+  if (lua_pushthread(L))
+    lua_pushnil(L);  /* main thread is not a coroutine */
+  return 1;
+}
+
+
+static const luaL_Reg co_funcs[] = {
+  {"create", luaB_cocreate},
+  {"resume", luaB_coresume},
+  {"running", luaB_corunning},
+  {"status", luaB_costatus},
+  {"wrap", luaB_cowrap},
+  {"yield", luaB_yield},
+  {NULL, NULL}
+};
+
+/* }====================================================== */
+
+
+static void auxopen (lua_State *L, const char *name,
+                     lua_CFunction f, lua_CFunction u) {
+  lua_pushcfunction(L, u);
+  lua_pushcclosure(L, f, 1);
+  lua_setfield(L, -2, name);
+}
+
+
+static void base_open (lua_State *L) {
+  /* set global _G */
+  lua_pushvalue(L, LUA_GLOBALSINDEX);
+  lua_setglobal(L, "_G");
+  /* open lib into global table */
+  luaL_register(L, "_G", base_funcs);
+  lua_pushliteral(L, LUA_VERSION);
+  lua_setglobal(L, "_VERSION");  /* set global _VERSION */
+  lua_pushliteral(L, LUA_LNUM);
+  lua_setglobal(L, "_LNUM");  /* "[complex] double|float|ldouble [int16|int32|int64]" */
+  /* `ipairs' and `pairs' need auxliliary functions as upvalues */
+  auxopen(L, "ipairs", luaB_ipairs, ipairsaux);
+  auxopen(L, "pairs", luaB_pairs, luaB_next);
+  /* `newproxy' needs a weaktable as upvalue */
+  lua_createtable(L, 0, 1);  /* new table `w' */
+  lua_pushvalue(L, -1);  /* `w' will be its own metatable */
+  lua_setmetatable(L, -2);
+  lua_pushliteral(L, "kv");
+  lua_setfield(L, -2, "__mode");  /* metatable(w).__mode = "kv" */
+  lua_pushcclosure(L, luaB_newproxy, 1);
+  lua_setglobal(L, "newproxy");  /* set global `newproxy' */
+}
+
+
+LUALIB_API int luaopen_base (lua_State *L) {
+  base_open(L);
+  luaL_register(L, LUA_COLIBNAME, co_funcs);
+  return 2;
+}
+
