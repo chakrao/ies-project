@@ -451,4 +451,169 @@ static Instruction symbexec (const Proto *pt, int lastpc, int reg) {
         int nup, j;
         check(b < pt->sizep);
         nup = pt->p[b]->nups;
-        check(
+        check(pc + nup < pt->sizecode);
+        for (j = 1; j <= nup; j++) {
+          OpCode op1 = GET_OPCODE(pt->code[pc + j]);
+          check(op1 == OP_GETUPVAL || op1 == OP_MOVE);
+        }
+        if (reg != NO_REG)  /* tracing? */
+          pc += nup;  /* do not 'execute' these pseudo-instructions */
+        break;
+      }
+      case OP_VARARG: {
+        check((pt->is_vararg & VARARG_ISVARARG) &&
+             !(pt->is_vararg & VARARG_NEEDSARG));
+        b--;
+        if (b == LUA_MULTRET) check(checkopenop(pt, pc));
+        checkreg(pt, a+b-1);
+        break;
+      }
+      default: break;
+    }
+  }
+  return pt->code[last];
+}
+
+#undef check
+#undef checkjump
+#undef checkreg
+
+/* }====================================================== */
+
+
+int luaG_checkcode (const Proto *pt) {
+  return (symbexec(pt, pt->sizecode, NO_REG) != 0);
+}
+
+
+static const char *kname (Proto *p, int c) {
+  if (ISK(c) && ttisstring(&p->k[INDEXK(c)]))
+    return svalue(&p->k[INDEXK(c)]);
+  else
+    return "?";
+}
+
+
+static const char *getobjname (lua_State *L, CallInfo *ci, int stackpos,
+                               const char **name) {
+  if (isLua(ci)) {  /* a Lua function? */
+    Proto *p = ci_func(ci)->l.p;
+    int pc = currentpc(L, ci);
+    Instruction i;
+    *name = luaF_getlocalname(p, stackpos+1, pc);
+    if (*name)  /* is a local? */
+      return "local";
+    i = symbexec(p, pc, stackpos);  /* try symbolic execution */
+    lua_assert(pc != -1);
+    switch (GET_OPCODE(i)) {
+      case OP_GETGLOBAL: {
+        int g = GETARG_Bx(i);  /* global index */
+        lua_assert(ttisstring(&p->k[g]));
+        *name = svalue(&p->k[g]);
+        return "global";
+      }
+      case OP_MOVE: {
+        int a = GETARG_A(i);
+        int b = GETARG_B(i);  /* move from `b' to `a' */
+        if (b < a)
+          return getobjname(L, ci, b, name);  /* get name for `b' */
+        break;
+      }
+      case OP_GETTABLE: {
+        int k = GETARG_C(i);  /* key index */
+        *name = kname(p, k);
+        return "field";
+      }
+      case OP_GETUPVAL: {
+        int u = GETARG_B(i);  /* upvalue index */
+        *name = p->upvalues ? getstr(p->upvalues[u]) : "?";
+        return "upvalue";
+      }
+      case OP_SELF: {
+        int k = GETARG_C(i);  /* key index */
+        *name = kname(p, k);
+        return "method";
+      }
+      default: break;
+    }
+  }
+  return NULL;  /* no useful name found */
+}
+
+
+static const char *getfuncname (lua_State *L, CallInfo *ci, const char **name) {
+  Instruction i;
+  if ((isLua(ci) && ci->tailcalls > 0) || !isLua(ci - 1))
+    return NULL;  /* calling function is not Lua (or is unknown) */
+  ci--;  /* calling function */
+  i = ci_func(ci)->l.p->code[currentpc(L, ci)];
+  if (GET_OPCODE(i) == OP_CALL || GET_OPCODE(i) == OP_TAILCALL ||
+      GET_OPCODE(i) == OP_TFORLOOP)
+    return getobjname(L, ci, GETARG_A(i), name);
+  else
+    return NULL;  /* no useful name can be found */
+}
+
+
+/* only ANSI way to check whether a pointer points to an array */
+static int isinstack (CallInfo *ci, const TValue *o) {
+  StkId p;
+  for (p = ci->base; p < ci->top; p++)
+    if (o == p) return 1;
+  return 0;
+}
+
+
+void luaG_typeerror (lua_State *L, const TValue *o, const char *op) {
+  const char *name = NULL;
+  const char *t = luaT_typenames[ttype_ext(o)];
+  const char *kind = (isinstack(L->ci, o)) ?
+                         getobjname(L, L->ci, cast_int(o - L->base), &name) :
+                         NULL;
+  if (kind)
+    luaG_runerror(L, "attempt to %s %s " LUA_QS " (a %s value)",
+                op, kind, name, t);
+  else
+    luaG_runerror(L, "attempt to %s a %s value", op, t);
+}
+
+
+void luaG_concaterror (lua_State *L, StkId p1, StkId p2) {
+  if (ttisstring(p1) || ttisnumber(p1)) p1 = p2;
+  lua_assert(!ttisstring(p1) && !ttisnumber(p1));
+  luaG_typeerror(L, p1, "concatenate");
+}
+
+
+void luaG_aritherror (lua_State *L, const TValue *p1, const TValue *p2) {
+  TValue temp;
+  if (luaV_tonumber(p1, &temp) == NULL)
+    p2 = p1;  /* first operand is wrong */
+  luaG_typeerror(L, p2, "perform arithmetic on");
+}
+
+
+int luaG_ordererror (lua_State *L, const TValue *p1, const TValue *p2) {
+  const char *t1 = luaT_typenames[ttype_ext(p1)];
+  const char *t2 = luaT_typenames[ttype_ext(p2)];
+  if (t1[2] == t2[2])
+    luaG_runerror(L, "attempt to compare two %s values", t1);
+  else
+    luaG_runerror(L, "attempt to compare %s with %s", t1, t2);
+  return 0;
+}
+
+
+static void addinfo (lua_State *L, const char *msg) {
+  CallInfo *ci = L->ci;
+  if (isLua(ci)) {  /* is Lua code? */
+    char buff[LUA_IDSIZE];  /* add file:line information */
+    int line = currentline(L, ci);
+    luaO_chunkid(buff, getstr(getluaproto(ci)->source), LUA_IDSIZE);
+    luaO_pushfstring(L, "%s:%d: %s", buff, line, msg);
+  }
+}
+
+
+void luaG_errormsg (lua_State *L) {
+  if (L->errfunc != 0) {  /* is there an error handl
