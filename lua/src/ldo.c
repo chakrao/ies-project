@@ -425,4 +425,94 @@ LUA_API int lua_resume (lua_State *L, int nargs) {
   lua_assert(L->errfunc == 0);
   L->baseCcalls = ++L->nCcalls;
   status = luaD_rawrunprotected(L, resume, L->top - nargs);
-  if (status != 0) {  /* er
+  if (status != 0) {  /* error? */
+    L->status = cast_byte(status);  /* mark thread as `dead' */
+    luaD_seterrorobj(L, status, L->top);
+    L->ci->top = L->top;
+  }
+  else {
+    lua_assert(L->nCcalls == L->baseCcalls);
+    status = L->status;
+  }
+  --L->nCcalls;
+  lua_unlock(L);
+  return status;
+}
+
+
+LUA_API int lua_yield (lua_State *L, int nresults) {
+  luai_userstateyield(L, nresults);
+  lua_lock(L);
+  if (L->nCcalls > L->baseCcalls)
+    luaG_runerror(L, "attempt to yield across metamethod/C-call boundary");
+  L->base = L->top - nresults;  /* protect stack slots below */
+  L->status = LUA_YIELD;
+  lua_unlock(L);
+  return -1;
+}
+
+
+int luaD_pcall (lua_State *L, Pfunc func, void *u,
+                ptrdiff_t old_top, ptrdiff_t ef) {
+  int status;
+  unsigned short oldnCcalls = L->nCcalls;
+  ptrdiff_t old_ci = saveci(L, L->ci);
+  lu_byte old_allowhooks = L->allowhook;
+  ptrdiff_t old_errfunc = L->errfunc;
+  L->errfunc = ef;
+  status = luaD_rawrunprotected(L, func, u);
+  if (status != 0) {  /* an error occurred? */
+    StkId oldtop = restorestack(L, old_top);
+    luaF_close(L, oldtop);  /* close eventual pending closures */
+    luaD_seterrorobj(L, status, oldtop);
+    L->nCcalls = oldnCcalls;
+    L->ci = restoreci(L, old_ci);
+    L->base = L->ci->base;
+    L->savedpc = L->ci->savedpc;
+    L->allowhook = old_allowhooks;
+    restore_stack_limit(L);
+  }
+  L->errfunc = old_errfunc;
+  return status;
+}
+
+
+
+/*
+** Execute a protected parser.
+*/
+struct SParser {  /* data to `f_parser' */
+  ZIO *z;
+  Mbuffer buff;  /* buffer to be used by the scanner */
+  const char *name;
+};
+
+static void f_parser (lua_State *L, void *ud) {
+  int i;
+  Proto *tf;
+  Closure *cl;
+  struct SParser *p = cast(struct SParser *, ud);
+  int c = luaZ_lookahead(p->z);
+  luaC_checkGC(L);
+  tf = ((c == LUA_SIGNATURE[0]) ? luaU_undump : luaY_parser)(L, p->z,
+                                                             &p->buff, p->name);
+  cl = luaF_newLclosure(L, tf->nups, hvalue(gt(L)));
+  cl->l.p = tf;
+  for (i = 0; i < tf->nups; i++)  /* initialize eventual upvalues */
+    cl->l.upvals[i] = luaF_newupval(L);
+  setclvalue(L, L->top, cl);
+  incr_top(L);
+}
+
+
+int luaD_protectedparser (lua_State *L, ZIO *z, const char *name) {
+  struct SParser p;
+  int status;
+  p.z = z; p.name = name;
+  luaZ_initbuffer(L, &p.buff);
+  status = luaD_pcall(L, f_parser, &p, savestack(L, L->top), L->errfunc);
+  luaZ_freebuffer(L, &p.buff);
+  return status;
+}
+
+
