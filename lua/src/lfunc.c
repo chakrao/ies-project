@@ -143,3 +143,32 @@ void luaF_freeproto (lua_State *L, Proto *f) {
   luaM_freearray(L, f->code, f->sizecode, Instruction);
   luaM_freearray(L, f->p, f->sizep, Proto *);
   luaM_freearray(L, f->k, f->sizek, TValue);
+  luaM_freearray(L, f->lineinfo, f->sizelineinfo, int);
+  luaM_freearray(L, f->locvars, f->sizelocvars, struct LocVar);
+  luaM_freearray(L, f->upvalues, f->sizeupvalues, TString *);
+  luaM_free(L, f);
+}
+
+
+void luaF_freeclosure (lua_State *L, Closure *c) {
+  int size = (c->c.isC) ? sizeCclosure(c->c.nupvalues) :
+                          sizeLclosure(c->l.nupvalues);
+  luaM_freemem(L, c, size);
+}
+
+
+/*
+** Look for n-th local variable at line `line' in function `func'.
+** Returns NULL if not found.
+*/
+const char *luaF_getlocalname (const Proto *f, int local_number, int pc) {
+  int i;
+  for (i = 0; i<f->sizelocvars && f->locvars[i].startpc <= pc; i++) {
+    if (pc < f->locvars[i].endpc) {  /* is variable active? */
+      local_number--;
+      if (local_number == 0)
+        return getstr(f->locvars[i].varname);
+    }
+  }
+  return NULL;  /* not found */
+}
