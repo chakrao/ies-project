@@ -328,3 +328,176 @@ static int read_complex (lua_State *L, FILE *f) {
     return 1;
   }
   return 0;  /* read fails */
+}
+#endif
+
+
+static int test_eof (lua_State *L, FILE *f) {
+  int c = getc(f);
+  ungetc(c, f);
+  lua_pushlstring(L, NULL, 0);
+  return (c != EOF);
+}
+
+
+static int read_line (lua_State *L, FILE *f) {
+  luaL_Buffer b;
+  luaL_buffinit(L, &b);
+  for (;;) {
+    size_t l;
+    char *p = luaL_prepbuffer(&b);
+    if (fgets(p, LUAL_BUFFERSIZE, f) == NULL) {  /* eof? */
+      luaL_pushresult(&b);  /* close buffer */
+      return (lua_objlen(L, -1) > 0);  /* check whether read something */
+    }
+    l = strlen(p);
+    if (l == 0 || p[l-1] != '\n')
+      luaL_addsize(&b, l);
+    else {
+      luaL_addsize(&b, l - 1);  /* do not include `eol' */
+      luaL_pushresult(&b);  /* close buffer */
+      return 1;  /* read at least an `eol' */
+    }
+  }
+}
+
+
+static int read_chars (lua_State *L, FILE *f, size_t n) {
+  size_t rlen;  /* how much to read */
+  size_t nr;  /* number of chars actually read */
+  luaL_Buffer b;
+  luaL_buffinit(L, &b);
+  rlen = LUAL_BUFFERSIZE;  /* try to read that much each time */
+  do {
+    char *p = luaL_prepbuffer(&b);
+    if (rlen > n) rlen = n;  /* cannot read more than asked */
+    nr = fread(p, sizeof(char), rlen, f);
+    luaL_addsize(&b, nr);
+    n -= nr;  /* still have to read `n' chars */
+  } while (n > 0 && nr == rlen);  /* until end of count or eof */
+  luaL_pushresult(&b);  /* close buffer */
+  return (n == 0 || lua_objlen(L, -1) > 0);
+}
+
+
+static int g_read (lua_State *L, FILE *f, int first) {
+  int nargs = lua_gettop(L) - 1;
+  int success;
+  int n;
+  clearerr(f);
+  if (nargs == 0) {  /* no arguments? */
+    success = read_line(L, f);
+    n = first+1;  /* to return 1 result */
+  }
+  else {  /* ensure stack space for all results and for auxlib's buffer */
+    luaL_checkstack(L, nargs+LUA_MINSTACK, "too many arguments");
+    success = 1;
+    for (n = first; nargs-- && success; n++) {
+      if (lua_type(L, n) == LUA_TNUMBER) {
+        size_t l = (size_t)lua_tointeger(L, n);
+        success = (l == 0) ? test_eof(L, f) : read_chars(L, f, l);
+      }
+      else {
+        const char *p = lua_tostring(L, n);
+        luaL_argcheck(L, p && p[0] == '*', n, "invalid option");
+        switch (p[1]) {
+          case 'n':  /* number */
+            success = read_number(L, f);
+            break;
+          case 'i':  /* integer (full accuracy) */
+            success = read_integer(L, f);
+            break;
+#ifdef LNUM_COMPLEX
+          case 'c':  /* complex */
+            success = read_complex(L, f);
+            break;
+#endif
+          case 'l':  /* line */
+            success = read_line(L, f);
+            break;
+          case 'a':  /* file */
+            read_chars(L, f, ~((size_t)0));  /* read MAX_SIZE_T chars */
+            success = 1; /* always success */
+            break;
+          default:
+            return luaL_argerror(L, n, "invalid format");
+        }
+      }
+    }
+  }
+  if (ferror(f))
+    return pushresult(L, 0, NULL);
+  if (!success) {
+    lua_pop(L, 1);  /* remove last result */
+    lua_pushnil(L);  /* push nil instead */
+  }
+  return n - first;
+}
+
+
+static int io_read (lua_State *L) {
+  return g_read(L, getiofile(L, IO_INPUT), 1);
+}
+
+
+static int f_read (lua_State *L) {
+  return g_read(L, tofile(L), 2);
+}
+
+
+static int io_readline (lua_State *L) {
+  FILE *f = *(FILE **)lua_touserdata(L, lua_upvalueindex(1));
+  int sucess;
+  if (f == NULL)  /* file is already closed? */
+    luaL_error(L, "file is already closed");
+  sucess = read_line(L, f);
+  if (ferror(f))
+    return luaL_error(L, "%s", strerror(errno));
+  if (sucess) return 1;
+  else {  /* EOF */
+    if (lua_toboolean(L, lua_upvalueindex(2))) {  /* generator created file? */
+      lua_settop(L, 0);
+      lua_pushvalue(L, lua_upvalueindex(1));
+      aux_close(L);  /* close it */
+    }
+    return 0;
+  }
+}
+
+/* }====================================================== */
+
+
+static int g_write (lua_State *L, FILE *f, int arg) {
+  int nargs = lua_gettop(L) - 1;
+  int status = 1;
+  for (; nargs--; arg++) {
+    if (lua_type(L, arg) == LUA_TNUMBER) {
+      if (lua_isinteger(L,arg))
+          status = status && fprintf(f, LUA_INTEGER_FMT, lua_tointeger(L, arg)) > 0;
+      else
+          status = status && fprintf(f, LUA_NUMBER_FMT, lua_tonumber(L, arg)) > 0;
+    }
+    else {
+      size_t l;
+      const char *s = luaL_checklstring(L, arg, &l);
+      status = status && (fwrite(s, sizeof(char), l, f) == l);
+    }
+  }
+  return pushresult(L, status, NULL);
+}
+
+
+static int io_write (lua_State *L) {
+  return g_write(L, getiofile(L, IO_OUTPUT), 1);
+}
+
+
+static int f_write (lua_State *L) {
+  return g_write(L, tofile(L), 2);
+}
+
+
+static int f_seek (lua_State *L) {
+  static const int mode[] = {SEEK_SET, SEEK_CUR, SEEK_END};
+  static const char *const modenames[] = {"set", "cur", "end", NULL};
+  FILE *f = tof
