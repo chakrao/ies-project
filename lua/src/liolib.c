@@ -500,4 +500,115 @@ static int f_write (lua_State *L) {
 static int f_seek (lua_State *L) {
   static const int mode[] = {SEEK_SET, SEEK_CUR, SEEK_END};
   static const char *const modenames[] = {"set", "cur", "end", NULL};
-  FILE *f = tof
+  FILE *f = tofile(L);
+  int op = luaL_checkoption(L, 2, "cur", modenames);
+  long offset = luaL_optlong(L, 3, 0);
+  op = fseek(f, offset, mode[op]);
+  if (op)
+    return pushresult(L, 0, NULL);  /* error */
+  else {
+    lua_pushinteger(L, ftell(f));
+    return 1;
+  }
+}
+
+
+static int f_setvbuf (lua_State *L) {
+  static const int mode[] = {_IONBF, _IOFBF, _IOLBF};
+  static const char *const modenames[] = {"no", "full", "line", NULL};
+  FILE *f = tofile(L);
+  int op = luaL_checkoption(L, 2, NULL, modenames);
+  size_t sz = luaL_optint32(L, 3, LUAL_BUFFERSIZE);
+  int res = setvbuf(f, NULL, mode[op], sz);
+  return pushresult(L, res == 0, NULL);
+}
+
+
+
+static int io_flush (lua_State *L) {
+  return pushresult(L, fflush(getiofile(L, IO_OUTPUT)) == 0, NULL);
+}
+
+
+static int f_flush (lua_State *L) {
+  return pushresult(L, fflush(tofile(L)) == 0, NULL);
+}
+
+
+static const luaL_Reg iolib[] = {
+  {"close", io_close},
+  {"flush", io_flush},
+  {"input", io_input},
+  {"lines", io_lines},
+  {"open", io_open},
+  {"output", io_output},
+  {"popen", io_popen},
+  {"read", io_read},
+  {"tmpfile", io_tmpfile},
+  {"type", io_type},
+  {"write", io_write},
+  {NULL, NULL}
+};
+
+
+static const luaL_Reg flib[] = {
+  {"close", io_close},
+  {"flush", f_flush},
+  {"lines", f_lines},
+  {"read", f_read},
+  {"seek", f_seek},
+  {"setvbuf", f_setvbuf},
+  {"write", f_write},
+  {"__gc", io_gc},
+  {"__tostring", io_tostring},
+  {NULL, NULL}
+};
+
+
+static void createmeta (lua_State *L) {
+  luaL_newmetatable(L, LUA_FILEHANDLE);  /* create metatable for file handles */
+  lua_pushvalue(L, -1);  /* push metatable */
+  lua_setfield(L, -2, "__index");  /* metatable.__index = metatable */
+  luaL_register(L, NULL, flib);  /* file methods */
+}
+
+
+static void createstdfile (lua_State *L, FILE *f, int k, const char *fname) {
+  *newfile(L) = f;
+  if (k > 0) {
+    lua_pushvalue(L, -1);
+    lua_rawseti(L, LUA_ENVIRONINDEX, k);
+  }
+  lua_pushvalue(L, -2);  /* copy environment */
+  lua_setfenv(L, -2);  /* set it */
+  lua_setfield(L, -3, fname);
+}
+
+
+static void newfenv (lua_State *L, lua_CFunction cls) {
+  lua_createtable(L, 0, 1);
+  lua_pushcfunction(L, cls);
+  lua_setfield(L, -2, "__close");
+}
+
+
+LUALIB_API int luaopen_io (lua_State *L) {
+  createmeta(L);
+  /* create (private) environment (with fields IO_INPUT, IO_OUTPUT, __close) */
+  newfenv(L, io_fclose);
+  lua_replace(L, LUA_ENVIRONINDEX);
+  /* open library */
+  luaL_register(L, LUA_IOLIBNAME, iolib);
+  /* create (and set) default files */
+  newfenv(L, io_noclose);  /* close function for default files */
+  createstdfile(L, stdin, IO_INPUT, "stdin");
+  createstdfile(L, stdout, IO_OUTPUT, "stdout");
+  createstdfile(L, stderr, 0, "stderr");
+  lua_pop(L, 1);  /* pop environment for default files */
+  lua_getfield(L, -1, "popen");
+  newfenv(L, io_pclose);  /* create environment for 'popen' */
+  lua_setfenv(L, -2);  /* set fenv for 'popen' */
+  lua_pop(L, 1);  /* pop 'popen' */
+  return 1;
+}
+
