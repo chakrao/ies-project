@@ -30,4 +30,20 @@
 #define luaM_newvector(L,n,t) \
 		cast(t *, luaM_reallocv(L, NULL, 0, n, sizeof(t)))
 
-#define luaM_growvector(L,v,nele
+#define luaM_growvector(L,v,nelems,size,t,limit,e) \
+          if ((nelems)+1 > (size)) \
+            ((v)=cast(t *, luaM_growaux_(L,v,&(size),sizeof(t),limit,e)))
+
+#define luaM_reallocvector(L, v,oldn,n,t) \
+   ((v)=cast(t *, luaM_reallocv(L, v, oldn, n, sizeof(t))))
+
+
+LUAI_FUNC void *luaM_realloc_ (lua_State *L, void *block, size_t oldsize,
+                                                          size_t size);
+LUAI_FUNC void *luaM_toobig (lua_State *L);
+LUAI_FUNC void *luaM_growaux_ (lua_State *L, void *block, int *size,
+                               size_t size_elem, int limit,
+                               const char *errormsg);
+
+#endif
+
