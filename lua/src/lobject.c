@@ -135,4 +135,95 @@ const char *luaO_pushvfstring (lua_State *L, const char *fmt, va_list argp) {
       }
       case 'c': {
         char buff[2];
-        buff[0] = cast(char, 
+        buff[0] = cast(char, va_arg(argp, int));
+        buff[1] = '\0';
+        pushstr(L, buff);
+        break;
+      }
+      case 'd': {
+        /* This is tricky for 64-bit integers; maybe they even cannot be
+         * supported on all compilers; depends on the conversions applied to
+         * variable argument lists. TBD: test!
+         */
+        setivalue(L->top, (lua_Integer) va_arg(argp, l_uacInteger));
+        incr_top(L);
+        break;
+      }
+      case 'f': {
+        setnvalue(L->top, cast_num(va_arg(argp, l_uacNumber)));
+        incr_top(L);
+        break;
+      }
+      case 'p': {
+        char buff[4*sizeof(void *) + 8]; /* should be enough space for a `%p' */
+        sprintf(buff, "%p", va_arg(argp, void *));
+        pushstr(L, buff);
+        break;
+      }
+      case '%': {
+        pushstr(L, "%");
+        break;
+      }
+      default: {
+        char buff[3];
+        buff[0] = '%';
+        buff[1] = *(e+1);
+        buff[2] = '\0';
+        pushstr(L, buff);
+        break;
+      }
+    }
+    n += 2;
+    fmt = e+2;
+  }
+  pushstr(L, fmt);
+  luaV_concat(L, n+1, cast_int(L->top - L->base) - 1);
+  L->top -= n;
+  return svalue(L->top - 1);
+}
+
+
+const char *luaO_pushfstring (lua_State *L, const char *fmt, ...) {
+  const char *msg;
+  va_list argp;
+  va_start(argp, fmt);
+  msg = luaO_pushvfstring(L, fmt, argp);
+  va_end(argp);
+  return msg;
+}
+
+
+void luaO_chunkid (char *out, const char *source, size_t bufflen) {
+  if (*source == '=') {
+    strncpy(out, source+1, bufflen);  /* remove first char */
+    out[bufflen-1] = '\0';  /* ensures null termination */
+  }
+  else {  /* out = "source", or "...source" */
+    if (*source == '@') {
+      size_t l;
+      source++;  /* skip the `@' */
+      bufflen -= sizeof(" '...' ");
+      l = strlen(source);
+      strcpy(out, "");
+      if (l > bufflen) {
+        source += (l-bufflen);  /* get last part of file name */
+        strcat(out, "...");
+      }
+      strcat(out, source);
+    }
+    else {  /* out = [string "string"] */
+      size_t len = strcspn(source, "\n\r");  /* stop at first newline */
+      bufflen -= sizeof(" [string \"...\"] ");
+      if (len > bufflen) len = bufflen;
+      strcpy(out, "[string \"");
+      if (source[len] != '\0') {  /* must truncate? */
+        strncat(out, source, len);
+        strcat(out, "...");
+      }
+      else
+        strcat(out, source);
+      strcat(out, "\"]");
+    }
+  }
+}
+
