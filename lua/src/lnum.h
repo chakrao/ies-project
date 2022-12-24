@@ -102,4 +102,18 @@
         case 0:             cos_z=1, sin_z=0; break;
         case 2: case -2:    cos_z=-1, sin_z=0; break;
         case 1: case -3:    cos_z=0, sin_z=1; break;
-        c
+        case 3: case -1:    cos_z=0, sin_z=-1; break;
+        default:            lua_assert(0); return 0;
+      }
+      return k*cos_z + (k*sin_z)*I;
+    }
+    return _LF(cpow) ( a, b );
+  }
+#endif
+
+LUAI_FUNC int luaO_str2d (const char *s, lua_Number *res1, lua_Integer *res2);
+LUAI_FUNC void luaO_num2buf( char *s, const TValue *o );
+
+LUAI_FUNC int /*bool*/ tt_integer_valued( const TValue *o, lua_Integer *ref );
+
+#endif
