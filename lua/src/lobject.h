@@ -117,4 +117,150 @@ typedef struct lua_TValue {
 #define pvalue(o)	check_exp(ttislightuserdata(o), (o)->value.p)
 
 #if defined(LUA_TINT) && (LUA_TINT&0x0f == LUA_TNUMBER)
-/* expects never 
+/* expects never to be called on <0 (LUA_TNONE) */
+# define ttype_ext(o) ( ttype(o) & 0x0f )
+#elif defined(LUA_TINT)
+# define ttype_ext(o) ( ttype(o) == LUA_TINT ? LUA_TNUMBER : ttype(o) )
+#else
+# define ttype_ext(o) ttype(o)
+#endif
+
+/* '_fast' variants are for cases where 'ttype(o)' is known to be LUA_TNUMBER
+ */
+#ifdef LNUM_COMPLEX
+# ifndef LUA_TINT
+#  error "LNUM_COMPLEX only allowed with LNUM_INTxx defined (can be changed)"
+# endif
+# define nvalue_complex_fast(o) check_exp( ttype(o)==LUA_TNUMBER, (o)->value.n )   
+# define nvalue_fast(o)     ( _LF(creal) ( nvalue_complex_fast(o) ) )
+# define nvalue_img_fast(o) ( _LF(cimag) ( nvalue_complex_fast(o) ) )
+# define nvalue_complex(o) check_exp( ttisnumber(o), (ttype(o)==LUA_TINT) ? (o)->value.i : (o)->value.n )
+# define nvalue_img(o) check_exp( ttisnumber(o), (ttype(o)==LUA_TINT) ? 0 : _LF(cimag)( (o)->value.n ) ) 
+# define nvalue(o) check_exp( ttisnumber(o), (ttype(o)==LUA_TINT) ? cast_num((o)->value.i) : _LF(creal)((o)->value.n) ) 
+/* */
+#elif defined(LUA_TINT)
+# define nvalue(o)	check_exp( ttisnumber(o), (ttype(o)==LUA_TINT) ? cast_num((o)->value.i) : (o)->value.n )
+# define nvalue_fast(o) check_exp( ttype(o)==LUA_TNUMBER, (o)->value.n )   
+#else
+# define nvalue(o)	check_exp( ttisnumber(o), (o)->value.n )
+# define nvalue_fast(o) nvalue(o)
+#endif
+
+#ifdef LUA_TINT
+# define ivalue(o)	check_exp( ttype(o)==LUA_TINT, (o)->value.i )
+#endif
+
+#define rawtsvalue(o)	check_exp(ttisstring(o), &(o)->value.gc->ts)
+#define tsvalue(o)	(&rawtsvalue(o)->tsv)
+#define rawuvalue(o)	check_exp(ttisuserdata(o), &(o)->value.gc->u)
+#define uvalue(o)	(&rawuvalue(o)->uv)
+#define clvalue(o)	check_exp(ttisfunction(o), &(o)->value.gc->cl)
+#define hvalue(o)	check_exp(ttistable(o), &(o)->value.gc->h)
+#define bvalue(o)	check_exp(ttisboolean(o), (o)->value.b)
+#define thvalue(o)	check_exp(ttisthread(o), &(o)->value.gc->th)
+
+#define l_isfalse(o)	(ttisnil(o) || (ttisboolean(o) && bvalue(o) == 0))
+
+/*
+** for internal debug only
+*/
+#define checkconsistency(obj) \
+  lua_assert(!iscollectable(obj) || (ttype(obj) == (obj)->value.gc->gch.tt))
+
+#define checkliveness(g,obj) \
+  lua_assert(!iscollectable(obj) || \
+  ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(g, (obj)->value.gc)))
+
+
+/* Macros to set values */
+#define setnilvalue(obj) ((obj)->tt=LUA_TNIL)
+
+/* Must not have side effects, 'x' may be expression.
+*/
+#define setnvalue(obj,x) { TValue *i_o=(obj); i_o->value.n= (x); i_o->tt=LUA_TNUMBER; }
+
+#ifdef LUA_TINT
+# define setivalue(obj,x) { TValue *i_o=(obj); i_o->value.i=(x); i_o->tt=LUA_TINT; }
+#else
+# define setivalue(obj,x) setnvalue(obj,cast_num(x))
+#endif
+
+/* Note: Complex always has "inline", both are C99.
+*/
+#ifdef LNUM_COMPLEX
+  static inline void setnvalue_complex_fast( TValue *obj, lua_Complex x ) {
+    lua_assert( _LF(cimag)(x) != 0 );
+    obj->value.n= x; obj->tt= LUA_TNUMBER;
+  }
+  static inline void setnvalue_complex( TValue *obj, lua_Complex x ) {
+    if (_LF(cimag)(x) == 0) { setnvalue(obj, _LF(creal)(x)); }
+    else { obj->value.n= x; obj->tt= LUA_TNUMBER; }
+  }
+#endif
+
+
+#define setpvalue(obj,x) \
+  { TValue *i_o=(obj); i_o->value.p=(x); i_o->tt=LUA_TLIGHTUSERDATA; }
+
+#define setbvalue(obj,x) \
+  { TValue *i_o=(obj); i_o->value.b=(x); i_o->tt=LUA_TBOOLEAN; }
+
+#define setsvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TSTRING; \
+    checkliveness(G(L),i_o); }
+
+#define setuvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TUSERDATA; \
+    checkliveness(G(L),i_o); }
+
+#define setthvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TTHREAD; \
+    checkliveness(G(L),i_o); }
+
+#define setclvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TFUNCTION; \
+    checkliveness(G(L),i_o); }
+
+#define sethvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TTABLE; \
+    checkliveness(G(L),i_o); }
+
+#define setptvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TPROTO; \
+    checkliveness(G(L),i_o); }
+
+#define setobj(L,obj1,obj2) \
+  { const TValue *o2=(obj2); TValue *o1=(obj1); \
+    o1->value = o2->value; o1->tt=o2->tt; \
+    checkliveness(G(L),o1); }
+
+
+/*
+** different types of sets, according to destination
+*/
+
+/* from stack to (same) stack */
+#define setobjs2s	setobj
+/* to stack (not from same stack) */
+#define setobj2s	setobj
+#define setsvalue2s	setsvalue
+#define sethvalue2s	sethvalue
+#define setptvalue2s	setptvalue
+/* from table to same table */
+#define setobjt2t	setobj
+/* to table */
+#define setobj2t	setobj
+/* to new object */
+#define setobj2n	setobj
+#define setsvalue2n	setsvalue
+
+#define setttype(obj, tt) (ttype(obj) = (tt))
+
+#if defined(LUA_TINT) && (LUA_TINT >= LUA_TSTRING)
+# define iscollectable(o)	((ttype(o
