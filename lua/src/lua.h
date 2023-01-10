@@ -191,4 +191,162 @@ LUA_API int   (lua_pushthread) (lua_State *L);
 
 
 /*
-** get functions (Lua -> sta
+** get functions (Lua -> stack)
+*/
+LUA_API void  (lua_gettable) (lua_State *L, int idx);
+LUA_API void  (lua_getfield) (lua_State *L, int idx, const char *k);
+LUA_API void  (lua_rawget) (lua_State *L, int idx);
+LUA_API void  (lua_rawgeti) (lua_State *L, int idx, int n);
+LUA_API void  (lua_createtable) (lua_State *L, int narr, int nrec);
+LUA_API void *(lua_newuserdata) (lua_State *L, size_t sz);
+LUA_API int   (lua_getmetatable) (lua_State *L, int objindex);
+LUA_API void  (lua_getfenv) (lua_State *L, int idx);
+
+
+/*
+** set functions (stack -> Lua)
+*/
+LUA_API void  (lua_settable) (lua_State *L, int idx);
+LUA_API void  (lua_setfield) (lua_State *L, int idx, const char *k);
+LUA_API void  (lua_rawset) (lua_State *L, int idx);
+LUA_API void  (lua_rawseti) (lua_State *L, int idx, int n);
+LUA_API int   (lua_setmetatable) (lua_State *L, int objindex);
+LUA_API int   (lua_setfenv) (lua_State *L, int idx);
+
+
+/*
+** `load' and `call' functions (load and run Lua code)
+*/
+LUA_API void  (lua_call) (lua_State *L, int nargs, int nresults);
+LUA_API int   (lua_pcall) (lua_State *L, int nargs, int nresults, int errfunc);
+LUA_API int   (lua_cpcall) (lua_State *L, lua_CFunction func, void *ud);
+LUA_API int   (lua_load) (lua_State *L, lua_Reader reader, void *dt,
+                                        const char *chunkname);
+
+LUA_API int (lua_dump) (lua_State *L, lua_Writer writer, void *data);
+
+
+/*
+** coroutine functions
+*/
+LUA_API int  (lua_yield) (lua_State *L, int nresults);
+LUA_API int  (lua_resume) (lua_State *L, int narg);
+LUA_API int  (lua_status) (lua_State *L);
+
+/*
+** garbage-collection function and options
+*/
+
+#define LUA_GCSTOP		0
+#define LUA_GCRESTART		1
+#define LUA_GCCOLLECT		2
+#define LUA_GCCOUNT		3
+#define LUA_GCCOUNTB		4
+#define LUA_GCSTEP		5
+#define LUA_GCSETPAUSE		6
+#define LUA_GCSETSTEPMUL	7
+
+LUA_API int (lua_gc) (lua_State *L, int what, int data);
+
+
+/*
+** miscellaneous functions
+*/
+
+LUA_API int   (lua_error) (lua_State *L);
+
+LUA_API int   (lua_next) (lua_State *L, int idx);
+
+LUA_API void  (lua_concat) (lua_State *L, int n);
+
+LUA_API lua_Alloc (lua_getallocf) (lua_State *L, void **ud);
+LUA_API void lua_setallocf (lua_State *L, lua_Alloc f, void *ud);
+
+
+/*
+* It is unnecessary to break Lua C API 'lua_tonumber()' compatibility, just
+* because the Lua number type is complex. Most C modules would use scalars
+* only. We'll introduce new 'lua_tocomplex' and 'lua_pushcomplex' for when
+* the module really wants to use them.
+*/
+#ifdef LNUM_COMPLEX
+  #include <complex.h>
+  typedef LUA_NUMBER complex lua_Complex;
+  LUA_API lua_Complex (lua_tocomplex) (lua_State *L, int idx);
+  LUA_API void (lua_pushcomplex) (lua_State *L, lua_Complex v);
+#endif
+
+
+/* 
+** ===============================================================
+** some useful macros
+** ===============================================================
+*/
+
+#define lua_pop(L,n)		lua_settop(L, -(n)-1)
+
+#define lua_newtable(L)		lua_createtable(L, 0, 0)
+
+#define lua_register(L,n,f) (lua_pushcfunction(L, (f)), lua_setglobal(L, (n)))
+
+#define lua_pushcfunction(L,f)	lua_pushcclosure(L, (f), 0)
+
+#define lua_strlen(L,i)		lua_objlen(L, (i))
+
+#define lua_isfunction(L,n)	(lua_type(L, (n)) == LUA_TFUNCTION)
+#define lua_istable(L,n)	(lua_type(L, (n)) == LUA_TTABLE)
+#define lua_islightuserdata(L,n)	(lua_type(L, (n)) == LUA_TLIGHTUSERDATA)
+#define lua_isnil(L,n)		(lua_type(L, (n)) == LUA_TNIL)
+#define lua_isboolean(L,n)	(lua_type(L, (n)) == LUA_TBOOLEAN)
+#define lua_isthread(L,n)	(lua_type(L, (n)) == LUA_TTHREAD)
+#define lua_isnone(L,n)		(lua_type(L, (n)) == LUA_TNONE)
+
+#if LUA_TINT < 0
+# define lua_isnoneornil(L, n)	( (lua_type(L,(n)) <= 0) && (lua_type(L,(n)) != LUA_TINT) )
+#else
+# define lua_isnoneornil(L, n)	(lua_type(L, (n)) <= 0)
+#endif
+
+#define lua_pushliteral(L, s)	\
+	lua_pushlstring(L, "" s, (sizeof(s)/sizeof(char))-1)
+
+#define lua_setglobal(L,s)	lua_setfield(L, LUA_GLOBALSINDEX, (s))
+#define lua_getglobal(L,s)	lua_getfield(L, LUA_GLOBALSINDEX, (s))
+
+#define lua_tostring(L,i)	lua_tolstring(L, (i), NULL)
+
+
+
+/*
+** compatibility macros and functions
+*/
+
+#define lua_open()	luaL_newstate()
+
+#define lua_getregistry(L)	lua_pushvalue(L, LUA_REGISTRYINDEX)
+
+#define lua_getgccount(L)	lua_gc(L, LUA_GCCOUNT, 0)
+
+#define lua_Chunkreader		lua_Reader
+#define lua_Chunkwriter		lua_Writer
+
+
+/* hack */
+LUA_API void lua_setlevel	(lua_State *from, lua_State *to);
+
+
+/*
+** {======================================================================
+** Debug API
+** =======================================================================
+*/
+
+
+/*
+** Event codes
+*/
+#define LUA_HOOKCALL	0
+#define LUA_HOOKRET	1
+#define LUA_HOOKLINE	2
+#define LUA_HOOKCOUNT	3
+#define LUA_HOOKTAILR
