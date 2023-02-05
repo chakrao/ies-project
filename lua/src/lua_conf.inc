@@ -66,4 +66,26 @@ ifdef APPNAME
   
   ifneq ($(findstring Linux, $(TEC_UNAME)), )
     LIBS += dl 
-    LFLAG
+    LFLAGS = -Wl,-E
+    LIBS += readline history curses ncurses
+  endif
+  
+  ifneq ($(findstring BSD, $(TEC_UNAME)), )
+    LFLAGS = -Wl,-E
+    LIBS += readline history curses ncurses
+  endif
+  
+  ifneq ($(findstring Darwin, $(TEC_UNAME)), )
+    LIBS += readline
+  endif
+  
+  ifneq ($(findstring SunOS, $(TEC_UNAME)), )
+    LIBS += dl 
+  endif
+  
+  ifneq ($(findstring cygw, $(TEC_UNAME)), )
+    LIBS += lua$(SFX) readline history
+    SLIB =
+    LDIR += ../lib/$(TEC_UNAME)   
+  endif
+endif
