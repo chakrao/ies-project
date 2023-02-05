@@ -349,4 +349,78 @@ LUA_API void lua_setlevel	(lua_State *from, lua_State *to);
 #define LUA_HOOKRET	1
 #define LUA_HOOKLINE	2
 #define LUA_HOOKCOUNT	3
-#define LUA_HOOKTAILR
+#define LUA_HOOKTAILRET 4
+
+
+/*
+** Event masks
+*/
+#define LUA_MASKCALL	(1 << LUA_HOOKCALL)
+#define LUA_MASKRET	(1 << LUA_HOOKRET)
+#define LUA_MASKLINE	(1 << LUA_HOOKLINE)
+#define LUA_MASKCOUNT	(1 << LUA_HOOKCOUNT)
+
+typedef struct lua_Debug lua_Debug;  /* activation record */
+
+
+/* Functions to be called by the debuger in specific events */
+typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
+
+
+LUA_API int lua_getstack (lua_State *L, int level, lua_Debug *ar);
+LUA_API int lua_getinfo (lua_State *L, const char *what, lua_Debug *ar);
+LUA_API const char *lua_getlocal (lua_State *L, const lua_Debug *ar, int n);
+LUA_API const char *lua_setlocal (lua_State *L, const lua_Debug *ar, int n);
+LUA_API const char *lua_getupvalue (lua_State *L, int funcindex, int n);
+LUA_API const char *lua_setupvalue (lua_State *L, int funcindex, int n);
+
+LUA_API int lua_sethook (lua_State *L, lua_Hook func, int mask, int count);
+LUA_API lua_Hook lua_gethook (lua_State *L);
+LUA_API int lua_gethookmask (lua_State *L);
+LUA_API int lua_gethookcount (lua_State *L);
+
+
+struct lua_Debug {
+  int event;
+  const char *name;	/* (n) */
+  const char *namewhat;	/* (n) `global', `local', `field', `method' */
+  const char *what;	/* (S) `Lua', `C', `main', `tail' */
+  const char *source;	/* (S) */
+  int currentline;	/* (l) */
+  int nups;		/* (u) number of upvalues */
+  int linedefined;	/* (S) */
+  int lastlinedefined;	/* (S) */
+  char short_src[LUA_IDSIZE]; /* (S) */
+  /* private part */
+  int i_ci;  /* active function */
+};
+
+/* }====================================================================== */
+
+
+/******************************************************************************
+* Copyright (C) 1994-2008 Lua.org, PUC-Rio.  All rights reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining
+* a copy of this software and associated documentation files (the
+* "Software"), to deal in the Software without restriction, including
+* without limitation the rights to use, copy, modify, merge, publish,
+* distribute, sublicense, and/or sell copies of the Software, and to
+* permit persons to whom the Software is furnished to do so, subject to
+* the following conditions:
+*
+* The above copyright notice and this permission notice shall be
+* included in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+******************************************************************************/
+
+
+#endif
+
