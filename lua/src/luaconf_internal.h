@@ -261,3 +261,155 @@ union luai_Cast { double l_d; long l_l; };
 #define LUAI_DATA	LUAI_FUNC
 
 #else
+#define LUAI_FUNC	extern
+#define LUAI_DATA	extern
+#endif
+
+
+
+/*
+@@ LUA_QL describes how error messages quote program elements.
+** CHANGE it if you want a different appearance.
+*/
+#define LUA_QL(x)	"'" x "'"
+#define LUA_QS		LUA_QL("%s")
+
+
+/*
+** {==================================================================
+** Stand-alone configuration
+** ===================================================================
+*/
+
+#if defined(lua_c) || defined(luaall_c)
+
+/*
+@@ lua_stdin_is_tty detects whether the standard input is a 'tty' (that
+@* is, whether we're running lua interactively).
+** CHANGE it if you have a better definition for non-POSIX/non-Windows
+** systems.
+*/
+#if defined(LUA_USE_ISATTY)
+#include <unistd.h>
+#define lua_stdin_is_tty()	isatty(0)
+#elif defined(LUA_WIN)
+#include <io.h>
+#include <stdio.h>
+#define lua_stdin_is_tty()	_isatty(_fileno(stdin))
+#else
+#define lua_stdin_is_tty()	1  /* assume stdin is a tty */
+#endif
+
+
+/*
+@@ LUA_PROMPT is the default prompt used by stand-alone Lua.
+@@ LUA_PROMPT2 is the default continuation prompt used by stand-alone Lua.
+** CHANGE them if you want different prompts. (You can also change the
+** prompts dynamically, assigning to globals _PROMPT/_PROMPT2.)
+*/
+#define LUA_PROMPT		"> "
+#define LUA_PROMPT2		">> "
+
+
+/*
+@@ LUA_PROGNAME is the default name for the stand-alone Lua program.
+** CHANGE it if your stand-alone interpreter has a different name and
+** your system is not able to detect that name automatically.
+*/
+#define LUA_PROGNAME		"lua"
+
+
+/*
+@@ LUA_MAXINPUT is the maximum length for an input line in the
+@* stand-alone interpreter.
+** CHANGE it if you need longer lines.
+*/
+#define LUA_MAXINPUT	512
+
+
+/*
+@@ lua_readline defines how to show a prompt and then read a line from
+@* the standard input.
+@@ lua_saveline defines how to "save" a read line in a "history".
+@@ lua_freeline defines how to free a line read by lua_readline.
+** CHANGE them if you want to improve this functionality (e.g., by using
+** GNU readline and history facilities).
+*/
+#if defined(LUA_USE_READLINE)
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#define lua_readline(L,b,p)	((void)L, ((b)=readline(p)) != NULL)
+#define lua_saveline(L,idx) \
+	if (lua_strlen(L,idx) > 0)  /* non-empty line? */ \
+	  add_history(lua_tostring(L, idx));  /* add it to history */
+#define lua_freeline(L,b)	((void)L, free(b))
+#else
+#define lua_readline(L,b,p)	\
+	((void)L, fputs(p, stdout), fflush(stdout),  /* show prompt */ \
+	fgets(b, LUA_MAXINPUT, stdin) != NULL)  /* get line */
+#define lua_saveline(L,idx)	{ (void)L; (void)idx; }
+#define lua_freeline(L,b)	{ (void)L; (void)b; }
+#endif
+
+#endif
+
+/* }================================================================== */
+
+
+/*
+@@ LUAI_GCPAUSE defines the default pause between garbage-collector cycles
+@* as a percentage.
+** CHANGE it if you want the GC to run faster or slower (higher values
+** mean larger pauses which mean slower collection.) You can also change
+** this value dynamically.
+*/
+#define LUAI_GCPAUSE	200  /* 200% (wait memory to double before next GC) */
+
+
+/*
+@@ LUAI_GCMUL defines the default speed of garbage collection relative to
+@* memory allocation as a percentage.
+** CHANGE it if you want to change the granularity of the garbage
+** collection. (Higher values mean coarser collections. 0 represents
+** infinity, where each step performs a full collection.) You can also
+** change this value dynamically.
+*/
+#define LUAI_GCMUL	200 /* GC runs 'twice the speed' of memory allocation */
+
+
+/*
+@@ luai_apicheck is the assert macro used by the Lua-C API.
+** CHANGE luai_apicheck if you want Lua to perform some checks in the
+** parameters it gets from API calls. This may slow down the interpreter
+** a bit, but may be quite useful when debugging C code that interfaces
+** with Lua. A useful redefinition is to use assert.h.
+*/
+#if defined(LUA_USE_APICHECK)
+#include <assert.h>
+#define luai_apicheck(L,o)	{ (void)L; assert(o); }
+#else
+#define luai_apicheck(L,o)	{ (void)L; }
+#endif
+
+
+/*
+@@ LUAI_UINT32 is an unsigned integer with at least 32 bits.
+@@ LUAI_INT32 is an signed integer with at least 32 bits.
+@@ LUAI_UMEM is an unsigned integer big enough to count the total
+@* memory used by Lua.
+@@ LUAI_MEM is a signed integer big enough to count the total memory
+@* used by Lua.
+** CHANGE here if for some weird reason the default definitions are not
+** good enough for your machine. (The definitions in the 'else'
+** part always works, but may waste space on machines with 64-bit
+** longs.) Probably you do not need to change this.
+*/
+#if LUAI_BITSINT >= 32
+#define LUAI_UINT32	unsigned int
+#define LUAI_INT32	int
+#define LUAI_MAXINT32	INT_MAX
+#define LUAI_UMEM	size_t
+#define LUAI_MEM	ptrdiff_t
+#else
+/* 16-bit 
