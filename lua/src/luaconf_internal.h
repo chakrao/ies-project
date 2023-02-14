@@ -576,4 +576,56 @@ union luai_Cast { double l_d; long l_l; };
 /*
 @@ LUA_DL_* define which dynamic-library system Lua should use.
 ** CHANGE here if Lua has problems choosing the appropriate
-** dynamic-librar
+** dynamic-library system for your platform (either Windows' DLL, Mac's
+** dyld, or Unix's dlopen). If your system is some kind of Unix, there
+** is a good chance that it has dlopen, so LUA_DL_DLOPEN will work for
+** it.  To use dlopen you also need to adapt the src/Makefile (probably
+** adding -ldl to the linker options), so Lua does not select it
+** automatically.  (When you change the makefile to add -ldl, you must
+** also add -DLUA_USE_DLOPEN.)
+** If you do not want any kind of dynamic library, undefine all these
+** options.
+** By default, _WIN32 gets LUA_DL_DLL and Mac OS X gets LUA_DL_DYLD.
+*/
+#if defined(LUA_USE_DLOPEN)
+#define LUA_DL_DLOPEN
+#endif
+
+#if defined(LUA_WIN)
+#define LUA_DL_DLL
+#endif
+
+
+/*
+@@ LUAI_EXTRASPACE allows you to add user-specific data in a lua_State
+@* (the data goes just *before* the lua_State pointer).
+** CHANGE (define) this if you really need that. This value must be
+** a multiple of the maximum alignment required for your machine.
+*/
+#define LUAI_EXTRASPACE		0
+
+
+/*
+@@ luai_userstate* allow user-specific actions on threads.
+** CHANGE them if you defined LUAI_EXTRASPACE and need to do something
+** extra when a thread is created/deleted/resumed/yielded.
+*/
+#define luai_userstateopen(L)		((void)L)
+#define luai_userstateclose(L)		((void)L)
+#define luai_userstatethread(L,L1)	((void)L)
+#define luai_userstatefree(L)		((void)L)
+#define luai_userstateresume(L,n)	((void)L)
+#define luai_userstateyield(L,n)	((void)L)
+
+
+/* =================================================================== */
+
+/*
+** Local configuration. You can use this space to add your redefinitions
+** without modifying the main part of the file.
+*/
+
+
+
+#endif
+
