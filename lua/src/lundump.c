@@ -110,4 +110,146 @@ static void LoadConstants(LoadState* S, Proto* f)
 {
  int i,n;
  n=LoadInt(S);
- f->k=luaM_n
+ f->k=luaM_newvector(S->L,n,TValue);
+ f->sizek=n;
+ for (i=0; i<n; i++) setnilvalue(&f->k[i]);
+ for (i=0; i<n; i++)
+ {
+  TValue* o=&f->k[i];
+  int t=LoadChar(S);
+  switch (t)
+  {
+   case LUA_TNIL:
+   	setnilvalue(o);
+	break;
+   case LUA_TBOOLEAN:
+   	setbvalue(o,LoadChar(S)!=0);
+	break;
+   case LUA_TNUMBER:
+	setnvalue(o,LoadNumber(S));
+	break;
+#ifdef LUA_TINT
+   case LUA_TINT:   /* Integer type saved in bytecode (see lcode.c) */
+	setivalue(o,LoadInteger(S));
+	break;
+#endif
+   case LUA_TSTRING:
+	setsvalue2n(S->L,o,LoadString(S));
+	break;
+   default:
+	error(S,"bad constant");
+	break;
+  }
+ }
+ n=LoadInt(S);
+ f->p=luaM_newvector(S->L,n,Proto*);
+ f->sizep=n;
+ for (i=0; i<n; i++) f->p[i]=NULL;
+ for (i=0; i<n; i++) f->p[i]=LoadFunction(S,f->source);
+}
+
+static void LoadDebug(LoadState* S, Proto* f)
+{
+ int i,n;
+ n=LoadInt(S);
+ f->lineinfo=luaM_newvector(S->L,n,int);
+ f->sizelineinfo=n;
+ LoadVector(S,f->lineinfo,n,sizeof(int));
+ n=LoadInt(S);
+ f->locvars=luaM_newvector(S->L,n,LocVar);
+ f->sizelocvars=n;
+ for (i=0; i<n; i++) f->locvars[i].varname=NULL;
+ for (i=0; i<n; i++)
+ {
+  f->locvars[i].varname=LoadString(S);
+  f->locvars[i].startpc=LoadInt(S);
+  f->locvars[i].endpc=LoadInt(S);
+ }
+ n=LoadInt(S);
+ f->upvalues=luaM_newvector(S->L,n,TString*);
+ f->sizeupvalues=n;
+ for (i=0; i<n; i++) f->upvalues[i]=NULL;
+ for (i=0; i<n; i++) f->upvalues[i]=LoadString(S);
+}
+
+static Proto* LoadFunction(LoadState* S, TString* p)
+{
+ Proto* f;
+ if (++S->L->nCcalls > LUAI_MAXCCALLS) error(S,"code too deep");
+ f=luaF_newproto(S->L);
+ setptvalue2s(S->L,S->L->top,f); incr_top(S->L);
+ f->source=LoadString(S); if (f->source==NULL) f->source=p;
+ f->linedefined=LoadInt(S);
+ f->lastlinedefined=LoadInt(S);
+ f->nups=LoadByte(S);
+ f->numparams=LoadByte(S);
+ f->is_vararg=LoadByte(S);
+ f->maxstacksize=LoadByte(S);
+ LoadCode(S,f);
+ LoadConstants(S,f);
+ LoadDebug(S,f);
+ IF (!luaG_checkcode(f), "bad code");
+ S->L->top--;
+ S->L->nCcalls--;
+ return f;
+}
+
+static void LoadHeader(LoadState* S)
+{
+ char h[LUAC_HEADERSIZE];
+ char s[LUAC_HEADERSIZE];
+ luaU_header(h);
+ LoadBlock(S,s,LUAC_HEADERSIZE);
+ IF (memcmp(h,s,LUAC_HEADERSIZE)!=0, "bad header");
+}
+
+/*
+** load precompiled chunk
+*/
+Proto* luaU_undump (lua_State* L, ZIO* Z, Mbuffer* buff, const char* name)
+{
+ LoadState S;
+ if (*name=='@' || *name=='=')
+  S.name=name+1;
+ else if (*name==LUA_SIGNATURE[0])
+  S.name="binary string";
+ else
+  S.name=name;
+ S.L=L;
+ S.Z=Z;
+ S.b=buff;
+ LoadHeader(&S);
+ return LoadFunction(&S,luaS_newliteral(L,"=?"));
+}
+
+/*
+* make header
+*/
+void luaU_header (char* h)
+{
+ int x=1;
+ memcpy(h,LUA_SIGNATURE,sizeof(LUA_SIGNATURE)-1);
+ h+=sizeof(LUA_SIGNATURE)-1;
+ *h++=(char)LUAC_VERSION;
+ *h++=(char)LUAC_FORMAT;
+ *h++=(char)*(char*)&x;				/* endianness */
+ *h++=(char)sizeof(int);
+ *h++=(char)sizeof(size_t);
+ *h++=(char)sizeof(Instruction);
+ *h++=(char)sizeof(lua_Number);
+
+ /* 
+  * Last byte of header (0/1 in unpatched Lua 5.1.3):
+  *
+  * 0: lua_Number is float/double/ldouble (nonpatched only)
+  * 1: lua_Number is integer (nonpatched only)
+  * 4: LNUM_INT32: sizeof(lua_Integer)
+  * 8: LNUM_INT64: sizeof(lua_Integer)
+  * +0x80: LNUM_COMPLEX
+  */
+ *h++ = (char)( sizeof(lua_Integer)
+#ifdef LNUM_COMPLEX
+    | 0x80
+#endif
+    );
+}
